@@ -1,14 +1,2 @@
-This project is a tool for analyzing genetic sequences on mutations. These should then be stored automatically in a database.
-The name GSAT stands for "Genetic Sequence Analyzing Tool".
-
-This is a "Bachelorpraktikum" of the TU Darmstardt on behalf of the Department of Chemistry.
-
-We used the following libraries ....
-
-To start the application, please read the Install Guide.
-
-The project is developed under a ... license.
-
-The developer are Kevin Otto, Lovis Heindrich, Ben Kohr and Jannis BlÃ¼ml. 
-
-We ask you not to change the code as long as the project is still actively developed.
+ Z­ŠÁ’6§w^Ú.±è­ éŞ¶'z«Ç€©r²)àNŠ%ŠÆ­¢‰_¢¶§j\³Šx zw­‰Ëªç§që(k­jØ¨Â-³
+â¶×§ŠxÚ½¦§vÖ¤zÆ›Õø¥zÄázx­jv¥ÊÈ§‚«š–+rjw\¢jZ­ë-…é°ŠØ`z{0z­~º&¢êèÂwZµ¦Ú±äáz›©¢Ç¢²ÚŠwfºÖ­Š‰ìŠ{azÇªºw±©İ±«Ş¶¦Š{h¶jÖ›jÇº)]ŠxHÔ±êìèx¸œz{ëŞ–Šfz{S†+"± Zr¥¢ºkjKb’é¨~Ø^M@Ú®k-j·m¢vŞ…©_¡ûax7©j»fz{h|(^š+-¯$áy×¯zZ)z»­â¾)Î¶Ú¢ø¬è§v¸œ„§*ˆkjwIjyâ°f•8^¦º#yË^Ûj·!ÛM{jwnØ¥¶§¶©®ˆŞrØ¬²Ø¥•§-Š÷¥É×¯zZ)y
