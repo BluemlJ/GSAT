@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<section name="Workbench">
+	<item value="1" key="org.eclipse.egit.ui.internal.clone.GitSelectWizardPageWizardSel"/>
+	<item value="D:\BP\GSAT\.git" key="GitSelectRepositoryPage.lastRepository"/>
+	<section name="GitImportWizard">
+	</section>
+	<section name="GitCommitMessageComponent">
+		<list key="D:\BP\GSAT\.git">
+			<item value="false"/>
+			<item value="Jannis &lt;bluemlJ@gmx.net&gt;"/>
+			<item value="eclipse, first try to commit project"/>
+			<item value="Jannis &lt;bluemlJ@gmx.net&gt;"/>
+			<item value="75553339d3f6cd2b2bfa5f082b158b8d839f3310"/>
+		</list>
+	</section>
+	<section name="org.eclipse.egit.ui.internal.staging.StagingView">
+		<item value="200,200" key="STAGING_SASH_FORM_WEIGHT"/>
+		<item value="false" key="sortItemState"/>
+		<item value="200,200" key="HORIZONTAL_SASH_FORM_WEIGHT"/>
+	</section>
+</section>
