@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Move element &apos;Library.java&apos; to &apos;p_GSAT/src/main/java/libraries&apos;&#x0A;- Original project: &apos;p_GSAT&apos;&#x0A;- Destination element: &apos;p_GSAT/src/main/java/libraries&apos;&#x0A;- Original element: &apos;Library.java&apos;&#x0A;- Update references to refactored element" description="Move compilation unit" destination="/src\/main\/java&lt;libraries" element1="/src\/main\/java&lt;{Library.java" files="0" flags="589830" folders="0" id="org.eclipse.jdt.ui.move" policy="org.eclipse.jdt.ui.moveResources" qualified="false" references="true" stamp="1479162574092" units="1" version="1.0"/>
+</session>

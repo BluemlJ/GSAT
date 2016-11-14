@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Move 3 packages to &apos;p_GSAT/src/main/java&apos;&#x0A;- Original project: &apos;java_GSAT&apos;&#x0A;- Destination element: &apos;p_GSAT/src/main/java&apos;&#x0A;- Original elements:&#x0A;     java_GSAT/src/sequenceAnalyser&#x0A;     java_GSAT/src/core&#x0A;     java_GSAT/src/inputAndOutputManager&#x0A;- Update references to refactored element" description="Move packages" destination="=p_GSAT/src\/main\/java" element1="/src&lt;sequenceAnalyser" element2="/src&lt;core" element3="/src&lt;inputAndOutputManager" flags="589830" fragments="3" id="org.eclipse.jdt.ui.move" policy="org.eclipse.jdt.ui.movePackages" stamp="1479162586113" version="1.0"/>
+</session>
