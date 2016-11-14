@@ -1,0 +1,16 @@
+language: java
+
+jdk:
+   - openjdk7
+   - oraclejdk7
+   - openjdk6
+   - oraclejdk8
+
+after_success:
+   - gradle assemble
+   - gradle check
+
+notifications:
+  email:
+      recipients:
+         - bluemlJ@gmx.net
