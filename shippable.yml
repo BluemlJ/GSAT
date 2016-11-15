@@ -12,6 +12,7 @@ build:
   ci:
     - mkdir -p shippable/testresults
     - mkdir -p shippable/codecoverage
+    - cd p_GSAT/
     - gradle build
    
 after_success:
