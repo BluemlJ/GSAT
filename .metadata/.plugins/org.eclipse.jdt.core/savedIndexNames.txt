@@ -1,5 +1,19 @@
-INDEX VERSION 1.129+/home/bluemlj/SSHRepos/GSAT/.metadata/.plugins/org.eclipse.jdt.core
-4171618324.index
-635796775.index
-89578696.index
-1528751494.index
+INDEX VERSION 1.129+C:\Users\Admin\Bachelor-Praktikum\GIT\GSAT\.metadata\.plugins\org.eclipse.jdt.core
+2449793579.index
+2334050384.index
+3465765727.index
+2979327570.index
+152244849.index
+2563912980.index
+623186594.index
+2442888519.index
+4078855296.index
+2153270132.index
+48817752.index
+1416821754.index
+1760935762.index
+1677593041.index
+606802006.index
+3814180264.index
+3887496914.index
+3724307573.index
