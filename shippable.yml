@@ -6,9 +6,16 @@ jdk:
    - openjdk6
    - oraclejdk8
 
+#Create folders for test and code coverage
+
+build:
+  ci:
+    - mkdir -p shippable/testresults
+    - mkdir -p shippable/codecoverage
+    - gradle build
+   
 after_success:
-   - gradle assemble
-   - gradle check
+    - rm -r shippaple/
 
 notifications:
   email:
