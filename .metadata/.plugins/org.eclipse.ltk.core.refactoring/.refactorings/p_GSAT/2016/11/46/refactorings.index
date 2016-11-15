@@ -1,2 +1,9 @@
 1479221370804	Rename package 'inputAndOutputManager'
 1479221753551	Move compilation unit
+1479240529978	Move compilation unit
+1479240719451	Delete element
+1479241329862	Rename type 'DatabaseIO'
+1479242314987	Rename type 'SequenceIO'
+1479243254994	Delete element
+1479245755826	Delete element
+1479247106112	Rename package 'sequenceAnalyser'
