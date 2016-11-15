@@ -1,5 +1,5 @@
 import static org.junit.Assert.*;
-import org.biojava.nbio.core.*;
+import org.biojava.nbio.core.sequence.*;
 import org.junit.Test;
 
 public class BioJavaTest {
