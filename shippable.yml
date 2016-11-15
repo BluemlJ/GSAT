@@ -15,8 +15,8 @@ build:
     - cd p_GSAT/
     - gradle build
    
-after_success:
-    - rm -r shippaple/
+#after_success:
+#    - rm -r shippaple/
 
 notifications:
   email:
