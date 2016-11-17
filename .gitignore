@@ -1,8 +1,8 @@
 # Java #
 ########
 *.class
-java_GSAT/bin/
-.metadata/
+p_GSAT/bin/
+
 
 # Mobile Tools for Java (J2ME) #
 ################################
