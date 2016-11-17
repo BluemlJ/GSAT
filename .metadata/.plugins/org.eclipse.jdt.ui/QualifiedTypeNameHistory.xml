@@ -5,4 +5,7 @@
 <fullyQualifiedTypeName name="java.util.LinkedList"/>
 <fullyQualifiedTypeName name="sequenceAnalyser.Gene"/>
 <fullyQualifiedTypeName name="java.awt.Frame"/>
+<fullyQualifiedTypeName name="io.DatabaseConnection"/>
+<fullyQualifiedTypeName name="analysis.AnalyzedSequence"/>
+<fullyQualifiedTypeName name="io.SequenceReader"/>
 </qualifiedTypeNameHistroy>

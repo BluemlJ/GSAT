@@ -41,27 +41,40 @@ public class DatabaseConnection {
 	
     }
     
+    
+    
+    /**
+     * Inserts the data points into a local file (e.g. if there is no connection to the 
+     * database available right now).
+     */
+    private static void storeAllLocally() {
+	
+    }
+    
+    
   
     /**
      * Puts a single entry in the waiting queue for being written into the database.
      * @param dbe
      */
     public static void addIntoQueue(DatabaseEntry dbe) {
-	
+	queue.add(dbe);
     }
+    
     
     
     /**
      * Empties the current waiting queue.
      */
     public static void flushQueue() {
-	
+	queue.clear();
     }
+    
     
     /**
      * Retrieves all genes from the database and returns them.
      */
-    public LinkedList<Gene> retrieveAllGenes() {
+    public static LinkedList<Gene> retrieveAllGenes() {
 	return null;
     }
     

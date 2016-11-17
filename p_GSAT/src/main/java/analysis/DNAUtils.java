@@ -44,7 +44,7 @@ public class DNAUtils {
      * Compares to sequences and returns their differences.
      * Note for Kevin: You could probably use the Levenshtein-Algorithm, but maybe (also?)
      * the Needleman-Wunsch-Algorithm or the Smith-Waterman-Algorithm. This method should
-     * have some kind of backtracking (to report on changes), "compare" shouldn't.
+     * have some kind of backtracking (to report on changes), while "compare" shouldn't.
      */
     private static LinkedList<String> compareAndReport(Sequence sOne, Sequence sTwo) {
 	return null;

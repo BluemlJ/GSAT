@@ -4,12 +4,12 @@ INDEX VERSION 1.129+C:\Users\Business\Bachelor-Praktikum\GIT\GSAT\.metadata\.plu
 3887496914.index
 2563912980.index
 48817752.index
-2442888519.index
-1416821754.index
-2449793579.index
-1760935762.index
-1851955243.index
 3967059705.index
+1416821754.index
+2442888519.index
+2449793579.index
+1851955243.index
+1760935762.index
 3814180264.index
 1677593041.index
 606802006.index

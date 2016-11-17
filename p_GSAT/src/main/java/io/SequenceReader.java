@@ -2,7 +2,7 @@ package io;
 
 import java.util.ArrayList;
 
-import analysis.Sequence;
+import analysis.AnalyzedSequence;
 
 /**
  * 
@@ -27,7 +27,7 @@ public class SequenceReader {
     /**
      * Constructed list of file names in a given folder (in order to not analyze a file twice).
      */
-    private ArrayList<String> files = new ArrayList<String>();
+    private static ArrayList<String> files = new ArrayList<String>();
     
     
     
@@ -37,7 +37,7 @@ public class SequenceReader {
      * and only once.
      * 
      */
-    public void configurePath(String path) {
+    public static void configurePath(String path) {
 	
     }
     
@@ -50,11 +50,26 @@ public class SequenceReader {
      * to process file by file completely.
      * 
      */
-    public Sequence parseFile() {
+    public static AnalyzedSequence convertFileIntoSequence() {
 	return null;
     }
     
     
+    /**
+     * Discards the current path and files.
+     */
+    public static void resetInputData() {
+	path = null;
+	files.clear();
+    }
+    
+    
+    /**
+     * Indicates whether there is a current path set.
+     */
+    public static boolean isPathSet() {
+	return (path != null);
+    }
     
     
     

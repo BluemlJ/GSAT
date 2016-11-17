@@ -70,6 +70,13 @@ public class AnalyzedSequence extends Sequence {
     }
     
     
+    /**
+     * Updates the sequence (e.g. after trimming off the ends).
+     */
+    public void updateSequence(String seq) {
+	sequence = seq;
+    }
+    
     
     
     
