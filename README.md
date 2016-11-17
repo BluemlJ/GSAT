@@ -1,7 +1,7 @@
 ## GSAT
 
 About GSAT
-----
+- - - -
 GSAT, which means "Genetic Sequence Analysing Tool", is a Java program for analysing AB1 files, comparing them with genes and adding retrieved
 information about mutations into a database.
 
