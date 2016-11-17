@@ -1,9 +1,9 @@
 ## GSAT
 
-What is GSAT and when to use it?
+About GSAT
 ------
-GSAT (Genetic Sequence Analysing Tool) is a tool to analysing ab1 files, comparing them with genes and addings them into a database. 
-It is written in Java.  
+GSAT, which means "Genetic Sequence Analysing Tool", is a Java program for analysing AB1 files, comparing them with genes and adding retrieved
+information about mutations into a database.
 
 
 Requirements
@@ -15,16 +15,17 @@ Building/Installation
 Users Guide
 -------
 
-License
+Licence
 -------
+see Gitlab's Project Section "GNU LGPLv3"
 
 About us
 -------
-This project is developed by students of the TU Darmstadt and is written in context of a "Bachelorpraktikum" for the Department of Chemistry.
-The projects ends march 2017 and until then its still in development. 
+This project is developed by TU Darmstadt students in the context of their so-called "Bachelor-Praktikum" for the Department of Chemistry.
+The projects ends in march 2017.
 
-The Authors are:
+The authors are:
 * **Kevin Otto**
 * **Ben Kohr**
 * **Lovis Heindrich**
-* **Jannis Blüml**
+* **Jannis BlÃ¼ml**
