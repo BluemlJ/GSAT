@@ -15,9 +15,15 @@ Building/Installation
 Users Guide
 -------
 
-Licence
+License
 -------
-see Gitlab's Project Section "GNU LGPLv3"
+Everyone is permitted to copy and distribute verbatim copies of this license document, but changing it is not allowed.
+This version of the GNU Lesser General Public License incorporates the terms and conditions of version 3 of the GNU General Public License, 
+supplemented by the additional permissions, you can find here under the link below.
+
+[LGPL 3.0](https://www.gnu.org/licenses/lgpl-3.0.de.html)
+
+The complete license can you find in the [lincense file](https://gitlab.com/BluemlJ/GSAT/blob/master/LICENSE).
 
 About us
 -------
