@@ -1,0 +1,80 @@
+package io;
+
+/**
+ * Models an "abstract" entry to be written into the database. The database itself may have
+ * different tables and this abstract entry can actually be split with its parts 
+ * being distributed among those tables (while making sure that it is 
+ * possible to combine the data again).
+ * 
+ * @author Ben Kohr
+ *
+ */
+public class DatabaseEntry {
+
+    
+    /**
+     * The unique id of the analysed file;
+     */
+    private int id;
+    
+    
+    /**
+     * The referenced gene of analysis.
+     */
+    private String gene;
+    
+    
+    /**
+     * The used primer.
+     */
+    private String primer;
+    
+    
+    /**
+     * Quality measure
+     */
+    private double quality;
+    
+    
+    /**
+     * A mutation string; might be empty.
+     */
+    private String mutation;
+    
+    
+    /**
+     * Indicates if the mutation is silent or not.
+     */
+    private boolean silent;
+    
+    
+    
+    
+    
+    /**
+     * Constructor that sets up all attributes.
+     * 
+     * @param id The unique id of the sequence
+     * @param gene The sequence's reference gene
+     * @param primer Given meta information about the sequence
+     * @param quality A quaility measure of the sequence
+     * @param mutatin One mutation, represented as a String
+     * @param silent Whether the mutation is silent or not
+     * 
+     * @author Ben Kohr
+     */
+    public DatabaseEntry(int id, String gene, String primer, double quality, 
+	    		 String mutation, boolean silent) {
+	this.id = id;
+	this.gene = gene;
+	this.primer = primer;
+	this.quality = quality;
+	this.mutation = mutation;
+	this.silent = silent;
+	
+    }
+    
+    
+    
+    
+}

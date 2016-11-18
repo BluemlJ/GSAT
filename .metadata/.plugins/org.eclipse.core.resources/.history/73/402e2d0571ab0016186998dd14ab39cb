@@ -1,0 +1,34 @@
+package io;
+
+import java.util.LinkedList;
+
+public class DatabaseIO {
+
+    /**
+     * List off all entries to be written into the database
+     */
+    private static LinkedList<DatabaseEntry> entries = new LinkedList<DatabaseEntry>();
+    
+    
+    /**
+     * Specifies the location of the database
+     */
+    private static String connectionString;
+    
+    
+    /**
+     * Inserts all currently stored Entries into the specified database.
+     * Makes use of insertIntoDatabase 
+     */
+    public static void insertAllIntoDatabase() {
+	
+    }
+    
+    /**
+     * Inserts a single data point into the specified database
+     */
+    public static void insertIntoDatabase() {
+	
+    }
+    
+}

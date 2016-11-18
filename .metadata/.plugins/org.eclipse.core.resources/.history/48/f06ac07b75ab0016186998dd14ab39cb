@@ -1,0 +1,55 @@
+package io;
+
+import java.util.LinkedList;
+
+import sequenceAnalyser.Sequence;
+
+/**
+ * 
+ * This class reads files of the AB1 format and extracts the information into a sequence.
+ *
+ */
+public class SequenceReader {
+
+    /**
+     * Path the the source of information (folder/file).
+     */
+    private static String path;
+    
+    
+    
+    /**
+     * Indicates whether the given path specifies a folder or not (i.e. a file);
+     */
+    private static boolean pathLeadsToFolder;
+    
+    
+    /**
+     * Constructed list of file names in a given folder (in order to not analyze a file twice).
+     */
+    private LinkedList<String> files = new LinkedList<String>();
+    
+    
+    
+    /**
+     * Sets the path to the folder or the file to be used.
+     * 
+     */
+    public void setPath(String path) {
+	
+    }
+    
+    
+    /**
+     * Parses one AB1 file into a sequence.
+     * 
+     */
+    public Sequence parseFile() {
+	return null;
+    }
+    
+    
+    
+    
+    
+}

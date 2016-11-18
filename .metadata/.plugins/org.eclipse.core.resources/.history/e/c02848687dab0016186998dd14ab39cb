@@ -1,0 +1,22 @@
+package gui;
+
+/**
+ * Class for organizing the graphical user interface.
+ *
+ */
+public class GUI {
+    
+    
+    /**
+     * Start the GUI and show it to the user.
+     */
+    public static void bringUpGUI() {
+	
+    }
+    
+    
+    // handle inputs via listeners here...
+    
+    
+    
+}

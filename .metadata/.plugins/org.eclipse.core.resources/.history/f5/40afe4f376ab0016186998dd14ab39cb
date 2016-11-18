@@ -1,0 +1,5 @@
+package sequenceAnalyser;
+
+public class AnalyzedSequence extends Sequence {
+
+}

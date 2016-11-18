@@ -1,10 +1,15 @@
 # Java #
 ########
 *.class
+<<<<<<< HEAD
 java_GSAT/bin/
 .metadata/
 .recommenders/
 p_GSAT/build/
+=======
+p_GSAT/bin/
+
+>>>>>>> c8f215ca2424dba9b55f76392d32bea426ef25cf
 
 # Mobile Tools for Java (J2ME) #
 ################################

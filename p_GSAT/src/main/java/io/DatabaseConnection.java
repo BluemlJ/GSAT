@@ -5,13 +5,17 @@ import java.util.LinkedList;
 import analysis.Gene;
 
 /**
- * Class to communicate with the database
+ * Class to communicate with the database. It's also responsible for storing files locally,
+ * if there is e.g. no connection to the database available.
+ * 
+ * @author Ben Kohr
  *
  */
 public class DatabaseConnection {
 
     /**
-     * List off all entries to be written into the database.
+     * List off all entries to be written into the database. These are typically the results of
+     * the analysis of a single file.
      */
     private static LinkedList<DatabaseEntry> queue = new LinkedList<DatabaseEntry>();
     
@@ -23,13 +27,24 @@ public class DatabaseConnection {
     private static String connectionString;
     
     
+    /**
+     * Specifies the path where local files shall be created (if necessary).
+     */
+    private static String localPath;
+    
+    
     
     /**
-     * Inserts all currently stored Entries into the specified database.
-     * Makes use of insertIntoDatabase 
+     * Inserts all currently stored entries into the specified database.
+     * 
+     * @see #insertIntoDatabase()
+     * 
+     * @author Ben Kohr
      */
     public static void insertAllIntoDatabase() {
-	
+	while (!queue.isEmpty()) {
+	    insertIntoDatabase();
+	}
     }
     
     
@@ -55,7 +70,10 @@ public class DatabaseConnection {
   
     /**
      * Puts a single entry in the waiting queue for being written into the database.
-     * @param dbe
+     * 
+     * @param dbe New Data point to be written into the database
+     * 
+     * @author Ben Kohr
      */
     public static void addIntoQueue(DatabaseEntry dbe) {
 	queue.add(dbe);
@@ -65,6 +83,8 @@ public class DatabaseConnection {
     
     /**
      * Empties the current waiting queue.
+     * 
+     * @author Ben Kohr
      */
     public static void flushQueue() {
 	queue.clear();
@@ -72,7 +92,22 @@ public class DatabaseConnection {
     
     
     /**
+     * Sets the path where local files shall be created if necessary.
+     * 
+     * @param path The path to create local files as a String
+     * 
+     * @author Ben Kohr
+     */
+    public static void setLocalPath(String path) {
+	localPath = path;
+    }
+    
+    
+    
+    /**
      * Retrieves all genes from the database and returns them.
+     * 
+     * @return List of genes currently stored in the database
      */
     public static LinkedList<Gene> retrieveAllGenes() {
 	return null;

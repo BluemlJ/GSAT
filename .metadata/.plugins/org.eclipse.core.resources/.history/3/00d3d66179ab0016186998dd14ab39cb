@@ -1,0 +1,19 @@
+package sequenceAnalyser;
+
+
+/**
+ * This class contains the logic of analyzing DNA sequences.
+ *
+ */
+public class DNAUtils {
+
+    
+    /**
+     * Compares a sequence to a reference sequence (typically, a gene) to find mutations
+     * using the Levenshtein algorithm.
+     */
+    public static void compare(Sequence toAnalyze, Sequence reference) {
+	
+    }
+    
+}
