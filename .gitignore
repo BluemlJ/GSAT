@@ -3,6 +3,8 @@
 *.class
 java_GSAT/bin/
 .metadata/
+.recommenders/
+p_GSAT/build/
 
 # Mobile Tools for Java (J2ME) #
 ################################
