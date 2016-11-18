@@ -6,13 +6,13 @@ import java.util.LinkedList;
  * This class contains the logic of analyzing DNA sequences. Thus, it is the 
  * main part of the analyzing pipeline.
  * 
- *
  */
 public class DNAUtils {
 
     /**
      * This method finds the point in given sequence from which on the sequence is 
      * not reliable anymore. 
+     * The nucleotide at the point itself is the last "reliable" nucleotide.
      * 
      * @param sequence The sequence for which the end of reliability should be determined.
      * 
@@ -22,6 +22,18 @@ public class DNAUtils {
 	return 0;
     }
     
+    
+    
+    
+    /**
+     * Measures the quality of a sequence or of one of its parts which is used to
+     * find the end of trustwothyness.
+     * 
+     * @return The quality measure for the given sequence (may also be a part of a reference sequence)
+     */
+    private static double measureQuality(AnalyzedSequence seq) {
+	return 0.0;
+    }
     
     
     
@@ -102,5 +114,8 @@ public class DNAUtils {
     private static double compare(Sequence first, Sequence second) {
 	return 0.0;
     }
+    
+    
+    
     
 }

@@ -5,7 +5,10 @@ import java.util.LinkedList;
 import analysis.Gene;
 
 /**
- * Class to communicate with the database.
+ * Class to communicate with the database. It's also responsible for storing files locally,
+ * if there is e.g. no connection to the database available.
+ * 
+ * @author Ben Kohr
  *
  */
 public class DatabaseConnection {
@@ -22,6 +25,12 @@ public class DatabaseConnection {
      * Specifies the location of the database.
      */
     private static String connectionString;
+    
+    
+    /**
+     * Specifies the path where local files shall be created (if necessary).
+     */
+    private static String localPath;
     
     
     
@@ -80,6 +89,19 @@ public class DatabaseConnection {
     public static void flushQueue() {
 	queue.clear();
     }
+    
+    
+    /**
+     * Sets the path where local files shall be created if necessary.
+     * 
+     * @param path The path to create local files as a String
+     * 
+     * @author Ben Kohr
+     */
+    public static void setLocalPath(String path) {
+	localPath = path;
+    }
+    
     
     
     /**

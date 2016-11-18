@@ -1,0 +1,13 @@
+package io;
+
+/**
+ * 
+ * This class reads files of the AB1 format and extracts the information into a sequence.
+ *
+ */
+public class SequenceReader {
+
+    
+    
+    
+}

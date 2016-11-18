@@ -1,0 +1,41 @@
+package sequenceAnalyser;
+
+import java.util.LinkedList;
+
+/**
+ * Models a DNA sequence which could be a reference gen or a given sequence to analyze.
+ *
+ */
+public class Sequence {
+
+    /**
+     * The sequence of nucleotides.
+     */
+    private String sequence;
+    
+    
+    /**
+     * A list of discovered mutations.
+     */
+    private LinkedList<String> mutations;
+    
+    
+    
+    /**
+     * A list of discovered silent mutations.
+     */
+    private LinkedList<String> silentMutations;
+    
+    
+    /**
+     * The point in the data sequence from which on the sequence itself is 
+     * considered unreliable.
+     */
+    private int endOfTrustworthyness;
+    
+    
+    public Sequence() {
+	
+    }
+    
+}

@@ -1,0 +1,13 @@
+package io;
+
+public class DatabaseIO {
+
+    
+    LinkedList<DatabaseEntry> entries = new LinkedList<DatabaseEntry>();
+    
+    
+    public void insertIntoDatabase() {
+	
+    }
+    
+}

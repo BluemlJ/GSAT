@@ -1,0 +1,70 @@
+package io;
+
+import java.util.LinkedList;
+
+import sequenceAnalyser.Gene;
+
+/**
+ * Class to communicate with the database
+ *
+ */
+public class DatabaseConnection {
+
+    /**
+     * List off all entries to be written into the database.
+     */
+    private static LinkedList<DatabaseEntry> queue = new LinkedList<DatabaseEntry>();
+    
+    
+    
+    /**
+     * Specifies the location of the database.
+     */
+    private static String connectionString;
+    
+    
+    
+    /**
+     * Inserts all currently stored Entries into the specified database.
+     * Makes use of insertIntoDatabase 
+     */
+    public static void insertAllIntoDatabase() {
+	
+    }
+    
+    
+    
+    /**
+     * Inserts a single data point into the specified database.
+     */
+    private static void insertIntoDatabase() {
+	
+    }
+    
+  
+    /**
+     * Puts a single entry in the waiting queue for being written into the database.
+     * @param dbe
+     */
+    public static void addIntoQueue(DatabaseEntry dbe) {
+	
+    }
+    
+    
+    /**
+     * Empties the current waiting queue.
+     */
+    public static void flushQueue() {
+	
+    }
+    
+    /**
+     * Retrieves all genes from the database and returns them.
+     */
+    public LinkedList<Gene> getAllGenes() {
+	return null;
+    }
+    
+    
+    
+}

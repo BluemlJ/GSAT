@@ -1,0 +1,32 @@
+package sequenceAnalyser;
+
+import java.util.LinkedList;
+
+public class AnalyzedSequence extends Sequence {
+
+    
+    public AnalyzedSequence() {
+	super();
+    }
+    
+    
+    /**
+     * A list of discovered mutations.
+     */
+    private LinkedList<String> mutations;
+    
+    
+    
+    /**
+     * A list of discovered silent mutations.
+     */
+    private LinkedList<String> silentMutations;
+    
+    
+    /**
+     * The point in the data sequence from which on the sequence itself is 
+     * considered unreliable.
+     */
+    private int endOfTrustworthyness;
+    
+}

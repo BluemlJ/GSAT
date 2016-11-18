@@ -1,0 +1,23 @@
+package sequenceAnalyser;
+
+import java.util.LinkedList;
+
+/**
+ * Models a DNA sequence which could be a reference gene or a given sequence to analyze.
+ *
+ */
+public class Sequence {
+
+    /**
+     * The sequence of nucleotides.
+     */
+    protected String sequence;
+    
+    /**
+     * Constructor setting the attribute.
+     */
+    public Sequence(String sequence) {
+	this.sequence = sequence;
+    }
+    
+}

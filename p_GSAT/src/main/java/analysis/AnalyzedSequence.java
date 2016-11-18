@@ -3,13 +3,21 @@ package analysis;
 import java.util.LinkedList;
 
 /**
- * Models a sequence under analysis (i.e. obtained from an AB1 file).
+ * Models a sequence under analysis (i.e. obtained from an AB1 file), which may have mutations.
  * 
  * @author Ben Kohr
  * 
  */
 public class AnalyzedSequence extends Sequence {
 
+    
+    /**
+     * The name of the file this sequence was obtained from. This is used to create the name
+     * of the output file.
+     */
+    private String fileName;
+    
+    
     /**
      * The gene this sequence was formed from. Useful to compare the sequence with the gene.
      */
@@ -35,23 +43,20 @@ public class AnalyzedSequence extends Sequence {
     private LinkedList<String> silentMutations;
     
     
-    /**
-     * The point in the data sequence from which on the sequence itself is 
-     * considered unreliable. This number is zero-based (index in String).
-     */
-    private int endOfTrustworthyness;
-    
-    
     
     /**
      * Constructor calling the super constructor (which sets the only given attribute).
      * 
      * @param sequence The actual sequence of nucleotides as a String
+     * @param fileName Name of the file this sequence was obtained from
+     * @param primer Metadata to be stored with the sequence
      * 
      * @author Ben Kohr
      */
-    public AnalyzedSequence(String sequence) {
+    public AnalyzedSequence(String sequence, String fileName, String primer) {
 	super(sequence);
+	this.fileName = fileName;
+	this.primer = primer;
     }
     
     /**
@@ -77,27 +82,67 @@ public class AnalyzedSequence extends Sequence {
     }
     
     
+    
     /**
-     * Sets the point of the data starting to be unreliable.
+     * This method trims a sequence, i.e. it cuts out the desired part of the 
+     * nucleotide sequence. It keeps the start index character, and all following characters
+     * including the end index character. The rest is discarded. 
      * 
-     * @param endPoint The index of the data String from which on the data is considered unreliable
+     * @param startIndex The start of the sequence to be cut off
+     * @param endIndex The end of the sequence to be cut off
      * 
      * @author Ben Kohr
      */
-    public void setEndOfThrustworthyness(int endPoint) {
-	endOfTrustworthyness = endPoint;
+    public void trimSequence(int startIndex, int endIndex) {
+	sequence.substring(startIndex, endIndex + 1);
     }
+    
+    
     
     
     /**
-     * Updates the sequence (e.g. after trimming off the ends).
+     * Cuts off the end of a sequence. The nucleotide at the given index will the last one
+     * of the trimmed sequence.
      * 
-     * @param seq The new sequence of nucleotides as a String
+     * @param index The index after which all nucleotides are discarded
+     * 
+     * @see #trimSequence(int, int)
+     * 
      * @author Ben Kohr
      */
-    public void updateSequence(String seq) {
-	sequence = seq;
+    public void discardRest(int index) {
+	trimSequence(0, index);
     }
+    
+    
+    
+    
+    /**
+     * Cuts off the starts of a sequence. The nucleotide at the given index will the first one
+     * of the trimmed sequence.
+     * 
+     * @param index The first index to be kept in the new sequence
+     * 
+     * @see #trimSequence(int, int)
+     * 
+     * @author Ben Kohr
+     */
+    public void discardStart(int index) {
+	trimSequence(index, sequence.length() - 1);
+    }
+    
+
+    
+    /**
+     * Sets the referenced gene (after it is determined).
+     * 
+     * @param gene the determined reference gene
+     */
+    public void setReferencedGene(Gene gene) {
+	referencedGene = gene;
+    }
+    
+    
     
     
     /**
