@@ -1,5 +1,0 @@
-package sequenceAnalyser;
-
-public class Gene extends Sequence {
-
-}
