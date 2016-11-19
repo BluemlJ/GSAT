@@ -86,5 +86,26 @@ public abstract class Sequence {
 		return complSequence;
 
 	}
+	
+	/**
+	 * This Method gives you the nucleotide sequence of this object.	 * 
+	 * 
+	 * @return this object's nucleotide sequence
+	 * 
+	 * @author Jannis Blüml
+	 */
+	public String getSequence() {
+		return sequence;
+	}
+	/**
+	 * This Method sets the nucleotide sequence of this object.	 * 
+	 * 
+	 * @param sequence sets the nucleotide sequence of this object
+	 * 
+	 * @author Jannis Blüml
+	 */
+	public void setSequence(String sequence) {
+		this.sequence = sequence;
+	}
 
 }
