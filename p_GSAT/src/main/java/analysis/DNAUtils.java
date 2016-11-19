@@ -115,7 +115,7 @@ public class DNAUtils {
 				break;
 			// D = deletion, deletion of an amino acid
 			case "D":
-				originalAminoAcid += originalSequence.substring(position, position + 2);
+				originalAminoAcid += originalSequence.substring(position, position + 2 + shift);
 				shift += 3;
 				mutations.add(reference.getName() + "  -1" + getAminoAcidName(originalAminoAcid) + position);
 				break;
@@ -145,7 +145,139 @@ public class DNAUtils {
 	 * @author Jannis Blüml
 	 */
 	private static String getAminoAcidName(String AminoAcidTriple) {
-		// TODO Auto-generated method stub
+		switch (AminoAcidTriple) {
+		case "UUU":
+			return "F";
+		case "UUC":
+			return "F";
+		case "UUA":
+			return "L";
+		case "UUG":
+			return "L";
+		case "UCU":
+			return "S";
+		case "UCC":
+			return "S";
+		case "UCA":
+			return "S";
+		case "UCG":
+			return "S";
+		case "UAU":
+			return "Y";
+		case "UAC":
+			return "Y";
+		case "UAA":
+			return "STOP";
+		case "UAG":
+			return "STOP";
+		case "UGU":
+			return "C";
+		case "UGC":
+			return "C";
+		case "UGA":
+			return "STOP";
+		case "UGG":
+			return "W";
+		case "CUU":
+			return "L";
+		case "CUC":
+			return "L";
+		case "CUA":
+			return "L";
+		case "CUG":
+			return "L";
+		case "CCU":
+			return "P";
+		case "CCC":
+			return "P";
+		case "CCA":
+			return "P";
+		case "CCG":
+			return "P";
+		case "CAU":
+			return "H";
+		case "CAC":
+			return "H";
+		case "CAA":
+			return "Q";
+		case "CAG":
+			return "Q";
+		case "CGU":
+			return "R";
+		case "CGC":
+			return "R";
+		case "CGA":
+			return "R";
+		case "CGG":
+			return "R";
+		case "AUU":
+			return "I";
+		case "AUC":
+			return "I";
+		case "AUA":
+			return "I";
+		case "AUG":
+			return "M";
+		case "ACU":
+			return "T";
+		case "ACC":
+			return "T";
+		case "ACA":
+			return "T";
+		case "ACG":
+			return "T";
+		case "AAU":
+			return "N";
+		case "AAC":
+			return "N";
+		case "AAA":
+			return "K";
+		case "AAG":
+			return "K";
+		case "AGU":
+			return "S";
+		case "AGC":
+			return "S";
+		case "AGA":
+			return "R";
+		case "AGG":
+			return "R";
+		case "GUU":
+			return "V";
+		case "GUC":
+			return "V";
+		case "GUA":
+			return "V";
+		case "GUG":
+			return "V";
+		case "GCU":
+			return "A";
+		case "GCC":
+			return "A";
+		case "GCA":
+			return "A";
+		case "GCG":
+			return "A";
+		case "GAU":
+			return "D";
+		case "GAC":
+			return "D";
+		case "GAA":
+			return "E";
+		case "GAG":
+			return "E";
+		case "GGU":
+			return "G";
+		case "GGC":
+			return "G";
+		case "GGA":
+			return "G";
+		case "GGG":
+			return "G";
+		default:
+			//TODO exception unknown aminoacid
+			break;
+		}
 		return null;
 	}
 
