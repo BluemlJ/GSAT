@@ -26,6 +26,7 @@ public class LevenshteinResult {
 	 * default constructor
 	 * @param levenshteinMatrix
 	 * @param levenshteinOperations
+	 * @author Kevin Otto
 	 */
 	public LevenshteinResult(int[][] levenshteinMatrix, char[][] levenshteinOperations) {
 		super();
