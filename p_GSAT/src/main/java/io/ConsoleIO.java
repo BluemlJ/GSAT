@@ -12,7 +12,7 @@ public class ConsoleIO {
 	 * and Formating it for better readability
 	 * @param mat matrix (int[][]) to print
 	 */
-	protected static void printIntMatrix(int[][] mat) {
+	public static void printIntMatrix(int[][] mat) {
 		for (int j = 0; j < mat[0].length; j++) {
 			for (int i = 0; i < mat.length; i++) {
 				System.out.print(mat[i][j] + " ");

@@ -50,7 +50,7 @@ public class AnalysisTests {
 		for (String string : list) {
 			result += string + ", ";
 		}
-		String expected = "d|l|5, "; 
+		String expected = "d|5, "; 
 		assertTrue(result.equals(expected));
 	}
 	
@@ -65,7 +65,7 @@ public class AnalysisTests {
 		for (String string : list) {
 			result += string + ", ";
 		}
-		String expected = "d|x|6, "; 
+		String expected = "d|6, "; 
 		assertTrue(result.equals(expected));
 	}
 	
@@ -80,7 +80,7 @@ public class AnalysisTests {
 		for (String string : list) {
 			result += string + ", ";
 		}
-		String expected = "i|l|3, "; 
+		String expected = "i|3, "; 
 		assertTrue(result.equals(expected));
 	}
 	
