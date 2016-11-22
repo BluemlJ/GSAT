@@ -24,6 +24,7 @@ public class DNAUtils {
   public static final Map<String, String> aminoAcidShorts;
   static {
     Hashtable<String, String> tmp = new Hashtable<String, String>();
+    // RNA
     tmp.put("UUU", "F");
     tmp.put("UUC", "F");
     tmp.put("UUA", "L");
@@ -88,6 +89,75 @@ public class DNAUtils {
     tmp.put("GAA", "E");
     tmp.put("GAG", "E");
     tmp.put("GGU", "G");
+    tmp.put("GGC", "G");
+    tmp.put("GGA", "G");
+    tmp.put("GGG", "G");
+
+    // DNA
+    tmp.put("TTT", "F");
+    tmp.put("TTC", "F");
+    tmp.put("TTA", "L");
+    tmp.put("TTG", "L");
+    tmp.put("TCT", "S");
+    tmp.put("TCC", "S");
+    tmp.put("TCA", "S");
+    tmp.put("TCG", "S");
+    tmp.put("TAT", "Y");
+    tmp.put("TAC", "Y");
+    tmp.put("TAA", "STOP");
+    tmp.put("TAG", "STOP");
+    tmp.put("TGT", "C");
+    tmp.put("TGC", "C");
+    tmp.put("TGA", "STOP");
+    tmp.put("TGG", "W");
+
+    tmp.put("CTT", "L");
+    tmp.put("CTC", "L");
+    tmp.put("CTA", "L");
+    tmp.put("CTG", "L");
+    tmp.put("CCT", "P");
+    tmp.put("CCC", "P");
+    tmp.put("CCA", "P");
+    tmp.put("CCG", "P");
+    tmp.put("CAT", "H");
+    tmp.put("CAC", "H");
+    tmp.put("CAA", "Q");
+    tmp.put("CAG", "Q");
+    tmp.put("CGT", "R");
+    tmp.put("CGC", "R");
+    tmp.put("CGA", "R");
+    tmp.put("CGG", "R");
+
+    tmp.put("ATT", "I");
+    tmp.put("ATC", "I");
+    tmp.put("ATA", "I");
+    tmp.put("ATG", "M");
+    tmp.put("ACT", "T");
+    tmp.put("ACC", "T");
+    tmp.put("ACA", "T");
+    tmp.put("ACG", "T");
+    tmp.put("AAT", "N");
+    tmp.put("AAC", "N");
+    tmp.put("AAA", "K");
+    tmp.put("AAG", "K");
+    tmp.put("AGT", "S");
+    tmp.put("AGC", "S");
+    tmp.put("AGA", "R");
+    tmp.put("AGG", "R");
+
+    tmp.put("GTT", "V");
+    tmp.put("GTC", "V");
+    tmp.put("GTA", "V");
+    tmp.put("GTG", "V");
+    tmp.put("GCT", "A");
+    tmp.put("GCC", "A");
+    tmp.put("GCA", "A");
+    tmp.put("GCG", "A");
+    tmp.put("GAT", "D");
+    tmp.put("GAC", "D");
+    tmp.put("GAA", "E");
+    tmp.put("GAG", "E");
+    tmp.put("GGT", "G");
     tmp.put("GGC", "G");
     tmp.put("GGA", "G");
     tmp.put("GGG", "G");
@@ -183,7 +253,7 @@ public class DNAUtils {
               originalSequence.substring((position + shift) * 3, (position + shift) * 3 + 2);
           String newAcid = mutatedSequence.substring(position * 3, position * 3 + 2);
 
-          if (!oldAcid.matches(newAcid)) {
+          if (!oldAcid.equals(newAcid)) {
             mutations.add(reference.getName() + "   " + oldAcid + position + newAcid);
           }
           break;
@@ -210,12 +280,12 @@ public class DNAUtils {
    * 
    * @author Jannis Blueml
    */
-  private static String nukleotideToAminoAcidForm(String nukleotides) {
+  private static String codonsToAminoAcids(String nukleotides) {
     String aminoAcidString = "";
 
     for (int i = 0; i < nukleotides.length(); i = i + 3) {
-      String triple = nukleotides.substring(i, i + 2);
-      aminoAcidString += aminoAcidShorts.get(triple);
+      String codon = nukleotides.substring(i, i + 2);
+      aminoAcidString += aminoAcidShorts.get(codon);
     }
     return aminoAcidString;
   }
