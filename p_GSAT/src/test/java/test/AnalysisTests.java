@@ -2,17 +2,12 @@ package test;
 
 import static org.junit.Assert.assertTrue;
 
-import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.LinkedList;
 
-import org.biojava.nbio.core.exceptions.CompoundNotFoundException;
-import org.biojava.nbio.core.sequence.DNASequence;
 import org.junit.Test;
 
 import analysis.DNAUtils;
-import io.ConsoleIO;
-import junit.framework.Assert;
 
 /**
  * This class tests the behavior of the analysis parts of the project.

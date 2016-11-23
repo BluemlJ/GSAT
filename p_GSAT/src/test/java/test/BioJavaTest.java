@@ -1,14 +1,9 @@
 package test;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertTrue;
 
-import java.io.File;
 import java.io.IOException;
 
-import org.biojava.bio.program.abi.ABIFChromatogram;
-import org.biojava.bio.program.abi.ABIFParser;
-import org.biojava.bio.program.abi.ABITrace;
-import org.biojava.bio.symbol.SymbolList;
 import org.biojava.nbio.core.exceptions.CompoundNotFoundException;
 import org.biojava.nbio.core.sequence.DNASequence;
 import org.junit.Test;
