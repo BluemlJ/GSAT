@@ -8,6 +8,7 @@ import java.util.LinkedList;
 import org.junit.Test;
 
 import analysis.DNAUtils;
+import exceptions.CorruptedSequenceException;
 
 /**
  * This class tests the behavior of the analysis parts of the project.
@@ -137,9 +138,10 @@ public class AnalysisTests {
    * Test if the convention from codons to amino acid (shortform) is correct, if the user uses
    * correct codonstrings
    * @author bluemlj
+ * @throws CorruptedSequenceException 
    */
   @Test
-  public void codonsToAminoAcidsOnCorrectUse() {
+  public void codonsToAminoAcidsOnCorrectUse() throws CorruptedSequenceException {
     String testA = "ATTGGGCCCATT";
     String result = DNAUtils.codonsToAminoAcids(testA);
     assertTrue(result.equals("IGPI"));
@@ -152,7 +154,7 @@ public class AnalysisTests {
    * @author bluemlj
    */
   @Test
-  public void codonsToAminoAcidsWithNotNukleotideString() {
+  public void codonsToAminoAcidsWithNotNukleotideString() throws CorruptedSequenceException{
     String testString = "HNOFClBrI";
     String result = DNAUtils.codonsToAminoAcids(testString);
     assertTrue(result.equals("uncorrect codonString"));
@@ -166,7 +168,7 @@ public class AnalysisTests {
    * @author bluemlj
    */
   @Test
-  public void codonsToAminoAcidsWithToShortString() {
+  public void codonsToAminoAcidsWithToShortString() throws CorruptedSequenceException{
     String testString = "ACTTTGG";
     String result = DNAUtils.codonsToAminoAcids(testString);
     assertTrue(result.equals("nukleotides not modulo 3, so not convertable"));
@@ -180,7 +182,7 @@ public class AnalysisTests {
    * @author bluemlj
    */
   @Test
-  public void codonsToAminoAcidsWithEmptyString() {
+  public void codonsToAminoAcidsWithEmptyString() throws CorruptedSequenceException {
    String testString = "";
     String result = DNAUtils.codonsToAminoAcids(testString);
     assertTrue(result.equals("empty nukleotides"));

@@ -5,6 +5,8 @@ import java.util.Hashtable;
 import java.util.LinkedList;
 import java.util.Map;
 
+import exceptions.CorruptedSequenceException;
+import exceptions.UndefinedMutationTypeException;
 import io.ConsoleIO;
 
 /**
@@ -190,7 +192,7 @@ public class DNAUtils {
    * 
    * @author bluemlj
    */
-  public static LinkedList<String> findMutations(AnalyzedSequence toAnalyze) {
+  public static LinkedList<String> findMutations(AnalyzedSequence toAnalyze) throws UndefinedMutationTypeException {
 
     Gene reference = toAnalyze.getReferencedGene();
 
@@ -257,8 +259,7 @@ public class DNAUtils {
           mutations.add(" - reading frame");
           return mutations;
         default:
-          // TODO exeption werfen
-          break;
+          throw new UndefinedMutationTypeException(typeOfMutations);
       }
 
     }
@@ -273,7 +274,7 @@ public class DNAUtils {
    * 
    * @author bluemlj
    */
-  public static String codonsToAminoAcids(String nukleotides) {
+  public static String codonsToAminoAcids(String nukleotides) throws CorruptedSequenceException {
     String aminoAcidString = "";
 
     if (nukleotides.isEmpty())
@@ -285,8 +286,19 @@ public class DNAUtils {
         String aminoacid = aminoAcidShorts.get(codon);
         if (aminoacid != null)
           aminoAcidString += aminoacid;
-        else
-          return "uncorrect codonString"; // TODO or throw exeption
+        else {
+        	
+        	int index;
+        	if (!codon.matches("[ATCGU]..")) { 
+        		index = 0; 
+        	} else if (!codon.matches(".[ATCGU].")) {
+        		index = 1;
+        	} else {
+        		index = 2; 
+        	}
+        	
+        	throw new CorruptedSequenceException(i + index, codon.charAt(index), nukleotides);
+        }
       }
     else
       return "nukleotides not modulo 3, so not convertable";

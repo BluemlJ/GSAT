@@ -77,7 +77,7 @@ public abstract class Sequence {
 				break;
 			default:
 				char problem = sequence.charAt(i);
-				throw new CorruptedSequenceException(i, problem);
+				throw new CorruptedSequenceException(i, problem, sequence);
 			}
 		}
 
