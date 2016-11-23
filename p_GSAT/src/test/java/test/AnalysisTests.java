@@ -1,13 +1,18 @@
 package test;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import java.util.Arrays;
 import java.util.LinkedList;
 
 import org.junit.Test;
 
+import analysis.AnalyzedSequence;
 import analysis.DNAUtils;
+import analysis.Gene;
+import analysis.Sequence;
 import exceptions.CorruptedSequenceException;
 
 /**
@@ -187,6 +192,75 @@ public class AnalysisTests {
     String result = DNAUtils.codonsToAminoAcids(testString);
     assertTrue(result.equals("empty nukleotides"));
     
+  }
+  
+  
+  
+  /**
+   * This test checks if a sequence is correctly reversed.
+   * 
+   * @throws CorruptedSequenceException
+   * 
+   * @author Ben Kohr
+   */
+  @Test
+  public void testGetReversedSequence() {
+	  
+	  Sequence seq = new Gene("", "Test1");
+	  assertEquals("", seq.getReversedSequence());  
+	  
+	  Sequence seq2 = new Gene("TTT", "Test2");
+	  assertEquals("TTT", seq2.getReversedSequence()); 
+	  
+	  Sequence seq3 = new Gene("ATCGATCGATCG", "Test3");
+	  assertEquals("GCTAGCTAGCTA", seq3.getReversedSequence()); 
+	  
+	  Sequence seq4 = new Gene("GGGTACCGTGTAGG", "Test4");
+	  assertEquals("GGATGTGCCATGGG", seq4.getReversedSequence()); 
+	  
+  }
+  
+  
+  
+  /**
+   * This test checks whether the complementary sequence is correctly computed.
+   * 
+   * @throws CorruptedSequenceException
+   * 
+   * @author Ben Kohr
+   */
+  @Test
+  public void testGetComplementarySequenceNoError() throws CorruptedSequenceException  {
+	  
+	  Sequence seq = new Gene("", "Test1");
+	  assertEquals("", seq.getComplementarySequence());  
+	  
+	  Sequence seq2 = new Gene("AAA", "Test2");
+	  assertEquals("TTT", seq2.getComplementarySequence()); 
+	  
+	  Sequence seq3 = new Gene("AATTCCGGATCG", "Test3");
+	  assertEquals("TTAAGGCCTAGC", seq3.getComplementarySequence()); 
+	  
+	  Sequence seq4 = new Gene("ATGCTAGCTAGCCCC", "Test4");
+	  assertEquals("TACGATCGATCGGGG", seq4.getComplementarySequence()); 
+  }
+  
+  
+  /**
+   * This test checks whether an exception is thrown if a sequence's complementary
+   * sequence is build. It's important to throw the exception and not to hide the error.
+   * 
+   * @throws CorruptedSequenceException
+   * 
+   * @author Ben Kohr
+   */
+  @Test(expected = CorruptedSequenceException.class)
+  public void testGetComplementarySequenceWithError() throws CorruptedSequenceException  {
+	  
+	  Sequence seq = new Gene("AATTCCFGATCG", "Problem");
+	  String comp = seq.getComplementarySequence();
+	  
+	  fail("No exception thrown!");  
   }
   
   

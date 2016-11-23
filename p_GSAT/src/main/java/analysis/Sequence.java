@@ -92,7 +92,7 @@ public abstract class Sequence {
 	 * 
 	 * @return this object's nucleotide sequence
 	 * 
-	 * @author Jannis BlÃ¼ml
+	 * @author Jannis Blüml
 	 */
 	public String getSequence() {
 		return sequence;
