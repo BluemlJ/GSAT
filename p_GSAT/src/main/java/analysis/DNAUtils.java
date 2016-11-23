@@ -1,18 +1,11 @@
 package analysis;
 
-import static org.junit.Assert.assertTrue;
-
-import java.util.Arrays;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.LinkedList;
 import java.util.Map;
 
-import core.Main;
 import io.ConsoleIO;
-import test.BioJavaTest;
-import org.biojava.*;
 
 /**
  * This class contains the logic of analyzing DNA sequences. Thus, it is the
