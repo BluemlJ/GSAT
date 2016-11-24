@@ -336,19 +336,21 @@ public class DNAUtils {
    * 
    * the returned list contains String of the following syntax:
    * 
-   * x|y|n
+   * x|y|n|m
    * 
-   * where: x is element of {s,i,d} where s stands for substitution i for insertion and d for
+   * where: x is element of {s,i,d,e,n} where s stands for substitution i for insertion and d for
    * deletion
    * 
-   * y is element of all chars contained in sOne and sTwo
-   * 
-   * n is the index of the char in sOne
+   * y is the index of the char in sOne
    *
+   * n is the old amino acid placed in the gene
+   *
+   * m is the new amino acid placed in the mutated sequence
+   *    * 
    * insertions take place between the given index and the next index
    * 
-   * @param sOne The first sequence
-   * @param sTwo The second sequence.
+   * @param sOne The mutated sequence
+   * @param sTwo The gene
    * 
    * @return A list of differences (represented as String)
    * @author Kevin Otto
