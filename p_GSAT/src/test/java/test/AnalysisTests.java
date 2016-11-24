@@ -50,12 +50,12 @@ public class AnalysisTests {
   @Test
   public void testDiferencesDelet() {
     LinkedList<String> list = DNAUtils.reportDifferences("helllo", "hello");
-    String result = "";
+    StringBuilder result = new StringBuilder();
     for (String string : list) {
-      result += string + ", ";
+      result.append(string + ", ");
     }
     String expected = "d|5, ";
-    assertTrue(result.equals(expected));
+    assertTrue(result.toString().equals(expected));
   }
 
   /**
@@ -66,12 +66,12 @@ public class AnalysisTests {
   @Test
   public void testDiferencesDeletEnd() {
     LinkedList<String> list = DNAUtils.reportDifferences("hellox", "hello");
-    String result = "";
+    StringBuilder result = new StringBuilder();
     for (String string : list) {
-      result += string + ", ";
+      result.append(string + ", ");
     }
     String expected = "d|6, ";
-    assertTrue(result.equals(expected));
+    assertTrue(result.toString().equals(expected));
   }
 
   /**
@@ -82,12 +82,12 @@ public class AnalysisTests {
   @Test
   public void testDiferencesInsert() {
     LinkedList<String> list = DNAUtils.reportDifferences("helo", "hello");
-    String result = "";
+    StringBuilder result = new StringBuilder();
     for (String string : list) {
-      result += string + ", ";
+      result.append(string + ", ");
     }
     String expected = "i|3, ";
-    assertTrue(result.equals(expected));
+    assertTrue(result.toString().equals(expected));
   }
 
   /**
@@ -98,12 +98,12 @@ public class AnalysisTests {
   @Test
   public void testDiferencesInsertEnd() {
     LinkedList<String> list = DNAUtils.reportDifferences("hell", "hello");
-    String result = "";
+    StringBuilder result = new StringBuilder();
     for (String string : list) {
-      result += string + ", ";
+      result.append(string + ", ");
     }
     String expected = "i|o|4, ";
-    assertTrue(result.equals(expected));
+    assertTrue(result.toString().equals(expected));
   }
 
   /**
@@ -114,12 +114,12 @@ public class AnalysisTests {
   @Test
   public void testDiferencesInsertBegin() {
     LinkedList<String> list = DNAUtils.reportDifferences("ello", "hello");
-    String result = "";
+    StringBuilder result = new StringBuilder();
     for (String string : list) {
-      result += string + ", ";
+      result.append(string + ", ");
     }
     String expected = "i|h|0, ";
-    assertTrue(result.equals(expected));
+    assertTrue(result.toString().equals(expected));
   }
 
   /**
@@ -130,13 +130,13 @@ public class AnalysisTests {
   @Test
   public void testDiferencesSubstitute() {
     LinkedList<String> list = DNAUtils.reportDifferences("helxo", "hello");
-    String result = "";
+    StringBuilder result = new StringBuilder();
     for (String string : list) {
-      result += string + ", ";
+      result.append(string + ", ");
     }
     String expected = "s|l|4, ";
     System.out.println(result);
-    assertTrue(result.equals(expected));
+    assertTrue(result.toString().equals(expected));
   }
 
   /**
