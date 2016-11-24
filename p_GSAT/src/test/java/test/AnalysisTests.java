@@ -142,8 +142,9 @@ public class AnalysisTests {
   /**
    * Test if the convention from codons to amino acid (shortform) is correct, if the user uses
    * correct codonstrings
+   * 
    * @author bluemlj
- * @throws CorruptedSequenceException 
+   * @throws CorruptedSequenceException
    */
   @Test
   public void codonsToAminoAcidsOnCorrectUse() throws CorruptedSequenceException {
@@ -151,51 +152,68 @@ public class AnalysisTests {
     String result = DNAUtils.codonsToAminoAcids(testA);
     assertTrue(result.equals("IGPI"));
   }
-  
+
   /**
    * Test if the convention from codons to amino acid (shortform) is correct, if the user uses
    * uncorrect codonstrings (with wrong nukleotides) and gets the correct error String
+   * 
    * @see analysis.DNAUtils
    * @author bluemlj
    */
-  @Test
-  public void codonsToAminoAcidsWithNotNukleotideString() throws CorruptedSequenceException{
+  @Test(expected = CorruptedSequenceException.class)
+  public void codonsToAminoAcidsWithNotNukleotideString() throws CorruptedSequenceException {
     String testString = "HNOFClBrI";
     String result = DNAUtils.codonsToAminoAcids(testString);
-    assertTrue(result.equals("uncorrect codonString"));
-    
+
+
   }
-  
+
   /**
    * Test if the convention from codons to amino acid (shortform) is correct, if the user uses
    * codonstrings, that cant be correct condon string (%3) and gets the correct error message
+   * 
    * @see analysis.DNAUtils
    * @author bluemlj
    */
   @Test
-  public void codonsToAminoAcidsWithToShortString() throws CorruptedSequenceException{
+  public void codonsToAminoAcidsWithToShortString() throws CorruptedSequenceException {
     String testString = "ACTTTGG";
     String result = DNAUtils.codonsToAminoAcids(testString);
     assertTrue(result.equals("nukleotides not modulo 3, so not convertable"));
-    
+
   }
-  
+
   /**
-   * Test if the convention from codons to amino acid (shortform) is correct, if the user uses
-   * empty codonstrings and gets the correct error
+   * Test if the convention from codons to amino acid (shortform) is correct, if the user uses empty
+   * codonstrings and gets the correct error
+   * 
    * @see analysis.DNAUtils
    * @author bluemlj
    */
   @Test
   public void codonsToAminoAcidsWithEmptyString() throws CorruptedSequenceException {
-   String testString = "";
+    String testString = "";
     String result = DNAUtils.codonsToAminoAcids(testString);
     assertTrue(result.equals("empty nukleotides"));
-    
+
   }
-  
-  
-  
+
+  AnalyzedSequence testA = new AnalyzedSequence("AGGGT", "testA", "FFFF");
+  Gene testGeneA = new Gene("AGGGC", "testGeneA");
+  Gene testGeneB = new Gene("AGTTTTTGGC", "testGeneB");
+  Gene testGeneC = new Gene("AGCCTCTCTCTCTGGC", "testGeneC");
+  LinkedList<Gene> testGenes = new LinkedList<>();
+
+  /*
+   * public void testFindingRightGeneOnCorrectUse(){ testGenes.add(testGeneA);
+   * testGenes.add(testGeneB); testGenes.add(testGeneC);
+   * 
+   * Gene result = DNAUtils.findRightGene(testA,testGenes);
+   * System.out.println(result.getSequence()); assertTrue(result == testGeneA); }
+   * 
+   * verschoben bis checksimilarity vorhanden
+   */
+
   /**
    * This test checks if a sequence is correctly reversed.
    * 
@@ -205,23 +223,23 @@ public class AnalysisTests {
    */
   @Test
   public void testGetReversedSequence() {
-	  
-	  Sequence seq = new Gene("", "Test1");
-	  assertEquals("", seq.getReversedSequence());  
-	  
-	  Sequence seq2 = new Gene("TTT", "Test2");
-	  assertEquals("TTT", seq2.getReversedSequence()); 
-	  
-	  Sequence seq3 = new Gene("ATCGATCGATCG", "Test3");
-	  assertEquals("GCTAGCTAGCTA", seq3.getReversedSequence()); 
-	  
-	  Sequence seq4 = new Gene("GGGTACCGTGTAGG", "Test4");
-	  assertEquals("GGATGTGCCATGGG", seq4.getReversedSequence()); 
-	  
+
+    Sequence seq = new Gene("", "Test1");
+    assertEquals("", seq.getReversedSequence());
+
+    Sequence seq2 = new Gene("TTT", "Test2");
+    assertEquals("TTT", seq2.getReversedSequence());
+
+    Sequence seq3 = new Gene("ATCGATCGATCG", "Test3");
+    assertEquals("GCTAGCTAGCTA", seq3.getReversedSequence());
+
+    Sequence seq4 = new Gene("GGGTACCGTGTAGG", "Test4");
+    assertEquals("GGATGTGCCATGGG", seq4.getReversedSequence());
+
   }
-  
-  
-  
+
+
+
   /**
    * This test checks whether the complementary sequence is correctly computed.
    * 
@@ -230,39 +248,39 @@ public class AnalysisTests {
    * @author Ben Kohr
    */
   @Test
-  public void testGetComplementarySequenceNoError() throws CorruptedSequenceException  {
-	  
-	  Sequence seq = new Gene("", "Test1");
-	  assertEquals("", seq.getComplementarySequence());  
-	  
-	  Sequence seq2 = new Gene("AAA", "Test2");
-	  assertEquals("TTT", seq2.getComplementarySequence()); 
-	  
-	  Sequence seq3 = new Gene("AATTCCGGATCG", "Test3");
-	  assertEquals("TTAAGGCCTAGC", seq3.getComplementarySequence()); 
-	  
-	  Sequence seq4 = new Gene("ATGCTAGCTAGCCCC", "Test4");
-	  assertEquals("TACGATCGATCGGGG", seq4.getComplementarySequence()); 
+  public void testGetComplementarySequenceNoError() throws CorruptedSequenceException {
+
+    Sequence seq = new Gene("", "Test1");
+    assertEquals("", seq.getComplementarySequence());
+
+    Sequence seq2 = new Gene("AAA", "Test2");
+    assertEquals("TTT", seq2.getComplementarySequence());
+
+    Sequence seq3 = new Gene("AATTCCGGATCG", "Test3");
+    assertEquals("TTAAGGCCTAGC", seq3.getComplementarySequence());
+
+    Sequence seq4 = new Gene("ATGCTAGCTAGCCCC", "Test4");
+    assertEquals("TACGATCGATCGGGG", seq4.getComplementarySequence());
   }
-  
-  
+
+
   /**
-   * This test checks whether an exception is thrown if a sequence's complementary
-   * sequence is build. It's important to throw the exception and not to hide the error.
+   * This test checks whether an exception is thrown if a sequence's complementary sequence is
+   * build. It's important to throw the exception and not to hide the error.
    * 
    * @throws CorruptedSequenceException
    * 
    * @author Ben Kohr
    */
   @Test(expected = CorruptedSequenceException.class)
-  public void testGetComplementarySequenceWithError() throws CorruptedSequenceException  {
-	  
-	  Sequence seq = new Gene("AATTCCFGATCG", "Problem");
-	  String comp = seq.getComplementarySequence();
-	  
-	  fail("No exception thrown!");  
+  public void testGetComplementarySequenceWithError() throws CorruptedSequenceException {
+
+    Sequence seq = new Gene("AATTCCFGATCG", "Problem");
+    String comp = seq.getComplementarySequence();
+
+    fail("No exception thrown!");
   }
-  
-  
+
+
 
 }

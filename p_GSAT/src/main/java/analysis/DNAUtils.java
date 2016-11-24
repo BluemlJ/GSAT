@@ -192,7 +192,8 @@ public class DNAUtils {
    * 
    * @author bluemlj
    */
-  public static LinkedList<String> findMutations(AnalyzedSequence toAnalyze) throws UndefinedMutationTypeException {
+  public static LinkedList<String> findMutations(AnalyzedSequence toAnalyze)
+      throws UndefinedMutationTypeException {
 
     Gene reference = toAnalyze.getReferencedGene();
 
@@ -275,7 +276,7 @@ public class DNAUtils {
    * @author bluemlj
    */
   public static String codonsToAminoAcids(String nukleotides) throws CorruptedSequenceException {
-	  StringBuilder aminoAcidString = new StringBuilder();
+    String aminoAcidString = "";
 
     if (nukleotides.isEmpty())
       return "empty nukleotides";
@@ -284,21 +285,21 @@ public class DNAUtils {
       for (int i = 0; i < nukleotides.length(); i = i + 3) {
         String codon = nukleotides.substring(i, i + 3);
         String aminoacid = aminoAcidShorts.get(codon);
-       
+
         if (aminoacid != null)
-        	aminoAcidString.append(aminoacid);
+          aminoAcidString += aminoacid;
         else {
-        	
-        	int index;
-        	if (!codon.matches("[ATCGU]..")) { 
-        		index = 0; 
-        	} else if (!codon.matches(".[ATCGU].")) {
-        		index = 1;
-        	} else {
-        		index = 2; 
-        	}
-        	
-        	throw new CorruptedSequenceException(i + index, codon.charAt(index), nukleotides);
+
+          int index;
+          if (!codon.matches("[ATCGU]..")) {
+            index = 0;
+          } else if (!codon.matches(".[ATCGU].")) {
+            index = 1;
+          } else {
+            index = 2;
+          }
+
+          throw new CorruptedSequenceException(i + index, codon.charAt(index), nukleotides);
         }
       }
     else
@@ -358,9 +359,8 @@ public class DNAUtils {
    *
    * n is the old amino acid placed in the gene
    *
-   * m is the new amino acid placed in the mutated sequence
-   *    * 
-   * insertions take place between the given index and the next index
+   * m is the new amino acid placed in the mutated sequence * insertions take place between the
+   * given index and the next index
    * 
    * @param sOne The mutated sequence
    * @param sTwo The gene
