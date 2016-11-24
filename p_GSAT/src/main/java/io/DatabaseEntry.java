@@ -16,10 +16,18 @@ import analysis.AnalyzedSequence;
 public class DatabaseEntry {
 
 	/**
-	 * The unique id of the analysed file;
+	 * The id for this entry. 
+	 * It is given by the DatabaseConnection class.
 	 */
-	private int id;
+	private int id = -1;
 
+	
+	/**
+	 * The name of the file this entry was retrieved from.
+	 */
+	private String fileName;
+	
+	
 	/**
 	 * The referenced gene of analysis.
 	 */
@@ -43,9 +51,9 @@ public class DatabaseEntry {
 
 
 	/**
-	 * Constructor that sets up all attributes.
+	 * Constructor that sets up all attributes except the id (which is given
+	 * by the DatabaseConnection class).
 	 * 
-	 * @param id The unique id of the sequence
 	 * @param gene The sequence's reference gene
 	 * @param primer Given meta information about the sequence
 	 * @param mutatin One mutation, represented as a String
@@ -53,8 +61,8 @@ public class DatabaseEntry {
 	 * 
 	 * @author Ben Kohr
 	 */
-	public DatabaseEntry(int id, String gene, String primer, String mutation, boolean silent) {
-		this.id = id;
+	public DatabaseEntry(String fileName, String gene, String primer, String mutation, boolean silent) {
+		this.fileName = fileName;
 		this.gene = gene;
 		this.primer = primer;
 		this.mutation = mutation;
@@ -69,9 +77,129 @@ public class DatabaseEntry {
 	 * 
 	 * @param seq The sequence to be converted to database entries
 	 * @return List of database entries ready to be stored
+	 * 
+	 * @author Ben Kohr
 	 */
 	public static LinkedList<DatabaseEntry> convertSequenceIntoDBEs(AnalyzedSequence seq) {
-		return null;
+
+		LinkedList<DatabaseEntry> entries = new LinkedList<DatabaseEntry>();
+		
+		// Get information valid for all entries
+		String fileName = seq.getFileName();
+		String primer = seq.getPrimer();
+		String geneName = seq.getReferencedGene().getName();
+		
+		// Initialize lists for (silent) mutations
+		LinkedList<String> mutations = seq.getMutations();
+		LinkedList<String> silentMutations = seq.getSilentMutations();
+	
+		// Collect normal mutations
+		for(String mutation : mutations) {
+			DatabaseEntry dbe = new DatabaseEntry(fileName, geneName, primer, mutation, false);
+			entries.add(dbe);
+		}
+		
+		// Collect silent mutations
+		for(String silentMutation : silentMutations) {
+			DatabaseEntry dbe = new DatabaseEntry(fileName, geneName, primer, silentMutation, true);
+			entries.add(dbe);
+		}
+		
+		return entries;
+		
 	}
 
+	
+	
+	
+	/**
+	 * Sets the id of this entry.
+	 * Typically used be DatabaseConnection to update the ids
+	 * correctly.
+	 * 
+	 * @param id The current id
+	 * 
+	 * @author Ben Kohr
+	 */
+	public void setID(int id) {
+		this.id = id;
+	}
+	
+	
+	
+	/**
+	 * Returns the id of this entry.
+	 * 
+	 * @return id
+	 * 
+	 * @author Ben Kohr
+	 */
+	public int getID() {
+		return id;
+	}
+	
+	
+	
+	
+	/**
+	 * Returns the file name this database entry was obtained from.
+	 * 
+	 * @return the file name
+	 * 
+	 * @author Ben Kohr
+	 */
+	public String getFileName() {
+		return fileName;
+	}
+	
+	
+	
+	/**
+	 * Returns the referenced gene of this entry.
+	 * 
+	 * @return gene
+	 * 
+	 * @author Ben Kohr
+	 */
+	public String getGene() {
+		return gene;
+	}
+	
+	
+	/**
+	 * Returns the primer of this entry.
+	 * 
+	 * @return primer
+	 * 
+	 * @author Ben Kohr
+	 */
+	public String getPrimer() {
+		return primer;
+	}
+	
+	
+	/**
+	 * Returns the single mutation of this entry.
+	 * 
+	 * @return mutation
+	 * 
+	 * @author Ben Kohr
+	 */
+	public String getMutation() {
+		return mutation;
+	}
+	
+	
+	/**
+	 * Returns the boolean indicated whether the mutation is
+	 * silent or not.
+	 * 
+	 * @return boolean indicating a silent mutation
+	 * 
+	 * @author Ben Kohr
+	 */
+	public boolean getSilentBoolean() {
+		return silent;
+	}
+	
 }

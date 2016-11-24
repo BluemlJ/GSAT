@@ -30,6 +30,7 @@ public class Main {
 	private static void resetPipeline() {
 		SequenceReader.resetInputData();
 		DatabaseConnection.flushQueue();
+		DatabaseConnection.resetIDs();
 	}
 
 }

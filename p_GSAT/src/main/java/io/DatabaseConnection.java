@@ -1,10 +1,14 @@
 package io;
 
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.LinkedList;
 
 import analysis.Gene;
 import exceptions.DatabaseConnectionException;
 import exceptions.DatabaseErrorException;
+import exceptions.MissingPathException;
+import exceptions.PathUsage;
 
 /**
  * Class to communicate with the database. It's also responsible for storing files locally, if
@@ -28,10 +32,18 @@ public class DatabaseConnection {
 
 	/**
 	 * Specifies the path where local files shall be created (if necessary).
+	 * This specifies the folder, not the file!
 	 */
 	private static String localPath;
 
 
+	/**
+	 * This value is needed to keep track of the momentarily used id of the data.
+	 */
+	private static int id = 0;
+	
+	
+	
 
 	/**
 	 * Inserts all currently stored entries into the specified database.
@@ -58,9 +70,42 @@ public class DatabaseConnection {
 	/**
 	 * Inserts the data points into a local file (e.g. if there is no connection to the
 	 * database available right now).
+	 * 
+	 * @throws IOException 
 	 */
-	private static void storeAllLocally() {
-
+	public static void storeAllLocally(String filename) throws MissingPathException, IOException {
+		
+		if (localPath == null) {
+			throw new MissingPathException(PathUsage.WRITING);
+		}
+		
+		FileWriter writer = new FileWriter(localPath + filename + ".csv");
+		
+		for(DatabaseEntry dbe : queue) {
+			
+			// retrieve the data from the Database object
+			int id = dbe.getID();
+			String fileName = dbe.getFileName();
+			String gene = dbe.getGene();
+			String primer = dbe.getPrimer();
+			String mutation = dbe.getMutation();
+			boolean silent = dbe.getSilentBoolean();
+			
+			// Concatenate the Strings together to one line to be written
+			StringBuilder builder = new StringBuilder();
+			builder.append(id).append("; ");
+			builder.append(fileName).append("; ");
+			builder.append(gene).append("; ");
+			builder.append(primer).append("; ");
+			builder.append(mutation).append("; ");
+			builder.append(silent).append(System.lineSeparator());
+			
+			// write the String into the file
+			String toWrite = builder.toString();
+			writer.write(toWrite);
+		}
+		
+		writer.close();
 	}
 
 
@@ -72,9 +117,35 @@ public class DatabaseConnection {
 	 * @author Ben Kohr
 	 */
 	public static void addIntoQueue(DatabaseEntry dbe) {
+		setIdOnEntry(dbe);
 		queue.add(dbe);
 	}
 
+	
+	/**
+	 * Sets the momentarily used id for a DatabaseEntry.
+	 * Increments it afterwards to keep it up to date (unique).
+	 * 
+	 * @param dbe The DatabaseEntry object which has no id right now
+	 * 
+	 * @author Ben Kohr
+	 */
+	public static void setIdOnEntry(DatabaseEntry dbe) {
+		dbe.setID(id);
+		id++;
+	}
+	
+	
+	
+	/**
+	 * Sets the momentarily used id to zero.
+	 * 
+	 * @author Ben Kohr
+	 */
+	public static void resetIDs() {
+		id = 0;
+	}
+	
 
 	/**
 	 * Empties the current waiting queue.

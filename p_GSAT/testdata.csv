@@ -1,0 +1,5 @@
+0; a.ab1; FSA; primer1; A|34|E; false
+1; b.ab1; FSA; primer2; A|7|B; true
+2; c.ab1; TEST; primer3; Q|5|R; true
+3; d.ab1; TEST; primer4; A|3|R; false
+4; e.ab1; TEST; primer5; E|55|O; false

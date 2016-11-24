@@ -149,5 +149,47 @@ public class AnalyzedSequence extends Sequence {
 	public Gene getReferencedGene() {
 		return referencedGene;
 	}
+	
+	
+	/**
+	 * Returns the sequence's primer.
+	 * 
+	 * @return the primer of this sequence
+	 */
+	public String getPrimer() {
+		return primer;
+	}
+	
+	
+	/**
+	 * Returns the sequence's file name (the file it was obtained from).
+	 * 
+	 * @return the file name
+	 */
+	public String getFileName() {
+		return fileName;
+	}
+	
+	
+	
+	/**
+	 * Returns the list of normal mutations.
+	 * 
+	 * @return list of mutations
+	 */
+	public LinkedList<String> getMutations() {
+		return mutations;
+	}
+	
+	
+	
+	/**
+	 * Returns the sequence's list of silent mutations
+	 * 
+	 * @return silent mutations
+	 */
+	public LinkedList<String> getSilentMutations() {
+		return silentMutations;
+	}
 
 }
