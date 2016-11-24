@@ -5,6 +5,8 @@ import java.util.Hashtable;
 import java.util.LinkedList;
 import java.util.Map;
 
+import exceptions.CorruptedSequenceException;
+import exceptions.UndefinedMutationTypeException;
 import io.ConsoleIO;
 
 /**
@@ -190,7 +192,7 @@ public class DNAUtils {
    * 
    * @author bluemlj
    */
-  public static LinkedList<String> findMutations(AnalyzedSequence toAnalyze) {
+  public static LinkedList<String> findMutations(AnalyzedSequence toAnalyze) throws UndefinedMutationTypeException {
 
     Gene reference = toAnalyze.getReferencedGene();
 
@@ -212,10 +214,10 @@ public class DNAUtils {
 
     for (String difference : differences) {
       // type of mutation (s,i,d,e,n)
-      String typeOfMutations = difference.split("|")[0];
+      String typeOfMutations = difference.split("\\|")[0];
 
       // position relative to mutatedSequence (of animoAcids)
-      int position = Integer.parseInt(difference.split("|")[1]);
+      int position = Integer.parseInt(difference.split("\\|")[1]);
 
       String oldAminoAcid;
       String newAminoAcid;
@@ -223,20 +225,20 @@ public class DNAUtils {
       switch (typeOfMutations) {
         // s = substitution, normal mutation of one aminoAcid
         case "s":
-          oldAminoAcid = difference.split("|")[2];
-          newAminoAcid = difference.split("|")[3];
+          oldAminoAcid = difference.split("\\|")[2];
+          newAminoAcid = difference.split("\\|")[3];
           mutations.add(reference.getName() + "   " + oldAminoAcid + position + newAminoAcid);
           break;
         // i = injection, inject of an new amino acid (aminoAcid short form)
         case "i":
           shift--;
-          newAminoAcid = difference.split("|")[2];
+          newAminoAcid = difference.split("\\|")[2];
           mutations.add(reference.getName() + "  +1" + newAminoAcid + position);
           break;
         // d = deletion, deletion of an amino acid
         case "d":
           shift++;
-          oldAminoAcid = difference.split("|")[2];
+          oldAminoAcid = difference.split("\\|")[2];
           mutations.add(reference.getName() + "  -1" + oldAminoAcid + position);
           break;
         // in case of a nop, we test a silent mutation and add it if the
@@ -257,8 +259,7 @@ public class DNAUtils {
           mutations.add(" - reading frame");
           return mutations;
         default:
-          // TODO exeption werfen
-          break;
+          throw new UndefinedMutationTypeException(typeOfMutations);
       }
 
     }
@@ -273,8 +274,8 @@ public class DNAUtils {
    * 
    * @author bluemlj
    */
-  public static String codonsToAminoAcids(String nukleotides) {
-    String aminoAcidString = "";
+  public static String codonsToAminoAcids(String nukleotides) throws CorruptedSequenceException {
+	  StringBuilder aminoAcidString = new StringBuilder();
 
     if (nukleotides.isEmpty())
       return "empty nukleotides";
@@ -283,14 +284,26 @@ public class DNAUtils {
       for (int i = 0; i < nukleotides.length(); i = i + 3) {
         String codon = nukleotides.substring(i, i + 3);
         String aminoacid = aminoAcidShorts.get(codon);
+       
         if (aminoacid != null)
-          aminoAcidString += aminoacid;
-        else
-          return "uncorrect codonString"; // TODO or throw exeption
+        	aminoAcidString.append(aminoacid);
+        else {
+        	
+        	int index;
+        	if (!codon.matches("[ATCGU]..")) { 
+        		index = 0; 
+        	} else if (!codon.matches(".[ATCGU].")) {
+        		index = 1;
+        	} else {
+        		index = 2; 
+        	}
+        	
+        	throw new CorruptedSequenceException(i + index, codon.charAt(index), nukleotides);
+        }
       }
     else
       return "nukleotides not modulo 3, so not convertable";
-    return aminoAcidString;
+    return aminoAcidString.toString();
   }
 
   /**

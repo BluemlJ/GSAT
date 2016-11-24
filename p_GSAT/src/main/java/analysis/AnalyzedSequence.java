@@ -30,12 +30,12 @@ public class AnalyzedSequence extends Sequence {
 	/**
 	 * A list of discovered mutations to be stored.
 	 */
-	private LinkedList<String> mutations;
+	private LinkedList<String> mutations = new LinkedList<String>();
 
 	/**
 	 * A list of discovered silent mutations to be stored
 	 */
-	private LinkedList<String> silentMutations;
+	private LinkedList<String> silentMutations = new LinkedList<String>();
 
 
 
@@ -87,10 +87,13 @@ public class AnalyzedSequence extends Sequence {
 	 * @param startIndex The start of the sequence to be cut off
 	 * @param endIndex The end of the sequence to be cut off
 	 * 
+	 * @return The trimmed String
+	 * 
 	 * @author Ben Kohr
 	 */
-	public void trimSequence(int startIndex, int endIndex) {
-		sequence.substring(startIndex, endIndex + 1);
+	public String trimSequence(int startIndex, int endIndex) {
+		String trimmed = sequence.substring(startIndex, endIndex + 1);
+		return trimmed;
 	}
 
 
@@ -100,12 +103,14 @@ public class AnalyzedSequence extends Sequence {
 	 * 
 	 * @param index The index after which all nucleotides are discarded
 	 * 
+	 * @return The trimmed String (trimmed at the end)
+	 * 
 	 * @see #trimSequence(int, int)
 	 * 
 	 * @author Ben Kohr
 	 */
-	public void discardRest(int index) {
-		trimSequence(0, index);
+	public String discardRest(int index) {
+		return trimSequence(0, index);
 	}
 
 
@@ -115,12 +120,14 @@ public class AnalyzedSequence extends Sequence {
 	 * 
 	 * @param index The first index to be kept in the new sequence
 	 * 
+	 * @return The trimmed String (trimmed at the beginning)
+	 * 
 	 * @see #trimSequence(int, int)
 	 * 
 	 * @author Ben Kohr
 	 */
-	public void discardStart(int index) {
-		trimSequence(index, sequence.length() - 1);
+	public String discardStart(int index) {
+		return trimSequence(index, sequence.length() - 1);
 	}
 
 
