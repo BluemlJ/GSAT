@@ -54,7 +54,7 @@ public class AnalysisTests {
     for (String string : list) {
       result.append(string + ", ");
     }
-    String expected = "d|5, ";
+    String expected = "d|5||l, ";
     assertTrue(result.toString().equals(expected));
   }
 
@@ -70,7 +70,7 @@ public class AnalysisTests {
     for (String string : list) {
       result.append(string + ", ");
     }
-    String expected = "d|6, ";
+    String expected = "d|6||x, ";
     assertTrue(result.toString().equals(expected));
   }
 
@@ -86,7 +86,8 @@ public class AnalysisTests {
     for (String string : list) {
       result.append(string + ", ");
     }
-    String expected = "i|3, ";
+    String expected = "i|3|l|, ";
+    //System.out.println(result);
     assertTrue(result.toString().equals(expected));
   }
 
@@ -102,7 +103,7 @@ public class AnalysisTests {
     for (String string : list) {
       result.append(string + ", ");
     }
-    String expected = "i|o|4, ";
+    String expected = "i|4|o|, ";
     assertTrue(result.toString().equals(expected));
   }
 
@@ -118,7 +119,7 @@ public class AnalysisTests {
     for (String string : list) {
       result.append(string + ", ");
     }
-    String expected = "i|h|0, ";
+    String expected = "i|0|h|, ";
     assertTrue(result.toString().equals(expected));
   }
 
@@ -134,8 +135,8 @@ public class AnalysisTests {
     for (String string : list) {
       result.append(string + ", ");
     }
-    String expected = "s|l|4, ";
-    System.out.println(result);
+    String expected = "s|4|l|x, ";
+    //System.out.println(result);
     assertTrue(result.toString().equals(expected));
   }
 
