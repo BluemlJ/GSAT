@@ -432,19 +432,23 @@ public class DNAUtils {
    * 
    * the returned list contains String of the following syntax:
    * 
-   * x|y|n
+   * x|y|n|m
    * 
-   * where: x is element of {s,i,d} where s stands for substitution i for insertion and d for
-   * deletion
+   * where: x is element of {s,i,d,e,n} where s stands for substitution,
+   * i for insertion,
+   * d for deletion,
+   * n for no Operation,
+   * e for ERROR
    * 
-   * y is element of all chars contained in sOne and sTwo
-   * 
-   * n is the index of the char in sOne
+   * y is the index of the char in sOne
    *
-   * insertions take place between the given index and the next index
+   * n is the old amino acid placed in the gene
+   *
+   * m is the new amino acid placed in the mutated sequence * insertions take place between the
+   * given index and the next index
    * 
-   * @param sOne The first sequence
-   * @param sTwo The second sequence.
+   * @param sOne The mutated sequence
+   * @param sTwo The gene
    * 
    * @return A list of differences (represented as String)
    * @author Kevin Otto
@@ -468,12 +472,10 @@ public class DNAUtils {
       if (lev[row - 1][column - 1] <= Math.min(lev[row - 1][column], lev[row][column - 1])
           && (lev[row - 1][column - 1] == lev[row][column]
               || lev[row - 1][column - 1] == lev[row][column] - 1)) {
-        if (lev[row - 1][column - 1] == lev[row][column] - 1) {// Diagonal
-                                                               // smaller
-                                                               // ->
-                                                               // Substitution
+    	  // Diagonal smaller -> Substitution
+    	  if (lev[row - 1][column - 1] == lev[row][column] - 1) {
           // SUBSTITUTION
-          result.addFirst("s|" + sTwo.charAt(column - 1) + "|" + row);
+          result.addFirst("s|" + row  + "|" + sTwo.charAt(column - 1) + "|" + sOne.charAt(row - 1));
         }
         // else -> No Operation
         // go to next diagonal cell
@@ -487,7 +489,7 @@ public class DNAUtils {
         // smaller->deletion;
         // DELETION
         if (lev[row - 1][column] == lev[row][column] - 1) {
-          result.addFirst("d|" + sOne.charAt(row - 1) + "|" + row);
+          result.addFirst("d|" + row  + "|" + "|" + sOne.charAt(row - 1));
         }
 
         row--;
@@ -495,7 +497,7 @@ public class DNAUtils {
         // up smaller -> insertion
         // INSERTION
         if (lev[row][column - 1] == lev[row][column] - 1) {
-          result.addFirst("i|" + sTwo.charAt(column - 1) + "|" + row);
+          result.addFirst("i|" + row  + "|" + sTwo.charAt(column - 1) + "|");
         }
         column--;
       }
@@ -506,14 +508,14 @@ public class DNAUtils {
     // insertion at begin
     if (column > 0) {
       for (; column > 0; column--) {
-        result.addFirst("i|" + sTwo.charAt(column - 1) + "|" + row);
+        result.addFirst("i|" + row  + "|" + sTwo.charAt(column - 1) + "|");
       }
     }
 
     // deletion at begin
     if (row > 0) {
       for (; row > 0; row--) {
-        result.addFirst("d|" + sOne.charAt(row - 1) + "|" + row);
+        result.addFirst("d|" + row  + "|" + "|" + sOne.charAt(row - 1));
       }
     }
     return result;
