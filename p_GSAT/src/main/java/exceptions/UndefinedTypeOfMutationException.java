@@ -9,7 +9,7 @@ package exceptions;
  * @author Ben Kohr
  *
  */
-public class UndefinedMutationTypeException extends Exception {
+public class UndefinedTypeOfMutationException extends Exception {
 
 	
 	
@@ -27,7 +27,7 @@ public class UndefinedMutationTypeException extends Exception {
 	 * 
 	 * @author Ben Kohr
 	 */
-	public UndefinedMutationTypeException(String mutationString) {
+	public UndefinedTypeOfMutationException(String mutationString) {
 		super("Problem in mutation result: The String " + mutationString + 
 				" was observed but is not a valid mutation identifier.");
 

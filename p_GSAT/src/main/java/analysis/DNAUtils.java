@@ -6,12 +6,14 @@ import java.util.LinkedList;
 import java.util.Map;
 
 import exceptions.CorruptedSequenceException;
-import exceptions.UndefinedMutationTypeException;
+import exceptions.UndefinedTypeOfMutationException;
 import io.ConsoleIO;
 
 /**
  * This class contains the logic of analyzing DNA sequences. Thus, it is the main part of the
  * analyzing pipeline.
+ * 
+ * TODO split in two classes (quality/mutations) or three (q/m/stringmatching)
  * 
  */
 public class DNAUtils {
@@ -193,7 +195,7 @@ public class DNAUtils {
    * @author bluemlj
    */
   public static LinkedList<String> findMutations(AnalyzedSequence toAnalyze)
-      throws UndefinedMutationTypeException {
+      throws UndefinedTypeOfMutationException {
 
     Gene reference = toAnalyze.getReferencedGene();
 
@@ -260,7 +262,7 @@ public class DNAUtils {
           mutations.add(" - reading frame");
           return mutations;
         default:
-          throw new UndefinedMutationTypeException(typeOfMutations);
+          throw new UndefinedTypeOfMutationException(typeOfMutations);
       }
 
     }
@@ -268,22 +270,22 @@ public class DNAUtils {
   }
 
   /**
-   * Changes the sequence representation from nukleotides to aminoacid (shortform)
+   * Changes the sequence representation from nucleotides to aminoacid (shortform)
    * 
-   * @param nukleotides the sequence presented by nukleotides
+   * @param nucleotides the sequence presented by nucleotides
    * @return the sequence presented by aminoAcid (shorts)
    * 
    * @author bluemlj
    */
-  public static String codonsToAminoAcids(String nukleotides) throws CorruptedSequenceException {
+  public static String codonsToAminoAcids(String nucleotides) throws CorruptedSequenceException {
     String aminoAcidString = "";
 
-    if (nukleotides.isEmpty())
-      return "empty nukleotides";
+    if (nucleotides.isEmpty())
+      return "empty nucleotides";
 
-    if (nukleotides.length() % 3 == 0)
-      for (int i = 0; i < nukleotides.length(); i = i + 3) {
-        String codon = nukleotides.substring(i, i + 3);
+    if (nucleotides.length() % 3 == 0)
+      for (int i = 0; i < nucleotides.length(); i = i + 3) {
+        String codon = nucleotides.substring(i, i + 3);
         String aminoacid = aminoAcidShorts.get(codon);
 
         if (aminoacid != null)
@@ -299,11 +301,11 @@ public class DNAUtils {
             index = 2;
           }
 
-          throw new CorruptedSequenceException(i + index, codon.charAt(index), nukleotides);
+          throw new CorruptedSequenceException(i + index, codon.charAt(index), nucleotides);
         }
       }
     else
-      return "nukleotides not modulo 3, so not convertable";
+      return "nucleotides not modulo 3, so not convertable";
     return aminoAcidString.toString();
   }
 
@@ -359,7 +361,8 @@ public class DNAUtils {
    *
    * n is the old amino acid placed in the gene
    *
-   * m is the new amino acid placed in the mutated sequence * insertions take place between the
+   * m is the new amino acid placed in the mutated sequence 
+   * insertions take place between the
    * given index and the next index
    * 
    * @param sOne The mutated sequence
@@ -385,35 +388,35 @@ public class DNAUtils {
     // TODO find appropriate gap Penalty
     int gabPenalty = -5;
 
-    int m = sOne.length() + 1;
-    int n = sTwo.length() + 1;
+    int matrixWidth = sOne.length() + 1;
+    int matrixHeight = sTwo.length() + 1;
 
-    int[][] wunschMatrix = new int[m][n];// create empty Needleman Wunsch
-                                         // Matrix
-
+    // create empty Needleman Wunsch Matrix
+    int[][] wunschMatrix = new int[matrixWidth][matrixHeight];
+    
     // fill first line from 1 to |first|
-    for (int i = 1; i < m; i++) {
+    for (int i = 1; i < matrixWidth; i++) {
       wunschMatrix[i][0] = gabPenalty * i;
     }
     // fill first row from 1 to |second|
-    for (int j = 1; j < n; j++) {
+    for (int j = 1; j < matrixHeight; j++) {
       wunschMatrix[0][j] = gabPenalty * j;
     }
 
     int cost = 0;// variable to save difference in characters
     // iterate over 2D array
-    for (int i = 1; i < m; i++) {
-      for (int j = 1; j < n; j++) {
+    for (int i = 1; i < matrixWidth; i++) {
+      for (int j = 1; j < matrixHeight; j++) {
         int deletion = wunschMatrix[i - 1][j] + gabPenalty;
         int insertion = wunschMatrix[i][j - 1] + gabPenalty;
         int match = wunschMatrix[i - 1][j - 1] + Similarity(sOne.charAt(i), sTwo.charAt(j));
         wunschMatrix[i][j] = Math.max(Math.max(deletion, insertion), match);
       }
     }
-    return backTrackNeedlemanWunsch(wunschMatrix);
+    return findNeedlemanWunschPath(wunschMatrix);
   }
 
-  private static LinkedList<String> backTrackNeedlemanWunsch(int[][] wunschMatrix) {
+  private static LinkedList<String> findNeedlemanWunschPath(int[][] wunschMatrix) {
     // TODO Auto-generated method stub
     return null;
   }
@@ -448,15 +451,14 @@ public class DNAUtils {
    */
   public static LinkedList<String> reportDifferences(String sOne, String sTwo) {
     // get Levenshtein Result
-    int[][] lev = leventhsein(sOne, sTwo);
+    int[][] lev = calculateLevenshteinMatrix(sOne, sTwo);
 
-    // m x n matrix
-    int m = lev.length;
-    int n = lev[0].length;
+    int matrixHeight = lev.length;
+    int matrixWidth = lev[0].length;
 
     // counter variables for actual matrix position
-    int row = m - 1;
-    int column = n - 1;
+    int row = matrixHeight - 1;
+    int column = matrixWidth - 1;
 
     LinkedList<String> result = new LinkedList<String>();
 
@@ -541,26 +543,26 @@ public class DNAUtils {
    * @return
    * @author Kevin Otto
    */
-  public static int[][] leventhsein(String first, String second) {
+  public static int[][] calculateLevenshteinMatrix(String first, String second) {
 
-    int m = first.length() + 1;
-    int n = second.length() + 1;
+    int matrixHeight = first.length() + 1;
+    int matrixWidth = second.length() + 1;
 
-    int[][] levenMatrix = new int[m][n];// create empty Levenshtein Matrix
+    int[][] levenMatrix = new int[matrixHeight][matrixWidth];// create empty Levenshtein Matrix
 
     // fill first line from 1 to |first|
-    for (int i = 1; i < m; i++) {
+    for (int i = 1; i < matrixHeight; i++) {
       levenMatrix[i][0] = i;
     }
     // fill first row from 1 to |second|
-    for (int j = 1; j < n; j++) {
+    for (int j = 1; j < matrixWidth; j++) {
       levenMatrix[0][j] = j;
     }
 
     int cost = 0;// variable to save difference in characters
     // iterate over 2D array
-    for (int j = 1; j < n; j++) {
-      for (int i = 1; i < m; i++) {
+    for (int j = 1; j < matrixWidth; j++) {
+      for (int i = 1; i < matrixHeight; i++) {
         // if characters are equal cost for replacement = 0
         if (first.charAt(i - 1) == second.charAt(j - 1)) {
           cost = 0;
@@ -576,77 +578,8 @@ public class DNAUtils {
     return levenMatrix;
   }
 
-  /**
-   * Calculates the Levensthein Matrix of two Strings. The Matrix gives information about the
-   * differences of the two Strings and the best way to transform them into another. In this version
-   * the matrix contains symbols for the difrent operations
-   * 
-   * 'd' for deletion 'i' for insertion 'c' for change 'n' for no change
-   * 
-   * 'e' for error (should never happen!)
-   * 
-   * @param first The first String
-   * @param second The second String
-   * @return
-   * @author Kevin Otto
-   */
-  public static LevenshteinResult extendetLeventhsein(String first, String second) {
-
-    int m = first.length() + 1;
-    int n = second.length() + 1;
-
-    int[][] levenMatrix = new int[m][n];// create empty Levenshtein Matrix
-    char[][] levenOperations = new char[m][n];// create empty Levenshtein
-                                              // Matrix
-
-    levenOperations[0][0] = ' ';
-
-    // fill first line from 1 to |first|
-    for (int i = 1; i < m; i++) {
-      levenMatrix[i][0] = i;
-      levenOperations[i][0] = 'c';
-    }
-    // fill first row from 1 to |second|
-    for (int j = 1; j < n; j++) {
-      levenMatrix[0][j] = j;
-      levenOperations[0][j] = 'c';
-    }
-
-    int cost = 0;// variable to save difference in characters
-    // iterate over 2D array
-    for (int j = 1; j < n; j++) {
-      for (int i = 1; i < m; i++) {
-        // if characters are equal cost for replacement = 0
-        if (first.charAt(i - 1) == second.charAt(j - 1)) {
-          cost = 0;
-        } else {
-          cost = 1;
-        }
-        levenMatrix[i][j] = Math.min(
-            Math.min((levenMatrix[i - 1][j] + 1), /* deletion of char */
-                (levenMatrix[i][j - 1] + 1)), /* insertion of char */
-            (levenMatrix[i - 1][j - 1] + cost));/* change of char */
-
-        // put char in Operation Matrix
-        if (levenMatrix[i][j] == levenMatrix[i - 1][j] + 1) {
-          levenOperations[i][j] = 'd';// deletion of char
-        } else if (levenMatrix[i][j] == levenMatrix[i][j - 1] + 1) {
-          levenOperations[i][j] = 'i';// insertion of char
-        } else if (levenMatrix[i][j] == levenMatrix[i - 1][j - 1] + cost) {
-          if (cost == 1) {
-            levenOperations[i][j] = 'c'; // change of char
-          } else {
-            levenOperations[i][j] = 'n'; // no change of char
-          }
-        } else {
-          levenOperations[i][j] = 'e'; // error
-          System.err.println("Fatal Levenshtein Error");
-        }
-      }
-    }
-    return new LevenshteinResult(levenMatrix, levenOperations);
-  }
-
+  
+  
   /**
    * for test reasons, will be removed later TODO remove when no longer necessary
    * 
@@ -654,11 +587,6 @@ public class DNAUtils {
    * @author Kevin Otto
    */
   public static void main(String[] args) {
-
-
-    ConsoleIO.printCharMatrix(extendetLeventhsein("allo", "hallo").levenshteinOperations);
-    System.out.println();
-    ConsoleIO.printIntMatrix(extendetLeventhsein("AACAAB", "AAADDDABA").levenshteinMatrix);
 
     System.out.println();
 

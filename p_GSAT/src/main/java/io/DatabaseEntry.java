@@ -80,7 +80,7 @@ public class DatabaseEntry {
 	 * 
 	 * @author Ben Kohr
 	 */
-	public static LinkedList<DatabaseEntry> convertSequenceIntoDBEs(AnalyzedSequence seq) {
+	public static LinkedList<DatabaseEntry> convertSequenceIntoEntries(AnalyzedSequence seq) {
 
 		LinkedList<DatabaseEntry> entries = new LinkedList<DatabaseEntry>();
 		

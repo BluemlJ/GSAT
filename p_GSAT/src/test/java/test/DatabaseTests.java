@@ -116,7 +116,7 @@ public class DatabaseTests {
 	 * This tests checks if the conversion from a AnalyzedSequence into a DatabaseEntry
 	 * is working correctly.
 	 * 
-	 * @see DatabaseEntry#convertSequenceIntoDBEs(AnalyzedSequence)
+	 * @see DatabaseEntry#convertSequenceIntoEntries(AnalyzedSequence)
 	 * 
 	 * @author Ben Kohr
 	 */
@@ -124,7 +124,7 @@ public class DatabaseTests {
 	public void testConvertSequenceIntoDBEsNormal() {
 
 		// Use method
-		LinkedList<DatabaseEntry> entries = DatabaseEntry.convertSequenceIntoDBEs(seq1);
+		LinkedList<DatabaseEntry> entries = DatabaseEntry.convertSequenceIntoEntries(seq1);
 		
 		// Prepare correct result
 		DatabaseEntry dbe1 = new DatabaseEntry("sequence1.ab1", "FSA", "primer1", "A|131|E", false);
@@ -156,7 +156,7 @@ public class DatabaseTests {
 	 * This tests checks the conversion from a AnalyzedSequence into a DatabaseEntry
 	 * is working correctly with just one entry.
 	 * 
-	 * @see DatabaseEntry#convertSequenceIntoDBEs(AnalyzedSequence)
+	 * @see DatabaseEntry#convertSequenceIntoEntries(AnalyzedSequence)
 	 * 
 	 * @author Ben Kohr
 	 */
@@ -164,7 +164,7 @@ public class DatabaseTests {
 	public void testConvertSequenceIntoDBEsNormal2() {
 
 		// Use method
-		LinkedList<DatabaseEntry> entries = DatabaseEntry.convertSequenceIntoDBEs(seq2);
+		LinkedList<DatabaseEntry> entries = DatabaseEntry.convertSequenceIntoEntries(seq2);
 		
 		// Prepare correct result
 		DatabaseEntry correctDBE = new DatabaseEntry("sequence2.ab1", "FSB", "primer2", "A|1|E", false);
@@ -186,7 +186,7 @@ public class DatabaseTests {
 	 * This tests checks the conversion from a AnalyzedSequence into a DatabaseEntry
 	 * is working correctly without any entry to store (i.e. there is no mutation).
 	 * 
-	 * @see DatabaseEntry#convertSequenceIntoDBEs(AnalyzedSequence)
+	 * @see DatabaseEntry#convertSequenceIntoEntries(AnalyzedSequence)
 	 * 
 	 * @author Ben Kohr
 	 */
@@ -194,7 +194,7 @@ public class DatabaseTests {
 	public void testConvertSequenceIntoDBEsNoMutation() {
 
 		// Use method
-		LinkedList<DatabaseEntry> entries = DatabaseEntry.convertSequenceIntoDBEs(seq3);
+		LinkedList<DatabaseEntry> entries = DatabaseEntry.convertSequenceIntoEntries(seq3);
 		
 		// No mutation: Size should be zero
 		assertTrue(entries.size() == 0);
@@ -325,7 +325,7 @@ public class DatabaseTests {
 	 * @throws IOException
 	 * 
 	 * @see DatabaseConnection#storeAllLocally(String)
-	 * @see DatabaseEntry#convertSequenceIntoDBEs(AnalyzedSequence)
+	 * @see DatabaseEntry#convertSequenceIntoEntries(AnalyzedSequence)
 	 * 
 	 * @author Ben Kohr
 	 */
@@ -333,7 +333,7 @@ public class DatabaseTests {
 	public void testConvertAndStore() throws MissingPathException, IOException {
 
 		// Converting sequence into DBEs
-		LinkedList<DatabaseEntry> entries = DatabaseEntry.convertSequenceIntoDBEs(seq4);
+		LinkedList<DatabaseEntry> entries = DatabaseEntry.convertSequenceIntoEntries(seq4);
 		
 		// Storing them in the DatabaseConnection
 		for (DatabaseEntry dbe : entries) {
