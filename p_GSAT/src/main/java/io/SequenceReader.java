@@ -1,6 +1,13 @@
 package io;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.LinkedList;
+
+import org.biojava.bio.program.abi.ABITrace;
+import org.biojava.bio.seq.DNATools;
+import org.biojava.bio.symbol.IllegalSymbolException;
+import org.biojava.bio.symbol.SymbolList;
 
 import analysis.AnalyzedSequence;
 import exceptions.FileReadingException;
@@ -40,7 +47,7 @@ public class SequenceReader {
 	 * 
 	 */
 	public static void configurePath(String path) {
-
+		SequenceReader.path = path;
 	}
 
 
@@ -48,10 +55,23 @@ public class SequenceReader {
 	 * Parses one AB1 file (the only one or the next one in the list) into a sequence. If
 	 * possible, deletes the first entry of the list. Note: There's no method to read in
 	 * several files at once, because the files is analyzed one by one.
+	 * @throws IOException 
+	 * @throws IllegalSymbolException 
 	 * 
 	 */
-	public static AnalyzedSequence convertFileIntoSequence() throws FileReadingException {
-		return null;
+	public static AnalyzedSequence convertFileIntoSequence() throws FileReadingException, IOException, IllegalSymbolException {
+			//"D:/Dokumente/Dropbox/BP_GSAT/Materialien/Dateien/Bsp/AB/93GH02_A01.ab1"
+			File referencedFile = new File(path);
+			ABITrace parsedTrace = new ABITrace(referencedFile);
+			SymbolList parsedSymbols = parsedTrace.getSequence();
+			int[] aTrace = parsedTrace.getTrace(DNATools.a());
+			int[] cTrace = parsedTrace.getTrace(DNATools.c());
+			int[] gTrace = parsedTrace.getTrace(DNATools.g());
+			int[] tTrace = parsedTrace.getTrace(DNATools.t());
+			int[] basecalls = parsedTrace.getBasecalls();
+			//TODO Add Primer
+			AnalyzedSequence parsedSequence = new AnalyzedSequence(parsedSymbols.seqString(), referencedFile.getName(), "primer", aTrace, cTrace, gTrace, tTrace, basecalls);
+			return parsedSequence;
 	}
 
 

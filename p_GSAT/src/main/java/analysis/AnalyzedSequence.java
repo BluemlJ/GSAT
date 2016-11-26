@@ -36,7 +36,20 @@ public class AnalyzedSequence extends Sequence {
 	 * A list of discovered silent mutations to be stored
 	 */
 	private LinkedList<String> silentMutations = new LinkedList<String>();
-
+	
+	/**
+	 * Y Coordinates for four nucleotides
+	 * corresponding to the x-Value of the position in the array
+	 */
+	private int[] aTrace;
+	private int[] cTrace;
+	private int[] gTrace;
+	private int[] tTrace;
+	
+	/**
+	 * Int Array which represents the x Values of the peaks in the graph
+	 */
+	private int[] basecalls;
 
 
 	/**
@@ -47,11 +60,21 @@ public class AnalyzedSequence extends Sequence {
 	 * @param primer Metadata to be stored with the sequence
 	 * 
 	 * @author Ben Kohr
+	 * @param basecalls 
+	 * @param tTrace 
+	 * @param gTrace 
+	 * @param cTrace 
+	 * @param aTrace 
 	 */
-	public AnalyzedSequence(String sequence, String fileName, String primer) {
+	public AnalyzedSequence(String sequence, String fileName, String primer, int[] aTrace, int[] cTrace, int[] gTrace, int[] tTrace, int[] basecalls) {
 		super(sequence);
 		this.fileName = fileName;
 		this.primer = primer;
+		this.aTrace = aTrace;
+		this.cTrace = cTrace;
+		this.gTrace = gTrace;
+		this.tTrace = tTrace;
+		this.basecalls = basecalls;
 	}
 
 

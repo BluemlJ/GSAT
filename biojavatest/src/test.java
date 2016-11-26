@@ -4,6 +4,8 @@ import java.io.IOException;
 import org.biojava.bio.program.abi.ABIFChromatogram;
 import org.biojava.bio.program.abi.ABIFParser;
 import org.biojava.bio.program.abi.ABITrace;
+import org.biojava.bio.seq.DNATools;
+import org.biojava.bio.symbol.IllegalSymbolException;
 import org.biojava.bio.symbol.SymbolList;
 
 public class test {
@@ -26,8 +28,21 @@ public class test {
 			
 			//System.out.println(myTrace.getSequenceLength());
 			SymbolList mySequence = myTrace.getSequence();
-			System.out.println(mySequence.seqString());
+			//ABITools.getAlignment(mySequence);
+			//PhredSequence myPhred = new PhredSequence(mySequence, mySequence.;
+			//System.out.println(mySequence.seqString());
+			int[] cTrace = myTrace.getTrace(DNATools.c());
+			for(int i = 0; i < cTrace.length; i++){
+				//System.out.println(cTrace[i]);
+			}
+			int[] basecalls = myTrace.getBasecalls();
+			for(int i = 0; i < basecalls.length; i++){
+				System.out.println(basecalls[i]);
+			}
 		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (IllegalSymbolException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
