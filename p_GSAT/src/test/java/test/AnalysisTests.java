@@ -87,7 +87,7 @@ public class AnalysisTests {
       result.append(string + ", ");
     }
     String expected = "i|3|l|, ";
-    //System.out.println(result);
+    // System.out.println(result);
     assertTrue(result.toString().equals(expected));
   }
 
@@ -136,7 +136,7 @@ public class AnalysisTests {
       result.append(string + ", ");
     }
     String expected = "s|4|l|x, ";
-    //System.out.println(result);
+    // System.out.println(result);
     assertTrue(result.toString().equals(expected));
   }
 

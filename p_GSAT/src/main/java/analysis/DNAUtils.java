@@ -280,8 +280,7 @@ public class DNAUtils {
   public static String codonsToAminoAcids(String nucleotides) throws CorruptedSequenceException {
     String aminoAcidString = "";
 
-    if (nucleotides.isEmpty())
-      return "empty nucleotides";
+    if (nucleotides.isEmpty()) return "empty nucleotides";
 
     if (nucleotides.length() % 3 == 0)
       for (int i = 0; i < nucleotides.length(); i = i + 3) {
@@ -361,9 +360,8 @@ public class DNAUtils {
    *
    * n is the old amino acid placed in the gene
    *
-   * m is the new amino acid placed in the mutated sequence 
-   * insertions take place between the
-   * given index and the next index
+   * m is the new amino acid placed in the mutated sequence insertions take place between the given
+   * index and the next index
    * 
    * @param sOne The mutated sequence
    * @param sTwo The gene
@@ -393,7 +391,7 @@ public class DNAUtils {
 
     // create empty Needleman Wunsch Matrix
     int[][] wunschMatrix = new int[matrixWidth][matrixHeight];
-    
+
     // fill first line from 1 to |first|
     for (int i = 1; i < matrixWidth; i++) {
       wunschMatrix[i][0] = gabPenalty * i;
@@ -434,11 +432,8 @@ public class DNAUtils {
    * 
    * x|y|n|m
    * 
-   * where: x is element of {s,i,d,e,n} where s stands for substitution,
-   * i for insertion,
-   * d for deletion,
-   * n for no Operation,
-   * e for ERROR
+   * where: x is element of {s,i,d,e,n} where s stands for substitution, i for insertion, d for
+   * deletion, n for no Operation, e for ERROR
    * 
    * y is the index of the char in sOne
    *
@@ -472,10 +467,10 @@ public class DNAUtils {
       if (lev[row - 1][column - 1] <= Math.min(lev[row - 1][column], lev[row][column - 1])
           && (lev[row - 1][column - 1] == lev[row][column]
               || lev[row - 1][column - 1] == lev[row][column] - 1)) {
-    	  // Diagonal smaller -> Substitution
-    	  if (lev[row - 1][column - 1] == lev[row][column] - 1) {
+        // Diagonal smaller -> Substitution
+        if (lev[row - 1][column - 1] == lev[row][column] - 1) {
           // SUBSTITUTION
-          result.addFirst("s|" + row  + "|" + sTwo.charAt(column - 1) + "|" + sOne.charAt(row - 1));
+          result.addFirst("s|" + row + "|" + sTwo.charAt(column - 1) + "|" + sOne.charAt(row - 1));
         }
         // else -> No Operation
         // go to next diagonal cell
@@ -489,7 +484,7 @@ public class DNAUtils {
         // smaller->deletion;
         // DELETION
         if (lev[row - 1][column] == lev[row][column] - 1) {
-          result.addFirst("d|" + row  + "|" + "|" + sOne.charAt(row - 1));
+          result.addFirst("d|" + row + "|" + "|" + sOne.charAt(row - 1));
         }
 
         row--;
@@ -497,7 +492,7 @@ public class DNAUtils {
         // up smaller -> insertion
         // INSERTION
         if (lev[row][column - 1] == lev[row][column] - 1) {
-          result.addFirst("i|" + row  + "|" + sTwo.charAt(column - 1) + "|");
+          result.addFirst("i|" + row + "|" + sTwo.charAt(column - 1) + "|");
         }
         column--;
       }
@@ -508,14 +503,14 @@ public class DNAUtils {
     // insertion at begin
     if (column > 0) {
       for (; column > 0; column--) {
-        result.addFirst("i|" + row  + "|" + sTwo.charAt(column - 1) + "|");
+        result.addFirst("i|" + row + "|" + sTwo.charAt(column - 1) + "|");
       }
     }
 
     // deletion at begin
     if (row > 0) {
       for (; row > 0; row--) {
-        result.addFirst("d|" + row  + "|" + "|" + sOne.charAt(row - 1));
+        result.addFirst("d|" + row + "|" + "|" + sOne.charAt(row - 1));
       }
     }
     return result;
@@ -580,8 +575,8 @@ public class DNAUtils {
     return levenMatrix;
   }
 
-  
-  
+
+
   /**
    * for test reasons, will be removed later TODO remove when no longer necessary
    * 

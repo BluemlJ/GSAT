@@ -8,13 +8,13 @@ package exceptions;
  */
 public class DatabaseConnectionException extends Exception {
 
-	/**
-	 * Constructor calling the super constructor.
-	 * 
-	 * @author Ben Kohr
-	 */
-	public DatabaseConnectionException() {
-		super("Connection to the database could not be established.");
-	}
+  /**
+   * Constructor calling the super constructor.
+   * 
+   * @author Ben Kohr
+   */
+  public DatabaseConnectionException() {
+    super("Connection to the database could not be established.");
+  }
 
 }

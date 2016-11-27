@@ -9,13 +9,13 @@ package exceptions;
  */
 public class DatabaseErrorException extends Exception {
 
-	/**
-	 * Constructor calling the super constructor.
-	 * 
-	 * @author Ben Kohr
-	 */
-	public DatabaseErrorException() {
-		super("Error while database processing.");
-	}
+  /**
+   * Constructor calling the super constructor.
+   * 
+   * @author Ben Kohr
+   */
+  public DatabaseErrorException() {
+    super("Error while database processing.");
+  }
 
 }

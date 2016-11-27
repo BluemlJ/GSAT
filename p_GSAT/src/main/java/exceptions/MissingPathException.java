@@ -8,17 +8,16 @@ package exceptions;
  */
 public class MissingPathException extends Exception {
 
-	public PathUsage usage;
-	
-	/**
-	 * Constructor calling the super constructor.
-	 * It also specifies the type of path missing.
-	 * 
-	 * @author Ben Kohr
-	 */
-	public MissingPathException(PathUsage usage) {
-		super("Missing path detected.");
-		this.usage = usage;
-	}
-	
+  public PathUsage usage;
+
+  /**
+   * Constructor calling the super constructor. It also specifies the type of path missing.
+   * 
+   * @author Ben Kohr
+   */
+  public MissingPathException(PathUsage usage) {
+    super("Missing path detected (Usage: " + usage + ").");
+    this.usage = usage;
+  }
+
 }

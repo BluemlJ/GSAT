@@ -11,101 +11,102 @@ import exceptions.CorruptedSequenceException;
  */
 public abstract class Sequence {
 
-	/**
-	 * The sequence of nucleotides.
-	 */
-	protected String sequence;
+  /**
+   * The sequence of nucleotides.
+   */
+  protected String sequence;
 
 
 
-	/**
-	 * Constructor setting the attribute (used for inheriting classes).
-	 * 
-	 * @param sequence the sequence of nucleotides
-	 */
-	public Sequence(String sequence) {
-		this.sequence = sequence;
-	}
+  /**
+   * Constructor setting the attribute (used for inheriting classes).
+   * 
+   * @param sequence the sequence of nucleotides
+   */
+  public Sequence(String sequence) {
+    this.sequence = sequence;
+  }
 
 
-	/**
-	 * Returns the reversed version of this object's nucleotide sequence, i.e. the nucleotide
-	 * sequence is inverted
-	 * 
-	 * @return The reversed nucleotide sequence as a String
-	 * 
-	 * @author Ben Kohr
-	 */
-	public String getReversedSequence() {
+  /**
+   * Returns the reversed version of this object's nucleotide sequence, i.e. the nucleotide sequence
+   * is inverted
+   * 
+   * @return The reversed nucleotide sequence as a String
+   * 
+   * @author Ben Kohr
+   */
+  public String getReversedSequence() {
 
-		StringBuilder builder = new StringBuilder(sequence);
-		builder.reverse();
-		String reversedSequence = builder.toString();
+    StringBuilder builder = new StringBuilder(sequence);
+    builder.reverse();
+    String reversedSequence = builder.toString();
 
-		return reversedSequence;
-	}
+    return reversedSequence;
+  }
 
 
-	/**
-	 * Returns the complementary version of this object's nucleotide sequence, i.e. all A
-	 * nucleotides in the original sequence are replaced with T nucleotides (and vice versa)
-	 * and all C nucleotides are replaced by G nucleotides (and vice versa).
-	 * 
-	 * @return The complementary nucleotide sequence as a String
-	 * 
-	 * @author Ben Kohr
-	 */
-	public String getComplementarySequence() throws CorruptedSequenceException {
+  /**
+   * Returns the complementary version of this object's nucleotide sequence, i.e. all A nucleotides
+   * in the original sequence are replaced with T nucleotides (and vice versa) and all C nucleotides
+   * are replaced by G nucleotides (and vice versa).
+   * 
+   * @return The complementary nucleotide sequence as a String
+   * 
+   * @author Ben Kohr
+   */
+  public String getComplementarySequence() throws CorruptedSequenceException {
 
-		StringBuilder complSeqBuilder = new StringBuilder();
-		int stringLength = sequence.length();
+    StringBuilder complSeqBuilder = new StringBuilder();
+    int stringLength = sequence.length();
 
-		for (int i = 0; i < stringLength; i++) {
+    for (int i = 0; i < stringLength; i++) {
 
-			switch (sequence.charAt(i)) {
-			case 'A':
-				complSeqBuilder.append('T');
-				break;
-			case 'T':
-				complSeqBuilder.append('A');
-				break;
-			case 'C':
-				complSeqBuilder.append('G');
-				break;
-			case 'G':
-				complSeqBuilder.append('C');
-				break;
-			default:
-				char problem = sequence.charAt(i);
-				throw new CorruptedSequenceException(i, problem, sequence);
-			}
-		}
+      switch (sequence.charAt(i)) {
+        case 'A':
+          complSeqBuilder.append('T');
+          break;
+        case 'T':
+          complSeqBuilder.append('A');
+          break;
+        case 'C':
+          complSeqBuilder.append('G');
+          break;
+        case 'G':
+          complSeqBuilder.append('C');
+          break;
+        default:
+          char problem = sequence.charAt(i);
+          throw new CorruptedSequenceException(i, problem, sequence);
+      }
+    }
 
-		String complSequence = complSeqBuilder.toString();
+    String complSequence = complSeqBuilder.toString();
 
-		return complSequence;
+    return complSequence;
 
-	}
-	
-	/**
-	 * This Method gives you the nucleotide sequence of this object.	 * 
-	 * 
-	 * @return this object's nucleotide sequence
-	 * 
-	 * @author Jannis Blüml
-	 */
-	public String getSequence() {
-		return sequence;
-	}
-	/**
-	 * This Method sets the nucleotide sequence of this object.	 * 
-	 * 
-	 * @param sequence sets the nucleotide sequence of this object
-	 * 
-	 * @author Jannis BlÃ¼ml
-	 */
-	public void setSequence(String sequence) {
-		this.sequence = sequence;
-	}
+  }
+
+  /**
+   * This Method gives you the nucleotide sequence of this object. *
+   * 
+   * @return this object's nucleotide sequence
+   * 
+   * @author Jannis Blüml
+   */
+  public String getSequence() {
+    return sequence;
+  }
+
+  /**
+   * This Method sets the nucleotide sequence of this object. *
+   * 
+   * @param sequence sets the nucleotide sequence of this object
+   * 
+   * @author Jannis BlÃ¼ml
+   */
+  public void setSequence(String sequence) {
+    this.sequence = sequence;
+  }
 
 }
