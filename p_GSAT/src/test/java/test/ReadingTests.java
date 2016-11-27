@@ -17,6 +17,13 @@ import io.SequenceReader;
  */
 public class ReadingTests {
 
+  /**
+   * This tests checks if it is possible to read a DNA Sequence from an .abi file
+   * 
+   * @throws IllegalSymbolException
+   * @throws FileReadingException
+   * @throws IOException
+   */
   @Test
   public void SequenceReadTest() throws IllegalSymbolException, FileReadingException, IOException {
     // TODO local file path

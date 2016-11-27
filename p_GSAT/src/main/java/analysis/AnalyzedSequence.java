@@ -38,7 +38,7 @@ public class AnalyzedSequence extends Sequence {
   private LinkedList<String> silentMutations = new LinkedList<String>();
 
   /**
-   * Y Coordinates for four nucleotides corresponding to the x-Value of the position in the array
+   * y-Coordinates for four nucleotides corresponding to the x-Value of the position in the array
    */
   private int[] aTrace;
   private int[] cTrace;

@@ -32,11 +32,11 @@ public class test {
 			//PhredSequence myPhred = new PhredSequence(mySequence, mySequence.;
 			//System.out.println(mySequence.seqString());
 			int[] cTrace = myTrace.getTrace(DNATools.c());
-			for(int i = 0; i < cTrace.length; i++){
-				//System.out.println(cTrace[i]);
+			for(int i = 0; i < 50; i++){
+				System.out.println(cTrace[i]);
 			}
 			int[] basecalls = myTrace.getBasecalls();
-			for(int i = 0; i < basecalls.length; i++){
+			for(int i = 0; i < 3; i++){
 				System.out.println(basecalls[i]);
 			}
 		} catch (IOException e) {
