@@ -23,7 +23,7 @@ public class ExceptionTests {
    * An AnalyzedSequence object for test purposes.
    */
   static AnalyzedSequence seq1 =
-      new AnalyzedSequence("ATRGATCG", "sequence1.ab1", "primer1", null, null, null, null, null);
+      new AnalyzedSequence("ATRGATCG", "2016-11-28", "Kurt Hafer", "sequence1.ab1", "No comments", null, null, null, null, null);
 
 
   /**
@@ -44,7 +44,7 @@ public class ExceptionTests {
 
       // Check if the error message is correctly produced
       assertEquals(
-          "Problem in observed AnalyzedSequence: Index 2 is 'R', but should be 'A', 'T', 'C', 'G' or 'U'.",
+          "Problem in observed AnalyzedSequence: Index 2 is 'R', but should be 'A', 'T', 'C' or 'G'.",
           e.getMessage());
 
       // Check whether the fields are set correctly
@@ -77,7 +77,7 @@ public class ExceptionTests {
 
       // Check if the error message is correctly produced
       assertEquals(
-          "Problem in observed nucleotide sequence: Index 7 is 'L', but should be 'A', 'T', 'C', 'G' or 'U'.",
+          "Problem in observed nucleotide sequence: Index 7 is 'L', but should be 'A', 'T', 'C' or 'G'.",
           e.getMessage());
 
       // Check whether the fields are set correctly

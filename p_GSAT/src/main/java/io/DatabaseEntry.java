@@ -16,25 +16,39 @@ public class DatabaseEntry {
 
   /**
    * The id for this entry. It is given by the DatabaseConnection class.
+   * Until the id is given, -1 is the placeholder id.
    */
   private int id = -1;
-
 
   /**
    * The name of the file this entry was retrieved from.
    */
   private String fileName;
-
+  
+  /**
+   * The id for the referenced gene.
+   */
+  private int geneID;
+  
+  /**
+   * The sequence of nucleotides.
+   */
+  private String sequence;
+  
+  /**
+   * The date at which this sequence was added.
+   */
+  private String addingDate;
 
   /**
-   * The referenced gene of analysis.
+   * The researcher who added this sequence.
    */
-  private String gene;
+  private String researcher;
 
   /**
    * The used primer.
    */
-  private String primer;
+  private String comments;
 
   /**
    * A mutation string; might be empty.
@@ -45,28 +59,49 @@ public class DatabaseEntry {
    * Indicates if the mutation is silent or not.
    */
   private boolean silent;
+  
+  /**
+   * Indicates whether the results of this analysis have been checked by a researcher.
+   */
+  private boolean manuallyChecked;
 
+  
+  /**
+   * The vector to be stored with the sequence.
+   */
+  private String vector;
+  
+  
+  /**
+   * The promotor to be stored with the sequence.
+   */
+  private String promotor;
+  
 
 
   /**
    * Constructor that sets up all attributes except the id (which is given by the DatabaseConnection
    * class).
    * 
-   * @param gene The sequence's reference gene
-   * @param primer Given meta information about the sequence
-   * @param mutatin One mutation, represented as a String
-   * @param silent Whether the mutation is silent or not
-   * 
    * @author Ben Kohr
    */
-  public DatabaseEntry(String fileName, String gene, String primer, String mutation,
-      boolean silent) {
+  public DatabaseEntry(String fileName, int geneID, String sequence, 
+                                       String addingDate, String researcher, String comments, 
+                                       String vector, String promotor, boolean manuallyChecked,
+                                       String mutation, boolean silent) {
+
     this.fileName = fileName;
-    this.gene = gene;
-    this.primer = primer;
+    this.geneID = geneID;
+    this.sequence = sequence;
+    this.addingDate = addingDate;
+    this.researcher = researcher;
+    this.comments = comments;
+    this.vector = vector;
+    this.promotor = promotor;
+    this.manuallyChecked = manuallyChecked;
     this.mutation = mutation;
     this.silent = silent;
-
+    
   }
 
 
@@ -85,8 +120,15 @@ public class DatabaseEntry {
 
     // Get information valid for all entries
     String fileName = seq.getFileName();
-    String primer = seq.getPrimer();
-    String geneName = seq.getReferencedGene().getName();
+    int geneID = seq.getReferencedGene().getId();
+    String sequence = seq.getSequence();
+    String addingDate = seq.getAddingDate();
+    String researcher = seq.getResearcher();
+    String comments = seq.getComments();
+    String vector = seq.getVector();
+    String promotor = seq.getPromotor();
+    boolean manuallyChecked = seq.isManuallyChecked();
+    
 
     // Initialize lists for (silent) mutations
     LinkedList<String> mutations = seq.getMutations();
@@ -94,16 +136,19 @@ public class DatabaseEntry {
 
     // Collect normal mutations
     for (String mutation : mutations) {
-      DatabaseEntry dbe = new DatabaseEntry(fileName, geneName, primer, mutation, false);
+      DatabaseEntry dbe = 
+          new DatabaseEntry(fileName, geneID, sequence, addingDate, researcher, comments, vector, promotor, manuallyChecked, mutation, false);
       entries.add(dbe);
     }
 
     // Collect silent mutations
     for (String silentMutation : silentMutations) {
-      DatabaseEntry dbe = new DatabaseEntry(fileName, geneName, primer, silentMutation, true);
+      DatabaseEntry dbe = 
+          new DatabaseEntry(fileName, geneID, sequence, addingDate, researcher, comments, vector, promotor, manuallyChecked, silentMutation, true);
       entries.add(dbe);
     }
 
+    // return the results
     return entries;
 
   }
@@ -137,6 +182,113 @@ public class DatabaseEntry {
 
 
   /**
+   * Returns this entry's gene id.
+   * 
+   * @return gene id
+   * 
+   * @author Ben Kohr
+   */
+  public int getGeneID() {
+    return geneID;
+  }
+
+
+  /**
+   * Returns this entry's nucleotide sequence
+   * 
+   * @return the nucleotide sequence
+   * 
+   * @author Ben Kohr
+   */
+  public String getSequence() {
+    return sequence;
+  }
+
+
+  /**
+   * Returns this entry's adding date
+   * 
+   * @return adding date
+   * 
+   * @author Ben Kohr
+   */
+  public String getAddingDate() {
+    return addingDate;
+  }
+
+
+  /**
+   * Returns this entry's reasercher
+   * 
+   * @return this entry's researcher
+   * 
+   * @author Ben Kohr
+   */
+  public String getResearcher() {
+    return researcher;
+  }
+
+  /**
+   * Returns this entry's stored comments
+   * 
+   * @return comments
+   * 
+   * @author Ben Kohr
+   */
+  public String getComments() {
+    return comments;
+  }
+
+
+  /**
+   * Returns a boolean indicating whether this entry's mutation is silent or not
+   * 
+   * @return Is this mutation silent?
+   * 
+   * @author Ben Kohr
+   */
+  public boolean isSilent() {
+    return silent;
+  }
+
+
+  /**
+   * Returns a boolean indicating whether this result is manually checked
+   * 
+   * @return Is this mutation silent?
+   * 
+   * @author Ben Kohr
+   */
+  public boolean isManuallyChecked() {
+    return manuallyChecked;
+  }
+
+
+  /**
+   * Returns this entry's vector
+   * 
+   * @return the vector
+   * 
+   * @author Ben Kohr
+   */
+  public String getVector() {
+    return vector;
+  }
+
+
+  /**
+   * Returns this entry's promotor
+   * 
+   * @return the promotor
+   * 
+   * @author Ben Kohr
+   */
+  public String getPromotor() {
+    return promotor;
+  }
+
+
+  /**
    * Returns the file name this database entry was obtained from.
    * 
    * @return the file name
@@ -147,32 +299,8 @@ public class DatabaseEntry {
     return fileName;
   }
 
-
-
-  /**
-   * Returns the referenced gene of this entry.
-   * 
-   * @return gene
-   * 
-   * @author Ben Kohr
-   */
-  public String getGene() {
-    return gene;
-  }
-
-
-  /**
-   * Returns the primer of this entry.
-   * 
-   * @return primer
-   * 
-   * @author Ben Kohr
-   */
-  public String getPrimer() {
-    return primer;
-  }
-
-
+  
+  
   /**
    * Returns the single mutation of this entry.
    * 
@@ -184,16 +312,5 @@ public class DatabaseEntry {
     return mutation;
   }
 
-
-  /**
-   * Returns the boolean indicated whether the mutation is silent or not.
-   * 
-   * @return boolean indicating a silent mutation
-   * 
-   * @author Ben Kohr
-   */
-  public boolean getSilentBoolean() {
-    return silent;
-  }
 
 }

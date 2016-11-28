@@ -1,5 +1,6 @@
 package io;
 
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.LinkedList;
@@ -81,23 +82,38 @@ public class DatabaseConnection {
     }
 
     FileWriter writer = new FileWriter(localPath + filename + ".csv");
-
-    for (DatabaseEntry dbe : queue) {
+    
+    writer.write("id; file name; gene id; sequence; date; researcher; comments; vector; promotor; manually checked; mutation; silent" + System.lineSeparator());
+    
+    for (DatabaseEntry entry : queue) {
 
       // retrieve the data from the Database object
-      int id = dbe.getID();
-      String fileName = dbe.getFileName();
-      String gene = dbe.getGene();
-      String primer = dbe.getPrimer();
-      String mutation = dbe.getMutation();
-      boolean silent = dbe.getSilentBoolean();
+      int id = entry.getID();
+      String fileName = entry.getFileName();
+      int geneID = entry.getGeneID();
+      String sequence = entry.getSequence();
+      String addingDate = entry.getAddingDate();
+      String researcher = entry.getResearcher();
+      // As ';' is the seperator charachter, each inital semicolon is replaced
+      String comments = entry.getComments().replace(';', ',');
+      String vector = entry.getVector();
+      String promotor = entry.getPromotor();
+      boolean manuallyChecked = entry.isManuallyChecked();
+      String mutation = entry.getMutation();
+      boolean silent = entry.isSilent();
 
       // Concatenate the Strings together to one line to be written
       StringBuilder builder = new StringBuilder();
       builder.append(id).append("; ");
       builder.append(fileName).append("; ");
-      builder.append(gene).append("; ");
-      builder.append(primer).append("; ");
+      builder.append(geneID).append("; ");
+      builder.append(sequence).append("; ");
+      builder.append(addingDate).append("; ");
+      builder.append(researcher).append("; ");
+      builder.append(comments).append("; ");
+      builder.append(vector).append("; ");
+      builder.append(promotor).append("; ");
+      builder.append(manuallyChecked).append("; ");
       builder.append(mutation).append("; ");
       builder.append(silent).append(System.lineSeparator());
 
@@ -117,11 +133,23 @@ public class DatabaseConnection {
    * 
    * @author Ben Kohr
    */
-  public static void addIntoQueue(DatabaseEntry dbe) {
-    setIdOnEntry(dbe);
-    queue.add(dbe);
+  public static void addIntoQueue(DatabaseEntry entry) {
+    setIdOnEntry(entry);
+    queue.add(entry);
   }
 
+  
+  /**
+   * Puts all entries from a given list into this class's waiting queue.
+   * 
+   * @param entries A list of entries to be stored
+   */
+  public static void addAllIntoQueue(LinkedList<DatabaseEntry> entries) {
+    for(DatabaseEntry entry : entries) {
+      addIntoQueue(entry);
+    }
+  }
+  
 
   /**
    * Sets the momentarily used id for a DatabaseEntry. Increments it afterwards to keep it up to

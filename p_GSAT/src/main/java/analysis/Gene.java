@@ -12,6 +12,12 @@ public class Gene extends Sequence {
    */
   private String name;
 
+  
+  /**
+   * The globally unique id of this gene.
+   */
+  private int id;
+  
 
 
   /**
@@ -22,9 +28,10 @@ public class Gene extends Sequence {
    * 
    * @author Ben Kohr
    */
-  public Gene(String sequence, String name) {
-    super(sequence);
+  public Gene(String sequence, int id, String name, String addingDate, String researcher) {
+    super(sequence, addingDate, researcher);
     this.name = name;
+    this.id = id;
   }
 
 
@@ -39,4 +46,18 @@ public class Gene extends Sequence {
     this.name = name;
   }
 
+
+
+  public int getId() {
+    return id;
+  }
+
+
+
+  public void setId(int id) {
+    this.id = id;
+  }
+
+  
+  
 }

@@ -1,5 +1,7 @@
 package analysis;
 
+import java.util.Date;
+
 import exceptions.CorruptedSequenceException;
 
 /**
@@ -16,15 +18,28 @@ public abstract class Sequence {
    */
   protected String sequence;
 
+  
+  /**
+   * The date at which this sequence was added.
+   */
+  protected String addingDate;
 
+
+  /**
+   * The researcher who added this sequence.
+   */
+  protected String researcher;
+  
 
   /**
    * Constructor setting the attribute (used for inheriting classes).
    * 
    * @param sequence the sequence of nucleotides
    */
-  public Sequence(String sequence) {
+  public Sequence(String sequence, String addingDate, String researcher) {
     this.sequence = sequence;
+    this.addingDate = addingDate;
+    this.researcher = researcher;
   }
 
 
@@ -103,10 +118,31 @@ public abstract class Sequence {
    * 
    * @param sequence sets the nucleotide sequence of this object
    * 
-   * @author Jannis BlÃ¼ml
+   * @author Jannis Blüml
    */
   public void setSequence(String sequence) {
     this.sequence = sequence;
   }
 
+  
+  public String getAddingDate() {
+    return addingDate;
+  }
+
+
+  public void setAddingDate(String addingDate) {
+    this.addingDate = addingDate;
+  }
+
+
+  public String getResearcher() {
+    return researcher;
+  }
+
+
+  public void setResearcher(String researcher) {
+    this.researcher = researcher;
+  }
+  
+  
 }

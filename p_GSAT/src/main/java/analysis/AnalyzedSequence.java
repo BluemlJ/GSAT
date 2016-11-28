@@ -21,22 +21,42 @@ public class AnalyzedSequence extends Sequence {
    */
   private Gene referencedGene;
 
+  
   /**
-   * Information to be stored in the database together with the sequence (indicates how the sequence
-   * was obtained).
+   * Information to be stored in the database together with the sequence.
    */
-  private String primer;
-
+  private String comments;
+  
+  
+  /**
+   * Indicates whether the results of this analysis have been checked by a researcher.
+   */
+  private boolean manuallyChecked = false;
+  
+  
+  /**
+   * The vector to be stored with this sequence.
+   */
+  private String vector;
+  
+  
+  /**
+   * The promotor to be stored with this sequence.
+   */
+  private String promotor;
+  
   /**
    * A list of discovered mutations to be stored.
    */
   private LinkedList<String> mutations = new LinkedList<String>();
 
+  
   /**
    * A list of discovered silent mutations to be stored
    */
   private LinkedList<String> silentMutations = new LinkedList<String>();
 
+  
   /**
    * y-Coordinates for four nucleotides corresponding to the x-Value of the position in the array
    */
@@ -65,11 +85,12 @@ public class AnalyzedSequence extends Sequence {
    * @param cTrace
    * @param aTrace
    */
-  public AnalyzedSequence(String sequence, String fileName, String primer, int[] aTrace,
-      int[] cTrace, int[] gTrace, int[] tTrace, int[] basecalls) {
-    super(sequence);
+  public AnalyzedSequence(String sequence, String addingDate, String researcher, 
+                          String fileName, String comments, 
+                          int[] aTrace, int[] cTrace, int[] gTrace, int[] tTrace, int[] basecalls) {
+    super(sequence, addingDate, researcher);
     this.fileName = fileName;
-    this.primer = primer;
+    this.comments = comments;
     this.aTrace = aTrace;
     this.cTrace = cTrace;
     this.gTrace = gTrace;
@@ -175,16 +196,6 @@ public class AnalyzedSequence extends Sequence {
 
 
   /**
-   * Returns the sequence's primer.
-   * 
-   * @return the primer of this sequence
-   */
-  public String getPrimer() {
-    return primer;
-  }
-
-
-  /**
    * Returns the sequence's file name (the file it was obtained from).
    * 
    * @return the file name
@@ -215,4 +226,47 @@ public class AnalyzedSequence extends Sequence {
     return silentMutations;
   }
 
+
+  public String getComments() {
+    return comments;
+  }
+
+
+  public void setComments(String comments) {
+    this.comments = comments;
+  }
+
+
+  public boolean isManuallyChecked() {
+    return manuallyChecked;
+  }
+
+
+  public void setManuallyChecked(boolean manuallyChecked) {
+    this.manuallyChecked = manuallyChecked;
+  }
+
+
+  public String getVector() {
+    return vector;
+  }
+
+
+  public void setVector(String vector) {
+    this.vector = vector;
+  }
+
+
+  public String getPromotor() {
+    return promotor;
+  }
+
+
+  public void setPromotor(String promotor) {
+    this.promotor = promotor;
+  }
+
+  
+  
+  
 }

@@ -3,7 +3,7 @@ package exceptions;
 import analysis.AnalyzedSequence;
 
 /**
- * An instance of this class is thrown if a char, which is not one of 'A', 'T', 'C', 'G' or 'U', is
+ * An instance of this class is thrown if a char, which is not one of 'A', 'T', 'C' or 'G', is
  * detected in a sequence.
  * 
  * @author Ben Kohr
@@ -49,7 +49,7 @@ public class CorruptedSequenceException extends Exception {
    */
   public CorruptedSequenceException(int i, char problem, AnalyzedSequence sequence) {
     super("Problem in observed AnalyzedSequence: Index " + i + " is '" + problem
-        + "', but should be 'A', 'T', 'C', 'G' or 'U'.");
+        + "', but should be 'A', 'T', 'C' or 'G'.");
 
     this.index = i;
     this.problem = problem;
@@ -72,7 +72,7 @@ public class CorruptedSequenceException extends Exception {
    */
   public CorruptedSequenceException(int i, char problem, String nucleotides) {
     super("Problem in observed nucleotide sequence: Index " + i + " is '" + problem
-        + "', but should be 'A', 'T', 'C', 'G' or 'U'.");
+        + "', but should be 'A', 'T', 'C' or 'G'.");
 
     this.index = i;
     this.problem = problem;

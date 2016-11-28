@@ -1,0 +1,4 @@
+id; file name; gene id; sequence; date; researcher; comments; vector; promotor; manually checked; mutation; silent
+0; sequence3.ab1; 3; ATC; 2016-11-25; Kurt Bohne; Nothing to say; null; null; false; D|23|E; false
+1; sequence3.ab1; 3; ATC; 2016-11-25; Kurt Bohne; Nothing to say; null; null; false; D|44|P; false
+2; sequence3.ab1; 3; ATC; 2016-11-25; Kurt Bohne; Nothing to say; null; null; false; G|88|B; true
