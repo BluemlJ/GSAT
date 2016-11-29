@@ -72,7 +72,7 @@ public class SequenceReader {
     int[] basecalls = parsedTrace.getBasecalls();
     // TODO Add Primer
     AnalyzedSequence parsedSequence = new AnalyzedSequence(parsedSymbols.seqString(),
-        referencedFile.getName(), "primer", aTrace, cTrace, gTrace, tTrace, basecalls);
+         "date", "researcher", referencedFile.getName(), "comment", aTrace, cTrace, gTrace, tTrace, basecalls);
     return parsedSequence;
   }
 
