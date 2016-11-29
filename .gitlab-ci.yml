@@ -34,3 +34,4 @@ test:
   stage: test
   script:
     - ./gradlew -g /cache./gradle check
+    - cat target/site/jacoco/index.html
