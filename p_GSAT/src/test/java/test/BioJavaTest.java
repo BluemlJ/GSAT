@@ -49,7 +49,7 @@ public class BioJavaTest {
  * @throws BioError 
  * @throws IllegalAlphabetException 
    */
-  @Test
+  /*@Test
   public void testABIRead() throws IOException, IllegalSymbolException, IllegalAlphabetException, BioError {
     // placeholder - real test needs local files
     assertTrue(true);
@@ -69,7 +69,7 @@ public class BioJavaTest {
      * System.out.println(entry.getKey() + ", " + entry.getValue()); }
      */
     
-    
+    /*
     //scale has to be 2
     BufferedImage chromaImg = myTrace.getImage(1000, 2);
     File outputfile = new File("/Users/lovisheindrich/Desktop/chroma.png");
@@ -92,5 +92,5 @@ public class BioJavaTest {
     // assertEquals(mySequence.subStr(1, 6), "gagttt");
     // System.out.println(mySequence.seqString());
   }
-
+*/
 }
