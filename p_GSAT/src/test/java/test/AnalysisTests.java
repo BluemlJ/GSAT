@@ -176,13 +176,13 @@ public class AnalysisTests {
    * @see analysis.DNAUtils
    * @author bluemlj
    */
-  /*@Test
+  @Test
   public void codonsToAminoAcidsWithToShortString() throws CorruptedSequenceException {
     String testString = "ACTTTGG";
     String result = DNAUtils.codonsToAminoAcids(testString);
     assertTrue(result.equals("nukleotides not modulo 3, so not convertable"));
 
-  }*/
+  }
 
   /**
    * Test if the convention from codons to amino acid (shortform) is correct, if the user uses empty
@@ -191,13 +191,13 @@ public class AnalysisTests {
    * @see analysis.DNAUtils
    * @author bluemlj
    */
-  /*@Test
+  @Test
   public void codonsToAminoAcidsWithEmptyString() throws CorruptedSequenceException {
     String testString = "";
     String result = DNAUtils.codonsToAminoAcids(testString);
     assertTrue(result.equals("empty nukleotides"));
 
-  }*/
+  }
 
   // TODO change these four to correct values! (NEW CONSTRUCTOR!)
   //AnalyzedSequence testA = new AnalyzedSequence("AGGGT", "testA", "FFFF");
