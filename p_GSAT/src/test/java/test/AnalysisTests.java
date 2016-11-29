@@ -199,10 +199,11 @@ public class AnalysisTests {
 
   }
 
-  AnalyzedSequence testA = new AnalyzedSequence("AGGGT", "testA", "FFFF");
-  Gene testGeneA = new Gene("AGGGC", "testGeneA");
-  Gene testGeneB = new Gene("AGTTTTTGGC", "testGeneB");
-  Gene testGeneC = new Gene("AGCCTCTCTCTCTGGC", "testGeneC");
+  // TODO change these four to correct values! (NEW CONSTRUCTOR!)
+  //AnalyzedSequence testA = new AnalyzedSequence("AGGGT", "testA", "FFFF");
+  //Gene testGeneA = new Gene("AGGGC", "testGeneA");
+  //Gene testGeneB = new Gene("AGTTTTTGGC", "testGeneB");
+  //Gene testGeneC = new Gene("AGCCTCTCTCTCTGGC", "testGeneC");
   LinkedList<Gene> testGenes = new LinkedList<>();
 
   /*
@@ -225,16 +226,16 @@ public class AnalysisTests {
   @Test
   public void testGetReversedSequence() {
 
-    Sequence seq = new Gene("", "Test1");
+    Sequence seq = new Gene("", 0, "Test1", null, null);
     assertEquals("", seq.getReversedSequence());
 
-    Sequence seq2 = new Gene("TTT", "Test2");
+    Sequence seq2 = new Gene("TTT", 0, "Test2", null, null);
     assertEquals("TTT", seq2.getReversedSequence());
 
-    Sequence seq3 = new Gene("ATCGATCGATCG", "Test3");
+    Sequence seq3 = new Gene("ATCGATCGATCG", 0, "Test3", null, null);
     assertEquals("GCTAGCTAGCTA", seq3.getReversedSequence());
 
-    Sequence seq4 = new Gene("GGGTACCGTGTAGG", "Test4");
+    Sequence seq4 = new Gene("GGGTACCGTGTAGG", 0, "Test4", null, null);
     assertEquals("GGATGTGCCATGGG", seq4.getReversedSequence());
 
   }
@@ -251,16 +252,16 @@ public class AnalysisTests {
   @Test
   public void testGetComplementarySequenceNoError() throws CorruptedSequenceException {
 
-    Sequence seq = new Gene("", "Test1");
+    Sequence seq = new Gene("", 0, "Test1", null, null);
     assertEquals("", seq.getComplementarySequence());
 
-    Sequence seq2 = new Gene("AAA", "Test2");
+    Sequence seq2 = new Gene("AAA", 0, "Test2", null, null);
     assertEquals("TTT", seq2.getComplementarySequence());
 
-    Sequence seq3 = new Gene("AATTCCGGATCG", "Test3");
+    Sequence seq3 = new Gene("AATTCCGGATCG", 0, "Test3", null, null);
     assertEquals("TTAAGGCCTAGC", seq3.getComplementarySequence());
 
-    Sequence seq4 = new Gene("ATGCTAGCTAGCCCC", "Test4");
+    Sequence seq4 = new Gene("ATGCTAGCTAGCCCC", 0, "Test4", null, null);
     assertEquals("TACGATCGATCGGGG", seq4.getComplementarySequence());
   }
 
@@ -276,7 +277,7 @@ public class AnalysisTests {
   @Test(expected = CorruptedSequenceException.class)
   public void testGetComplementarySequenceWithError() throws CorruptedSequenceException {
 
-    Sequence seq = new Gene("AATTCCFGATCG", "Problem");
+    Sequence seq = new Gene("AATTCCFGATCG", 0, "Problem", null, null);
     String comp = seq.getComplementarySequence();
 
     fail("No exception thrown!");
