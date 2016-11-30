@@ -20,7 +20,7 @@ before_script:
     - chmod +x gradlew
 
 variables:
-  GRADLE_COMMAND: "./gradlew --gradle-user-home /cache --no-daemon"
+  GRADLE_COMMAND: "./gradlew"
   
 # We redirect the gradle user home using -g so that it caches the
 # wrapper and dependencies.
