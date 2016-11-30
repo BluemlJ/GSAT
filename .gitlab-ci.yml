@@ -32,8 +32,6 @@ variables:
 # If it fails here, the tests can't run.
 build:
   stage: build
-  only:
-  - master
   script:
   - $GRADLE_COMMAND clean assemble
   artifacts:
@@ -46,10 +44,11 @@ build:
 test:
   stage: test
   script:
+  - $GRADLE_COMMAND build jacocoTestReport
   - $GRADLE_COMMAND test jacocoTestReport
   - $GRADLE_COMMAND check
   artifacts:
     when: always
     expire_in: 1 week
     paths:
-    - build/reports
+    - build/reports/
