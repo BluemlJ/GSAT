@@ -37,18 +37,18 @@ build:
   artifacts:
     when: always
     paths:
-    - build/libs/gsat.jar
+    - build/
   allow_failure: false
 
 # Use the generated build output to run the tests.
 test:
   stage: test
   script:
-  - $GRADLE_COMMAND build jacocoTestReport
-  - $GRADLE_COMMAND test jacocoTestReport
-  - $GRADLE_COMMAND check
+  - $GRADLE_COMMAND clean build jacocoTestReport
+  - $GRADLE_COMMAND clean test jacocoTestReport
+  - $GRADLE_COMMAND clean check
   artifacts:
     when: always
     expire_in: 1 week
     paths:
-    - build/reports/
+    - build/
