@@ -5,7 +5,11 @@
 # This is the Gradle build system for JVM applications
 # https://gradle.org/
 # https://github.com/gradle/gradle
-image: java:8
+image: openjdk:8-jdk
+
+stages:
+  - build
+  - test
 
 # Make the gradle wrapper executable. This essentially downloads a copy of
 # Gradle to build the project with.
@@ -15,6 +19,9 @@ before_script:
     - cd p_GSAT/
     - chmod +x gradlew
 
+variables:
+  GRADLE_COMMAND: "./gradlew"
+  
 # We redirect the gradle user home using -g so that it caches the
 # wrapper and dependencies.
 # https://docs.gradle.org/current/userguide/gradle_command_line.html
@@ -26,11 +33,22 @@ before_script:
 build:
   stage: build
   script:
-    - ./gradlew -g /cache/.gradle clean assemble
+  - $GRADLE_COMMAND clean assemble
+  artifacts:
+    when: always
+    paths:
+    - build/
   allow_failure: false
 
 # Use the generated build output to run the tests.
 test:
   stage: test
   script:
-    - ./gradlew -g /cache./gradle check
+  - $GRADLE_COMMAND clean build jacocoTestReport
+  - $GRADLE_COMMAND clean test jacocoTestReport
+  - $GRADLE_COMMAND clean check
+  artifacts:
+    when: always
+    expire_in: 1 week
+    paths:
+    - build/
