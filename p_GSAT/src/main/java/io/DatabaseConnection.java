@@ -129,7 +129,7 @@ public class DatabaseConnection {
   /**
    * Puts a single entry in the waiting queue for being written into the database.
    * 
-   * @param dbe New Data point to be written into the database
+   * @param entry New Data point to be written into the database
    * 
    * @author Ben Kohr
    */
@@ -155,12 +155,12 @@ public class DatabaseConnection {
    * Sets the momentarily used id for a DatabaseEntry. Increments it afterwards to keep it up to
    * date (unique).
    * 
-   * @param dbe The DatabaseEntry object which has no id right now
+   * @param entry The DatabaseEntry object which has no id right now
    * 
    * @author Ben Kohr
    */
-  public static void setIdOnEntry(DatabaseEntry dbe) {
-    dbe.setID(id);
+  public static void setIdOnEntry(DatabaseEntry entry) {
+    entry.setID(id);
     id++;
   }
 
