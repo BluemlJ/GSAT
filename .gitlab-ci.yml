@@ -46,7 +46,7 @@ build:
 test:
   stage: test
   script:
-  - $GRADLE_COMMAND clean build jacocoTestReport
+  - $GRADLE_COMMAND test jacocoTestReport
   - $GRADLE_COMMAND check
   artifacts:
     when: always
