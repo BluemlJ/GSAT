@@ -7,6 +7,10 @@
 # https://github.com/gradle/gradle
 image: openjdk:8-jdk
 
+stages:
+  - test
+  - build
+
 # Make the gradle wrapper executable. This essentially downloads a copy of
 # Gradle to build the project with.
 # https://docs.gradle.org/current/userguide/gradle_wrapper.html
@@ -15,6 +19,9 @@ before_script:
     - cd p_GSAT/
     - chmod +x gradlew
 
+variables:
+  GRADLE_COMMAND: "./gradlew --gradle-user-home /cache --no-daemon"
+  
 # We redirect the gradle user home using -g so that it caches the
 # wrapper and dependencies.
 # https://docs.gradle.org/current/userguide/gradle_command_line.html
@@ -25,20 +32,22 @@ before_script:
 # If it fails here, the tests can't run.
 build:
   stage: build
+  only:
+  - master
   script:
-    - ./gradlew -g /cache/.gradle clean assemble
-  allow_failure: false
-  
+  - $GRADLE_COMMAND clean assemble
   artifacts:
-    expire_in: 1 year
+    when: always
     paths:
-    - build/libs/GSAT.jar
+    - build/libs/gsat.jar
+  allow_failure: false
+
 # Use the generated build output to run the tests.
 test:
   stage: test
   script:
-    - ./gradlew --gradle-user-home /cache --no-daemon clean build jacocoTestReport
-    - ./gradlew -g /cache./gradle check
+  - $GRADLE_COMMAND clean build jacocoTestReport
+  - $GRADLE_COMMAND check
   artifacts:
     when: always
     expire_in: 1 week
