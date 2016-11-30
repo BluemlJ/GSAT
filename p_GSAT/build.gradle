@@ -13,6 +13,11 @@ apply plugin: 'java'
 // Apply the gradle plugin for JaCoCo
 apply plugin: "jacoco"
 
+jacoco {
+    toolVersion = "0.7.1.201405082137"
+    reportsDir = file("$buildDir/reports")
+}
+
 ext { buildTime = new Date().format("yyyyMMddHHmm") }
 
 // In this section you declare where to find the dependencies of your project
@@ -34,6 +39,15 @@ dependencies {
     testCompile 'junit:junit:4.12'
 }
 // In this section we declare the jacocoTestReport structure
+
+test {
+    jacoco {
+        append = false
+        destinationFile = file("$buildDir/jacoco/jacocoTest.exec")
+        classDumpFile = file("$buildDir/jacoco/classpathdumps")
+    }
+}
+
 jacocoTestReport {
     reports {
         xml.enabled false
