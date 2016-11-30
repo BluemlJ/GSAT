@@ -8,8 +8,8 @@
 image: openjdk:8-jdk
 
 stages:
-  - test
   - build
+  - test
 
 # Make the gradle wrapper executable. This essentially downloads a copy of
 # Gradle to build the project with.
