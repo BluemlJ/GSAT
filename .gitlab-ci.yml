@@ -47,7 +47,7 @@ test:
   stage: test
   script:
   - $GRADLE_COMMAND clean build jacocoTestReport
-  - cat target/site/jacoco/index.html 
+  - "cat target/site/jacoco/index.html"
   - $GRADLE_COMMAND check
   artifacts:
     when: always
