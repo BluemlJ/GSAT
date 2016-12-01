@@ -107,7 +107,7 @@ public abstract class Sequence {
    * 
    * @return this object's nucleotide sequence
    * 
-   * @author Jannis Blüml
+   * @author bluemlj
    */
   public String getSequence() {
     return sequence;
@@ -118,7 +118,7 @@ public abstract class Sequence {
    * 
    * @param sequence sets the nucleotide sequence of this object
    * 
-   * @author Jannis Blüml
+   * @author bluemlj
    */
   public void setSequence(String sequence) {
     this.sequence = sequence;
