@@ -1,5 +1,8 @@
 # GSAT #
 
+Develop-Buildstatus:
+[build status](https://gitlab.com/BluemlJ/GSAT/badges/Develop/build.svg)](https://gitlab.com/BluemlJ/GSAT/commits/Develop)
+
 About GSAT
 ----
 GSAT, which means "Genetic Sequence Analysing Tool", is a Java program for analysing AB1 files, comparing them with genes and adding retrieved
