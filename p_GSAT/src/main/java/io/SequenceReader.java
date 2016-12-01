@@ -117,7 +117,6 @@ public class SequenceReader {
 	public static int findLowQualityClippingPosition(File file) throws IOException {
 		Chromatogram abifile = ChromatogramFactory.create(file);
 		byte[] qualities = abifile.getQualitySequence().toArray();
-		abifile.getNucleotideSequence().toString();
 		double average = abifile.getQualitySequence().getAvgQuality();
 		int counterAll = 0;
 		int countertoBreak = 0;
