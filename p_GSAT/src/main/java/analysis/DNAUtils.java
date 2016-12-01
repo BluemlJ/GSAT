@@ -278,17 +278,19 @@ public class DNAUtils {
    * @author bluemlj
    */
   public static String codonsToAminoAcids(String nucleotides) throws CorruptedSequenceException {
-    String aminoAcidString = "";
 
     if (nucleotides.isEmpty()) return "empty nucleotides";
-
-    if (nucleotides.length() % 3 == 0)
+    
+    StringBuilder builder = new StringBuilder();
+    
+    if (nucleotides.length() % 3 == 0) {
       for (int i = 0; i < nucleotides.length(); i = i + 3) {
         String codon = nucleotides.substring(i, i + 3);
         String aminoacid = aminoAcidShorts.get(codon);
 
+        
         if (aminoacid != null)
-          aminoAcidString += aminoacid;
+          builder.append(aminoacid);
         else {
 
           int index;
@@ -303,9 +305,9 @@ public class DNAUtils {
           throw new CorruptedSequenceException(i + index, codon.charAt(index), nucleotides);
         }
       }
-    else
+    } else
       return "nucleotides not modulo 3, so not convertable";
-    return aminoAcidString.toString();
+    return builder.toString();
   }
 
   /**

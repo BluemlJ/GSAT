@@ -180,7 +180,7 @@ public class AnalysisTests {
   public void codonsToAminoAcidsWithToShortString() throws CorruptedSequenceException {
     String testString = "ACTTTGG";
     String result = DNAUtils.codonsToAminoAcids(testString);
-    assertTrue(result.equals("nukleotides not modulo 3, so not convertable"));
+    assertTrue(result.equals("nucleotides not modulo 3, so not convertable"));
 
   }
 
@@ -195,7 +195,7 @@ public class AnalysisTests {
   public void codonsToAminoAcidsWithEmptyString() throws CorruptedSequenceException {
     String testString = "";
     String result = DNAUtils.codonsToAminoAcids(testString);
-    assertTrue(result.equals("empty nukleotides"));
+    assertTrue(result.equals("empty nucleotides"));
 
   }
 
@@ -213,7 +213,7 @@ public class AnalysisTests {
    * Gene result = DNAUtils.findRightGene(testA,testGenes);
    * System.out.println(result.getSequence()); assertTrue(result == testGeneA); }
    * 
-   * verschoben bis checksimilarity vorhanden
+   * verschoben bis checksimilarity vorhanden TODO wieder nutzen!
    */
 
   /**

@@ -25,7 +25,7 @@ public class ReadingTests {
    * @throws IOException
    */
   @Test
-  public void SequenceReadTest() throws IllegalSymbolException, FileReadingException, IOException {
+  public void sequenceReadTest() throws IllegalSymbolException, FileReadingException, IOException {
     // TODO local file path
     SequenceReader
         .configurePath("D:/Dokumente/Dropbox/BP_GSAT/Materialien/Dateien/Bsp/AB/93GH02_A01.ab1");
