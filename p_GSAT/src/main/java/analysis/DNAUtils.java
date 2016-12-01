@@ -1,5 +1,6 @@
 package analysis;
 
+import java.io.IOException;
 import java.util.Collections;
 import java.util.Hashtable;
 import java.util.LinkedList;
@@ -576,22 +577,5 @@ public class DNAUtils {
     }
     return levenMatrix;
   }
-
-
-
-  /**
-   * for test reasons, will be removed later TODO remove when no longer necessary
-   * 
-   * @param args
-   * @author Kevin Otto
-   */
-  public static void main(String[] args) {
-
-    System.out.println();
-
-    LinkedList<String> list = reportDifferences("AACAAB", "AAADDDAAB");
-    for (String string : list) {
-      System.out.println(string);
-    }
-  }
+  
 }
