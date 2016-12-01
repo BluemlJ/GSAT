@@ -1,7 +1,9 @@
 # GSAT #
 
 Develop-Buildstatus:
-[build status](https://gitlab.com/BluemlJ/GSAT/badges/Develop/build.svg)](https://gitlab.com/BluemlJ/GSAT/commits/Develop)
+
+ [![build status](https://gitlab.com/BluemlJ/GSAT/badges/Develop/build.svg)](https://gitlab.com/BluemlJ/GSAT/commits/Develop)
+ 
 
 About GSAT
 ----
