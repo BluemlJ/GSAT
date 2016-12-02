@@ -96,38 +96,4 @@ public class SequenceReader {
 		return (path != null);
 	}
 
-	/**
-	 * This method checks the nucleotidestring and finds a position to trim the
-	 * low quality part at the end of the sequence.
-	 * 
-	 * @param file
-	 *            The .abi file to read
-	 * @return an Integer, that gives you the position in the sequence to trim
-	 *         the low quality part.
-	 * 
-	 * @throws IOException
-	 * 
-	 * @author bluemlj
-	 */
-	public static int findLowQualityClippingPosition(File file) throws IOException {
-		Chromatogram abifile = ChromatogramFactory.create(file);
-		byte[] qualities = abifile.getQualitySequence().toArray();
-		double average = abifile.getQualitySequence().getAvgQuality();
-		int counterAll = 0;
-		int countertoBreak = 0;
-
-		for (byte b : qualities) {
-			int i = b;
-			if (i < average)
-				countertoBreak++;
-			else {
-				counterAll += countertoBreak + 1;
-				countertoBreak = 0;
-			}
-			if (countertoBreak == 5) {
-				return counterAll;
-			}
-		}
-		return counterAll;
-	}
 }

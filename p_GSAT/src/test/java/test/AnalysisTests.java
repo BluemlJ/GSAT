@@ -10,9 +10,10 @@ import java.util.LinkedList;
 import org.junit.Test;
 
 import analysis.AnalyzedSequence;
-import analysis.DNAUtils;
+import analysis.MutationAnalysis;
 import analysis.Gene;
 import analysis.Sequence;
+import analysis.StringAnalysis;
 import exceptions.CorruptedSequenceException;
 
 /**
@@ -30,7 +31,7 @@ public class AnalysisTests {
   public void testLevenshtein() {
     String first = "kitten";
     String second = "sitting";
-    int[][] levenMatrix = DNAUtils.calculateLevenshteinMatrix(first, second);
+    int[][] levenMatrix = StringAnalysis.calculateLevenshteinMatrix(first, second);
     // int[][] resultMatrix = new int[][]
     // {{0,1,2,3,4,5,6},{1,1,2,3,4,5,6},{2,2,1,2,3,4,5},{3,3,2,1,2,3,4},{4,4,3,2,1,2,3},{5,5,4,3,2,2,3},{6,6,5,4,3,3,2},{7,7,6,5,4,4,3}};
     int[][] resultMatrix = new int[][] {{0, 1, 2, 3, 4, 5, 6, 7}, {1, 1, 2, 3, 4, 5, 6, 7},
@@ -49,7 +50,7 @@ public class AnalysisTests {
    */
   @Test
   public void testDiferencesDelet() {
-    LinkedList<String> list = DNAUtils.reportDifferences("helllo", "hello");
+    LinkedList<String> list = MutationAnalysis.reportDifferences("helllo", "hello");
     StringBuilder result = new StringBuilder();
     for (String string : list) {
       result.append(string + ", ");
@@ -65,7 +66,7 @@ public class AnalysisTests {
    */
   @Test
   public void testDiferencesDeletEnd() {
-    LinkedList<String> list = DNAUtils.reportDifferences("hellox", "hello");
+    LinkedList<String> list = MutationAnalysis.reportDifferences("hellox", "hello");
     StringBuilder result = new StringBuilder();
     for (String string : list) {
       result.append(string + ", ");
@@ -81,7 +82,7 @@ public class AnalysisTests {
    */
   @Test
   public void testDiferencesInsert() {
-    LinkedList<String> list = DNAUtils.reportDifferences("helo", "hello");
+    LinkedList<String> list = MutationAnalysis.reportDifferences("helo", "hello");
     StringBuilder result = new StringBuilder();
     for (String string : list) {
       result.append(string + ", ");
@@ -98,7 +99,7 @@ public class AnalysisTests {
    */
   @Test
   public void testDiferencesInsertEnd() {
-    LinkedList<String> list = DNAUtils.reportDifferences("hell", "hello");
+    LinkedList<String> list = MutationAnalysis.reportDifferences("hell", "hello");
     StringBuilder result = new StringBuilder();
     for (String string : list) {
       result.append(string + ", ");
@@ -114,7 +115,7 @@ public class AnalysisTests {
    */
   @Test
   public void testDiferencesInsertBegin() {
-    LinkedList<String> list = DNAUtils.reportDifferences("ello", "hello");
+    LinkedList<String> list = MutationAnalysis.reportDifferences("ello", "hello");
     StringBuilder result = new StringBuilder();
     for (String string : list) {
       result.append(string + ", ");
@@ -130,7 +131,7 @@ public class AnalysisTests {
    */
   @Test
   public void testDiferencesSubstitute() {
-    LinkedList<String> list = DNAUtils.reportDifferences("helxo", "hello");
+    LinkedList<String> list = MutationAnalysis.reportDifferences("helxo", "hello");
     StringBuilder result = new StringBuilder();
     for (String string : list) {
       result.append(string + ", ");
@@ -150,7 +151,7 @@ public class AnalysisTests {
   @Test
   public void codonsToAminoAcidsOnCorrectUse() throws CorruptedSequenceException {
     String testA = "ATTGGGCCCATT";
-    String result = DNAUtils.codonsToAminoAcids(testA);
+    String result = MutationAnalysis.codonsToAminoAcids(testA);
     assertTrue(result.equals("IGPI"));
   }
 
@@ -158,13 +159,13 @@ public class AnalysisTests {
    * Test if the convention from codons to amino acid (shortform) is correct, if the user uses
    * uncorrect codonstrings (with wrong nukleotides) and gets the correct error String
    * 
-   * @see analysis.DNAUtils
+   * @see analysis.MutationAnalysis
    * @author bluemlj
    */
   @Test(expected = CorruptedSequenceException.class)
   public void codonsToAminoAcidsWithNotNukleotideString() throws CorruptedSequenceException {
     String testString = "HNOFClBrI";
-    String result = DNAUtils.codonsToAminoAcids(testString);
+    String result = MutationAnalysis.codonsToAminoAcids(testString);
 
 
   }
@@ -173,13 +174,13 @@ public class AnalysisTests {
    * Test if the convention from codons to amino acid (shortform) is correct, if the user uses
    * codonstrings, that cant be correct condon string (%3) and gets the correct error message
    * 
-   * @see analysis.DNAUtils
+   * @see analysis.MutationAnalysis
    * @author bluemlj
    */
   @Test
   public void codonsToAminoAcidsWithToShortString() throws CorruptedSequenceException {
     String testString = "ACTTTGG";
-    String result = DNAUtils.codonsToAminoAcids(testString);
+    String result = MutationAnalysis.codonsToAminoAcids(testString);
     assertTrue(result.equals("nucleotides not modulo 3, so not convertable"));
 
   }
@@ -188,13 +189,13 @@ public class AnalysisTests {
    * Test if the convention from codons to amino acid (shortform) is correct, if the user uses empty
    * codonstrings and gets the correct error
    * 
-   * @see analysis.DNAUtils
+   * @see analysis.MutationAnalysis
    * @author bluemlj
    */
   @Test
   public void codonsToAminoAcidsWithEmptyString() throws CorruptedSequenceException {
     String testString = "";
-    String result = DNAUtils.codonsToAminoAcids(testString);
+    String result = MutationAnalysis.codonsToAminoAcids(testString);
     assertTrue(result.equals("empty nucleotides"));
 
   }
