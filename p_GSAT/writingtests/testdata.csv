@@ -1,6 +1,6 @@
-id; file name; gene id; sequence; date; researcher; comments; vector; promotor; manually checked; mutation; silent
-0; a.ab1; 1; ATCGTCGATCGA; 2016-11-28; Klaus Bohne; No comments; CCCCCCCC; ATCG; true; A|1|T; false
-1; b.ab1; 4; TCGATCGATCG; 2016-11-28; Kurt Bohne; No comments; TTTTTT; ATCG; false; A|2|T; false
-2; c.ab1; 0; ATCGA; 2016-11-28; Klaus Bohne; No comments; AAAAAAAT; ATCG; true; A|3|T; false
-3; d.ab1; 7; ATCGT; 2016-11-28; Kurt Bohne; No comments; AAAAAAAT; ATCG; false; A|4|T; false
-4; e.ab1; 1; AA; 2016-11-28; Kurt Bohne; No comments, nothing to say; GGGGGG; ATCG; true; A|5|T; false
+id; file name; gene id; sequence; date; researcher; comments; vector; promotor; manually checked; mutation; mutation type
+0; a.ab1; 1; ATCGTCGATCGA; 2016-11-28; Klaus Bohne; No comments; CCCCCCCC; ATCG; true; +1H4; INSERTION
+1; b.ab1; 4; TCGATCGATCG; 2016-11-28; Kurt Bohne; No comments; TTTTTT; ATCG; false; -1H4; DELETION
+2; c.ab1; 0; ATCGA; 2016-11-28; Klaus Bohne; No comments; AAAAAAAT; ATCG; true; ACC4ACG; SILENT
+3; d.ab1; 7; ATCGT; 2016-11-28; Kurt Bohne; No comments; AAAAAAAT; ATCG; false; H4D; SUBSTITUTION
+4; e.ab1; 1; AA; 2016-11-28; Kurt Bohne; No comments, nothing to say; GGGGGG; ATCG; true; reading frame error; ERROR

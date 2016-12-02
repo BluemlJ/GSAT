@@ -3,6 +3,7 @@ package io;
 import java.util.LinkedList;
 
 import analysis.AnalyzedSequence;
+import exceptions.UndefinedTypeOfMutationException;
 
 /**
  * Models an "abstract" entry to be written into the database. The database itself may have
@@ -56,9 +57,9 @@ public class DatabaseEntry {
   private String mutation;
 
   /**
-   * Indicates if the mutation is silent or not.
+   * Indicates the mutation type.
    */
-  private boolean silent;
+  private MutationType mType;
   
   /**
    * Indicates whether the results of this analysis have been checked by a researcher.
@@ -88,7 +89,7 @@ public class DatabaseEntry {
   public DatabaseEntry(String fileName, int geneID, String sequence, 
                                        String addingDate, String researcher, String comments, 
                                        String vector, String promotor, boolean manuallyChecked,
-                                       String mutation, boolean silent) {
+                                       String mutation, MutationType mType) {
 
     this.fileName = fileName;
     this.geneID = geneID;
@@ -100,7 +101,7 @@ public class DatabaseEntry {
     this.promotor = promotor;
     this.manuallyChecked = manuallyChecked;
     this.mutation = mutation;
-    this.silent = silent;
+    this.mType = mType;
     
   }
 
@@ -113,8 +114,9 @@ public class DatabaseEntry {
    * @return List of database entries ready to be stored
    * 
    * @author Ben Kohr
+   * @throws UndefinedTypeOfMutationException 
    */
-  public static LinkedList<DatabaseEntry> convertSequenceIntoEntries(AnalyzedSequence seq) {
+  public static LinkedList<DatabaseEntry> convertSequenceIntoEntries(AnalyzedSequence seq) throws UndefinedTypeOfMutationException {
 
     LinkedList<DatabaseEntry> entries = new LinkedList<DatabaseEntry>();
 
@@ -130,23 +132,19 @@ public class DatabaseEntry {
     boolean manuallyChecked = seq.isManuallyChecked();
     
 
-    // Initialize lists for (silent) mutations
+    // Initialize lists for mutations
     LinkedList<String> mutations = seq.getMutations();
-    LinkedList<String> silentMutations = seq.getSilentMutations();
 
-    // Collect normal mutations
+    // Collect mutations
     for (String mutation : mutations) {
+      
+      MutationType mType = determineMutationType(mutation);
+      
       DatabaseEntry dbe = 
-          new DatabaseEntry(fileName, geneID, sequence, addingDate, researcher, comments, vector, promotor, manuallyChecked, mutation, false);
+          new DatabaseEntry(fileName, geneID, sequence, addingDate, researcher, comments, vector, promotor, manuallyChecked, mutation, mType);
       entries.add(dbe);
     }
 
-    // Collect silent mutations
-    for (String silentMutation : silentMutations) {
-      DatabaseEntry dbe = 
-          new DatabaseEntry(fileName, geneID, sequence, addingDate, researcher, comments, vector, promotor, manuallyChecked, silentMutation, true);
-      entries.add(dbe);
-    }
 
     // return the results
     return entries;
@@ -154,6 +152,48 @@ public class DatabaseEntry {
   }
 
 
+  /**
+   * Determines the type of a given String-encoded mutation.
+   * 
+   * @param mutation The String-encoded mutation
+   * 
+   * @return The given mutation's type
+   * 
+   * @throws UndefinedTypeOfMutationException 
+   * 
+   * @author Ben Kohr
+   */
+  private static MutationType determineMutationType(String mutation) throws UndefinedTypeOfMutationException {
+    
+    // Is this mutation indicating a reading frame error?
+    if (mutation.equals("reading frame error")) {
+      return MutationType.ERROR;
+    }
+    
+    // If not: Check for ordinary mutation types
+    char firstChar = mutation.charAt(0);
+   
+    if(firstChar == '+') {
+      return MutationType.INSERTION;
+    } else if (firstChar == '-') {
+      return MutationType.DELETION;
+    } else {
+      
+      String[] mutationParts = mutation.split("[0-9]+");
+      if (mutationParts[0].length() == 1) {
+        return MutationType.SUBSTITUTION;
+      } else if (mutationParts[0].length() == 3) {
+        return MutationType.SILENT;
+      }
+      
+    }
+    
+    // If none of the above conditions fired, throw an exception
+    throw new UndefinedTypeOfMutationException(mutation);
+    
+  }
+  
+  
 
   /**
    * Sets the id of this entry. Typically used be DatabaseConnection to update the ids correctly.
@@ -241,14 +281,14 @@ public class DatabaseEntry {
 
 
   /**
-   * Returns a boolean indicating whether this entry's mutation is silent or not
+   * Returns the type of this entry's mutation.
    * 
-   * @return Is this mutation silent?
+   * @return Mutation type
    * 
    * @author Ben Kohr
    */
-  public boolean isSilent() {
-    return silent;
+  public MutationType getMutationType() {
+    return mType;
   }
 
 

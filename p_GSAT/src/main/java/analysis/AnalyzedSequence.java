@@ -2,6 +2,8 @@ package analysis;
 
 import java.util.LinkedList;
 
+import org.biojava.bio.program.abi.ABITrace;
+
 /**
  * Models a sequence under analysis (i.e. obtained from an AB1 file), which may have mutations.
  * 
@@ -52,23 +54,9 @@ public class AnalyzedSequence extends Sequence {
 
   
   /**
-   * A list of discovered silent mutations to be stored
-   */
-  private LinkedList<String> silentMutations = new LinkedList<String>();
-
-  
-  /**
    * y-Coordinates for four nucleotides corresponding to the x-Value of the position in the array
    */
-  private int[] aTrace;
-  private int[] cTrace;
-  private int[] gTrace;
-  private int[] tTrace;
-
-  /**
-   * Int Array which represents the x Values of the peaks in the graph
-   */
-  private int[] basecalls;
+  private ABITrace abiTrace;
 
 
   /**
@@ -78,24 +66,16 @@ public class AnalyzedSequence extends Sequence {
    * @param fileName Name of the file this sequence was obtained from
    * @param primer Metadata to be stored with the sequence
    * 
+   * @param abiTrace
+   * 
    * @author Ben Kohr
-   * @param basecalls
-   * @param tTrace
-   * @param gTrace
-   * @param cTrace
-   * @param aTrace
    */
   public AnalyzedSequence(String sequence, String addingDate, String researcher, 
-                          String fileName, String comments, 
-                          int[] aTrace, int[] cTrace, int[] gTrace, int[] tTrace, int[] basecalls) {
+                          String fileName, String comments, ABITrace abiTrace) {
     super(sequence, addingDate, researcher);
     this.fileName = fileName;
     this.comments = comments;
-    this.aTrace = aTrace;
-    this.cTrace = cTrace;
-    this.gTrace = gTrace;
-    this.tTrace = tTrace;
-    this.basecalls = basecalls;
+    this.abiTrace = abiTrace;
   }
 
 
@@ -110,17 +90,6 @@ public class AnalyzedSequence extends Sequence {
     mutations.add(mutation);
   }
 
-
-  /**
-   * Adds a discovered silent mutation.
-   * 
-   * @param mutation A discovered silent mutation (in the given String format)
-   * 
-   * @author Ben Kohr
-   */
-  public void addSilentMutation(String mutation) {
-    silentMutations.add(mutation);
-  }
 
 
   /**
@@ -213,17 +182,6 @@ public class AnalyzedSequence extends Sequence {
    */
   public LinkedList<String> getMutations() {
     return mutations;
-  }
-
-
-
-  /**
-   * Returns the sequence's list of silent mutations
-   * 
-   * @return silent mutations
-   */
-  public LinkedList<String> getSilentMutations() {
-    return silentMutations;
   }
 
 

@@ -231,19 +231,19 @@ public class DNAUtils {
         case "s":
           oldAminoAcid = difference.split("\\|")[2];
           newAminoAcid = difference.split("\\|")[3];
-          mutations.add(reference.getName() + "   " + oldAminoAcid + position + newAminoAcid);
+          mutations.add(oldAminoAcid + position + newAminoAcid);
           break;
         // i = injection, inject of an new amino acid (aminoAcid short form)
         case "i":
           shift--;
           newAminoAcid = difference.split("\\|")[2];
-          mutations.add(reference.getName() + "  +1" + newAminoAcid + position);
+          mutations.add("+1" + newAminoAcid + position);
           break;
         // d = deletion, deletion of an amino acid
         case "d":
           shift++;
           oldAminoAcid = difference.split("\\|")[2];
-          mutations.add(reference.getName() + "  -1" + oldAminoAcid + position);
+          mutations.add("-1" + oldAminoAcid + position);
           break;
         // in case of a nop, we test a silent mutation and add it if the
         // test has a positive match
@@ -253,14 +253,14 @@ public class DNAUtils {
           String newAcid = mutatedSequence.substring(position * 3, position * 3 + 2);
 
           if (!oldAcid.equals(newAcid)) {
-            mutations.add(reference.getName() + "   " + oldAcid + position + newAcid);
+            mutations.add(oldAcid + position + newAcid);
           }
           break;
         // in case of an error, we clear the return list and add a reading
         // frame error
         case "e":
           mutations.clear();
-          mutations.add(" - reading frame");
+          mutations.add("reading frame error");
           return mutations;
         default:
           throw new UndefinedTypeOfMutationException(typeOfMutations);

@@ -2,9 +2,7 @@ package exceptions;
 
 
 /**
- * This exception is thrown if a String was used for representing a mutation but is not valid (i.e.
- * its none of the following: 'i' (insertion), 's' (substitution), 'd' (deletion) or 'e' (known
- * error; this may happen and is not problematic).
+ * This exception is thrown if a String was used for representing a mutation but is not valid. 
  * 
  * @author Ben Kohr
  *
