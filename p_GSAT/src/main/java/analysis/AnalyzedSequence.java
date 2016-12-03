@@ -5,19 +5,25 @@ import java.util.LinkedList;
 import org.biojava.bio.program.abi.ABITrace;
 
 /**
- * Models a sequence under analysis (i.e. obtained from an AB1 file), which may have mutations.
+ * Models a sequence under analysis (i.e. obtained from an AB1 file), which may
+ * have mutations.
  * 
  * @author Ben Kohr
  * 
  */
 public class AnalyzedSequence extends Sequence {
 
-  /**
-   * The name of the file this sequence was obtained from. This is used to create the name of the
-   * output file.
-   */
-  private String fileName;// TODO change from String to File
+	/**
+	 * The name of the file this sequence was obtained from. This is used to
+	 * create the name of the output file.
+	 */
+	private String fileName;// TODO change from String to File
 
+	/**
+	 * The gene this sequence was formed from. Useful to compare the sequence
+	 * with the gene.
+	 */
+	
   /**
    * The gene this sequence was formed from. Useful to compare the sequence with the gene.
    */
@@ -224,7 +230,6 @@ public class AnalyzedSequence extends Sequence {
     this.promotor = promotor;
   }
 
-  
   
   
 }

@@ -6,9 +6,10 @@ import analysis.AnalyzedSequence;
 import exceptions.UndefinedTypeOfMutationException;
 
 /**
- * Models an "abstract" entry to be written into the database. The database itself may have
- * different tables and this abstract entry can actually be split with its parts being distributed
- * among those tables (while making sure that it is possible to combine the data again).
+ * Models an "abstract" entry to be written into the database. The database
+ * itself may have different tables and this abstract entry can actually be
+ * split with its parts being distributed among those tables (while making sure
+ * that it is possible to combine the data again).
  * 
  * @author Ben Kohr
  *
@@ -352,5 +353,6 @@ public class DatabaseEntry {
     return mutation;
   }
 
+>>>>>>> 77f7191a89db5ce73fa918a9870d774d858b78fe
 
 }
