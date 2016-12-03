@@ -2,7 +2,7 @@ package io;
 
 import java.util.LinkedList;
 
-import analysis.AnalyzedSequence;
+import analysis.AnalysedSequence;
 import exceptions.UndefinedTypeOfMutationException;
 
 /**
@@ -117,7 +117,7 @@ public class DatabaseEntry {
    * @author Ben Kohr
    * @throws UndefinedTypeOfMutationException 
    */
-  public static LinkedList<DatabaseEntry> convertSequenceIntoEntries(AnalyzedSequence seq) throws UndefinedTypeOfMutationException {
+  public static LinkedList<DatabaseEntry> convertSequenceIntoEntries(AnalysedSequence seq) throws UndefinedTypeOfMutationException {
 
     LinkedList<DatabaseEntry> entries = new LinkedList<DatabaseEntry>();
 

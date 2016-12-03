@@ -8,7 +8,7 @@ import org.biojava.bio.symbol.IllegalSymbolException;
 import org.junit.Before;
 import org.junit.Test;
 
-import analysis.AnalyzedSequence;
+import analysis.AnalysedSequence;
 import exceptions.FileReadingException;
 import io.SequenceReader;
 
@@ -19,7 +19,7 @@ import io.SequenceReader;
 public class ReadingTests {
   
   String correctSequence;
-  AnalyzedSequence testSequence;
+  AnalysedSequence testSequence;
   
   @Before
   public void initializeSequence() throws IllegalSymbolException, FileReadingException, IOException{
@@ -45,4 +45,5 @@ public class ReadingTests {
 
     assertEquals(testSequence.getSequence().toLowerCase(), correctSequence.toLowerCase());
   }
+
 }

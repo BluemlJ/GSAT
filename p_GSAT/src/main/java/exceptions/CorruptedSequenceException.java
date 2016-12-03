@@ -1,6 +1,6 @@
 package exceptions;
 
-import analysis.AnalyzedSequence;
+import analysis.AnalysedSequence;
 
 /**
  * An instance of this class is thrown if a char, which is not one of 'A', 'T', 'C' or 'G', is
@@ -27,7 +27,7 @@ public class CorruptedSequenceException extends Exception {
    * If available, the corrupt sequence is referenced. If only a nucleotide String is given, this
    * will be a null reference.
    */
-  public AnalyzedSequence sequence;
+  public AnalysedSequence sequence;
 
 
   /**
@@ -47,7 +47,7 @@ public class CorruptedSequenceException extends Exception {
    * 
    * @author Ben Kohr
    */
-  public CorruptedSequenceException(int i, char problem, AnalyzedSequence sequence) {
+  public CorruptedSequenceException(int i, char problem, AnalysedSequence sequence) {
     super("Problem in observed AnalyzedSequence: Index " + i + " is '" + problem
         + "', but should be 'A', 'T', 'C' or 'G'.");
 

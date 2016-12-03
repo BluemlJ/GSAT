@@ -5,13 +5,12 @@ import java.io.IOException;
 import java.util.LinkedList;
 
 import org.biojava.bio.program.abi.ABITrace;
-import org.biojava.bio.seq.DNATools;
 import org.biojava.bio.symbol.IllegalSymbolException;
 import org.biojava.bio.symbol.SymbolList;
 import org.jcvi.jillion.trace.chromat.Chromatogram;
 import org.jcvi.jillion.trace.chromat.ChromatogramFactory;
 
-import analysis.AnalyzedSequence;
+import analysis.AnalysedSequence;
 import exceptions.FileReadingException;
 
 /**
@@ -63,15 +62,18 @@ public class SequenceReader {
 	 * @throws IllegalSymbolException
 	 * 
 	 */
-	public static AnalyzedSequence convertFileIntoSequence()
+	public static AnalysedSequence convertFileIntoSequence()
 			throws FileReadingException, IOException, IllegalSymbolException {
 		// "D:/Dokumente/Dropbox/BP_GSAT/Materialien/Dateien/Bsp/AB/93GH02_A01.ab1"
 		File referencedFile = new File(path);
 		ABITrace parsedTrace = new ABITrace(referencedFile);
 		SymbolList parsedSymbols = parsedTrace.getSequence();
+		Chromatogram abifile = ChromatogramFactory.create(referencedFile);
+        byte[] qualities = abifile.getQualitySequence().toArray();
+        double average = (abifile.getQualitySequence().getAvgQuality());
 		// TODO Add Primer
-		AnalyzedSequence parsedSequence = new AnalyzedSequence(parsedSymbols.seqString(), "date", "researcher",
-				referencedFile.getName(), "comment", parsedTrace);
+		AnalysedSequence parsedSequence = new AnalysedSequence(parsedSymbols.seqString(), "date", "researcher",
+				referencedFile.getName(), "comment", parsedTrace, qualities, average);
 		return parsedSequence;
 	}
 
@@ -94,41 +96,5 @@ public class SequenceReader {
 	 */
 	public static boolean isPathSet() {
 		return (path != null);
-	}
-
-
-	/**
-	 * This method checks the nucleotidestring and finds a position to trim the
-	 * low quality part at the end of the sequence.
-	 * 
-	 * @param file
-	 *            The .abi file to read
-	 * @return an Integer, that gives you the position in the sequence to trim
-	 *         the low quality part.
-	 * 
-	 * @throws IOException
-	 * 
-	 * @author bluemlj
-	 */
-	public static int findLowQualityClippingPosition(File file) throws IOException {
-		Chromatogram abifile = ChromatogramFactory.create(file);
-		byte[] qualities = abifile.getQualitySequence().toArray();
-		double average = (abifile.getQualitySequence().getAvgQuality()+30)/2;
-		int clippingPosition = 0;
-		int countertoBreak = 0;
-
-		for (byte b : qualities) {
-			int i = b;
-			if (i < average)
-				countertoBreak++;
-			else {
-				clippingPosition += countertoBreak + 1;
-				countertoBreak = 0;
-			}
-			if (countertoBreak == 5) {
-				return clippingPosition;
-			}
-		}
-		return clippingPosition;
 	}
 }

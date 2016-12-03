@@ -29,14 +29,11 @@ public class QualityAnalysis {
    * @author bluemlj
    * 
    * */
-  public static int findLowQualityClippingPosition(File file) throws IOException {
+  public static int findLowQualityClippingPosition(AnalysedSequence sequence) throws IOException {
       
-    // TODO - This method should consume an AnalyzedSequence object and use ITS file!
-    // TODO - maybe -> store the parameters internally
-    
-      Chromatogram abifile = ChromatogramFactory.create(file);
-      byte[] qualities = abifile.getQualitySequence().toArray();
-      double average = abifile.getQualitySequence().getAvgQuality();
+
+      byte[] qualities = sequence.getQuality();
+      double average = sequence.getAvgQuality();
       int trimmingPosition = 0;
       int countertoBreak = 0;
 

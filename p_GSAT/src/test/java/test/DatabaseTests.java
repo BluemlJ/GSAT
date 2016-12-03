@@ -13,7 +13,7 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import analysis.AnalyzedSequence;
+import analysis.AnalysedSequence;
 import analysis.Gene;
 import exceptions.MissingPathException;
 import exceptions.UndefinedTypeOfMutationException;
@@ -39,29 +39,29 @@ public class DatabaseTests {
    * The first sequence for testing the conversion method (converting a sequence into a
    * DatabaseEntry).
    */
-  static AnalyzedSequence seq1 =
-      new AnalyzedSequence("ATCG", "2016-11-28", "Klaus Bohne", "sequence1.ab1", "No comments", null);
+  static AnalysedSequence seq1 =
+      new AnalysedSequence("ATCG", "2016-11-28", "Klaus Bohne", "sequence1.ab1", "No comments", null);
 
 
   /**
    * The second sequence for testing the conversion method.
    */
-  private static AnalyzedSequence seq2 =
-      new AnalyzedSequence("ATCTTTG", "2016-11-29", "Klaus Bohne", "sequence2.ab1", "No comments", null);
+  private static AnalysedSequence seq2 =
+      new AnalysedSequence("ATCTTTG", "2016-11-29", "Klaus Bohne", "sequence2.ab1", "No comments", null);
 
 
   /**
    * The third test sequence (which will result in no DatabaseEntries).
    */
-  private static AnalyzedSequence seq3 =
-      new AnalyzedSequence("ATCTTGCGTTG", "2016-11-27", "Klaus Hafer", "sequence3.ab1", "No comments", null);
+  private static AnalysedSequence seq3 =
+      new AnalysedSequence("ATCTTGCGTTG", "2016-11-27", "Klaus Hafer", "sequence3.ab1", "No comments", null);
 
 
   /**
    * The fourth test sequence.
    */
-  private static AnalyzedSequence seq4 =
-      new AnalyzedSequence("ATC", "2016-11-25", "Kurt Bohne", "sequence3.ab1", "Nothing to say", null);
+  private static AnalysedSequence seq4 =
+      new AnalysedSequence("ATC", "2016-11-25", "Kurt Bohne", "sequence3.ab1", "Nothing to say", null);
 
 
   /**
@@ -125,7 +125,7 @@ public class DatabaseTests {
    * This tests checks if the conversion from a AnalyzedSequence into a DatabaseEntry is working
    * correctly.
    * 
-   * @see DatabaseEntry#convertSequenceIntoEntries(AnalyzedSequence)
+   * @see DatabaseEntry#convertSequenceIntoEntries(AnalysedSequence)
    * 
    * @author Ben Kohr
    * @throws UndefinedTypeOfMutationException 
@@ -169,7 +169,7 @@ public class DatabaseTests {
    * This tests checks the conversion from a AnalyzedSequence into a DatabaseEntry is working
    * correctly with just one entry.
    * 
-   * @see DatabaseEntry#convertSequenceIntoEntries(AnalyzedSequence)
+   * @see DatabaseEntry#convertSequenceIntoEntries(AnalysedSequence)
    * 
    * @author Ben Kohr
    * @throws UndefinedTypeOfMutationException 
@@ -206,7 +206,7 @@ public class DatabaseTests {
    * This tests checks the conversion from a AnalyzedSequence into a DatabaseEntry is working
    * correctly without any entry to store (i.e. there is no mutation).
    * 
-   * @see DatabaseEntry#convertSequenceIntoEntries(AnalyzedSequence)
+   * @see DatabaseEntry#convertSequenceIntoEntries(AnalysedSequence)
    * 
    * @author Ben Kohr
    * @throws UndefinedTypeOfMutationException 
@@ -347,7 +347,7 @@ public class DatabaseTests {
    * @throws IOException
    * 
    * @see DatabaseConnection#storeAllLocally(String)
-   * @see DatabaseEntry#convertSequenceIntoEntries(AnalyzedSequence)
+   * @see DatabaseEntry#convertSequenceIntoEntries(AnalysedSequence)
    * 
    * @author Ben Kohr
    * @throws UndefinedTypeOfMutationException 

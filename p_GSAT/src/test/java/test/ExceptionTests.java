@@ -6,7 +6,7 @@ import static org.junit.Assert.assertSame;
 
 import org.junit.Test;
 
-import analysis.AnalyzedSequence;
+import analysis.AnalysedSequence;
 import exceptions.*;
 
 /**
@@ -22,8 +22,8 @@ public class ExceptionTests {
   /**
    * An AnalyzedSequence object for test purposes.
    */
-  static AnalyzedSequence seq1 =
-      new AnalyzedSequence("ATRGATCG", "2016-11-28", "Kurt Hafer", "sequence1.ab1", "No comments", null);
+  static AnalysedSequence seq1 =
+      new AnalysedSequence("ATRGATCG", "2016-11-28", "Kurt Hafer", "sequence1.ab1", "No comments", null);
 
 
   /**

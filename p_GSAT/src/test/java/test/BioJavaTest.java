@@ -15,6 +15,8 @@ import org.jcvi.jillion.trace.chromat.ChromatogramFactory;
 import org.junit.Before;
 import org.junit.Test;
 
+import io.SequenceReader;
+
 /**
  * Tests to check the correct integration of the BioJava framework in our project.
  * 
@@ -62,9 +64,9 @@ public class BioJavaTest {
     for (int i = 0; i < basecalls.length; i++) {
       // System.out.println(basecalls[i]);
     }
-    System.out.println(tTrace.length);
-    System.out.println(basecalls[basecalls.length - 1]);
-    System.out.println((double) basecalls[basecalls.length - 1] / (double) tTrace.length);
+    //System.out.println(tTrace.length);
+    //System.out.println(basecalls[basecalls.length - 1]);
+    //System.out.println((double) basecalls[basecalls.length - 1] / (double) tTrace.length);
 
     // System.out.println(myTrace.getSequenceLength());
     // SymbolList mySequence = myTrace.getSequence();
@@ -90,6 +92,5 @@ public class BioJavaTest {
 
     assertTrue(testString1.equals(testString2));
   }
-
   
 }

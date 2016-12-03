@@ -9,7 +9,7 @@ import java.util.LinkedList;
 
 import org.junit.Test;
 
-import analysis.AnalyzedSequence;
+import analysis.AnalysedSequence;
 import analysis.MutationAnalysis;
 import analysis.Gene;
 import analysis.Sequence;

@@ -173,7 +173,7 @@ public class MutationAnalysis {
    * 
    * @author bluemlj
    */
-  public static LinkedList<String> findMutations(AnalyzedSequence toAnalyze)
+  public static LinkedList<String> findMutations(AnalysedSequence toAnalyze)
       throws UndefinedTypeOfMutationException {
 
     Gene reference = toAnalyze.getReferencedGene();
@@ -299,7 +299,7 @@ public class MutationAnalysis {
    * @return the gene, that has the best similarity
    * @author bluemlj
    */
-  public static Gene findRightGene(AnalyzedSequence toAnalyze, LinkedList<Gene> listOfGenes) {
+  public static Gene findRightGene(AnalysedSequence toAnalyze, LinkedList<Gene> listOfGenes) {
     Gene bestgene = null;
     double bestSimilarity = 0;
 
@@ -325,7 +325,7 @@ public class MutationAnalysis {
    * 
    * @author bluemlj
    */
-  public static Gene findRightGene(AnalyzedSequence toAnalyze) {
+  public static Gene findRightGene(AnalysedSequence toAnalyze) {
     // TODO call findRightGene(sequence, listOfGenes) with listOfGenes with a database export
     return null;
   }

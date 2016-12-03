@@ -11,7 +11,7 @@ import org.biojava.bio.program.abi.ABITrace;
  * @author Ben Kohr
  * 
  */
-public class AnalyzedSequence extends Sequence {
+public class AnalysedSequence extends Sequence {
 
 	/**
 	 * The name of the file this sequence was obtained from. This is used to
@@ -63,6 +63,16 @@ public class AnalyzedSequence extends Sequence {
    * y-Coordinates for four nucleotides corresponding to the x-Value of the position in the array
    */
   private ABITrace abiTrace;
+  
+  /**
+   * Array containing the quality information for the sequence
+   */
+  private byte[] qualities;
+  
+  /**
+   * average quality of the sequence
+   */
+  private double qualityAvg;
 
 
   /**
@@ -75,13 +85,17 @@ public class AnalyzedSequence extends Sequence {
    * @param abiTrace
    * 
    * @author Ben Kohr
+   * @param average 
+   * @param qualities 
    */
-  public AnalyzedSequence(String sequence, String addingDate, String researcher, 
-                          String fileName, String comments, ABITrace abiTrace) {
+  public AnalysedSequence(String sequence, String addingDate, String researcher, 
+                          String fileName, String comments, ABITrace abiTrace, byte[] qualities, double average) {
     super(sequence, addingDate, researcher);
     this.fileName = fileName;
     this.comments = comments;
     this.abiTrace = abiTrace;
+    this.qualities = qualities;
+    this.qualityAvg = average;
   }
 
 
@@ -228,6 +242,16 @@ public class AnalyzedSequence extends Sequence {
 
   public void setPromotor(String promotor) {
     this.promotor = promotor;
+  }
+
+
+  public byte[] getQuality() {
+    return qualities;
+  }
+
+
+  public double getAvgQuality() {
+    return qualityAvg;
   }
 
   
