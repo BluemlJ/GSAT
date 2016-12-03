@@ -19,7 +19,7 @@ import exceptions.FileReadingException;
  * This class reads files of the AB1 format and extracts the information into a
  * sequence.
  * 
- * @author Ben Kohr
+ * @author Ben Kohr, bluemlj, Lovis Heindrich
  *
  */
 public class SequenceReader {
@@ -117,8 +117,8 @@ public class SequenceReader {
 	public static int findLowQualityClippingPosition(File file) throws IOException {
 		Chromatogram abifile = ChromatogramFactory.create(file);
 		byte[] qualities = abifile.getQualitySequence().toArray();
-		double average = abifile.getQualitySequence().getAvgQuality();
-		int counterAll = 0;
+		double average = (abifile.getQualitySequence().getAvgQuality()+30)/2;
+		int clippingPosition = 0;
 		int countertoBreak = 0;
 
 		for (byte b : qualities) {
@@ -126,13 +126,13 @@ public class SequenceReader {
 			if (i < average)
 				countertoBreak++;
 			else {
-				counterAll += countertoBreak + 1;
+				clippingPosition += countertoBreak + 1;
 				countertoBreak = 0;
 			}
 			if (countertoBreak == 5) {
-				return counterAll;
+				return clippingPosition;
 			}
 		}
-		return counterAll;
+		return clippingPosition;
 	}
 }
