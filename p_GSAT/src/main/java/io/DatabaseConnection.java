@@ -83,7 +83,7 @@ public class DatabaseConnection {
 
     FileWriter writer = new FileWriter(localPath + filename + ".csv");
     
-    writer.write("id; file name; gene id; sequence; date; researcher; comments; vector; promotor; manually checked; mutation; silent" + System.lineSeparator());
+    writer.write("id; file name; gene id; sequence; date; researcher; comments; vector; promotor; manually checked; mutation; mutation type" + System.lineSeparator());
     
     for (DatabaseEntry entry : queue) {
 
@@ -100,7 +100,7 @@ public class DatabaseConnection {
       String promotor = entry.getPromotor();
       boolean manuallyChecked = entry.isManuallyChecked();
       String mutation = entry.getMutation();
-      boolean silent = entry.isSilent();
+      MutationType mType = entry.getMutationType();
 
       // Concatenate the Strings together to one line to be written
       StringBuilder builder = new StringBuilder();
@@ -115,7 +115,7 @@ public class DatabaseConnection {
       builder.append(promotor).append("; ");
       builder.append(manuallyChecked).append("; ");
       builder.append(mutation).append("; ");
-      builder.append(silent).append(System.lineSeparator());
+      builder.append(mType).append(System.lineSeparator());
 
       // write the String into the file
       String toWrite = builder.toString();

@@ -23,7 +23,7 @@ public class ExceptionTests {
    * An AnalyzedSequence object for test purposes.
    */
   static AnalyzedSequence seq1 =
-      new AnalyzedSequence("ATRGATCG", "2016-11-28", "Kurt Hafer", "sequence1.ab1", "No comments", null, null, null, null, null);
+      new AnalyzedSequence("ATRGATCG", "2016-11-28", "Kurt Hafer", "sequence1.ab1", "No comments", null);
 
 
   /**

@@ -16,8 +16,10 @@ import org.junit.Test;
 import analysis.AnalyzedSequence;
 import analysis.Gene;
 import exceptions.MissingPathException;
+import exceptions.UndefinedTypeOfMutationException;
 import io.DatabaseConnection;
 import io.DatabaseEntry;
+import io.MutationType;
 
 /**
  * This class tests the behavior of the communication with the database and all associated behavior.
@@ -38,28 +40,28 @@ public class DatabaseTests {
    * DatabaseEntry).
    */
   static AnalyzedSequence seq1 =
-      new AnalyzedSequence("ATCG", "2016-11-28", "Klaus Bohne", "sequence1.ab1", "No comments", null, null, null, null, null);
+      new AnalyzedSequence("ATCG", "2016-11-28", "Klaus Bohne", "sequence1.ab1", "No comments", null);
 
 
   /**
    * The second sequence for testing the conversion method.
    */
   private static AnalyzedSequence seq2 =
-      new AnalyzedSequence("ATCTTTG", "2016-11-29", "Klaus Bohne", "sequence2.ab1", "No comments", null, null, null, null, null);
+      new AnalyzedSequence("ATCTTTG", "2016-11-29", "Klaus Bohne", "sequence2.ab1", "No comments", null);
 
 
   /**
    * The third test sequence (which will result in no DatabaseEntries).
    */
   private static AnalyzedSequence seq3 =
-      new AnalyzedSequence("ATCTTGCGTTG", "2016-11-27", "Klaus Hafer", "sequence3.ab1", "No comments", null, null, null, null, null);
+      new AnalyzedSequence("ATCTTGCGTTG", "2016-11-27", "Klaus Hafer", "sequence3.ab1", "No comments", null);
 
 
   /**
    * The fourth test sequence.
    */
   private static AnalyzedSequence seq4 =
-      new AnalyzedSequence("ATC", "2016-11-25", "Kurt Bohne", "sequence3.ab1", "Nothing to say", null, null, null, null, null);
+      new AnalyzedSequence("ATC", "2016-11-25", "Kurt Bohne", "sequence3.ab1", "Nothing to say", null);
 
 
   /**
@@ -67,11 +69,11 @@ public class DatabaseTests {
    */
   private static DatabaseEntry[] entries =
       new DatabaseEntry[] {
-          new DatabaseEntry("a.ab1", 1, "ATCGTCGATCGA", "2016-11-28", "Klaus Bohne", "No comments", "CCCCCCCC", "ATCG", true, "A|1|T", false),
-          new DatabaseEntry("b.ab1", 4, "TCGATCGATCG", "2016-11-28", "Kurt Bohne", "No comments", "TTTTTT", "ATCG", false, "A|2|T", false),
-          new DatabaseEntry("c.ab1", 0, "ATCGA", "2016-11-28", "Klaus Bohne", "No comments", "AAAAAAAT", "ATCG", true, "A|3|T", false),
-          new DatabaseEntry("d.ab1", 7, "ATCGT", "2016-11-28", "Kurt Bohne", "No comments", "AAAAAAAT", "ATCG", false, "A|4|T", false),
-          new DatabaseEntry("e.ab1", 1, "AA", "2016-11-28", "Kurt Bohne", "No comments; nothing to say", "GGGGGG", "ATCG", true, "A|5|T", false)
+          new DatabaseEntry("a.ab1", 1, "ATCGTCGATCGA", "2016-11-28", "Klaus Bohne", "No comments", "CCCCCCCC", "ATCG", true, "+1H4", MutationType.INSERTION),
+          new DatabaseEntry("b.ab1", 4, "TCGATCGATCG", "2016-11-28", "Kurt Bohne", "No comments", "TTTTTT", "ATCG", false, "-1H4", MutationType.DELETION),
+          new DatabaseEntry("c.ab1", 0, "ATCGA", "2016-11-28", "Klaus Bohne", "No comments", "AAAAAAAT", "ATCG", true, "ACC4ACG", MutationType.SILENT),
+          new DatabaseEntry("d.ab1", 7, "ATCGT", "2016-11-28", "Kurt Bohne", "No comments", "AAAAAAAT", "ATCG", false, "H4D", MutationType.SUBSTITUTION),
+          new DatabaseEntry("e.ab1", 1, "AA", "2016-11-28", "Kurt Bohne", "No comments; nothing to say", "GGGGGG", "ATCG", true, "reading frame error", MutationType.ERROR)
           };
 
 
@@ -87,20 +89,18 @@ public class DatabaseTests {
   public static void setupSequences() {
 
     seq1.setReferencedGene(new Gene("ATTTTCG", 4, "FSA", "2016-11-28", "Klaus Bohne"));
-    seq1.addMutation("A|131|E");
-    seq1.addMutation("K|7|K");
-    seq1.addSilentMutation("P|32|S");
-    seq1.addSilentMutation("Y|757|E");
+    seq1.addMutation("A131E");
+    seq1.addMutation("G7K");
+    seq1.addMutation("+2H5");
 
     seq2.setReferencedGene(new Gene("ATTTTCG", 1, "FSA", "2016-11-28", "Karl Mueller"));
-    seq2.addMutation("A|1|E");
+    seq2.addMutation("reading frame error");
 
     seq3.setReferencedGene(new Gene("ATTTTCG", 2, "FSA", "2016-11-28", "Lisa Weber"));
 
-    seq4.setReferencedGene(new Gene("ATTTTCG", 3, "FSA", "2016-11-28", "Hans Gärtner"));
-    seq4.addMutation("D|23|E");
-    seq4.addSilentMutation("G|88|B");
-    seq4.addMutation("D|44|P");
+    seq4.setReferencedGene(new Gene("ATTTTCG", 3, "FSA", "2016-11-28", "Hans Gans"));
+    seq4.addMutation("AAA7CAA");
+    seq4.addMutation("-1H5");
 
   }
 
@@ -128,19 +128,19 @@ public class DatabaseTests {
    * @see DatabaseEntry#convertSequenceIntoEntries(AnalyzedSequence)
    * 
    * @author Ben Kohr
+   * @throws UndefinedTypeOfMutationException 
    */
   @Test
-  public void testConvertSequenceIntoDBEsNormal() {
+  public void testConvertSequenceIntoDBEsNormal() throws UndefinedTypeOfMutationException {
 
     // Use method
     LinkedList<DatabaseEntry> entries = DatabaseEntry.convertSequenceIntoEntries(seq1);
     
     // Prepare correct result
-    DatabaseEntry dbe1 = new DatabaseEntry("sequence1.ab1", 4, "ATCG", "2016-11-28", "Klaus Bohne", "No comments", null, null, false, "A|131|E", false);
-    DatabaseEntry dbe2 = new DatabaseEntry("sequence1.ab1", 4, "ATCG", "2016-11-28", "Klaus Bohne", "No comments", null, null, false, "K|7|K", false);
-    DatabaseEntry dbe3 = new DatabaseEntry("sequence1.ab1", 4, "ATCG", "2016-11-28", "Klaus Bohne", "No comments", null, null, false, "P|32|S", true);
-    DatabaseEntry dbe4 = new DatabaseEntry("sequence1.ab1", 4, "ATCG", "2016-11-28", "Klaus Bohne", "No comments", null, null, false, "Y|757|E", true);
-    DatabaseEntry[] correctResult = new DatabaseEntry[] {dbe1, dbe2, dbe3, dbe4};
+    DatabaseEntry dbe1 = new DatabaseEntry("sequence1.ab1", 4, "ATCG", "2016-11-28", "Klaus Bohne", "No comments", null, null, false, "A131E", MutationType.SUBSTITUTION);
+    DatabaseEntry dbe2 = new DatabaseEntry("sequence1.ab1", 4, "ATCG", "2016-11-28", "Klaus Bohne", "No comments", null, null, false, "G7K", MutationType.SUBSTITUTION);
+    DatabaseEntry dbe3 = new DatabaseEntry("sequence1.ab1", 4, "ATCG", "2016-11-28", "Klaus Bohne", "No comments", null, null, false, "+2H5", MutationType.INSERTION);
+    DatabaseEntry[] correctResult = new DatabaseEntry[] {dbe1, dbe2, dbe3};
 
     
     // compare all attributes in each of the pairings
@@ -155,11 +155,11 @@ public class DatabaseTests {
       assertEquals(correctResult[i].getVector(), entries.get(i).getVector());
       assertEquals(correctResult[i].getPromotor(), entries.get(i).getPromotor());
       assertEquals(correctResult[i].getMutation(), entries.get(i).getMutation());
-      assertEquals(correctResult[i].isSilent(), entries.get(i).isSilent());
+      assertEquals(correctResult[i].getMutationType(), entries.get(i).getMutationType());
     }
 
-    // Result should have 4 elements.
-    assertTrue(entries.size() == 4);
+    // Result should have 3 elements.
+    assertTrue(entries.size() == 3);
 
   }
 
@@ -172,15 +172,16 @@ public class DatabaseTests {
    * @see DatabaseEntry#convertSequenceIntoEntries(AnalyzedSequence)
    * 
    * @author Ben Kohr
+   * @throws UndefinedTypeOfMutationException 
    */
   @Test
-  public void testConvertSequenceIntoDBEsNormal2() {
+  public void testConvertSequenceIntoDBEsNormal2() throws UndefinedTypeOfMutationException {
 
     // Use method
     LinkedList<DatabaseEntry> entries = DatabaseEntry.convertSequenceIntoEntries(seq2);
     
     // Prepare correct result
-    DatabaseEntry correctDBE = new DatabaseEntry("sequence2.ab1", 1, "ATCTTTG", "2016-11-29", "Klaus Bohne", "No comments", null, null, false, "A|1|E", false);
+    DatabaseEntry correctDBE = new DatabaseEntry("sequence2.ab1", 1, "ATCTTTG", "2016-11-29", "Klaus Bohne", "No comments", null, null, false, "reading frame error", MutationType.ERROR);
    
     // compare all attributes
     assertEquals(-1, entries.get(0).getID());
@@ -193,8 +194,9 @@ public class DatabaseTests {
     assertEquals(correctDBE.getVector(), entries.get(0).getVector());
     assertEquals(correctDBE.getPromotor(), entries.get(0).getPromotor());
     assertEquals(correctDBE.getMutation(), entries.get(0).getMutation());
-    assertEquals(correctDBE.isSilent(), entries.get(0).isSilent());
+    assertEquals(correctDBE.getMutationType(), entries.get(0).getMutationType());
 
+    // Only one entry expected
     assertTrue(entries.size() == 1);
 
   }
@@ -207,9 +209,10 @@ public class DatabaseTests {
    * @see DatabaseEntry#convertSequenceIntoEntries(AnalyzedSequence)
    * 
    * @author Ben Kohr
+   * @throws UndefinedTypeOfMutationException 
    */
   @Test
-  public void testConvertSequenceIntoDBEsNoMutation() {
+  public void testConvertSequenceIntoDBEsNoMutation() throws UndefinedTypeOfMutationException {
 
     // Use method
     LinkedList<DatabaseEntry> entries = DatabaseEntry.convertSequenceIntoEntries(seq3);
@@ -254,13 +257,13 @@ public class DatabaseTests {
 
     // Check whether the input is correct
     String[] correctResults = new String[] {
-        "0; a.ab1; 1; ATCGTCGATCGA; 2016-11-28; Klaus Bohne; No comments; CCCCCCCC; ATCG; true; A|1|T; false",
-        "1; b.ab1; 4; TCGATCGATCG; 2016-11-28; Kurt Bohne; No comments; TTTTTT; ATCG; false; A|2|T; false",
-        "2; c.ab1; 0; ATCGA; 2016-11-28; Klaus Bohne; No comments; AAAAAAAT; ATCG; true; A|3|T; false",
-        "3; d.ab1; 7; ATCGT; 2016-11-28; Kurt Bohne; No comments; AAAAAAAT; ATCG; false; A|4|T; false",
-        "4; e.ab1; 1; AA; 2016-11-28; Kurt Bohne; No comments, nothing to say; GGGGGG; ATCG; true; A|5|T; false"
-        
+        "0; a.ab1; 1; ATCGTCGATCGA; 2016-11-28; Klaus Bohne; No comments; CCCCCCCC; ATCG; true; +1H4; INSERTION",
+        "1; b.ab1; 4; TCGATCGATCG; 2016-11-28; Kurt Bohne; No comments; TTTTTT; ATCG; false; -1H4; DELETION",
+        "2; c.ab1; 0; ATCGA; 2016-11-28; Klaus Bohne; No comments; AAAAAAAT; ATCG; true; ACC4ACG; SILENT",
+        "3; d.ab1; 7; ATCGT; 2016-11-28; Kurt Bohne; No comments; AAAAAAAT; ATCG; false; H4D; SUBSTITUTION",
+        "4; e.ab1; 1; AA; 2016-11-28; Kurt Bohne; No comments, nothing to say; GGGGGG; ATCG; true; reading frame error; ERROR"  
     };
+    
     for (int i = 0; i < correctResults.length; i++) {
       assertEquals(correctResults[i], results.get(i));
     }
@@ -347,9 +350,10 @@ public class DatabaseTests {
    * @see DatabaseEntry#convertSequenceIntoEntries(AnalyzedSequence)
    * 
    * @author Ben Kohr
+   * @throws UndefinedTypeOfMutationException 
    */
   @Test
-  public void testConvertAndStore() throws MissingPathException, IOException {
+  public void testConvertAndStore() throws MissingPathException, IOException, UndefinedTypeOfMutationException {
 
     // Converting sequence into DBEs
     LinkedList<DatabaseEntry> entries = DatabaseEntry.convertSequenceIntoEntries(seq4);
@@ -371,17 +375,16 @@ public class DatabaseTests {
     
     // Check whether the input is correct
     String[] correctResults = new String[] {
-       "0; sequence3.ab1; 3; ATC; 2016-11-25; Kurt Bohne; Nothing to say; null; null; false; D|23|E; false",
-       "1; sequence3.ab1; 3; ATC; 2016-11-25; Kurt Bohne; Nothing to say; null; null; false; D|44|P; false",
-       "2; sequence3.ab1; 3; ATC; 2016-11-25; Kurt Bohne; Nothing to say; null; null; false; G|88|B; true"
+       "0; sequence3.ab1; 3; ATC; 2016-11-25; Kurt Bohne; Nothing to say; null; null; false; AAA7CAA; SILENT",
+       "1; sequence3.ab1; 3; ATC; 2016-11-25; Kurt Bohne; Nothing to say; null; null; false; -1H5; DELETION"
     };
-    
+
     for (int i = 0; i < correctResults.length; i++) {
       assertEquals(correctResults[i], results.get(i));
     }
 
-    // Size should be three, for there a three initial entries.
-    assertTrue(results.size() == 3);
+    // Size should be three, for there a two initial entries.
+    assertTrue(results.size() == 2);
 
   }
   

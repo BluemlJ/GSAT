@@ -69,14 +69,9 @@ public class SequenceReader {
 		File referencedFile = new File(path);
 		ABITrace parsedTrace = new ABITrace(referencedFile);
 		SymbolList parsedSymbols = parsedTrace.getSequence();
-		int[] aTrace = parsedTrace.getTrace(DNATools.a());
-		int[] cTrace = parsedTrace.getTrace(DNATools.c());
-		int[] gTrace = parsedTrace.getTrace(DNATools.g());
-		int[] tTrace = parsedTrace.getTrace(DNATools.t());
-		int[] basecalls = parsedTrace.getBasecalls();
 		// TODO Add Primer
 		AnalyzedSequence parsedSequence = new AnalyzedSequence(parsedSymbols.seqString(), "date", "researcher",
-				referencedFile.getName(), "comment", aTrace, cTrace, gTrace, tTrace, basecalls);
+				referencedFile.getName(), "comment", parsedTrace);
 		return parsedSequence;
 	}
 
@@ -100,6 +95,7 @@ public class SequenceReader {
 	public static boolean isPathSet() {
 		return (path != null);
 	}
+
 
 	/**
 	 * This method checks the nucleotidestring and finds a position to trim the
