@@ -353,6 +353,4 @@ public class DatabaseEntry {
     return mutation;
   }
 
->>>>>>> 77f7191a89db5ce73fa918a9870d774d858b78fe
-
 }
