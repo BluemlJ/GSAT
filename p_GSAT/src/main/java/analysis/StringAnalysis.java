@@ -9,6 +9,7 @@ import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeMap;
 import java.util.TreeSet;
+import java.util.Vector;
 
 import javax.lang.model.element.Element;
 
@@ -178,7 +179,16 @@ public class StringAnalysis {
 		return levenMatrix;
 	}
 
-	public static String findBestMatch(String longString, String toFind) {
+	/**
+	 * 
+	 * @param longString
+	 *            the String to search in
+	 * @param toFind
+	 *            the String to search for
+	 * @return
+	 */
+	public static Pair findBestMatch(String longString, String toFind) {
+
 		/*
 		 * Comparator<String> similarity = new Comparator<String>() {
 		 * 
@@ -191,38 +201,50 @@ public class StringAnalysis {
 		 * else { return (int) (similarityTwo * 100); } } } };
 		 */
 
-		TreeMap<Double, String> matches = new TreeMap<>();
+		TreeMap<Double, Pair<Integer, String>> matches = new TreeMap<>();
 
+		//go throu every supString
+		
+		//begin at every possition
 		for (int begin = 0; begin < (longString.length() - 1); begin++) {
+			
+			//end at every possition
 			for (int end = begin + 1; end < longString.length(); end++) {
+				//get supString
 				String canditate = longString.substring(begin, end);
+				//calculate similarity
 				Double rating = checkSimilarity(canditate, toFind);
 
+				//check if two strings have the same Similarity
 				if (matches.containsKey(rating)) {
-					String doubleHit = matches.get(rating);
+					//if yes, take the longer one
+					String doubleHit = matches.get(rating).value;
 					if (doubleHit.length() < canditate.length()) {
-						matches.put(rating, canditate);
+						matches.put(rating, new Pair<Integer, String>(begin, canditate));
 					}
 				} else {
-					matches.put(rating, canditate);
+					matches.put(rating, new Pair<Integer, String>(begin, canditate));
 				}
 			}
 		}
+		return matches.pollFirstEntry().getValue();
+	}
 
-		TreeMap<Integer, String> bestMatches = new TreeMap<>();
+	/**
+	 * Helper class to store Pairs
+	 * @author Kevin
+	 *
+	 * @param <Key>
+	 * @param <Value>
+	 */
+	public static class Pair<Key, Value> {
 
-		boolean goodKey = true;
-		double maxKey = matches.lastKey();
-		while (!matches.isEmpty() && goodKey) {
-			Entry<Double, String> e = matches.pollLastEntry();
-			// System.out.println(e.getKey() + " # " + e.getValue());
+		public Key key;
+		public Value value;
 
-			if (e.getKey() >= maxKey) {
-				bestMatches.put(Math.abs(e.getValue().length() - toFind.length()), e.getValue());
-			} else {
-				goodKey = false;
-			}
+		public Pair(Key k, Value v) {
+			key = k;
+			value = v;
 		}
-		return bestMatches.pollFirstEntry().getValue();
 	}
 }
