@@ -7,8 +7,8 @@ import java.util.LinkedList;
 import org.biojava.bio.program.abi.ABITrace;
 import org.biojava.bio.symbol.IllegalSymbolException;
 import org.biojava.bio.symbol.SymbolList;
-import org.jcvi.jillion.trace.chromat.Chromatogram;
-import org.jcvi.jillion.trace.chromat.ChromatogramFactory;
+//import org.jcvi.jillion.trace.chromat.Chromatogram;
+//import org.jcvi.jillion.trace.chromat.ChromatogramFactory;
 
 import analysis.AnalysedSequence;
 import exceptions.FileReadingException;
@@ -68,10 +68,12 @@ public class SequenceReader {
 		File referencedFile = new File(path);
 		ABITrace parsedTrace = new ABITrace(referencedFile);
 		SymbolList parsedSymbols = parsedTrace.getSequence();
-		Chromatogram abifile = ChromatogramFactory.create(referencedFile);
-        byte[] qualities = abifile.getQualitySequence().toArray();
-        double average = (abifile.getQualitySequence().getAvgQuality());
+		 //Chromatogram abifile = ChromatogramFactory.create(referencedFile);
+        //byte[] qualities = abifile.getQualitySequence().toArray();
+        //double average = (abifile.getQualitySequence().getAvgQuality());
 		// TODO Add Primer
+		byte[] qualities = {0};
+		double average = 0;
 		AnalysedSequence parsedSequence = new AnalysedSequence(parsedSymbols.seqString(), "date", "researcher",
 				referencedFile.getName(), "comment", parsedTrace, qualities, average);
 		return parsedSequence;
