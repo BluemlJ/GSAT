@@ -14,37 +14,39 @@ import exceptions.FileReadingException;
 import io.SequenceReader;
 
 public class QualityTests {
-  
+
   AnalysedSequence testSequence;
-  
+
   @Before
-  public void initializeSequence() throws IllegalSymbolException, FileReadingException, IOException{
+  public void initializeSequence()
+      throws IllegalSymbolException, FileReadingException, IOException {
     // set SequenceReader file path
-    SequenceReader.configurePath(
-      getClass().getResource("/ab1/Tk_Gs40Hits/Forward/95EI60.ab1").getFile());
-      //"./src/main/resources/ab1/Tk_Gs40Hits/Forward/95EI60.ab1");
+    SequenceReader
+        .configurePath(getClass().getResource("/ab1/Tk_Gs40Hits/Forward/95EI60.ab1").getFile());
+    // "./src/main/resources/ab1/Tk_Gs40Hits/Forward/95EI60.ab1");
     testSequence = SequenceReader.convertFileIntoSequence();
   }
-  
+
   /**
    * Tests if the quality information is accessible
    */
   @Test
-  public void testQualityAccessibility(){
+  public void testQualityAccessibility() {
     // test if average quality information is accessible
-    //assertEquals((int) testSequence.getAvgQuality(), 36);
+    assertEquals((int) testSequence.getAvgQuality(), 36);
     // test if the quality array is accessible
-    //assertEquals(testSequence.getQuality()[0], 16);
-    
-    assertEquals(testSequence.toString(), testSequence.toString());
+    assertEquals(testSequence.getQuality()[0], 16);
+
+
   }
-  
+
   /**
    * Tests if the quality trim function is usable
-   * @throws IOException 
+   * 
+   * @throws IOException
    */
   @Test
-  public void testQualityTrim() throws IOException{
-    //assertEquals(QualityAnalysis.findLowQualityClippingPosition(testSequence), 0);
+  public void testQualityTrim() throws IOException {
+    assertEquals(QualityAnalysis.findLowQualityClippingPosition(testSequence), 0);
   }
 }
