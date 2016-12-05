@@ -1,8 +1,14 @@
 package analysis;
 
 import java.util.Comparator;
+import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.Map.Entry;
 import java.util.PriorityQueue;
+import java.util.Set;
+import java.util.SortedSet;
+import java.util.TreeMap;
+import java.util.TreeSet;
 
 import javax.lang.model.element.Element;
 
@@ -42,7 +48,7 @@ public class StringAnalysis {
 	public static double checkSimilarity(String first, String second) {
 		double levenshteinIndex = getLevenshteinIndex(first, second);
 		double avgLength = (first.length() + second.length()) / 2;
-		return levenshteinIndex / (avgLength / 100);
+		return Math.max(0, 100 - (levenshteinIndex / (avgLength / 100)));
 	}
 
 	/**
@@ -68,7 +74,7 @@ public class StringAnalysis {
 	 */
 	public static int getLevenshteinIndex(int[][] matrix) {
 		// get levensthein index out of matrix
-		return matrix[matrix.length][matrix[matrix.length].length];
+		return matrix[matrix.length - 1][matrix[matrix.length - 1].length - 1];
 	}
 
 	/**
@@ -172,31 +178,51 @@ public class StringAnalysis {
 		return levenMatrix;
 	}
 
-	public static void findBestMatch(String longString, String toFind) {
-		Comparator<String> similarity = new Comparator<String>() {
+	public static String findBestMatch(String longString, String toFind) {
+		/*
+		 * Comparator<String> similarity = new Comparator<String>() {
+		 * 
+		 * @Override public int compare(String o1, String o2) { double
+		 * similarityOne = checkSimilarity(o1, longString); double similarityTwo
+		 * = checkSimilarity(o2, longString); if (similarityOne > similarityTwo)
+		 * { return (int) (similarityOne * 100); } else if (similarityOne <
+		 * similarityTwo) { return (int) (similarityTwo * 100); } else { if
+		 * (o1.length() > o2.length()) { return (int) (similarityOne * 100); }
+		 * else { return (int) (similarityTwo * 100); } } } };
+		 */
 
-			@Override
-			public int compare(String o1, String o2) {
-				double similarityOne = checkSimilarity(o1, longString);
-				double similarityTwo = checkSimilarity(o2, longString);
-				if (similarityOne > similarityTwo) {
-					return (int) (similarityOne*100);
-				}else if (similarityOne < similarityTwo) {
-					return (int) (similarityTwo*100);
-				}else {
-					if (o1.length() > o2.length()) {
-						return (int) (similarityOne*100);
-					}else {
-						return (int) (similarityTwo*100);
+		TreeMap<Double, String> matches = new TreeMap<>();
+
+		for (int begin = 0; begin < (longString.length() - 1); begin++) {
+			for (int end = begin + 1; end < longString.length(); end++) {
+				String canditate = longString.substring(begin, end);
+				Double rating = checkSimilarity(canditate, toFind);
+
+				if (matches.containsKey(rating)) {
+					String doubleHit = matches.get(rating);
+					if (doubleHit.length() < canditate.length()) {
+						matches.put(rating, canditate);
 					}
+				} else {
+					matches.put(rating, canditate);
 				}
 			}
-		};
-		
-		PriorityQueue<String> matchQueue = new PriorityQueue<String>(similarity);
-		
-		for (int i = 0; i < longString.length(); i++) {
-			
 		}
+
+		TreeMap<Integer, String> bestMatches = new TreeMap<>();
+
+		boolean goodKey = true;
+		double maxKey = matches.lastKey();
+		while (!matches.isEmpty() && goodKey) {
+			Entry<Double, String> e = matches.pollLastEntry();
+			// System.out.println(e.getKey() + " # " + e.getValue());
+
+			if (e.getKey() >= maxKey) {
+				bestMatches.put(Math.abs(e.getValue().length() - toFind.length()), e.getValue());
+			} else {
+				goodKey = false;
+			}
+		}
+		return bestMatches.pollFirstEntry().getValue();
 	}
 }
