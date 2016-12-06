@@ -46,6 +46,9 @@ public class QualityTests {
 	@Test
 	public void testQualityTrim() throws IOException {
 		assertTrue(QualityAnalysis.findLowQualityEnd(testSequence) >= 0);
+		System.out.println(QualityAnalysis.findLowQualityStart(testSequence));
+		System.out.println(QualityAnalysis.findLowQualityEnd(testSequence));
+		System.out.println(testSequence.length());
 	}
 
 	/*

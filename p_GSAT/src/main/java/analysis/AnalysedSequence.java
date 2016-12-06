@@ -58,6 +58,11 @@ public class AnalysedSequence extends Sequence {
 	 * Array containing the quality information for the sequence
 	 */
 	private int[] qualities;
+	
+	/**
+	 * Length of the sequence
+	 */
+	private int length;
 
 	/**
 	 * average quality of the sequence
@@ -88,6 +93,7 @@ public class AnalysedSequence extends Sequence {
 		this.comments = comments;
 		this.qualityAvg = average;
 		this.qualities = qualities;
+		this.length = sequence.length();
 	}
 
 	/**
@@ -246,6 +252,11 @@ public class AnalysedSequence extends Sequence {
 
 	public double getAvgQuality() {
 		return qualityAvg;
+	}
+
+	public int length() {
+		// TODO Auto-generated method stub
+		return length;
 	}
 
 }
