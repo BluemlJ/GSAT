@@ -1,7 +1,5 @@
 package analysis;
 
-import java.io.IOException;
-
 /**
  * This class contains the logic of analyzing the quality of sequences (poin)
  * Thus, it is one of the main parts of the analyzing pipeline.
@@ -24,17 +22,15 @@ public class QualityAnalysis {
 	 * @return an Integer, that gives you the position in the sequence to trim
 	 *         the low quality part.
 	 * 
-	 * @throws IOException
 	 * 
 	 * @author bluemlj
 	 * 
 	 */
-	public static int findLowQualityEnd(AnalysedSequence sequence) throws IOException {
+	public static int findLowQualityEnd(AnalysedSequence sequence) {
 		int start = findLowQualityStart(sequence);
 		if (start == sequence.getSequence().length()) {
 			return 0;
 		}
-		System.out.println(start);
 		int[] qualities = sequence.getQuality();
 		double average = sequence.getAvgQuality();
 		int trimmingPosition = 0;
@@ -44,11 +40,9 @@ public class QualityAnalysis {
 			int quality = qualities[i];
 			if (quality < average / 2 || quality < 30) {
 				countertoBreak++;
-				System.out.println("break" + trimmingPosition + " q: " + quality);
 			} else {
 				trimmingPosition += countertoBreak + 1;
 				countertoBreak = 0;
-				System.out.println("cont" + trimmingPosition + " q: " + quality);
 			}
 			if (countertoBreak == BREAKCOUNTER) {
 				return trimmingPosition + start;

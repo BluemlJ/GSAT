@@ -104,6 +104,20 @@ public class AnalysedSequence extends Sequence {
 	}
 
 	/**
+	 * This method trims a sequence by removing the low quality beginning and
+	 * end of the sequence.
+	 */
+	public String trimLowQuality() {
+		int start = QualityAnalysis.findLowQualityStart(this);
+		int end = QualityAnalysis.findLowQualityEnd(this);
+		if (start < end) {
+			return trimSequence(start, end - 1);
+		} else {
+			return "";
+		}
+	}
+
+	/**
 	 * This method trims a sequence, i.e. it cuts out the desired part of the
 	 * nucleotide sequence. It keeps the start index character, and all
 	 * following characters including the end index character. The rest is
