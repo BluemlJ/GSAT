@@ -58,7 +58,7 @@ public class AnalysedSequence extends Sequence {
 	 * Array containing the quality information for the sequence
 	 */
 	private int[] qualities;
-	
+
 	/**
 	 * Length of the sequence
 	 */

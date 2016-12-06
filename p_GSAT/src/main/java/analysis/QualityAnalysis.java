@@ -11,6 +11,8 @@ public class QualityAnalysis {
 	 * This variable represents how many bad quality nucleotide are allowed
 	 * before the sequence gets cut off. Changing this may cause tests to fail.
 	 */
+	// TODO needs to be adjusted to achieve reasonable values on sample ab1
+	// data, 10-40 looks promising
 	private static int BREAKCOUNTER = 5;
 
 	/**
