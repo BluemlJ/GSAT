@@ -1,7 +1,5 @@
 package analysis;
 
-import java.util.Date;
-
 import exceptions.CorruptedSequenceException;
 
 /**
@@ -36,7 +34,7 @@ public abstract class Sequence {
    * 
    * @param sequence the sequence of nucleotides
    */
-  public Sequence(String sequence, String addingDate, String researcher) {
+	public Sequence(String sequence, String addingDate, String researcher) {
     this.sequence = sequence;
     this.addingDate = addingDate;
     this.researcher = researcher;
