@@ -51,7 +51,6 @@ public class Main {
 	 * @author Ben Kohr
 	 */
 	private static void resetPipeline() {
-		SequenceReader.resetInputData();
 		DatabaseConnection.flushQueue();
 		DatabaseConnection.resetIDs();
 	}
