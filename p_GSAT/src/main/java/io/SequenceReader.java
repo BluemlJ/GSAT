@@ -60,7 +60,6 @@ public class SequenceReader {
 	 * 
 	 */
 	public static AnalysedSequence convertFileIntoSequence() throws FileReadingException, IOException {
-		// "D:/Dokumente/Dropbox/BP_GSAT/Materialien/Dateien/Bsp/AB/93GH02_A01.ab1"
 		File referencedFile = new File(path);
 		Chromatogram abifile = ChromatogramFactory.create(referencedFile);
 		String sequence = abifile.getNucleotideSequence().toString();
