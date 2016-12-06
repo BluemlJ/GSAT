@@ -1,6 +1,6 @@
 package test;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 
 import java.io.IOException;
 
@@ -45,7 +45,7 @@ public class QualityTests {
 	 */
 	@Test
 	public void testQualityTrim() throws IOException {
-		assertEquals(QualityAnalysis.findLowQualityClippingPosition(testSequence), 0);
+		assertTrue(QualityAnalysis.findLowQualityEnd(testSequence) >= 0);
 	}
 
 	/*
@@ -55,9 +55,10 @@ public class QualityTests {
 	@Test
 	public void qualityTestA() throws IOException {
 		// quality cutoff after 3 nucleotide
-		int[] qualitiesA = { 100, 100, 100, 0, 0, 0, 0, 0, 0 };
+		int[] qualitiesA = { 100, 100, 100, 100, 100, 100, 100, 100, 0 };
 		AnalysedSequence testSequenceA = new AnalysedSequence("aaatttggg", "", "", "", "", qualitiesA, 33.3);
-		assertEquals(QualityAnalysis.findLowQualityClippingPosition(testSequenceA), 3);
+		assertEquals(QualityAnalysis.findLowQualityEnd(testSequenceA), 8);
+		assertEquals(QualityAnalysis.findLowQualityStart(testSequenceA), 0);
 	}
 
 	/*
@@ -69,7 +70,8 @@ public class QualityTests {
 		// whole sequence is perfect quality
 		int[] qualitiesB = { 100, 100, 100, 100, 100, 100, 100, 100, 100 };
 		AnalysedSequence testSequenceB = new AnalysedSequence("aaatttggg", "", "", "", "", qualitiesB, 100);
-		assertEquals(QualityAnalysis.findLowQualityClippingPosition(testSequenceB), 9);
+		assertEquals(QualityAnalysis.findLowQualityEnd(testSequenceB), 9);
+		assertEquals(QualityAnalysis.findLowQualityStart(testSequenceB), 0);
 	}
 
 	/*
@@ -81,6 +83,35 @@ public class QualityTests {
 		// whole sequence is bad quality
 		int[] qualitiesC = { 0, 0, 0, 0, 0, 0, 0, 0, 0 };
 		AnalysedSequence testSequenceC = new AnalysedSequence("aaatttggg", "", "", "", "", qualitiesC, 33.3);
-		assertEquals(QualityAnalysis.findLowQualityClippingPosition(testSequenceC), 0);
+		assertEquals(QualityAnalysis.findLowQualityEnd(testSequenceC), 0);
+		assertEquals(QualityAnalysis.findLowQualityStart(testSequenceC), 9);
+	}
+	
+	/*
+	 * This test confirms expected quality trimming behaviour for a synthetic
+	 * sequence
+	 */
+	@Test
+	public void qualityTestD() throws IOException {
+		// start is bad quality, end is low quality
+		int[] qualitiesD = { 0, 0, 100, 100, 100, 100, 100, 0, 0, 0, 0, 0, 0};
+		AnalysedSequence testSequenceD = new AnalysedSequence("aaatttggg", "", "", "", "", qualitiesD, 33.3);
+		System.out.println(QualityAnalysis.findLowQualityEnd(testSequenceD));
+		assertEquals(QualityAnalysis.findLowQualityEnd(testSequenceD), 7);
+		assertEquals(QualityAnalysis.findLowQualityStart(testSequenceD), 2);
+	}
+	
+	/*
+	 * This test confirms expected quality trimming behaviour for a synthetic
+	 * sequence
+	 */
+	@Test
+	public void qualityTestE() throws IOException {
+		// start is bad quality, end is low quality
+		int[] qualitiesE = { 0, 0, 100, 100, 100, 100, 100, 100, 100 };
+		AnalysedSequence testSequenceE = new AnalysedSequence("aaatttggg", "", "", "", "", qualitiesE, 33.3);
+		System.out.println(QualityAnalysis.findLowQualityEnd(testSequenceE));
+		assertEquals(QualityAnalysis.findLowQualityEnd(testSequenceE), 9);
+		assertEquals(QualityAnalysis.findLowQualityStart(testSequenceE), 2);
 	}
 }
