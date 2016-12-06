@@ -67,8 +67,12 @@ public class SequenceReader {
 		byte[] qualities = abifile.getQualitySequence().toArray();
 		double average = (abifile.getQualitySequence().getAvgQuality());
 		// TODO Add Primer
+		int[] qualitiesInt = new int[qualities.length];
+		for(int i = 0; i<qualities.length; i++){
+			qualitiesInt[i] = qualities[i];
+		}
 		AnalysedSequence parsedSequence = new AnalysedSequence(sequence, "date", "researcher", referencedFile.getName(),
-				"comment", qualities, average);
+				"comment", qualitiesInt, average);
 		return parsedSequence;
 	}
 

@@ -57,7 +57,7 @@ public class AnalysedSequence extends Sequence {
 	/**
 	 * Array containing the quality information for the sequence
 	 */
-	private byte[] qualities;
+	private int[] qualities;
 
 	/**
 	 * average quality of the sequence
@@ -82,12 +82,12 @@ public class AnalysedSequence extends Sequence {
 	 * @param qualities
 	 */
 	public AnalysedSequence(String sequence, String addingDate, String researcher, String fileName, String comments,
-			byte[] qualities, double average) {
+			int[] qualities, double average) {
 		super(sequence, addingDate, researcher);
 		this.fileName = fileName;
 		this.comments = comments;
-		this.qualities = qualities;
 		this.qualityAvg = average;
+		this.qualities = qualities;
 	}
 
 	/**
@@ -226,7 +226,7 @@ public class AnalysedSequence extends Sequence {
 		this.promotor = promotor;
 	}
 
-	public byte[] getQuality() {
+	public int[] getQuality() {
 		return qualities;
 	}
 

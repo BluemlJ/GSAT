@@ -32,13 +32,12 @@ public class QualityAnalysis {
   public static int findLowQualityClippingPosition(AnalysedSequence sequence) throws IOException {
       
 
-      byte[] qualities = sequence.getQuality();
+      int[] qualities = sequence.getQuality();
       double average = sequence.getAvgQuality();
       int trimmingPosition = 0;
       int countertoBreak = 0;
 
-      for (byte b : qualities) {
-          int i = b;
+      for (int i : qualities) {
           if (i < average)
               countertoBreak++;
           else {
