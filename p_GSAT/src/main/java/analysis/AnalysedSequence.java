@@ -2,8 +2,6 @@ package analysis;
 
 import java.util.LinkedList;
 
-import org.biojava.bio.program.abi.ABITrace;
-
 /**
  * Models a sequence under analysis (i.e. obtained from an AB1 file), which may
  * have mutations.
@@ -57,12 +55,6 @@ public class AnalysedSequence extends Sequence {
    * A list of discovered mutations to be stored.
    */
   private LinkedList<String> mutations = new LinkedList<String>();
-
-  
-  /**
-   * y-Coordinates for four nucleotides corresponding to the x-Value of the position in the array
-   */
-  private ABITrace abiTrace;
   
   /**
    * Array containing the quality information for the sequence
@@ -89,11 +81,10 @@ public class AnalysedSequence extends Sequence {
    * @param qualities 
    */
   public AnalysedSequence(String sequence, String addingDate, String researcher, 
-                          String fileName, String comments, ABITrace abiTrace, byte[] qualities, double average) {
+                          String fileName, String comments, byte[] qualities, double average) {
     super(sequence, addingDate, researcher);
     this.fileName = fileName;
     this.comments = comments;
-    this.abiTrace = abiTrace;
     this.qualities = qualities;
     this.qualityAvg = average;
   }

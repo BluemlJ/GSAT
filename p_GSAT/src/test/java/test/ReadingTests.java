@@ -4,7 +4,6 @@ import static org.junit.Assert.assertEquals;
 
 import java.io.IOException;
 
-import org.biojava.bio.symbol.IllegalSymbolException;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -23,7 +22,7 @@ public class ReadingTests {
 
   @Before
   public void initializeSequence()
-      throws IllegalSymbolException, FileReadingException, IOException {
+      throws FileReadingException, IOException {
     // sequence for ab1/Tk_Gs40Hits/Forward/95EI60.ab1 obtained with Chromas
     // (http://technelysium.com.au/wp/chromas/)
     correctSequence =
@@ -43,7 +42,7 @@ public class ReadingTests {
    * @throws IOException
    */
   @Test
-  public void sequenceReadTest() throws IllegalSymbolException, FileReadingException, IOException {
+  public void sequenceReadTest() throws FileReadingException, IOException {
 
     assertEquals(testSequence.getSequence().toLowerCase(), correctSequence.toLowerCase());
   }

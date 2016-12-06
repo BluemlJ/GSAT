@@ -4,9 +4,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.LinkedList;
 
-import org.biojava.bio.program.abi.ABITrace;
-import org.biojava.bio.symbol.IllegalSymbolException;
-import org.biojava.bio.symbol.SymbolList;
 import org.jcvi.jillion.trace.chromat.Chromatogram;
 import org.jcvi.jillion.trace.chromat.ChromatogramFactory;
 
@@ -58,17 +55,16 @@ public class SequenceReader {
    * 
    */
   public static AnalysedSequence convertFileIntoSequence()
-      throws FileReadingException, IOException, IllegalSymbolException {
+      throws FileReadingException, IOException {
     // "D:/Dokumente/Dropbox/BP_GSAT/Materialien/Dateien/Bsp/AB/93GH02_A01.ab1"
     File referencedFile = new File(path);
-    ABITrace parsedTrace = new ABITrace(referencedFile);
-    SymbolList parsedSymbols = parsedTrace.getSequence();
     Chromatogram abifile = ChromatogramFactory.create(referencedFile);
+    String sequence = abifile.getNucleotideSequence().toString();
     byte[] qualities = abifile.getQualitySequence().toArray();
     double average = (abifile.getQualitySequence().getAvgQuality());
     // TODO Add Primer
-    AnalysedSequence parsedSequence = new AnalysedSequence(parsedSymbols.seqString(), "date",
-        "researcher", referencedFile.getName(), "comment", parsedTrace, qualities, average);
+    AnalysedSequence parsedSequence = new AnalysedSequence(sequence, "date",
+        "researcher", referencedFile.getName(), "comment", qualities, average);
     return parsedSequence;
   }
 

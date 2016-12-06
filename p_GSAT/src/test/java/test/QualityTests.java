@@ -4,7 +4,6 @@ import static org.junit.Assert.assertEquals;
 
 import java.io.IOException;
 
-import org.biojava.bio.symbol.IllegalSymbolException;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -19,7 +18,7 @@ public class QualityTests {
 
   @Before
   public void initializeSequence()
-      throws IllegalSymbolException, FileReadingException, IOException {
+      throws FileReadingException, IOException {
     // set SequenceReader file path
     SequenceReader
         .configurePath(getClass().getResource("/ab1/Tk_Gs40Hits/Forward/95EI60.ab1").getFile());
