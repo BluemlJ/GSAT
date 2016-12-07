@@ -12,6 +12,7 @@ import java.util.TreeSet;
 import java.util.Vector;
 
 import javax.lang.model.element.Element;
+import javax.xml.ws.Action;
 
 /**
  * This class contains the logic of analyzing sequence strings. This class
@@ -30,6 +31,7 @@ public class StringAnalysis {
 	 *            The second sequence
 	 * 
 	 * @return Similarity measure
+	 * @author Kevin
 	 */
 	public static double checkSimilarity(Sequence first, Sequence second) {
 		return checkSimilarity(first.sequence, second.sequence);
@@ -45,6 +47,7 @@ public class StringAnalysis {
 	 *            The second String
 	 * 
 	 * @return Similarity measure
+	 * @author Kevin
 	 */
 	public static double checkSimilarity(String first, String second) {
 		double levenshteinIndex = getLevenshteinIndex(first, second);
@@ -60,6 +63,7 @@ public class StringAnalysis {
 	 * @param first
 	 * @param second
 	 * @return
+	 * @author Kevin
 	 */
 	public static int getLevenshteinIndex(String first, String second) {
 		int[][] matrix = calculateLevenshteinMatrix(first, second);
@@ -72,6 +76,7 @@ public class StringAnalysis {
 	 * @param matrix
 	 *            the Levenshtein Matrix
 	 * @return
+	 * @author Kevin
 	 */
 	public static int getLevenshteinIndex(int[][] matrix) {
 		// get levensthein index out of matrix
@@ -84,6 +89,7 @@ public class StringAnalysis {
 	 * @param sOne
 	 * @param sTwo
 	 * @return
+	 * @author Kevin
 	 */
 	private static LinkedList<String> needlemanWunsch(String sOne, String sTwo) {
 
@@ -180,12 +186,26 @@ public class StringAnalysis {
 	}
 
 	/**
+	 * cuts out the Vector from a given sequence
+	 * @param sequence
+	 * @param gen
+	 * @author Kevin
+	 */
+	public static void cutVector(Sequence sequence, Gene gen){
+		Pair<Integer, String> match = findBestMatch(sequence.sequence, gen.sequence);
+		String newSequence =sequence.sequence.substring(match.key, match.value.length());
+		sequence.setSequence(newSequence);
+	}
+	
+	/**
 	 * 
 	 * @param longString
 	 *            the String to search in
 	 * @param toFind
 	 *            the String to search for
 	 * @return
+	 * 
+	 * @author Kevin
 	 */
 	public static Pair findBestMatch(String longString, String toFind) {
 

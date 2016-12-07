@@ -78,6 +78,7 @@ public class SequenceReader {
 	/**
 	 * Returns a list of all AB1 files in the path that was set via configurePath()
 	 * @return
+	 * @author Kevin
 	 */
 	public static LinkedList<File> listFiles(){
 		//get list of all files and Pathes in given path

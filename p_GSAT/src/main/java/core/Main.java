@@ -4,6 +4,11 @@ import java.io.File;
 import java.io.IOException;
 import java.util.LinkedList;
 
+import analysis.AnalysedSequence;
+import analysis.Gene;
+import analysis.MutationAnalysis;
+import analysis.Sequence;
+import analysis.StringAnalysis;
 import io.ConsoleIO;
 import io.DatabaseConnection;
 import io.SequenceReader;
@@ -36,10 +41,13 @@ public class Main {
 		String destinationPath = askForDestinationPath();
 		DatabaseConnection.setLocalPath(destinationPath);
 		//TODO Aks for GEN
-		//TODO Read GEN
+		Gene gene = null;//TODO Read GEN
 		for (File file : files) {
-			//SequenceReader.convertFileIntoSequence(file);//TODO change @Ben
+			Sequence activeSequence = null;//SequenceReader.convertFileIntoSequence(file);//TODO change @Ben
+			StringAnalysis.cutVector(activeSequence, gene);
+			//convert to Analysed Sequence
 			//TODO more stuff
+			
 		}
 	}
 	
