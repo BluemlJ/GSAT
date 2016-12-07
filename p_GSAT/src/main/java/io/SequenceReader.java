@@ -74,6 +74,30 @@ public class SequenceReader {
 				"comment", qualitiesInt, average);
 		return parsedSequence;
 	}
+	
+	/**
+	 * Returns a list of all AB1 files in the path that was set via configurePath()
+	 * @return
+	 */
+	public static LinkedList<File> listFiles(){
+		//get list of all files and Pathes in given path
+		File folder = new File(path);
+		File[] allFiles = folder.listFiles();
+		
+		LinkedList<File> ab1Files = new LinkedList<File>();
+		
+		//for every files or path
+		for (int fileID = 0; fileID < allFiles.length; fileID++) {
+			File activeFile = allFiles[fileID];
+			String fileName = activeFile.getName();
+			String fileEnding = fileName.split(".")[fileName.split(".").length];
+			//if it is a File and the fileending is abi or ab1 add file
+			if (activeFile.isFile() && (fileEnding.toLowerCase().equals("ab1") || fileEnding.toLowerCase().equals("abi"))) {
+				ab1Files.add(activeFile);
+			}
+		}
+		return ab1Files;
+	}
 
 	/**
 	 * Discards the current path and files.
