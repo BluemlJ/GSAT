@@ -4,6 +4,7 @@ package analysis;
  * This class contains the logic of analyzing the quality of sequences (poin)
  * Thus, it is one of the main parts of the analyzing pipeline.
  * 
+ * @author Lovis Heindrich
  */
 public class QualityAnalysis {
 
@@ -21,11 +22,11 @@ public class QualityAnalysis {
 	 * 
 	 * @param file
 	 *            The .abi file to read
-	 * @return an Integer, that gives you the position in the sequence to trim
+	 * @return an Integer, that gives you the position at the end of the sequence to trim
 	 *         the low quality part.
 	 * 
 	 * 
-	 * @author bluemlj
+	 * @author bluemlj, Lovis Heindrich
 	 * 
 	 */
 	public static int findLowQualityEnd(AnalysedSequence sequence) {
@@ -52,7 +53,17 @@ public class QualityAnalysis {
 		}
 		return trimmingPosition + start;
 	}
-
+	
+	/**
+	 * This method checks the nucleotidestring and finds a position to trim the
+     * low quality part at the beginning of the sequence.
+     * 
+	 * @param sequence
+	 * @return an Integer, that gives you the position at the beginning of the sequence to trim
+     *         the low quality part.
+     *         
+     * @author Lovis Heindrich, Jannis Blueml
+	 */
 	public static int findLowQualityStart(AnalysedSequence sequence) {
 
 		int[] qualities = sequence.getQuality();

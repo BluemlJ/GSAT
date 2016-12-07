@@ -13,6 +13,12 @@ import analysis.QualityAnalysis;
 import exceptions.FileReadingException;
 import io.SequenceReader;
 
+/**
+ * This class contains tests for analysing the quality of an analysedSequence
+ * 
+ * @author Lovis Heindrich
+ *
+ */
 public class QualityTests {
 
 	AnalysedSequence testSequence;
