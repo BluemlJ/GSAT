@@ -27,12 +27,18 @@ public class Main {
 	 * @param args
 	 *            Unused input parameters
 	 */
-	public static void main(String[] args) {
-		for (int i = 0; i < args.length; i++) {
+	public static void main(String[] args) {	
+	  boolean console = false;
+	  for (int i = 0; i < args.length; i++) {
 			if (args[i].equals("c")) {
-				startConsoleVersion();
+				console = true; 
+				break;
 			}
 		}
+	  
+	  if (console) 
+	    startConsoleVersion();
+	  
 	}
 
 	private static void startConsoleVersion() {
