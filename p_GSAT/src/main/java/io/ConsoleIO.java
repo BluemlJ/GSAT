@@ -65,7 +65,7 @@ public class ConsoleIO {
 			// corect flip to prevent endless loop
 			int tmp = min;
 			min = max;
-			min = tmp;
+			max = tmp;
 		}
 
 		// create reader

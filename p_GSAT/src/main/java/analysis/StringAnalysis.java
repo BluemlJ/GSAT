@@ -51,7 +51,7 @@ public class StringAnalysis {
 	 */
 	public static double checkSimilarity(String first, String second) {
 		double levenshteinIndex = getLevenshteinIndex(first, second);
-		double avgLength = (first.length() + second.length()) / 2;
+		double avgLength = (first.length() + second.length()) / 2.0;
 		return Math.max(0, 100 - (levenshteinIndex / (avgLength / 100)));
 	}
 

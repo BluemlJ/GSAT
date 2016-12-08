@@ -112,11 +112,12 @@ public class SequenceReader {
 
     LinkedList<File> ab1Files = new LinkedList<File>();
 
+    int lastID = (allFiles != null) ? allFiles.length - 1 : 0;
     // for every files or path
-    for (int fileID = 0; fileID < allFiles.length; fileID++) {
+    for (int fileID = 0; fileID < lastID; fileID++) {
       File activeFile = allFiles[fileID];
       String fileName = activeFile.getName();
-      String fileEnding = fileName.split(".")[fileName.split(".").length];
+      String fileEnding = fileName.split("\\.")[fileName.split("\\.").length - 1];
       // if it is a File and the fileending is abi or ab1 add file
       if (activeFile.isFile()
           && (fileEnding.toLowerCase().equals("ab1") || fileEnding.toLowerCase().equals("abi"))) {
