@@ -67,8 +67,8 @@ public class SequenceReader {
     for (int i = 0; i < qualities.length; i++) {
       qualitiesInt[i] = qualities[i];
     }
-    AnalysedSequence parsedSequence = new AnalysedSequence(sequence, "date", "researcher",
-        referencedFile.getName(), "comment", qualitiesInt, average);
+    AnalysedSequence parsedSequence = new AnalysedSequence(sequence, "researcher",
+        referencedFile.getName(), qualitiesInt, average);
     return parsedSequence;
   }
 
@@ -94,8 +94,8 @@ public class SequenceReader {
     for (int i = 0; i < qualities.length; i++) {
       qualitiesInt[i] = qualities[i];
     }
-    AnalysedSequence parsedSequence = new AnalysedSequence(sequence, "date", "researcher",
-        referencedFile.getName(), "comment", qualitiesInt, average);
+    AnalysedSequence parsedSequence = new AnalysedSequence(sequence, "researcher",
+        referencedFile.getName(), qualitiesInt, average);
     return parsedSequence;
   }
 

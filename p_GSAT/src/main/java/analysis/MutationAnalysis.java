@@ -173,14 +173,12 @@ public class MutationAnalysis {
    * 
    * @author bluemlj
    */
-  public static LinkedList<String> findMutations(AnalysedSequence toAnalyze)
+  public static boolean findMutations(AnalysedSequence toAnalyze)
       throws UndefinedTypeOfMutationException {
 
     Gene reference = toAnalyze.getReferencedGene();
 
-    // list to return
-    LinkedList<String> mutations = new LinkedList<>();
-
+    
     // the sequence to analyze
     String mutatedSequence = toAnalyze.getSequence();
 
@@ -209,19 +207,19 @@ public class MutationAnalysis {
         case "s":
           oldAminoAcid = difference.split("\\|")[2];
           newAminoAcid = difference.split("\\|")[3];
-          mutations.add(oldAminoAcid + position + newAminoAcid);
+          toAnalyze.addMutation(oldAminoAcid + position + newAminoAcid);
           break;
         // i = injection, inject of an new amino acid (aminoAcid short form)
         case "i":
           shift--;
           newAminoAcid = difference.split("\\|")[2];
-          mutations.add("+1" + newAminoAcid + position);
+          toAnalyze.addMutation("+1" + newAminoAcid + position);
           break;
         // d = deletion, deletion of an amino acid
         case "d":
           shift++;
           oldAminoAcid = difference.split("\\|")[2];
-          mutations.add("-1" + oldAminoAcid + position);
+          toAnalyze.addMutation("-1" + oldAminoAcid + position);
           break;
         // in case of a nop, we test a silent mutation and add it if the
         // test has a positive match
@@ -231,21 +229,20 @@ public class MutationAnalysis {
           String newAcid = mutatedSequence.substring(position * 3, position * 3 + 2);
 
           if (!oldAcid.equals(newAcid)) {
-            mutations.add(oldAcid + position + newAcid);
+        	  toAnalyze.addMutation(oldAcid + position + newAcid);
           }
           break;
         // in case of an error, we clear the return list and add a reading
         // frame error
         case "e":
-          mutations.clear();
-          mutations.add("reading frame error");
-          return mutations;
+          return false;
         default:
           throw new UndefinedTypeOfMutationException(typeOfMutations);
       }
 
     }
-    return mutations;
+    //TODO mutationis to sequence
+    return true;
   }
 
   

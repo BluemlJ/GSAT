@@ -14,7 +14,7 @@ public class QualityAnalysis {
 	 */
 	// TODO needs to be adjusted to achieve reasonable values on sample ab1
 	// data, 10-40 looks promising
-	private static int BREAKCOUNTER = 5;
+	private static int breakcounter = 5;
 
 	/**
 	 * This method checks the nucleotidestring and finds a position to trim the
@@ -22,68 +22,48 @@ public class QualityAnalysis {
 	 * 
 	 * @param file
 	 *            The .abi file to read
-	 * @return an Integer, that gives you the position at the end of the sequence to trim
-	 *         the low quality part.
+	 * @return an Integer, that gives you the position at the end of the
+	 *         sequence to trim the low quality part.
 	 * 
 	 * 
-	 * @author bluemlj, Lovis Heindrich
+	 * @author bluemlj
 	 * 
 	 */
-	public static int findLowQualityEnd(AnalysedSequence sequence) {
-		int start = findLowQualityStart(sequence);
-		if (start == sequence.getSequence().length()) {
-			return 0;
-		}
+	public static int findLowQuality(AnalysedSequence sequence) {
 		int[] qualities = sequence.getQuality();
 		double average = sequence.getAvgQuality();
 		int trimmingPosition = 0;
 		int countertoBreak = 0;
 
-		for (int i = start; i < qualities.length; i++) {
-			int quality = qualities[i];
-			if (quality < average / 2 || quality < 30) {
-				countertoBreak++;
-			} else {
-				trimmingPosition += countertoBreak + 1;
-				countertoBreak = 0;
-			}
-			if (countertoBreak == BREAKCOUNTER) {
-				return trimmingPosition + start;
-			}
-		}
-		return trimmingPosition + start;
-	}
-	
-	/**
-	 * This method checks the nucleotidestring and finds a position to trim the
-     * low quality part at the beginning of the sequence.
-     * 
-	 * @param sequence
-	 * @return an Integer, that gives you the position at the beginning of the sequence to trim
-     *         the low quality part.
-     *         
-     * @author Lovis Heindrich, Jannis Blueml
-	 */
-	public static int findLowQualityStart(AnalysedSequence sequence) {
-
-		int[] qualities = sequence.getQuality();
-		double average = sequence.getAvgQuality();
-		int trimmingPosition = 0;
-		int countertoBreak = 0;
-
-		for (int i : qualities) {
-			if (i > average / 2 || i > 30)
+		for (int quality : qualities) {
+			if (quality < (average + 50) / 2)
 				countertoBreak++;
 			else {
 				trimmingPosition += countertoBreak + 1;
 				countertoBreak = 0;
 			}
-			if (countertoBreak == BREAKCOUNTER) {
+			if (countertoBreak == breakcounter) {
 				return trimmingPosition;
 			}
 		}
 		return trimmingPosition;
+	}
 
+	
+	/**
+	 * This method trims a sequence by removing the low quality end of the sequence.
+	 */
+	public static void trimLowQuality(AnalysedSequence toAnalyse) {
+		int end = QualityAnalysis.findLowQuality(toAnalyse);
+		toAnalyse.discardRest(end -1);
+	}
+
+	public static void setBreakcounter(int update) {
+		breakcounter = update;
+	}
+
+	public static int getBreakcounter() {
+		return breakcounter;
 	}
 
 }

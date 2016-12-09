@@ -7,10 +7,15 @@ import java.util.LinkedList;
 import analysis.AnalysedSequence;
 import analysis.Gene;
 import analysis.MutationAnalysis;
+import analysis.QualityAnalysis;
 import analysis.Sequence;
 import analysis.StringAnalysis;
+import exceptions.FileReadingException;
+import exceptions.MissingPathException;
+import exceptions.UndefinedTypeOfMutationException;
 import io.ConsoleIO;
 import io.DatabaseConnection;
+import io.DatabaseEntry;
 import io.SequenceReader;
 
 /**
@@ -27,10 +32,10 @@ public class Main {
 	 * @param args
 	 *            Unused input parameters
 	 */
-	public static void main(String[] args) {	
+	public static void main(String[] args) {
 	  boolean console = false;
 	  for (int i = 0; i < args.length; i++) {
-			if (args[i].equals("c")) {
+			if (args[i].toLowerCase().equals("c")) {
 				console = true; 
 				break;
 			}
@@ -47,14 +52,50 @@ public class Main {
 		String destinationPath = askForDestinationPath();
 		DatabaseConnection.setLocalPath(destinationPath);
 		//TODO Aks for GEN
+		
 		Gene gene = null;//TODO Read GEN
 		for (File file : files) {
-			Sequence activeSequence = null;//SequenceReader.convertFileIntoSequence(file);//TODO change @Ben
-			StringAnalysis.cutVector(activeSequence, gene);
-			//convert to Analysed Sequence
-			//TODO more stuff
+			AnalysedSequence activeSequence = null;
+			try {
+				activeSequence = SequenceReader.convertFileIntoSequence(file);
+			} catch (FileReadingException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			
+			QualityAnalysis.trimLowQuality(activeSequence);
+			
+			StringAnalysis.trimVector(activeSequence, gene);
+			
+			try {
+				MutationAnalysis.findMutations(activeSequence);
+			} catch (UndefinedTypeOfMutationException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			//TODO:
+			//Ask for Comment and add
+			//read researcher from config
+			try {
+				LinkedList<DatabaseEntry> entries = DatabaseEntry.convertSequenceIntoEntries(activeSequence);
+				DatabaseConnection.addAllIntoQueue(entries);
+				DatabaseConnection.storeAllLocally(file.getName() +"_result");
+				resetPipeline();
+			} catch (UndefinedTypeOfMutationException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (MissingPathException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
+		System.out.println("Program end");
 	}
 	
 	private static String askForDestinationPath(){

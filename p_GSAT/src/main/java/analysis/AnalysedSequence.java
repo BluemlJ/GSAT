@@ -86,11 +86,11 @@ public class AnalysedSequence extends Sequence {
 	 * @param average
 	 * @param qualities
 	 */
-	public AnalysedSequence(String sequence, String addingDate, String researcher, String fileName, String comments,
+	public AnalysedSequence(String sequence, String researcher, String fileName,
 			int[] qualities, double average) {
-		super(sequence, addingDate, researcher);
+		super(sequence, researcher);
 		this.fileName = fileName;
-		this.comments = comments;
+		this.comments = "";
 		this.qualityAvg = average;
 		this.qualities = qualities;
 		this.length = sequence.length();
@@ -110,20 +110,6 @@ public class AnalysedSequence extends Sequence {
 	}
 
 	/**
-	 * This method trims a sequence by removing the low quality beginning and
-	 * end of the sequence.
-	 */
-	public String trimLowQuality() {
-		int start = QualityAnalysis.findLowQualityStart(this);
-		int end = QualityAnalysis.findLowQualityEnd(this);
-		if (start < end) {
-			return trimSequence(start, end - 1);
-		} else {
-			return "";
-		}
-	}
-
-	/**
 	 * This method trims a sequence, i.e. it cuts out the desired part of the
 	 * nucleotide sequence. It keeps the start index character, and all
 	 * following characters including the end index character. The rest is
@@ -138,9 +124,9 @@ public class AnalysedSequence extends Sequence {
 	 * 
 	 * @author Ben Kohr
 	 */
-	public String trimSequence(int startIndex, int endIndex) {
+	public void trimSequence(int startIndex, int endIndex) {
 		String trimmed = sequence.substring(startIndex, endIndex + 1);
-		return trimmed;
+		this.sequence = trimmed;
 	}
 
 	/**
@@ -156,25 +142,8 @@ public class AnalysedSequence extends Sequence {
 	 * 
 	 * @author Ben Kohr
 	 */
-	public String discardRest(int index) {
-		return trimSequence(0, index);
-	}
-
-	/**
-	 * Cuts off the starts of a sequence. The nucleotide at the given index will
-	 * the first one of the trimmed sequence.
-	 * 
-	 * @param index
-	 *            The first index to be kept in the new sequence
-	 * 
-	 * @return The trimmed String (trimmed at the beginning)
-	 * 
-	 * @see #trimSequence(int, int)
-	 * 
-	 * @author Ben Kohr
-	 */
-	public String discardStart(int index) {
-		return trimSequence(index, sequence.length() - 1);
+	public void discardRest(int index) {
+		trimSequence(0, index);
 	}
 
 	/**

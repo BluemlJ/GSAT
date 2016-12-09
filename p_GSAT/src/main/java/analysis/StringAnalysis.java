@@ -191,10 +191,9 @@ public class StringAnalysis {
 	 * @param gen
 	 * @author Kevin
 	 */
-	public static void cutVector(Sequence sequence, Gene gen){
+	public static void trimVector(AnalysedSequence sequence, Gene gen){
 		Pair<Integer, String> match = findBestMatch(sequence.sequence, gen.sequence);
-		String newSequence =sequence.sequence.substring(match.key, match.value.length());
-		sequence.setSequence(newSequence);
+		sequence.trimSequence(match.key, match.value.length());
 	}
 	
 	/**
@@ -207,7 +206,7 @@ public class StringAnalysis {
 	 * 
 	 * @author Kevin
 	 */
-	public static Pair findBestMatch(String longString, String toFind) {
+	public static Pair<Integer, String> findBestMatch(String longString, String toFind) {
 
 		/*
 		 * Comparator<String> similarity = new Comparator<String>() {
@@ -257,7 +256,7 @@ public class StringAnalysis {
 	 * @param <Key>
 	 * @param <Value>
 	 */
-	public static class Pair<Key, Value> {
+	private static class Pair<Key, Value> {
 
 		public Key key;
 		public Value value;

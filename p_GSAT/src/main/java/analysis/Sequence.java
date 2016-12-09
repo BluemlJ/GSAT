@@ -1,5 +1,12 @@
 package analysis;
 
+import java.sql.Time;
+import java.sql.Timestamp;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.util.Calendar;
+
 import exceptions.CorruptedSequenceException;
 
 /**
@@ -34,9 +41,11 @@ public abstract class Sequence {
    * 
    * @param sequence the sequence of nucleotides
    */
-	public Sequence(String sequence, String addingDate, String researcher) {
+	public Sequence(String sequence, String researcher) {
     this.sequence = sequence;
-    this.addingDate = addingDate;
+    DateFormat df = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss");
+    Calendar cal = Calendar.getInstance();
+    this.addingDate = df.format(cal);
     this.researcher = researcher;
   }
 

@@ -29,7 +29,7 @@ public class Gene extends Sequence {
    * @author Ben Kohr
    */
   public Gene(String sequence, int id, String name, String addingDate, String researcher) {
-    super(sequence, addingDate, researcher);
+    super(sequence, researcher);
     this.name = name;
     this.id = id;
   }
