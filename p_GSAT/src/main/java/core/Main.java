@@ -34,6 +34,9 @@ public class Main {
 	 */
 	public static void main(String[] args) {
 	  boolean console = false;
+	  //DEBUG: TODO remove
+	  console = true;
+	  //DEBUG END
 	  for (int i = 0; i < args.length; i++) {
 			if (args[i].toLowerCase().equals("c")) {
 				console = true; 
@@ -48,6 +51,7 @@ public class Main {
 
 	private static void startConsoleVersion() {
 		ConsoleIO.clearConsole();
+		//ask User for Filepath
 		LinkedList<File> files = askForAB1Files();
 		String destinationPath = askForDestinationPath();
 		DatabaseConnection.setLocalPath(destinationPath);
@@ -56,40 +60,52 @@ public class Main {
 		Gene gene = null;//TODO Read GEN
 		for (File file : files) {
 			AnalysedSequence activeSequence = null;
+			//Read Sequence From File
 			try {
 				activeSequence = SequenceReader.convertFileIntoSequence(file);
 			} catch (FileReadingException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				System.err.println("Could not Read File " + e.filename + ", File might be Damaged");
+				System.out.println();
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			
+			//cut out low Quality parts of sequence
 			QualityAnalysis.trimLowQuality(activeSequence);
 			
+			//cut out Vector
 			StringAnalysis.trimVector(activeSequence, gene);
 			
 			try {
 				MutationAnalysis.findMutations(activeSequence);
 			} catch (UndefinedTypeOfMutationException e) {
+				System.err.println("Unknowen Mutation Type Found.");
+				System.err.println("Mutation:");
+				System.err.println(e.mutationString);
+				System.out.println();
+			}
+			
+			//Ask for Comment
+			try {
+				activeSequence.setComments(ConsoleIO.readLine("Please type comment text for File " + file.getName()));
+			} catch (IOException e1) {
 				// TODO Auto-generated catch block
-				e.printStackTrace();
+				e1.printStackTrace();
 			}
 			//TODO:
-			//Ask for Comment and add
 			//read researcher from config
+			
 			try {
 				LinkedList<DatabaseEntry> entries = DatabaseEntry.convertSequenceIntoEntries(activeSequence);
 				DatabaseConnection.addAllIntoQueue(entries);
 				DatabaseConnection.storeAllLocally(file.getName() +"_result");
 				resetPipeline();
 			} catch (UndefinedTypeOfMutationException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				System.err.println("Unknowen Mutation Type Found.");
+				System.err.println("Mutation:");
+				System.err.println(e.mutationString);
+				System.out.println();
 			} catch (MissingPathException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				DatabaseConnection.setLocalPath(askForDestinationPath());
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
