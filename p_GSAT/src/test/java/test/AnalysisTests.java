@@ -271,16 +271,16 @@ public class AnalysisTests {
 	@Test
 	public void testGetReversedSequence() {
 
-		Sequence seq = new Gene("", 0, "Test1", null, null);
+		Sequence seq = new Gene("", 0, "Test1", null);
 		assertEquals("", seq.getReversedSequence());
 
-		Sequence seq2 = new Gene("TTT", 0, "Test2", null, null);
+		Sequence seq2 = new Gene("TTT", 0, "Test2", null);
 		assertEquals("TTT", seq2.getReversedSequence());
 
-		Sequence seq3 = new Gene("ATCGATCGATCG", 0, "Test3", null, null);
+		Sequence seq3 = new Gene("ATCGATCGATCG", 0, "Test3", null);
 		assertEquals("GCTAGCTAGCTA", seq3.getReversedSequence());
 
-		Sequence seq4 = new Gene("GGGTACCGTGTAGG", 0, "Test4", null, null);
+		Sequence seq4 = new Gene("GGGTACCGTGTAGG", 0, "Test4", null);
 		assertEquals("GGATGTGCCATGGG", seq4.getReversedSequence());
 
 	}
@@ -297,16 +297,16 @@ public class AnalysisTests {
 	public void testGetComplementarySequenceNoError()
 			throws CorruptedSequenceException {
 
-		Sequence seq = new Gene("", 0, "Test1", null, null);
+		Sequence seq = new Gene("", 0, "Test1", null);
 		assertEquals("", seq.getComplementarySequence());
 
-		Sequence seq2 = new Gene("AAA", 0, "Test2", null, null);
+		Sequence seq2 = new Gene("AAA", 0, "Test2", null);
 		assertEquals("TTT", seq2.getComplementarySequence());
 
-		Sequence seq3 = new Gene("AATTCCGGATCG", 0, "Test3", null, null);
+		Sequence seq3 = new Gene("AATTCCGGATCG", 0, "Test3", null);
 		assertEquals("TTAAGGCCTAGC", seq3.getComplementarySequence());
 
-		Sequence seq4 = new Gene("ATGCTAGCTAGCCCC", 0, "Test4", null, null);
+		Sequence seq4 = new Gene("ATGCTAGCTAGCCCC", 0, "Test4", null);
 		assertEquals("TACGATCGATCGGGG", seq4.getComplementarySequence());
 	}
 
@@ -323,7 +323,7 @@ public class AnalysisTests {
 	public void testGetComplementarySequenceWithError()
 			throws CorruptedSequenceException {
 
-		Sequence seq = new Gene("AATTCCFGATCG", 0, "Problem", null, null);
+		Sequence seq = new Gene("AATTCCFGATCG", 0, "Problem", null);
 		String comp = seq.getComplementarySequence();
 
 		fail("No exception thrown!");

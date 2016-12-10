@@ -39,26 +39,22 @@ public class DatabaseTests {
 	 * The first sequence for testing the conversion method (converting a
 	 * sequence into a DatabaseEntry).
 	 */
-	static AnalysedSequence seq1 = new AnalysedSequence("ATCG", "2016-11-28", "Klaus Bohne", "sequence1.ab1",
-			"No comments", null, 0);
+	static AnalysedSequence seq1 = new AnalysedSequence("ATCG", "Klaus Bohne", "sequence1.ab1", null, 0);
 
 	/**
 	 * The second sequence for testing the conversion method.
 	 */
-	private static AnalysedSequence seq2 = new AnalysedSequence("ATCTTTG", "2016-11-29", "Klaus Bohne", "sequence2.ab1",
-			"No comments", null, 0);
+	private static AnalysedSequence seq2 = new AnalysedSequence("ATCTTTG", "Klaus Bohne", "sequence2.ab1", null, 0);
 
 	/**
 	 * The third test sequence (which will result in no DatabaseEntries).
 	 */
-	private static AnalysedSequence seq3 = new AnalysedSequence("ATCTTGCGTTG", "2016-11-27", "Klaus Hafer",
-			"sequence3.ab1", "No comments", null, 0);
+	private static AnalysedSequence seq3 = new AnalysedSequence("ATCTTGCGTTG", "Klaus Hafer", "sequence3.ab1", null, 0);
 
 	/**
 	 * The fourth test sequence.
 	 */
-	private static AnalysedSequence seq4 = new AnalysedSequence("ATC", "2016-11-25", "Kurt Bohne", "sequence3.ab1",
-			"Nothing to say", null, 0);
+	private static AnalysedSequence seq4 = new AnalysedSequence("ATC", "Kurt Bohne", "sequence3.ab1", null, 0);
 
 	/**
 	 * An array of DatabaseEntries used to test the writing of a file.
@@ -86,17 +82,20 @@ public class DatabaseTests {
 	@BeforeClass
 	public static void setupSequences() {
 
-		seq1.setReferencedGene(new Gene("ATTTTCG", 4, "FSA", "2016-11-28", "Klaus Bohne"));
+		seq1.setReferencedGene(new Gene("ATTTTCG", 4, "FSA", "Klaus Bohne"));
+		seq1.setComments("No comments");
 		seq1.addMutation("A131E");
 		seq1.addMutation("G7K");
 		seq1.addMutation("+2H5");
 
-		seq2.setReferencedGene(new Gene("ATTTTCG", 1, "FSA", "2016-11-28", "Karl Mueller"));
+		seq2.setReferencedGene(new Gene("ATTTTCG", 1, "FSA", "Karl Mueller"));
+		seq2.setComments("No comments");
 		seq2.addMutation("reading frame error");
 
-		seq3.setReferencedGene(new Gene("ATTTTCG", 2, "FSA", "2016-11-28", "Lisa Weber"));
+		seq3.setReferencedGene(new Gene("ATTTTCG", 2, "FSA", "Lisa Weber"));
 
-		seq4.setReferencedGene(new Gene("ATTTTCG", 3, "FSA", "2016-11-28", "Hans Gans"));
+		seq4.setReferencedGene(new Gene("ATTTTCG", 3, "FSA", "Hans Gans"));
+		seq4.setComments("Nothing to say");
 		seq4.addMutation("AAA7CAA");
 		seq4.addMutation("-1H5");
 
@@ -145,7 +144,6 @@ public class DatabaseTests {
 			assertEquals(correctResult[i].getFileName(), entries.get(i).getFileName());
 			assertEquals(correctResult[i].getGeneID(), entries.get(i).getGeneID());
 			assertEquals(correctResult[i].getSequence(), entries.get(i).getSequence());
-			assertEquals(correctResult[i].getAddingDate(), entries.get(i).getAddingDate());
 			assertEquals(correctResult[i].getResearcher(), entries.get(i).getResearcher());
 			assertEquals(correctResult[i].getComments(), entries.get(i).getComments());
 			assertEquals(correctResult[i].getVector(), entries.get(i).getVector());
@@ -178,12 +176,11 @@ public class DatabaseTests {
 		DatabaseEntry correctDBE = new DatabaseEntry("sequence2.ab1", 1, "ATCTTTG", "2016-11-29", "Klaus Bohne",
 				"No comments", null, null, false, "reading frame error", MutationType.ERROR);
 
-		// compare all attributes
+		// compare all attributes (except for the date)
 		assertEquals(-1, entries.get(0).getID());
 		assertEquals(correctDBE.getFileName(), entries.get(0).getFileName());
 		assertEquals(correctDBE.getGeneID(), entries.get(0).getGeneID());
 		assertEquals(correctDBE.getSequence(), entries.get(0).getSequence());
-		assertEquals(correctDBE.getAddingDate(), entries.get(0).getAddingDate());
 		assertEquals(correctDBE.getResearcher(), entries.get(0).getResearcher());
 		assertEquals(correctDBE.getComments(), entries.get(0).getComments());
 		assertEquals(correctDBE.getVector(), entries.get(0).getVector());
@@ -363,7 +360,13 @@ public class DatabaseTests {
 				"1; sequence3.ab1; 3; ATC; 2016-11-25; Kurt Bohne; Nothing to say; null; null; false; -1H5; DELETION" };
 
 		for (int i = 0; i < correctResults.length; i++) {
-			assertEquals(correctResults[i], results.get(i));
+			String[] correctInfo = correctResults[i].split(";");
+			String[] testInfo = results.get(i).split(";");
+		    for(int j = 0; j < correctInfo.length; j++)
+		      
+		      // Date cannot be compared
+		      if (j != 4)
+		        assertEquals(correctInfo[i], testInfo[i]);
 		}
 
 		// Size should be three, for there a two initial entries.

@@ -28,7 +28,7 @@ public class Gene extends Sequence {
    * 
    * @author Ben Kohr
    */
-  public Gene(String sequence, int id, String name, String addingDate, String researcher) {
+  public Gene(String sequence, int id, String name, String researcher) {
     super(sequence, researcher);
     this.name = name;
     this.id = id;
