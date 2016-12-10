@@ -45,7 +45,7 @@ public abstract class Sequence {
     this.sequence = sequence;
     DateFormat df = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss");
     Calendar cal = Calendar.getInstance();
-    this.addingDate = df.format(cal);
+    this.addingDate = df.format(cal.getTime());
     this.researcher = researcher;
   }
 
