@@ -15,6 +15,7 @@ public class QualityAnalysis {
 	// TODO needs to be adjusted to achieve reasonable values on sample ab1
 	// data, 10-40 looks promising
 	private static int breakcounter = 5;
+	private static int startcounter = 5;
 
 	/**
 	 * This method checks the nucleotidestring and finds a position to trim the
@@ -29,33 +30,52 @@ public class QualityAnalysis {
 	 * @author bluemlj
 	 * 
 	 */
-	public static int findLowQuality(AnalysedSequence sequence) {
+	public static int[] findLowQuality(AnalysedSequence sequence) {
 		int[] qualities = sequence.getQuality();
 		double average = sequence.getAvgQuality();
-		int trimmingPosition = 0;
+		int trimmingPosition[] = { 0, 0 };
 		int countertoBreak = 0;
+		int countertoStart = 0;
+		boolean startfound = false;
+		int counter = 0;
 
 		for (int quality : qualities) {
-			if (quality < (average + 50) / 2)
-				countertoBreak++;
-			else {
-				trimmingPosition += countertoBreak + 1;
-				countertoBreak = 0;
-			}
-			if (countertoBreak == breakcounter) {
-				return trimmingPosition;
+			if (!startfound) {
+				if (quality > (average + 50) / 2)
+					countertoStart++;
+				else {
+					counter = countertoStart + 1;
+					countertoStart = 0;
+				}
+
+				if (countertoStart == startcounter) {
+					trimmingPosition[0] = counter + startcounter;
+					startfound = true;
+				}
+			} else {
+
+				if (quality < (average + 50) / 2)
+					countertoBreak++;
+				else {
+					counter += countertoBreak + 1;
+					countertoBreak = 0;
+				}
+				if (countertoBreak == breakcounter) {
+					trimmingPosition[1] = counter + breakcounter;
+				}
 			}
 		}
+
 		return trimmingPosition;
 	}
 
-	
 	/**
-	 * This method trims a sequence by removing the low quality end of the sequence.
+	 * This method trims a sequence by removing the low quality end of the
+	 * sequence.
 	 */
 	public static void trimLowQuality(AnalysedSequence toAnalyse) {
-		int end = QualityAnalysis.findLowQuality(toAnalyse);
-		toAnalyse.discardRest(end -1);
+		int[] trimmingpositions = QualityAnalysis.findLowQuality(toAnalyse);
+		toAnalyse.trimSequence(trimmingpositions[0], trimmingpositions[1]);;
 	}
 
 	public static void setBreakcounter(int update) {

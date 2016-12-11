@@ -307,7 +307,10 @@ public class MutationAnalysis {
         bestgene = gene;
       }
     }
+    
+    if(bestSimilarity>0.8)
     return bestgene;
+    else return null;
   }
 
   
