@@ -48,10 +48,10 @@ public class QualityAnalysis {
 					counter = countertoStart + 1;
 					countertoStart = 0;
 				}
-
 				if (countertoStart == startcounter) {
-					trimmingPosition[0] = counter + startcounter;
+					trimmingPosition[0] = counter;
 					startfound = true;
+					counter = 0;
 				}
 			} else {
 
@@ -76,7 +76,7 @@ public class QualityAnalysis {
 	 */
 	public static void trimLowQuality(AnalysedSequence toAnalyse) {
 		int[] trimmingpositions = QualityAnalysis.findLowQuality(toAnalyse);
-		toAnalyse.trimSequence(trimmingpositions[0], trimmingpositions[1]);;
+		toAnalyse.trimSequence(trimmingpositions[0], trimmingpositions[1]-1);;
 	}
 
 	public static void setBreakcounter(int update) {
