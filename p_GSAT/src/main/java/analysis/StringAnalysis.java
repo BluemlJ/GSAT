@@ -1,7 +1,6 @@
 package analysis;
 
 import java.util.LinkedList;
-import java.util.Map.Entry;
 import java.util.TreeMap;
 
 /**
@@ -93,7 +92,9 @@ public class StringAnalysis {
       wunschMatrix[0][j] = gabPenalty * j;
     }
 
-    int cost = 0;// variable to save difference in characters
+    // variable to save difference in characters
+    int cost = 0;
+    
     // iterate over 2D array
     for (int i = 1; i < matrixWidth; i++) {
       for (int j = 1; j < matrixHeight; j++) {
@@ -132,9 +133,10 @@ public class StringAnalysis {
     int matrixHeight = first.length() + 1;
     int matrixWidth = second.length() + 1;
 
-    int[][] levenMatrix = new int[matrixHeight][matrixWidth];// create empty
-                                                             // Levenshtein
-                                                             // Matrix
+    // create empty Levenshtein matrix
+    int[][] levenMatrix = new int[matrixHeight][matrixWidth];
+                                                             
+                                                            
 
     // fill first line from 1 to |first|
     for (int i = 1; i < matrixHeight; i++) {
@@ -145,7 +147,9 @@ public class StringAnalysis {
       levenMatrix[0][j] = j;
     }
 
-    int cost = 0;// variable to save difference in characters
+    // variable to save difference in characters
+    int cost = 0;
+    
     // iterate over 2D array
     for (int j = 1; j < matrixWidth; j++) {
       for (int i = 1; i < matrixHeight; i++) {
@@ -155,10 +159,11 @@ public class StringAnalysis {
         } else {
           cost = 1;
         }
+        // deletion of char, insertion of char, change of char:
         levenMatrix[i][j] = Math.min(
-            Math.min((levenMatrix[i - 1][j] + 1), /* deletion of char */
-                (levenMatrix[i][j - 1] + 1)), /* insertion of char */
-            (levenMatrix[i - 1][j - 1] + cost));/* change of char */
+            Math.min(levenMatrix[i - 1][j] + 1,
+                     levenMatrix[i][j - 1] + 1),
+                     levenMatrix[i - 1][j - 1] + cost);
       }
     }
     return levenMatrix;

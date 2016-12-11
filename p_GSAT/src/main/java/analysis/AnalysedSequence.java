@@ -15,8 +15,9 @@ public class AnalysedSequence extends Sequence {
 	 * The name of the file this sequence was obtained from. This is used to
 	 * create the name of the output file.
 	 */
-	private String fileName;// TODO change from String to File
-
+	private String fileName;
+	// TODO change from String to File
+	
 	/**
 	 * The gene this sequence was formed from. Useful to compare the sequence
 	 * with the gene.

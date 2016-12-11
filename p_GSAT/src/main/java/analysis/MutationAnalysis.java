@@ -1,6 +1,5 @@
 package analysis;
 
-import java.io.IOException;
 import java.util.Collections;
 import java.util.Hashtable;
 import java.util.LinkedList;
@@ -8,7 +7,6 @@ import java.util.Map;
 
 import exceptions.CorruptedSequenceException;
 import exceptions.UndefinedTypeOfMutationException;
-import io.ConsoleIO;
 
 /**
  * This class contains the logic of analyzing mutations in sequences. 
@@ -17,7 +15,7 @@ import io.ConsoleIO;
  */
 public class MutationAnalysis {
 
-  public static final Map<String, String> aminoAcidShorts;
+  public static final Map<String, String> AMINO_ACID_SHORTS;
   static {
     Hashtable<String, String> tmp = new Hashtable<String, String>();
     // RNA
@@ -157,7 +155,7 @@ public class MutationAnalysis {
     tmp.put("GGC", "G");
     tmp.put("GGA", "G");
     tmp.put("GGG", "G");
-    aminoAcidShorts = Collections.unmodifiableMap(tmp);
+    AMINO_ACID_SHORTS = Collections.unmodifiableMap(tmp);
   }
 
  
@@ -263,7 +261,7 @@ public class MutationAnalysis {
     if (nucleotides.length() % 3 == 0) {
       for (int i = 0; i < nucleotides.length(); i = i + 3) {
         String codon = nucleotides.substring(i, i + 3);
-        String aminoacid = aminoAcidShorts.get(codon);
+        String aminoacid = AMINO_ACID_SHORTS.get(codon);
 
         
         if (aminoacid != null)
@@ -420,8 +418,8 @@ public class MutationAnalysis {
       // if left cell is best
       else if ((lev[row - 1][column] <= lev[row][column - 1])
           && (lev[row - 1][column] == lev[row][column]
-              || lev[row - 1][column] == lev[row][column] - 1)) {// left
-        // smaller->deletion;
+              || lev[row - 1][column] == lev[row][column] - 1)) {
+        // left smaller->deletion;
         // DELETION
         if (lev[row - 1][column] == lev[row][column] - 1) {
           result.addFirst("d|" + row + "|" + sOne.charAt(row - 1));

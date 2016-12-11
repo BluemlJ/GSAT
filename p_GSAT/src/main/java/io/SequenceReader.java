@@ -61,7 +61,7 @@ public class SequenceReader {
     Chromatogram abifile = ChromatogramFactory.create(referencedFile);
     String sequence = abifile.getNucleotideSequence().toString();
     byte[] qualities = abifile.getQualitySequence().toArray();
-    double average = (abifile.getQualitySequence().getAvgQuality());
+    double average = abifile.getQualitySequence().getAvgQuality();
     // TODO Add Primer
     int[] qualitiesInt = new int[qualities.length];
     for (int i = 0; i < qualities.length; i++) {
@@ -88,7 +88,7 @@ public class SequenceReader {
     Chromatogram abifile = ChromatogramFactory.create(referencedFile);
     String sequence = abifile.getNucleotideSequence().toString();
     byte[] qualities = abifile.getQualitySequence().toArray();
-    double average = (abifile.getQualitySequence().getAvgQuality());
+    double average = abifile.getQualitySequence().getAvgQuality();
     // TODO Add Primer
     int[] qualitiesInt = new int[qualities.length];
     for (int i = 0; i < qualities.length; i++) {
@@ -112,7 +112,12 @@ public class SequenceReader {
 
     LinkedList<File> ab1Files = new LinkedList<File>();
 
-    int lastID = (allFiles != null) ? allFiles.length - 1 : 0;
+    int lastID;
+    if (allFiles != null)
+      lastID = allFiles.length - 1;
+    else
+        lastID = 0;
+    
     // for every files or path
     for (int fileID = 0; fileID < lastID; fileID++) {
       File activeFile = allFiles[fileID];
@@ -145,6 +150,6 @@ public class SequenceReader {
    * @author Ben Kohr
    */
   public static boolean isPathSet() {
-    return (path != null);
+    return path != null;
   }
 }

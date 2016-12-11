@@ -76,7 +76,7 @@ public class QualityAnalysis {
 	 */
 	public static void trimLowQuality(AnalysedSequence toAnalyse) {
 		int[] trimmingpositions = QualityAnalysis.findLowQuality(toAnalyse);
-		toAnalyse.trimSequence(trimmingpositions[0], trimmingpositions[1]-1);;
+		toAnalyse.trimSequence(trimmingpositions[0], trimmingpositions[1]-1);
 	}
 
 	public static void setBreakcounter(int update) {

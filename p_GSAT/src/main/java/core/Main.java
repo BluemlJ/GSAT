@@ -8,7 +8,6 @@ import analysis.AnalysedSequence;
 import analysis.Gene;
 import analysis.MutationAnalysis;
 import analysis.QualityAnalysis;
-import analysis.Sequence;
 import analysis.StringAnalysis;
 import exceptions.FileReadingException;
 import exceptions.MissingPathException;
@@ -58,7 +57,8 @@ public class Main {
 		//TODO Aks for GEN
 		String genPath = askForDestinationPath("Please give path to gene");
 		
-		Gene gene = null;//TODO Read GEN
+		//TODO Read GENE
+		Gene gene = null;
 		for (File file : files) {
 			AnalysedSequence activeSequence = null;
 			
