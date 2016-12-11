@@ -1,18 +1,8 @@
 package analysis;
 
-import java.util.Comparator;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Map.Entry;
-import java.util.PriorityQueue;
-import java.util.Set;
-import java.util.SortedSet;
 import java.util.TreeMap;
-import java.util.TreeSet;
-import java.util.Vector;
-
-import javax.lang.model.element.Element;
-import javax.xml.ws.Action;
 
 /**
  * This class contains the logic of analyzing sequence strings. This class
@@ -91,7 +81,8 @@ public class StringAnalysis {
 	 * @return
 	 * @author Kevin
 	 */
-	private static LinkedList<String> needlemanWunsch(String sOne, String sTwo) {
+	private static LinkedList<String> needlemanWunsch(String sOne,
+			String sTwo) {
 
 		// TODO find appropriate gap Penalty
 		int gabPenalty = -5;
@@ -117,14 +108,17 @@ public class StringAnalysis {
 			for (int j = 1; j < matrixHeight; j++) {
 				int deletion = wunschMatrix[i - 1][j] + gabPenalty;
 				int insertion = wunschMatrix[i][j - 1] + gabPenalty;
-				int match = wunschMatrix[i - 1][j - 1] + Similarity(sOne.charAt(i), sTwo.charAt(j));
-				wunschMatrix[i][j] = Math.max(Math.max(deletion, insertion), match);
+				int match = wunschMatrix[i - 1][j - 1]
+						+ Similarity(sOne.charAt(i), sTwo.charAt(j));
+				wunschMatrix[i][j] = Math.max(Math.max(deletion, insertion),
+						match);
 			}
 		}
 		return findNeedlemanWunschPath(wunschMatrix);
 	}
 
-	private static LinkedList<String> findNeedlemanWunschPath(int[][] wunschMatrix) {
+	private static LinkedList<String> findNeedlemanWunschPath(
+			int[][] wunschMatrix) {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -148,7 +142,8 @@ public class StringAnalysis {
 	 * @return
 	 * @author Kevin Otto
 	 */
-	public static int[][] calculateLevenshteinMatrix(String first, String second) {
+	public static int[][] calculateLevenshteinMatrix(String first,
+			String second) {
 
 		int matrixHeight = first.length() + 1;
 		int matrixWidth = second.length() + 1;
@@ -187,18 +182,20 @@ public class StringAnalysis {
 
 	/**
 	 * cuts out the Vector from a given sequence
+	 * 
 	 * @param sequence
 	 * @param gen
 	 * @author Kevin
 	 */
-	public static void trimVector(AnalysedSequence sequence, Gene gen){
-		Pair<Integer, String> match = findBestMatch(sequence.sequence, gen.sequence);
+	public static void trimVector(AnalysedSequence sequence, Gene gen) {
+		Pair<Integer, String> match = findBestMatch(sequence.sequence,
+				gen.sequence);
 		sequence.trimSequence(match.key, match.value.length());
 	}
-	
+
 	/**
 	 * 
-	 * @param longString
+	 * @param sequence
 	 *            the String to search in
 	 * @param toFind
 	 *            the String to search for
@@ -206,7 +203,8 @@ public class StringAnalysis {
 	 * 
 	 * @author Kevin
 	 */
-	public static Pair<Integer, String> findBestMatch(String longString, String toFind) {
+	public static Pair<Integer, String> findBestMatch(String sequence,
+			String toFind) {
 
 		/*
 		 * Comparator<String> similarity = new Comparator<String>() {
@@ -222,41 +220,53 @@ public class StringAnalysis {
 
 		TreeMap<Double, Pair<Integer, String>> matches = new TreeMap<>();
 
-		//go throu every supString
-		
-		//begin at every possition
-		for (int begin = 0; begin < (longString.length() - 1); begin++) {
-			
-			//end at every possition
-			for (int end = begin + 1; end < longString.length(); end++) {
-				//get supString
-				String canditate = longString.substring(begin, end);
-				//calculate similarity
-				Double rating = checkSimilarity(canditate, toFind);
+		// go throu every supString
 
-				//check if two strings have the same Similarity
+		// begin at every possition
+		for (int begin = 0; begin < (sequence.length() - 1); begin++) {
+
+			// end at every possition
+			for (int end = begin + 1; end < sequence.length(); end++) {
+				// get supString
+				String canditate = sequence.substring(begin, end);
+				canditate = appentStringToLength(canditate, toFind.length());
+				// calculate similarity
+				Double rating = checkSimilarity(canditate, toFind);
+				canditate = canditate.trim();
+				// check if two strings have the same Similarity
 				if (matches.containsKey(rating)) {
-					//if yes, take the longer one
+					// if yes, take the one that is nearer to original
 					String doubleHit = matches.get(rating).value;
-					if (doubleHit.length() < canditate.length()) {
+					if (Math.abs(doubleHit.trim().length()-toFind.length()) > Math.abs(canditate.trim().length()-toFind.length())) {
 						matches.put(rating, new Pair<Integer, String>(begin, canditate));
 					}
 				} else {
-					matches.put(rating, new Pair<Integer, String>(begin, canditate));
+					matches.put(rating,
+							new Pair<Integer, String>(begin, canditate));
 				}
 			}
 		}
-		return matches.pollFirstEntry().getValue();
+
+		return matches.pollLastEntry().getValue();//.pollFirstEntry().getValue();
+	}
+
+	public static String appentStringToLength(String input, int Length) {
+		if (Length-input.length() > 0) {
+			String expand = new String(new char[Length - input.length()]).replace('\0', ' ');
+			input = input+expand;
+		}
+		return input;
 	}
 
 	/**
 	 * Helper class to store Pairs
+	 * 
 	 * @author Kevin
 	 *
 	 * @param <Key>
 	 * @param <Value>
 	 */
-	private static class Pair<Key, Value> {
+	public static class Pair<Key, Value> {
 
 		public Key key;
 		public Value value;

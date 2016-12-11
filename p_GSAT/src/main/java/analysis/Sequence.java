@@ -46,6 +46,7 @@ public abstract class Sequence {
    // DateFormat df = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss");
    // Calendar cal = Calendar.getInstance();
    // this.addingDate = df.format(cal);
+
     this.researcher = researcher;
   }
 

@@ -22,6 +22,35 @@ import exceptions.UndefinedTypeOfMutationException;
  *
  */
 public class AnalysisTests {
+<<<<<<< HEAD
+=======
+	
+	/**
+	 * This test checks that find best match is not overfitting
+	 * 
+	 * 
+	 * @author Kevin Otto
+	 */
+	@Test
+	public void StringAppentTest() {
+		assertTrue(StringAnalysis.appentStringToLength("hallo", 10).length() == 10);
+	}
+
+	/**
+	 * This test checks that find best match is not overfitting
+	 * 
+	 * 
+	 * @author Kevin Otto
+	 */
+	@Test
+	public void testBestMatchOverfit() {
+		String original = "halloWieGehts".toLowerCase();
+		String falseFit = "HalloWieXXXXhalloWieGehhtsABABABHALLOWieABAB".toLowerCase();
+		String bestFit = "halloWieGehhts".toLowerCase();
+		String result = StringAnalysis.findBestMatch(falseFit, original).value;
+		assertTrue(bestFit.equals(result));
+	}
+>>>>>>> 7471e968d8c27d8179dd2a300724c853413715d0
 
 	/**
 	 * This test checks the Levenshtein algorythm by putting in some generic
@@ -34,6 +63,7 @@ public class AnalysisTests {
 	public void testLevenshtein() {
 		String first = "kitten";
 		String second = "sitting";
+<<<<<<< HEAD
 		int[][] levenMatrix = StringAnalysis.calculateLevenshteinMatrix(first, second);
 		// int[][] resultMatrix = new int[][]
 		// {{0,1,2,3,4,5,6},{1,1,2,3,4,5,6},{2,2,1,2,3,4,5},{3,3,2,1,2,3,4},{4,4,3,2,1,2,3},{5,5,4,3,2,2,3},{6,6,5,4,3,3,2},{7,7,6,5,4,4,3}};
@@ -42,6 +72,17 @@ public class AnalysisTests {
 				{ 5, 5, 4, 3, 2, 2, 3, 4 }, { 6, 6, 5, 4, 3, 3, 2, 3 } };
 		assertTrue(Arrays.deepEquals(levenMatrix, resultMatrix));
 
+=======
+		int[][] levenMatrix = StringAnalysis.calculateLevenshteinMatrix(first,
+				second);
+		// int[][] resultMatrix = new int[][]
+		// {{0,1,2,3,4,5,6},{1,1,2,3,4,5,6},{2,2,1,2,3,4,5},{3,3,2,1,2,3,4},{4,4,3,2,1,2,3},{5,5,4,3,2,2,3},{6,6,5,4,3,3,2},{7,7,6,5,4,4,3}};
+		int[][] resultMatrix = new int[][]{{0, 1, 2, 3, 4, 5, 6, 7},
+				{1, 1, 2, 3, 4, 5, 6, 7}, {2, 2, 1, 2, 3, 4, 5, 6},
+				{3, 3, 2, 1, 2, 3, 4, 5}, {4, 4, 3, 2, 1, 2, 3, 4},
+				{5, 5, 4, 3, 2, 2, 3, 4}, {6, 6, 5, 4, 3, 3, 2, 3}};
+		assertTrue(Arrays.deepEquals(levenMatrix, resultMatrix));
+>>>>>>> 7471e968d8c27d8179dd2a300724c853413715d0
 	}
 
 	/********************
@@ -55,7 +96,12 @@ public class AnalysisTests {
 	 */
 	@Test
 	public void testDiferencesDelet() {
+<<<<<<< HEAD
 		LinkedList<String> list = MutationAnalysis.reportDifferences("helllo", "hello");
+=======
+		LinkedList<String> list = MutationAnalysis.reportDifferences("helllo",
+				"hello");
+>>>>>>> 7471e968d8c27d8179dd2a300724c853413715d0
 		StringBuilder result = new StringBuilder();
 		for (String string : list) {
 			result.append(string + ", ");
@@ -71,7 +117,12 @@ public class AnalysisTests {
 	 */
 	@Test
 	public void testDiferencesDeletEnd() {
+<<<<<<< HEAD
 		LinkedList<String> list = MutationAnalysis.reportDifferences("hellox", "hello");
+=======
+		LinkedList<String> list = MutationAnalysis.reportDifferences("hellox",
+				"hello");
+>>>>>>> 7471e968d8c27d8179dd2a300724c853413715d0
 		StringBuilder result = new StringBuilder();
 		for (String string : list) {
 			result.append(string + ", ");
@@ -87,7 +138,12 @@ public class AnalysisTests {
 	 */
 	@Test
 	public void testDiferencesInsert() {
+<<<<<<< HEAD
 		LinkedList<String> list = MutationAnalysis.reportDifferences("helo", "hello");
+=======
+		LinkedList<String> list = MutationAnalysis.reportDifferences("helo",
+				"hello");
+>>>>>>> 7471e968d8c27d8179dd2a300724c853413715d0
 		StringBuilder result = new StringBuilder();
 		for (String string : list) {
 			result.append(string + ", ");
@@ -104,7 +160,12 @@ public class AnalysisTests {
 	 */
 	@Test
 	public void testDiferencesInsertEnd() {
+<<<<<<< HEAD
 		LinkedList<String> list = MutationAnalysis.reportDifferences("hell", "hello");
+=======
+		LinkedList<String> list = MutationAnalysis.reportDifferences("hell",
+				"hello");
+>>>>>>> 7471e968d8c27d8179dd2a300724c853413715d0
 		StringBuilder result = new StringBuilder();
 		for (String string : list) {
 			result.append(string + ", ");
@@ -120,7 +181,12 @@ public class AnalysisTests {
 	 */
 	@Test
 	public void testDiferencesInsertBegin() {
+<<<<<<< HEAD
 		LinkedList<String> list = MutationAnalysis.reportDifferences("ello", "hello");
+=======
+		LinkedList<String> list = MutationAnalysis.reportDifferences("ello",
+				"hello");
+>>>>>>> 7471e968d8c27d8179dd2a300724c853413715d0
 		StringBuilder result = new StringBuilder();
 		for (String string : list) {
 			result.append(string + ", ");
@@ -136,7 +202,12 @@ public class AnalysisTests {
 	 */
 	@Test
 	public void testDiferencesSubstitute() {
+<<<<<<< HEAD
 		LinkedList<String> list = MutationAnalysis.reportDifferences("helxo", "hello");
+=======
+		LinkedList<String> list = MutationAnalysis.reportDifferences("helxo",
+				"hello");
+>>>>>>> 7471e968d8c27d8179dd2a300724c853413715d0
 		StringBuilder result = new StringBuilder();
 		for (String string : list) {
 			result.append(string + ", ");
@@ -154,7 +225,12 @@ public class AnalysisTests {
 	 * @throws CorruptedSequenceException
 	 */
 	@Test
+<<<<<<< HEAD
 	public void codonsToAminoAcidsOnCorrectUse() throws CorruptedSequenceException {
+=======
+	public void codonsToAminoAcidsOnCorrectUse()
+			throws CorruptedSequenceException {
+>>>>>>> 7471e968d8c27d8179dd2a300724c853413715d0
 		String testA = "ATTGGGCCCATT";
 		String result = MutationAnalysis.codonsToAminoAcids(testA);
 		assertTrue(result.equals("IGPI"));
@@ -169,7 +245,8 @@ public class AnalysisTests {
 	 * @author bluemlj
 	 */
 	@Test(expected = CorruptedSequenceException.class)
-	public void codonsToAminoAcidsWithNotNukleotideString() throws CorruptedSequenceException {
+	public void codonsToAminoAcidsWithNotNukleotideString()
+			throws CorruptedSequenceException {
 		String testString = "HNOFClBrI";
 		String result = MutationAnalysis.codonsToAminoAcids(testString);
 
@@ -184,10 +261,19 @@ public class AnalysisTests {
 	 * @author bluemlj
 	 */
 	@Test
+<<<<<<< HEAD
 	public void codonsToAminoAcidsWithToShortString() throws CorruptedSequenceException {
 		String testString = "ACTTTGG";
 		String result = MutationAnalysis.codonsToAminoAcids(testString);
 		assertTrue(result.equals("nucleotides not modulo 3, so not convertable"));
+=======
+	public void codonsToAminoAcidsWithToShortString()
+			throws CorruptedSequenceException {
+		String testString = "ACTTTGG";
+		String result = MutationAnalysis.codonsToAminoAcids(testString);
+		assertTrue(
+				result.equals("nucleotides not modulo 3, so not convertable"));
+>>>>>>> 7471e968d8c27d8179dd2a300724c853413715d0
 
 	}
 
@@ -199,13 +285,19 @@ public class AnalysisTests {
 	 * @author bluemlj
 	 */
 	@Test
+<<<<<<< HEAD
 	public void codonsToAminoAcidsWithEmptyString() throws CorruptedSequenceException {
+=======
+	public void codonsToAminoAcidsWithEmptyString()
+			throws CorruptedSequenceException {
+>>>>>>> 7471e968d8c27d8179dd2a300724c853413715d0
 		String testString = "";
 		String result = MutationAnalysis.codonsToAminoAcids(testString);
 		assertTrue(result.equals("empty nucleotides"));
 
 	}
 
+<<<<<<< HEAD
 	/**
 	 * Test if FindingGene finds the right Gene
 	 * @author bluemlj
@@ -265,6 +357,8 @@ public class AnalysisTests {
 		}
 	}
 
+=======
+>>>>>>> 7471e968d8c27d8179dd2a300724c853413715d0
 	// TODO change these four to correct values! (NEW CONSTRUCTOR!)
 	// AnalyzedSequence testA = new AnalyzedSequence("AGGGT", "testA", "FFFF");
 	// Gene testGeneA = new Gene("AGGGC", "testGeneA");
@@ -316,7 +410,12 @@ public class AnalysisTests {
 	 * @author Ben Kohr
 	 */
 	@Test
+<<<<<<< HEAD
 	public void testGetComplementarySequenceNoError() throws CorruptedSequenceException {
+=======
+	public void testGetComplementarySequenceNoError()
+			throws CorruptedSequenceException {
+>>>>>>> 7471e968d8c27d8179dd2a300724c853413715d0
 
 		Sequence seq = new Gene("", 0, "Test1", null);
 		assertEquals("", seq.getComplementarySequence());
@@ -341,7 +440,12 @@ public class AnalysisTests {
 	 * @author Ben Kohr
 	 */
 	@Test(expected = CorruptedSequenceException.class)
+<<<<<<< HEAD
 	public void testGetComplementarySequenceWithError() throws CorruptedSequenceException {
+=======
+	public void testGetComplementarySequenceWithError()
+			throws CorruptedSequenceException {
+>>>>>>> 7471e968d8c27d8179dd2a300724c853413715d0
 
 		Sequence seq = new Gene("AATTCCFGATCG", 0, "Problem", null);
 		String comp = seq.getComplementarySequence();
