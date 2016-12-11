@@ -55,7 +55,7 @@ public class QualityAnalysis {
 				}
 			} else {
 
-				if (quality < (average + 50) / 2)
+				if (quality < (average + avgApproximation) / 2)
 					countertoBreak++;
 				else {
 					counter += countertoBreak + 1;
