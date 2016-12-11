@@ -16,6 +16,7 @@ public class QualityAnalysis {
 	// data, 10-40 looks promising
 	private static int breakcounter = 5;
 	private static int startcounter = 5;
+	private static int avgApproximation = 50;
 
 	/**
 	 * This method checks the nucleotidestring and finds a position to trim the
@@ -41,7 +42,7 @@ public class QualityAnalysis {
 
 		for (int quality : qualities) {
 			if (!startfound) {
-				if (quality > (average + 50) / 2)
+				if (quality > (average + avgApproximation) / 2)
 					countertoStart++;
 				else {
 					counter = countertoStart + 1;
