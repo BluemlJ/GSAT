@@ -424,7 +424,7 @@ public class MutationAnalysis {
         // smaller->deletion;
         // DELETION
         if (lev[row - 1][column] == lev[row][column] - 1) {
-          result.addFirst("d|" + row + "|" + "|" + sOne.charAt(row - 1));
+          result.addFirst("d|" + row + "|" + sOne.charAt(row - 1));
         }
 
         row--;

@@ -5,275 +5,254 @@ import java.util.Map.Entry;
 import java.util.TreeMap;
 
 /**
- * This class contains the logic of analyzing sequence strings. This class
- * serves for MutationAnaysis by providing useful String Matching methods.
+ * This class contains the logic of analyzing sequence strings. This class serves for
+ * MutationAnaysis by providing useful String Matching methods.
  * 
  */
 public class StringAnalysis {
 
-	/**
-	 * Compares to sequences and returns their similarity without finding the
-	 * exact differences.
-	 * 
-	 * @param first
-	 *            The first sequence
-	 * @param second
-	 *            The second sequence
-	 * 
-	 * @return Similarity measure
-	 * @author Kevin
-	 */
-	public static double checkSimilarity(Sequence first, Sequence second) {
-		return checkSimilarity(first.sequence, second.sequence);
-	}
+  /**
+   * Compares to sequences and returns their similarity without finding the exact differences.
+   * 
+   * @param first The first sequence
+   * @param second The second sequence
+   * 
+   * @return Similarity measure
+   * @author Kevin
+   */
+  public static double checkSimilarity(Sequence first, Sequence second) {
+    return checkSimilarity(first.sequence, second.sequence);
+  }
 
-	/**
-	 * Compares to String and returns their similarity without finding the exact
-	 * differences.
-	 * 
-	 * @param first
-	 *            The first String
-	 * @param second
-	 *            The second String
-	 * 
-	 * @return Similarity measure
-	 * @author Kevin
-	 */
-	public static double checkSimilarity(String first, String second) {
-		double levenshteinIndex = getLevenshteinIndex(first, second);
-		double avgLength = (first.length() + second.length()) / 2.0;
-		return Math.max(0, 100 - (levenshteinIndex / (avgLength / 100)));
-	}
+  /**
+   * Compares to String and returns their similarity without finding the exact differences.
+   * 
+   * @param first The first String
+   * @param second The second String
+   * 
+   * @return Similarity measure
+   * @author Kevin
+   */
+  public static double checkSimilarity(String first, String second) {
+    double levenshteinIndex = getLevenshteinIndex(first, second);
+    double avgLength = (first.length() + second.length()) / 2.0;
+    return Math.max(0, 100 - (levenshteinIndex / (avgLength / 100)));
+  }
 
-	/**
-	 * calculates Levensthein Matrix of first and second using
-	 * calculateLevenshteinMatrix(first, second) and returns the Levenshtein
-	 * Index
-	 * 
-	 * @param first
-	 * @param second
-	 * @return
-	 * @author Kevin
-	 */
-	public static int getLevenshteinIndex(String first, String second) {
-		int[][] matrix = calculateLevenshteinMatrix(first, second);
-		return getLevenshteinIndex(matrix);
-	}
+  /**
+   * calculates Levensthein Matrix of first and second using calculateLevenshteinMatrix(first,
+   * second) and returns the Levenshtein Index
+   * 
+   * @param first
+   * @param second
+   * @return
+   * @author Kevin
+   */
+  public static int getLevenshteinIndex(String first, String second) {
+    int[][] matrix = calculateLevenshteinMatrix(first, second);
+    return getLevenshteinIndex(matrix);
+  }
 
-	/**
-	 * gets Levenshtein index out of Levenshtein Matrix
-	 * 
-	 * @param matrix
-	 *            the Levenshtein Matrix
-	 * @return
-	 * @author Kevin
-	 */
-	public static int getLevenshteinIndex(int[][] matrix) {
-		// get levensthein index out of matrix
-		return matrix[matrix.length - 1][matrix[matrix.length - 1].length - 1];
-	}
+  /**
+   * gets Levenshtein index out of Levenshtein Matrix
+   * 
+   * @param matrix the Levenshtein Matrix
+   * @return
+   * @author Kevin
+   */
+  public static int getLevenshteinIndex(int[][] matrix) {
+    // get levensthein index out of matrix
+    return matrix[matrix.length - 1][matrix[matrix.length - 1].length - 1];
+  }
 
-	/**
-	 * note: return with nops!
-	 * 
-	 * @param sOne
-	 * @param sTwo
-	 * @return
-	 * @author Kevin
-	 */
-	private static LinkedList<String> needlemanWunsch(String sOne,
-			String sTwo) {
+  /**
+   * note: return with nops!
+   * 
+   * @param sOne
+   * @param sTwo
+   * @return
+   * @author Kevin
+   */
+  private static LinkedList<String> needlemanWunsch(String sOne, String sTwo) {
 
-		// TODO find appropriate gap Penalty
-		int gabPenalty = -5;
+    // TODO find appropriate gap Penalty
+    int gabPenalty = -5;
 
-		int matrixWidth = sOne.length() + 1;
-		int matrixHeight = sTwo.length() + 1;
+    int matrixWidth = sOne.length() + 1;
+    int matrixHeight = sTwo.length() + 1;
 
-		// create empty Needleman Wunsch Matrix
-		int[][] wunschMatrix = new int[matrixWidth][matrixHeight];
+    // create empty Needleman Wunsch Matrix
+    int[][] wunschMatrix = new int[matrixWidth][matrixHeight];
 
-		// fill first line from 1 to |first|
-		for (int i = 1; i < matrixWidth; i++) {
-			wunschMatrix[i][0] = gabPenalty * i;
-		}
-		// fill first row from 1 to |second|
-		for (int j = 1; j < matrixHeight; j++) {
-			wunschMatrix[0][j] = gabPenalty * j;
-		}
+    // fill first line from 1 to |first|
+    for (int i = 1; i < matrixWidth; i++) {
+      wunschMatrix[i][0] = gabPenalty * i;
+    }
+    // fill first row from 1 to |second|
+    for (int j = 1; j < matrixHeight; j++) {
+      wunschMatrix[0][j] = gabPenalty * j;
+    }
 
-		int cost = 0;// variable to save difference in characters
-		// iterate over 2D array
-		for (int i = 1; i < matrixWidth; i++) {
-			for (int j = 1; j < matrixHeight; j++) {
-				int deletion = wunschMatrix[i - 1][j] + gabPenalty;
-				int insertion = wunschMatrix[i][j - 1] + gabPenalty;
-				int match = wunschMatrix[i - 1][j - 1]
-						+ Similarity(sOne.charAt(i), sTwo.charAt(j));
-				wunschMatrix[i][j] = Math.max(Math.max(deletion, insertion),
-						match);
-			}
-		}
-		return findNeedlemanWunschPath(wunschMatrix);
-	}
+    int cost = 0;// variable to save difference in characters
+    // iterate over 2D array
+    for (int i = 1; i < matrixWidth; i++) {
+      for (int j = 1; j < matrixHeight; j++) {
+        int deletion = wunschMatrix[i - 1][j] + gabPenalty;
+        int insertion = wunschMatrix[i][j - 1] + gabPenalty;
+        int match = wunschMatrix[i - 1][j - 1] + Similarity(sOne.charAt(i), sTwo.charAt(j));
+        wunschMatrix[i][j] = Math.max(Math.max(deletion, insertion), match);
+      }
+    }
+    return findNeedlemanWunschPath(wunschMatrix);
+  }
 
-	private static LinkedList<String> findNeedlemanWunschPath(
-			int[][] wunschMatrix) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+  private static LinkedList<String> findNeedlemanWunschPath(int[][] wunschMatrix) {
+    // TODO Auto-generated method stub
+    return null;
+  }
 
-	private static int Similarity(char a, char b) {
-		// TODO Implement
-		return 0;
-	}
+  private static int Similarity(char a, char b) {
+    // TODO Implement
+    return 0;
+  }
 
-	/**
-	 * Calculates the Levensthein Matrix of two Strings. The Matrix gives
-	 * information about the differences of the two Strings and the best way to
-	 * transform them into another.
-	 * 
-	 * for more information: https://en.wikipedia.org/wiki/Levenshtein_distance
-	 * 
-	 * @param first
-	 *            The first String
-	 * @param second
-	 *            The second String
-	 * @return
-	 * @author Kevin Otto
-	 */
-	public static int[][] calculateLevenshteinMatrix(String first,
-			String second) {
+  /**
+   * Calculates the Levensthein Matrix of two Strings. The Matrix gives information about the
+   * differences of the two Strings and the best way to transform them into another.
+   * 
+   * for more information: https://en.wikipedia.org/wiki/Levenshtein_distance
+   * 
+   * @param first The first String
+   * @param second The second String
+   * @return
+   * @author Kevin Otto
+   */
+  public static int[][] calculateLevenshteinMatrix(String first, String second) {
 
-		int matrixHeight = first.length() + 1;
-		int matrixWidth = second.length() + 1;
+    int matrixHeight = first.length() + 1;
+    int matrixWidth = second.length() + 1;
 
-		int[][] levenMatrix = new int[matrixHeight][matrixWidth];// create empty
-																	// Levenshtein
-																	// Matrix
+    int[][] levenMatrix = new int[matrixHeight][matrixWidth];// create empty
+                                                             // Levenshtein
+                                                             // Matrix
 
-		// fill first line from 1 to |first|
-		for (int i = 1; i < matrixHeight; i++) {
-			levenMatrix[i][0] = i;
-		}
-		// fill first row from 1 to |second|
-		for (int j = 1; j < matrixWidth; j++) {
-			levenMatrix[0][j] = j;
-		}
+    // fill first line from 1 to |first|
+    for (int i = 1; i < matrixHeight; i++) {
+      levenMatrix[i][0] = i;
+    }
+    // fill first row from 1 to |second|
+    for (int j = 1; j < matrixWidth; j++) {
+      levenMatrix[0][j] = j;
+    }
 
-		int cost = 0;// variable to save difference in characters
-		// iterate over 2D array
-		for (int j = 1; j < matrixWidth; j++) {
-			for (int i = 1; i < matrixHeight; i++) {
-				// if characters are equal cost for replacement = 0
-				if (first.charAt(i - 1) == second.charAt(j - 1)) {
-					cost = 0;
-				} else {
-					cost = 1;
-				}
-				levenMatrix[i][j] = Math.min(Math.min(
-						(levenMatrix[i - 1][j] + 1), /* deletion of char */
-						(levenMatrix[i][j - 1] + 1)), /* insertion of char */
-						(levenMatrix[i - 1][j - 1] + cost));/* change of char */
-			}
-		}
-		return levenMatrix;
-	}
+    int cost = 0;// variable to save difference in characters
+    // iterate over 2D array
+    for (int j = 1; j < matrixWidth; j++) {
+      for (int i = 1; i < matrixHeight; i++) {
+        // if characters are equal cost for replacement = 0
+        if (first.charAt(i - 1) == second.charAt(j - 1)) {
+          cost = 0;
+        } else {
+          cost = 1;
+        }
+        levenMatrix[i][j] = Math.min(
+            Math.min((levenMatrix[i - 1][j] + 1), /* deletion of char */
+                (levenMatrix[i][j - 1] + 1)), /* insertion of char */
+            (levenMatrix[i - 1][j - 1] + cost));/* change of char */
+      }
+    }
+    return levenMatrix;
+  }
 
-	/**
-	 * cuts out the Vector from a given sequence
-	 * 
-	 * @param sequence
-	 * @param gen
-	 * @author Kevin
-	 */
-	public static void trimVector(AnalysedSequence sequence, Gene gen) {
-		Pair<Integer, String> match = findBestMatch(sequence.sequence,
-				gen.sequence);
-		sequence.trimSequence(match.key, match.value.length());
-	}
+  /**
+   * cuts out the Vector from a given sequence
+   * 
+   * @param sequence
+   * @param gen
+   * @author Kevin
+   */
+  public static void trimVector(AnalysedSequence sequence, Gene gen) {
+    Pair<Integer, String> match = findBestMatch(sequence.sequence, gen.sequence);
+    sequence.trimSequence(match.key, match.value.length());
+  }
 
-	/**
-	 * 
-	 * @param sequence
-	 *            the String to search in
-	 * @param toFind
-	 *            the String to search for
-	 * @return
-	 * 
-	 * @author Kevin
-	 */
-	public static Pair<Integer, String> findBestMatch(String sequence,
-			String toFind) {
+  /**
+   * 
+   * @param sequence the String to search in
+   * @param gen the String to search for
+   * @return
+   * 
+   * @author Kevin
+   */
+  public static Pair<Integer, String> findBestMatch(String sequence, String gen) {
 
-		/*
-		 * Comparator<String> similarity = new Comparator<String>() {
-		 * 
-		 * @Override public int compare(String o1, String o2) { double
-		 * similarityOne = checkSimilarity(o1, longString); double similarityTwo
-		 * = checkSimilarity(o2, longString); if (similarityOne > similarityTwo)
-		 * { return (int) (similarityOne * 100); } else if (similarityOne <
-		 * similarityTwo) { return (int) (similarityTwo * 100); } else { if
-		 * (o1.length() > o2.length()) { return (int) (similarityOne * 100); }
-		 * else { return (int) (similarityTwo * 100); } } } };
-		 */
+    TreeMap<Double, Pair<Integer, String>> matches = new TreeMap<>();
 
-		TreeMap<Double, Pair<Integer, String>> matches = new TreeMap<>();
+    // go throu every supString
 
-		// go throu every supString
+    // begin at every position
+    for (int begin = 0; begin < (sequence.length() - 1); begin++) {
 
-		// begin at every possition
-		for (int begin = 0; begin < (sequence.length() - 1); begin++) {
+      // end at every position
+      for (int end = begin + 1; end < sequence.length()+1 && (end-begin)-1 < gen.length()+1; end++) {
 
-			// end at every possition
-			for (int end = begin + 1; end < sequence.length(); end++) {
-				// get supString
-				String canditate = sequence.substring(begin, end);
-				canditate = appentStringToLength(canditate, toFind.length());
-				// calculate similarity
-				Double rating = checkSimilarity(canditate, toFind);
-				canditate = canditate.trim();
-				// check if two strings have the same Similarity
-				if (matches.containsKey(rating)) {
-					// if yes, take the one that is nearer to original
-					String doubleHit = matches.get(rating).value;
-					if (Math.abs(doubleHit.trim().length()-toFind.length()) > Math.abs(canditate.trim().length()-toFind.length())) {
-						matches.put(rating, new Pair<Integer, String>(begin, canditate));
-					}
-				} else {
-					matches.put(rating,
-							new Pair<Integer, String>(begin, canditate));
-				}
-			}
-		}
+        // get supString
+        String canditate = sequence.substring(begin, end);
+        canditate = appentStringToLength(canditate, gen.length());
 
-		return matches.pollLastEntry().getValue();//.pollFirstEntry().getValue();
-	}
+        // calculate similarity
+        Double rating = checkSimilarity(canditate, gen);
+        canditate = canditate.trim();
+        System.out.println(rating  + " # " +  canditate);
+ 
+        // check if two strings have the same Similarity
+        if (matches.containsKey(rating)) {
 
-	public static String appentStringToLength(String input, int Length) {
-		if (Length-input.length() > 0) {
-			String expand = new String(new char[Length - input.length()]).replace('\0', ' ');
-			input = input+expand;
-		}
-		return input;
-	}
+          // if yes, take the one that is nearer to original
+          String doubleHit = matches.get(rating).value;
+          if (Math.abs(doubleHit.trim().length() - gen.length()) > Math
+              .abs(canditate.trim().length() - gen.length())) {
+            matches.put(rating, new Pair<Integer, String>(begin, canditate));
+          }
+        } else {
+          matches.put(rating, new Pair<Integer, String>(begin, canditate));
+        }
+      }
+    }
+    
+    /*
+     * while (!matches.isEmpty()) { System.out.println(matches.pollFirstEntry().getValue().value);
+     * 
+     * }
+     */
 
-	/**
-	 * Helper class to store Pairs
-	 * 
-	 * @author Kevin
-	 *
-	 * @param <Key>
-	 * @param <Value>
-	 */
-	public static class Pair<Key, Value> {
+    return matches.pollLastEntry().getValue();
+  }
 
-		public Key key;
-		public Value value;
+  public static String appentStringToLength(String input, int Length) {
+    if (Length - input.length() > 0) {
+      String expand = new String(new char[Length - input.length()]).replace('\0', ' ');
+      input = input + expand;
+    }
+    return input;
+  }
 
-		public Pair(Key k, Value v) {
-			key = k;
-			value = v;
-		}
-	}
+  /**
+   * Helper class to store Pairs
+   * 
+   * @author Kevin
+   *
+   * @param <Key>
+   * @param <Value>
+   */
+  public static class Pair<Key, Value> {
+
+    public Key key;
+    public Value value;
+
+    public Pair(Key k, Value v) {
+      key = k;
+      value = v;
+    }
+  }
 }

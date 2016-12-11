@@ -53,22 +53,18 @@ public class Main {
 		ConsoleIO.clearConsole();
 		//ask User for Filepath
 		LinkedList<File> files = askForAB1Files();
-		String destinationPath = askForDestinationPath();
+		String destinationPath = askForDestinationPath("Please give destination path for output File");
 		DatabaseConnection.setLocalPath(destinationPath);
 		//TODO Aks for GEN
+		String genPath = askForDestinationPath("Please give path to gene");
 		
 		Gene gene = null;//TODO Read GEN
 		for (File file : files) {
 			AnalysedSequence activeSequence = null;
+			
 			//Read Sequence From File
-			try {
-				activeSequence = SequenceReader.convertFileIntoSequence(file);
-			} catch (FileReadingException e) {
-				System.err.println("Could not Read File " + e.filename + ", File might be Damaged");
-				System.out.println();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
+			readSequenceFromFile(file);
+			
 			//cut out low Quality parts of sequence
 			QualityAnalysis.trimLowQuality(activeSequence);
 			
@@ -105,7 +101,7 @@ public class Main {
 				System.err.println(e.mutationString);
 				System.out.println();
 			} catch (MissingPathException e) {
-				DatabaseConnection.setLocalPath(askForDestinationPath());
+				DatabaseConnection.setLocalPath(askForDestinationPath("Please give destination path for output File"));
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -114,11 +110,29 @@ public class Main {
 		System.out.println("Program end");
 	}
 	
-	private static String askForDestinationPath(){
+	/**
+	 * Reads the Sequence of the given File and prints Errors if necessary
+	 * @param file
+	 * @return
+	 * @author Kevin
+	 */
+	private static AnalysedSequence readSequenceFromFile(File file){
+		try {
+			return SequenceReader.convertFileIntoSequence(file);
+		} catch (FileReadingException e) {
+			System.err.println("Could not Read File " + e.filename + ", File might be Damaged");
+			System.out.println();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	private static String askForDestinationPath(String message){
 		boolean invalidPath = true;
 		while (invalidPath) {
 			try {
-				String path = ConsoleIO.readLine("Please give destination path for output File");
+				String path = ConsoleIO.readLine(message);
 				invalidPath = false;
 
 				return path;
