@@ -103,7 +103,7 @@ public class QualityTests {
     int[] qualitiesC = {0, 0, 0, 0, 0, 0, 0, 0, 0};
     AnalysedSequence testSequenceC = new AnalysedSequence("aaatttggg", "", "", qualitiesC, 33.3);
     int[] trim = QualityAnalysis.findLowQuality(testSequenceC);
-    assertEquals(trim[1], 0);
+    assertEquals(trim[1], 9);
     assertEquals(trim[0], 9);
     QualityAnalysis.trimLowQuality(testSequenceC);
     assertEquals(testSequenceC.getSequence(), "");

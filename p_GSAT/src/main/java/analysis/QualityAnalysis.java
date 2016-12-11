@@ -34,7 +34,7 @@ public class QualityAnalysis {
 	public static int[] findLowQuality(AnalysedSequence sequence) {
 		int[] qualities = sequence.getQuality();
 		double average = sequence.getAvgQuality();
-		int trimmingPosition[] = { 0, 0 };
+		int trimmingPosition[] = { sequence.length(), sequence.length() };
 		int countertoBreak = 0;
 		int countertoStart = 0;
 		boolean startfound = false;
@@ -45,13 +45,13 @@ public class QualityAnalysis {
 				if (quality > (average + avgApproximation) / 2)
 					countertoStart++;
 				else {
-					counter = countertoStart + 1;
+					counter += countertoStart + 1;
 					countertoStart = 0;
 				}
 				if (countertoStart == startcounter) {
 					trimmingPosition[0] = counter;
 					startfound = true;
-					counter = 0;
+					counter += startcounter;
 				}
 			} else {
 
@@ -62,11 +62,11 @@ public class QualityAnalysis {
 					countertoBreak = 0;
 				}
 				if (countertoBreak == breakcounter) {
-					trimmingPosition[1] = counter + breakcounter;
+					trimmingPosition[1] = counter;
 				}
 			}
 		}
-
+		
 		return trimmingPosition;
 	}
 
