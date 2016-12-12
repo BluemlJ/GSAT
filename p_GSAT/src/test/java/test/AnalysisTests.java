@@ -61,7 +61,7 @@ public class AnalysisTests {
     String sequence = "XXXXHalloWie".toLowerCase();
     String bestFit = "halloWie".toLowerCase();
     String result = StringAnalysis.findBestMatch(sequence, original).value;
-    System.out.println(result);
+    //System.out.println(result);
     assertTrue(bestFit.equals(result));
   }
 

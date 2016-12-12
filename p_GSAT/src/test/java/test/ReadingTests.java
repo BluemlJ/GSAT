@@ -16,7 +16,7 @@ import io.SequenceReader;
  * This class tests the behavior of reading AB1 files and converting them into
  * sequences.
  *
- *@author Lovis Heindrich
+ * @author Lovis Heindrich
  */
 public class ReadingTests {
 
@@ -52,7 +52,22 @@ public class ReadingTests {
 
 		assertEquals(testSequence.getSequence().toLowerCase(), correctSequence.toLowerCase());
 	}
-	
+
+	/**
+	 * This tests checks if a corrupt file leads to an ioexception
+	 * 
+	 * @throws FileReadingException
+	 */
+	@Test
+	public void testCorruptSequence() throws FileReadingException {
+		SequenceReader.configurePath(getClass().getResource("/ab1/corrupt.ab1").getFile());
+		try {
+			SequenceReader.convertFileIntoSequence();
+		} catch (IOException e) {
+			assertEquals(e.getMessage(), "unknown chromatogram format (not ab1, scf or ztr)");
+		}
+	}
+
 	/**
 	 * This test reads a sequence by passing the file directly as an argument
 	 * 
@@ -60,10 +75,10 @@ public class ReadingTests {
 	 * @throws IOException
 	 */
 	@Test
-	public void readFromFileTest() throws FileReadingException, IOException{
-	  File parsedFile = new File(getClass().getResource("/ab1/Tk_Gs40Hits/Forward/95EI60.ab1").getFile());
-	  AnalysedSequence parsedSequence = SequenceReader.convertFileIntoSequence(parsedFile);
-	  assertEquals(parsedSequence.getSequence().toLowerCase(), correctSequence.toLowerCase());
+	public void readFromFileTest() throws FileReadingException, IOException {
+		File parsedFile = new File(getClass().getResource("/ab1/Tk_Gs40Hits/Forward/95EI60.ab1").getFile());
+		AnalysedSequence parsedSequence = SequenceReader.convertFileIntoSequence(parsedFile);
+		assertEquals(parsedSequence.getSequence().toLowerCase(), correctSequence.toLowerCase());
 	}
 
 }
