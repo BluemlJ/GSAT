@@ -216,6 +216,7 @@ public class DatabaseTests {
 
 	/**
 	 * This test checks if the writing of local files is done correctly.
+	 * (User Story 006, typical scenario 1)
 	 * 
 	 * @throws MissingPathException
 	 * @throws IOException
@@ -263,7 +264,8 @@ public class DatabaseTests {
 	/**
 	 * 
 	 * This test checks if there is no problem with the writing even if there
-	 * are no database entries given
+	 * are no database entries given.
+	 * (User Story 006, unusual scenario)
 	 * 
 	 * @throws MissingPathException
 	 * @throws IOException
@@ -325,6 +327,7 @@ public class DatabaseTests {
 	 * into DatabaseEntries and if these entries is correctly written in a file.
 	 * This means, this test checks the complete local storage mechanism from
 	 * the obtained sequences.
+	 * (User Story 006, typical scenario 2)
 	 * 
 	 * @throws MissingPathException
 	 * @throws IOException
