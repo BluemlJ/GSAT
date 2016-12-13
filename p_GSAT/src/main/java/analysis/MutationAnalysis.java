@@ -9,12 +9,13 @@ import exceptions.CorruptedSequenceException;
 import exceptions.UndefinedTypeOfMutationException;
 
 /**
- * This class contains the logic of analyzing mutations in sequences. 
- * Thus, it is one of the main parts of the analyzing pipeline.
+ * This class contains the logic of analyzing mutations in sequences. Thus, it
+ * is one of the main parts of the analyzing pipeline.
  * 
  */
 public class MutationAnalysis {
 
+<<<<<<< HEAD
   public static final Map<String, String> AMINO_ACID_SHORTS;
   static {
     Hashtable<String, String> tmp = new Hashtable<String, String>();
@@ -162,86 +163,87 @@ public class MutationAnalysis {
  
   
   /**
-   * Compares a sequence to a gene to find mutations. Returns the list of mutations, denoted as
-   * described by the department of organic chemistry.
+   * Compares a sequence to a gene to find mutations. Returns the list of
+   * mutations, denoted as described by the department of organic chemistry.
    * 
-   * @param toAnalyze The sequence to be analyzed (which may have mutations)
-   * @param reference The referenced gene (used to compare the sequence against it)
+   * @param toAnalyze
+   *            The sequence to be analyzed (which may have mutations)
+   * @param reference
+   *            The referenced gene (used to compare the sequence against it)
    * 
    * @return A List of Mutations, represented as Strings in the given format
    * 
    * @author bluemlj
    */
-  public static boolean findMutations(AnalysedSequence toAnalyze)
-      throws UndefinedTypeOfMutationException {
+  public static boolean findMutations(AnalysedSequence toAnalyze) throws UndefinedTypeOfMutationException {
 
-    Gene reference = toAnalyze.getReferencedGene();
+      Gene reference = toAnalyze.getReferencedGene();
 
-    
-    // the sequence to analyze
-    String mutatedSequence = toAnalyze.getSequence();
+      // the sequence to analyze
+      String mutatedSequence = toAnalyze.getSequence();
 
-    // the gene sequence
-    String originalSequence = reference.getSequence();
+      // the gene sequence
+      String originalSequence = reference.getSequence();
 
-    // list of differences in form like "s|12|G|H"
-    LinkedList<String> differences = reportDifferences(reference, toAnalyze);
+      // list of differences in form like "s|12|G|H"
+      LinkedList<String> differences = reportDifferences(reference, toAnalyze);
 
-    // the shiftdifference between mutated and original because of
-    // injections/deletions
-    int shift = 0;
+      // the shiftdifference between mutated and original because of
+      // injections/deletions
+      int shift = 0;
 
-    for (String difference : differences) {
-      // type of mutation (s,i,d,e,n)
-      String typeOfMutations = difference.split("\\|")[0];
+      for (int i = 0; i < differences.size(); i++) {
+          String difference = differences.get(i);
+          // type of mutation (s,i,d,e,n)
+          String typeOfMutations = difference.split("\\|")[0];
 
-      // position relative to mutatedSequence (of animoAcids)
-      int position = Integer.parseInt(difference.split("\\|")[1]);
+          // position relative to mutatedSequence (of animoAcids)
+          int position = Integer.parseInt(difference.split("\\|")[1])+reference.getOffset()/3;
 
-      String oldAminoAcid;
-      String newAminoAcid;
+          String oldAminoAcid;
+          String newAminoAcid;
 
-      switch (typeOfMutations) {
-        // s = substitution, normal mutation of one aminoAcid
-        case "s":
-          oldAminoAcid = difference.split("\\|")[2];
-          newAminoAcid = difference.split("\\|")[3];
-          toAnalyze.addMutation(oldAminoAcid + position + newAminoAcid);
-          break;
-        // i = injection, inject of an new amino acid (aminoAcid short form)
-        case "i":
-          shift--;
-          newAminoAcid = difference.split("\\|")[2];
-          toAnalyze.addMutation("+1" + newAminoAcid + position);
-          break;
-        // d = deletion, deletion of an amino acid
-        case "d":
-          shift++;
-          oldAminoAcid = difference.split("\\|")[2];
-          toAnalyze.addMutation("-1" + oldAminoAcid + position);
-          break;
-        // in case of a nop, we test a silent mutation and add it if the
-        // test has a positive match
-        case "n":
-          String oldAcid =
-              originalSequence.substring((position + shift) * 3, (position + shift) * 3 + 2);
-          String newAcid = mutatedSequence.substring(position * 3, position * 3 + 2);
+          switch (typeOfMutations) {
+          // s = substitution, normal mutation of one aminoAcid
+          case "s":
+              oldAminoAcid = difference.split("\\|")[2];
+              newAminoAcid = difference.split("\\|")[3];
+              toAnalyze.addMutation(newAminoAcid + position + oldAminoAcid);
+              break;
+          // i = injection, inject of an new amino acid (aminoAcid short form)
+          case "i":
+              shift++;
+              newAminoAcid = difference.split("\\|")[2];
+              toAnalyze.addMutation("+1" + newAminoAcid + position);
+              break;
+          // d = deletion, deletion of an amino acid
+          case "d":
+              shift--;
+              oldAminoAcid = difference.split("\\|")[2];
+              toAnalyze.addMutation("-1" + oldAminoAcid + position);
+              break;
+          // in case of a nop, we test a silent mutation and add it if the
+          // test has a positive match
+          case "n":
+              
+              String oldAcid = originalSequence.substring(position*3,position*3+2);
+              String newAcid = mutatedSequence.substring((position+shift)*3-reference.getOffset()/3,(position+shift)*3-reference.getOffset()/3+2);
 
-          if (!oldAcid.equals(newAcid)) {
-        	  toAnalyze.addMutation(oldAcid + position + newAcid);
+              if (!oldAcid.equals(newAcid)) {
+                  toAnalyze.addMutation(oldAcid + position + newAcid);
+              }
+              break;
+          // in case of an error, we clear the return list and add a reading
+          // frame error
+          case "e":
+              return false;
+          default:
+              throw new UndefinedTypeOfMutationException(typeOfMutations);
           }
-          break;
-        // in case of an error, we clear the return list and add a reading
-        // frame error
-        case "e":
-          return false;
-        default:
-          throw new UndefinedTypeOfMutationException(typeOfMutations);
-      }
 
-    }
-    //TODO mutationis to sequence
-    return true;
+      }
+      // TODO mutationis to sequence
+      return true;
   }
 
   
