@@ -293,29 +293,40 @@ public class AnalysisTests {
 
   @Test
   public void testsimpleFindingMutations() {
-    Gene gena = new Gene("hallo", 0, "testGen1", "Jannis");
-    Gene genb = new Gene("mochi", 1, "testGen1", "Jannis");
+    Gene gena = new Gene("UUUUUUUUU", 0, "testGen1", "Jannis");
+    Gene genb = new Gene("UUUUUUUUC", 1, "testGen1", "Jannis");
     Gene genc = new Gene("ola", 2, "testGen1", "Jannis");
+    Gene gend = new Gene("HalloWieGehts", 3, "testgen1", "Jannis");
     LinkedList<Gene> testDatabase = new LinkedList<>();
     testDatabase.add(gena);
     testDatabase.add(genb);
     testDatabase.add(genc);
-    AnalysedSequence testSeq = new AnalysedSequence("hello", "Jannis", "toAnalyse", null, 0);
+    testDatabase.add(gend);
+    AnalysedSequence testSeq = new AnalysedSequence("UUUUUCUUU", "Jannis", "toAnalyse", null, 0);
     AnalysedSequence testSeq2 = new AnalysedSequence("olla", "Jannis", "toAnalyse", null, 0);
-    AnalysedSequence testSeq3 = new AnalysedSequence("mchi", "Jannis", "toAnalyse", null, 0);
+    AnalysedSequence testSeq3 = new AnalysedSequence("UUUUUUUC", "Jannis", "toAnalyse", null, 0);
+    AnalysedSequence testSeq4 = new AnalysedSequence("HaloWieGeGtEs", "Jannis", "toAnalyze", null, 0);
     testSeq.setReferencedGene(gena);
     testSeq2.setReferencedGene(genc);
     testSeq3.setReferencedGene(genb);
+    testSeq4.setReferencedGene(gend);
 
     try {
       MutationAnalysis.findMutations(testSeq);
-      assertTrue(testSeq.getMutations().getFirst().equals("a2e"));
+      assertTrue(testSeq.getMutations().getFirst().equals("U6C"));
 
       MutationAnalysis.findMutations(testSeq2);
-      assertTrue(testSeq2.getMutations().getFirst().equals("-1l3"));
+      System.out.println(testSeq2.getMutations().getFirst());
+      assertTrue(testSeq2.getMutations().getFirst().equals("+1l2"));
 
       MutationAnalysis.findMutations(testSeq3);
-      assertTrue(testSeq3.getMutations().getFirst().equals("+1o1"));
+      assertTrue(testSeq3.getMutations().getFirst().equals("-1U8"));
+      
+      MutationAnalysis.findMutations(testSeq4);
+      assertTrue(testSeq4.getMutations().size()==3);
+      assertTrue(testSeq4.getMutations().getFirst().equals("-1l4"));
+      assertTrue(testSeq4.getMutations().get(1).equals("h11G"));
+      assertTrue(testSeq4.getMutations().get(2).equals("+1E12"));
     } catch (UndefinedTypeOfMutationException e) {
       // TODO Auto-generated catch block
       e.printStackTrace();

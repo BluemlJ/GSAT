@@ -208,7 +208,7 @@ public class StringAnalysis {
         // calculate similarity
         Double rating = checkSimilarity(canditate, gen);
         canditate = canditate.trim();
-        System.out.println(rating  + " # " +  canditate);
+       // System.out.println(rating  + " # " +  canditate);
  
         // check if two strings have the same Similarity
         if (matches.containsKey(rating)) {
