@@ -184,7 +184,7 @@ public class MutationAnalysis {
     String originalSequence = reference.getSequence();
 
     // list of differences in form like "s|12|G|H"
-    LinkedList<String> differences = reportDifferences(toAnalyze, reference);
+    LinkedList<String> differences = reportDifferences(reference, toAnalyze);
 
     // the shiftdifference between mutated and original because of
     // injections/deletions

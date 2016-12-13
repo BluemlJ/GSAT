@@ -1,41 +1,87 @@
 package test;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import java.io.IOException;
 
 import org.junit.Test;
 
+import analysis.AnalysedSequence;
 import exceptions.ConfigNotFoundException;
 import exceptions.ConfigReadException;
 import io.Config;
 
+/**
+ * Tests for reading a config file
+ * 
+ * @author lovisheindrich
+ *
+ */
 public class ConfigTests {
 
-	@Test
-	public void testConfigRead() throws IOException, ConfigReadException, ConfigNotFoundException {
-		Config.setPath(getClass().getResource("/lh_config.ini").getFile());
-		Config.readConfig();
-		assertEquals(Config.researcher, "lovis heindrich");
-	}
+  /**
+   * Test reading a researcher name from a sample config file (Userstory 017 - Expected behavior)
+   * 
+   * @throws IOException
+   * @throws ConfigReadException
+   * @throws ConfigNotFoundException
+   */
+  @Test
+  public void testConfigRead() throws IOException, ConfigReadException, ConfigNotFoundException {
+    Config.setPath(getClass().getResource("/lh_config.ini").getFile());
+    Config.readConfig();
+    assertEquals(Config.researcher, "lovis heindrich");
+  }
 
-	@Test
-	public void testCorruptConfig() throws IOException, ConfigNotFoundException {
-		Config.setPath(getClass().getResource("/corrupt_config.ini").getFile());
-		try {
-			Config.readConfig();
-		} catch (ConfigReadException e) {
-			assertEquals(e.getMessage(), "Error while reading researcher from config");
-		}
-	}
-	
-	@Test
-	public void wrongConfigPath() throws IOException, ConfigReadException{
-		Config.setPath("/corrupt_path/corrupt_config.ini");
-		try {
-			Config.readConfig();
-		} catch (ConfigNotFoundException e) {
-			assertEquals(e.getMessage(), "Config at path: /corrupt_path/corrupt_config.ini could not be found");
-		}
-	}
+  /**
+   * Test reading a researcher name from a sample config file and sets the researcher in an analysed
+   * sequence (Userstory 017 - Expected behavior)
+   * 
+   * @throws IOException
+   * @throws ConfigReadException
+   * @throws ConfigNotFoundException
+   */
+  @Test
+  public void testAnalysedSeqRead()
+      throws IOException, ConfigReadException, ConfigNotFoundException {
+    Config.setPath(getClass().getResource("/lh_config.ini").getFile());
+    Config.readConfig();
+    AnalysedSequence testSeq =
+        new AnalysedSequence("atg", Config.researcher, "seq1.abi", new int[] {100, 100, 100}, 100);
+    assertEquals(testSeq.getResearcher(), "lovis heindrich");
+  }
+
+  /**
+   * Tests if trying to read a corrupt config file leads to a ConfigReadException (Userstory 017 -
+   * Unusual behavior)
+   * 
+   * @throws IOException
+   * @throws ConfigNotFoundException
+   */
+  @Test
+  public void testCorruptConfig() throws IOException, ConfigNotFoundException {
+    Config.setPath(getClass().getResource("/corrupt_config.ini").getFile());
+    try {
+      Config.readConfig();
+    } catch (ConfigReadException e) {
+      assertEquals(e.getMessage(), "Error while reading researcher from config");
+    }
+  }
+
+  /**
+   * This tests tries to read from a file that doesn't exist (Userstory 017 - Unusual behavior)
+   * 
+   * @throws IOException
+   * @throws ConfigReadException
+   */
+  @Test
+  public void wrongConfigPath() throws IOException, ConfigReadException {
+    Config.setPath("/corrupt_path/corrupt_config.ini");
+    try {
+      Config.readConfig();
+    } catch (ConfigNotFoundException e) {
+      assertEquals(e.getMessage(),
+          "Config at path: /corrupt_path/corrupt_config.ini could not be found");
+    }
+  }
 }

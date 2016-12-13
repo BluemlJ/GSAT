@@ -42,6 +42,7 @@ public class ReadingTests {
 	/**
 	 * This tests checks if it is possible to read a correct DNA Sequence from
 	 * an .abi file
+	 * (Userstory 003 - Expected behavior)
 	 * 
 	 * @throws IllegalSymbolException
 	 * @throws FileReadingException
@@ -55,6 +56,7 @@ public class ReadingTests {
 
 	/**
 	 * This tests checks if a corrupt file leads to an ioexception
+	 * (Userstory 003 - Unusual behavior)
 	 * 
 	 * @throws FileReadingException
 	 */
@@ -70,6 +72,7 @@ public class ReadingTests {
 
 	/**
 	 * This test reads a sequence by passing the file directly as an argument
+	 * (Userstory 003 - Expected behavior)
 	 * 
 	 * @throws FileReadingException
 	 * @throws IOException
