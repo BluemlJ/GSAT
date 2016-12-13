@@ -36,6 +36,7 @@ public class QualityTests {
 
   /**
    * Tests if the quality information is accessible
+   * (Userstory 008 - Expected behavior)
    */
   @Test
   public void testQualityAccessibility() {
@@ -63,8 +64,9 @@ public class QualityTests {
      */
   }
 
-  /*
+  /**
    * This test confirms expected quality trimming behaviour for a synthetic sequence
+   * (Userstory 008 - Expected behavior)
    */
   @Test
   public void qualityTestA() throws IOException {
@@ -79,8 +81,9 @@ public class QualityTests {
     assertEquals(testSequenceA.getSequence(), "aaatttgg");
   }
 
-  /*
+  /**
    * This test confirms expected quality trimming behaviour for a synthetic sequence
+   * (Userstory 008 - Unusual behavior)
    */
   @Test
   public void qualityTestB() throws IOException {
@@ -94,8 +97,9 @@ public class QualityTests {
     assertEquals(testSequenceB.getSequence(), "aaatttggg");
   }
 
-  /*
+  /**
    * This test confirms expected quality trimming behaviour for a synthetic sequence
+   * (Userstory 008 - Unusual behavior)
    */
   @Test
   public void qualityTestC() throws IOException {
@@ -109,8 +113,9 @@ public class QualityTests {
     assertEquals(testSequenceC.getSequence(), "");
   }
 
-  /*
+  /**
    * This test confirms expected quality trimming behaviour for a synthetic sequence
+   * (Userstory 008 - Expected behavior)
    */
   @Test
   public void qualityTestD() throws IOException {
@@ -125,8 +130,9 @@ public class QualityTests {
     assertEquals(testSequenceD.getSequence(), "atttg");
   }
 
-  /*
+  /**
    * This test confirms expected quality trimming behaviour for a synthetic sequence
+   * (Userstory 008 - Expected behavior)
    */
   @Test
   public void qualityTestE() throws IOException {
