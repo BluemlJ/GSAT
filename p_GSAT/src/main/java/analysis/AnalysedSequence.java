@@ -60,10 +60,11 @@ public class AnalysedSequence extends Sequence {
 	 */
 	private int[] qualities;
 
+	
 	/**
-	 * Length of the sequence
+	 * give the possition in the original gene
 	 */
-	private int length;
+	private int offset = -1;
 
 	/**
 	 * average quality of the sequence
@@ -94,7 +95,6 @@ public class AnalysedSequence extends Sequence {
 		this.comments = "";
 		this.qualityAvg = average;
 		this.qualities = qualities;
-		this.length = sequence.length();
 	}
 
 	/**
@@ -226,7 +226,15 @@ public class AnalysedSequence extends Sequence {
 
 	public int length() {
 		// TODO Auto-generated method stub
-		return length;
+		return sequence.length();
 	}
+
+  public int getOffset() {
+    return offset;
+  }
+
+  public void setOffset(int offset) {
+    this.offset = offset;
+  }
 
 }

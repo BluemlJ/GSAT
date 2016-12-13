@@ -190,8 +190,8 @@ public class StringAnalysis {
    * @param gen
    * @return
    */
-  public static Pair<Integer, String> findBestMatchFast(String sequence, String gen){
-    int[][] levenMatrix = calculateLevenshteinMatrix(gen, sequence);
+  public static void findBestMatchFast(AnalysedSequence sequence, Gene gen){
+    int[][] levenMatrix = calculateLevenshteinMatrix(gen.sequence, sequence.sequence);
     
     //begin and end possition of final string
     int begin = 0;
@@ -202,7 +202,7 @@ public class StringAnalysis {
     
     int row = levenMatrix.length-1;//gen
     int line = levenMatrix[0].length-1;//sequence
-    
+    int originalBegin = 0;
     
     while (row > 0 && line > 0) {
       if (levenMatrix[row-1][line-1] <= levenMatrix[row-1][line] && levenMatrix[row-1][line-1] <= levenMatrix[row][line-1]) {
@@ -213,7 +213,7 @@ public class StringAnalysis {
 
         potentialBegin = true;
         potentialBeginPosition = line;
-
+        originalBegin = row;
         
       }else if(levenMatrix[row-1][line] < levenMatrix[row][line-1]){
         row--;
@@ -228,21 +228,24 @@ public class StringAnalysis {
     if (potentialBegin) {
       begin = potentialBeginPosition;
     }
-    
-    String result = sequence.substring(begin, end);
-    String startCodon = gen.substring(0,3);
+    String result = sequence.sequence.substring(begin, end);
+ 
+    String startCodon = gen.sequence.substring(0,3);
 
     if (result.contains(startCodon)) {
       String alternativ = result.substring(result.indexOf(startCodon));
       
-      if (checkSimilarity(gen, alternativ) <= checkSimilarity(gen,result)) {
+      if (checkSimilarity(gen.sequence, alternativ) <= checkSimilarity(gen.sequence,result)) {
         result = alternativ;
+        originalBegin = 0;
+        begin = 0;
       }
-
     }
-
+    //System.out.println("begin = " + begin + " end = " + end);
+    result = sequence.sequence.substring((begin+originalBegin%3),(end-((end-begin)%3)));
     
-    return new Pair<Integer, String>(begin, result); 
+    sequence.setSequence(result);
+    sequence.setOffset(begin+originalBegin%3);
   }
 
   /**

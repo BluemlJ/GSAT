@@ -4,6 +4,8 @@ import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
+import analysis.AnalysedSequence;
+import analysis.Gene;
 import analysis.StringAnalysis;
 
 /**
@@ -21,8 +23,13 @@ public class VectorTrimTests {
    */
   @Test
   public void findBestmatchFastBasicTest() {
-    String test = StringAnalysis.findBestMatchFast("XXhalloXX", "hallo").value;
-    String expected = "hallo";
+    AnalysedSequence sequence = new AnalysedSequence("XXhallo3XX", null, null, null, 0.0);
+    Gene gen = new Gene("hallo3", 0, null, null);
+    
+    StringAnalysis.findBestMatchFast(sequence, gen);
+    String test = sequence.getSequence();
+    String expected = "hallo3";
+    //System.err.println(test);
     assertTrue(expected.equals(test));
   }
   
@@ -34,8 +41,12 @@ public class VectorTrimTests {
    */
   @Test
   public void findBestmatchFastMutatedTest() {
-    String test = StringAnalysis.findBestMatchFast("XXhalAoXX", "hallo").value;
-    String expected = "halAo";
+    AnalysedSequence sequence = new AnalysedSequence("XXhalAo3XX", null, null, null, 0.0);
+    Gene gen = new Gene("hallo3", 0, null, null);
+    
+    StringAnalysis.findBestMatchFast(sequence, gen);
+    String test = sequence.getSequence();
+    String expected = "halAo3";
     assertTrue(expected.equals(test));
   }
   
@@ -47,7 +58,12 @@ public class VectorTrimTests {
    */
   @Test
   public void findBestmatchFastDelTest() {
-    String test = StringAnalysis.findBestMatchFast("XXhalloWieGetsXX", "halloWieGehts").value;
+    AnalysedSequence sequence = new AnalysedSequence("XXhalloWieGetsXX", null, null, null, 0.0);
+    Gene gen = new Gene("halloWieGehts", 0, null, null);
+    
+    StringAnalysis.findBestMatchFast(sequence, gen);
+
+    String test = sequence.getSequence();
     String expected = "halloWieGets";
 
     assertTrue(expected.equals(test));
@@ -60,8 +76,15 @@ public class VectorTrimTests {
    */
   @Test
   public void findBestmatchFastInsertTest() {
-    String test = StringAnalysis.findBestMatchFast("XXhalAloXX", "hallo").value;
-    String expected = "halAlo";
+    AnalysedSequence sequence = new AnalysedSequence("XXhalAAAlo3XX", null, null, null, 0.0);
+    Gene gen = new Gene("hallo3", 0, null, null);
+    
+    StringAnalysis.findBestMatchFast(sequence, gen);
+    
+    String test = sequence.getSequence();
+    String expected = "halAAAlo3";
+    //System.out.println(test);
+    
     assertTrue(expected.equals(test));
   }
 
@@ -72,8 +95,12 @@ public class VectorTrimTests {
    */
   @Test
   public void findBestmatchFastEndMissingTest() {
-    String test = StringAnalysis.findBestMatchFast("XXhallowie", "hallowiegehts").value;
-    String expected = "hallowie";
+    AnalysedSequence sequence = new AnalysedSequence("XXhallow", null, null, null, 0.0);
+    Gene gen = new Gene("hallowiegeht", 0, null, null);
+    
+    StringAnalysis.findBestMatchFast(sequence, gen);
+    String test = sequence.getSequence();
+    String expected = "hallow";
     assertTrue(expected.equals(test));
   }
 
@@ -84,10 +111,13 @@ public class VectorTrimTests {
    */
   @Test
   public void findBestmatchFastBeginMissingTest() {
-    
-    String test = StringAnalysis.findBestMatchFast("wiegehts", "hallowiegehts").value;
-    String expected = "wiegehts";
-
+    AnalysedSequence sequence = new AnalysedSequence("wiegeh", null, null, null, 0.0);
+    Gene gen = new Gene("hallowiegeht", 0, null, null);
+   
+    StringAnalysis.findBestMatchFast(sequence, gen);
+    String test = sequence.getSequence();
+    System.out.println(test);
+    String expected = "wiegeh";
     assertTrue(expected.equals(test));
   }
   
@@ -99,19 +129,23 @@ public class VectorTrimTests {
    */
   @Test
   public void findBestmatchFastTimingTest() {
-
+    
     String randomSequence = getRandomSequence();
-
     String randomgen = getRandomGen(randomSequence);
     
+    AnalysedSequence sequence = new AnalysedSequence(randomSequence, null, null, null, 0.0);
+    Gene gen = new Gene(randomgen, 0, null, null);
+   
+    
     Double time = (double) System.nanoTime();
-    StringAnalysis.findBestMatchFast(randomSequence, randomgen);
-    System.out.println(((System.nanoTime()-time))/1000000000.0);
+    
+    StringAnalysis.findBestMatchFast(sequence, gen);
+    System.out.println("Time for matching:"+((System.nanoTime()-time))/1000000000.0);
   }
 
   public static String getRandomGen(String Sequence){
     
-    return Sequence.substring(234,1830);
+    return Sequence.substring(203,1997);
   }
   
   public static String getRandomSequence(){

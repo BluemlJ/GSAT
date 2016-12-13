@@ -157,6 +157,7 @@ public class MutationAnalysis {
     tmp.put("GGG", "G");
     AMINO_ACID_SHORTS = Collections.unmodifiableMap(tmp);
   }
+  
 
  
   
