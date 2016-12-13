@@ -3,6 +3,11 @@ package analysis;
 import java.util.LinkedList;
 import java.util.TreeMap;
 
+import javax.annotation.Generated;
+
+import core.Main;
+import io.ConsoleIO;
+
 /**
  * This class contains the logic of analyzing sequence strings. This class serves for
  * MutationAnaysis by providing useful String Matching methods.
@@ -94,7 +99,7 @@ public class StringAnalysis {
 
     // variable to save difference in characters
     int cost = 0;
-    
+
     // iterate over 2D array
     for (int i = 1; i < matrixWidth; i++) {
       for (int j = 1; j < matrixHeight; j++) {
@@ -135,8 +140,8 @@ public class StringAnalysis {
 
     // create empty Levenshtein matrix
     int[][] levenMatrix = new int[matrixHeight][matrixWidth];
-                                                             
-                                                            
+
+
 
     // fill first line from 1 to |first|
     for (int i = 1; i < matrixHeight; i++) {
@@ -149,7 +154,7 @@ public class StringAnalysis {
 
     // variable to save difference in characters
     int cost = 0;
-    
+
     // iterate over 2D array
     for (int j = 1; j < matrixWidth; j++) {
       for (int i = 1; i < matrixHeight; i++) {
@@ -160,10 +165,8 @@ public class StringAnalysis {
           cost = 1;
         }
         // deletion of char, insertion of char, change of char:
-        levenMatrix[i][j] = Math.min(
-            Math.min(levenMatrix[i - 1][j] + 1,
-                     levenMatrix[i][j - 1] + 1),
-                     levenMatrix[i - 1][j - 1] + cost);
+        levenMatrix[i][j] = Math.min(Math.min(levenMatrix[i - 1][j] + 1, levenMatrix[i][j - 1] + 1),
+            levenMatrix[i - 1][j - 1] + cost);
       }
     }
     return levenMatrix;
@@ -179,6 +182,67 @@ public class StringAnalysis {
   public static void trimVector(AnalysedSequence sequence, Gene gen) {
     Pair<Integer, String> match = findBestMatch(sequence.sequence, gen.sequence);
     sequence.trimSequence(match.key, match.value.length());
+  }
+
+  /**
+   * same as find Best Match but faster
+   * @param sequence
+   * @param gen
+   * @return
+   */
+  public static Pair<Integer, String> findBestMatchFast(String sequence, String gen){
+    int[][] levenMatrix = calculateLevenshteinMatrix(gen, sequence);
+    
+    //begin and end possition of final string
+    int begin = 0;
+    int end = sequence.length();
+    boolean endFound = false;
+    boolean potentialBegin = false;
+    int potentialBeginPosition = 0;
+    
+    int row = levenMatrix.length-1;//gen
+    int line = levenMatrix[0].length-1;//sequence
+    
+    
+    while (row > 0 && line > 0) {
+      if (levenMatrix[row-1][line-1] <= levenMatrix[row-1][line] && levenMatrix[row-1][line-1] <= levenMatrix[row][line-1]) {
+        row--;
+        
+        line--;
+        endFound = true;
+
+        potentialBegin = true;
+        potentialBeginPosition = line;
+
+        
+      }else if(levenMatrix[row-1][line] < levenMatrix[row][line-1]){
+        row--;
+
+      }else {
+        if (!endFound) {
+          end--;
+        }
+        line--;
+      }
+    }
+    if (potentialBegin) {
+      begin = potentialBeginPosition;
+    }
+    
+    String result = sequence.substring(begin, end);
+    String startCodon = gen.substring(0,3);
+
+    if (result.contains(startCodon)) {
+      String alternativ = result.substring(result.indexOf(startCodon));
+      
+      if (checkSimilarity(gen, alternativ) <= checkSimilarity(gen,result)) {
+        result = alternativ;
+      }
+
+    }
+
+    
+    return new Pair<Integer, String>(begin, result); 
   }
 
   /**
@@ -199,7 +263,8 @@ public class StringAnalysis {
     for (int begin = 0; begin < (sequence.length() - 1); begin++) {
 
       // end at every position
-      for (int end = begin + 1; end < sequence.length()+1 && (end-begin)-1 < gen.length()+1; end++) {
+      for (int end = begin + 1; end < sequence.length() + 1
+          && (end - begin) - 1 < gen.length() + 1; end++) {
 
         // get supString
         String canditate = sequence.substring(begin, end);
@@ -209,8 +274,7 @@ public class StringAnalysis {
         Double rating = checkSimilarity(canditate, gen);
         canditate = canditate.trim();
        // System.out.println(rating  + " # " +  canditate);
- 
-        // check if two strings have the same Similarity
+       // check if two strings have the same Similarity
         if (matches.containsKey(rating)) {
 
           // if yes, take the one that is nearer to original
@@ -224,7 +288,7 @@ public class StringAnalysis {
         }
       }
     }
-    
+
     /*
      * while (!matches.isEmpty()) { System.out.println(matches.pollFirstEntry().getValue().value);
      * 
