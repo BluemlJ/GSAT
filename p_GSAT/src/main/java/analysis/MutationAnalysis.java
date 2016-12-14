@@ -15,7 +15,7 @@ import exceptions.UndefinedTypeOfMutationException;
  */
 public class MutationAnalysis {
 
-<<<<<<< HEAD
+
   public static final Map<String, String> AMINO_ACID_SHORTS;
   static {
     Hashtable<String, String> tmp = new Hashtable<String, String>();
@@ -198,7 +198,7 @@ public class MutationAnalysis {
           String typeOfMutations = difference.split("\\|")[0];
 
           // position relative to mutatedSequence (of animoAcids)
-          int position = Integer.parseInt(difference.split("\\|")[1])+reference.getOffset()/3;
+          int position = Integer.parseInt(difference.split("\\|")[1])+toAnalyze.getOffset()/3;
 
           String oldAminoAcid;
           String newAminoAcid;
@@ -227,7 +227,7 @@ public class MutationAnalysis {
           case "n":
               
               String oldAcid = originalSequence.substring(position*3,position*3+2);
-              String newAcid = mutatedSequence.substring((position+shift)*3-reference.getOffset()/3,(position+shift)*3-reference.getOffset()/3+2);
+              String newAcid = mutatedSequence.substring((position+shift)*3-toAnalyze.getOffset()/3,(position+shift)*3-toAnalyze.getOffset()/3+2);
 
               if (!oldAcid.equals(newAcid)) {
                   toAnalyze.addMutation(oldAcid + position + newAcid);
