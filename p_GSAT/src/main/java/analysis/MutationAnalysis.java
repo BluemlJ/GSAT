@@ -15,6 +15,7 @@ import exceptions.UndefinedTypeOfMutationException;
  */
 public class MutationAnalysis {
 
+  public static int FrameErrorEdge = 7;
 
   public static final Map<String, String> AMINO_ACID_SHORTS;
   static {
@@ -186,7 +187,7 @@ public class MutationAnalysis {
     // injections/deletions
     int shift = 0;
 
-    int checkframeerrorCounter = 0;
+    int checkFrameerrorCounter = 0;
     for (int i = 0; i < differences.size(); i++) {
       String difference = differences.get(i);
       // type of mutation (s,i,d,n)
@@ -204,8 +205,8 @@ public class MutationAnalysis {
           oldAminoAcid = difference.split("\\|")[2];
           newAminoAcid = difference.split("\\|")[3];
           toAnalyze.addMutation(newAminoAcid + position + oldAminoAcid);
-          checkframeerrorCounter++;
-          if (checkframeerrorCounter == 7) return false;
+          checkFrameerrorCounter++;
+          if (checkFrameerrorCounter == FrameErrorEdge) return false;
           break;
         // i = injection, inject of an new amino acid (aminoAcid short form)
         case "i":
@@ -230,7 +231,7 @@ public class MutationAnalysis {
           if (!oldAcid.equals(newAcid)) {
             toAnalyze.addMutation(oldAcid + position + newAcid);
           } else
-            checkframeerrorCounter = 0;
+            checkFrameerrorCounter = 0;
           break;
         default:
           throw new UndefinedTypeOfMutationException(typeOfMutations);
