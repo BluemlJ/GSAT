@@ -105,13 +105,17 @@ public class SequenceReader {
    * @return
    * @author Kevin
    */
-  public static LinkedList<File> listFiles() {
+  public static Object[] listFiles() {
     // get list of all files and Pathes in given path
-    File folder = new File(path);
+    
+	
+	  
+	File folder = new File(path);
     File[] allFiles = folder.listFiles();
 
     LinkedList<File> ab1Files = new LinkedList<File>();
-
+    LinkedList<File> oddFiles = new LinkedList<File>();
+    
     int lastID;
     if (allFiles != null)
       lastID = allFiles.length - 1;
@@ -127,9 +131,11 @@ public class SequenceReader {
       if (activeFile.isFile()
           && (fileEnding.toLowerCase().equals("ab1") || fileEnding.toLowerCase().equals("abi"))) {
         ab1Files.add(activeFile);
+      } else if (! "config.ini".equals(activeFile.getName())){
+    	  oddFiles.add(activeFile);
       }
     }
-    return ab1Files;
+    return new Object[]{ab1Files, oddFiles};
   }
 
   /**

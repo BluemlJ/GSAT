@@ -38,12 +38,12 @@ public class Config {
 	public static void readConfig() throws ConfigReadException, ConfigNotFoundException, IOException {
 		BufferedReader configReader;
 		try {
-			configReader = new BufferedReader(new FileReader(Config.path));
+			configReader = new BufferedReader(new FileReader(Config.path + "/config.ini"));
 		} catch (FileNotFoundException e) {
 			throw new ConfigNotFoundException(path);
 		}
 		String researcherLine = configReader.readLine();
-		if (researcherLine.substring(0, 11).equals("researcher:") == false) {
+		if (researcherLine == null || researcherLine.length() < 12 || !researcherLine.substring(0, 11).equals("researcher:")) {
 			throw new ConfigReadException("researcher");
 		}
 		Config.researcher = researcherLine.substring(11).trim();
