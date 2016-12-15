@@ -15,11 +15,11 @@ import io.SequenceReader;
 
 public class PrivateTest {
 
-	@Ignore
+	
 	@Test
 	public void testLocalFile() throws FileReadingException, IOException, UndefinedTypeOfMutationException {
 		// TODO set local path
-		SequenceReader.configurePath("/Users/lovisheindrich/Dropbox/BP_GSAT/Materialien/Dateien/Bsp/AB/93GH02_A01.ab1");
+		SequenceReader.configurePath("/home/bluemlj/Dropbox/BP_GSAT/Materialien/Dateien/Bsp/AB/93GH02_A01.ab1");
 		System.out.println("Path set");
 		AnalysedSequence testSeq = SequenceReader.convertFileIntoSequence();
 		System.out.println("File read");
