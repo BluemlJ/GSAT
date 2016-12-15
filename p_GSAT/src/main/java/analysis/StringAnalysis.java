@@ -180,8 +180,7 @@ public class StringAnalysis {
    * @author Kevin
    */
   public static void trimVector(AnalysedSequence sequence, Gene gen) {
-    Pair<Integer, String> match = findBestMatch(sequence.sequence, gen.sequence);
-    sequence.trimSequence(match.key, match.value.length());
+    findBestMatchFast(sequence, gen);
   }
 
   /**
