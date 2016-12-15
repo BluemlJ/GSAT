@@ -84,9 +84,64 @@ public class VectorTrimTests {
     String test = sequence.getSequence();
     String expected = "halAAAlo3";
     //System.out.println(test);
+    //System.out.println(test);
+    assertTrue(expected.equals(test));
+  }
+  
+  /**
+   * 
+   * 
+   * @author Kevin Otto
+   */
+  @Test
+  public void findBestmatchFastDammagedBegin() {
+    AnalysedSequence sequence = new AnalysedSequence("XXhxllo3XX", null, null, null, 0.0);
+    Gene gen = new Gene("hallo3", 0, null, null);
+    
+    StringAnalysis.findBestMatchFast(sequence, gen);
+    
+    String test = sequence.getSequence();
+    String expected = "hxllo3";
     
     assertTrue(expected.equals(test));
   }
+  
+  /**
+   * 
+   * 
+   * @author Kevin Otto
+   */
+  @Test
+  public void findBestmatchFastDammagedEND() {
+    AnalysedSequence sequence = new AnalysedSequence("XXhall33XX", null, null, null, 0.0);
+    Gene gen = new Gene("hallo3", 0, null, null);
+    
+    StringAnalysis.findBestMatchFast(sequence, gen);
+    
+    String test = sequence.getSequence();
+    String expected = "hall33";
+    
+    assertTrue(expected.equals(test));
+  }
+  
+  /**
+   * 
+   * 
+   * @author Kevin Otto
+   */
+  @Test
+  public void findBestmatchFastDammagedBeginAndEND() {
+    AnalysedSequence sequence = new AnalysedSequence("XXhxll33YasdlkjfhY", null, null, null, 0.0);
+    Gene gen = new Gene("hallo3", 0, null, null);
+    
+    StringAnalysis.findBestMatchFast(sequence, gen);
+    
+    String test = sequence.getSequence();
+    String expected = "hxll33";
+    
+    assertTrue(expected.equals(test));
+  }
+  
 
   /**
    * 
@@ -112,11 +167,11 @@ public class VectorTrimTests {
   @Test
   public void findBestmatchFastBeginMissingTest() {
     AnalysedSequence sequence = new AnalysedSequence("wiegeh", null, null, null, 0.0);
-    Gene gen = new Gene("hallowiegeht", 0, null, null);
+    Gene gen = new Gene("hallo3wiegeht", 0, null, null);
    
     StringAnalysis.findBestMatchFast(sequence, gen);
     String test = sequence.getSequence();
-    System.out.println(test);
+  
     String expected = "wiegeh";
     assertTrue(expected.equals(test));
   }
@@ -151,7 +206,7 @@ public class VectorTrimTests {
   public static String getRandomSequence(){
       String sequence = "";
       for (int i = 0; i < 2000; i++) {
-        int rand = (int) (Math.random()*3);
+        int rand = (int) (Math.random()*4);
         switch (rand) {
           case 0:
             sequence+="A";

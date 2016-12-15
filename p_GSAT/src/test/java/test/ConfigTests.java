@@ -28,7 +28,7 @@ public class ConfigTests {
    */
   @Test
   public void testConfigRead() throws IOException, ConfigReadException, ConfigNotFoundException {
-    Config.setPath(getClass().getResource("/lh_config.ini").getFile());
+    Config.setPath(getClass().getResource("/lh_config").getFile());
     Config.readConfig();
     assertEquals(Config.researcher, "lovis heindrich");
   }
@@ -44,7 +44,7 @@ public class ConfigTests {
   @Test
   public void testAnalysedSeqRead()
       throws IOException, ConfigReadException, ConfigNotFoundException {
-    Config.setPath(getClass().getResource("/lh_config.ini").getFile());
+    Config.setPath(getClass().getResource("/lh_config").getFile());
     Config.readConfig();
     AnalysedSequence testSeq =
         new AnalysedSequence("atg", Config.researcher, "seq1.abi", new int[] {100, 100, 100}, 100);
@@ -60,7 +60,7 @@ public class ConfigTests {
    */
   @Test
   public void testCorruptConfig() throws IOException, ConfigNotFoundException {
-    Config.setPath(getClass().getResource("/corrupt_config.ini").getFile());
+    Config.setPath(getClass().getResource("/corrupt_config").getFile());
     try {
       Config.readConfig();
     } catch (ConfigReadException e) {
@@ -76,12 +76,12 @@ public class ConfigTests {
    */
   @Test
   public void wrongConfigPath() throws IOException, ConfigReadException {
-    Config.setPath("/corrupt_path/corrupt_config.ini");
+    Config.setPath("/corrupt_path");
     try {
       Config.readConfig();
     } catch (ConfigNotFoundException e) {
       assertEquals(e.getMessage(),
-          "Config at path: /corrupt_path/corrupt_config.ini could not be found");
+          "Config at path: /corrupt_path could not be found");
     }
   }
 }

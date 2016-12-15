@@ -231,18 +231,18 @@ public class StringAnalysis {
     String result = sequence.sequence.substring(begin, end);
  
     String startCodon = gen.sequence.substring(0,3);
-
     if (result.contains(startCodon)) {
-      String alternativ = result.substring(result.indexOf(startCodon));
-      
+      int codonIndex = result.indexOf(startCodon);
+      String alternativ = result.substring(codonIndex);
+      //System.err.println(alternativ + " # " + result);
       if (checkSimilarity(gen.sequence, alternativ) <= checkSimilarity(gen.sequence,result)) {
         result = alternativ;
         originalBegin = 0;
-        begin = 0;
+        begin = begin+codonIndex;
       }
     }
     //System.out.println("begin = " + begin + " end = " + end);
-    result = sequence.sequence.substring((begin+originalBegin%3),(end-((end-begin)%3)));
+    result = sequence.sequence.substring(begin+((originalBegin%3)),(end-((end-begin)%3)));
     
     sequence.setSequence(result);
     sequence.setOffset(begin+originalBegin%3);
