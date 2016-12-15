@@ -3,10 +3,6 @@ package analysis;
 import java.util.LinkedList;
 import java.util.TreeMap;
 
-import javax.annotation.Generated;
-
-import core.Main;
-import io.ConsoleIO;
 
 /**
  * This class contains the logic of analyzing sequence strings. This class serves for
@@ -241,12 +237,14 @@ public class StringAnalysis {
         begin = begin+codonIndex;
       }
     }
-    //System.out.println("begin = " + begin + " end = " + end);
+    
     begin = begin+(originalBegin%3);
+    System.out.println("begin = " + begin + " end = " + end);
     result = sequence.sequence.substring((begin),(end-((end-begin)%3)));
     
     sequence.setSequence(result);
-    sequence.setOffset(begin);
+    //sequence.setOffset(begin);ORIGINAL
+    sequence.setOffset(originalBegin);
   }
 
   /**

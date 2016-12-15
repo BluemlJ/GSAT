@@ -358,9 +358,9 @@ public class MutationAnalysis {
    * @author Kevin Otto
    * @throws CorruptedSequenceException
    */
-  private static LinkedList<String> reportDifferences(Sequence sOne, Sequence sTwo)
+  private static LinkedList<String> reportDifferences(Gene sOne, AnalysedSequence sTwo)
       throws CorruptedSequenceException {
-    String first = codonsToAminoAcids(sOne.sequence);
+    String first = codonsToAminoAcids(sOne.sequence.substring(sTwo.getOffset()));//CHANGE 15.12.2016
     String second = codonsToAminoAcids(sTwo.sequence);
 
     LinkedList<String> result = reportDifferences(first, second);

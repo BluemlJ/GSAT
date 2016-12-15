@@ -354,7 +354,7 @@ public class AnalysisTests {
   }
 
   @Test
-  public void testsimpleFindingMutations() {
+  public void testsimpleFindingMutations() throws CorruptedSequenceException {
     Gene gena = new Gene("UUUUUUUUU", 0, "testGen1", "Jannis");
     Gene genb = new Gene("UUUUUUUUC", 1, "testGen1", "Jannis");
     Gene genc = new Gene("ola", 2, "testGen1", "Jannis");

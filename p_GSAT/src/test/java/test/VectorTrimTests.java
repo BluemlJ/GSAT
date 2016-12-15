@@ -1,5 +1,6 @@
 package test;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
@@ -31,6 +32,7 @@ public class VectorTrimTests {
     String expected = "hallo3";
     //System.err.println(test);
     assertTrue(expected.equals(test));
+    assertEquals(0,sequence.getOffset());
   }
   
   
@@ -48,6 +50,7 @@ public class VectorTrimTests {
     String test = sequence.getSequence();
     String expected = "halAo3";
     assertTrue(expected.equals(test));
+    assertEquals(0,sequence.getOffset());
   }
   
   
@@ -67,6 +70,7 @@ public class VectorTrimTests {
     String expected = "halloWieGets";
 
     assertTrue(expected.equals(test));
+    assertEquals(0,sequence.getOffset());
   }
   
   /**
@@ -86,6 +90,7 @@ public class VectorTrimTests {
     //System.out.println(test);
     //System.out.println(test);
     assertTrue(expected.equals(test));
+    assertEquals(0,sequence.getOffset());
   }
   
   /**
@@ -104,6 +109,7 @@ public class VectorTrimTests {
     String expected = "hxllo3";
     
     assertTrue(expected.equals(test));
+    assertEquals(0,sequence.getOffset());
   }
   
   /**
@@ -122,6 +128,7 @@ public class VectorTrimTests {
     String expected = "hall33";
     
     assertTrue(expected.equals(test));
+    assertEquals(0,sequence.getOffset());
   }
   
   /**
@@ -140,6 +147,7 @@ public class VectorTrimTests {
     String expected = "hxll33";
     
     assertTrue(expected.equals(test));
+    assertEquals(0,sequence.getOffset());
   }
   
 
@@ -157,6 +165,7 @@ public class VectorTrimTests {
     String test = sequence.getSequence();
     String expected = "hallow";
     assertTrue(expected.equals(test));
+    assertEquals(0,sequence.getOffset());
   }
 
   /**
@@ -174,6 +183,7 @@ public class VectorTrimTests {
   
     String expected = "wiegeh";
     assertTrue(expected.equals(test));
+    assertEquals(6,sequence.getOffset());
   }
   
 
