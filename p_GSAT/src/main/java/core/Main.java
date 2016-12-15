@@ -12,6 +12,7 @@ import analysis.QualityAnalysis;
 import analysis.StringAnalysis;
 import exceptions.ConfigNotFoundException;
 import exceptions.ConfigReadException;
+import exceptions.CorruptedSequenceException;
 import exceptions.FileReadingException;
 import exceptions.MissingPathException;
 import exceptions.UndefinedTypeOfMutationException;
@@ -93,7 +94,10 @@ public class Main {
 				System.err.println("Mutation:");
 				System.err.println(e.mutationString);
 				System.out.println();
-			}
+			} catch (CorruptedSequenceException e) {
+			  System.err.println(file.getName() + " Corrupted -> Reading Frame Error");
+        e.printStackTrace();
+      }
 			
 			//Ask for Comment
 			try {

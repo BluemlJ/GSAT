@@ -235,16 +235,18 @@ public class StringAnalysis {
       String alternativ = result.substring(codonIndex);
       //System.err.println(alternativ + " # " + result);
       if (checkSimilarity(gen.sequence, alternativ) <= checkSimilarity(gen.sequence,result)) {
+        System.out.println("BESTMATCH: Start Codon found at " +(begin + codonIndex));
         result = alternativ;
         originalBegin = 0;
         begin = begin+codonIndex;
       }
     }
     //System.out.println("begin = " + begin + " end = " + end);
-    result = sequence.sequence.substring(begin+((originalBegin%3)),(end-((end-begin)%3)));
+    begin = begin+(originalBegin%3);
+    result = sequence.sequence.substring((begin),(end-((end-begin)%3)));
     
     sequence.setSequence(result);
-    sequence.setOffset(begin+originalBegin%3);
+    sequence.setOffset(begin);
   }
 
   /**

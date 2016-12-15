@@ -172,9 +172,10 @@ public class MutationAnalysis {
    * @return A List of Mutations, represented as Strings in the given format
    * 
    * @author bluemlj
+   * @throws CorruptedSequenceException
    */
   public static boolean findMutations(AnalysedSequence toAnalyze)
-      throws UndefinedTypeOfMutationException {
+      throws UndefinedTypeOfMutationException, CorruptedSequenceException {
 
     Gene reference = toAnalyze.getReferencedGene();
     // the sequence to analyze
@@ -230,8 +231,10 @@ public class MutationAnalysis {
 
           if (!oldAcid.equals(newAcid)) {
             toAnalyze.addMutation(oldAcid + position + newAcid);
-          } else
+          } else {
+            System.out.println("nop");
             checkFrameerrorCounter = 0;
+          }
           break;
         default:
           throw new UndefinedTypeOfMutationException(typeOfMutations);
@@ -252,7 +255,7 @@ public class MutationAnalysis {
    * @author bluemlj
    */
   public static String codonsToAminoAcids(String nucleotides) throws CorruptedSequenceException {
-
+    nucleotides = nucleotides.toUpperCase();
     if (nucleotides.isEmpty()) return "empty nucleotides";
 
     StringBuilder builder = new StringBuilder();
@@ -353,9 +356,14 @@ public class MutationAnalysis {
    * 
    * @return A list of differences (represented as String)
    * @author Kevin Otto
+   * @throws CorruptedSequenceException
    */
-  private static LinkedList<String> reportDifferences(Sequence sOne, Sequence sTwo) {
-    LinkedList<String> result = reportDifferences(sOne.sequence, sTwo.sequence);
+  private static LinkedList<String> reportDifferences(Sequence sOne, Sequence sTwo)
+      throws CorruptedSequenceException {
+    String first = codonsToAminoAcids(sOne.sequence);
+    String second = codonsToAminoAcids(sTwo.sequence);
+
+    LinkedList<String> result = reportDifferences(first, second);
     return result;
   }
 
@@ -421,7 +429,7 @@ public class MutationAnalysis {
         // left smaller->deletion;
         // DELETION
         if (lev[row - 1][column] == lev[row][column] - 1) {
-          result.addFirst("d|" + row + "|" + sOne.charAt(row - 1));
+          result.addFirst("d|" + row + "|" + sOne.charAt(row - 1) + "|");
         }
 
         row--;
@@ -447,7 +455,7 @@ public class MutationAnalysis {
     // deletion at begin
     if (row > 0) {
       for (; row > 0; row--) {
-        result.addFirst("d|" + row + "|" + "|" + sOne.charAt(row - 1));
+        result.addFirst("d|" + row + "|" + sOne.charAt(row - 1) + "|");
       }
     }
     return result;
