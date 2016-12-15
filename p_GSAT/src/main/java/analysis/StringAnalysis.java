@@ -200,9 +200,9 @@ public class StringAnalysis {
     int row = levenMatrix.length-1;//gen
     int line = levenMatrix[0].length-1;//sequence
     int originalBegin = 0;
-    System.out.println();
-    ConsoleIO.printIntMatrix(levenMatrix);
-    System.out.println();
+    //System.out.println();
+    //ConsoleIO.printIntMatrix(levenMatrix);
+    //System.out.println();
     while (row > 0 && line > 0) {
       if (levenMatrix[row-1][line-1] <= levenMatrix[row-1][line] && levenMatrix[row-1][line-1] <= levenMatrix[row][line-1]) {
         row--;
@@ -224,8 +224,13 @@ public class StringAnalysis {
         line--;
       }
     }
-    if (potentialBegin) {
+    boolean neg = false;
+    if (potentialBeginPosition > 1 && potentialBegin) {
       begin = potentialBeginPosition;
+      
+    }else {
+      begin = 0;
+      neg = true;
     }
     String result = sequence.sequence.substring(begin, end);
  
@@ -242,14 +247,19 @@ public class StringAnalysis {
       }
     }
     
-    begin = begin+(originalBegin%3);
+    
+    begin = begin+((3-(originalBegin%3))%3);
+    if (neg && begin > 0) {
+      begin--;
+    }
+    
     System.out.println("begin = " + begin + " end = " + end);
-    result = sequence.sequence.substring((begin),(end-((end-begin)%3)));
+    result = sequence.sequence.substring(begin,(end-((end-begin)%3)));
     
     sequence.setSequence(result);
     //sequence.setOffset(begin);ORIGINAL
-    sequence.setOffset(originalBegin);
-    System.out.println(originalBegin + " = OFFSET");
+    sequence.setOffset(originalBegin+((3-(originalBegin%3))%3));
+    System.out.println(sequence.getOffset() + " = OFFSET");
   }
 
   /**

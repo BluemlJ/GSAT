@@ -145,7 +145,7 @@ public class VectorTrimTests {
     
     String test = sequence.getSequence();
     String expected = "hxll33";
-    
+    //System.err.println(test);
     assertTrue(expected.equals(test));
     assertEquals(0,sequence.getOffset());
   }
