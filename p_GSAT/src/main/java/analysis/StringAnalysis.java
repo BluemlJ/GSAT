@@ -3,6 +3,8 @@ package analysis;
 import java.util.LinkedList;
 import java.util.TreeMap;
 
+import io.ConsoleIO;
+
 
 /**
  * This class contains the logic of analyzing sequence strings. This class serves for
@@ -198,7 +200,9 @@ public class StringAnalysis {
     int row = levenMatrix.length-1;//gen
     int line = levenMatrix[0].length-1;//sequence
     int originalBegin = 0;
-    
+    System.out.println();
+    ConsoleIO.printIntMatrix(levenMatrix);
+    System.out.println();
     while (row > 0 && line > 0) {
       if (levenMatrix[row-1][line-1] <= levenMatrix[row-1][line] && levenMatrix[row-1][line-1] <= levenMatrix[row][line-1]) {
         row--;
@@ -245,6 +249,7 @@ public class StringAnalysis {
     sequence.setSequence(result);
     //sequence.setOffset(begin);ORIGINAL
     sequence.setOffset(originalBegin);
+    System.out.println(originalBegin + " = OFFSET");
   }
 
   /**
