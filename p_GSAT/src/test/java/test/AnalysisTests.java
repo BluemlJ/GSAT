@@ -16,6 +16,7 @@ import analysis.Sequence;
 import analysis.StringAnalysis;
 import exceptions.CorruptedSequenceException;
 import exceptions.UndefinedTypeOfMutationException;
+import io.ConsoleIO;
 
 /**
  * This class tests the behavior of the analysis parts of the project.
@@ -28,7 +29,7 @@ public class AnalysisTests {
   
   
   /**
-   * This test checks that find best match is not overfitting
+   * test the helpermethod appentString for coreckt lenght of the result
    * 
    * 
    * @author Kevin Otto
@@ -40,7 +41,7 @@ public class AnalysisTests {
 
   /**
    * This test checks that find best match is not overfitting
-   * 
+   * DEPRICATED
    * 
    * @author Kevin Otto
    */
@@ -55,7 +56,7 @@ public class AnalysisTests {
   
   /**
    * This test checks findBestMatch with a half gene
-   * 
+   * DEPRICATED
    * 
    * @author Kevin Otto
    */
@@ -88,6 +89,42 @@ public class AnalysisTests {
         {5, 5, 4, 3, 2, 2, 3, 4}, {6, 6, 5, 4, 3, 3, 2, 3}};
     assertTrue(Arrays.deepEquals(levenMatrix, resultMatrix));
   }
+  
+  /**
+   * This test checks the Levenshtein algorythm by putting in one empty and one normal String
+   * 
+   * 
+   * @author Kevin Otto
+   */
+  @Test
+  public void testLevenshteinAsymetric() {
+    String first = "";
+    String second = "Hallo";
+
+    int[][] levenMatrix = StringAnalysis.calculateLevenshteinMatrix(first, second);
+    
+    int[][] resultMatrix = new int[][] {{0, 1, 2, 3, 4, 5}};
+    assertTrue(Arrays.deepEquals(levenMatrix, resultMatrix));
+  }
+  
+  /**
+   * This test checks the Levenshtein algorythm with empty Strings
+   * 
+   * 
+   * @author Kevin Otto
+   */
+  @Test
+  public void testLevenshteinEmpty() {
+   
+    int[][] levenMatrix = StringAnalysis.calculateLevenshteinMatrix("", "");
+
+    assertTrue(levenMatrix.length == 1);
+    assertTrue(levenMatrix[0].length == 1);
+    assertTrue(levenMatrix[0][0] == 0);
+  }
+  
+  
+  
 
   /********************
    * Test for reportDifferences()
@@ -144,7 +181,7 @@ public class AnalysisTests {
       result.append(string + ", ");
     }
     String expected = "i|3|l|, ";
-    // System.out.println(result);
+
     assertTrue(result.toString().equals(expected));
   }
 
@@ -202,6 +239,27 @@ public class AnalysisTests {
     // System.out.println(result);
     assertTrue(result.toString().equals(expected));
   }
+  
+  /**
+   * Test for correct substitution;
+   * 
+   * @author Kevin Otto
+   */
+  @Test
+  public void testDiferencesEmpty() {
+
+    LinkedList<String> list = MutationAnalysis.reportDifferences("", "hello");
+
+    StringBuilder result = new StringBuilder();
+    for (String string : list) {
+      result.append(string + ", ");
+    }
+    //System.out.println(result);
+    String expected = "i|0|h|, i|0|e|, i|0|l|, i|0|l|, i|0|o|, ";
+    // System.out.println(result);
+    assertTrue(result.toString().equals(expected));
+  }
+  
 
   /**
    * Test if the convention from codons to amino acid (shortform) is correct, if the user uses
@@ -315,7 +373,7 @@ public class AnalysisTests {
       assertTrue(testSeq.getMutations().getFirst().equals("U6C"));
 
       MutationAnalysis.findMutations(testSeq2);
-      System.out.println(testSeq2.getMutations().getFirst());
+      //System.out.println(testSeq2.getMutations().getFirst());
       assertTrue(testSeq2.getMutations().getFirst().equals("+1l2"));
 
       MutationAnalysis.findMutations(testSeq3);
