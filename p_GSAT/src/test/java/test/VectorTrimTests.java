@@ -206,7 +206,7 @@ public class VectorTrimTests {
   public static String getRandomSequence(){
       String sequence = "";
       for (int i = 0; i < 2000; i++) {
-        int rand = (int) (Math.random()*3);
+        int rand = (int) (Math.random()*4);
         switch (rand) {
           case 0:
             sequence+="A";

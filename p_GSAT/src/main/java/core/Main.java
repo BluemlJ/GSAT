@@ -73,12 +73,12 @@ public class Main {
 		String genPath = askForDestinationPath("Please give path to gene");
 		
 		//TODO Read GENE
-		Gene gene = null;
+		Gene gene = new Gene("", 0, "", "");
 		for (File file : files) {
 			AnalysedSequence activeSequence = null;
 			
 			//Read Sequence From File
-			readSequenceFromFile(file);
+			activeSequence = readSequenceFromFile(file);
 			
 			//cut out low Quality parts of sequence
 			QualityAnalysis.trimLowQuality(activeSequence);

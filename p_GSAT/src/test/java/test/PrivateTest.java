@@ -13,7 +13,7 @@ import exceptions.FileReadingException;
 import exceptions.UndefinedTypeOfMutationException;
 import io.SequenceReader;
 
-public class privateTest {
+public class PrivateTest {
 
 	@Ignore
 	@Test

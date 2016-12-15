@@ -62,7 +62,6 @@ public class PipelineTests {
 		
 		BufferedReader reader = new BufferedReader(new FileReader("reporttests/report.txt"));
 
-		LinkedList<String> results = new LinkedList<String>();
 		StringBuilder builder = new StringBuilder();
 		reader.lines().forEach(line -> { builder.append(line); builder.append(System.lineSeparator()); });
 		reader.close();
@@ -106,7 +105,6 @@ public class PipelineTests {
 		
 		BufferedReader reader = new BufferedReader(new FileReader("reporttests/report.txt"));
 
-		LinkedList<String> results = new LinkedList<String>();
 		StringBuilder builder = new StringBuilder();
 		reader.lines().forEach(line -> { builder.append(line); builder.append(System.lineSeparator()); });
 		reader.close();
@@ -147,7 +145,6 @@ public class PipelineTests {
 		
 		BufferedReader reader = new BufferedReader(new FileReader("reporttests/report.txt"));
 
-		LinkedList<String> results = new LinkedList<String>();
 		StringBuilder builder = new StringBuilder();
 		reader.lines().forEach(line -> { builder.append(line); builder.append(System.lineSeparator()); });
 		reader.close();

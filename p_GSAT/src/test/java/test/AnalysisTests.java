@@ -34,7 +34,7 @@ public class AnalysisTests {
    * @author Kevin Otto
    */
   @Test
-  public void StringAppentTest() {
+  public void stringAppentTest() {
     assertTrue(StringAnalysis.appentStringToLength("hallo", 10).length() == 10);
   }
 
@@ -301,11 +301,6 @@ public class AnalysisTests {
     Gene genb = new Gene("UUUUUUUUC", 1, "testGen1", "Jannis");
     Gene genc = new Gene("ola", 2, "testGen1", "Jannis");
     Gene gend = new Gene("HalloWieGehts", 3, "testgen1", "Jannis");
-    LinkedList<Gene> testDatabase = new LinkedList<>();
-    testDatabase.add(gena);
-    testDatabase.add(genb);
-    testDatabase.add(genc);
-    testDatabase.add(gend);
     AnalysedSequence testSeq = new AnalysedSequence("UUUUUCUUU", "Jannis", "toAnalyse", null, 0);
     AnalysedSequence testSeq2 = new AnalysedSequence("olla", "Jannis", "toAnalyse", null, 0);
     AnalysedSequence testSeq3 = new AnalysedSequence("UUUUUUUC", "Jannis", "toAnalyse", null, 0);
