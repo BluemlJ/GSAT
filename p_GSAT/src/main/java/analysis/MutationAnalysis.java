@@ -374,9 +374,14 @@ public class MutationAnalysis {
    * m is the new amino acid placed in the mutated sequence insertions take place between the given
    * index and the next index
    * 
+<<<<<<< HEAD
    * @param sOne The mutated sequence
    * @param seq The gene
    * @param type 0 = if the we work on nucleotides, 1 = if we work on aminoacids;
+=======
+   * @param gene The mutated sequence
+   * @param sequence The gene
+>>>>>>> 2b5f6c1192ca56bd5c615bff808c6f091130fcaf
    * 
    * @return A list of differences (represented as String)
    * @author Kevin Otto, Jannis Blueml
@@ -423,15 +428,15 @@ public class MutationAnalysis {
    * m is the new amino acid placed in the mutated sequence * insertions take place between the
    * given index and the next index
    * 
-   * @param sOne The mutated sequence
-   * @param sTwo The gene
+   * @param gene The mutated sequence
+   * @param sequence The gene
    * 
    * @return A list of differences (represented as String)
    * @author Kevin Otto
    */
-  public static LinkedList<String> reportDifferences(String sOne, String sTwo) {
+  public static LinkedList<String> reportDifferences(String gene, String sequence) {
     // get Levenshtein Result
-    int[][] lev = StringAnalysis.calculateLevenshteinMatrix(sOne, sTwo);
+    int[][] lev = StringAnalysis.calculateLevenshteinMatrix(gene, sequence);
 
     int matrixHeight = lev.length;
     int matrixWidth = lev[0].length;
@@ -451,7 +456,8 @@ public class MutationAnalysis {
         // Diagonal smaller -> Substitution
         if (lev[row - 1][column - 1] == lev[row][column] - 1) {
           // SUBSTITUTION
-          result.addFirst("s|" + row + "|" + sTwo.charAt(column - 1) + "|" + sOne.charAt(row - 1));
+          result.addFirst(
+              "s|" + row + "|" + sequence.charAt(column - 1) + "|" + gene.charAt(row - 1));
         }
         // else -> No Operation
         // go to next diagonal cell
@@ -465,7 +471,7 @@ public class MutationAnalysis {
         // left smaller->deletion;
         // DELETION
         if (lev[row - 1][column] == lev[row][column] - 1) {
-          result.addFirst("d|" + row + "|" + sOne.charAt(row - 1) + "|");
+          result.addFirst("d|" + row + "|" + gene.charAt(row - 1) + "|");
         }
 
         row--;
@@ -473,7 +479,7 @@ public class MutationAnalysis {
         // up smaller -> insertion
         // INSERTION
         if (lev[row][column - 1] == lev[row][column] - 1) {
-          result.addFirst("i|" + row + "|" + sTwo.charAt(column - 1) + "|");
+          result.addFirst("i|" + row + "|" + sequence.charAt(column - 1) + "|");
         }
         column--;
       }
@@ -484,14 +490,14 @@ public class MutationAnalysis {
     // insertion at begin
     if (column > 0) {
       for (; column > 0; column--) {
-        result.addFirst("i|" + row + "|" + sTwo.charAt(column - 1) + "|");
+        result.addFirst("i|" + row + "|" + sequence.charAt(column - 1) + "|");
       }
     }
 
     // deletion at begin
     if (row > 0) {
       for (; row > 0; row--) {
-        result.addFirst("d|" + row + "|" + sOne.charAt(row - 1) + "|");
+        result.addFirst("d|" + row + "|" + gene.charAt(row - 1) + "|");
       }
     }
     return result;

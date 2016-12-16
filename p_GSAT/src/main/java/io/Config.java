@@ -29,6 +29,19 @@ public class Config {
 	}
 
 	/**
+     * read the content of the configuration file in the given path and store its values locally
+     * 
+     * @throws IOException
+     * @throws ConfigReadException
+     * @throws ConfigNotFoundException 
+     */
+	public static void readConfig(String path) throws ConfigReadException, ConfigNotFoundException, IOException {
+	  setPath(path);
+	  readConfig();
+	}
+	    
+
+	/**
 	 * read the content of the configuration file and store its values locally
 	 * 
 	 * @throws IOException
@@ -44,6 +57,7 @@ public class Config {
 		}
 		String researcherLine = configReader.readLine();
 		if (researcherLine == null || researcherLine.length() < 12 || !researcherLine.substring(0, 11).equals("researcher:")) {
+		    configReader.close();
 			throw new ConfigReadException("researcher");
 		}
 		Config.researcher = researcherLine.substring(11).trim();
