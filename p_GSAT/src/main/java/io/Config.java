@@ -44,6 +44,7 @@ public class Config {
 		}
 		String researcherLine = configReader.readLine();
 		if (researcherLine == null || researcherLine.length() < 12 || !researcherLine.substring(0, 11).equals("researcher:")) {
+		    configReader.close();
 			throw new ConfigReadException("researcher");
 		}
 		Config.researcher = researcherLine.substring(11).trim();
