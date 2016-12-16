@@ -62,9 +62,9 @@ public class AnalysedSequence extends Sequence {
 
 	
 	/**
-	 * give the possition in the original gene
+	 * give the position in the original gene
 	 */
-	private int offset = -1;
+	private int offset = 0;
 
 	/**
 	 * average quality of the sequence

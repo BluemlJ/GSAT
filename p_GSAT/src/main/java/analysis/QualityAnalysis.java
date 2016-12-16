@@ -1,10 +1,10 @@
 package analysis;
 
 /**
- * This class contains the logic of analyzing the quality of sequences (poin)
- * Thus, it is one of the main parts of the analyzing pipeline.
+ * This class contains the logic of analyzing the quality of sequences (poin) Thus, it is one of the
+ * main parts of the analyzing pipeline.
  * 
- * @author Lovis Heindrich
+ * @author Jannis Blueml
  */
 public class QualityAnalysis {
 

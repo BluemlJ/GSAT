@@ -16,18 +16,15 @@ import analysis.Sequence;
 import analysis.StringAnalysis;
 import exceptions.CorruptedSequenceException;
 import exceptions.UndefinedTypeOfMutationException;
-import io.ConsoleIO;
 
 /**
  * This class tests the behavior of the analysis parts of the project.
  *
  */
 public class AnalysisTests {
-  
 
-  
-  
-  
+
+
   /**
    * test the helpermethod appentString for coreckt lenght of the result
    * 
@@ -40,8 +37,7 @@ public class AnalysisTests {
   }
 
   /**
-   * This test checks that find best match is not overfitting
-   * DEPRICATED
+   * This test checks that find best match is not overfitting DEPRICATED
    * 
    * @author Kevin Otto
    */
@@ -53,10 +49,9 @@ public class AnalysisTests {
     String result = StringAnalysis.findBestMatch(falseFit, original).value;
     assertTrue(bestFit.equals(result));
   }
-  
+
   /**
-   * This test checks findBestMatch with a half gene
-   * DEPRICATED
+   * This test checks findBestMatch with a half gene DEPRICATED
    * 
    * @author Kevin Otto
    */
@@ -66,7 +61,7 @@ public class AnalysisTests {
     String sequence = "XXXXHalloWie".toLowerCase();
     String bestFit = "halloWie".toLowerCase();
     String result = StringAnalysis.findBestMatch(sequence, original).value;
-    //System.out.println(result);
+    // System.out.println(result);
     assertTrue(bestFit.equals(result));
   }
 
@@ -89,7 +84,7 @@ public class AnalysisTests {
         {5, 5, 4, 3, 2, 2, 3, 4}, {6, 6, 5, 4, 3, 3, 2, 3}};
     assertTrue(Arrays.deepEquals(levenMatrix, resultMatrix));
   }
-  
+
   /**
    * This test checks the Levenshtein algorythm by putting in one empty and one normal String
    * 
@@ -102,11 +97,11 @@ public class AnalysisTests {
     String second = "Hallo";
 
     int[][] levenMatrix = StringAnalysis.calculateLevenshteinMatrix(first, second);
-    
+
     int[][] resultMatrix = new int[][] {{0, 1, 2, 3, 4, 5}};
     assertTrue(Arrays.deepEquals(levenMatrix, resultMatrix));
   }
-  
+
   /**
    * This test checks the Levenshtein algorythm with empty Strings
    * 
@@ -115,16 +110,15 @@ public class AnalysisTests {
    */
   @Test
   public void testLevenshteinEmpty() {
-   
+
     int[][] levenMatrix = StringAnalysis.calculateLevenshteinMatrix("", "");
 
     assertTrue(levenMatrix.length == 1);
     assertTrue(levenMatrix[0].length == 1);
     assertTrue(levenMatrix[0][0] == 0);
   }
-  
-  
-  
+
+
 
   /********************
    * Test for reportDifferences()
@@ -239,7 +233,7 @@ public class AnalysisTests {
     // System.out.println(result);
     assertTrue(result.toString().equals(expected));
   }
-  
+
   /**
    * Test for correct substitution;
    * 
@@ -254,12 +248,12 @@ public class AnalysisTests {
     for (String string : list) {
       result.append(string + ", ");
     }
-    //System.out.println(result);
+    // System.out.println(result);
     String expected = "i|0|h|, i|0|e|, i|0|l|, i|0|l|, i|0|o|, ";
     // System.out.println(result);
     assertTrue(result.toString().equals(expected));
   }
-  
+
 
   /**
    * Test if the convention from codons to amino acid (shortform) is correct, if the user uses
@@ -287,7 +281,7 @@ public class AnalysisTests {
   @Test(expected = CorruptedSequenceException.class)
   public void codonsToAminoAcidsWithNotNukleotideString() throws CorruptedSequenceException {
     String testString = "HNOFClBrI";
-    String result = MutationAnalysis.codonsToAminoAcids(testString);
+    MutationAnalysis.codonsToAminoAcids(testString);
 
   }
 
@@ -354,58 +348,81 @@ public class AnalysisTests {
   }
 
   @Test
-  public void testsimpleFindingMutations() throws CorruptedSequenceException {
-    Gene gena = new Gene("UUUUUUUUU", 0, "testGen1", "Jannis");
-    Gene genb = new Gene("UUUUUUUUC", 1, "testGen1", "Jannis");
-    Gene genc = new Gene("ola", 2, "testGen1", "Jannis");
-    Gene gend = new Gene("HalloWieGehts", 3, "testgen1", "Jannis");
-    AnalysedSequence testSeq = new AnalysedSequence("UUUUUCUUU", "Jannis", "toAnalyse", null, 0);
-    AnalysedSequence testSeq2 = new AnalysedSequence("olla", "Jannis", "toAnalyse", null, 0);
-    AnalysedSequence testSeq3 = new AnalysedSequence("UUUUUUUC", "Jannis", "toAnalyse", null, 0);
-    AnalysedSequence testSeq4 = new AnalysedSequence("HaloWieGeGtEs", "Jannis", "toAnalyze", null, 0);
+  public void testsimpleSubstitutionFinding() throws CorruptedSequenceException {
+    Gene gena = new Gene("UUUUUUUUU", 0, "testGenA", "Jannis");
+    AnalysedSequence testSeq = new AnalysedSequence("UUUUUAUUU", "Jannis", "toAnalyse", null, 0);
     testSeq.setReferencedGene(gena);
-    testSeq2.setReferencedGene(genc);
-    testSeq3.setReferencedGene(genb);
-    testSeq4.setReferencedGene(gend);
 
     try {
       MutationAnalysis.findMutations(testSeq);
-      assertTrue(testSeq.getMutations().getFirst().equals("U6C"));
-
-      MutationAnalysis.findMutations(testSeq2);
-      //System.out.println(testSeq2.getMutations().getFirst());
-      assertTrue(testSeq2.getMutations().getFirst().equals("+1l2"));
-
-      MutationAnalysis.findMutations(testSeq3);
-      assertTrue(testSeq3.getMutations().getFirst().equals("-1U8"));
-      
-      MutationAnalysis.findMutations(testSeq4);
-      assertTrue(testSeq4.getMutations().size()==3);
-      assertTrue(testSeq4.getMutations().getFirst().equals("-1l4"));
-      assertTrue(testSeq4.getMutations().get(1).equals("h11G"));
-      assertTrue(testSeq4.getMutations().get(2).equals("+1E12"));
+      assertTrue(testSeq.getMutations().getFirst().equals("F2L"));
     } catch (UndefinedTypeOfMutationException e) {
       // TODO Auto-generated catch block
       e.printStackTrace();
     }
   }
 
-  // TODO change these four to correct values! (NEW CONSTRUCTOR!)
-  // AnalyzedSequence testA = new AnalyzedSequence("AGGGT", "testA", "FFFF");
-  // Gene testGeneA = new Gene("AGGGC", "testGeneA");
-  // Gene testGeneB = new Gene("AGTTTTTGGC", "testGeneB");
-  // Gene testGeneC = new Gene("AGCCTCTCTCTCTGGC", "testGeneC");
-  LinkedList<Gene> testGenes = new LinkedList<>();
+  @Test
+  public void testsimpleDeletionFinding() throws CorruptedSequenceException {
+    Gene gena = new Gene("UAUUUUUAU", 0, "testGen1", "Jannis");
+    AnalysedSequence testSeq = new AnalysedSequence("UAUUAU", "Jannis", "toAnalyse", null, 0);
+    testSeq.setReferencedGene(gena);
 
-  /*
-   * public void testFindingRightGeneOnCorrectUse(){ testGenes.add(testGeneA);
-   * testGenes.add(testGeneB); testGenes.add(testGeneC);
-   * 
-   * Gene result = DNAUtils.findRightGene(testA,testGenes);
-   * System.out.println(result.getSequence()); assertTrue(result == testGeneA); }
-   * 
-   * verschoben bis checksimilarity vorhanden TODO wieder nutzen!
-   */
+    try {
+      MutationAnalysis.findMutations(testSeq);
+      assertTrue(testSeq.getMutations().getFirst().equals("-1F2"));
+    } catch (UndefinedTypeOfMutationException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    }
+  }
+
+  @Test
+  public void testsimpleInsertionFinding() throws CorruptedSequenceException {
+    Gene gena = new Gene("UAUUAU", 0, "testGen1", "Jannis");
+    AnalysedSequence testSeq = new AnalysedSequence("UAUUUCUAU", "Jannis", "toAnalyse", null, 0);
+    testSeq.setReferencedGene(gena);
+
+    try {
+      MutationAnalysis.findMutations(testSeq);
+      assertTrue(testSeq.getMutations().getFirst().equals("+1F1"));
+    } catch (UndefinedTypeOfMutationException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    }
+  }
+
+
+  @Test
+  public void testFindingRightGeneOnCorrectUse() {
+    AnalysedSequence testA = new AnalysedSequence("AGGGT", "Jannis", "testA", null, 0);
+    Gene testGeneA = new Gene("AGGGC", 0, "testGeneA", "Jannis");
+    Gene testGeneB = new Gene("AGTTTTTGGC", 1, "testGeneB", "Jannis");
+    Gene testGeneC = new Gene("AGCCTCTCTCTCTGGC", 2, "testGeneC", "Jannis");
+    LinkedList<Gene> testGenes = new LinkedList<>();
+    testGenes.add(testGeneA);
+    testGenes.add(testGeneB);
+    testGenes.add(testGeneC);
+
+    Gene result = MutationAnalysis.findRightGene(testA, testGenes);
+
+    assertTrue(result == testGeneA);
+  }
+
+  @Test
+  public void testFindingRightGeneOnIncorrectUse() {
+    AnalysedSequence testA = new AnalysedSequence("BBBBCKCKCKCKCS", "Jannis", "testA", null, 0);
+    Gene testGeneA = new Gene("AGGGC", 0, "testGeneA", "Jannis");
+    Gene testGeneB = new Gene("AGTTTTTGGC", 1, "testGeneB", "Jannis");
+    Gene testGeneC = new Gene("AGCCTCTCTCTCTGGC", 2, "testGeneC", "Jannis");
+    LinkedList<Gene> testGenes = new LinkedList<>();
+    testGenes.add(testGeneA);
+    testGenes.add(testGeneB);
+    testGenes.add(testGeneC);
+
+    Gene result = MutationAnalysis.findRightGene(testA, testGenes);
+    assertTrue(result == null);
+  }
 
   /**
    * This test checks if a sequence is correctly reversed.
@@ -468,7 +485,7 @@ public class AnalysisTests {
   public void testGetComplementarySequenceWithError() throws CorruptedSequenceException {
 
     Sequence seq = new Gene("AATTCCFGATCG", 0, "Problem", null);
-    String comp = seq.getComplementarySequence();
+    seq.getComplementarySequence();
 
     fail("No exception thrown!");
   }

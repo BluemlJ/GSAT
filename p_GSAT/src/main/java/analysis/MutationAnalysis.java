@@ -5,6 +5,8 @@ import java.util.Hashtable;
 import java.util.LinkedList;
 import java.util.Map;
 
+import org.junit.Test;
+
 import exceptions.CorruptedSequenceException;
 import exceptions.UndefinedTypeOfMutationException;
 
@@ -15,8 +17,10 @@ import exceptions.UndefinedTypeOfMutationException;
  */
 public class MutationAnalysis {
 
+  // A Integer, that specifies the border for the "Reading Frame Error"
   public static int FrameErrorEdge = 7;
 
+  // A Map with all possible RNA and DNA codons with the matched AminoAcid in shortform.
   public static final Map<String, String> AMINO_ACID_SHORTS;
   static {
     Hashtable<String, String> tmp = new Hashtable<String, String>();
@@ -163,13 +167,12 @@ public class MutationAnalysis {
 
 
   /**
-   * Compares a sequence to a gene to find mutations. Returns the list of mutations, denoted as
-   * described by the department of organic chemistry.
+   * Compares a sequence to a gene to find mutations. Returns a boolean if there was a reading frame
+   * error.
    * 
    * @param toAnalyze The sequence to be analyzed (which may have mutations)
-   * @param reference The referenced gene (used to compare the sequence against it)
    * 
-   * @return A List of Mutations, represented as Strings in the given format
+   * @return A boolean, if there was a reading frame error
    * 
    * @author bluemlj
    * @throws CorruptedSequenceException
@@ -177,26 +180,27 @@ public class MutationAnalysis {
   public static boolean findMutations(AnalysedSequence toAnalyze)
       throws UndefinedTypeOfMutationException, CorruptedSequenceException {
 
+    // the gene references by the mutated Sequence
     Gene reference = toAnalyze.getReferencedGene();
     // the sequence to analyze
     String mutatedSequence = toAnalyze.getSequence();
     // the gene sequence
     String originalSequence = reference.getSequence();
     // list of differences in form like "s|12|G|H"
-    LinkedList<String> differences = reportDifferences(reference, toAnalyze);
+    LinkedList<String> differences = reportDifferences(toAnalyze, 0);
     // the shiftdifference between mutated and original because of
     // injections/deletions
     int shift = 0;
-
+    int lastposition = 0;
     int checkFrameerrorCounter = 0;
     for (int i = 0; i < differences.size(); i++) {
+      if (checkFrameerrorCounter == FrameErrorEdge) return false;
       String difference = differences.get(i);
-      // type of mutation (s,i,d,n)
+      // type of mutation (s,i,d)
       String typeOfMutations = difference.split("\\|")[0];
 
       // position relative to mutatedSequence (of animoAcids)
       int position = Integer.parseInt(difference.split("\\|")[1]) + toAnalyze.getOffset() / 3;
-
       String oldAminoAcid;
       String newAminoAcid;
 
@@ -207,42 +211,55 @@ public class MutationAnalysis {
           newAminoAcid = difference.split("\\|")[3];
           toAnalyze.addMutation(newAminoAcid + position + oldAminoAcid);
           checkFrameerrorCounter++;
-          if (checkFrameerrorCounter == FrameErrorEdge) return false;
+
           break;
         // i = injection, inject of an new amino acid (aminoAcid short form)
         case "i":
           shift++;
           newAminoAcid = difference.split("\\|")[2];
           toAnalyze.addMutation("+1" + newAminoAcid + position);
+          checkFrameerrorCounter++;
           break;
         // d = deletion, deletion of an amino acid
         case "d":
           shift--;
           oldAminoAcid = difference.split("\\|")[2];
           toAnalyze.addMutation("-1" + oldAminoAcid + position);
+          checkFrameerrorCounter++;
           break;
-        // in case of a nop, we test a silent mutation and add it if the
-        // test has a positive match
-        case "n":
-          String oldAcid = originalSequence.substring(position * 3, position * 3 + 2);
-          String newAcid =
-              mutatedSequence.substring((position + shift) * 3 - toAnalyze.getOffset() / 3,
-                  (position + shift) * 3 - toAnalyze.getOffset() / 3 + 2);
 
-          if (!oldAcid.equals(newAcid)) {
-            toAnalyze.addMutation(oldAcid + position + newAcid);
-          } else {
-            System.out.println("nop");
-            checkFrameerrorCounter = 0;
-          }
-          break;
+
         default:
           throw new UndefinedTypeOfMutationException(typeOfMutations);
       }
 
+      // in case that between to mutations are more then zero aminoacids, we check if there is any
+      // silent mutation in them.
+
+      if (position > lastposition + 1 || i == differences.size() - 1) {
+        if (i == differences.size() - 1) position = mutatedSequence.length()/3;
+        for (int tempPosition = lastposition; tempPosition < position - 1; tempPosition++) {
+          String oldAcid = originalSequence.substring(tempPosition * 3 + toAnalyze.getOffset(), tempPosition * 3 + toAnalyze.getOffset() + 3);
+          String newAcid =
+              mutatedSequence.substring((tempPosition + shift) * 3 ,
+                  (tempPosition + shift) * 3+ 3);
+
+          if (!oldAcid.equals(newAcid)) {
+            toAnalyze.addMutation(oldAcid + tempPosition + newAcid);
+          } else {
+            checkFrameerrorCounter = 0;
+          }
+        }
+        lastposition = position;
+      } else
+        lastposition = position;
+
+
     }
-    // TODO mutationis to sequence
     return true;
+
+
+
   }
 
 
@@ -256,11 +273,16 @@ public class MutationAnalysis {
    */
   public static String codonsToAminoAcids(String nucleotides) throws CorruptedSequenceException {
     nucleotides = nucleotides.toUpperCase();
+
+    // check for empty parameter
     if (nucleotides.isEmpty()) return "empty nucleotides";
+
 
     StringBuilder builder = new StringBuilder();
 
+    // checks if the nucleotides is % 3 = 0 because if not, there will be an error at the end
     if (nucleotides.length() % 3 == 0) {
+      // changes the nucleotides to aminoacids in shortform by using the Map
       for (int i = 0; i < nucleotides.length(); i = i + 3) {
         String codon = nucleotides.substring(i, i + 3);
         String aminoacid = AMINO_ACID_SHORTS.get(codon);
@@ -268,8 +290,8 @@ public class MutationAnalysis {
 
         if (aminoacid != null)
           builder.append(aminoacid);
+        // get the index of the corruptedSequenceException
         else {
-
           int index;
           if (!codon.matches("[ATCGU]..")) {
             index = 0;
@@ -308,9 +330,10 @@ public class MutationAnalysis {
       }
     }
 
-    if (bestSimilarity > 0.8)
+    // if the Similarity is less then 80%, return null
+    if (bestSimilarity >= 80) {
       return bestgene;
-    else
+    } else
       return null;
   }
 
@@ -352,19 +375,32 @@ public class MutationAnalysis {
    * index and the next index
    * 
    * @param sOne The mutated sequence
-   * @param sTwo The gene
+   * @param seq The gene
+   * @param type 0 = if the we work on nucleotides, 1 = if we work on aminoacids;
    * 
    * @return A list of differences (represented as String)
-   * @author Kevin Otto
+   * @author Kevin Otto, Jannis Blueml
    * @throws CorruptedSequenceException
    */
-  private static LinkedList<String> reportDifferences(Gene sOne, AnalysedSequence sTwo)
+  private static LinkedList<String> reportDifferences(AnalysedSequence seq, int type)
       throws CorruptedSequenceException {
-    String first = codonsToAminoAcids(sOne.sequence.substring(sTwo.getOffset()));//CHANGE 15.12.2016
-    String second = codonsToAminoAcids(sTwo.sequence);
+    String first, second;
+    switch (type) {
+      case 0:
+        first = codonsToAminoAcids(seq.getReferencedGene().sequence.substring(seq.getOffset()));// CHANGE
+        // 15.12.2016
+        second = codonsToAminoAcids(seq.sequence);
 
-    LinkedList<String> result = reportDifferences(first, second);
-    return result;
+        return reportDifferences(first, second);
+
+      default:
+        first = seq.getReferencedGene().sequence.substring(seq.getOffset());
+        second = seq.sequence;
+
+        return reportDifferences(first, second);
+
+    }
+
   }
 
 
