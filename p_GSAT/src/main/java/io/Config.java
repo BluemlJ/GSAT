@@ -29,6 +29,19 @@ public class Config {
 	}
 
 	/**
+     * read the content of the configuration file in the given path and store its values locally
+     * 
+     * @throws IOException
+     * @throws ConfigReadException
+     * @throws ConfigNotFoundException 
+     */
+	public static void readConfig(String path) throws ConfigReadException, ConfigNotFoundException, IOException {
+	  setPath(path);
+	  readConfig();
+	}
+	    
+
+	/**
 	 * read the content of the configuration file and store its values locally
 	 * 
 	 * @throws IOException

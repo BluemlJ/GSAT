@@ -25,11 +25,6 @@ public class SequenceReader {
   private static String path;
 
   /**
-   * Indicates whether the given path specifies a folder or not (i.e. a file);
-   */
-  private static boolean pathLeadsToFolder;
-
-  /**
    * Constructed list of file names in a given folder (in order to not analyze a file twice).
    */
   private static LinkedList<String> files = new LinkedList<String>();
@@ -57,19 +52,7 @@ public class SequenceReader {
    */
   public static AnalysedSequence convertFileIntoSequence()
       throws FileReadingException, IOException {
-    File referencedFile = new File(path);
-    Chromatogram abifile = ChromatogramFactory.create(referencedFile);
-    String sequence = abifile.getNucleotideSequence().toString();
-    byte[] qualities = abifile.getQualitySequence().toArray();
-    double average = abifile.getQualitySequence().getAvgQuality();
-    // TODO Add Primer
-    int[] qualitiesInt = new int[qualities.length];
-    for (int i = 0; i < qualities.length; i++) {
-      qualitiesInt[i] = qualities[i];
-    }
-    AnalysedSequence parsedSequence = new AnalysedSequence(sequence, "researcher",
-        referencedFile.getName(), qualitiesInt, average);
-    return parsedSequence;
+    return convertFileIntoSequence(new File(path));
   }
 
   /**
@@ -84,16 +67,22 @@ public class SequenceReader {
    */
   public static AnalysedSequence convertFileIntoSequence(File file)
       throws FileReadingException, IOException {
+
     File referencedFile = file;
+
     Chromatogram abifile = ChromatogramFactory.create(referencedFile);
     String sequence = abifile.getNucleotideSequence().toString();
     byte[] qualities = abifile.getQualitySequence().toArray();
     double average = abifile.getQualitySequence().getAvgQuality();
+
     // TODO Add Primer
+
+    // convert qualities from byte[] to int[]
     int[] qualitiesInt = new int[qualities.length];
     for (int i = 0; i < qualities.length; i++) {
       qualitiesInt[i] = qualities[i];
     }
+
     AnalysedSequence parsedSequence = new AnalysedSequence(sequence, "researcher",
         referencedFile.getName(), qualitiesInt, average);
     return parsedSequence;
@@ -107,21 +96,21 @@ public class SequenceReader {
    */
   public static Object[] listFiles() {
     // get list of all files and Pathes in given path
-    
-	
-	  
-	File folder = new File(path);
+
+
+
+    File folder = new File(path);
     File[] allFiles = folder.listFiles();
 
     LinkedList<File> ab1Files = new LinkedList<File>();
     LinkedList<File> oddFiles = new LinkedList<File>();
-    
+
     int lastID;
     if (allFiles != null)
       lastID = allFiles.length - 1;
     else
-        lastID = 0;
-    
+      lastID = 0;
+
     // for every files or path
     for (int fileID = 0; fileID < lastID; fileID++) {
       File activeFile = allFiles[fileID];
@@ -131,11 +120,11 @@ public class SequenceReader {
       if (activeFile.isFile()
           && (fileEnding.toLowerCase().equals("ab1") || fileEnding.toLowerCase().equals("abi"))) {
         ab1Files.add(activeFile);
-      } else if (! "config.ini".equals(activeFile.getName())){
-    	  oddFiles.add(activeFile);
+      } else if (!"config.ini".equals(activeFile.getName())) {
+        oddFiles.add(activeFile);
       }
     }
-    return new Object[]{ab1Files, oddFiles};
+    return new Object[] {ab1Files, oddFiles};
   }
 
   /**

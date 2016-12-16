@@ -23,11 +23,9 @@ import io.ConsoleIO;
  *
  */
 public class AnalysisTests {
-  
 
-  
-  
-  
+
+
   /**
    * test the helpermethod appentString for coreckt lenght of the result
    * 
@@ -40,8 +38,7 @@ public class AnalysisTests {
   }
 
   /**
-   * This test checks that find best match is not overfitting
-   * DEPRICATED
+   * This test checks that find best match is not overfitting DEPRICATED
    * 
    * @author Kevin Otto
    */
@@ -53,10 +50,9 @@ public class AnalysisTests {
     String result = StringAnalysis.findBestMatch(falseFit, original).value;
     assertTrue(bestFit.equals(result));
   }
-  
+
   /**
-   * This test checks findBestMatch with a half gene
-   * DEPRICATED
+   * This test checks findBestMatch with a half gene DEPRICATED
    * 
    * @author Kevin Otto
    */
@@ -66,7 +62,7 @@ public class AnalysisTests {
     String sequence = "XXXXHalloWie".toLowerCase();
     String bestFit = "halloWie".toLowerCase();
     String result = StringAnalysis.findBestMatch(sequence, original).value;
-    //System.out.println(result);
+    // System.out.println(result);
     assertTrue(bestFit.equals(result));
   }
 
@@ -89,7 +85,7 @@ public class AnalysisTests {
         {5, 5, 4, 3, 2, 2, 3, 4}, {6, 6, 5, 4, 3, 3, 2, 3}};
     assertTrue(Arrays.deepEquals(levenMatrix, resultMatrix));
   }
-  
+
   /**
    * This test checks the Levenshtein algorythm by putting in one empty and one normal String
    * 
@@ -102,11 +98,11 @@ public class AnalysisTests {
     String second = "Hallo";
 
     int[][] levenMatrix = StringAnalysis.calculateLevenshteinMatrix(first, second);
-    
+
     int[][] resultMatrix = new int[][] {{0, 1, 2, 3, 4, 5}};
     assertTrue(Arrays.deepEquals(levenMatrix, resultMatrix));
   }
-  
+
   /**
    * This test checks the Levenshtein algorythm with empty Strings
    * 
@@ -115,16 +111,15 @@ public class AnalysisTests {
    */
   @Test
   public void testLevenshteinEmpty() {
-   
+
     int[][] levenMatrix = StringAnalysis.calculateLevenshteinMatrix("", "");
 
     assertTrue(levenMatrix.length == 1);
     assertTrue(levenMatrix[0].length == 1);
     assertTrue(levenMatrix[0][0] == 0);
   }
-  
-  
-  
+
+
 
   /********************
    * Test for reportDifferences()
@@ -239,7 +234,7 @@ public class AnalysisTests {
     // System.out.println(result);
     assertTrue(result.toString().equals(expected));
   }
-  
+
   /**
    * Test for correct substitution;
    * 
@@ -254,12 +249,12 @@ public class AnalysisTests {
     for (String string : list) {
       result.append(string + ", ");
     }
-    //System.out.println(result);
+    // System.out.println(result);
     String expected = "i|0|h|, i|0|e|, i|0|l|, i|0|l|, i|0|o|, ";
     // System.out.println(result);
     assertTrue(result.toString().equals(expected));
   }
-  
+
 
   /**
    * Test if the convention from codons to amino acid (shortform) is correct, if the user uses
@@ -362,7 +357,8 @@ public class AnalysisTests {
     AnalysedSequence testSeq = new AnalysedSequence("UUUUUCUUU", "Jannis", "toAnalyse", null, 0);
     AnalysedSequence testSeq2 = new AnalysedSequence("olla", "Jannis", "toAnalyse", null, 0);
     AnalysedSequence testSeq3 = new AnalysedSequence("UUUUUUUC", "Jannis", "toAnalyse", null, 0);
-    AnalysedSequence testSeq4 = new AnalysedSequence("HaloWieGeGtEs", "Jannis", "toAnalyze", null, 0);
+    AnalysedSequence testSeq4 =
+        new AnalysedSequence("HaloWieGeGtEs", "Jannis", "toAnalyze", null, 0);
     testSeq.setReferencedGene(gena);
     testSeq2.setReferencedGene(genc);
     testSeq3.setReferencedGene(genb);
@@ -373,14 +369,14 @@ public class AnalysisTests {
       assertTrue(testSeq.getMutations().getFirst().equals("U6C"));
 
       MutationAnalysis.findMutations(testSeq2);
-      //System.out.println(testSeq2.getMutations().getFirst());
+      // System.out.println(testSeq2.getMutations().getFirst());
       assertTrue(testSeq2.getMutations().getFirst().equals("+1l2"));
 
       MutationAnalysis.findMutations(testSeq3);
       assertTrue(testSeq3.getMutations().getFirst().equals("-1U8"));
-      
+
       MutationAnalysis.findMutations(testSeq4);
-      assertTrue(testSeq4.getMutations().size()==3);
+      assertTrue(testSeq4.getMutations().size() == 3);
       assertTrue(testSeq4.getMutations().getFirst().equals("-1l4"));
       assertTrue(testSeq4.getMutations().get(1).equals("h11G"));
       assertTrue(testSeq4.getMutations().get(2).equals("+1E12"));

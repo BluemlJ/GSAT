@@ -68,73 +68,20 @@ public class StringAnalysis {
   }
 
   /**
-   * note: return with nops!
-   * 
-   * @param sOne
-   * @param sTwo
-   * @return
-   * @author Kevin
-   */
-  private static LinkedList<String> needlemanWunsch(String sOne, String sTwo) {
-
-    // TODO find appropriate gap Penalty
-    int gabPenalty = -5;
-
-    int matrixWidth = sOne.length() + 1;
-    int matrixHeight = sTwo.length() + 1;
-
-    // create empty Needleman Wunsch Matrix
-    int[][] wunschMatrix = new int[matrixWidth][matrixHeight];
-
-    // fill first line from 1 to |first|
-    for (int i = 1; i < matrixWidth; i++) {
-      wunschMatrix[i][0] = gabPenalty * i;
-    }
-    // fill first row from 1 to |second|
-    for (int j = 1; j < matrixHeight; j++) {
-      wunschMatrix[0][j] = gabPenalty * j;
-    }
-
-    // variable to save difference in characters
-    int cost = 0;
-
-    // iterate over 2D array
-    for (int i = 1; i < matrixWidth; i++) {
-      for (int j = 1; j < matrixHeight; j++) {
-        int deletion = wunschMatrix[i - 1][j] + gabPenalty;
-        int insertion = wunschMatrix[i][j - 1] + gabPenalty;
-        int match = wunschMatrix[i - 1][j - 1] + Similarity(sOne.charAt(i), sTwo.charAt(j));
-        wunschMatrix[i][j] = Math.max(Math.max(deletion, insertion), match);
-      }
-    }
-    return findNeedlemanWunschPath(wunschMatrix);
-  }
-
-  private static LinkedList<String> findNeedlemanWunschPath(int[][] wunschMatrix) {
-    // TODO Auto-generated method stub
-    return null;
-  }
-
-  private static int Similarity(char a, char b) {
-    // TODO Implement
-    return 0;
-  }
-
-  /**
    * Calculates the Levensthein Matrix of two Strings. The Matrix gives information about the
    * differences of the two Strings and the best way to transform them into another.
    * 
    * for more information: https://en.wikipedia.org/wiki/Levenshtein_distance
    * 
-   * @param first The first String
-   * @param second The second String
+   * @param horizontal The first String
+   * @param vertical The second String
    * @return
    * @author Kevin Otto
    */
-  public static int[][] calculateLevenshteinMatrix(String first, String second) {
+  public static int[][] calculateLevenshteinMatrix(String horizontal, String vertical) {
 
-    int matrixHeight = first.length() + 1;
-    int matrixWidth = second.length() + 1;
+    int matrixHeight = horizontal.length() + 1;
+    int matrixWidth = vertical.length() + 1;
 
     // create empty Levenshtein matrix
     int[][] levenMatrix = new int[matrixHeight][matrixWidth];
@@ -157,7 +104,7 @@ public class StringAnalysis {
     for (int j = 1; j < matrixWidth; j++) {
       for (int i = 1; i < matrixHeight; i++) {
         // if characters are equal cost for replacement = 0
-        if (first.charAt(i - 1) == second.charAt(j - 1)) {
+        if (horizontal.charAt(i - 1) == vertical.charAt(j - 1)) {
           cost = 0;
         } else {
           cost = 1;
@@ -173,131 +120,134 @@ public class StringAnalysis {
   /**
    * cuts out the Vector from a given sequence
    * 
-   * @param sequence
-   * @param gen
+   * @param toAlign
+   * @param template
    * @author Kevin
    */
-  public static void trimVector(AnalysedSequence sequence, Gene gen) {
-    findBestMatchFast(sequence, gen);
+  public static void trimVector(AnalysedSequence toAlign, Gene template) {
+    findBestMatchFast(toAlign, template);
   }
 
   /**
    * same as find Best Match but faster
-   * @param sequence
-   * @param gen
+   * 
+   * @param toAlign
+   * @param template
    * @return
    */
-  public static void findBestMatchFast(AnalysedSequence sequence, Gene gen){
-    int[][] levenMatrix = calculateLevenshteinMatrix(gen.sequence, sequence.sequence);
-    
-    //begin and end possition of final string
+  public static void findBestMatchFast(AnalysedSequence toAlign, Gene template) {
+    int[][] levenMatrix = calculateLevenshteinMatrix(template.sequence, toAlign.sequence);
+
+    // begin and end possition of final string
     int begin = 0;
-    int end = sequence.length();
+    int end = toAlign.length();
     boolean endFound = false;
     boolean potentialBegin = false;
     int potentialBeginPosition = 0;
-    
-    int row = levenMatrix.length-1;//gen
-    int line = levenMatrix[0].length-1;//sequence
+
+    int row = levenMatrix.length - 1;// gen
+    int line = levenMatrix[0].length - 1;// sequence
     int originalBegin = 0;
-    //System.out.println();
-    //ConsoleIO.printIntMatrix(levenMatrix);
-    //System.out.println();
+    // System.out.println();
+    // ConsoleIO.printIntMatrix(levenMatrix);
+    // System.out.println();
     while (row > 0 && line > 0) {
-      if (levenMatrix[row-1][line-1] <= levenMatrix[row-1][line] && levenMatrix[row-1][line-1] <= levenMatrix[row][line-1]) {
+      if (levenMatrix[row - 1][line - 1] <= levenMatrix[row - 1][line]
+          && levenMatrix[row - 1][line - 1] <= levenMatrix[row][line - 1]) {
         row--;
-        
+
         line--;
         endFound = true;
 
         potentialBegin = true;
         potentialBeginPosition = line;
         originalBegin = row;
-        
-      }else if(levenMatrix[row-1][line] < levenMatrix[row][line-1]){
+
+      } else if (levenMatrix[row - 1][line] < levenMatrix[row][line - 1]) {
         row--;
 
-      }else {
+      } else {
         if (!endFound) {
           end--;
         }
         line--;
       }
     }
-    boolean neg = false;
+    boolean beginOutOfRange = false;
     if (potentialBeginPosition > 1 && potentialBegin) {
       begin = potentialBeginPosition;
-      
-    }else {
+
+    } else {
       begin = 0;
-      neg = true;
+      beginOutOfRange = true;
     }
-    String result = sequence.sequence.substring(begin, end);
- 
-    String startCodon = gen.sequence.substring(0,3);
+    String result = toAlign.sequence.substring(begin, end);
+
+    String startCodon = template.sequence.substring(0, 3);
     if (result.contains(startCodon)) {
       int codonIndex = result.indexOf(startCodon);
       String alternativ = result.substring(codonIndex);
-      //System.err.println(alternativ + " # " + result);
-      if (checkSimilarity(gen.sequence, alternativ) <= checkSimilarity(gen.sequence,result)) {
-        System.out.println("BESTMATCH: Start Codon found at " +(begin + codonIndex));
+      // System.err.println(alternativ + " # " + result);
+      if (checkSimilarity(template.sequence, alternativ) <= checkSimilarity(template.sequence,
+          result)) {
+        System.out.println("BESTMATCH: Start Codon found at " + (begin + codonIndex));
         result = alternativ;
         originalBegin = 0;
-        begin = begin+codonIndex;
+        begin = begin + codonIndex;
       }
     }
-    
-    
-    begin = begin+((3-(originalBegin%3))%3);
-    if (neg && begin > 0) {
+
+    // TODO EXPLAIN
+    begin = begin + ((3 - (originalBegin % 3)) % 3);
+    if (beginOutOfRange && begin > 0) {
       begin--;
     }
-    
+    // TODO remove syso
     System.out.println("begin = " + begin + " end = " + end);
-    result = sequence.sequence.substring(begin,(end-((end-begin)%3)));
-    
-    sequence.setSequence(result);
-    //sequence.setOffset(begin);ORIGINAL
-    sequence.setOffset(originalBegin+((3-(originalBegin%3))%3));
-    System.out.println(sequence.getOffset() + " = OFFSET");
+    result = toAlign.sequence.substring(begin, (end - ((end - begin) % 3)));
+
+    toAlign.setSequence(result);
+    // sequence.setOffset(begin);ORIGINAL
+    toAlign.setOffset(originalBegin + ((3 - (originalBegin % 3)) % 3));
+    System.out.println(toAlign.getOffset() + " = OFFSET");
   }
 
   /**
    * 
-   * @param sequence the String to search in
-   * @param gen the String to search for
+   * @param toAlign the String to search in
+   * @param template the String to search for
    * @return
    * 
    * @author Kevin
    */
-  public static Pair<Integer, String> findBestMatch(String sequence, String gen) {
+  public static Pair<Integer, String> findBestMatch(String toAlign, String template) {
 
     TreeMap<Double, Pair<Integer, String>> matches = new TreeMap<>();
 
     // go throu every supString
 
     // begin at every position
-    for (int begin = 0; begin < (sequence.length() - 1); begin++) {
+    for (int begin = 0; begin < (toAlign.length() - 1); begin++) {
 
       // end at every position
-      for (int end = begin + 1; end < sequence.length() + 1
-          && (end - begin) - 1 < gen.length() + 1; end++) {
+      for (int end = begin + 1; end < toAlign.length() + 1
+          && (end - begin) - 1 < template.length() + 1; end++) {
 
         // get supString
-        String canditate = sequence.substring(begin, end);
-        canditate = appentStringToLength(canditate, gen.length());
+        String canditate = toAlign.substring(begin, end);
+        canditate = appentStringToLength(canditate, template.length());
 
         // calculate similarity
-        Double rating = checkSimilarity(canditate, gen);
+        Double rating = checkSimilarity(canditate, template);
         canditate = canditate.trim();
-       // System.out.println(rating  + " # " +  canditate);
-       // check if two strings have the same Similarity
+        // System.out.println(rating + " # " + canditate);
+        // check if two strings have the same Similarity
         if (matches.containsKey(rating)) {
 
           // if yes, take the one that is nearer to original
           String doubleHit = matches.get(rating).value;
-          if (Math.abs(doubleHit.trim().length() - gen.length()) > Math
-              .abs(canditate.trim().length() - gen.length())) {
+          if (Math.abs(doubleHit.trim().length() - template.length()) > Math
+              .abs(canditate.trim().length() - template.length())) {
             matches.put(rating, new Pair<Integer, String>(begin, canditate));
           }
         } else {
@@ -315,9 +265,9 @@ public class StringAnalysis {
     return matches.pollLastEntry().getValue();
   }
 
-  public static String appentStringToLength(String input, int Length) {
-    if (Length - input.length() > 0) {
-      String expand = new String(new char[Length - input.length()]).replace('\0', ' ');
+  public static String appentStringToLength(String input, int length) {
+    if (length - input.length() > 0) {
+      String expand = new String(new char[length - input.length()]).replace('\0', ' ');
       input = input + expand;
     }
     return input;
