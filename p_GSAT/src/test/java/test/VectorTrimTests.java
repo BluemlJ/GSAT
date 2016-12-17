@@ -27,7 +27,7 @@ public class VectorTrimTests {
     AnalysedSequence sequence = new AnalysedSequence("XXhallo3XX", null, null, null, 0.0);
     Gene gen = new Gene("hallo3", 0, null, null);
     
-    StringAnalysis.findBestMatchFast(sequence, gen);
+    StringAnalysis.trimVector(sequence, gen);
     String test = sequence.getSequence();
     String expected = "hallo3";
     //System.err.println(test);
@@ -46,7 +46,7 @@ public class VectorTrimTests {
     AnalysedSequence sequence = new AnalysedSequence("XXhalAo3XX", null, null, null, 0.0);
     Gene gen = new Gene("hallo3", 0, null, null);
     
-    StringAnalysis.findBestMatchFast(sequence, gen);
+    StringAnalysis.trimVector(sequence, gen);
     String test = sequence.getSequence();
     String expected = "halAo3";
     assertTrue(expected.equals(test));
@@ -64,7 +64,7 @@ public class VectorTrimTests {
     AnalysedSequence sequence = new AnalysedSequence("XXhalloWieGetsXX", null, null, null, 0.0);
     Gene gen = new Gene("halloWieGehts", 0, null, null);
     
-    StringAnalysis.findBestMatchFast(sequence, gen);
+    StringAnalysis.trimVector(sequence, gen);
 
     String test = sequence.getSequence();
     String expected = "halloWieGets";
@@ -83,7 +83,7 @@ public class VectorTrimTests {
     AnalysedSequence sequence = new AnalysedSequence("XXhalAAAlo3XX", null, null, null, 0.0);
     Gene gen = new Gene("hallo3", 0, null, null);
     
-    StringAnalysis.findBestMatchFast(sequence, gen);
+    StringAnalysis.trimVector(sequence, gen);
     
     String test = sequence.getSequence();
     String expected = "halAAAlo3";
@@ -103,7 +103,7 @@ public class VectorTrimTests {
     AnalysedSequence sequence = new AnalysedSequence("XXhxllo3XX", null, null, null, 0.0);
     Gene gen = new Gene("hallo3", 0, null, null);
     
-    StringAnalysis.findBestMatchFast(sequence, gen);
+    StringAnalysis.trimVector(sequence, gen);
     
     String test = sequence.getSequence();
     String expected = "hxllo3";
@@ -122,7 +122,7 @@ public class VectorTrimTests {
     AnalysedSequence sequence = new AnalysedSequence("XXhall33XX", null, null, null, 0.0);
     Gene gen = new Gene("hallo3", 0, null, null);
     
-    StringAnalysis.findBestMatchFast(sequence, gen);
+    StringAnalysis.trimVector(sequence, gen);
     
     String test = sequence.getSequence();
     String expected = "hall33";
@@ -141,7 +141,7 @@ public class VectorTrimTests {
     AnalysedSequence sequence = new AnalysedSequence("XXhxll33YasdlkjfhY", null, null, null, 0.0);
     Gene gen = new Gene("hallo3", 0, null, null);
     
-    StringAnalysis.findBestMatchFast(sequence, gen);
+    StringAnalysis.trimVector(sequence, gen);
     
     String test = sequence.getSequence();
     String expected = "hxll33";
@@ -161,7 +161,7 @@ public class VectorTrimTests {
     AnalysedSequence sequence = new AnalysedSequence("XXhallow", null, null, null, 0.0);
     Gene gen = new Gene("hallowiegeht", 0, null, null);
     
-    StringAnalysis.findBestMatchFast(sequence, gen);
+    StringAnalysis.trimVector(sequence, gen);
     String test = sequence.getSequence();
     String expected = "hallow";
     assertTrue(expected.equals(test));
@@ -178,7 +178,7 @@ public class VectorTrimTests {
     AnalysedSequence sequence = new AnalysedSequence("wiegeh", null, null, null, 0.0);
     Gene gen = new Gene("hallo3wiegeht", 0, null, null);
    
-    StringAnalysis.findBestMatchFast(sequence, gen);
+    StringAnalysis.trimVector(sequence, gen);
     String test = sequence.getSequence();
   
     String expected = "wiegeh";
@@ -204,7 +204,7 @@ public class VectorTrimTests {
     
     Double time = (double) System.nanoTime();
     
-    StringAnalysis.findBestMatchFast(sequence, gen);
+    StringAnalysis.trimVector(sequence, gen);
     System.out.println("Time for matching:"+((System.nanoTime()-time))/1000000000.0);
   }
 

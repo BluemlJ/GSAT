@@ -5,7 +5,6 @@ import java.util.TreeMap;
 
 import io.ConsoleIO;
 
-
 /**
  * This class contains the logic of analyzing sequence strings. This class serves for
  * MutationAnaysis by providing useful String Matching methods.
@@ -86,8 +85,6 @@ public class StringAnalysis {
     // create empty Levenshtein matrix
     int[][] levenMatrix = new int[matrixHeight][matrixWidth];
 
-
-
     // fill first line from 1 to |first|
     for (int i = 1; i < matrixHeight; i++) {
       levenMatrix[i][0] = i;
@@ -118,24 +115,13 @@ public class StringAnalysis {
   }
 
   /**
-   * cuts out the Vector from a given sequence
-   * 
-   * @param toAlign
-   * @param template
-   * @author Kevin
-   */
-  public static void trimVector(AnalysedSequence toAlign, Gene template) {
-    findBestMatchFast(toAlign, template);
-  }
-
-  /**
    * same as find Best Match but faster
    * 
    * @param toAlign
    * @param template
    * @return
    */
-  public static void findBestMatchFast(AnalysedSequence toAlign, Gene template) {
+  public static void trimVector(AnalysedSequence toAlign, Gene template) {
     int[][] levenMatrix = calculateLevenshteinMatrix(template.sequence, toAlign.sequence);
 
     // begin and end possition of final string
@@ -210,6 +196,27 @@ public class StringAnalysis {
     // sequence.setOffset(begin);ORIGINAL
     toAlign.setOffset(originalBegin + ((3 - (originalBegin % 3)) % 3));
     System.out.println(toAlign.getOffset() + " = OFFSET");
+  }
+
+  public static void findOffset(AnalysedSequence seqence) {
+
+    // get gene and sequence as String
+    String gene = seqence.getReferencedGene().getSequence();
+    String seq = seqence.getSequence();
+
+    // part of the sequence that will be testet.
+
+    String toTest = seq.substring(seq.length() / 3, (seq.length() / 3) * 2);
+
+    if (toTest.length() < 9) {
+      System.err.println("Usable part of Sequence might be too short for good Results");
+    }
+
+    boolean offsetNotFound = true;
+
+    while (offsetNotFound) {
+      
+    }
   }
 
   /**
