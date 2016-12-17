@@ -168,7 +168,7 @@ public class VectorTrimTests {
     String test = sequence.getSequence();
     String expected = "hxll33owareyoutodaygoodandyou";
 
-
+System.err.println(test);
     assertTrue(expected.equals(test));
     assertEquals(0, sequence.getOffset());
   }
@@ -269,8 +269,7 @@ public class VectorTrimTests {
     randomSequence.setReferencedGene(randomgene);
 
     StringAnalysis.findOffset(randomSequence);
-    // System.out.println(realOffset);
-    // System.err.println(randomSequence.getOffset());
+    System.err.println(randomSequence.getOffset());
     assertEquals(5, randomSequence.getOffset());
 
   }

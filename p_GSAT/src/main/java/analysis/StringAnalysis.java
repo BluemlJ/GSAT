@@ -204,46 +204,56 @@ public class StringAnalysis {
     toAlign.setOffset(originalBegin + ((3 - (originalBegin % 3)) % 3));
     // System.out.println(toAlign.getOffset() + " = OFFSET");
   }
-  
+
   public static void trimVector(AnalysedSequence toAlign, Gene gene) {
     toAlign.setReferencedGene(gene);
     trimVector(toAlign);
   }
-  
+
   public static void trimVector(AnalysedSequence toAlign) {
-    //**********simple Vector Cutting*****************
+    // **********simple Vector Cutting*****************
     findOffset(toAlign);
+
     Gene gene = toAlign.getReferencedGene();
-    
-    //calculate the end of the sequence (as long as the gene if possible els till end)
+
+
     String newSequence = toAlign.sequence;
-        
-    //if necessary cut off begin
+
+    // check for endcodon
+    String codon = gene.sequence.substring(gene.sequence.length() - 3, gene.sequence.length());
+    int hitIndex = newSequence.indexOf(codon);
+    if (hitIndex == newSequence.lastIndexOf(codon)) {
+      newSequence = newSequence.substring(hitIndex + 3);
+    }
+
+
+
+    // calculate the end of the sequence (as long as the gene if possible els till end)
+    // if necessary cut off begin
     if (toAlign.getOffset() < 0) {
       String leftVector = newSequence.substring(0, -toAlign.getOffset());
       newSequence = newSequence.substring(-toAlign.getOffset());
       toAlign.setLeftVector(leftVector);
       toAlign.setOffset(0);
     }
-    
-    int sequenceEnd = Math.min(newSequence.length(),gene.sequence.length());
+
+    int sequenceEnd = Math.min(newSequence.length(), gene.sequence.length());
     String rightVector = newSequence.substring(sequenceEnd);
     newSequence = newSequence.substring(0, sequenceEnd);
-    
-        
-    
-    
-    //**********complex Vector Cutting*****************
-    //TODO implement
-    
-    //**********modulo Cutting*****************
-    if (toAlign.getOffset()!=0) {
-      int begin = (3-(toAlign.getOffset()%3)%3);
-      //newSequence = newSequence.substring(begin);
-      //newSequence = newSequence.substring(0,newSequence.length()-(newSequence.length()%3));
+
+
+
+    // **********complex Vector Cutting*****************
+    // TODO implement
+
+    // **********modulo Cutting*****************
+    if (toAlign.getOffset() != 0) {
+      int begin = (3 - (toAlign.getOffset() % 3) % 3);
+      // newSequence = newSequence.substring(begin);
+      // newSequence = newSequence.substring(0,newSequence.length()-(newSequence.length()%3));
     }
-    //******************************************
-    
+    // ******************************************
+
     toAlign.setRightVector(rightVector);
     toAlign.setSequence(newSequence);
   }
@@ -263,43 +273,50 @@ public class StringAnalysis {
       System.err.println("Usable part of Sequence might be too short for good Results");
     }
 
-    boolean offsetNotFound = true;
+    boolean offsetNotFound = false;
     boolean emrgencyMode = false;
 
+    // check for startcodon
+    if (seq.contains(gene.substring(0, 3))) {
+      String codon = gene.substring(0, 3);
+
+      int hitIndex = seq.indexOf(codon);
+      if (hitIndex == seq.lastIndexOf(codon)) {
+        seqence.setOffset(hitIndex);
+      }
+    }
+
     while (offsetNotFound) {
-      
+
       // index of toTest is gene
       int targetIndex = gene.indexOf(toTest);
 
       // test if toTest was found and if it was found only once
       if (targetIndex >= 0 && targetIndex == gene.lastIndexOf(toTest)) {
-        //OFFSET found:
+        // OFFSET found:
         offsetNotFound = false;
-       
-        //Set offset
-        seqence.setOffset(targetIndex-testIndex);
-        
-      } else if(!emrgencyMode){
-        //check if next step is possible
+
+        // Set offset
+        seqence.setOffset(targetIndex - testIndex);
+
+      } else if (!emrgencyMode) {
+        // check if next step is possible
         if (testIndex + toTest.length() * 2 > seq.length()) {
           testIndex = 0;
           toTest = seq.substring(0, toTest.length() - 1);
           if (toTest.length() < 9) {
             emrgencyMode = true;
           }
-          //else begin with smaller step size
+          // else begin with smaller step size
         } else {
           testIndex += toTest.length();
           toTest = seq.substring(testIndex, testIndex + toTest.length());
         }
-      }else {
-        //EMERGENCY MODE
+      } else {
+        // EMERGENCY MODE
         System.err.println("EMERGENCY MODE REQUIRED");
-        //TODO Implement
-        offsetNotFound = false;//TODO REMOVE
-        if (seq.contains(gene.substring(0, 3))) {
-          seqence.setOffset(seq.indexOf(gene.substring(0,3)));
-        }
+        // TODO Implement
+        offsetNotFound = false;// TODO REMOVE
       }
     }
   }
