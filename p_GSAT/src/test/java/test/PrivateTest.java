@@ -17,7 +17,7 @@ import io.SequenceReader;
 
 public class PrivateTest {
 
-	//@Ignore
+	@Ignore
 	@Test
 	public void testLocalFile() throws FileReadingException, IOException, UndefinedTypeOfMutationException, CorruptedSequenceException {
 		// TODO set local path

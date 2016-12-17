@@ -245,7 +245,7 @@ public class StringAnalysis {
         if (matches.containsKey(rating)) {
 
           // if yes, take the one that is nearer to original
-          String doubleHit = matches.get(rating).value;
+          String doubleHit = matches.get(rating).second;
           if (Math.abs(doubleHit.trim().length() - template.length()) > Math
               .abs(canditate.trim().length() - template.length())) {
             matches.put(rating, new Pair<Integer, String>(begin, canditate));
@@ -273,22 +273,4 @@ public class StringAnalysis {
     return input;
   }
 
-  /**
-   * Helper class to store Pairs
-   * 
-   * @author Kevin
-   *
-   * @param <Key>
-   * @param <Value>
-   */
-  public static class Pair<Key, Value> {
-
-    public Key key;
-    public Value value;
-
-    public Pair(Key k, Value v) {
-      key = k;
-      value = v;
-    }
-  }
 }

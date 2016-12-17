@@ -8,6 +8,7 @@ import org.jcvi.jillion.trace.chromat.Chromatogram;
 import org.jcvi.jillion.trace.chromat.ChromatogramFactory;
 
 import analysis.AnalysedSequence;
+import analysis.Pair;
 import exceptions.FileReadingException;
 
 /**
@@ -94,7 +95,7 @@ public class SequenceReader {
    * @return
    * @author Kevin
    */
-  public static Object[] listFiles() {
+  public static Pair<LinkedList<File>, LinkedList<File>> listFiles() {
     // get list of all files and Pathes in given path
 
 
@@ -124,7 +125,7 @@ public class SequenceReader {
         oddFiles.add(activeFile);
       }
     }
-    return new Object[] {ab1Files, oddFiles};
+    return new Pair<LinkedList<File>, LinkedList<File>>(ab1Files, oddFiles);
   }
 
   /**
@@ -146,5 +147,10 @@ public class SequenceReader {
    */
   public static boolean isPathSet() {
     return path != null;
+  }
+  
+
+  public static String getPath() {
+    return path;
   }
 }

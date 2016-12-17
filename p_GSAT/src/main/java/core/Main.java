@@ -8,6 +8,7 @@ import java.util.LinkedList;
 import analysis.AnalysedSequence;
 import analysis.Gene;
 import analysis.MutationAnalysis;
+import analysis.Pair;
 import analysis.QualityAnalysis;
 import analysis.StringAnalysis;
 import exceptions.ConfigNotFoundException;
@@ -28,8 +29,6 @@ import io.SequenceReader;
  * @author Ben Kohr
  */
 public class Main {
-
-  static String readingPath = null;
 
   /**
    * Start of the GSAT program.
@@ -55,16 +54,13 @@ public class Main {
   private static void startConsoleVersion() {
     ConsoleIO.clearConsole();
     // ask user for filepath
-    Object[] okayAndOddFiles = askForAB1Files();
+    Pair<LinkedList<File>, LinkedList<File>> okayAndOddFiles = askForAB1Files();
 
-    String configReport = getConfig();
+    String configReport = getConfig(SequenceReader.getPath());
 
-    LinkedList<File> files = (LinkedList<File>) okayAndOddFiles[0];
+    String destinationPath = askForPath("Please enter the path where the results shall be stored." + System.lineSeparator() + "DESTINATION PATH: ");
 
-    String destinationPath = askForPath("Please give destination path for output File");
-
-    reportOnInput(destinationPath, (LinkedList<File>) okayAndOddFiles[0],
-        (LinkedList<File>) okayAndOddFiles[1], configReport);
+    reportOnInput(destinationPath,okayAndOddFiles.first, okayAndOddFiles.second, configReport);
 
     DatabaseConnection.setLocalPath(destinationPath);
     // TODO Aks for GEN
@@ -77,9 +73,9 @@ public class Main {
     boolean noGene = true;
     while (noGene) {
       try {
-        strGene = ConsoleIO.readLine("Please give me the gene sequence");
+        strGene = ConsoleIO.readLine("Please enter the nulceotide sequence of the reference gene." + System.lineSeparator() + "REFERENCE GENE SEQUENCE: ");
         noGene = false;
-        strGeneName = ConsoleIO.readLine("Please give the gene name");
+        strGeneName = ConsoleIO.readLine("Please enter the name of this gene." + System.lineSeparator() + "REFERENCE GENE NAME: ");
       } catch (IOException e2) {
         noGene = true;
       }
@@ -88,6 +84,7 @@ public class Main {
     Gene gene = new Gene(strGene, 0, strGeneName, "");
 
 
+    LinkedList<File> files = okayAndOddFiles.first;
     for (File file : files) {
       AnalysedSequence activeSequence = null;
 
@@ -104,48 +101,45 @@ public class Main {
         MutationAnalysis.findMutations(activeSequence);
       } catch (UndefinedTypeOfMutationException e) {
         System.err.println("Unknown mutation type found.");
-        System.err.println("Mutation:");
-        System.err.println(e.mutationString);
+        System.err.println("Mutation: " + e.mutationString);
         System.out.println();
       } catch (CorruptedSequenceException e) {
-        System.err.println(file.getName() + " Corrupted -> Reading Frame Error");
+        System.err.println("The file " + file.getName() + " seems to be corrupted. An unknown nulceotide symbol was detected.");
         e.printStackTrace();
       }
 
       // Ask for Comment
       try {
         activeSequence
-            .setComments(ConsoleIO.readLine("Please type comment text for File " + file.getName()));
+            .setComments(ConsoleIO.readLine("Please enter a comment for file " + file.getName() + " or press ENTER directly to skip."));
       } catch (IOException e1) {
         // TODO Auto-generated catch block
         e1.printStackTrace();
       }
-      // TODO:
-      // read researcher from config
+
 
       try {
         LinkedList<DatabaseEntry> entries =
             DatabaseEntry.convertSequenceIntoEntries(activeSequence);
         DatabaseConnection.addAllIntoQueue(entries);
-        DatabaseConnection.storeAllLocally(file.getName() + "_result");
+        DatabaseConnection.storeAllLocally(file.getName().replaceFirst("[.][^.]+$", "") + "_result");
         resetPipeline();
       } catch (UndefinedTypeOfMutationException e) {
-        System.err.println("Unknowen Mutation Type Found.");
-        System.err.println("Mutation:");
-        System.err.println(e.mutationString);
+        System.err.println("Unknown mutation type found.");
+        System.err.println("Mutation:" + e.mutationString);
         System.out.println();
       } catch (MissingPathException e) {
-        DatabaseConnection.setLocalPath(askForPath("Please give destination path for output File"));
+        DatabaseConnection.setLocalPath(destinationPath);
       } catch (IOException e) {
         // TODO Auto-generated catch block
         e.printStackTrace();
       }
     }
-    System.out.println("Program end");
+    System.out.println("PROGRAMM END");
+    System.out.println("Press enter to terminate");
     try {
       ConsoleIO.readLine("");
     } catch (IOException e) {
-      System.err.println("Something bad happend, please alarm your programmer");
     }
   }
 
@@ -230,7 +224,7 @@ public class Main {
    * 
    * @author Ben Kohr
    */
-  private static String getConfig() {
+  private static String getConfig(String readingPath) {
 
     Config.setPath(readingPath);
     String report = "found";
@@ -259,7 +253,7 @@ public class Main {
     try {
       return SequenceReader.convertFileIntoSequence(file);
     } catch (FileReadingException e) {
-      System.err.println("Could not Read File " + e.filename + ", File might be Damaged");
+      System.err.println("Could not read file " + e.filename + ". This file might be corrupted.");
       System.out.println();
     } catch (IOException e) {
       e.printStackTrace();
@@ -289,7 +283,7 @@ public class Main {
    * 
    * @return
    */
-  private static Object[] askForAB1Files() {
+  private static Pair<LinkedList<File>, LinkedList<File>> askForAB1Files() {
     boolean inputInvalid = true;
 
     LinkedList<File> files = null;
@@ -297,24 +291,23 @@ public class Main {
     // Ask User for AB1 File
     while (inputInvalid) {
       try {
-        String path = ConsoleIO.readLine("Please give path to AB1 files:");
+        String path = ConsoleIO.readLine("Please enter the path to the AB1 files to be analyzed." + System.lineSeparator() + "SOURCE PATH: ");
 
         io.SequenceReader.configurePath(path);
-        readingPath = path;
-        Object[] fileLists = io.SequenceReader.listFiles();
-        files = (LinkedList<File>) fileLists[0];
-        oddFiles = (LinkedList<File>) fileLists[1];
+        Pair<LinkedList<File>, LinkedList<File>> fileLists = io.SequenceReader.listFiles();
+        files = fileLists.first;
+        oddFiles = fileLists.second;
 
         if (files.isEmpty()) {
-          System.err.println("No AB1 files found in given path");
+          System.err.println("No AB1 files were found at the given path.");
         } else {
           inputInvalid = false;
         }
       } catch (IOException e) {
-        System.err.println("Invalid Input Please Try Again");
+        System.err.println("Invalid Input detected. Please try again.");
       }
     }
-    return new Object[] {files, oddFiles};
+    return new Pair<LinkedList<File>, LinkedList<File>>(files, oddFiles);
   }
 
   /**
@@ -325,7 +318,6 @@ public class Main {
   private static void resetPipeline() {
     DatabaseConnection.flushQueue();
     DatabaseConnection.resetIDs();
-    readingPath = null;
   }
 
 }
