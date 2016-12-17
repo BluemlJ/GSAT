@@ -3,6 +3,10 @@ package test;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
+import java.io.IOException;
+import java.io.OutputStream;
+import java.io.PrintStream;
+
 import org.junit.Test;
 
 import analysis.AnalysedSequence;
@@ -203,6 +207,70 @@ public class VectorTrimTests {
     StringAnalysis.trimVector(randomSequence, randomgen);
     System.out.println("Time for matching:" + ((System.nanoTime() - time)) / 1000000000.0);
   }
+
+  /**
+   * 
+   * 
+   * @author Kevin Otto
+   */
+  @Test
+  public void findOffsetTest() {
+    for (int i = 0; i < 100; i++) {
+
+      AnalysedSequence randomSequence = getRandomSequence();
+      Gene randomgene = randomSequence.getReferencedGene();
+
+      int realOffset = -randomSequence.getOffset();
+      randomSequence.setOffset(-1);
+      StringAnalysis.findOffset(randomSequence);
+      // System.out.println(realOffset);
+      // System.err.println(randomSequence.getOffset());
+      assertEquals(realOffset, randomSequence.getOffset());
+
+      // System.out.println(StringAnalysis.appentStringToLength("", randomSequence.getOffset()) +
+      // randomgene);
+      // System.out.println(randomSequence);
+    }
+  }
+
+  /**
+   * 
+   * 
+   * @author Kevin Otto
+   */
+  @Test
+  public void findPositivOffsetTest() {
+    // supress prints:
+    // creates an print stream that does nothing on print
+    PrintStream originalOUTStream = System.out;
+    PrintStream originalERRStream = System.err;
+
+
+    PrintStream dummyStream = new PrintStream(new OutputStream() {
+      public void write(int b) {
+        // NO-OP
+      }
+    });
+    System.setOut(dummyStream);
+    System.setErr(dummyStream);
+    
+
+    AnalysedSequence randomSequence = new AnalysedSequence("wiegehts", "", "", null, 0);
+    Gene randomgene = new Gene("hallowiegehts", 0, "", "");
+    randomSequence.setReferencedGene(randomgene);
+
+    StringAnalysis.findOffset(randomSequence);
+    // System.out.println(realOffset);
+    // System.err.println(randomSequence.getOffset());
+    assertEquals(5, randomSequence.getOffset());
+
+    // System.out.println(StringAnalysis.appentStringToLength("", randomSequence.getOffset()) +
+    // randomgene);
+    // System.out.println(randomSequence);
+    // unsupress prints
+    System.setOut(originalOUTStream);
+    System.setErr(originalERRStream);
+  }
   
   /**
    * 
@@ -210,27 +278,51 @@ public class VectorTrimTests {
    * @author Kevin Otto
    */
   @Test
-  public void testtest() {
-    AnalysedSequence randomSequence = getRandomSequence();
-    Gene randomgene = randomSequence.getReferencedGene();
+  public void findNegativOffsetTest() {
+    // supress prints:
+    // creates an print stream that does nothing on print
+    PrintStream originalOUTStream = System.out;
+    PrintStream originalERRStream = System.err;
+
+    PrintStream dummyStream = new PrintStream(new OutputStream() {
+      public void write(int b) {
+        // NO-OP
+      }
+    });
+    System.setOut(dummyStream);
+    System.setErr(dummyStream);
     
-    System.out.println(StringAnalysis.appentStringToLength("", randomSequence.getOffset()) + randomgene);
-    System.out.println(randomSequence);
+
+    AnalysedSequence randomSequence = new AnalysedSequence("ZZZZZZZwiegehts", "", "", null, 0);
+    Gene randomgene = new Gene("hallowiegehts", 0, "", "");
+    randomSequence.setReferencedGene(randomgene);
+
+    StringAnalysis.findOffset(randomSequence);
+    // System.out.println(realOffset);
+    // System.err.println(randomSequence.getOffset());
+    assertEquals(-2, randomSequence.getOffset());
+
+    // System.out.println(StringAnalysis.appentStringToLength("", randomSequence.getOffset()) +
+    // randomgene);
+    // System.out.println(randomSequence);
+    // unsupress prints
+    System.setOut(originalOUTStream);
+    System.setErr(originalERRStream);
   }
-  
+
 
   public static Gene getRandomGen(AnalysedSequence Sequence) {
-    int end = Sequence.length()-(int) (Math.random() * Sequence.length()/4);
+    int end = Sequence.length() - (int) (Math.random() * Sequence.length() / 4);
     end -= end % 3;
-    int begin = (int) (Math.random() * Sequence.length()/4);
+    int begin = (int) (Math.random() * Sequence.length() / 4);
     begin += (3 - (begin % 3));
     Sequence.setOffset(begin);
     return new Gene(Sequence.getSequence().substring(begin, end), 0, "FN", "Coincidence");
   }
 
   /**
-   * generates a random sequence
-   * WARNING no qualities are set
+   * generates a random sequence WARNING no qualities are set
+   * 
    * @return
    */
   public static AnalysedSequence getRandomSequence() {
@@ -239,10 +331,12 @@ public class VectorTrimTests {
       int rand = (int) (Math.random() * 4);
       sequenceBuilder.append(getRandomNucleotide(rand));
     }
-    AnalysedSequence seq = new AnalysedSequence(sequenceBuilder.toString(), "Coincidence", "FN", null, 0.0);
+    AnalysedSequence seq =
+        new AnalysedSequence(sequenceBuilder.toString(), "Coincidence", "FN", null, 0.0);
     seq.setReferencedGene(getRandomGen(seq));
-    seq.setSequence(randomMutation(seq.getSequence(),seq.getOffset(),seq.getOffset()+seq.getReferencedGene().getSequence().length()));
-    return seq; 
+    seq.setSequence(randomMutation(seq.getSequence(), seq.getOffset(),
+        seq.getOffset() + seq.getReferencedGene().getSequence().length()));
+    return seq;
   }
 
   public static char getRandomNucleotide(int id) {
@@ -265,9 +359,9 @@ public class VectorTrimTests {
     int numMutations = (int) ((Math.random() * 10) + 1);
     StringBuilder sequenceBuilder = new StringBuilder(sequence);
     for (int i = 0; i < numMutations; i++) {
-      int index = begin + ((int) (Math.random()*(sequence.length()-(begin + end + 1))));
-      sequenceBuilder.setCharAt(index, getRandomNucleotide((int)(Math.random()*4)));
-      System.err.println(index);
+      int index = begin + ((int) (Math.random() * (sequence.length() - (begin + end + 1))));
+      sequenceBuilder.setCharAt(index, getRandomNucleotide((int) (Math.random() * 4)));
+
     }
     return sequenceBuilder.toString();
   }

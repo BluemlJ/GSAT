@@ -121,7 +121,7 @@ public class StringAnalysis {
    * @param template
    * @return
    */
-  public static void trimVector(AnalysedSequence toAlign, Gene template) {
+  public static void trimVectorDEPRECATED(AnalysedSequence toAlign, Gene template) {
     int[][] levenMatrix = calculateLevenshteinMatrix(template.sequence, toAlign.sequence);
 
     // begin and end possition of final string
@@ -176,7 +176,7 @@ public class StringAnalysis {
       // System.err.println(alternativ + " # " + result);
       if (checkSimilarity(template.sequence, alternativ) <= checkSimilarity(template.sequence,
           result)) {
-        //System.out.println("BESTMATCH: Start Codon found at " + (begin + codonIndex));
+        // System.out.println("BESTMATCH: Start Codon found at " + (begin + codonIndex));
         result = alternativ;
         originalBegin = 0;
         begin = begin + codonIndex;
@@ -189,13 +189,48 @@ public class StringAnalysis {
       begin--;
     }
     // TODO remove syso
-    //System.out.println("begin = " + begin + " end = " + end);
+    // System.out.println("begin = " + begin + " end = " + end);
     result = toAlign.sequence.substring(begin, (end - ((end - begin) % 3)));
 
     toAlign.setSequence(result);
     // sequence.setOffset(begin);ORIGINAL
     toAlign.setOffset(originalBegin + ((3 - (originalBegin % 3)) % 3));
-    //System.out.println(toAlign.getOffset() + " = OFFSET");
+    // System.out.println(toAlign.getOffset() + " = OFFSET");
+  }
+  
+  public static void trimVector(AnalysedSequence toAlign, Gene gene) {
+    toAlign.setReferencedGene(gene);
+    trimVector(toAlign);
+  }
+  
+  public static void trimVector(AnalysedSequence toAlign) {
+    //**********simple Vector Cutting*****************
+    findOffset(toAlign);
+    Gene gene = toAlign.getReferencedGene();
+    
+    //calculate the end of the sequence (as long as the gene if possible els till end)
+    String newSequence = toAlign.sequence;
+        
+    //if necessary cut off begin
+    if (toAlign.getOffset() < 0) {
+      String leftVector = newSequence.substring(0, -toAlign.getOffset());
+      newSequence = newSequence.substring(-toAlign.getOffset());
+      toAlign.setLeftVector(leftVector);
+    }
+    
+    int sequenceEnd = Math.min(newSequence.length(),gene.sequence.length());
+    String rightVector = newSequence.substring(sequenceEnd);
+    newSequence = newSequence.substring(0, sequenceEnd);
+    toAlign.setRightVector(rightVector);
+        
+    toAlign.setSequence(newSequence);
+    
+    //**********complex Vector Cutting*****************
+    //TODO implement
+    
+    //**********modulo Cutting*****************
+    //TODO implement
+    
   }
 
   public static void findOffset(AnalysedSequence seqence) {
@@ -208,24 +243,44 @@ public class StringAnalysis {
 
     String toTest = seq.substring(0, (seq.length() / 3));
     int testIndex = 0;
-    
+
     if (toTest.length() < 9) {
       System.err.println("Usable part of Sequence might be too short for good Results");
     }
 
     boolean offsetNotFound = true;
+    boolean emrgencyMode = false;
 
     while (offsetNotFound) {
-      //index of toTest is gene
-      int targetIndex = gene.indexOf(toTest); 
       
-      //test if toTest was found and if it was found only once
+      // index of toTest is gene
+      int targetIndex = gene.indexOf(toTest);
+
+      // test if toTest was found and if it was found only once
       if (targetIndex >= 0 && targetIndex == gene.lastIndexOf(toTest)) {
+        //OFFSET found:
         offsetNotFound = false;
-        seqence.setOffset(testIndex+targetIndex);
+       
+        //Set offset
+        seqence.setOffset(targetIndex-testIndex);
+        
+      } else if(!emrgencyMode){
+        if (testIndex + toTest.length() * 2 > seq.length()) {
+          testIndex = 0;
+          toTest = seq.substring(0, toTest.length() - 1);
+          if (toTest.length() < 9) {
+            emrgencyMode = true;
+          }
+        } else {
+          testIndex += toTest.length();
+          toTest = seq.substring(testIndex, testIndex + toTest.length());
+        }
+      }else {
+        //EMERGENCY MODE
+        System.err.println("EMERGENCY MODE REQUIRED");
+        //TODO Implement
+        offsetNotFound = true;//TODO REMOVE
       }
-      
-      
     }
   }
 
