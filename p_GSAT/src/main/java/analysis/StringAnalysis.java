@@ -176,7 +176,7 @@ public class StringAnalysis {
       // System.err.println(alternativ + " # " + result);
       if (checkSimilarity(template.sequence, alternativ) <= checkSimilarity(template.sequence,
           result)) {
-        System.out.println("BESTMATCH: Start Codon found at " + (begin + codonIndex));
+        //System.out.println("BESTMATCH: Start Codon found at " + (begin + codonIndex));
         result = alternativ;
         originalBegin = 0;
         begin = begin + codonIndex;
@@ -189,13 +189,13 @@ public class StringAnalysis {
       begin--;
     }
     // TODO remove syso
-    System.out.println("begin = " + begin + " end = " + end);
+    //System.out.println("begin = " + begin + " end = " + end);
     result = toAlign.sequence.substring(begin, (end - ((end - begin) % 3)));
 
     toAlign.setSequence(result);
     // sequence.setOffset(begin);ORIGINAL
     toAlign.setOffset(originalBegin + ((3 - (originalBegin % 3)) % 3));
-    System.out.println(toAlign.getOffset() + " = OFFSET");
+    //System.out.println(toAlign.getOffset() + " = OFFSET");
   }
 
   public static void findOffset(AnalysedSequence seqence) {
@@ -206,8 +206,9 @@ public class StringAnalysis {
 
     // part of the sequence that will be testet.
 
-    String toTest = seq.substring(seq.length() / 3, (seq.length() / 3) * 2);
-
+    String toTest = seq.substring(0, (seq.length() / 3));
+    int testIndex = 0;
+    
     if (toTest.length() < 9) {
       System.err.println("Usable part of Sequence might be too short for good Results");
     }
@@ -215,6 +216,15 @@ public class StringAnalysis {
     boolean offsetNotFound = true;
 
     while (offsetNotFound) {
+      //index of toTest is gene
+      int targetIndex = gene.indexOf(toTest); 
+      
+      //test if toTest was found and if it was found only once
+      if (targetIndex >= 0 && targetIndex == gene.lastIndexOf(toTest)) {
+        offsetNotFound = false;
+        seqence.setOffset(testIndex+targetIndex);
+      }
+      
       
     }
   }
