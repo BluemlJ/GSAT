@@ -1,7 +1,13 @@
 package analysis;
 
+import java.io.ByteArrayOutputStream;
+import java.io.OutputStream;
+import java.io.PrintStream;
 import java.util.LinkedList;
 import java.util.TreeMap;
+
+import org.junit.After;
+import org.junit.Before;
 
 import io.ConsoleIO;
 
@@ -11,6 +17,7 @@ import io.ConsoleIO;
  * 
  */
 public class StringAnalysis {
+
 
   /**
    * Compares to sequences and returns their similarity without finding the exact differences.
@@ -216,21 +223,29 @@ public class StringAnalysis {
       String leftVector = newSequence.substring(0, -toAlign.getOffset());
       newSequence = newSequence.substring(-toAlign.getOffset());
       toAlign.setLeftVector(leftVector);
+      toAlign.setOffset(0);
     }
     
     int sequenceEnd = Math.min(newSequence.length(),gene.sequence.length());
     String rightVector = newSequence.substring(sequenceEnd);
     newSequence = newSequence.substring(0, sequenceEnd);
-    toAlign.setRightVector(rightVector);
+    
         
-    toAlign.setSequence(newSequence);
+    
     
     //**********complex Vector Cutting*****************
     //TODO implement
     
     //**********modulo Cutting*****************
-    //TODO implement
+    if (toAlign.getOffset()!=0) {
+      int begin = (3-(toAlign.getOffset()%3)%3);
+      //newSequence = newSequence.substring(begin);
+      //newSequence = newSequence.substring(0,newSequence.length()-(newSequence.length()%3));
+    }
+    //******************************************
     
+    toAlign.setRightVector(rightVector);
+    toAlign.setSequence(newSequence);
   }
 
   public static void findOffset(AnalysedSequence seqence) {
@@ -265,12 +280,14 @@ public class StringAnalysis {
         seqence.setOffset(targetIndex-testIndex);
         
       } else if(!emrgencyMode){
+        //check if next step is possible
         if (testIndex + toTest.length() * 2 > seq.length()) {
           testIndex = 0;
           toTest = seq.substring(0, toTest.length() - 1);
           if (toTest.length() < 9) {
             emrgencyMode = true;
           }
+          //else begin with smaller step size
         } else {
           testIndex += toTest.length();
           toTest = seq.substring(testIndex, testIndex + toTest.length());
@@ -279,7 +296,10 @@ public class StringAnalysis {
         //EMERGENCY MODE
         System.err.println("EMERGENCY MODE REQUIRED");
         //TODO Implement
-        offsetNotFound = true;//TODO REMOVE
+        offsetNotFound = false;//TODO REMOVE
+        if (seq.contains(gene.substring(0, 3))) {
+          seqence.setOffset(seq.indexOf(gene.substring(0,3)));
+        }
       }
     }
   }

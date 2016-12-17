@@ -22,6 +22,19 @@ import exceptions.UndefinedTypeOfMutationException;
  *
  */
 public class AnalysisTests {
+  
+  /**
+   * test the helpermethod appentString for coreckt lenght of the result
+   * 
+   * 
+   * @author Kevin Otto
+   */
+  @Test
+  public void findDifrencesInsertionTest() {
+    String result = MutationAnalysis.reportDifferences("hallo", "hallxo").getFirst();
+    String expected = "i|4|x|"; 
+    assertEquals(expected, result);
+  }
 
 
 
@@ -138,7 +151,7 @@ public class AnalysisTests {
     for (String string : list) {
       result.append(string + ", ");
     }
-    String expected = "d|5|l, ";
+    String expected = "d|5|l|, ";
     assertTrue(result.toString().equals(expected));
   }
 
@@ -156,12 +169,15 @@ public class AnalysisTests {
     for (String string : list) {
       result.append(string + ", ");
     }
-    String expected = "d|6|x, ";
+    String expected = "d|6|x|, ";
     assertTrue(result.toString().equals(expected));
   }
 
   /**
    * Test for correct insertion;
+   * using the example "helo" -> "hello" with insertion of 'l' at possition 3 
+   * 
+   * (User Story 007, typical behavior 1)
    * 
    * @author Kevin Otto
    */
@@ -181,6 +197,8 @@ public class AnalysisTests {
 
   /**
    * Test for correct insertion at end;
+   * using the example "hell" -> "hello" with insertion of 'o' at possition 4 
+   * (User Story 007, special case 1)
    * 
    * @author Kevin Otto
    */
@@ -199,6 +217,8 @@ public class AnalysisTests {
 
   /**
    * Test for correct insertion at begin;
+   * using the example "ello" -> "hello" with insertion of 'h' at possition 0
+   * (User Story 007, special case 2)
    * 
    * @author Kevin Otto
    */
@@ -217,6 +237,8 @@ public class AnalysisTests {
 
   /**
    * Test for correct substitution;
+   * using the example "helxo" -> "hello" with substitution of 'x' to 'l' at possition 4
+   * (User Story 007, typical behavior 2)
    * 
    * @author Kevin Otto
    */
@@ -235,7 +257,9 @@ public class AnalysisTests {
   }
 
   /**
-   * Test for correct substitution;
+   * Test with empty String;
+   * using the example "" -> "hello" expecting 5 insertions
+   * (User Story 007, special case 3)
    * 
    * @author Kevin Otto
    */
@@ -363,6 +387,10 @@ public class AnalysisTests {
   }
 
   @Test
+  /**
+   * @JANNIS TODO beschreibung
+   * @throws CorruptedSequenceException
+   */
   public void testsimpleDeletionFinding() throws CorruptedSequenceException {
     Gene gena = new Gene("UAUUUUUAU", 0, "testGen1", "Jannis");
     AnalysedSequence testSeq = new AnalysedSequence("UAUUAU", "Jannis", "toAnalyse", null, 0);

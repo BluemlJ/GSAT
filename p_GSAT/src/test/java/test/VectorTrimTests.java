@@ -3,10 +3,13 @@ package test;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintStream;
 
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 
 import analysis.AnalysedSequence;
@@ -20,6 +23,21 @@ import analysis.StringAnalysis;
  *
  */
 public class VectorTrimTests {
+
+  private final ByteArrayOutputStream outContent = new ByteArrayOutputStream();
+  private final ByteArrayOutputStream errContent = new ByteArrayOutputStream();
+
+  @Before
+  public void suppressOutput() {
+    //System.setOut(new PrintStream(outContent));
+    //System.setErr(new PrintStream(errContent));
+  }
+
+  @After
+  public void cleanUpStreams() {
+    //System.setOut(null);
+    //System.setErr(null);
+  }
 
   /**
    * 
@@ -83,13 +101,14 @@ public class VectorTrimTests {
    */
   @Test
   public void findBestmatchFastInsertTest() {
-    AnalysedSequence sequence = new AnalysedSequence("XXhalAAAlo3XX", null, null, null, 0.0);
-    Gene gen = new Gene("hallo3", 0, null, null);
+    AnalysedSequence sequence = new AnalysedSequence("XXhalAAAlo3GENGENGENGENGENGENGENGENGENGENGENGENXX", null, null, null, 0.0);
+    Gene gen = new Gene("hallo3GENGENGENGENGENGENGENGENGENGENGENGEN", 0, null, null);
 
     StringAnalysis.trimVector(sequence, gen);
 
     String test = sequence.getSequence();
-    String expected = "halAAAlo3";
+    String expected = "halAAAlo3GENGENGENGENGENGENGENGENGENGENGENGEN";
+    System.out.println(test);
 
     assertTrue(expected.equals(test));
     assertEquals(0, sequence.getOffset());
@@ -140,13 +159,15 @@ public class VectorTrimTests {
    */
   @Test
   public void findBestmatchFastDammagedBeginAndEND() {
-    AnalysedSequence sequence = new AnalysedSequence("XXhxll33YasdlkjfhY", null, null, null, 0.0);
-    Gene gen = new Gene("hallo3", 0, null, null);
+    AnalysedSequence sequence =
+        new AnalysedSequence("XXhxll33owareyoutodaygoodandyouYasdlkjfhY", null, null, null, 0.0);
+    Gene gen = new Gene("hellohowareyoutodaygoodandyou", 0, null, null);
 
     StringAnalysis.trimVector(sequence, gen);
 
     String test = sequence.getSequence();
-    String expected = "hxll33";
+    String expected = "hxll33owareyoutodaygoodandyou";
+
 
     assertTrue(expected.equals(test));
     assertEquals(0, sequence.getOffset());
@@ -240,20 +261,8 @@ public class VectorTrimTests {
    */
   @Test
   public void findPositivOffsetTest() {
-    // supress prints:
-    // creates an print stream that does nothing on print
-    PrintStream originalOUTStream = System.out;
-    PrintStream originalERRStream = System.err;
 
 
-    PrintStream dummyStream = new PrintStream(new OutputStream() {
-      public void write(int b) {
-        // NO-OP
-      }
-    });
-    System.setOut(dummyStream);
-    System.setErr(dummyStream);
-    
 
     AnalysedSequence randomSequence = new AnalysedSequence("wiegehts", "", "", null, 0);
     Gene randomgene = new Gene("hallowiegehts", 0, "", "");
@@ -264,14 +273,8 @@ public class VectorTrimTests {
     // System.err.println(randomSequence.getOffset());
     assertEquals(5, randomSequence.getOffset());
 
-    // System.out.println(StringAnalysis.appentStringToLength("", randomSequence.getOffset()) +
-    // randomgene);
-    // System.out.println(randomSequence);
-    // unsupress prints
-    System.setOut(originalOUTStream);
-    System.setErr(originalERRStream);
   }
-  
+
   /**
    * 
    * 
@@ -291,7 +294,7 @@ public class VectorTrimTests {
     });
     System.setOut(dummyStream);
     System.setErr(dummyStream);
-    
+
 
     AnalysedSequence randomSequence = new AnalysedSequence("ZZZZZZZwiegehts", "", "", null, 0);
     Gene randomgene = new Gene("hallowiegehts", 0, "", "");
@@ -310,7 +313,12 @@ public class VectorTrimTests {
     System.setErr(originalERRStream);
   }
 
-
+  /**
+   * generates a random gene out of a rendom sequence
+   * 
+   * @param Sequence
+   * @return
+   */
   public static Gene getRandomGen(AnalysedSequence Sequence) {
     int end = Sequence.length() - (int) (Math.random() * Sequence.length() / 4);
     end -= end % 3;
@@ -339,6 +347,13 @@ public class VectorTrimTests {
     return seq;
   }
 
+  /**
+   * returns a rendom nucleotide (as char) 0 = A 1 = T 2 = C 3 = G everything else will result in an
+   * error 'e'
+   * 
+   * @param id
+   * @return
+   */
   public static char getRandomNucleotide(int id) {
     switch (id) {
       case 0:
@@ -355,6 +370,15 @@ public class VectorTrimTests {
     }
   }
 
+  /**
+   * randomly mutates the given sequence in range from begin to and it puts up to 10 mutation into
+   * one sequence
+   * 
+   * @param sequence
+   * @param begin
+   * @param end
+   * @return
+   */
   public static String randomMutation(String sequence, int begin, int end) {
     int numMutations = (int) ((Math.random() * 10) + 1);
     StringBuilder sequenceBuilder = new StringBuilder(sequence);
