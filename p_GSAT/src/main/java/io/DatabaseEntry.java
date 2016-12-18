@@ -128,7 +128,8 @@ public class DatabaseEntry {
     String addingDate = seq.getAddingDate();
     String researcher = seq.getResearcher();
     String comments = seq.getComments();
-    String vector = seq.getVector();
+    //TODO repair
+    //String vector = seq.getVector();
     String promotor = seq.getPromotor();
     boolean manuallyChecked = seq.isManuallyChecked();
     
@@ -142,7 +143,7 @@ public class DatabaseEntry {
       MutationType mType = determineMutationType(mutation);
       
       DatabaseEntry dbe = 
-          new DatabaseEntry(fileName, geneID, sequence, addingDate, researcher, comments, vector, promotor, manuallyChecked, mutation, mType);
+          new DatabaseEntry(fileName, geneID, sequence, addingDate, researcher, comments, /*TODO REPAIR*/"vector", promotor, manuallyChecked, mutation, mType);
       entries.add(dbe);
     }
 

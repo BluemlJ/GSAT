@@ -24,14 +24,14 @@ public class ConsoleTest {
 
   @Before
   public void setUpStreams() {
-    // System.setOut(new PrintStream(outContent));
-    // System.setErr(new PrintStream(errContent));
+    System.setOut(new PrintStream(outContent));
+    System.setErr(new PrintStream(errContent));
   }
 
   @After
   public void cleanUpStreams() {
-    // System.setOut(null);
-    // System.setErr(null);
+    System.setOut(null);
+    System.setErr(null);
   }
 
 

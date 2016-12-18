@@ -1,10 +1,15 @@
 package analysis;
 
+import java.io.ByteArrayOutputStream;
+import java.io.OutputStream;
+import java.io.PrintStream;
 import java.util.LinkedList;
 import java.util.TreeMap;
 
-import io.ConsoleIO;
+import org.junit.After;
+import org.junit.Before;
 
+import io.ConsoleIO;
 
 /**
  * This class contains the logic of analyzing sequence strings. This class serves for
@@ -12,6 +17,7 @@ import io.ConsoleIO;
  * 
  */
 public class StringAnalysis {
+
 
   /**
    * Compares to sequences and returns their similarity without finding the exact differences.
@@ -86,8 +92,6 @@ public class StringAnalysis {
     // create empty Levenshtein matrix
     int[][] levenMatrix = new int[matrixHeight][matrixWidth];
 
-
-
     // fill first line from 1 to |first|
     for (int i = 1; i < matrixHeight; i++) {
       levenMatrix[i][0] = i;
@@ -118,24 +122,13 @@ public class StringAnalysis {
   }
 
   /**
-   * cuts out the Vector from a given sequence
-   * 
-   * @param toAlign
-   * @param template
-   * @author Kevin
-   */
-  public static void trimVector(AnalysedSequence toAlign, Gene template) {
-    findBestMatchFast(toAlign, template);
-  }
-
-  /**
    * same as find Best Match but faster
    * 
    * @param toAlign
    * @param template
    * @return
    */
-  public static void findBestMatchFast(AnalysedSequence toAlign, Gene template) {
+  public static void trimVectorDEPRECATED(AnalysedSequence toAlign, Gene template) {
     int[][] levenMatrix = calculateLevenshteinMatrix(template.sequence, toAlign.sequence);
 
     // begin and end possition of final string
@@ -190,7 +183,7 @@ public class StringAnalysis {
       // System.err.println(alternativ + " # " + result);
       if (checkSimilarity(template.sequence, alternativ) <= checkSimilarity(template.sequence,
           result)) {
-        System.out.println("BESTMATCH: Start Codon found at " + (begin + codonIndex));
+        // System.out.println("BESTMATCH: Start Codon found at " + (begin + codonIndex));
         result = alternativ;
         originalBegin = 0;
         begin = begin + codonIndex;
@@ -203,13 +196,129 @@ public class StringAnalysis {
       begin--;
     }
     // TODO remove syso
-    System.out.println("begin = " + begin + " end = " + end);
+    // System.out.println("begin = " + begin + " end = " + end);
     result = toAlign.sequence.substring(begin, (end - ((end - begin) % 3)));
 
     toAlign.setSequence(result);
     // sequence.setOffset(begin);ORIGINAL
     toAlign.setOffset(originalBegin + ((3 - (originalBegin % 3)) % 3));
-    System.out.println(toAlign.getOffset() + " = OFFSET");
+    // System.out.println(toAlign.getOffset() + " = OFFSET");
+  }
+
+  public static void trimVector(AnalysedSequence toAlign, Gene gene) {
+    toAlign.setReferencedGene(gene);
+    trimVector(toAlign);
+  }
+
+  public static void trimVector(AnalysedSequence toAlign) {
+    // **********simple Vector Cutting*****************
+    findOffset(toAlign);
+
+    Gene gene = toAlign.getReferencedGene();
+
+
+    String newSequence = toAlign.sequence;
+
+    // check for endcodon
+    String codon = gene.sequence.substring(gene.sequence.length() - 3, gene.sequence.length());
+    int hitIndex = newSequence.indexOf(codon);
+    if (hitIndex == newSequence.lastIndexOf(codon)) {
+      newSequence = newSequence.substring(hitIndex + 3);
+    }
+
+
+
+    // calculate the end of the sequence (as long as the gene if possible els till end)
+    // if necessary cut off begin
+    if (toAlign.getOffset() < 0) {
+      String leftVector = newSequence.substring(0, -toAlign.getOffset());
+      newSequence = newSequence.substring(-toAlign.getOffset());
+      toAlign.setLeftVector(leftVector);
+      toAlign.setOffset(0);
+    }
+
+    int sequenceEnd = Math.min(newSequence.length(), gene.sequence.length());
+    String rightVector = newSequence.substring(sequenceEnd);
+    newSequence = newSequence.substring(0, sequenceEnd);
+
+
+
+    // **********complex Vector Cutting*****************
+    // TODO implement
+
+    // **********modulo Cutting*****************
+    if (toAlign.getOffset() != 0) {
+      int begin = (3 - (toAlign.getOffset() % 3) % 3);
+      // newSequence = newSequence.substring(begin);
+      // newSequence = newSequence.substring(0,newSequence.length()-(newSequence.length()%3));
+    }
+    // ******************************************
+
+    toAlign.setRightVector(rightVector);
+    toAlign.setSequence(newSequence);
+  }
+
+  public static void findOffset(AnalysedSequence seqence) {
+
+    // get gene and sequence as String
+    String gene = seqence.getReferencedGene().getSequence();
+    String seq = seqence.getSequence();
+
+    // part of the sequence that will be testet.
+
+    String toTest = seq.substring(0, (seq.length() / 3));
+    int testIndex = 0;
+
+    if (toTest.length() < 9) {
+      System.err.println("Usable part of Sequence might be too short for good Results");
+    }
+
+    boolean offsetNotFound = false;
+    boolean emrgencyMode = false;
+
+    // check for startcodon
+    if (seq.contains(gene.substring(0, 3))) {
+      String codon = gene.substring(0, 3);
+
+      int hitIndex = seq.indexOf(codon);
+      if (hitIndex == seq.lastIndexOf(codon)) {
+        seqence.setOffset(hitIndex);
+      }
+    }
+
+    while (offsetNotFound) {
+
+      // index of toTest is gene
+      int targetIndex = gene.indexOf(toTest);
+
+      // test if toTest was found and if it was found only once
+      if (targetIndex >= 0 && targetIndex == gene.lastIndexOf(toTest)) {
+        // OFFSET found:
+        offsetNotFound = false;
+
+        // Set offset
+        seqence.setOffset(targetIndex - testIndex);
+
+      } else if (!emrgencyMode) {
+        // check if next step is possible
+        if (testIndex + toTest.length() * 2 > seq.length()) {
+          testIndex = 0;
+          toTest = seq.substring(0, toTest.length() - 1);
+          if (toTest.length() < 9) {
+            emrgencyMode = true;
+          }
+          // else begin with smaller step size
+        } else {
+          testIndex += toTest.length();
+          toTest = seq.substring(testIndex, testIndex + toTest.length());
+        }
+      } else {
+        // EMERGENCY MODE
+        System.err.println("EMERGENCY MODE REQUIRED");
+        // TODO Implement
+        offsetNotFound = false;// TODO REMOVE
+      }
+    }
   }
 
   /**
@@ -245,7 +354,7 @@ public class StringAnalysis {
         if (matches.containsKey(rating)) {
 
           // if yes, take the one that is nearer to original
-          String doubleHit = matches.get(rating).value;
+          String doubleHit = matches.get(rating).second;
           if (Math.abs(doubleHit.trim().length() - template.length()) > Math
               .abs(canditate.trim().length() - template.length())) {
             matches.put(rating, new Pair<Integer, String>(begin, canditate));
@@ -273,22 +382,4 @@ public class StringAnalysis {
     return input;
   }
 
-  /**
-   * Helper class to store Pairs
-   * 
-   * @author Kevin
-   *
-   * @param <Key>
-   * @param <Value>
-   */
-  public static class Pair<Key, Value> {
-
-    public Key key;
-    public Value value;
-
-    public Pair(Key k, Value v) {
-      key = k;
-      value = v;
-    }
-  }
 }

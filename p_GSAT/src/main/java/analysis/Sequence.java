@@ -145,5 +145,10 @@ public abstract class Sequence {
     this.researcher = researcher;
   }
   
+  @Override
+  public String toString() {
+    return sequence;
+  }
+  
   
 }

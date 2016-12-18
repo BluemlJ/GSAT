@@ -39,7 +39,12 @@ public class AnalysedSequence extends Sequence {
   /**
    * The vector to be stored with this sequence.
    */
-  private String vector;
+  private String leftVector;
+  
+  /**
+   * The vector to be stored with this sequence.
+   */
+  private String rightVector;
 
   /**
    * The promotor to be stored with this sequence.
@@ -185,12 +190,20 @@ public class AnalysedSequence extends Sequence {
     this.manuallyChecked = manuallyChecked;
   }
 
-  public String getVector() {
-    return vector;
+  public String getLeftVector() {
+    return leftVector;
   }
 
-  public void setVector(String vector) {
-    this.vector = vector;
+  public void setLeftVector(String vector) {
+    this.leftVector = vector;
+  }
+  
+  public String getRightVector() {
+    return rightVector;
+  }
+
+  public void setRightVector(String vector) {
+    this.rightVector = vector;
   }
 
   public String getPromotor() {
