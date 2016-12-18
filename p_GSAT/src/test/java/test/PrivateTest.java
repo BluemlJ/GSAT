@@ -23,7 +23,7 @@ public class PrivateTest {
       UndefinedTypeOfMutationException, CorruptedSequenceException {
     // TODO set local path
     SequenceReader
-        .configurePath("/home/bluemlj/Dropbox/BP_GSAT/Materialien/Dateien/Bsp/AB/93GH02_G05.ab1");
+        .configurePath("/home/bluemlj/Dropbox/BP_GSAT/Materialien/Dateien/Bsp/AB/93GH02_A03.ab1");
     System.out.println("Path set");
     AnalysedSequence testSeq = SequenceReader.convertFileIntoSequence();
     System.out.println("File read");

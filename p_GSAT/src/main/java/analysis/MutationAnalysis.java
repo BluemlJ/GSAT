@@ -239,25 +239,21 @@ public class MutationAnalysis {
       if (position > lastposition + 1 || i == differences.size() - 1) {
 
         for (int tempPosition = lastposition; tempPosition < position - 1; tempPosition++) {
-          if (tempPosition < 0) {
-            System.err.println("negativ Positioning");
-
+          if (tempPosition * 3 + toAnalyze.getOffset() + 3 > originalSequence.length()
+              || tempPosition * 3 + 3 > mutatedSequence.length()) {
+            break;
           } else {
-            if (tempPosition * 3 + toAnalyze.getOffset() + 3 > originalSequence.length()
-                || tempPosition * 3 + 3 > mutatedSequence.length()) {
-              break;
-            } else {
-              String oldAcid = originalSequence.substring(tempPosition * 3 + toAnalyze.getOffset(),
-                  tempPosition * 3 + toAnalyze.getOffset() + 3);
-              String newAcid = mutatedSequence.substring(tempPosition * 3, tempPosition * 3 + 3);
+            String oldAcid = originalSequence.substring(tempPosition * 3 + toAnalyze.getOffset(),
+                tempPosition * 3 + toAnalyze.getOffset() + 3);
+            String newAcid = mutatedSequence.substring(tempPosition * 3, tempPosition * 3 + 3);
 
-              if (!oldAcid.equals(newAcid)) {
-                toAnalyze.addMutation(oldAcid + tempPosition + newAcid);
-              } else {
-                checkFrameerrorCounter = 0;
-              }
+            if (!oldAcid.equals(newAcid)) {
+              toAnalyze.addMutation(oldAcid + tempPosition + newAcid);
+            } else {
+              checkFrameerrorCounter = 0;
             }
           }
+
           lastposition = position;
         }
 
