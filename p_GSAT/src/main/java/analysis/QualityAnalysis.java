@@ -14,11 +14,11 @@ public class QualityAnalysis {
    */
   // TODO needs to be adjusted to achieve reasonable values on sample ab1
   // data, 10-40 looks promising
-  private static int breakcounter = 5;
+  private static int breakcounter = 10;
   private static int startcounter = 5;
 
-  private static int avgApproximationEnd = 30;
-  private static int avgApproximationStart = 50;
+  private static int avgApproximationEnd = 25;
+  private static int avgApproximationStart = 40;
 
   /**
    * This method checks the nucleotidestring and finds a position to trim the low quality part at
@@ -43,7 +43,7 @@ public class QualityAnalysis {
 
     for (int quality : qualities) {
       if (!startfound) {
-        if (quality > (average + avgApproximationStart) / 2)
+        if (quality > (avgApproximationStart))
           countertoStart++;
         else {
           counter += countertoStart + 1;
@@ -56,7 +56,7 @@ public class QualityAnalysis {
         }
       } else {
 
-        if (quality < (average + avgApproximationEnd) / 2)
+        if (quality < (avgApproximationEnd))
           countertoBreak++;
         else {
           counter += countertoBreak + 1;
@@ -71,6 +71,9 @@ public class QualityAnalysis {
 
     return trimmingPosition;
   }
+  
+   
+  
 
   /**
    * This method trims a sequence by removing the low quality end of the sequence.
