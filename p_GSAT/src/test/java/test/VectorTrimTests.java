@@ -4,8 +4,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.OutputStream;
+
 import java.io.PrintStream;
 
 import org.junit.After;
@@ -29,14 +28,14 @@ public class VectorTrimTests {
 
   @Before
   public void suppressOutput() {
-    //System.setOut(new PrintStream(outContent));
-    //System.setErr(new PrintStream(errContent));
+     System.setOut(new PrintStream(outContent));
+     System.setErr(new PrintStream(errContent));
   }
 
   @After
   public void cleanUpStreams() {
-    //System.setOut(null);
-    //System.setErr(null);
+     System.setOut(null);
+     System.setErr(null);
   }
 
   /**
@@ -45,130 +44,15 @@ public class VectorTrimTests {
    * @author Kevin Otto
    */
   @Test
-  public void findBestmatchFastBasicTest() {
-    AnalysedSequence sequence = new AnalysedSequence("XXhallo3XX", null, null, null, 0.0);
-    Gene gen = new Gene("hallo3", 0, null, null);
-
-    StringAnalysis.trimVector(sequence, gen);
-    String test = sequence.getSequence();
-    String expected = "hallo3";
-    assertTrue(expected.equals(test));
-    assertEquals(0, sequence.getOffset());
-  }
-
-
-  /**
-   * 
-   * 
-   * @author Kevin Otto
-   */
-  @Test
-  public void findBestmatchFastMutatedTest() {
-    AnalysedSequence sequence = new AnalysedSequence("XXhalAo3XX", null, null, null, 0.0);
-    Gene gen = new Gene("hallo3", 0, null, null);
-
-    StringAnalysis.trimVector(sequence, gen);
-    String test = sequence.getSequence();
-    String expected = "halAo3";
-    assertTrue(expected.equals(test));
-    assertEquals(0, sequence.getOffset());
-  }
-
-
-  /**
-   * 
-   * 
-   * @author Kevin Otto
-   */
-  @Test
-  public void findBestmatchFastDelTest() {
-    AnalysedSequence sequence = new AnalysedSequence("XXhalloWieGetsXX", null, null, null, 0.0);
-    Gene gen = new Gene("halloWieGehts", 0, null, null);
-
-    StringAnalysis.trimVector(sequence, gen);
-
-    String test = sequence.getSequence();
-    String expected = "halloWieGets";
-
-    assertTrue(expected.equals(test));
-    assertEquals(0, sequence.getOffset());
-  }
-
-  /**
-   * 
-   * 
-   * @author Kevin Otto
-   */
-  @Test
-  public void findBestmatchFastInsertTest() {
-    AnalysedSequence sequence = new AnalysedSequence("XXhalAAAlo3GENGENGENGENGENGENGENGENGENGENGENGENXX", null, null, null, 0.0);
-    Gene gen = new Gene("hallo3GENGENGENGENGENGENGENGENGENGENGENGEN", 0, null, null);
-
-    StringAnalysis.trimVector(sequence, gen);
-
-    String test = sequence.getSequence();
-    String expected = "halAAAlo3GENGENGENGENGENGENGENGENGENGENGENGEN";
-    System.out.println(test);
-
-    assertTrue(expected.equals(test));
-    assertEquals(0, sequence.getOffset());
-  }
-
-  /**
-   * 
-   * 
-   * @author Kevin Otto
-   */
-  @Test
-  public void findBestmatchFastDammagedBegin() {
-    AnalysedSequence sequence = new AnalysedSequence("XXhxllo3XX", null, null, null, 0.0);
-    Gene gen = new Gene("hallo3", 0, null, null);
-
-    StringAnalysis.trimVector(sequence, gen);
-
-    String test = sequence.getSequence();
-    String expected = "hxllo3";
-
-    assertTrue(expected.equals(test));
-    assertEquals(0, sequence.getOffset());
-  }
-
-  /**
-   * 
-   * 
-   * @author Kevin Otto
-   */
-  @Test
-  public void findBestmatchFastDammagedEND() {
-    AnalysedSequence sequence = new AnalysedSequence("XXhall33XX", null, null, null, 0.0);
-    Gene gen = new Gene("hallo3", 0, null, null);
-
-    StringAnalysis.trimVector(sequence, gen);
-
-    String test = sequence.getSequence();
-    String expected = "hall33";
-
-    assertTrue(expected.equals(test));
-    assertEquals(0, sequence.getOffset());
-  }
-
-  /**
-   * 
-   * 
-   * @author Kevin Otto
-   */
-  @Test
-  public void findBestmatchFastDammagedBeginAndEND() {
+  public void trimVectorBasicTest() {
     AnalysedSequence sequence =
-        new AnalysedSequence("XXhxll33owareyoutodaygoodandyouYasdlkjfhY", null, null, null, 0.0);
-    Gene gen = new Gene("hellohowareyoutodaygoodandyou", 0, null, null);
+        new AnalysedSequence("XXhallo3wieGehts3dirheute3XX", null, null, null, 0.0);
+    Gene gen = new Gene("hallo3wieGehts3dirheute3", 0, null, null);
 
     StringAnalysis.trimVector(sequence, gen);
-
     String test = sequence.getSequence();
-    String expected = "hxll33owareyoutodaygoodandyou";
+    String expected = "hallo3wieGehts3dirheute3";
 
-System.err.println(test);
     assertTrue(expected.equals(test));
     assertEquals(0, sequence.getOffset());
   }
@@ -180,13 +64,138 @@ System.err.println(test);
    * @author Kevin Otto
    */
   @Test
-  public void findBestmatchFastEndMissingTest() {
+  public void trimVectorMutatedTest() {
+    AnalysedSequence sequence =
+        new AnalysedSequence("XXhalAo3wieGehts3dirheute3XX", null, null, null, 0.0);
+    Gene gen = new Gene("hallo3wieGehts3dirheute3", 0, null, null);
+
+    StringAnalysis.trimVector(sequence, gen);
+    String test = sequence.getSequence();
+    String expected = "halAo3wieGehts3dirheute3";
+
+    assertTrue(expected.equals(test));
+    assertEquals(0, sequence.getOffset());
+  }
+
+
+  /**
+   * 
+   * 
+   * @author Kevin Otto
+   */
+  @Test
+  public void trimVectorDelitionTest() {
+    AnalysedSequence sequence =
+        new AnalysedSequence("XXhallo3Gehts3dirheute3XX", null, null, null, 0.0);
+    Gene gen = new Gene("hallo3wieGehts3dirheute3", 0, null, null);
+
+    StringAnalysis.trimVector(sequence, gen);
+
+    String test = sequence.getSequence();
+    String expected = "hallo3Gehts3dirheute3";
+
+    assertTrue(expected.equals(test));
+    assertEquals(0, sequence.getOffset());
+  }
+
+  /**
+   * 
+   * 
+   * @author Kevin Otto
+   */
+  @Test
+  public void trimVectorInsertTest() {
+    AnalysedSequence sequence =
+        new AnalysedSequence("XXhallo3wiewieGehts3dirheute3XXX", null, null, null, 0.0);
+    Gene gen = new Gene("hallo3wieGehts3dirheute3", 0, null, null);
+
+    StringAnalysis.trimVector(sequence, gen);
+
+    String test = sequence.getSequence();
+    String expected = "hallo3wiewieGehts3dirheute3";
+    
+    assertTrue(expected.equals(test));
+    assertEquals(0, sequence.getOffset());
+  }
+
+  /**
+   * 
+   * 
+   * @author Kevin Otto
+   */
+  @Test
+  public void trimVectorDammagedBeginTest() {
+    AnalysedSequence sequence =
+        new AnalysedSequence("XXhaXlo3wieGehts3dirheute3XX", null, null, null, 0.0);
+    Gene gen = new Gene("hallo3wieGehts3dirheute3", 0, null, null);
+
+    StringAnalysis.trimVector(sequence, gen);
+
+    String test = sequence.getSequence();
+    String expected = "haXlo3wieGehts3dirheute3";
+
+    assertTrue(expected.equals(test));
+    assertEquals(0, sequence.getOffset());
+  }
+
+  /**
+   * 
+   * 
+   * @author Kevin Otto
+   */
+  @Test
+  public void trimVectorDammagedEND() {
+    AnalysedSequence sequence =
+        new AnalysedSequence("XXXhallo3wieGehts3dirheute3ERDXYX", null, null, null, 0.0);
+    Gene gen = new Gene("hallo3wieGehts3dirheute3END", 0, null, null);
+
+    StringAnalysis.trimVector(sequence, gen);
+
+    String test = sequence.getSequence();
+    String expected = "hallo3wieGehts3dirheute3ERD";
+    
+    assertTrue(expected.equals(test));
+    assertEquals(0, sequence.getOffset());
+  }
+
+  /**
+   * 
+   * 
+   * @author Kevin Otto
+   */
+  @Test
+  public void trimVectorDammagedBeginAndEND() {
+    AnalysedSequence sequence =
+        new AnalysedSequence("XYXBELhallo3wieGehts3dirheute3ERDASDF", null, null, null, 0.0);
+    Gene gen = new Gene("BEGhallo3wieGehts3dirheute3END", 0, null, null);
+
+    StringAnalysis.trimVector(sequence, gen);
+
+    String test = sequence.getSequence();
+    String expected = "BELhallo3wieGehts3dirheute3ERD";
+
+
+    assertTrue(expected.equals(test));
+    assertEquals(0, sequence.getOffset());
+  }
+
+
+  /**
+   * 
+   * 
+   * @author Kevin Otto
+   */
+  @Test
+  public void trimVectorEndMissingTest() {
     AnalysedSequence sequence = new AnalysedSequence("XXhallow", null, null, null, 0.0);
     Gene gen = new Gene("hallowiegeht", 0, null, null);
 
     StringAnalysis.trimVector(sequence, gen);
     String test = sequence.getSequence();
     String expected = "hallow";
+
+
+
     assertTrue(expected.equals(test));
     assertEquals(0, sequence.getOffset());
   }
@@ -197,16 +206,17 @@ System.err.println(test);
    * @author Kevin Otto
    */
   @Test
-  public void findBestmatchFastBeginMissingTest() {
-    AnalysedSequence sequence = new AnalysedSequence("wiegeh", null, null, null, 0.0);
-    Gene gen = new Gene("hallo3wiegeht", 0, null, null);
+  public void trimVectorBeginMissingTest() {
+    AnalysedSequence sequence =
+        new AnalysedSequence("wieGehts3dirheute3ABCABCENDYXYX", null, null, null, 0.0);
+    Gene gen = new Gene("BEGhallo3wieGehts3dirheute3ABCABCEND", 0, null, null);
 
     StringAnalysis.trimVector(sequence, gen);
     String test = sequence.getSequence();
 
-    String expected = "wiegeh";
+    String expected = "wieGehts3dirheute3ABCABCEND";
     assertTrue(expected.equals(test));
-    assertEquals(6, sequence.getOffset());
+    assertEquals(9, sequence.getOffset());
   }
 
 
@@ -216,101 +226,20 @@ System.err.println(test);
    * @author Kevin Otto
    */
   @Test
-  public void findBestmatchFastTimingTest() {
+  public void trimVectorTimingTest() {
 
     AnalysedSequence randomSequence = getRandomSequence();
     Gene randomgen = getRandomGen(randomSequence);
 
-
-
     Double time = (double) System.nanoTime();
 
     StringAnalysis.trimVector(randomSequence, randomgen);
-    System.out.println("Time for matching:" + ((System.nanoTime() - time)) / 1000000000.0);
+    time = ((System.nanoTime() - time)) / 1000000000.0;// calsulate time needet and convert to
+                                                       // seconds
+
+    assertTrue(time < 5);
   }
 
-  /**
-   * 
-   * 
-   * @author Kevin Otto
-   */
-  @Test
-  public void findOffsetTest() {
-    for (int i = 0; i < 100; i++) {
-
-      AnalysedSequence randomSequence = getRandomSequence();
-      Gene randomgene = randomSequence.getReferencedGene();
-
-      int realOffset = -randomSequence.getOffset();
-      randomSequence.setOffset(-1);
-      StringAnalysis.findOffset(randomSequence);
-      // System.out.println(realOffset);
-      // System.err.println(randomSequence.getOffset());
-      assertEquals(realOffset, randomSequence.getOffset());
-
-      // System.out.println(StringAnalysis.appentStringToLength("", randomSequence.getOffset()) +
-      // randomgene);
-      // System.out.println(randomSequence);
-    }
-  }
-
-  /**
-   * 
-   * 
-   * @author Kevin Otto
-   */
-  @Test
-  public void findPositivOffsetTest() {
-
-
-
-    AnalysedSequence randomSequence = new AnalysedSequence("wiegehts", "", "", null, 0);
-    Gene randomgene = new Gene("hallowiegehts", 0, "", "");
-    randomSequence.setReferencedGene(randomgene);
-
-    StringAnalysis.findOffset(randomSequence);
-    System.err.println(randomSequence.getOffset());
-    assertEquals(5, randomSequence.getOffset());
-
-  }
-
-  /**
-   * 
-   * 
-   * @author Kevin Otto
-   */
-  @Test
-  public void findNegativOffsetTest() {
-    // supress prints:
-    // creates an print stream that does nothing on print
-    PrintStream originalOUTStream = System.out;
-    PrintStream originalERRStream = System.err;
-
-    PrintStream dummyStream = new PrintStream(new OutputStream() {
-      public void write(int b) {
-        // NO-OP
-      }
-    });
-    System.setOut(dummyStream);
-    System.setErr(dummyStream);
-
-
-    AnalysedSequence randomSequence = new AnalysedSequence("ZZZZZZZwiegehts", "", "", null, 0);
-    Gene randomgene = new Gene("hallowiegehts", 0, "", "");
-    randomSequence.setReferencedGene(randomgene);
-
-    StringAnalysis.findOffset(randomSequence);
-    // System.out.println(realOffset);
-    // System.err.println(randomSequence.getOffset());
-    assertEquals(-2, randomSequence.getOffset());
-
-    // System.out.println(StringAnalysis.appentStringToLength("", randomSequence.getOffset()) +
-    // randomgene);
-    // System.out.println(randomSequence);
-    // unsupress prints
-    System.setOut(originalOUTStream);
-    System.setErr(originalERRStream);
-  }
 
   /**
    * generates a random gene out of a rendom sequence
