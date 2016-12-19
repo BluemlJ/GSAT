@@ -56,92 +56,31 @@ public class Main {
     // ask user for filepath
     Pair<LinkedList<File>, LinkedList<File>> okayAndOddFiles = askForAB1Files();
 
+    // read config file
     String configReport = getConfig(SequenceReader.getPath());
 
-    String destinationPath = askForPath("Please enter the path where the results shall be stored." + System.lineSeparator() + "DESTINATION PATH: ");
+    // set path for results and set database path
+    String destinationPath = processPath();
 
-    reportOnInput(destinationPath,okayAndOddFiles.first, okayAndOddFiles.second, configReport);
+    // write a report on parsed files
+    reportOnInput(destinationPath, okayAndOddFiles.first, okayAndOddFiles.second, configReport);    
 
-    DatabaseConnection.setLocalPath(destinationPath);
-    // TODO Aks for GEN
-    // String genPath = askForPath("Please give path to gene");
+    // ask user for reference gene
+    Gene gene = askForGene();
 
-    // TODO Read GENE
-    // TODO REALLY DO IT
-    String strGene = null;
-    String strGeneName = null;
-    boolean noGene = true;
-    while (noGene) {
-      try {
-        strGene = ConsoleIO.readLine("Please enter the nulceotide sequence of the reference gene." + System.lineSeparator() + "REFERENCE GENE SEQUENCE: ");
-        noGene = false;
-        strGeneName = ConsoleIO.readLine("Please enter the name of this gene." + System.lineSeparator() + "REFERENCE GENE NAME: ");
-      } catch (IOException e2) {
-        noGene = true;
-      }
-    }
-
-    Gene gene = new Gene(strGene, 0, strGeneName, "");
-
-
+    // get ab1 files
     LinkedList<File> files = okayAndOddFiles.first;
+
+    // process all ab1 files
     for (File file : files) {
-      AnalysedSequence activeSequence = null;
-
-      // Read Sequence From File
-      activeSequence = readSequenceFromFile(file);
-      activeSequence.setReferencedGene(gene);
-      // cut out low Quality parts of sequence
-      QualityAnalysis.trimLowQuality(activeSequence);
-
-      // cut out Vector
-      StringAnalysis.trimVector(activeSequence, gene);
-
-      try {
-        MutationAnalysis.findMutations(activeSequence);
-      } catch (UndefinedTypeOfMutationException e) {
-        System.err.println("Unknown mutation type found.");
-        System.err.println("Mutation: " + e.mutationString);
-        System.out.println();
-      } catch (CorruptedSequenceException e) {
-        System.err.println("The file " + file.getName() + " seems to be corrupted. An unknown nulceotide symbol was detected.");
-        e.printStackTrace();
-      }
-
-      // Ask for Comment
-      try {
-        activeSequence
-            .setComments(ConsoleIO.readLine("Please enter a comment for file " + file.getName() + " or press ENTER directly to skip."));
-      } catch (IOException e1) {
-        // TODO Auto-generated catch block
-        e1.printStackTrace();
-      }
-
-
-      try {
-        LinkedList<DatabaseEntry> entries =
-            DatabaseEntry.convertSequenceIntoEntries(activeSequence);
-        DatabaseConnection.addAllIntoQueue(entries);
-        DatabaseConnection.storeAllLocally(file.getName().replaceFirst("[.][^.]+$", "") + "_result");
-        resetPipeline();
-      } catch (UndefinedTypeOfMutationException e) {
-        System.err.println("Unknown mutation type found.");
-        System.err.println("Mutation:" + e.mutationString);
-        System.out.println();
-      } catch (MissingPathException e) {
-        DatabaseConnection.setLocalPath(destinationPath);
-      } catch (IOException e) {
-        // TODO Auto-generated catch block
-        e.printStackTrace();
-      }
+      // run pipeline for every sequence
+      processSequence(gene, file, destinationPath);
     }
-    System.out.println("PROGRAMM END");
-    System.out.println("Press enter to terminate");
-    try {
-      ConsoleIO.readLine("");
-    } catch (IOException e) {
-    }
+
+    // close console
+    closeProgram();
   }
+
 
   /**
    * Creates, prints and stores a report of the reading of the files.
@@ -216,6 +155,138 @@ public class Main {
     }
   }
 
+  /**
+   * runs the complete analysis pipeline for a single sequence and adds a database entry for the
+   * sequence
+   * 
+   * @param activeSequence
+   * @param gene
+   * @param file
+   */
+  private static void processSequence(Gene gene, File file, String destinationPath) {
+    AnalysedSequence activeSequence = null;
+
+    // read sequence from file
+    activeSequence = readSequenceFromFile(file);
+    activeSequence.setReferencedGene(gene);
+    // cut out low Quality parts of sequence
+    QualityAnalysis.trimLowQuality(activeSequence);
+
+    // cut out vector
+    StringAnalysis.trimVector(activeSequence, gene);
+
+    // mutation analysis
+    processMutations(activeSequence, file);
+
+    // ask for comment
+    askForComment(activeSequence, file);
+
+    // add entry to database
+    addDatabaseEntry(activeSequence, file, destinationPath);
+  }
+
+  /**
+   * Asks user for gene and gene name
+   * 
+   * @return Gene containing the parsed data
+   */
+  private static Gene askForGene() {
+    // TODO Aks for GEN
+    // String genPath = askForPath("Please give path to gene");
+
+    // TODO Read GENE
+    // TODO REALLY DO IT
+    String strGene = null;
+    String strGeneName = null;
+    boolean noGene = true;
+    while (noGene) {
+      try {
+        strGene = ConsoleIO.readLine("Please enter the nulceotide sequence of the reference gene."
+            + System.lineSeparator() + "REFERENCE GENE SEQUENCE: ");
+        noGene = false;
+        strGeneName = ConsoleIO.readLine("Please enter the name of this gene."
+            + System.lineSeparator() + "REFERENCE GENE NAME: ");
+      } catch (IOException e2) {
+        noGene = true;
+      }
+    }
+
+    return new Gene(strGene, 0, strGeneName, "");
+  }
+
+  /**
+   * Calls all necessary functions to process Mutations of a sequence
+   * 
+   * @param sequence
+   * @param file
+   */
+  private static void processMutations(AnalysedSequence sequence, File file) {
+    try {
+      MutationAnalysis.findMutations(sequence);
+    } catch (UndefinedTypeOfMutationException e) {
+      System.err.println("Unknown mutation type found.");
+      System.err.println("Mutation: " + e.mutationString);
+      System.out.println();
+    } catch (CorruptedSequenceException e) {
+      System.err.println("The file " + file.getName()
+          + " seems to be corrupted. An unknown nulceotide symbol was detected.");
+      e.printStackTrace();
+    }
+  }
+
+  /**
+   * Asks user for a comment and sets the comment field of the referenced analysedSequence
+   * 
+   * @param sequence
+   * @param file
+   */
+  private static void askForComment(AnalysedSequence sequence, File file) {
+    try {
+      sequence.setComments(ConsoleIO.readLine("Please enter a comment for file " + file.getName()
+          + " or press ENTER directly to skip."));
+    } catch (IOException e1) {
+      // TODO Auto-generated catch block
+      e1.printStackTrace();
+    }
+  }
+
+  /**
+   * prints done message and closes the console
+   */
+  private static void closeProgram() {
+    System.out.println("PROGRAMM END");
+    System.out.println("Press enter to terminate");
+    try {
+      ConsoleIO.readLine("");
+    } catch (IOException e) {}
+  }
+
+  /**
+   * adds a database entry for a sequence
+   * 
+   * @param activeSequence
+   * @param file
+   * @param destinationPath
+   */
+  private static void addDatabaseEntry(AnalysedSequence activeSequence, File file,
+      String destinationPath) {
+    try {
+      LinkedList<DatabaseEntry> entries = DatabaseEntry.convertSequenceIntoEntries(activeSequence);
+      DatabaseConnection.addAllIntoQueue(entries);
+      DatabaseConnection.storeAllLocally(file.getName().replaceFirst("[.][^.]+$", "") + "_result");
+      resetPipeline();
+    } catch (UndefinedTypeOfMutationException e) {
+      System.err.println("Unknown mutation type found.");
+      System.err.println("Mutation:" + e.mutationString);
+      System.out.println();
+    } catch (MissingPathException e) {
+      DatabaseConnection.setLocalPath(destinationPath);
+    } catch (IOException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    }
+
+  }
 
   /**
    * Reads in the config file.
@@ -261,13 +332,20 @@ public class Main {
     return null;
   }
 
-  private static String askForPath(String message) {
+  /**
+   * asks user for destination path and sets the value in DatanbaseConnection
+   * @return
+   */
+  private static String processPath() {
+    String message = "Please enter the path where the results shall be stored."
+        + System.lineSeparator() + "DESTINATION PATH: ";
     boolean invalidPath = true;
     while (invalidPath) {
       try {
         String path = ConsoleIO.readLine(message);
         invalidPath = false;
-
+        // set destination path for database entries
+        DatabaseConnection.setLocalPath(path);
         return path;
       } catch (IOException e) {
         invalidPath = true;
@@ -291,7 +369,8 @@ public class Main {
     // Ask User for AB1 File
     while (inputInvalid) {
       try {
-        String path = ConsoleIO.readLine("Please enter the path to the AB1 files to be analyzed." + System.lineSeparator() + "SOURCE PATH: ");
+        String path = ConsoleIO.readLine("Please enter the path to the AB1 files to be analyzed."
+            + System.lineSeparator() + "SOURCE PATH: ");
 
         io.SequenceReader.configurePath(path);
         Pair<LinkedList<File>, LinkedList<File>> fileLists = io.SequenceReader.listFiles();
