@@ -204,7 +204,7 @@ public class Main {
         strGene = ConsoleIO.readLine("Please enter the nulceotide sequence of the reference gene."
             + System.lineSeparator() + "REFERENCE GENE SEQUENCE: ");
         noGene = false;
-        strGeneName = ConsoleIO.readLine("Please enter the name of this gene."
+        strGeneName = ConsoleIO.readLine("Please enter the name of the gene."
             + System.lineSeparator() + "REFERENCE GENE NAME: ");
       } catch (IOException e2) {
         noGene = true;
@@ -243,7 +243,7 @@ public class Main {
   private static void askForComment(AnalysedSequence sequence, File file) {
     try {
       sequence.setComments(ConsoleIO.readLine("Please enter a comment for file " + file.getName()
-          + " or press ENTER directly to skip."));
+          + " or press ENTER to skip."));
     } catch (IOException e1) {
       // TODO Auto-generated catch block
       e1.printStackTrace();
@@ -254,8 +254,9 @@ public class Main {
    * prints done message and closes the console
    */
   private static void closeProgram() {
-    System.out.println("PROGRAMM END");
-    System.out.println("Press enter to terminate");
+    System.out.println();
+    System.out.println("DONE");
+    System.out.println("Press enter to close console");
     try {
       ConsoleIO.readLine("");
     } catch (IOException e) {}
@@ -337,7 +338,7 @@ public class Main {
    * @return
    */
   private static String processPath() {
-    String message = "Please enter the path where the results shall be stored."
+    String message = "Please enter the path where the results will be stored."
         + System.lineSeparator() + "DESTINATION PATH: ";
     boolean invalidPath = true;
     while (invalidPath) {
