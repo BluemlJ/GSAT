@@ -3,7 +3,10 @@ package analysis;
 import java.io.ByteArrayOutputStream;
 import java.io.OutputStream;
 import java.io.PrintStream;
+import java.util.Collections;
+import java.util.Hashtable;
 import java.util.LinkedList;
+import java.util.Map;
 import java.util.TreeMap;
 
 import javax.swing.plaf.synth.SynthSpinnerUI;
@@ -11,6 +14,7 @@ import javax.swing.plaf.synth.SynthSpinnerUI;
 import org.junit.After;
 import org.junit.Before;
 
+import exceptions.CorruptedSequenceException;
 import io.ConsoleIO;
 
 /**
@@ -20,7 +24,243 @@ import io.ConsoleIO;
  */
 public class StringAnalysis {
 
+  // A Map with all possible RNA and DNA codons with the matched AminoAcid in
+  // shortform.
+  public static final Map<String, String> AMINO_ACID_SHORTS;
+  static {
+    Hashtable<String, String> tmp = new Hashtable<String, String>();
+    // RNA
+    tmp.put("UUU", "F");
+    tmp.put("UUC", "F");
+    tmp.put("UUA", "L");
+    tmp.put("UUG", "L");
+    tmp.put("UCU", "S");
+    tmp.put("UCC", "S");
+    tmp.put("UCA", "S");
+    tmp.put("UCG", "S");
+    tmp.put("UAU", "Y");
+    tmp.put("UAC", "Y");
+    tmp.put("UAA", "STOP");
+    tmp.put("UAG", "STOP");
+    tmp.put("UGU", "C");
+    tmp.put("UGC", "C");
+    tmp.put("UGA", "STOP");
+    tmp.put("UGG", "W");
 
+    tmp.put("CUU", "L");
+    tmp.put("CUC", "L");
+    tmp.put("CUA", "L");
+    tmp.put("CUG", "L");
+    tmp.put("CCU", "P");
+    tmp.put("CCC", "P");
+    tmp.put("CCA", "P");
+    tmp.put("CCG", "P");
+    tmp.put("CAU", "H");
+    tmp.put("CAC", "H");
+    tmp.put("CAA", "Q");
+    tmp.put("CAG", "Q");
+    tmp.put("CGU", "R");
+    tmp.put("CGC", "R");
+    tmp.put("CGA", "R");
+    tmp.put("CGG", "R");
+
+    tmp.put("AUU", "I");
+    tmp.put("AUC", "I");
+    tmp.put("AUA", "I");
+    tmp.put("AUG", "M");
+    tmp.put("ACU", "T");
+    tmp.put("ACC", "T");
+    tmp.put("ACA", "T");
+    tmp.put("ACG", "T");
+    tmp.put("AAU", "N");
+    tmp.put("AAC", "N");
+    tmp.put("AAA", "K");
+    tmp.put("AAG", "K");
+    tmp.put("AGU", "S");
+    tmp.put("AGC", "S");
+    tmp.put("AGA", "R");
+    tmp.put("AGG", "R");
+
+    tmp.put("GUU", "V");
+    tmp.put("GUC", "V");
+    tmp.put("GUA", "V");
+    tmp.put("GUG", "V");
+    tmp.put("GCU", "A");
+    tmp.put("GCC", "A");
+    tmp.put("GCA", "A");
+    tmp.put("GCG", "A");
+    tmp.put("GAU", "D");
+    tmp.put("GAC", "D");
+    tmp.put("GAA", "E");
+    tmp.put("GAG", "E");
+    tmp.put("GGU", "G");
+    tmp.put("GGC", "G");
+    tmp.put("GGA", "G");
+    tmp.put("GGG", "G");
+
+    // DNA
+    tmp.put("TTT", "F");
+    tmp.put("TTC", "F");
+    tmp.put("TTA", "L");
+    tmp.put("TTG", "L");
+    tmp.put("TCT", "S");
+    tmp.put("TCC", "S");
+    tmp.put("TCA", "S");
+    tmp.put("TCG", "S");
+    tmp.put("TAT", "Y");
+    tmp.put("TAC", "Y");
+    tmp.put("TAA", "STOP");
+    tmp.put("TAG", "STOP");
+    tmp.put("TGT", "C");
+    tmp.put("TGC", "C");
+    tmp.put("TGA", "STOP");
+    tmp.put("TGG", "W");
+
+    tmp.put("CTT", "L");
+    tmp.put("CTC", "L");
+    tmp.put("CTA", "L");
+    tmp.put("CTG", "L");
+    tmp.put("CCT", "P");
+    tmp.put("CCC", "P");
+    tmp.put("CCA", "P");
+    tmp.put("CCG", "P");
+    tmp.put("CAT", "H");
+    tmp.put("CAC", "H");
+    tmp.put("CAA", "Q");
+    tmp.put("CAG", "Q");
+    tmp.put("CGT", "R");
+    tmp.put("CGC", "R");
+    tmp.put("CGA", "R");
+    tmp.put("CGG", "R");
+
+    tmp.put("ATT", "I");
+    tmp.put("ATC", "I");
+    tmp.put("ATA", "I");
+    tmp.put("ATG", "M");
+    tmp.put("ACT", "T");
+    tmp.put("ACC", "T");
+    tmp.put("ACA", "T");
+    tmp.put("ACG", "T");
+    tmp.put("AAT", "N");
+    tmp.put("AAC", "N");
+    tmp.put("AAA", "K");
+    tmp.put("AAG", "K");
+    tmp.put("AGT", "S");
+    tmp.put("AGC", "S");
+    tmp.put("AGA", "R");
+    tmp.put("AGG", "R");
+
+    tmp.put("GTT", "V");
+    tmp.put("GTC", "V");
+    tmp.put("GTA", "V");
+    tmp.put("GTG", "V");
+    tmp.put("GCT", "A");
+    tmp.put("GCC", "A");
+    tmp.put("GCA", "A");
+    tmp.put("GCG", "A");
+    tmp.put("GAT", "D");
+    tmp.put("GAC", "D");
+    tmp.put("GAA", "E");
+    tmp.put("GAG", "E");
+    tmp.put("GGT", "G");
+    tmp.put("GGC", "G");
+    tmp.put("GGA", "G");
+    tmp.put("GGG", "G");
+    AMINO_ACID_SHORTS = Collections.unmodifiableMap(tmp);
+  }
+
+  /**
+   * Changes the sequence representation from nucleotides to aminoacid (shortform)
+   * 
+   * @param nucleotides the sequence presented by nucleotides
+   * @return the sequence presented by aminoAcid (shorts)
+   * 
+   * @author bluemlj
+   */
+  public static String codonsToAminoAcids(String nucleotides) throws CorruptedSequenceException {
+    nucleotides = nucleotides.toUpperCase();
+
+    // check for empty parameter
+    if (nucleotides.isEmpty()) return "empty nucleotides";
+
+
+    StringBuilder builder = new StringBuilder();
+
+    // checks if the nucleotides is % 3 = 0 because if not, there will be an error at the end
+    if (nucleotides.length() % 3 == 0) {
+      // changes the nucleotides to aminoacids in shortform by using the Map
+      for (int i = 0; i < nucleotides.length(); i = i + 3) {
+        String codon = nucleotides.substring(i, i + 3);
+        String aminoacid = AMINO_ACID_SHORTS.get(codon);
+
+
+        if (aminoacid != null)
+          builder.append(aminoacid);
+        // get the index of the corruptedSequenceException
+        else {
+          int index;
+          if (!codon.matches("[ATCGU]..")) {
+            index = 0;
+          } else if (!codon.matches(".[ATCGU].")) {
+            index = 1;
+          } else {
+            index = 2;
+          }
+
+          throw new CorruptedSequenceException(i + index, codon.charAt(index), nucleotides);
+        }
+      }
+    } else
+      return "nucleotides not modulo 3, so not convertable";
+    return builder.toString();
+  }
+  
+  /**
+   * Finds the gene that fits best to a given sequence by comparing it to all given genes.
+   * 
+   * @param toAnalyze The sequence, we compare with the list of genes
+   * @param listOfGenes A list of all genes, we want to compare with the sequence
+   * @return the gene, that has the best similarity
+   * @author bluemlj
+   */
+  public static Gene findRightGene(AnalysedSequence toAnalyze, LinkedList<Gene> listOfGenes) {
+    Gene bestgene = null;
+    double bestSimilarity = 0;
+
+    for (Gene gene : listOfGenes) {
+      double similarity = StringAnalysis.checkSimilarity(toAnalyze, gene);
+      if (similarity > bestSimilarity) {
+        bestSimilarity = similarity;
+        bestgene = gene;
+      }
+    }
+
+    // if the Similarity is less then 80%, return null
+    if (bestSimilarity >= 80) {
+      return bestgene;
+    } else
+      return null;
+  }
+
+
+
+  /**
+   * Finds the gene that fits best to a given sequence by comparing it to all given genes. Known
+   * genes can be found in the database.
+   * 
+   * @param toAnalyze Sequence to be analyzed (i.e. for which the fitting gene is to find)
+   * 
+   * @return The found gene.
+   * 
+   * @author bluemlj
+   */
+  public static Gene findRightGene(AnalysedSequence toAnalyze) {
+    // TODO call findRightGene(sequence, listOfGenes) with listOfGenes with a database export
+    return null;
+  }
+
+  
+  
   /**
    * Compares to sequences and returns their similarity without finding the exact differences.
    * 
@@ -187,7 +427,8 @@ public class StringAnalysis {
       // System.err.println(alternativ + " # " + result);
       if (checkSimilarity(template.sequence, alternativ) <= checkSimilarity(template.sequence,
           result)) {
-        // System.out.println("BESTMATCH: Start Codon found at " + (begin + codonIndex));
+        // System.out.println("BESTMATCH: Start Codon found at " +
+        // (begin + codonIndex));
         result = alternativ;
         originalBegin = 0;
         begin = begin + codonIndex;
@@ -234,7 +475,6 @@ public class StringAnalysis {
     boolean offsetExact = findOffset(toAlign);
 
     Gene gene = toAlign.getReferencedGene();
-
 
     String newSequence = toAlign.sequence;
 
@@ -304,7 +544,6 @@ public class StringAnalysis {
     // String rightVector = newSequence.substring(sequenceEnd);
     // newSequence = newSequence.substring(0, sequenceEnd);
 
-
     // **********complex Vector Cutting*****************
     // TODO implement
 
@@ -312,7 +551,8 @@ public class StringAnalysis {
     if (toAlign.getOffset() != 0) {
       int begin = (3 - (toAlign.getOffset() % 3) % 3);
       // newSequence = newSequence.substring(begin);
-      // newSequence = newSequence.substring(0,newSequence.length()-(newSequence.length()%3));
+      // newSequence =
+      // newSequence.substring(0,newSequence.length()-(newSequence.length()%3));
     }
     // ******************************************
 

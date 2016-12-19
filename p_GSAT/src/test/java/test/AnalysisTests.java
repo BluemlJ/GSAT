@@ -291,7 +291,7 @@ public class AnalysisTests {
   public void codonsToAminoAcidsOnCorrectUse() throws CorruptedSequenceException {
 
     String testA = "ATTGGGCCCATT";
-    String result = MutationAnalysis.codonsToAminoAcids(testA);
+    String result = StringAnalysis.codonsToAminoAcids(testA);
     assertTrue(result.equals("IGPI"));
   }
 
@@ -305,7 +305,7 @@ public class AnalysisTests {
   @Test(expected = CorruptedSequenceException.class)
   public void codonsToAminoAcidsWithNotNukleotideString() throws CorruptedSequenceException {
     String testString = "HNOFClBrI";
-    MutationAnalysis.codonsToAminoAcids(testString);
+    StringAnalysis.codonsToAminoAcids(testString);
 
   }
 
@@ -320,7 +320,7 @@ public class AnalysisTests {
 
   public void codonsToAminoAcidsWithToShortString() throws CorruptedSequenceException {
     String testString = "ACTTTGG";
-    String result = MutationAnalysis.codonsToAminoAcids(testString);
+    String result = StringAnalysis.codonsToAminoAcids(testString);
     assertTrue(result.equals("nucleotides not modulo 3, so not convertable"));
 
   }
@@ -337,7 +337,7 @@ public class AnalysisTests {
   public void codonsToAminoAcidsWithEmptyString() throws CorruptedSequenceException {
 
     String testString = "";
-    String result = MutationAnalysis.codonsToAminoAcids(testString);
+    String result = StringAnalysis.codonsToAminoAcids(testString);
     assertTrue(result.equals("empty nucleotides"));
 
   }
@@ -360,13 +360,13 @@ public class AnalysisTests {
     AnalysedSequence testSeq2 = new AnalysedSequence("ola", "Jannis", "toAnalyse", null, 0);
     AnalysedSequence testSeq3 = new AnalysedSequence("mochi", "Jannis", "toAnalyse", null, 0);
 
-    Gene result = MutationAnalysis.findRightGene(testSeq, testDatabase);
+    Gene result = StringAnalysis.findRightGene(testSeq, testDatabase);
     assertTrue(result.getId() == (gena.getId()));
 
-    result = MutationAnalysis.findRightGene(testSeq2, testDatabase);
+    result = StringAnalysis.findRightGene(testSeq2, testDatabase);
     assertTrue(result.getId() == (genc.getId()));
 
-    result = MutationAnalysis.findRightGene(testSeq3, testDatabase);
+    result = StringAnalysis.findRightGene(testSeq3, testDatabase);
     assertTrue(result == null);
 
   }
@@ -432,7 +432,7 @@ public class AnalysisTests {
     testGenes.add(testGeneB);
     testGenes.add(testGeneC);
 
-    Gene result = MutationAnalysis.findRightGene(testA, testGenes);
+    Gene result = StringAnalysis.findRightGene(testA, testGenes);
 
     assertTrue(result == testGeneA);
   }
@@ -448,7 +448,7 @@ public class AnalysisTests {
     testGenes.add(testGeneB);
     testGenes.add(testGeneC);
 
-    Gene result = MutationAnalysis.findRightGene(testA, testGenes);
+    Gene result = StringAnalysis.findRightGene(testA, testGenes);
     assertTrue(result == null);
   }
 
