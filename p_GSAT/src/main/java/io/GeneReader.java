@@ -20,7 +20,7 @@ public class GeneReader {
    * @throws IOException
    */
   public static void readGenes(String genePath) throws IOException {
-
+    geneList = new HashMap<String, String>();
     BufferedReader geneReader = new BufferedReader(new FileReader(genePath));
     String line;
     // for each line
@@ -30,6 +30,7 @@ public class GeneReader {
       String name = sepLine[0];
       String gene = sepLine[1];
       geneList.put(name, gene);
+      
     }
 
     geneReader.close();
@@ -60,6 +61,9 @@ public class GeneReader {
     return geneList.get(geneName);
   }
   
+  public static HashMap getGeneList(){
+    return geneList;
+  }
 
 }
 
