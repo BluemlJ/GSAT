@@ -19,7 +19,7 @@ import exceptions.MissingPathException;
 import exceptions.UndefinedTypeOfMutationException;
 import io.Config;
 import io.ConsoleIO;
-import io.DatabaseConnection;
+import io.FileSaver;
 import io.DatabaseEntry;
 import io.SequenceReader;
 
@@ -39,6 +39,9 @@ public class ConsoleVersion {
     // set path for results and set database path
     String destinationPath = processPath();
 
+    // does the user want one or multiple files for local storage?
+    askForOneOrMultipleFiles();
+    
     // write a report on parsed files
     reportOnInput(destinationPath, okayAndOddFiles.first, okayAndOddFiles.second, configReport);
 
@@ -129,7 +132,7 @@ public class ConsoleVersion {
         String path = ConsoleIO.readLine(message);
         invalidPath = false;
         // set destination path for database entries
-        DatabaseConnection.setLocalPath(path);
+        FileSaver.setLocalPath(path);
         return path;
       } catch (IOException e) {
         invalidPath = true;
@@ -138,6 +141,39 @@ public class ConsoleVersion {
     }
     return null;
   }
+  
+  
+  
+  /**
+   * asks user for destination path and sets the value in DatanbaseConnection
+   * 
+   * @return
+   */
+	private static void askForOneOrMultipleFiles() {
+	    String message = "Would you like separate files for each input file?"
+	    	+ System.lineSeparator() + "y/n: ";
+	    
+	    boolean invalidInput = true;
+	
+	    while (invalidInput) {
+	    	try {
+	    		String entered = ConsoleIO.readLine(message);
+	    
+	    		if(entered.toLowerCase().equals("y")) {
+	    			FileSaver.setSeparateFiles(true);
+	    			return;
+	    		} else if (entered.toLowerCase().equals("n")) {
+	    			FileSaver.setSeparateFiles(false);
+	    			return;
+	    		}
+	        
+	    	} catch (IOException e) {
+	    	  invalidInput = true;
+	    	}
+	    }
+	 }
+  
+  
 
   /**
    * Creates, prints and stores a report of the reading of the files.
@@ -268,7 +304,7 @@ public class ConsoleVersion {
     askForComment(activeSequence, file);
 
     // add entry to database
-    addDatabaseEntry(activeSequence, file, destinationPath);
+    addLocalEntry(activeSequence, file, destinationPath);
   }
 
   /**
@@ -345,19 +381,19 @@ public class ConsoleVersion {
    * @param file
    * @param destinationPath
    */
-  private static void addDatabaseEntry(AnalysedSequence activeSequence, File file,
+  private static void addLocalEntry(AnalysedSequence activeSequence, File file,
       String destinationPath) {
     try {
       LinkedList<DatabaseEntry> entries = DatabaseEntry.convertSequenceIntoEntries(activeSequence);
-      DatabaseConnection.addAllIntoQueue(entries);
-      DatabaseConnection.storeAllLocally(file.getName().replaceFirst("[.][^.]+$", "") + "_result");
-      resetPipeline();
+      FileSaver.addAllIntoQueue(entries);
+      FileSaver.storeAllLocally(file.getName().replaceFirst("[.][^.]+$", "") + "_result");
+      preparePipelineForNextRun();
     } catch (UndefinedTypeOfMutationException e) {
       System.err.println("Unknown mutation type found.");
       System.err.println("Mutation:" + e.mutationString);
       System.out.println();
     } catch (MissingPathException e) {
-      DatabaseConnection.setLocalPath(destinationPath);
+      FileSaver.setLocalPath(destinationPath);
     } catch (IOException e) {
       // TODO Auto-generated catch block
       e.printStackTrace();
@@ -366,12 +402,24 @@ public class ConsoleVersion {
   }
 
   /**
+   * Resets the analysis pipeline between the analyses of different files.
+   * 
+   * @author Ben Kohr
+   */
+  private static void preparePipelineForNextRun() {
+    FileSaver.flushQueue();
+  }
+  
+  /**
    * Resets the analysis pipeline to be able to start with a completely new analyzing process.
    * 
    * @author Ben Kohr
    */
   private static void resetPipeline() {
-    DatabaseConnection.flushQueue();
-    DatabaseConnection.resetIDs();
+    FileSaver.resetAll();
   }
+  
+  
+  
+  
 }

@@ -1,5 +1,6 @@
 package io;
 
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.LinkedList;
@@ -17,56 +18,42 @@ import exceptions.PathUsage;
  * @author Ben Kohr
  *
  */
-public class DatabaseConnection {
+public class FileSaver {
 
   /**
-   * List off all entries to be written into the database. These are typically the results of the
+   * List off all entries to be written into files/a file. These are typically the results of the
    * analysis of a single file.
    */
   private static LinkedList<DatabaseEntry> queue = new LinkedList<DatabaseEntry>();
 
   /**
-   * Specifies the location of the database.
-   */
-  private static String connectionString;
-
-  /**
-   * Specifies the path where local files shall be created (if necessary). This specifies the
+   * Specifies the path where local files shall be created. This specifies the
    * folder, not the file!
    */
   private static String localPath;
 
-
+  
+  private static final String DEST_FILE_NAME = "gsat_results.csv";
+  
+  
+  /**
+   * Indicates whether one or multiple files shall be used for storage.
+   */
+  private static boolean separateFiles = false;
+  
+/**
+ * Indicating whether this is the first call on this class.
+ */
+  private static boolean firstCall = true;
+  
+  
   /**
    * This value is needed to keep track of the momentarily used id of the data.
    */
-  private static int id = 0;
+  private static long id = 0;
 
 
-
-  /**
-   * Inserts all currently stored entries into the specified database.
-   * 
-   * @see #insertIntoDatabase()
-   * 
-   * @author Ben Kohr
-   */
-  public static void insertAllIntoDatabase()
-      throws DatabaseConnectionException, DatabaseErrorException {
-    while (!queue.isEmpty()) {
-      insertIntoDatabase();
-    }
-  }
-
-
-  /**
-   * Inserts a single data point into the specified database.
-   */
-  private static void insertIntoDatabase()
-      throws DatabaseConnectionException, DatabaseErrorException {
-
-  }
-
+  
 
   /**
    * Inserts the data points into a local file (e.g. if there is no connection to the database
@@ -76,13 +63,27 @@ public class DatabaseConnection {
    */
   public static void storeAllLocally(String filename) throws MissingPathException, IOException {
 
+	// Without a path, writing is not possible.
     if (localPath == null) {
       throw new MissingPathException(PathUsage.WRITING);
     }
 
-    FileWriter writer = new FileWriter(localPath + filename + ".csv");
+    // The writer to create a file / files.
+    FileWriter writer;
+    // One or multiple files?
+    if (separateFiles) {
+    	writer = new FileWriter(localPath + "\\" + filename + ".csv");
+    	writer.write("id; file name; gene id; sequence; date; researcher; comments; left vector; right vector; promotor; manually checked; mutation; mutation type" + System.lineSeparator());
+    } else {
+    	if (firstCall) {
+    		writer = new FileWriter(localPath + "\\" + DEST_FILE_NAME);
+    		writer.write("id; file name; gene id; sequence; date; researcher; comments; left vector; right vector; promotor; manually checked; mutation; mutation type" + System.lineSeparator());
+    		firstCall = false;
+    	} else {
+    		writer = new FileWriter(localPath + "\\" + DEST_FILE_NAME, true);
+    	}
+    } 
     
-    writer.write("id; file name; gene id; sequence; date; researcher; comments; vector; promotor; manually checked; mutation; mutation type" + System.lineSeparator());
     
     for (DatabaseEntry entry : queue) {
 
@@ -124,6 +125,8 @@ public class DatabaseConnection {
     }
 
     writer.close();
+    
+    resetIDsIfNecessary();
   }
 
 
@@ -166,6 +169,19 @@ public class DatabaseConnection {
   }
 
 
+  
+  /**
+   * Sets the momentarily used id to zero, if separate files are desired.
+   * 
+   * @author Ben Kohr
+   */
+  private static void resetIDsIfNecessary() {
+	  if (separateFiles) {
+		  resetIDs();
+	  }
+  }
+  
+  
 
   /**
    * Sets the momentarily used id to zero.
@@ -197,15 +213,24 @@ public class DatabaseConnection {
   public static void setLocalPath(String path) {
     localPath = path;
   }
-
-
+  
+  
   /**
-   * Retrieves all genes from the database and returns them.
+   * Sets the path where local files shall be created if necessary.
    * 
-   * @return List of genes currently stored in the database
+   * @param path The path to create local files as a String
+   * 
+   * @author Ben Kohr
    */
-  public static LinkedList<Gene> retrieveAllGenes() {
-    return null;
+  public static void setSeparateFiles(Boolean separate) {
+    separateFiles = separate;
+  }
+  
+  
+  public static void resetAll() {
+	  flushQueue();
+	  resetIDs();
+	  firstCall = true;
   }
 
 }

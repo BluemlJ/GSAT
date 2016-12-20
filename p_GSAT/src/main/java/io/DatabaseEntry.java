@@ -20,7 +20,7 @@ public class DatabaseEntry {
    * The id for this entry. It is given by the DatabaseConnection class.
    * Until the id is given, -1 is the placeholder id.
    */
-  private int id = -1;
+  private long id = -1;
 
   /**
    * The name of the file this entry was retrieved from.
@@ -69,9 +69,14 @@ public class DatabaseEntry {
 
   
   /**
-   * The vector to be stored with the sequence.
+   * The left vector to be stored with the sequence.
    */
-  private String vector;
+  private String leftVector;
+  
+  /**
+   * The right vector to be stored with the sequence.
+   */
+  private String rightVector;
   
   
   /**
@@ -89,7 +94,7 @@ public class DatabaseEntry {
    */
   public DatabaseEntry(String fileName, int geneID, String sequence, 
                                        String addingDate, String researcher, String comments, 
-                                       String vector, String promotor, boolean manuallyChecked,
+                                       String leftVector, String rightVector, String promotor, boolean manuallyChecked,
                                        String mutation, MutationType mType) {
 
     this.fileName = fileName;
@@ -98,7 +103,8 @@ public class DatabaseEntry {
     this.addingDate = addingDate;
     this.researcher = researcher;
     this.comments = comments;
-    this.vector = vector;
+    this.leftVector = leftVector;
+    this.rightVector = rightVector;
     this.promotor = promotor;
     this.manuallyChecked = manuallyChecked;
     this.mutation = mutation;
@@ -128,8 +134,8 @@ public class DatabaseEntry {
     String addingDate = seq.getAddingDate();
     String researcher = seq.getResearcher();
     String comments = seq.getComments();
-    //TODO repair
-    //String vector = seq.getVector();
+    String leftVector = seq.getLeftVector();
+    String rightVector = seq.getRightVector();
     String promotor = seq.getPromotor();
     boolean manuallyChecked = seq.isManuallyChecked();
     
@@ -143,7 +149,7 @@ public class DatabaseEntry {
       MutationType mType = determineMutationType(mutation);
       
       DatabaseEntry dbe = 
-          new DatabaseEntry(fileName, geneID, sequence, addingDate, researcher, comments, /*TODO REPAIR*/"vector", promotor, manuallyChecked, mutation, mType);
+          new DatabaseEntry(fileName, geneID, sequence, addingDate, researcher, comments, leftVector, rightVector, promotor, manuallyChecked, mutation, mType);
       entries.add(dbe);
     }
 
@@ -204,7 +210,7 @@ public class DatabaseEntry {
    * 
    * @author Ben Kohr
    */
-  public void setID(int id) {
+  public void setID(long id) {
     this.id = id;
   }
 
@@ -217,7 +223,7 @@ public class DatabaseEntry {
    * 
    * @author Ben Kohr
    */
-  public int getID() {
+  public long getID() {
     return id;
   }
 
@@ -307,14 +313,25 @@ public class DatabaseEntry {
 
 
   /**
-   * Returns this entry's vector
+   * Returns this entry's left vector
    * 
    * @return the vector
    * 
    * @author Ben Kohr
    */
-  public String getVector() {
-    return vector;
+  public String getLeftVector() {
+    return leftVector;
+  }
+  
+  /**
+   * Returns this entry's right vector
+   * 
+   * @return the vector
+   * 
+   * @author Ben Kohr
+   */
+  public String getRightVector() {
+    return rightVector;
   }
 
 
