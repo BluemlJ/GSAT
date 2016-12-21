@@ -314,7 +314,7 @@ public class ConsoleVersion {
       }
     } catch (IOException e) {
       // no genes.txt found
-      System.out.println("Genes.txt could not be found.");
+      System.out.println("Error reading genes.txt");
       // ask user for gene
       return askForGene();
     }
