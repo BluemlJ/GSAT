@@ -19,8 +19,9 @@ import exceptions.MissingPathException;
 import exceptions.UndefinedTypeOfMutationException;
 import io.Config;
 import io.ConsoleIO;
-import io.FileSaver;
 import io.DatabaseEntry;
+import io.FileSaver;
+import io.GeneReader;
 import io.SequenceReader;
 
 public class ConsoleVersion {
@@ -41,12 +42,14 @@ public class ConsoleVersion {
 
     // does the user want one or multiple files for local storage?
     askForOneOrMultipleFiles();
-    
+
     // write a report on parsed files
     reportOnInput(destinationPath, okayAndOddFiles.first, okayAndOddFiles.second, configReport);
 
     // ask user for reference gene
-    Gene gene = askForGene();
+    // Gene gene = askForGene();
+
+    Gene gene = readGene();
 
     // get ab1 files
     LinkedList<File> files = okayAndOddFiles.first;
@@ -60,6 +63,7 @@ public class ConsoleVersion {
     // close console
     closeProgram();
   }
+
 
   /**
    * Asks the User for the path to the AB1 files and returns a list of the found files Also checks
@@ -141,39 +145,39 @@ public class ConsoleVersion {
     }
     return null;
   }
-  
-  
-  
+
+
+
   /**
    * asks user for destination path and sets the value in DatanbaseConnection
    * 
    * @return
    */
-	private static void askForOneOrMultipleFiles() {
-	    String message = "Would you like separate files for each input file?"
-	    	+ System.lineSeparator() + "y/n: ";
-	    
-	    boolean invalidInput = true;
-	
-	    while (invalidInput) {
-	    	try {
-	    		String entered = ConsoleIO.readLine(message);
-	    
-	    		if(entered.toLowerCase().equals("y")) {
-	    			FileSaver.setSeparateFiles(true);
-	    			return;
-	    		} else if (entered.toLowerCase().equals("n")) {
-	    			FileSaver.setSeparateFiles(false);
-	    			return;
-	    		}
-	        
-	    	} catch (IOException e) {
-	    	  invalidInput = true;
-	    	}
-	    }
-	 }
-  
-  
+  private static void askForOneOrMultipleFiles() {
+    String message =
+        "Would you like separate files for each input file?" + System.lineSeparator() + "y/n: ";
+
+    boolean invalidInput = true;
+
+    while (invalidInput) {
+      try {
+        String entered = ConsoleIO.readLine(message);
+
+        if (entered.toLowerCase().equals("y")) {
+          FileSaver.setSeparateFiles(true);
+          return;
+        } else if (entered.toLowerCase().equals("n")) {
+          FileSaver.setSeparateFiles(false);
+          return;
+        }
+
+      } catch (IOException e) {
+        invalidInput = true;
+      }
+    }
+  }
+
+
 
   /**
    * Creates, prints and stores a report of the reading of the files.
@@ -276,6 +280,46 @@ public class ConsoleVersion {
 
     return new Gene(strGene, 0, strGeneName, "");
   }
+
+
+  /**
+   * reads genes from file and returns the correct gene genes must be in a txt file named genes.txt
+   * in the same folder as the ab1 files if genes.txt can not be found it asks the user for a gene
+   * 
+   * @return
+   */
+  private static Gene readGene() {
+    String path = SequenceReader.getPath() + "/genes.txt";
+    try {
+      GeneReader.readGenes(path);
+      if (GeneReader.getNumGenes() == 0) {
+        // genes.txt empty
+        System.out.println("Genes.txt is empty");
+        return askForGene();
+      } else if (GeneReader.getNumGenes() == 1) {
+        Gene onlyGene = GeneReader.getGeneAt(0);
+        System.out.println("Gene found. Continuing with: " + onlyGene.getName() + ".");
+        return onlyGene;
+      } else {
+        System.out.println("The following genes have been found:");
+        String[] geneNames = GeneReader.getGeneNames();
+        for (int i = 0; i < geneNames.length; i++) {
+          System.out.println((i + 1) + ": " + geneNames[i]);
+        }
+        System.out.println();
+        int index = Integer
+            .parseInt(ConsoleIO.readLine("Please enter the Index of the gene you want to use."
+                + System.lineSeparator() + "INDEX: "));
+        return GeneReader.getGeneAt(index);
+      }
+    } catch (IOException e) {
+      // no genes.txt found
+      System.out.println("Genes.txt could not be found.");
+      // ask user for gene
+      return askForGene();
+    }
+  }
+
 
   /**
    * runs the complete analysis pipeline for a single sequence and adds a database entry for the
@@ -409,7 +453,7 @@ public class ConsoleVersion {
   private static void preparePipelineForNextRun() {
     FileSaver.flushQueue();
   }
-  
+
   /**
    * Resets the analysis pipeline to be able to start with a completely new analyzing process.
    * 
@@ -418,8 +462,7 @@ public class ConsoleVersion {
   private static void resetPipeline() {
     FileSaver.resetAll();
   }
-  
-  
-  
-  
+
+
+
 }
