@@ -530,5 +530,39 @@ public class DatabaseTests {
 	}
 	
 	
+	@Test
+	public void testStoreLocallyAsOneFileEmpty() throws MissingPathException, IOException, UndefinedTypeOfMutationException {
+		FileSaver.setSeparateFiles(false);
+		FileSaver.setLocalPath(path);
+		
+		LinkedList<DatabaseEntry> noEntries = new LinkedList<DatabaseEntry>();
+		
+		// Nothing added - does it still work?
+		FileSaver.addAllIntoQueue(noEntries);
+		FileSaver.storeAllLocally("");
+		FileSaver.flushQueue();
+		
+		FileSaver.addAllIntoQueue(noEntries);
+		FileSaver.storeAllLocally("");
+		FileSaver.flushQueue();
+		
+		FileSaver.addAllIntoQueue(noEntries);
+		FileSaver.storeAllLocally("");
+		FileSaver.flushQueue();
+
+		
+		// Code for reading the file in again
+		BufferedReader reader = new BufferedReader(new FileReader("writingtests/gsat_results.csv"));
+
+		LinkedList<String> results = new LinkedList<String>();
+		reader.lines().skip(1).forEach(line -> results.add(line));
+		reader.close();
+
+		// No entries expected
+		assertTrue(results.size() == 0);
+
+	}
+	
+	
 	
 }
