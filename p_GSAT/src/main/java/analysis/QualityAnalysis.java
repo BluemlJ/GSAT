@@ -34,7 +34,7 @@ public class QualityAnalysis {
    */
   public static int[] findLowQuality(AnalysedSequence sequence) {
     int[] qualities = sequence.getQuality();
-    double average = sequence.getAvgQuality();
+    
     int trimmingPosition[] = {sequence.length(), sequence.length()};
     int countertoBreak = 0;
     int countertoStart = 0;

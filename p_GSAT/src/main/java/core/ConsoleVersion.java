@@ -360,8 +360,11 @@ public class ConsoleVersion {
     System.out.println("Press enter to close console");
     try {
       ConsoleIO.readLine("");
-    } catch (IOException e) {}
-  }
+      System.exit(0);
+    } catch (IOException e) {
+    	System.exit(0);
+    }
+   }
 
   /**
    * Reads the Sequence of the given File and prints Errors if necessary

@@ -118,11 +118,12 @@ public class DatabaseTests {
 		
 		File directory = new File(path);
 		File[] files = directory.listFiles();
-		for (File f : files) {
-			if ("gsat_results.csv".equals(f.getName()))
-					f.delete();
+		if (files != null) {
+			for (File f : files) {
+				if ("gsat_results.csv".equals(f.getName()))
+						f.delete();
+			}
 		}
-		
 	}
 
 	/**
