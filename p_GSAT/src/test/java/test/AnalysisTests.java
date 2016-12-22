@@ -22,7 +22,7 @@ import exceptions.UndefinedTypeOfMutationException;
  *
  */
 public class AnalysisTests {
-  
+
   /**
    * test the helpermethod appentString for coreckt lenght of the result
    * 
@@ -32,7 +32,7 @@ public class AnalysisTests {
   @Test
   public void findDifrencesInsertionTest() {
     String result = MutationAnalysis.reportDifferences("hallo", "hallxo").getFirst();
-    String expected = "i|4|x|"; 
+    String expected = "i|4|x|";
     assertEquals(expected, result);
   }
 
@@ -174,8 +174,8 @@ public class AnalysisTests {
   }
 
   /**
-   * Test for correct insertion;
-   * using the example "helo" -> "hello" with insertion of 'l' at possition 3 
+   * Test for correct insertion; using the example "helo" -> "hello" with insertion of 'l' at
+   * possition 3
    * 
    * (User Story 007, typical behavior 1)
    * 
@@ -196,9 +196,8 @@ public class AnalysisTests {
   }
 
   /**
-   * Test for correct insertion at end;
-   * using the example "hell" -> "hello" with insertion of 'o' at possition 4 
-   * (User Story 007, special case 1)
+   * Test for correct insertion at end; using the example "hell" -> "hello" with insertion of 'o' at
+   * possition 4 (User Story 007, special case 1)
    * 
    * @author Kevin Otto
    */
@@ -216,9 +215,8 @@ public class AnalysisTests {
   }
 
   /**
-   * Test for correct insertion at begin;
-   * using the example "ello" -> "hello" with insertion of 'h' at possition 0
-   * (User Story 007, special case 2)
+   * Test for correct insertion at begin; using the example "ello" -> "hello" with insertion of 'h'
+   * at possition 0 (User Story 007, special case 2)
    * 
    * @author Kevin Otto
    */
@@ -236,9 +234,8 @@ public class AnalysisTests {
   }
 
   /**
-   * Test for correct substitution;
-   * using the example "helxo" -> "hello" with substitution of 'x' to 'l' at possition 4
-   * (User Story 007, typical behavior 2)
+   * Test for correct substitution; using the example "helxo" -> "hello" with substitution of 'x' to
+   * 'l' at possition 4 (User Story 007, typical behavior 2)
    * 
    * @author Kevin Otto
    */
@@ -257,9 +254,8 @@ public class AnalysisTests {
   }
 
   /**
-   * Test with empty String;
-   * using the example "" -> "hello" expecting 5 insertions
-   * (User Story 007, special case 3)
+   * Test with empty String; using the example "" -> "hello" expecting 5 insertions (User Story 007,
+   * special case 3)
    * 
    * @author Kevin Otto
    */
@@ -283,6 +279,8 @@ public class AnalysisTests {
    * Test if the convention from codons to amino acid (shortform) is correct, if the user uses
    * correct codonstrings
    * 
+   * ATT = I, GGG = G, CCC = P
+   * 
    * @author bluemlj
    * @throws CorruptedSequenceException
    */
@@ -293,6 +291,24 @@ public class AnalysisTests {
     String testA = "ATTGGGCCCATT";
     String result = StringAnalysis.codonsToAminoAcids(testA);
     assertTrue(result.equals("IGPI"));
+  }
+
+  /**
+   * Test if the convention from codons to amino acid (shortform) is correct, if the user uses
+   * correct codonstrings
+   * 
+   * ATG = M, CAA = Q, ATT = I, GTC = V, CTG = L, TGC = C
+   * 
+   * @author bluemlj
+   * @throws CorruptedSequenceException
+   */
+  @Test
+
+  public void codonsToAminoAcidsOnCorrectUse2() throws CorruptedSequenceException {
+
+    String testA = "ATGCAAATTGTCCTGTGCCAACTG";
+    String result = StringAnalysis.codonsToAminoAcids(testA);
+    assertTrue(result.equals("MQIVLCQL"));
   }
 
   /**
@@ -387,6 +403,22 @@ public class AnalysisTests {
   }
 
   @Test
+  public void testsimpleSubstitutionFinding2() throws CorruptedSequenceException {
+    Gene gena = new Gene("ATGCCCCACCCCTAA", 0, "testGenA", "Jannis");
+    AnalysedSequence testSeq =
+        new AnalysedSequence("ATGCCCCCCCCCTAA", "Jannis", "toAnalyse", null, 0);
+    testSeq.setReferencedGene(gena);
+
+    try {
+      MutationAnalysis.findMutations(testSeq);
+      assertTrue(testSeq.getMutations().getFirst().equals("H3P"));
+    } catch (UndefinedTypeOfMutationException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    }
+  }
+
+  @Test
   /**
    * @JANNIS TODO beschreibung
    * @throws CorruptedSequenceException
@@ -399,6 +431,25 @@ public class AnalysisTests {
     try {
       MutationAnalysis.findMutations(testSeq);
       assertTrue(testSeq.getMutations().getFirst().equals("-1F2"));
+    } catch (UndefinedTypeOfMutationException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    }
+  }
+
+  @Test
+  /**
+   * @JANNIS TODO beschreibung
+   * @throws CorruptedSequenceException
+   */
+  public void testsimpleDeletionFinding2() throws CorruptedSequenceException {
+    Gene gena = new Gene("ATGUUCUUAUUUTAA", 0, "testGen1", "Jannis");
+    AnalysedSequence testSeq = new AnalysedSequence("ATGUUCUUUTAA", "Jannis", "toAnalyse", null, 0);
+    testSeq.setReferencedGene(gena);
+
+    try {
+      MutationAnalysis.findMutations(testSeq);
+      assertTrue(testSeq.getMutations().getFirst().equals("-1L3"));
     } catch (UndefinedTypeOfMutationException e) {
       // TODO Auto-generated catch block
       e.printStackTrace();
@@ -420,6 +471,119 @@ public class AnalysisTests {
     }
   }
 
+  @Test
+  public void testsimpleInsertionFinding2() throws CorruptedSequenceException {
+    Gene gena = new Gene("ATGCCCAAATAA", 0, "testGen1", "Jannis");
+    AnalysedSequence testSeq =
+        new AnalysedSequence("ATGCCCGGGAAATAA", "Jannis", "toAnalyse", null, 0);
+    testSeq.setReferencedGene(gena);
+
+    try {
+      MutationAnalysis.findMutations(testSeq);
+      assertTrue(testSeq.getMutations().getFirst().equals("+1G2"));
+    } catch (UndefinedTypeOfMutationException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    }
+  }
+
+  @Test
+  public void testSilentMutationFinding() throws CorruptedSequenceException {
+    Gene gena = new Gene("ATGUUAGGGCCC", 0, "testGen1", "Jannis");
+    AnalysedSequence testSeq = new AnalysedSequence("ATGUUGGGGCCC", "Jannis", "toAnalyse", null, 0);
+    testSeq.setReferencedGene(gena);
+
+    try {
+      MutationAnalysis.findMutations(testSeq);
+      assertTrue(testSeq.getMutations().getFirst().equals("UUA2UUG"));
+    } catch (UndefinedTypeOfMutationException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    }
+  }
+
+  @Test
+  public void testSilentMutationFinding2() throws CorruptedSequenceException {
+    Gene gena = new Gene("ATGCAAGTTCTAGGGCCC", 0, "testGen1", "Jannis");
+    AnalysedSequence testSeq =
+        new AnalysedSequence("ATGCAAGTCCTAGGGCCC", "Jannis", "toAnalyse", null, 0);
+    testSeq.setReferencedGene(gena);
+
+    try {
+      MutationAnalysis.findMutations(testSeq);
+      assertTrue(testSeq.getMutations().getFirst().equals("GTT3GTC"));
+    } catch (UndefinedTypeOfMutationException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    }
+  }
+
+  @Test
+  /**
+   * @JANNIS TODO beschreibung
+   * @throws CorruptedSequenceException
+   */
+  public void testFindingMultipleMutations() throws CorruptedSequenceException {
+    Gene gena = new Gene("ATGUUUCCCCAA", 0, "testGen1", "Jannis");
+    AnalysedSequence testSeq = new AnalysedSequence("ATGUUAUUCCCC", "Jannis", "toAnalyse", null, 0);
+    testSeq.setReferencedGene(gena);
+
+    try {
+      MutationAnalysis.findMutations(testSeq);
+
+      assertTrue(testSeq.getMutations().getFirst().equals("+1L1"));
+      assertTrue(testSeq.getMutations().get(1).equals("-1Q4"));
+      assertTrue(testSeq.getMutations().get(2).equals("UUU2UUC"));
+    } catch (UndefinedTypeOfMutationException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    }
+  }
+
+  @Test
+  /**
+   * @JANNIS TODO beschreibung
+   * @throws CorruptedSequenceException
+   */
+  public void testFindingMultipleMutations2() throws CorruptedSequenceException {
+    Gene gena = new Gene("ATGUUUCCCCAA", 0, "testGen1", "Jannis");
+    AnalysedSequence testSeq = new AnalysedSequence("ATGUUACCC", "Jannis", "toAnalyse", null, 0);
+    testSeq.setReferencedGene(gena);
+
+    try {
+      MutationAnalysis.findMutations(testSeq);
+
+      assertTrue(testSeq.getMutations().getFirst().equals("F2L"));
+      assertTrue(testSeq.getMutations().get(1).equals("UUU1UUA"));
+      assertTrue(testSeq.getMutations().get(2).equals("-1Q4"));
+    } catch (UndefinedTypeOfMutationException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    }
+  }
+
+  @Test
+  /**
+   * @JANNIS TODO beschreibung
+   * @throws CorruptedSequenceException
+   */
+  public void testFindingMultipleMutationsIncorrect() throws CorruptedSequenceException {
+    Gene gena = new Gene("ATGUUUCCCCAA", 0, "testGen1", "Jannis");
+    AnalysedSequence testSeq = new AnalysedSequence("GGG", "Jannis", "toAnalyse", null, 0);
+    testSeq.setReferencedGene(gena);
+
+    try {
+      MutationAnalysis.findMutations(testSeq);
+
+      System.out.println(testSeq.getMutations().get(3));
+      assertTrue(testSeq.getMutations().getFirst().equals("F2L"));
+      assertTrue(testSeq.getMutations().get(1).equals("UUU1UUA"));
+      assertTrue(testSeq.getMutations().get(2).equals("-1Q4"));
+    } catch (UndefinedTypeOfMutationException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    }
+  }
 
   @Test
   public void testFindingRightGeneOnCorrectUse() {
