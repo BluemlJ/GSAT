@@ -28,15 +28,15 @@ public class PrivateTest {
     AnalysedSequence testSeq = SequenceReader.convertFileIntoSequence();
     System.out.println("File read");
 
-    
+
     for (int i : testSeq.getQuality()) {
       System.err.print(i + ", ");
     }
     System.out.println("\n");
     for (int i : QualityAnalysis.findLowQuality(testSeq)) {
-      System.err.println("ENDEN:    " + i );
+      System.err.println("ENDEN:    " + i);
     }
-    
+
 
 
     QualityAnalysis.trimLowQuality(testSeq);
@@ -47,7 +47,7 @@ public class PrivateTest {
     System.out.println("Gene constructed");
     System.out.println(testSeq.getSequence());
     StringAnalysis.trimVector(testSeq, fsa);
-     System.err.println(testSeq.getSequence());
+    System.err.println(testSeq.getSequence());
     System.out.println("Vector trimmed");
     testSeq.setReferencedGene(fsa);
     MutationAnalysis.findMutations(testSeq);

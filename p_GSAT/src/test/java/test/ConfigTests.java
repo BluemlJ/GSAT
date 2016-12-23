@@ -80,8 +80,7 @@ public class ConfigTests {
     try {
       Config.readConfig();
     } catch (ConfigNotFoundException e) {
-      assertEquals(e.getMessage(),
-          "Config at path: /corrupt_path could not be found");
+      assertEquals(e.getMessage(), "Config at path: /corrupt_path could not be found");
     }
   }
 }

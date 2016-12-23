@@ -7,7 +7,13 @@ import static org.junit.Assert.assertSame;
 import org.junit.Test;
 
 import analysis.AnalysedSequence;
-import exceptions.*;
+import exceptions.CorruptedSequenceException;
+import exceptions.DatabaseConnectionException;
+import exceptions.DatabaseErrorException;
+import exceptions.FileReadingException;
+import exceptions.MissingPathException;
+import exceptions.PathUsage;
+import exceptions.UndefinedTypeOfMutationException;
 
 /**
  * This class tests the behavior of the exceptions - whether they contain the right information when

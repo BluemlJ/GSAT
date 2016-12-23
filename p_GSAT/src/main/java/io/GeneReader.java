@@ -31,7 +31,7 @@ public class GeneReader {
     // for each line
     while ((line = geneReader.readLine()) != null) {
       // format "name=atgAAT..."
-      String sepLine[] = line.split("=");
+      String sepLine[] = line.split(";");
       String name = sepLine[0];
       String gene = sepLine[1];
       geneList.add(new Gene(gene, id, name, Config.researcher));
@@ -89,8 +89,8 @@ public class GeneReader {
   public static int getNumGenes() {
     return geneList.size();
   }
-  
-  public static Gene getGeneAt(int index){
+
+  public static Gene getGeneAt(int index) {
     return geneList.get(index);
   }
 }

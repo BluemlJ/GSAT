@@ -10,8 +10,9 @@ import java.util.LinkedList;
 import org.junit.Test;
 
 import analysis.AnalysedSequence;
-import analysis.MutationAnalysis;
 import analysis.Gene;
+import analysis.MutationAnalysis;
+import analysis.Pair;
 import analysis.Sequence;
 import analysis.StringAnalysis;
 import exceptions.CorruptedSequenceException;
@@ -376,13 +377,13 @@ public class AnalysisTests {
     AnalysedSequence testSeq2 = new AnalysedSequence("ola", "Jannis", "toAnalyse", null, 0);
     AnalysedSequence testSeq3 = new AnalysedSequence("mochi", "Jannis", "toAnalyse", null, 0);
 
-    Gene result = StringAnalysis.findRightGene(testSeq, testDatabase);
+    Gene result = StringAnalysis.findRightGene(testSeq, testDatabase).first;
     assertTrue(result.getId() == (gena.getId()));
 
-    result = StringAnalysis.findRightGene(testSeq2, testDatabase);
+    result = StringAnalysis.findRightGene(testSeq2, testDatabase).first;
     assertTrue(result.getId() == (genc.getId()));
 
-    result = StringAnalysis.findRightGene(testSeq3, testDatabase);
+    result = StringAnalysis.findRightGene(testSeq3, testDatabase).first;
     assertTrue(result == null);
 
   }
@@ -562,23 +563,21 @@ public class AnalysisTests {
     }
   }
 
+
   @Test
   /**
    * @JANNIS TODO beschreibung
+   * 
    * @throws CorruptedSequenceException
    */
-  public void testFindingMultipleMutationsIncorrect() throws CorruptedSequenceException {
-    Gene gena = new Gene("ATGUUUCCCCAA", 0, "testGen1", "Jannis");
-    AnalysedSequence testSeq = new AnalysedSequence("GGG", "Jannis", "toAnalyse", null, 0);
+  public void testFindingMutationOnEmptySequence() throws CorruptedSequenceException {
+    Gene gena = new Gene("GGGGGGGGGGGGGGGGGATGGGGGGGGGGG", 0, "testGen1", "Jannis");
+    AnalysedSequence testSeq = new AnalysedSequence("", "Jannis", "toAnalyse", null, 0);
     testSeq.setReferencedGene(gena);
 
     try {
       MutationAnalysis.findMutations(testSeq);
-
-      System.out.println(testSeq.getMutations().get(3));
-      assertTrue(testSeq.getMutations().getFirst().equals("F2L"));
-      assertTrue(testSeq.getMutations().get(1).equals("UUU1UUA"));
-      assertTrue(testSeq.getMutations().get(2).equals("-1Q4"));
+      assertTrue(testSeq.getMutations().isEmpty());
     } catch (UndefinedTypeOfMutationException e) {
       // TODO Auto-generated catch block
       e.printStackTrace();
@@ -596,14 +595,14 @@ public class AnalysisTests {
     testGenes.add(testGeneB);
     testGenes.add(testGeneC);
 
-    Gene result = StringAnalysis.findRightGene(testA, testGenes);
+    Gene result = StringAnalysis.findRightGene(testA, testGenes).first;
 
     assertTrue(result == testGeneA);
   }
 
   @Test
   public void testFindingRightGeneOnIncorrectUse() {
-    AnalysedSequence testA = new AnalysedSequence("BBBBCKCKCKCKCS", "Jannis", "testA", null, 0);
+    AnalysedSequence testA = new AnalysedSequence("", "Jannis", "testA", null, 0);
     Gene testGeneA = new Gene("AGGGC", 0, "testGeneA", "Jannis");
     Gene testGeneB = new Gene("AGTTTTTGGC", 1, "testGeneB", "Jannis");
     Gene testGeneC = new Gene("AGCCTCTCTCTCTGGC", 2, "testGeneC", "Jannis");
@@ -612,8 +611,8 @@ public class AnalysisTests {
     testGenes.add(testGeneB);
     testGenes.add(testGeneC);
 
-    Gene result = StringAnalysis.findRightGene(testA, testGenes);
-    assertTrue(result == null);
+    Pair<Gene, Double> result = StringAnalysis.findRightGene(testA, testGenes);
+    assertTrue(result.second == 0);
   }
 
   /**

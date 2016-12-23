@@ -1,12 +1,6 @@
 package analysis;
 
-import java.util.Collections;
-import java.util.Hashtable;
 import java.util.LinkedList;
-import java.util.Map;
-
-import org.junit.Test;
-import org.junit.experimental.max.MaxCore;
 
 import exceptions.CorruptedSequenceException;
 import exceptions.UndefinedTypeOfMutationException;
@@ -19,7 +13,8 @@ import exceptions.UndefinedTypeOfMutationException;
 public class MutationAnalysis {
 
   // A Integer, that specifies the border for the "Reading Frame Error"
-  public static int warningReadingErrorFrame = 10;
+  public static int warningReadingFrameError = 10;
+  public static boolean readingFrameError = false;
   public static int readingFrameErrorBorder = 100;
 
 
@@ -45,16 +40,24 @@ public class MutationAnalysis {
     // the gene sequence
     String originalSequence = reference.getSequence();
     // list of differences in form like "s|12|G|H"
-    LinkedList<String> differences = reportDifferences(toAnalyze, 0);
+
+    warningReadingFrameError = mutatedSequence.length() / 8;
+    readingFrameErrorBorder = mutatedSequence.length() / 3;
+
+    LinkedList<String> differences = reportDifferences(toAnalyze, true);
     int lastposition = 0;
     int checkFrameerrorCounter = 0;
     int shift = 0;
     int tmpshift = 0;
+
     for (int i = 0; i < differences.size(); i++) {
 
-      if (checkFrameerrorCounter == warningReadingErrorFrame)
-        System.err.println("Warning possible READING FRAME ERROR");
-      if (checkFrameerrorCounter == readingFrameErrorBorder) return false;
+      if (checkFrameerrorCounter == warningReadingFrameError)
+        System.err.println("Warning: Frame Error possible");
+      if (checkFrameerrorCounter == readingFrameErrorBorder) {
+        readingFrameError = true;
+        return false;
+      }
 
 
       String difference = differences.get(i);
@@ -113,8 +116,6 @@ public class MutationAnalysis {
 
             if (!oldAcid.equals(newAcid)) {
               toAnalyze.addMutation(oldAcid + tempPosition + newAcid);
-            } else {
-              checkFrameerrorCounter = 0;
             }
           }
         }
@@ -139,8 +140,6 @@ public class MutationAnalysis {
             tempPosition++;
             toAnalyze.addMutation(oldAcid + tempPosition + newAcid);
             tempPosition--;
-          } else {
-            checkFrameerrorCounter = 0;
           }
         }
       }
@@ -181,21 +180,18 @@ public class MutationAnalysis {
    * @author Kevin Otto, Jannis Blueml
    * @throws CorruptedSequenceException
    */
-  private static LinkedList<String> reportDifferences(AnalysedSequence seq, int type)
+  private static LinkedList<String> reportDifferences(AnalysedSequence seq, boolean type)
       throws CorruptedSequenceException {
     String first, second;
-    switch (type) {
-      case 0:
-        first = StringAnalysis
-            .codonsToAminoAcids(seq.getReferencedGene().sequence.substring(seq.getOffset()));
-        second = StringAnalysis.codonsToAminoAcids(seq.sequence);
-        return reportDifferences(first, second);
-
-      default:
-        first = seq.getReferencedGene().sequence.substring(seq.getOffset());
-        second = seq.sequence;
-
-        return reportDifferences(first, second);
+    if (type) {
+      first = StringAnalysis
+          .codonsToAminoAcids(seq.getReferencedGene().sequence.substring(seq.getOffset()));
+      second = StringAnalysis.codonsToAminoAcids(seq.sequence);
+      return reportDifferences(first, second);
+    } else {
+      first = seq.getReferencedGene().sequence.substring(seq.getOffset());
+      second = seq.sequence;
+      return reportDifferences(first, second);
 
     }
 

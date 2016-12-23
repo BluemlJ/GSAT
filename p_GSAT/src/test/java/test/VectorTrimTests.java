@@ -3,12 +3,6 @@ package test;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-import java.io.ByteArrayOutputStream;
-
-import java.io.PrintStream;
-
-import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
 
 import analysis.AnalysedSequence;
@@ -23,20 +17,7 @@ import analysis.StringAnalysis;
  */
 public class VectorTrimTests {
 
-  private final ByteArrayOutputStream outContent = new ByteArrayOutputStream();
-  private final ByteArrayOutputStream errContent = new ByteArrayOutputStream();
 
-  @Before
-  public void suppressOutput() {
-     System.setOut(new PrintStream(outContent));
-     System.setErr(new PrintStream(errContent));
-  }
-
-  @After
-  public void cleanUpStreams() {
-     System.setOut(null);
-     System.setErr(null);
-  }
 
   /**
    * 
@@ -113,7 +94,7 @@ public class VectorTrimTests {
 
     String test = sequence.getSequence();
     String expected = "hallo3wiewieGehts3dirheute3";
-    
+
     assertTrue(expected.equals(test));
     assertEquals(0, sequence.getOffset());
   }
@@ -153,7 +134,7 @@ public class VectorTrimTests {
 
     String test = sequence.getSequence();
     String expected = "hallo3wieGehts3dirheute3ERD";
-    
+
     assertTrue(expected.equals(test));
     assertEquals(0, sequence.getOffset());
   }

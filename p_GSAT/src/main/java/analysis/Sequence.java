@@ -16,7 +16,7 @@ public abstract class Sequence {
    */
   protected String sequence;
 
-  
+
   /**
    * The date at which this sequence was added.
    */
@@ -27,18 +27,18 @@ public abstract class Sequence {
    * The researcher who added this sequence.
    */
   protected String researcher;
-  
+
 
   /**
    * Constructor setting the attribute (used for inheriting classes).
    * 
    * @param sequence the sequence of nucleotides
    */
-	public Sequence(String sequence, String researcher) {
-    this.sequence = sequence;
-   // DateFormat df = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss");
-   // Calendar cal = Calendar.getInstance();
-   // this.addingDate = df.format(cal);
+  public Sequence(String sequence, String researcher) {
+    setSequence(sequence);
+    // DateFormat df = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss");
+    // Calendar cal = Calendar.getInstance();
+    // this.addingDate = df.format(cal);
 
     this.researcher = researcher;
   }
@@ -122,10 +122,10 @@ public abstract class Sequence {
    * @author bluemlj
    */
   public void setSequence(String sequence) {
-    this.sequence = sequence;
+    this.sequence = sequence.toUpperCase();
   }
 
-  
+
   public String getAddingDate() {
     return addingDate;
   }
@@ -144,11 +144,11 @@ public abstract class Sequence {
   public void setResearcher(String researcher) {
     this.researcher = researcher;
   }
-  
+
   @Override
   public String toString() {
     return sequence;
   }
-  
-  
+
+
 }

@@ -8,6 +8,7 @@ package exceptions;
  */
 public class ConfigReadException extends Exception {
   public String field;
+
   public ConfigReadException(String field) {
     super("Error while reading " + field + " from config");
     this.field = field;

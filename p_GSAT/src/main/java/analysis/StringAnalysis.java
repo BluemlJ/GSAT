@@ -1,21 +1,12 @@
 package analysis;
 
-import java.io.ByteArrayOutputStream;
-import java.io.OutputStream;
-import java.io.PrintStream;
 import java.util.Collections;
 import java.util.Hashtable;
 import java.util.LinkedList;
 import java.util.Map;
 import java.util.TreeMap;
 
-import javax.swing.plaf.synth.SynthSpinnerUI;
-
-import org.junit.After;
-import org.junit.Before;
-
 import exceptions.CorruptedSequenceException;
-import io.ConsoleIO;
 
 /**
  * This class contains the logic of analyzing sequence strings. This class serves for
@@ -214,7 +205,7 @@ public class StringAnalysis {
       return "nucleotides not modulo 3, so not convertable";
     return builder.toString();
   }
-  
+
   /**
    * Finds the gene that fits best to a given sequence by comparing it to all given genes.
    * 
@@ -223,7 +214,8 @@ public class StringAnalysis {
    * @return the gene, that has the best similarity
    * @author bluemlj
    */
-  public static Gene findRightGene(AnalysedSequence toAnalyze, LinkedList<Gene> listOfGenes) {
+  public static Pair<Gene, Double> findRightGene(AnalysedSequence toAnalyze,
+      LinkedList<Gene> listOfGenes) {
     Gene bestgene = null;
     double bestSimilarity = 0;
 
@@ -235,14 +227,23 @@ public class StringAnalysis {
       }
     }
 
-    // if the Similarity is less then 80%, return null
-    if (bestSimilarity >= 80) {
-      return bestgene;
-    } else
-      return null;
+    return new Pair<Gene, Double>(bestgene, bestSimilarity);
   }
 
-
+  /**
+   * Finds the gene that fits best to a given sequence by comparing it to all given genes. Known
+   * genes can be found in the local dataset.
+   * 
+   * @param toAnalyze Sequence to be analyzed (i.e. for which the fitting gene is to find)
+   * 
+   * @return The found gene.
+   * 
+   * @author bluemlj
+   */
+  public static Pair<Gene, Double> findRightGeneLocal(AnalysedSequence toAnalyze) {
+    // TODO call findRightGene(sequence, listOfGenes) with listOfGenes with a database sysout export
+    return null;
+  }
 
   /**
    * Finds the gene that fits best to a given sequence by comparing it to all given genes. Known
@@ -254,13 +255,13 @@ public class StringAnalysis {
    * 
    * @author bluemlj
    */
-  public static Gene findRightGene(AnalysedSequence toAnalyze) {
+  public static Pair<Gene, Double> findRightGene(AnalysedSequence toAnalyze) {
     // TODO call findRightGene(sequence, listOfGenes) with listOfGenes with a database export
     return null;
   }
 
-  
-  
+
+
   /**
    * Compares to sequences and returns their similarity without finding the exact differences.
    * 
@@ -399,7 +400,7 @@ public class StringAnalysis {
         potentialBegin = true;
         potentialBeginPosition = line;
         originalBegin = row;
-        
+
       } else if (levenMatrix[row - 1][line] < levenMatrix[row][line - 1]) {
         row--;
 
@@ -455,7 +456,7 @@ public class StringAnalysis {
     toAlign.setSequence(result);
     // sequence.setOffset(begin);ORIGINAL
     toAlign.setOffset(originalBegin + ((3 - (originalBegin % 3)) % 3));
-    //toAlign.setOffset(toAlign.getOffset() + begin);
+    // toAlign.setOffset(toAlign.getOffset() + begin);
     return result;
     // System.out.println(toAlign.getOffset() + " = OFFSET");
   }
@@ -480,7 +481,7 @@ public class StringAnalysis {
 
     // check for stopcodon //TODO edit
     boolean endexact = false;
-    
+
     String codon = gene.sequence.substring(gene.sequence.length() - 3, gene.sequence.length());
 
 
@@ -490,7 +491,7 @@ public class StringAnalysis {
       if (hitIndex >= 0 && hitIndex == newSequence.lastIndexOf(codon)) {
         newSequence = newSequence.substring(0, hitIndex + 3);
         endexact = true;
-        //TODO save end vector
+        // TODO save end vector
         i = 10;
       }
       switch (i) {
@@ -529,7 +530,7 @@ public class StringAnalysis {
       // set vector and correct offset
       toAlign.setLeftVector(leftVector);
       toAlign.setOffset(0);
-      
+
       toAlign.setSequence(newSequence);
     }
 
@@ -645,6 +646,7 @@ public class StringAnalysis {
    * @deprecated
    * @author Kevin
    */
+  @Deprecated
   public static Pair<Integer, String> findBestMatch(String toAlign, String template) {
 
     TreeMap<Double, Pair<Integer, String>> matches = new TreeMap<>();

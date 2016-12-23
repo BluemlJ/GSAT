@@ -1,7 +1,6 @@
 package test;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
 
@@ -35,8 +34,7 @@ public class QualityTests {
   }
 
   /**
-   * Tests if the quality information is accessible
-   * (Userstory 008 - Expected behavior)
+   * Tests if the quality information is accessible (Userstory 008 - Expected behavior)
    */
   @Test
   public void testQualityAccessibility() {
@@ -65,8 +63,8 @@ public class QualityTests {
   }
 
   /**
-   * This test confirms expected quality trimming behaviour for a synthetic sequence
-   * (Userstory 008 - Expected behavior)
+   * This test confirms expected quality trimming behaviour for a synthetic sequence (Userstory 008
+   * - Expected behavior)
    */
   @Test
   public void qualityTestA() throws IOException {
@@ -82,8 +80,8 @@ public class QualityTests {
   }
 
   /**
-   * This test confirms expected quality trimming behaviour for a synthetic sequence
-   * (Userstory 008 - Unusual behavior)
+   * This test confirms expected quality trimming behaviour for a synthetic sequence (Userstory 008
+   * - Unusual behavior)
    */
   @Test
   public void qualityTestB() throws IOException {
@@ -98,8 +96,8 @@ public class QualityTests {
   }
 
   /**
-   * This test confirms expected quality trimming behaviour for a synthetic sequence
-   * (Userstory 008 - Unusual behavior)
+   * This test confirms expected quality trimming behaviour for a synthetic sequence (Userstory 008
+   * - Unusual behavior)
    */
   @Test
   public void qualityTestC() throws IOException {
@@ -114,8 +112,8 @@ public class QualityTests {
   }
 
   /**
-   * This test confirms expected quality trimming behaviour for a synthetic sequence
-   * (Userstory 008 - Expected behavior)
+   * This test confirms expected quality trimming behaviour for a synthetic sequence (Userstory 008
+   * - Expected behavior)
    */
   @Test
   public void qualityTestD() throws IOException {
@@ -131,15 +129,14 @@ public class QualityTests {
   }
 
   /**
-   * This test confirms expected quality trimming behaviour for a synthetic sequence
-   * (Userstory 008 - Expected behavior)
+   * This test confirms expected quality trimming behaviour for a synthetic sequence (Userstory 008
+   * - Expected behavior)
    */
   @Test
   public void qualityTestE() throws IOException {
     // start is bad quality, end is low quality
     int[] qualitiesE = {0, 0, 100, 100, 100, 100, 100, 100, 100};
-    AnalysedSequence testSequenceE =
-        new AnalysedSequence("aaatttggg", "", "", qualitiesE, 33.3);
+    AnalysedSequence testSequenceE = new AnalysedSequence("aaatttggg", "", "", qualitiesE, 33.3);
     int[] trim = QualityAnalysis.findLowQuality(testSequenceE);
     assertEquals(trim[1], 9);
     assertEquals(trim[0], 2);

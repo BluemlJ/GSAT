@@ -1,5 +1,7 @@
 package core;
 
+import io.FileSaver;
+
 /**
  * This class coordinates the overall behavior of the program. It moderates the analyzing pipeline.
  *
@@ -27,4 +29,23 @@ public class Main {
     if (consoleMode) ConsoleVersion.startConsoleVersion();
 
   }
+
+  /**
+   * Resets the analysis pipeline between the analyses of different files.
+   * 
+   * @author Ben Kohr
+   */
+  static void preparePipelineForNextRun() {
+    FileSaver.flushQueue();
+  }
+
+  /**
+   * Resets the analysis pipeline to be able to start with a completely new analyzing process.
+   * 
+   * @author Ben Kohr
+   */
+  static void resetPipeline() {
+    FileSaver.resetAll();
+  }
+
 }
