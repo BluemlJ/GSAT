@@ -74,10 +74,12 @@ public class PrivateTest {
     System.out.println(sequence);
     
     //StringAnalysis.trimVector(sequence, fsa);
-    StringAnalysis.findOffset(sequence);
+    StringAnalysis.trimVector(sequence);
     System.out.println(sequence.getOffset());
+    //System.out.println(sequence.getOffset());
     
-    System.out.println(sequence);
+    System.err.println(sequence);
+    System.out.println();
     System.out.println(fsa);
     
   }

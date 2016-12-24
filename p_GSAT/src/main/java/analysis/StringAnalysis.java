@@ -572,6 +572,8 @@ public class StringAnalysis {
    */
   public static boolean findOffset(AnalysedSequence seqence) {
 
+    int stepSize = 4;
+    stepSize*=3;
     // get gene and sequence as String
     String gene = seqence.getReferencedGene().getSequence();
     String seq = seqence.getSequence();
@@ -588,14 +590,12 @@ public class StringAnalysis {
       }
     }
 
-
-    boolean offsetNotFound = false;
+    boolean offsetNotFound = true;
     boolean emrgencyMode = false;
 
     // part of the sequence that will be testet.
-    String toTest = seq.substring(0, (seq.length() / 3));
+    String toTest = gene.substring(0, (gene.length() / stepSize));
     int testIndex = 0;
-    
 
     // warn if sequence is to short for testing
     if (toTest.length() < 9) {
@@ -605,30 +605,33 @@ public class StringAnalysis {
     // if begin was not found
     // intense search begins
     while (offsetNotFound) {
-
       // index of toTest is gene
-      int targetIndex = gene.indexOf(toTest);
-
+      int targetIndex = seq.indexOf(toTest);
+      
       // test if toTest was found and if it was found only once
-      if (targetIndex >= 0 && targetIndex == gene.lastIndexOf(toTest)) {
+      if (targetIndex >= 0 && targetIndex == seq.lastIndexOf(toTest)) {
         // OFFSET found:
-        offsetNotFound = false;
-
         // Set offset
-        seqence.setOffset(targetIndex - testIndex);
+        offsetNotFound = false;
+        seqence.setOffset(targetIndex + testIndex);
+        if (testIndex == 0) {
+          return true;
+        }
+        return false;
+
+        
 
       } else if (!emrgencyMode) {
         // check if next step is to big
-        if (testIndex + toTest.length() * 2 > seq.length()) {
-          testIndex = 0;
-          toTest = seq.substring(0, toTest.length() - 1);
-          if (toTest.length() < 9) {
+        if (toTest.length() > 9) {       
+          toTest = toTest.substring(0, toTest.length()-3);
+        }else {
+          if (testIndex+3 + gene.length()/stepSize < gene.length()) {
+            testIndex++;
+            toTest = gene.substring(testIndex, gene.length()/stepSize);
+          }else {
             emrgencyMode = true;
           }
-          // else begin with smaller step size
-        } else {
-          testIndex += toTest.length();
-          toTest = seq.substring(testIndex, testIndex + toTest.length());
         }
       } else {
         // EMERGENCY MODE
