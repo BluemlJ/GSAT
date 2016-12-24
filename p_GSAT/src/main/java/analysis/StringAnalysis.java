@@ -483,7 +483,7 @@ public class StringAnalysis {
     boolean endexact = false;
 
     String codon = gene.sequence.substring(gene.sequence.length() - 3, gene.sequence.length());
-
+    codon = "false";//TODO fix
 
     // if found cut at stopcodon
     for (int i = 0; i < 6; i++) {
@@ -491,6 +491,8 @@ public class StringAnalysis {
       if (hitIndex >= 0 && hitIndex == newSequence.lastIndexOf(codon)) {
         newSequence = newSequence.substring(0, hitIndex + 3);
         endexact = true;
+        System.out.println();
+        System.err.println("start found " + codon);
         // TODO save end vector
         i = 10;
       }
@@ -578,11 +580,11 @@ public class StringAnalysis {
     // if found method can return with exact begining possition
     if (seq.contains(gene.substring(0, 3))) {
       String codon = gene.substring(0, 3);
-
+      
       int hitIndex = seq.indexOf(codon);
       if (hitIndex == seq.lastIndexOf(codon)) {
-        seqence.setOffset(hitIndex);
-        return true;
+        seqence.setOffset(hitIndex);        
+        return true;        
       }
     }
 
@@ -593,6 +595,7 @@ public class StringAnalysis {
     // part of the sequence that will be testet.
     String toTest = seq.substring(0, (seq.length() / 3));
     int testIndex = 0;
+    
 
     // warn if sequence is to short for testing
     if (toTest.length() < 9) {
