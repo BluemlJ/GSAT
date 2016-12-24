@@ -57,7 +57,7 @@ public class PrivateTest {
   }
 
 
-  //@Ignore
+  @Ignore
   @Test
   public void kevinLocalTest() throws FileReadingException, IOException,
       UndefinedTypeOfMutationException, CorruptedSequenceException {
