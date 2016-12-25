@@ -104,7 +104,7 @@ public class MutationAnalysis {
 
       if (position > lastposition + 1 || i == differences.size() - 1) {
 
-        for (int tempPosition = lastposition + 1; tempPosition < position; tempPosition++) {
+        for (int tempPosition = lastposition + 1; tempPosition <= position; tempPosition++) {
           if (tempPosition * 3 + toAnalyze.getOffset() + 3 > originalSequence.length()
               || tempPosition * 3 + 3 > mutatedSequence.length()) {
             break;
@@ -118,6 +118,7 @@ public class MutationAnalysis {
               toAnalyze.addMutation(oldAcid + tempPosition + newAcid);
             }
           }
+          lastposition = position;
         }
 
       } else {

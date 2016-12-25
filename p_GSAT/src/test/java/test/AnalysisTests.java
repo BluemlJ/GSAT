@@ -532,6 +532,7 @@ public class AnalysisTests {
     try {
       MutationAnalysis.findMutations(testSeq);
 
+      System.out.println(testSeq.getMutations().get(2));
       assertTrue(testSeq.getMutations().getFirst().equals("+1L1"));
       assertTrue(testSeq.getMutations().get(1).equals("-1Q4"));
       assertTrue(testSeq.getMutations().get(2).equals("UUU2UUC"));
