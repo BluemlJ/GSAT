@@ -1,22 +1,17 @@
 package analysis;
 
-import java.io.ByteArrayOutputStream;
-import java.io.OutputStream;
-import java.io.PrintStream;
 import java.util.Collections;
 import java.util.Hashtable;
 import java.util.LinkedList;
 import java.util.Map;
 import java.util.TreeMap;
 
-import javax.swing.plaf.synth.SynthSpinnerUI;
-
-import org.junit.After;
-import org.junit.Before;
-
 import exceptions.CorruptedSequenceException;
+<<<<<<< HEAD
 import exceptions.DissimilarGeneException;
 import io.ConsoleIO;
+=======
+>>>>>>> c9a6c5a8a26d3be6c4782d806cb7d0bcb82515c5
 
 /**
  * This class contains the logic of analyzing sequence strings. This class serves for
@@ -215,7 +210,7 @@ public class StringAnalysis {
       return "nucleotides not modulo 3, so not convertable";
     return builder.toString();
   }
-  
+
   /**
    * Finds the gene that fits best to a given sequence by comparing it to all given genes.
    * 
@@ -225,8 +220,14 @@ public class StringAnalysis {
    * @author bluemlj
  * @throws DissimilarGeneException 
    */
+<<<<<<< HEAD
   public static Gene findRightGene(AnalysedSequence toAnalyze, LinkedList<Gene> listOfGenes) throws DissimilarGeneException {
     Gene bestgene = listOfGenes.getFirst();
+=======
+  public static Pair<Gene, Double> findRightGene(AnalysedSequence toAnalyze,
+      LinkedList<Gene> listOfGenes) {
+    Gene bestgene = null;
+>>>>>>> c9a6c5a8a26d3be6c4782d806cb7d0bcb82515c5
     double bestSimilarity = 0;
 
     for (Gene gene : listOfGenes) {
@@ -237,15 +238,32 @@ public class StringAnalysis {
       }
     }
 
+<<<<<<< HEAD
     // if the Similarity is less then 80%, return null
     if (bestSimilarity >= 80) {
       return bestgene;
     }
     
     throw new DissimilarGeneException(toAnalyze, bestgene, bestSimilarity);
+=======
+    return new Pair<Gene, Double>(bestgene, bestSimilarity);
+>>>>>>> c9a6c5a8a26d3be6c4782d806cb7d0bcb82515c5
   }
 
-
+  /**
+   * Finds the gene that fits best to a given sequence by comparing it to all given genes. Known
+   * genes can be found in the local dataset.
+   * 
+   * @param toAnalyze Sequence to be analyzed (i.e. for which the fitting gene is to find)
+   * 
+   * @return The found gene.
+   * 
+   * @author bluemlj
+   */
+  public static Pair<Gene, Double> findRightGeneLocal(AnalysedSequence toAnalyze) {
+    // TODO call findRightGene(sequence, listOfGenes) with listOfGenes with a database sysout export
+    return null;
+  }
 
   /**
    * Finds the gene that fits best to a given sequence by comparing it to all given genes. Known
@@ -257,13 +275,13 @@ public class StringAnalysis {
    * 
    * @author bluemlj
    */
-  public static Gene findRightGene(AnalysedSequence toAnalyze) {
+  public static Pair<Gene, Double> findRightGene(AnalysedSequence toAnalyze) {
     // TODO call findRightGene(sequence, listOfGenes) with listOfGenes with a database export
     return null;
   }
 
-  
-  
+
+
   /**
    * Compares to sequences and returns their similarity without finding the exact differences.
    * 
@@ -402,7 +420,7 @@ public class StringAnalysis {
         potentialBegin = true;
         potentialBeginPosition = line;
         originalBegin = row;
-        
+
       } else if (levenMatrix[row - 1][line] < levenMatrix[row][line - 1]) {
         row--;
 
@@ -458,7 +476,7 @@ public class StringAnalysis {
     toAlign.setSequence(result);
     // sequence.setOffset(begin);ORIGINAL
     toAlign.setOffset(originalBegin + ((3 - (originalBegin % 3)) % 3));
-    //toAlign.setOffset(toAlign.getOffset() + begin);
+    // toAlign.setOffset(toAlign.getOffset() + begin);
     return result;
     // System.out.println(toAlign.getOffset() + " = OFFSET");
   }
@@ -483,9 +501,9 @@ public class StringAnalysis {
 
     // check for stopcodon //TODO edit
     boolean endexact = false;
-    
-    String codon = gene.sequence.substring(gene.sequence.length() - 3, gene.sequence.length());
 
+    String codon = gene.sequence.substring(gene.sequence.length() - 3, gene.sequence.length());
+    codon = "false";//TODO fix
 
     // if found cut at stopcodon
     for (int i = 0; i < 6; i++) {
@@ -493,7 +511,9 @@ public class StringAnalysis {
       if (hitIndex >= 0 && hitIndex == newSequence.lastIndexOf(codon)) {
         newSequence = newSequence.substring(0, hitIndex + 3);
         endexact = true;
-        //TODO save end vector
+        System.out.println();
+        System.err.println("start found " + codon);
+        // TODO save end vector
         i = 10;
       }
       switch (i) {
@@ -532,7 +552,7 @@ public class StringAnalysis {
       // set vector and correct offset
       toAlign.setLeftVector(leftVector);
       toAlign.setOffset(0);
-      
+
       toAlign.setSequence(newSequence);
     }
 
@@ -572,6 +592,8 @@ public class StringAnalysis {
    */
   public static boolean findOffset(AnalysedSequence seqence) {
 
+    int stepSize = 4;
+    stepSize*=3;
     // get gene and sequence as String
     String gene = seqence.getReferencedGene().getSequence();
     String seq = seqence.getSequence();
@@ -580,20 +602,19 @@ public class StringAnalysis {
     // if found method can return with exact begining possition
     if (seq.contains(gene.substring(0, 3))) {
       String codon = gene.substring(0, 3);
-
+      
       int hitIndex = seq.indexOf(codon);
       if (hitIndex == seq.lastIndexOf(codon)) {
-        seqence.setOffset(hitIndex);
-        return true;
+        seqence.setOffset(hitIndex);        
+        return true;        
       }
     }
 
-
-    boolean offsetNotFound = false;
+    boolean offsetNotFound = true;
     boolean emrgencyMode = false;
 
     // part of the sequence that will be testet.
-    String toTest = seq.substring(0, (seq.length() / 3));
+    String toTest = gene.substring(0, (gene.length() / stepSize));
     int testIndex = 0;
 
     // warn if sequence is to short for testing
@@ -604,30 +625,33 @@ public class StringAnalysis {
     // if begin was not found
     // intense search begins
     while (offsetNotFound) {
-
       // index of toTest is gene
-      int targetIndex = gene.indexOf(toTest);
-
+      int targetIndex = seq.indexOf(toTest);
+      
       // test if toTest was found and if it was found only once
-      if (targetIndex >= 0 && targetIndex == gene.lastIndexOf(toTest)) {
+      if (targetIndex >= 0 && targetIndex == seq.lastIndexOf(toTest)) {
         // OFFSET found:
-        offsetNotFound = false;
-
         // Set offset
-        seqence.setOffset(targetIndex - testIndex);
+        offsetNotFound = false;
+        seqence.setOffset(targetIndex + testIndex);
+        if (testIndex == 0) {
+          return true;
+        }
+        return false;
+
+        
 
       } else if (!emrgencyMode) {
         // check if next step is to big
-        if (testIndex + toTest.length() * 2 > seq.length()) {
-          testIndex = 0;
-          toTest = seq.substring(0, toTest.length() - 1);
-          if (toTest.length() < 9) {
+        if (toTest.length() > 9) {       
+          toTest = toTest.substring(0, toTest.length()-3);
+        }else {
+          if (testIndex+3 + gene.length()/stepSize < gene.length()) {
+            testIndex++;
+            toTest = gene.substring(testIndex, gene.length()/stepSize);
+          }else {
             emrgencyMode = true;
           }
-          // else begin with smaller step size
-        } else {
-          testIndex += toTest.length();
-          toTest = seq.substring(testIndex, testIndex + toTest.length());
         }
       } else {
         // EMERGENCY MODE
@@ -648,6 +672,7 @@ public class StringAnalysis {
    * @deprecated
    * @author Kevin
    */
+  @Deprecated
   public static Pair<Integer, String> findBestMatch(String toAlign, String template) {
 
     TreeMap<Double, Pair<Integer, String>> matches = new TreeMap<>();

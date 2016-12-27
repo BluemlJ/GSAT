@@ -12,12 +12,12 @@ public class Gene extends Sequence {
    */
   private String name;
 
-  
+
   /**
    * The globally unique id of this gene.
    */
   private int id;
-  
+
 
 
   /**
@@ -58,6 +58,6 @@ public class Gene extends Sequence {
     this.id = id;
   }
 
-  
-  
+
+
 }

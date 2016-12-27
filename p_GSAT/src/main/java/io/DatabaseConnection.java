@@ -81,9 +81,11 @@ public class DatabaseConnection {
     }
 
     FileWriter writer = new FileWriter(localPath + filename + ".csv");
-    
-    writer.write("id; file name; gene id; sequence; date; researcher; comments; vector; promotor; manually checked; mutation; mutation type" + System.lineSeparator());
-    
+
+    writer.write(
+        "id; file name; gene id; sequence; date; researcher; comments; vector; promotor; manually checked; mutation; mutation type"
+            + System.lineSeparator());
+
     for (DatabaseEntry entry : queue) {
 
       // retrieve the data from the Database object
@@ -139,18 +141,18 @@ public class DatabaseConnection {
     queue.add(entry);
   }
 
-  
+
   /**
    * Puts all entries from a given list into this class's waiting queue.
    * 
    * @param entries A list of entries to be stored
    */
   public static void addAllIntoQueue(LinkedList<DatabaseEntry> entries) {
-    for(DatabaseEntry entry : entries) {
+    for (DatabaseEntry entry : entries) {
       addIntoQueue(entry);
     }
   }
-  
+
 
   /**
    * Sets the momentarily used id for a DatabaseEntry. Increments it afterwards to keep it up to

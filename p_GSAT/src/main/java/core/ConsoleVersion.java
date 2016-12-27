@@ -362,9 +362,9 @@ public class ConsoleVersion {
       ConsoleIO.readLine("");
       System.exit(0);
     } catch (IOException e) {
-    	System.exit(0);
+      System.exit(0);
     }
-   }
+  }
 
   /**
    * Reads the Sequence of the given File and prints Errors if necessary
@@ -434,7 +434,7 @@ public class ConsoleVersion {
       LinkedList<DatabaseEntry> entries = DatabaseEntry.convertSequenceIntoEntries(activeSequence);
       FileSaver.addAllIntoQueue(entries);
       FileSaver.storeAllLocally(file.getName().replaceFirst("[.][^.]+$", "") + "_result");
-      preparePipelineForNextRun();
+      Main.preparePipelineForNextRun();
     } catch (UndefinedTypeOfMutationException e) {
       System.err.println("Unknown mutation type found.");
       System.err.println("Mutation:" + e.mutationString);
@@ -446,24 +446,6 @@ public class ConsoleVersion {
       e.printStackTrace();
     }
 
-  }
-
-  /**
-   * Resets the analysis pipeline between the analyses of different files.
-   * 
-   * @author Ben Kohr
-   */
-  private static void preparePipelineForNextRun() {
-    FileSaver.flushQueue();
-  }
-
-  /**
-   * Resets the analysis pipeline to be able to start with a completely new analyzing process.
-   * 
-   * @author Ben Kohr
-   */
-  private static void resetPipeline() {
-    FileSaver.resetAll();
   }
 
 

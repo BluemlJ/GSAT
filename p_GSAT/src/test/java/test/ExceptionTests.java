@@ -8,8 +8,18 @@ import static org.junit.Assert.assertTrue;
 import org.junit.Test;
 
 import analysis.AnalysedSequence;
+<<<<<<< HEAD
 import analysis.Gene;
 import exceptions.*;
+=======
+import exceptions.CorruptedSequenceException;
+import exceptions.DatabaseConnectionException;
+import exceptions.DatabaseErrorException;
+import exceptions.FileReadingException;
+import exceptions.MissingPathException;
+import exceptions.PathUsage;
+import exceptions.UndefinedTypeOfMutationException;
+>>>>>>> c9a6c5a8a26d3be6c4782d806cb7d0bcb82515c5
 
 /**
  * This class tests the behavior of the exceptions - whether they contain the right information when

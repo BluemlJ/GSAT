@@ -2,7 +2,7 @@ package exceptions;
 
 
 /**
- * This exception is thrown if a String was used for representing a mutation but is not valid. 
+ * This exception is thrown if a String was used for representing a mutation but is not valid.
  * 
  * @author Ben Kohr
  *

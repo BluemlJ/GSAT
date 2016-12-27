@@ -40,7 +40,7 @@ public class AnalysedSequence extends Sequence {
    * The vector to be stored with this sequence.
    */
   private String leftVector;
-  
+
   /**
    * The vector to be stored with this sequence.
    */
@@ -197,7 +197,7 @@ public class AnalysedSequence extends Sequence {
   public void setLeftVector(String vector) {
     this.leftVector = vector;
   }
-  
+
   public String getRightVector() {
     return rightVector;
   }

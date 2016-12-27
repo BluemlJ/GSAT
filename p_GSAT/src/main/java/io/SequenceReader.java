@@ -148,7 +148,7 @@ public class SequenceReader {
   public static boolean isPathSet() {
     return path != null;
   }
-  
+
 
   public static String getPath() {
     return path;

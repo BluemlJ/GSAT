@@ -34,7 +34,7 @@ public class QualityAnalysis {
    */
   public static int[] findLowQuality(AnalysedSequence sequence) {
     int[] qualities = sequence.getQuality();
-    
+
     int trimmingPosition[] = {sequence.length(), sequence.length()};
     int countertoBreak = 0;
     int countertoStart = 0;
@@ -71,9 +71,8 @@ public class QualityAnalysis {
 
     return trimmingPosition;
   }
-  
-   
-  
+
+
 
   /**
    * This method trims a sequence by removing the low quality end of the sequence.

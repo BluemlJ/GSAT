@@ -6,10 +6,9 @@ import analysis.AnalysedSequence;
 import exceptions.UndefinedTypeOfMutationException;
 
 /**
- * Models an "abstract" entry to be written into the database. The database
- * itself may have different tables and this abstract entry can actually be
- * split with its parts being distributed among those tables (while making sure
- * that it is possible to combine the data again).
+ * Models an "abstract" entry to be written into the database. The database itself may have
+ * different tables and this abstract entry can actually be split with its parts being distributed
+ * among those tables (while making sure that it is possible to combine the data again).
  * 
  * @author Ben Kohr
  *
@@ -17,8 +16,8 @@ import exceptions.UndefinedTypeOfMutationException;
 public class DatabaseEntry {
 
   /**
-   * The id for this entry. It is given by the DatabaseConnection class.
-   * Until the id is given, -1 is the placeholder id.
+   * The id for this entry. It is given by the DatabaseConnection class. Until the id is given, -1
+   * is the placeholder id.
    */
   private long id = -1;
 
@@ -26,17 +25,17 @@ public class DatabaseEntry {
    * The name of the file this entry was retrieved from.
    */
   private String fileName;
-  
+
   /**
    * The id for the referenced gene.
    */
   private int geneID;
-  
+
   /**
    * The sequence of nucleotides.
    */
   private String sequence;
-  
+
   /**
    * The date at which this sequence was added.
    */
@@ -61,29 +60,29 @@ public class DatabaseEntry {
    * Indicates the mutation type.
    */
   private MutationType mType;
-  
+
   /**
    * Indicates whether the results of this analysis have been checked by a researcher.
    */
   private boolean manuallyChecked;
 
-  
+
   /**
    * The left vector to be stored with the sequence.
    */
   private String leftVector;
-  
+
   /**
    * The right vector to be stored with the sequence.
    */
   private String rightVector;
-  
-  
+
+
   /**
    * The promotor to be stored with the sequence.
    */
   private String promotor;
-  
+
 
 
   /**
@@ -92,10 +91,9 @@ public class DatabaseEntry {
    * 
    * @author Ben Kohr
    */
-  public DatabaseEntry(String fileName, int geneID, String sequence, 
-                                       String addingDate, String researcher, String comments, 
-                                       String leftVector, String rightVector, String promotor, boolean manuallyChecked,
-                                       String mutation, MutationType mType) {
+  public DatabaseEntry(String fileName, int geneID, String sequence, String addingDate,
+      String researcher, String comments, String leftVector, String rightVector, String promotor,
+      boolean manuallyChecked, String mutation, MutationType mType) {
 
     this.fileName = fileName;
     this.geneID = geneID;
@@ -109,7 +107,7 @@ public class DatabaseEntry {
     this.manuallyChecked = manuallyChecked;
     this.mutation = mutation;
     this.mType = mType;
-    
+
   }
 
 
@@ -121,9 +119,10 @@ public class DatabaseEntry {
    * @return List of database entries ready to be stored
    * 
    * @author Ben Kohr
-   * @throws UndefinedTypeOfMutationException 
+   * @throws UndefinedTypeOfMutationException
    */
-  public static LinkedList<DatabaseEntry> convertSequenceIntoEntries(AnalysedSequence seq) throws UndefinedTypeOfMutationException {
+  public static LinkedList<DatabaseEntry> convertSequenceIntoEntries(AnalysedSequence seq)
+      throws UndefinedTypeOfMutationException {
 
     LinkedList<DatabaseEntry> entries = new LinkedList<DatabaseEntry>();
 
@@ -138,18 +137,18 @@ public class DatabaseEntry {
     String rightVector = seq.getRightVector();
     String promotor = seq.getPromotor();
     boolean manuallyChecked = seq.isManuallyChecked();
-    
+
 
     // Initialize lists for mutations
     LinkedList<String> mutations = seq.getMutations();
 
     // Collect mutations
     for (String mutation : mutations) {
-      
+
       MutationType mType = determineMutationType(mutation);
-      
-      DatabaseEntry dbe = 
-          new DatabaseEntry(fileName, geneID, sequence, addingDate, researcher, comments, leftVector, rightVector, promotor, manuallyChecked, mutation, mType);
+
+      DatabaseEntry dbe = new DatabaseEntry(fileName, geneID, sequence, addingDate, researcher,
+          comments, leftVector, rightVector, promotor, manuallyChecked, mutation, mType);
       entries.add(dbe);
     }
 
@@ -167,41 +166,42 @@ public class DatabaseEntry {
    * 
    * @return The given mutation's type
    * 
-   * @throws UndefinedTypeOfMutationException 
+   * @throws UndefinedTypeOfMutationException
    * 
    * @author Ben Kohr
    */
-  private static MutationType determineMutationType(String mutation) throws UndefinedTypeOfMutationException {
-    
+  private static MutationType determineMutationType(String mutation)
+      throws UndefinedTypeOfMutationException {
+
     // Is this mutation indicating a reading frame error?
     if (mutation.equals("reading frame error")) {
       return MutationType.ERROR;
     }
-    
+
     // If not: Check for ordinary mutation types
     char firstChar = mutation.charAt(0);
-   
-    if(firstChar == '+') {
+
+    if (firstChar == '+') {
       return MutationType.INSERTION;
     } else if (firstChar == '-') {
       return MutationType.DELETION;
     } else {
-      
+
       String[] mutationParts = mutation.split("[0-9]+");
       if (mutationParts[0].length() == 1) {
         return MutationType.SUBSTITUTION;
       } else if (mutationParts[0].length() == 3) {
         return MutationType.SILENT;
       }
-      
+
     }
-    
+
     // If none of the above conditions fired, throw an exception
     throw new UndefinedTypeOfMutationException(mutation);
-    
+
   }
-  
-  
+
+
 
   /**
    * Sets the id of this entry. Typically used be DatabaseConnection to update the ids correctly.
@@ -322,7 +322,7 @@ public class DatabaseEntry {
   public String getLeftVector() {
     return leftVector;
   }
-  
+
   /**
    * Returns this entry's right vector
    * 
@@ -358,8 +358,8 @@ public class DatabaseEntry {
     return fileName;
   }
 
-  
-  
+
+
   /**
    * Returns the single mutation of this entry.
    * 
