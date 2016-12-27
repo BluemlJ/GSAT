@@ -15,6 +15,7 @@ import org.junit.After;
 import org.junit.Before;
 
 import exceptions.CorruptedSequenceException;
+import exceptions.DissimilarGeneException;
 import io.ConsoleIO;
 
 /**
@@ -222,9 +223,10 @@ public class StringAnalysis {
    * @param listOfGenes A list of all genes, we want to compare with the sequence
    * @return the gene, that has the best similarity
    * @author bluemlj
+ * @throws DissimilarGeneException 
    */
-  public static Gene findRightGene(AnalysedSequence toAnalyze, LinkedList<Gene> listOfGenes) {
-    Gene bestgene = null;
+  public static Gene findRightGene(AnalysedSequence toAnalyze, LinkedList<Gene> listOfGenes) throws DissimilarGeneException {
+    Gene bestgene = listOfGenes.getFirst();
     double bestSimilarity = 0;
 
     for (Gene gene : listOfGenes) {
@@ -238,8 +240,9 @@ public class StringAnalysis {
     // if the Similarity is less then 80%, return null
     if (bestSimilarity >= 80) {
       return bestgene;
-    } else
-      return null;
+    }
+    
+    throw new DissimilarGeneException(toAnalyze, bestgene, bestSimilarity);
   }
 
 

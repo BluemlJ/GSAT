@@ -3,10 +3,12 @@ package test;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
 import analysis.AnalysedSequence;
+import analysis.Gene;
 import exceptions.*;
 
 /**
@@ -236,6 +238,38 @@ public class ExceptionTests {
 
       // Check if the mutations String is stored in the exception object
       assertEquals("y", e.mutationString);
+
+    }
+  }
+  
+  
+  /**
+   * This test checks if the exception indicating a badly fitting gene works.
+   * 
+   * @see exceptions.DissimilarGeneException
+   * 
+   * @author Ben Kohr
+   */
+  @Test
+  public void testDissimilarGeneException() {
+
+	  AnalysedSequence toAnalyse = new AnalysedSequence("TCTCTAGAGC", "Klaus Hafer", "sequence.ab1", null, 0);
+	  Gene bestGene = new Gene("AATC", 1, "nicht FSA", "Karl Mueller");
+	  
+	  
+    try {
+      throw new DissimilarGeneException(toAnalyse, bestGene, 20.3);
+    } catch (DissimilarGeneException e) {
+
+      // Check if the error message is correctly produced
+      assertEquals(
+          "Best found gene for given sequence (nicht FSA) has a similarity of only 20.3 for the given sequence (file: sequence.ab1).",
+          e.getMessage());
+
+      // Check if the fields are set
+      assertEquals(toAnalyse, e.toAnalyse);
+      assertEquals(bestGene, e.bestGene);
+      assertTrue(e.similarity == 20.3);
 
     }
   }

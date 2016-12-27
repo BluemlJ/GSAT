@@ -15,6 +15,7 @@ import analysis.Gene;
 import analysis.Sequence;
 import analysis.StringAnalysis;
 import exceptions.CorruptedSequenceException;
+import exceptions.DissimilarGeneException;
 import exceptions.UndefinedTypeOfMutationException;
 
 /**
@@ -346,9 +347,10 @@ public class AnalysisTests {
    * Test if FindingGene finds the right Gene
    * 
    * @author bluemlj
+ * @throws DissimilarGeneException 
    */
-  @Test
-  public void testFindingGene() {
+  @Test(expected = DissimilarGeneException.class)
+  public void testFindingGene() throws DissimilarGeneException {
     Gene gena = new Gene("hallo", 0, "testGen1", "Jannis");
     Gene genb = new Gene("bonjour", 1, "testGen1", "Jannis");
     Gene genc = new Gene("ola", 2, "testGen1", "Jannis");
@@ -367,8 +369,6 @@ public class AnalysisTests {
     assertTrue(result.getId() == (genc.getId()));
 
     result = StringAnalysis.findRightGene(testSeq3, testDatabase);
-    assertTrue(result == null);
-
   }
 
   @Test
@@ -422,7 +422,7 @@ public class AnalysisTests {
 
 
   @Test
-  public void testFindingRightGeneOnCorrectUse() {
+  public void testFindingRightGeneOnCorrectUse() throws DissimilarGeneException {
     AnalysedSequence testA = new AnalysedSequence("AGGGT", "Jannis", "testA", null, 0);
     Gene testGeneA = new Gene("AGGGC", 0, "testGeneA", "Jannis");
     Gene testGeneB = new Gene("AGTTTTTGGC", 1, "testGeneB", "Jannis");
@@ -437,8 +437,8 @@ public class AnalysisTests {
     assertTrue(result == testGeneA);
   }
 
-  @Test
-  public void testFindingRightGeneOnIncorrectUse() {
+  @Test(expected = DissimilarGeneException.class)
+  public void testFindingRightGeneOnIncorrectUse() throws DissimilarGeneException {
     AnalysedSequence testA = new AnalysedSequence("BBBBCKCKCKCKCS", "Jannis", "testA", null, 0);
     Gene testGeneA = new Gene("AGGGC", 0, "testGeneA", "Jannis");
     Gene testGeneB = new Gene("AGTTTTTGGC", 1, "testGeneB", "Jannis");
@@ -449,7 +449,6 @@ public class AnalysisTests {
     testGenes.add(testGeneC);
 
     Gene result = StringAnalysis.findRightGene(testA, testGenes);
-    assertTrue(result == null);
   }
 
   /**
