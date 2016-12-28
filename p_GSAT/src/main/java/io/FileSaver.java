@@ -1,5 +1,6 @@
 package io;
 
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.LinkedList;
@@ -25,10 +26,10 @@ public class FileSaver {
   /**
    * Specifies the path where local files shall be created. This specifies the folder, not the file!
    */
-  private static String localPath;
+  private static File localPath;
 
 
-  private static final String DEST_FILE_NAME = "gsat_results.csv";
+  private static final String DEST_FILE_NAME = "gsat_results";
 
 
   /**
@@ -64,24 +65,13 @@ public class FileSaver {
 
     // The writer to create a file / files.
     FileWriter writer;
+    
     // One or multiple files?
     if (separateFiles) {
-      writer = new FileWriter(localPath + "\\" + filename + ".csv");
-      writer.write(
-          "id; file name; gene id; sequence; date; researcher; comments; left vector; right vector; promotor; manually checked; mutation; mutation type"
-              + System.lineSeparator());
+      writer = getNewWriter(filename, false); 
     } else {
-      if (firstCall) {
-        writer = new FileWriter(localPath + "\\" + DEST_FILE_NAME);
-        writer.write(
-            "id; file name; gene id; sequence; date; researcher; comments; left vector; right vector; promotor; manually checked; mutation; mutation type"
-                + System.lineSeparator());
-        firstCall = false;
-      } else {
-        writer = new FileWriter(localPath + "\\" + DEST_FILE_NAME, true);
-      }
+      writer = getNewWriter();
     }
-
 
     for (DatabaseEntry entry : queue) {
 
@@ -208,11 +198,60 @@ public class FileSaver {
    * 
    * @author Ben Kohr
    */
-  public static void setLocalPath(String path) {
-    localPath = path;
+  public static void setLocalPath(String pathString) {
+    if (pathString != null)
+    	localPath = new File(pathString);
+    else {
+    	localPath = null;
+    }
   }
 
 
+  /**
+   * This method creates a new writer for the current writing situation. If necessary, also adds the first line.
+   * 
+   * @param filename The name of the new file
+   * @param append Shall content be added to the file (or is it a new file)?
+   * @return the writer object to continue writing
+   * @throws IOException
+   */
+  private static FileWriter getNewWriter(String filename, boolean append) throws IOException {
+	  
+	  File newFile = new File(localPath.getAbsolutePath() + File.separatorChar + filename + ".csv");
+	 
+	  if (!append) {
+		  newFile.createNewFile();
+	  }
+	  
+	  FileWriter writer = new FileWriter(newFile, append);
+	  
+	  if (!append) {
+	  writer.write("id; file name; gene id; sequence; date; researcher; comments; left vector; right vector; promotor; manually checked; mutation; mutation type"
+			  + System.lineSeparator());
+	  }
+	  
+	  return writer;
+  }
+  
+  /**
+   * This method is used if one file is desired.
+   * 
+   * 
+   * @see #getNewWriter(String, boolean)
+   * @return the writer object to continue writing
+   * @throws IOException
+   */
+  private static FileWriter getNewWriter() throws IOException {
+	  FileWriter writer;
+	  if (firstCall) {
+		   writer = getNewWriter(DEST_FILE_NAME, false);
+		   firstCall = false;
+	  } else {
+		  writer = getNewWriter(DEST_FILE_NAME, true);
+	  }
+	  return writer;
+  }
+  
   /**
    * Sets the path where local files shall be created if necessary.
    * 
