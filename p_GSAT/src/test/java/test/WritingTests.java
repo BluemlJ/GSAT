@@ -28,7 +28,7 @@ import io.MutationType;
  * @author Ben Kohr
  *
  */
-public class DatabaseTests {
+public class WritingTests {
 
   /**
    * The relative path used for this testing scenario.
