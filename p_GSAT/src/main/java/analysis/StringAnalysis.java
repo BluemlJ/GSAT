@@ -7,11 +7,8 @@ import java.util.Map;
 import java.util.TreeMap;
 
 import exceptions.CorruptedSequenceException;
-<<<<<<< HEAD
 import exceptions.DissimilarGeneException;
 import io.ConsoleIO;
-=======
->>>>>>> c9a6c5a8a26d3be6c4782d806cb7d0bcb82515c5
 
 /**
  * This class contains the logic of analyzing sequence strings. This class serves for
@@ -220,14 +217,8 @@ public class StringAnalysis {
    * @author bluemlj
  * @throws DissimilarGeneException 
    */
-<<<<<<< HEAD
   public static Gene findRightGene(AnalysedSequence toAnalyze, LinkedList<Gene> listOfGenes) throws DissimilarGeneException {
     Gene bestgene = listOfGenes.getFirst();
-=======
-  public static Pair<Gene, Double> findRightGene(AnalysedSequence toAnalyze,
-      LinkedList<Gene> listOfGenes) {
-    Gene bestgene = null;
->>>>>>> c9a6c5a8a26d3be6c4782d806cb7d0bcb82515c5
     double bestSimilarity = 0;
 
     for (Gene gene : listOfGenes) {
@@ -238,16 +229,12 @@ public class StringAnalysis {
       }
     }
 
-<<<<<<< HEAD
     // if the Similarity is less then 80%, return null
     if (bestSimilarity >= 80) {
       return bestgene;
     }
     
     throw new DissimilarGeneException(toAnalyze, bestgene, bestSimilarity);
-=======
-    return new Pair<Gene, Double>(bestgene, bestSimilarity);
->>>>>>> c9a6c5a8a26d3be6c4782d806cb7d0bcb82515c5
   }
 
   /**

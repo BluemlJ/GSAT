@@ -1,0 +1,3 @@
+id; file name; gene id; sequence; date; researcher; comments; left vector; right vector; promotor; manually checked; mutation; mutation type
+0; c.ab1; 0; ATCGA; 2016-11-28; Klaus Bohne; No comments; AAAAAAAT; AAAAAAAT; ATCG; true; ACC4ACG; SILENT
+1; d.ab1; 7; ATCGT; 2016-11-28; Kurt Bohne; No comments; AAAAAAAT; AAAAAAAT; ATCG; false; H4D; SUBSTITUTION

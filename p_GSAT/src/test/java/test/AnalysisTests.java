@@ -379,19 +379,14 @@ public class AnalysisTests {
     AnalysedSequence testSeq2 = new AnalysedSequence("ola", "Jannis", "toAnalyse", null, 0);
     AnalysedSequence testSeq3 = new AnalysedSequence("mochi", "Jannis", "toAnalyse", null, 0);
 
-    Gene result = StringAnalysis.findRightGene(testSeq, testDatabase).first;
+    Gene result = StringAnalysis.findRightGene(testSeq, testDatabase);
     assertTrue(result.getId() == (gena.getId()));
 
-    result = StringAnalysis.findRightGene(testSeq2, testDatabase).first;
+    result = StringAnalysis.findRightGene(testSeq2, testDatabase);
     assertTrue(result.getId() == (genc.getId()));
 
-<<<<<<< HEAD
     result = StringAnalysis.findRightGene(testSeq3, testDatabase);
-=======
-    result = StringAnalysis.findRightGene(testSeq3, testDatabase).first;
-    assertTrue(result == null);
-
->>>>>>> c9a6c5a8a26d3be6c4782d806cb7d0bcb82515c5
+    fail();
   }
 
   @Test
@@ -602,20 +597,15 @@ public class AnalysisTests {
     testGenes.add(testGeneB);
     testGenes.add(testGeneC);
 
-    Gene result = StringAnalysis.findRightGene(testA, testGenes).first;
+    Gene result = StringAnalysis.findRightGene(testA, testGenes);
 
     assertTrue(result == testGeneA);
   }
 
-<<<<<<< HEAD
+
   @Test(expected = DissimilarGeneException.class)
   public void testFindingRightGeneOnIncorrectUse() throws DissimilarGeneException {
     AnalysedSequence testA = new AnalysedSequence("BBBBCKCKCKCKCS", "Jannis", "testA", null, 0);
-=======
-  @Test
-  public void testFindingRightGeneOnIncorrectUse() {
-    AnalysedSequence testA = new AnalysedSequence("", "Jannis", "testA", null, 0);
->>>>>>> c9a6c5a8a26d3be6c4782d806cb7d0bcb82515c5
     Gene testGeneA = new Gene("AGGGC", 0, "testGeneA", "Jannis");
     Gene testGeneB = new Gene("AGTTTTTGGC", 1, "testGeneB", "Jannis");
     Gene testGeneC = new Gene("AGCCTCTCTCTCTGGC", 2, "testGeneC", "Jannis");
@@ -624,12 +614,7 @@ public class AnalysisTests {
     testGenes.add(testGeneB);
     testGenes.add(testGeneC);
 
-<<<<<<< HEAD
     Gene result = StringAnalysis.findRightGene(testA, testGenes);
-=======
-    Pair<Gene, Double> result = StringAnalysis.findRightGene(testA, testGenes);
-    assertTrue(result.second == 0);
->>>>>>> c9a6c5a8a26d3be6c4782d806cb7d0bcb82515c5
   }
 
   /**
