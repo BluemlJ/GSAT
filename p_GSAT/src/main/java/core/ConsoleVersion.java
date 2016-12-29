@@ -14,6 +14,7 @@ import analysis.StringAnalysis;
 import exceptions.ConfigNotFoundException;
 import exceptions.ConfigReadException;
 import exceptions.CorruptedSequenceException;
+import exceptions.DuplicateGeneException;
 import exceptions.FileReadingException;
 import exceptions.MissingPathException;
 import exceptions.UndefinedTypeOfMutationException;
@@ -256,15 +257,17 @@ public class ConsoleVersion {
    * Asks user for gene and gene name
    * 
    * @return Gene containing the parsed data
+   * @throws DuplicateGeneException 
    */
-  private static Gene askForGene() {
-    // TODO Aks for GEN
+  private static Gene askForGene(){
+    // TODO Ask for GEN
     // String genPath = askForPath("Please give path to gene");
 
     // TODO Read GENE
     // TODO REALLY DO IT
     String strGene = null;
     String strGeneName = null;
+    String saveGene = null;
     boolean noGene = true;
     while (noGene) {
       try {
@@ -273,6 +276,14 @@ public class ConsoleVersion {
         noGene = false;
         strGeneName = ConsoleIO.readLine("Please enter the name of the gene."
             + System.lineSeparator() + "REFERENCE GENE NAME: ");
+        saveGene = ConsoleIO.readLine("Do you want to save this gene for future use? (y/n)");
+        if(saveGene.toLowerCase().equals("y")){
+          try {
+            GeneReader.addGene(strGeneName, strGene);
+          } catch (DuplicateGeneException e) {
+            System.out.println(e.getMessage());
+          }
+        }
       } catch (IOException e2) {
         noGene = true;
       }
@@ -287,8 +298,9 @@ public class ConsoleVersion {
    * in the same folder as the ab1 files if genes.txt can not be found it asks the user for a gene
    * 
    * @return
+   *  
    */
-  private static Gene readGene() {
+  private static Gene readGene(){
     String path = SequenceReader.getPath() + "/genes.txt";
     try {
       GeneReader.readGenes(path);
@@ -296,21 +308,28 @@ public class ConsoleVersion {
         // genes.txt empty
         System.out.println("Genes.txt is empty");
         return askForGene();
-      } else if (GeneReader.getNumGenes() == 1) {
-        Gene onlyGene = GeneReader.getGeneAt(0);
-        System.out.println("Gene found. Continuing with: " + onlyGene.getName() + ".");
-        return onlyGene;
       } else {
         System.out.println("The following genes have been found:");
         String[] geneNames = GeneReader.getGeneNames();
         for (int i = 0; i < geneNames.length; i++) {
           System.out.println((i + 1) + ": " + geneNames[i]);
         }
+        System.out.println((geneNames.length + 1) + ": Enter new gene");
         System.out.println();
         int index = Integer
             .parseInt(ConsoleIO.readLine("Please enter the Index of the gene you want to use."
-                + System.lineSeparator() + "INDEX: "));
-        return GeneReader.getGeneAt(index);
+                + System.lineSeparator() + "INDEX: ")) -1;
+        
+        // add new gene 
+        if(index == geneNames.length){
+          return askForGene();
+        } 
+        // an existing gene has been chosen
+        else if(index >= 0 && index < geneNames.length){
+          return GeneReader.getGeneAt(index);
+        }
+        // bad user input
+        else return null;
       }
     } catch (IOException e) {
       // no genes.txt found

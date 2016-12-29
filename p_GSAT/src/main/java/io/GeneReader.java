@@ -28,6 +28,7 @@ public class GeneReader {
    * @throws IOException
    */
   public static void readGenes(String genePath) throws IOException {
+    path = genePath;
     geneList = new ArrayList<Gene>();
     BufferedReader geneReader = new BufferedReader(new FileReader(genePath));
     String line;
@@ -59,6 +60,7 @@ public class GeneReader {
     if(GeneReader.containsGene(geneName)){
       throw new DuplicateGeneException(geneName);
     }
+    path = genePath;
     BufferedWriter geneWriter = new BufferedWriter(new FileWriter(genePath, true));
     // TODO new genes need to be in a new line, no way to know if file starts with an empty line or with an existing line
     geneWriter.write(geneName + SEPARATOR + geneSequence);
