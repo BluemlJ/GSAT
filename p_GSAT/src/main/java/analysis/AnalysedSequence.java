@@ -63,7 +63,7 @@ public class AnalysedSequence extends Sequence {
 
 
   /**
-   * give the position in the original gene
+   * give the position in aminoacids in the original gene
    */
   private int offset = 0;
 
@@ -120,6 +120,26 @@ public class AnalysedSequence extends Sequence {
   public void trimSequence(int startIndex, int endIndex) {
     String trimmed = sequence.substring(startIndex, endIndex + 1);
     this.sequence = trimmed;
+  }
+
+  /**
+   * This method trims a qualtityarray, i.e. it cuts out the desired part of the nucleotide sequence
+   * out of it. It keeps the quality for the start index character, and all following characters
+   * including the end index character. The rest is discarded.
+   * 
+   * @param startIndex The start of the sequence to be cut off
+   * @param endIndex The end of the sequence to be cut off
+   * 
+   * @return The trimmed Qualityarray
+   * 
+   * @author Jannis Blueml
+   */
+  public void trimQualityArray(int startIndex, int endIndex) {
+    int[] trimmed = new int[endIndex - startIndex];
+    for (int i = startIndex; i < Math.min(endIndex, this.getQuality().length); i++)
+      trimmed[i - startIndex] = qualities[i];
+
+    this.qualities = trimmed;
   }
 
   /**

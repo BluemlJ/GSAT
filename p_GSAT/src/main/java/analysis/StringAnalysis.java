@@ -33,11 +33,11 @@ public class StringAnalysis {
     tmp.put("UCG", "S");
     tmp.put("UAU", "Y");
     tmp.put("UAC", "Y");
-    tmp.put("UAA", "STOP");
-    tmp.put("UAG", "STOP");
+    tmp.put("UAA", "#");
+    tmp.put("UAG", "#");
     tmp.put("UGU", "C");
     tmp.put("UGC", "C");
-    tmp.put("UGA", "STOP");
+    tmp.put("UGA", "#");
     tmp.put("UGG", "W");
 
     tmp.put("CUU", "L");
@@ -102,11 +102,11 @@ public class StringAnalysis {
     tmp.put("TCG", "S");
     tmp.put("TAT", "Y");
     tmp.put("TAC", "Y");
-    tmp.put("TAA", "STOP");
-    tmp.put("TAG", "STOP");
+    tmp.put("TAA", "#");
+    tmp.put("TAG", "#");
     tmp.put("TGT", "C");
     tmp.put("TGC", "C");
-    tmp.put("TGA", "STOP");
+    tmp.put("TGA", "#");
     tmp.put("TGG", "W");
 
     tmp.put("CTT", "L");
@@ -427,7 +427,8 @@ public class StringAnalysis {
       beginOutOfRange = true;
     }
     String result = toAlign.sequence.substring(begin, end);
-
+    toAlign.trimQualityArray(begin, end);
+    
     String startCodon = template.sequence.substring(0, 3);
     if (result.contains(startCodon)) {
       int codonIndex = result.indexOf(startCodon);
@@ -438,6 +439,7 @@ public class StringAnalysis {
         // System.out.println("BESTMATCH: Start Codon found at " +
         // (begin + codonIndex));
         result = alternativ;
+        toAlign.trimQualityArray(codonIndex, toAlign.length());
         originalBegin = 0;
         begin = begin + codonIndex;
       }
@@ -455,7 +457,7 @@ public class StringAnalysis {
 
 
     result = toAlign.sequence.substring(begin, (end - ((end - begin) % 3)));
-
+    toAlign.trimQualityArray(begin,  (end - ((end - begin) % 3)));
     // corect vectors
     toAlign.setLeftVector(toAlign.getLeftVector() + toAlign.sequence.substring(0, begin));
     toAlign.setRightVector(toAlign.getRightVector() + toAlign.sequence.substring(end));
@@ -490,6 +492,7 @@ public class StringAnalysis {
     boolean endexact = false;
 
     String codon = gene.sequence.substring(gene.sequence.length() - 3, gene.sequence.length());
+    
     codon = "false";//TODO fix
 
     // if found cut at stopcodon
@@ -534,8 +537,9 @@ public class StringAnalysis {
       // negative offset -> sequence goes over left site of gene
       // -> cut of left of offset
       String leftVector = newSequence.substring(0, Math.abs(toAlign.getOffset()));
+      
       newSequence = newSequence.substring(Math.abs(toAlign.getOffset()));
-
+      toAlign.trimQualityArray(Math.abs(toAlign.getOffset()), toAlign.length());
       // set vector and correct offset
       toAlign.setLeftVector(leftVector);
       toAlign.setOffset(0);
@@ -579,7 +583,7 @@ public class StringAnalysis {
    */
   public static boolean findOffset(AnalysedSequence seqence) {
 
-    int stepSize = 4;
+    int stepSize = 2;
     stepSize*=3;
     // get gene and sequence as String
     String gene = seqence.getReferencedGene().getSequence();
@@ -633,7 +637,8 @@ public class StringAnalysis {
         if (toTest.length() > 9) {       
           toTest = toTest.substring(0, toTest.length()-3);
         }else {
-          if (testIndex+3 + gene.length()/stepSize < gene.length()) {
+          //if (testIndex+3 + gene.length()/stepSize < gene.length()) {
+          if (testIndex+3 < gene.length()/stepSize) {
             testIndex++;
             toTest = gene.substring(testIndex, gene.length()/stepSize);
           }else {

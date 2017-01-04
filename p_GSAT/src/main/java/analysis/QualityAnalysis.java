@@ -18,13 +18,13 @@ public class QualityAnalysis {
   private static int startcounter = 5;
 
   private static int avgApproximationEnd = 25;
-  private static int avgApproximationStart = 40;
+  private static int avgApproximationStart = 30;
 
   /**
    * This method checks the nucleotidestring and finds a position to trim the low quality part at
    * the end of the sequence.
    * 
-   * @param file The .abi file to read
+   * @param sequence the sequence getting from the abi file
    * @return an Integer, that gives you the position at the end of the sequence to trim the low
    *         quality part.
    * 
@@ -35,7 +35,7 @@ public class QualityAnalysis {
   public static int[] findLowQuality(AnalysedSequence sequence) {
     int[] qualities = sequence.getQuality();
 
-    int trimmingPosition[] = {sequence.length(), sequence.length()};
+    int trimmingPosition[] = {sequence.length(), sequence.length(), 0};
     int countertoBreak = 0;
     int countertoStart = 0;
     boolean startfound = false;
@@ -43,15 +43,17 @@ public class QualityAnalysis {
 
     for (int quality : qualities) {
       if (!startfound) {
-        if (quality > (avgApproximationStart))
+        if (quality > (avgApproximationStart)) {
           countertoStart++;
-        else {
+        } else {
           counter += countertoStart + 1;
+
           countertoStart = 0;
         }
         if (countertoStart == startcounter) {
-          trimmingPosition[0] = counter;
+          trimmingPosition[0] = counter + (3 - (counter % 3) % 3);
           startfound = true;
+          trimmingPosition[2] = trimmingPosition[0] / 3;
           counter += startcounter;
         }
       } else {
@@ -63,7 +65,7 @@ public class QualityAnalysis {
           countertoBreak = 0;
         }
         if (countertoBreak == breakcounter) {
-          trimmingPosition[1] = counter;
+          trimmingPosition[1] = counter + (3 - (counter % 3) % 3);
           break;
         }
       }
@@ -72,13 +74,12 @@ public class QualityAnalysis {
     return trimmingPosition;
   }
 
-
-
   /**
    * This method trims a sequence by removing the low quality end of the sequence.
    */
   public static void trimLowQuality(AnalysedSequence toAnalyse) {
     int[] trimmingpositions = QualityAnalysis.findLowQuality(toAnalyse);
+    toAnalyse.setOffset(toAnalyse.getOffset() + trimmingpositions[2]);
     toAnalyse.trimSequence(trimmingpositions[0], trimmingpositions[1] - 1);
   }
 

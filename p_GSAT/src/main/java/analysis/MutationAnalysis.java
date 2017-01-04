@@ -65,7 +65,7 @@ public class MutationAnalysis {
       String typeOfMutations = difference.split("\\|")[0];
 
       // position relative to mutatedSequence (of animoAcids)
-      int position = Integer.parseInt(difference.split("\\|")[1]) + toAnalyze.getOffset() / 3;
+      int position = Integer.parseInt(difference.split("\\|")[1]) + toAnalyze.getOffset();
       String oldAminoAcid;
       String newAminoAcid;
 
@@ -104,17 +104,19 @@ public class MutationAnalysis {
 
       if (position > lastposition + 1 || i == differences.size() - 1) {
 
-        for (int tempPosition = lastposition + 1; tempPosition <= position; tempPosition++) {
-          if (tempPosition * 3 + toAnalyze.getOffset() + 3 > originalSequence.length()
-              || tempPosition * 3 + 3 > mutatedSequence.length()) {
+        for (int tempPosition = lastposition + 1; tempPosition < position - toAnalyze.getOffset()
+            - 1; tempPosition++) {
+          if ((tempPosition +tmpshift)* 3 + toAnalyze.getOffset() * 3 + 3 > originalSequence.length()
+              || (tempPosition +tmpshift) * 3 + 3 > mutatedSequence.length()) {
             break;
           } else {
-            String oldAcid =
-                originalSequence.substring((tempPosition + tmpshift) * 3 + toAnalyze.getOffset(),
-                    (tempPosition + tmpshift) * 3 + toAnalyze.getOffset() + 3);
+            String oldAcid = originalSequence.substring(
+                (tempPosition + tmpshift) * 3 + toAnalyze.getOffset() * 3,
+                (tempPosition + tmpshift) * 3 + toAnalyze.getOffset() * 3 + 3);
             String newAcid = mutatedSequence.substring(tempPosition * 3, tempPosition * 3 + 3);
 
             if (!oldAcid.equals(newAcid)) {
+              tempPosition += toAnalyze.getOffset() + 1;
               toAnalyze.addMutation(oldAcid + tempPosition + newAcid);
             }
           }
@@ -133,14 +135,14 @@ public class MutationAnalysis {
             || tempPosition * 3 + 3 > mutatedSequence.length()) {
           break;
         } else {
-          String oldAcid = originalSequence.substring(tempPosition * 3 + toAnalyze.getOffset(),
-              tempPosition * 3 + toAnalyze.getOffset() + 3);
+          String oldAcid = originalSequence.substring(tempPosition * 3 + toAnalyze.getOffset() * 3,
+              tempPosition * 3 + toAnalyze.getOffset() * 3 + 3);
           String newAcid = mutatedSequence.substring(tempPosition * 3, tempPosition * 3 + 3);
 
           if (!oldAcid.equals(newAcid)) {
-            tempPosition++;
+            tempPosition += toAnalyze.getOffset() + 1;
             toAnalyze.addMutation(oldAcid + tempPosition + newAcid);
-            tempPosition--;
+            tempPosition -= toAnalyze.getOffset() + 1;
           }
         }
       }
@@ -184,17 +186,21 @@ public class MutationAnalysis {
   private static LinkedList<String> reportDifferences(AnalysedSequence seq, boolean type)
       throws CorruptedSequenceException {
     String first, second;
-    if (type) {
-      first = StringAnalysis
-          .codonsToAminoAcids(seq.getReferencedGene().sequence.substring(seq.getOffset()));
-      second = StringAnalysis.codonsToAminoAcids(seq.sequence);
-      return reportDifferences(first, second);
-    } else {
-      first = seq.getReferencedGene().sequence.substring(seq.getOffset());
-      second = seq.sequence;
-      return reportDifferences(first, second);
+    // if (type) {
+    int begin = seq.getOffset() * 3;
+    int end = seq.getOffset() * 3 + seq.length();
 
-    }
+    first =
+        StringAnalysis.codonsToAminoAcids(seq.getReferencedGene().sequence.substring(begin, Math.min(end, seq.getReferencedGene().getSequence().length())));
+    second = StringAnalysis.codonsToAminoAcids(seq.sequence);
+    return reportDifferences(first.split("#")[0], second.split("#")[0]);
+    /*
+     * } else {//TODO @Jannis remove type first =
+     * seq.getReferencedGene().sequence.substring(seq.getOffset()); second = seq.sequence; return
+     * reportDifferences(first, second);
+     * 
+     * }
+     */
 
   }
 
@@ -225,6 +231,30 @@ public class MutationAnalysis {
    * @author Kevin Otto
    */
   public static LinkedList<String> reportDifferences(String gene, String sequence) {
+    try {
+      Thread.sleep(5);
+    } catch (InterruptedException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    }
+    System.out.println("");
+    System.out.println(
+        "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+    System.out.println("");
+    System.err.println(sequence);
+    try {
+      Thread.sleep(5);
+    } catch (InterruptedException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    }
+    System.out.println(gene);
+    System.out.println("");
+    System.out.println(
+        "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+    System.out.println("");
+
+
     // get Levenshtein Result
     int[][] lev = StringAnalysis.calculateLevenshteinMatrix(gene, sequence);
 
