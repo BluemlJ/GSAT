@@ -39,14 +39,15 @@ public class GeneReader {
       String sepLine[] = line.split(SEPARATOR);
       String name = sepLine[0];
       String gene = sepLine[1];
-      geneList.add(new Gene(gene, id, name, Config.researcher));
-      id++;
-
+      if (getGene(name) == null) {
+        geneList.add(new Gene(gene, id, name, Config.researcher));
+        id++;
+      }
     }
 
     geneReader.close();
   }
-  
+
   /**
    * add a new gene to genes.txt
    * 
@@ -56,20 +57,28 @@ public class GeneReader {
    * @throws DuplicateGeneException gene name already exists
    * @throws IOException error while writing the file
    */
-  public static void addGene(String genePath, String geneName, String geneSequence) throws DuplicateGeneException, IOException{
-    if(GeneReader.containsGene(geneName)){
+  public static void addGene(String genePath, String geneName, String geneSequence)
+      throws DuplicateGeneException, IOException {
+    readGenes(path);
+    if (GeneReader.containsGene(geneName)) {
       throw new DuplicateGeneException(geneName);
     }
     path = genePath;
-    BufferedWriter geneWriter = new BufferedWriter(new FileWriter(genePath, true));
-    // TODO new genes need to be in a new line, no way to know if file starts with an empty line or with an existing line
+    BufferedWriter geneWriter = new BufferedWriter(new FileWriter(genePath));
+    // TODO new genes need to be in a new line, no way to know if file starts with an empty line or
+    
+    for(Gene gene: geneList){
+      geneWriter.write(gene.getName() + SEPARATOR + gene.getSequence());
+      geneWriter.write(System.getProperty("line.separator"));
+    }
+    // with an existing line
     geneWriter.write(geneName + SEPARATOR + geneSequence);
-    geneWriter.write(System.getProperty("line.separator"));
     geneWriter.close();
     readGenes(genePath);
   }
-  
- public static void addGene(String geneName, String geneSequence) throws DuplicateGeneException, IOException{
+
+  public static void addGene(String geneName, String geneSequence)
+      throws DuplicateGeneException, IOException {
     addGene(path, geneName, geneSequence);
   }
 
@@ -90,13 +99,14 @@ public class GeneReader {
   public static void setPath(String path) {
     GeneReader.path = path;
   }
-  
+
   /**
    * checks if a gene already exists
+   * 
    * @param name
    * @return
    */
-  public static boolean containsGene(String name){
+  public static boolean containsGene(String name) {
     for (int i = 0; i < geneList.size(); i++) {
       if (geneList.get(i).getName().equals(name)) {
         return true;
@@ -118,13 +128,14 @@ public class GeneReader {
     }
     return null;
   }
-  
+
   /**
    * clears the txt file at a given path
+   * 
    * @param path
    * @throws IOException
    */
-  public static void clearTxtFile(String path) throws IOException{
+  public static void clearTxtFile(String path) throws IOException {
     BufferedWriter writer = new BufferedWriter(new FileWriter(path));
     writer.write("");
     writer.close();
