@@ -6,6 +6,8 @@ import java.util.LinkedList;
 import java.util.Map;
 import java.util.TreeMap;
 
+import javax.swing.plaf.synth.SynthScrollBarUI;
+
 import exceptions.CorruptedSequenceException;
 import exceptions.DissimilarGeneException;
 import io.ConsoleIO;
@@ -462,8 +464,22 @@ public class StringAnalysis {
     toAlign.setLeftVector(toAlign.getLeftVector() + toAlign.sequence.substring(0, begin));
     toAlign.setRightVector(toAlign.getRightVector() + toAlign.sequence.substring(end));
 
-    toAlign.setSequence(result);
+    
     // sequence.setOffset(begin);ORIGINAL
+    //System.out.println(template.sequence);
+    //System.out.println(toAlign.sequence.substring(toAlign.getOffset()));
+    //System.err.println(toAlign.sequence);
+    /*System.out.println(begin);
+    System.out.println("template    = " +template.sequence);
+    System.out.println("result      = " + result);
+    System.out.println("alinght     = " + toAlign);
+    System.out.println("alternative = " + toAlign.sequence.substring(toAlign.getOffset(),Math.min(end, toAlign.sequence.length())));
+    if (checkSimilarity(template.sequence, toAlign.sequence.substring(toAlign.getOffset(),Math.min(end, toAlign.sequence.length()))) <= checkSimilarity(template.sequence,
+        result)) {
+	originalBegin = toAlign.getOffset();
+	result =  toAlign.sequence.substring(toAlign.getOffset(),Math.min(end, toAlign.sequence.length()));
+    }*/
+    toAlign.setSequence(result);
     toAlign.setOffset(originalBegin + ((3 - (originalBegin % 3)) % 3));
     // toAlign.setOffset(toAlign.getOffset() + begin);
     return result;
@@ -483,7 +499,8 @@ public class StringAnalysis {
   public static void trimVector(AnalysedSequence toAlign) {
     // **********simple Vector Cutting*****************
     boolean offsetExact = findOffset(toAlign);
-
+System.out.println("OFFSET !!!!!!!!!!!!!!!!!!!!! "+ toAlign.getOffset());
+System.out.println("exact: = " + offsetExact);
     Gene gene = toAlign.getReferencedGene();
 
     String newSequence = toAlign.sequence;

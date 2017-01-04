@@ -21,7 +21,7 @@ public class PrivateTest {
     public void testLocalFile()
 	    throws FileReadingException, IOException, UndefinedTypeOfMutationException, CorruptedSequenceException {
 	// TODO set local path
-	SequenceReader.configurePath("C:/Users/Jannis/Dropbox/BP_GSAT/Materialien/Dateien/Bsp/AB/93GH02_A08.ab1");
+	SequenceReader.configurePath("C:/Users/Jannis/Dropbox/BP_GSAT/Materialien/Dateien/Bsp/AB/93GH02_C09.ab1");
 	System.out.println("Path set");
 	AnalysedSequence testSeq = SequenceReader.convertFileIntoSequence();
 	System.out.println("File read");
@@ -52,6 +52,11 @@ public class PrivateTest {
 	System.out.println("");
 	System.err.println(testSeq.getReferencedGene().getSequence().substring(testSeq.getOffset()*3));
 	System.out.println(testSeq.getSequence());
+	
+	for (int i = 0; i < testSeq.getQuality().length; i++) {
+	    //System.err.println(testSeq.getQuality()[i]);
+	}
+	
 	System.out.println("__________________________________________________________________________________________________");
 	
 	MutationAnalysis.findMutations(testSeq);
