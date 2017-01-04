@@ -14,6 +14,7 @@ import analysis.StringAnalysis;
 import exceptions.ConfigNotFoundException;
 import exceptions.ConfigReadException;
 import exceptions.CorruptedSequenceException;
+import exceptions.DissimilarGeneException;
 import exceptions.DuplicateGeneException;
 import exceptions.FileReadingException;
 import exceptions.MissingPathException;
@@ -26,6 +27,8 @@ import io.GeneReader;
 import io.SequenceReader;
 
 public class ConsoleVersion {
+
+  private static boolean geneRecognition = false;
 
   /**
    * starts the console version of the programs
@@ -254,17 +257,12 @@ public class ConsoleVersion {
   }
 
   /**
-   * Asks user for gene and gene name
+   * Asks user for gene and gene name and adds it to the gene database
    * 
    * @return Gene containing the parsed data
-   * @throws DuplicateGeneException 
+   * @throws DuplicateGeneException
    */
-  private static Gene askForGene(){
-    // TODO Ask for GEN
-    // String genPath = askForPath("Please give path to gene");
-
-    // TODO Read GENE
-    // TODO REALLY DO IT
+  private static Gene askForGene() {
     String strGene = null;
     String strGeneName = null;
     String saveGene = null;
@@ -277,7 +275,7 @@ public class ConsoleVersion {
         strGeneName = ConsoleIO.readLine("Please enter the name of the gene."
             + System.lineSeparator() + "REFERENCE GENE NAME: ");
         saveGene = ConsoleIO.readLine("Do you want to save this gene for future use? (y/n)");
-        if(saveGene.toLowerCase().equals("y")){
+        if (saveGene.toLowerCase().equals("y")) {
           try {
             GeneReader.addGene(strGeneName, strGene);
           } catch (DuplicateGeneException e) {
@@ -298,9 +296,9 @@ public class ConsoleVersion {
    * in the same folder as the ab1 files if genes.txt can not be found it asks the user for a gene
    * 
    * @return
-   *  
+   * 
    */
-  private static Gene readGene(){
+  private static Gene readGene() {
     String path = SequenceReader.getPath() + "/genes.txt";
     try {
       GeneReader.readGenes(path);
@@ -315,21 +313,30 @@ public class ConsoleVersion {
           System.out.println((i + 1) + ": " + geneNames[i]);
         }
         System.out.println((geneNames.length + 1) + ": Enter new gene");
+        System.out.println(
+            (geneNames.length + 2) + ": Use automatic gene recognition (gene must be in database)");
         System.out.println();
         int index = Integer
             .parseInt(ConsoleIO.readLine("Please enter the Index of the gene you want to use."
-                + System.lineSeparator() + "INDEX: ")) -1;
-        
-        // add new gene 
-        if(index == geneNames.length){
+                + System.lineSeparator() + "INDEX: "))
+            - 1;
+
+        // add new gene
+        if (index == geneNames.length) {
           return askForGene();
-        } 
+        }
+        // use automatic gene recognition
+        else if (index == geneNames.length + 1) {
+          geneRecognition = true;
+          return null;
+        }
         // an existing gene has been chosen
-        else if(index >= 0 && index < geneNames.length){
+        else if (index >= 0 && index < geneNames.length) {
           return GeneReader.getGeneAt(index);
         }
         // bad user input
-        else return null;
+        else
+          return null;
       }
     } catch (IOException e) {
       // no genes.txt found
@@ -353,9 +360,25 @@ public class ConsoleVersion {
 
     // read sequence from file
     activeSequence = readSequenceFromFile(file);
-    activeSequence.setReferencedGene(gene);
+    
+    
+    if(geneRecognition){
+      LinkedList<Gene> geneList = new LinkedList<Gene>();
+      for(Gene g : GeneReader.getGeneList()){
+        geneList.add(g);
+      }
+      try {
+        gene = StringAnalysis.findRightGene(activeSequence, geneList);
+      } catch (DissimilarGeneException e) {
+        gene = e.bestGene;
+        System.out.println(e.getMessage());
+      }
+    } else{
+    activeSequence.setReferencedGene(gene);}
+    
     // cut out low Quality parts of sequence
     QualityAnalysis.trimLowQuality(activeSequence);
+    
 
     // cut out vector
     StringAnalysis.trimVector(activeSequence, gene);
