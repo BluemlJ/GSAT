@@ -4,8 +4,10 @@ import java.util.LinkedList;
 
 /**
  * Models a sequence under analysis (i.e. obtained from an AB1 file), which may have mutations.
+ * The Sequence class defines it's basic behavior.
  * 
  * @author Ben Kohr
+ * @author Jannis Blueml
  * 
  */
 public class AnalysedSequence extends Sequence {
@@ -15,21 +17,16 @@ public class AnalysedSequence extends Sequence {
    * output file.
    */
   private String fileName;
-  // TODO change from String to File
 
   /**
-   * The gene this sequence was formed from. Useful to compare the sequence with the gene.
-   */
-
-  /**
-   * The gene this sequence was formed from. Useful to compare the sequence with the gene.
+   * The gene this sequence was formed from.
    */
   private Gene referencedGene;
 
   /**
-   * Information to be stored in the database together with the sequence.
+   * Information to be stored in the database together with the sequence. Can be entered by the user.
    */
-  private String comments;
+  private String comments = "";
 
   /**
    * Indicates whether the results of this analysis have been checked by a researcher.
@@ -37,67 +34,67 @@ public class AnalysedSequence extends Sequence {
   private boolean manuallyChecked = false;
 
   /**
-   * The vector to be stored with this sequence.
+   * The left vector to be stored with this sequence, i.e. the nucleotides at the left side of the 
+   * sequence that corresponds to the gene.
    */
   private String leftVector;
 
   /**
-   * The vector to be stored with this sequence.
+   * The right vector to be stored with this sequence, i.e. the nucleotides at the right hand side of the 
+   * sequence that corresponds to the gene.
    */
   private String rightVector;
 
   /**
-   * The promotor to be stored with this sequence.
+   * The promotor which generated the sequence. May be added by the user.
    */
   private String promotor;
 
   /**
-   * A list of discovered mutations to be stored.
+   * A list of discovered mutations to be stored. Each of them is encoded as a String.
    */
   private LinkedList<String> mutations = new LinkedList<String>();
 
   /**
-   * Array containing the quality information for the sequence
+   * Array containing the quality information for the sequence (i.e. for each nucleotide position).
    */
   private int[] qualities;
 
 
   /**
-   * give the position in aminoacids in the original gene
+   * Indicates how the nucleotides corresponding to the original gene are shifted in the complete sequence.
    */
   private int offset = 0;
 
   /**
-   * average quality of the sequence
+   * Average quality of the sequence. Measured by the quality analysis.
    */
   private double qualityAvg;
 
   /**
    * Constructor calling the super constructor (which sets all given attributes).
-   * 
-   * @param sequence The actual sequence of nucleotides as a String
-   * @param fileName Name of the file this sequence was obtained from
-   * @param primer Metadata to be stored with the sequence
-   * 
-   * @param abiTrace
+   *  
+   * @param sequence the nucleotide sequence as a String
+   * @param researcher the researcher's name
+   * @param fileName the name of the file this sequence was obtained from
+   * @param qualities the int-array of quality measurements
+   * @param average the average quality
    * 
    * @author Ben Kohr
-   * @param average
-   * @param qualities
    */
   public AnalysedSequence(String sequence, String researcher, String fileName, int[] qualities,
       double average) {
     super(sequence, researcher);
     this.fileName = fileName;
-    this.comments = "";
     this.qualityAvg = average;
     this.qualities = qualities;
   }
 
+  
   /**
-   * Add a discovered (normal) mutation to the list of already discovered mutations.
+   * Add a discovered, String-encoded mutation to the list of already discovered mutations.
    * 
-   * @param mutation A discovered mutation (in the given String format)
+   * @param mutation A discovered mutation
    * 
    * @author Ben Kohr
    */
@@ -105,15 +102,14 @@ public class AnalysedSequence extends Sequence {
     mutations.add(mutation);
   }
 
+  
   /**
    * This method trims a sequence, i.e. it cuts out the desired part of the nucleotide sequence. It
    * keeps the start index character, and all following characters including the end index
-   * character. The rest is discarded.
+   * character. The rest is discarded. The result is stored within the object.
    * 
    * @param startIndex The start of the sequence to be cut off
    * @param endIndex The end of the sequence to be cut off
-   * 
-   * @return The trimmed String
    * 
    * @author Ben Kohr
    */
@@ -122,15 +118,16 @@ public class AnalysedSequence extends Sequence {
     this.sequence = trimmed;
   }
 
+  
   /**
-   * This method trims a qualtityarray, i.e. it cuts out the desired part of the nucleotide sequence
+   * This method trims a quality array, i.e. it cuts out the desired part of the nucleotide sequence
    * out of it. It keeps the quality for the start index character, and all following characters
-   * including the end index character. The rest is discarded.
+   * including the end index character. The rest is discarded. The result is stored within the object.
    * 
-   * @param startIndex The start of the sequence to be cut off
-   * @param endIndex The end of the sequence to be cut off
+   * @param startIndex The start of the array to be cut off
+   * @param endIndex The end of the array to be cut off
    * 
-   * @return The trimmed Qualityarray
+   * @return The trimmed quality array
    * 
    * @author Jannis Blueml
    */
@@ -142,58 +139,40 @@ public class AnalysedSequence extends Sequence {
     this.qualities = trimmed;
   }
 
+  
   /**
-   * Cuts off the end of a sequence. The nucleotide at the given index will the last one of the
-   * trimmed sequence.
+   * Returns the length of the sequence (the number of nucleotides in it).
    * 
-   * @param index The index after which all nucleotides are discarded
+   * @return the sequence's length
    * 
-   * @return The trimmed String (trimmed at the end)
-   * 
-   * @see #trimSequence(int, int)
-   * 
-   * @author Ben Kohr
+   * @author Jannis Blueml
    */
-  public void discardRest(int index) {
-    trimSequence(0, index);
+  public int length() {
+	    return sequence.length();
+  }
+  
+  
+
+  // GETTERs and SETTERs:
+  
+  public Gene getReferencedGene() {
+	    return referencedGene;
   }
 
-  /**
-   * Sets the referenced gene (after it is determined).
-   * 
-   * @param gene the determined reference gene
-   */
   public void setReferencedGene(Gene gene) {
     referencedGene = gene;
   }
 
-  /**
-   * Returns the referenced gene.
-   * 
-   * @return the gene referenced with this sequence
-   */
-  public Gene getReferencedGene() {
-    return referencedGene;
-  }
 
-  /**
-   * Returns the sequence's file name (the file it was obtained from).
-   * 
-   * @return the file name
-   */
   public String getFileName() {
     return fileName;
   }
 
-  /**
-   * Returns the list of normal mutations.
-   * 
-   * @return list of mutations
-   */
   public LinkedList<String> getMutations() {
     return mutations;
   }
 
+  
   public String getComments() {
     return comments;
   }
@@ -202,6 +181,7 @@ public class AnalysedSequence extends Sequence {
     this.comments = comments;
   }
 
+  
   public boolean isManuallyChecked() {
     return manuallyChecked;
   }
@@ -210,6 +190,7 @@ public class AnalysedSequence extends Sequence {
     this.manuallyChecked = manuallyChecked;
   }
 
+  
   public String getLeftVector() {
     return leftVector;
   }
@@ -218,6 +199,7 @@ public class AnalysedSequence extends Sequence {
     this.leftVector = vector;
   }
 
+  
   public String getRightVector() {
     return rightVector;
   }
@@ -226,6 +208,7 @@ public class AnalysedSequence extends Sequence {
     this.rightVector = vector;
   }
 
+  
   public String getPromotor() {
     return promotor;
   }
@@ -234,6 +217,7 @@ public class AnalysedSequence extends Sequence {
     this.promotor = promotor;
   }
 
+  
   public int[] getQuality() {
     return qualities;
   }
@@ -242,10 +226,6 @@ public class AnalysedSequence extends Sequence {
     return qualityAvg;
   }
 
-  public int length() {
-    // TODO Auto-generated method stub
-    return sequence.length();
-  }
 
   public int getOffset() {
     return offset;

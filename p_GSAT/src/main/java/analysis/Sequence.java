@@ -1,24 +1,29 @@
 package analysis;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import exceptions.CorruptedSequenceException;
 
 /**
- * Models a DNA sequence which could be a reference gene or a given sequence to analyze.
- * Encapsulates the shared behavior of genes and sequences in analysis.
+ * This class models an abstract DNA sequence which could be a reference gene or a given mutated sequence to analyze.
+ * It encapsulates the shared behavior of genes and sequences under analysis.
  * 
  * @author Ben Kohr
- *
  */
 public abstract class Sequence {
 
   /**
-   * The sequence of nucleotides.
+   * The sequence of nucleotides, encoded as a String. It consists of the letters A, C, T, G for the 
+   * four possible nucleotides adenine, cytosine, thymine and guanine.
    */
   protected String sequence;
 
 
   /**
-   * The date at which this sequence was added.
+   * The date at which this sequence was created. 
+   * Useful to find out when a sequence was analyzed.
    */
   protected String addingDate;
 
@@ -30,23 +35,31 @@ public abstract class Sequence {
 
 
   /**
-   * Constructor setting the attribute (used for inheriting classes).
+   * Creates a new Sequence object. 
+   * As an abstract class, only inheriting classes can be created via this constructor.
+   * 
+   * It sets the nucleotide sequence and the researcher's name as passed via the parameters. Furthermore, it
+   * determines the current date and stores internally.
    * 
    * @param sequence the sequence of nucleotides
+   * @param researcher the name of the analyzing researcher
+   * 
+   * @author Ben Kohr
    */
   public Sequence(String sequence, String researcher) {
     setSequence(sequence);
-    // DateFormat df = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss");
-    // Calendar cal = Calendar.getInstance();
-    // this.addingDate = df.format(cal);
-
+    
     this.researcher = researcher;
+    
+    DateFormat df = new SimpleDateFormat("dd/MM/yy");
+    Date dateobj = new Date();
+    addingDate = df.format(dateobj);
   }
 
 
   /**
    * Returns the reversed version of this object's nucleotide sequence, i.e. the nucleotide sequence
-   * is inverted
+   * is inverted.
    * 
    * @return The reversed nucleotide sequence as a String
    * 
@@ -68,6 +81,8 @@ public abstract class Sequence {
    * are replaced by G nucleotides (and vice versa).
    * 
    * @return The complementary nucleotide sequence as a String
+   * 
+   * @throws CorruptedSequenceException If a nucleotide letter different from A, T, C and G is observed
    * 
    * @author Ben Kohr
    */
@@ -100,41 +115,48 @@ public abstract class Sequence {
     String complSequence = complSeqBuilder.toString();
 
     return complSequence;
-
   }
 
+  
+  
   /**
-   * This Method gives you the nucleotide sequence of this object. *
+   * The toString-Method of Object is used to return the nucleotide sequence.
    * 
-   * @return this object's nucleotide sequence
+   * @return the nucleotide sequence String (as a represenation of this object)
    * 
-   * @author bluemlj
+   * @author Kevin Otto
    */
+  @Override
+  public String toString() {
+    return sequence;
+  }
+  
+  
+  
+  
+  // GETTERs and SETTERs:
+  
+ 
+
   public String getSequence() {
     return sequence;
   }
 
-  /**
-   * This Method sets the nucleotide sequence of this object. *
-   * 
-   * @param sequence sets the nucleotide sequence of this object
-   * 
-   * @author bluemlj
-   */
   public void setSequence(String sequence) {
     this.sequence = sequence.toUpperCase();
   }
 
+  
 
   public String getAddingDate() {
     return addingDate;
   }
 
-
   public void setAddingDate(String addingDate) {
     this.addingDate = addingDate;
   }
 
+  
 
   public String getResearcher() {
     return researcher;
@@ -143,11 +165,6 @@ public abstract class Sequence {
 
   public void setResearcher(String researcher) {
     this.researcher = researcher;
-  }
-
-  @Override
-  public String toString() {
-    return sequence;
   }
 
 

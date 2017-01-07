@@ -169,7 +169,6 @@ public class WritingTests {
 
     // Result should have 3 elements.
     assertTrue(entries.size() == 3);
-
   }
 
   /**
@@ -520,8 +519,13 @@ public class WritingTests {
         "1; sequence3.ab1; 3; ATC; null; Kurt Bohne; Nothing to say; null; null; null; false; -1H5; DELETION"};
 
     for (int i = 0; i < correctResults.length; i++) {
-      assertEquals(correctResults[i], results.get(i));
-    }
+        String[] correctInfo = correctResults[i].split(";");
+        String[] testInfo = results.get(i).split(";");
+        for (int j = 0; j < correctInfo.length; j++)
+
+          // Date cannot be compared
+          if (j != 4) assertEquals(correctInfo[i], testInfo[i]);
+      }
 
     assertTrue(results.size() == 2);
 
