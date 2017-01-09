@@ -1,14 +1,17 @@
 package test;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.LinkedList;
 
 import org.junit.Before;
 import org.junit.Test;
 
 import analysis.AnalysedSequence;
+import analysis.Pair;
 import exceptions.FileReadingException;
 import io.SequenceReader;
 
@@ -82,6 +85,41 @@ public class ReadingTests {
         new File(getClass().getResource("/ab1/Tk_Gs40Hits/Forward/95EI60.ab1").getFile());
     AnalysedSequence parsedSequence = SequenceReader.convertFileIntoSequence(parsedFile);
     assertEquals(parsedSequence.getSequence().toLowerCase(), correctSequence.toLowerCase());
+  }
+
+  @Test
+  public void listFilesAllABITest() {
+    File parsedFile = new File(getClass().getResource("/ab1/Tk_Gs40Hits/Forward/").getFile());
+
+    SequenceReader.configurePath(parsedFile.getAbsolutePath());
+    Pair<LinkedList<File>, LinkedList<File>> pair = SequenceReader.listFiles();
+    boolean working = true;
+    for (File f : pair.first) {
+      if (!f.getName().substring(f.getName().length()-3).equals("ab1")) {
+        working = false;
+        System.err.println(f.getName());
+      }
+    }
+    assertTrue(working);
+  }
+  
+  @Test
+  public void listFilesHalfABITest() {
+    File parsedFile = new File(getClass().getResource("/ab1/").getFile());
+
+    SequenceReader.configurePath(parsedFile.getAbsolutePath());
+    Pair<LinkedList<File>, LinkedList<File>> pair = SequenceReader.listFiles();
+    
+    assertTrue(pair.first.size() == 1 && pair.second.size() == 2);
+  }
+  
+  @Test
+  public void listFilesEmptyFolderTest() {
+    //File parsedFile = new File(getClass().getResource("/test-results/test/binary").getFile());
+    File f = new File("/p_GSAT/build/test-results/test/empty");
+    SequenceReader.configurePath(f.getAbsolutePath());
+    Pair<LinkedList<File>, LinkedList<File>> pair = SequenceReader.listFiles();
+    assertTrue(pair.first.size() == 0 && pair.second.size() == 0);
   }
 
 }

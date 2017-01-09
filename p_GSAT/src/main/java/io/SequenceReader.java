@@ -97,12 +97,9 @@ public class SequenceReader {
    */
   public static Pair<LinkedList<File>, LinkedList<File>> listFiles() {
     // get list of all files and Pathes in given path
-
-
-
     File folder = new File(path);
     File[] allFiles = folder.listFiles();
-
+    
     LinkedList<File> ab1Files = new LinkedList<File>();
     LinkedList<File> oddFiles = new LinkedList<File>();
 
