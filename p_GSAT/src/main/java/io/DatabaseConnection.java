@@ -2,6 +2,11 @@ package io;
 
 import java.io.FileWriter;
 import java.io.IOException;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.LinkedList;
 
 import analysis.Gene;
@@ -28,22 +33,10 @@ public class DatabaseConnection {
   /**
    * Specifies the location of the database.
    */
-  private static String connectionString;
+  private static final String CONNECTION_STRING = "jdbc:mysql://localhost:5432/test";
 
-  /**
-   * Specifies the path where local files shall be created (if necessary). This specifies the
-   * folder, not the file!
-   */
-  private static String localPath;
-
-
-  /**
-   * This value is needed to keep track of the momentarily used id of the data.
-   */
-  private static int id = 0;
-
-
-
+  private static Connection conn;
+  
   /**
    * Inserts all currently stored entries into the specified database.
    * 
@@ -53,79 +46,82 @@ public class DatabaseConnection {
    */
   public static void insertAllIntoDatabase()
       throws DatabaseConnectionException, DatabaseErrorException {
-    while (!queue.isEmpty()) {
-      insertIntoDatabase();
+	  // important: just ONE analyzed file in the queue!
+	conn = establishConnection();  
+	
+	DatabaseEntry entry = queue.getFirst();
+	PreparedStatement pstmt;
+	try { 
+		 // main table
+		pstmt = conn.prepareStatement("INSERT INTO analysis (id, filename, geneid, sequence, addingdate, researcher" +
+				  				"comments, leftvector, rightvector, promotor, manuallychecked) VALUES " + 
+				  				"(?, '?', '?', '?', '?', '?', '?', '?', '?', '?', ?)");
+		
+		pstmt.setLong(0, entry.getID());
+		pstmt.setString(1, entry.getFileName());
+		pstmt.setInt(2, entry.getGeneID());
+		pstmt.setString(3, entry.getSequence());
+		pstmt.setString(4, entry.getAddingDate());
+		pstmt.setString(5, entry.getResearcher());
+		pstmt.setString(6, entry.getComments().replace(';', ','));
+		pstmt.setString(7, entry.getLeftVector());
+		pstmt.setString(8, entry.getRightVector());
+		pstmt.setString(9, entry.getPromotor());
+		pstmt.setString(10, "" + entry.isManuallyChecked());
+		
+		pstmt.execute();
+		queue.removeFirst();
+		
+	} catch (SQLException e) {
+		throw new DatabaseErrorException();
+	}
+	
+	try {
+		pstmt = conn.prepareStatement("INSERT INTO mutations (id, mutation, mtype) "+ 
+				"VALUES (?, '?', '?')");
+	} catch (SQLException e1) {
+		throw new DatabaseErrorException();
+	}
+	
+	while (!queue.isEmpty()) {
+      insertIntoDatabase(pstmt);
     }
+	
+	try {
+		pstmt.close();
+	} catch (SQLException e1) {
+		throw new DatabaseErrorException();
+	}
+	
+    try {
+		conn.close();
+	} catch (SQLException e) {
+		throw new DatabaseConnectionException();
+	}
   }
 
 
   /**
    * Inserts a single data point into the specified database.
    */
-  private static void insertIntoDatabase()
+  private static void insertIntoDatabase(PreparedStatement pstmt)
       throws DatabaseConnectionException, DatabaseErrorException {
-
-  }
-
-
-  /**
-   * Inserts the data points into a local file (e.g. if there is no connection to the database
-   * available right now).
-   * 
-   * @throws IOException
-   */
-  public static void storeAllLocally(String filename) throws MissingPathException, IOException {
-
-    if (localPath == null) {
-      throw new MissingPathException(PathUsage.WRITING);
-    }
-
-    FileWriter writer = new FileWriter(localPath + filename + ".csv");
-
-    writer.write(
-        "id; file name; gene id; sequence; date; researcher; comments; vector; promotor; manually checked; mutation; mutation type"
-            + System.lineSeparator());
-
-    for (DatabaseEntry entry : queue) {
-
-      // retrieve the data from the Database object
-      long id = entry.getID();
-      String fileName = entry.getFileName();
-      int geneID = entry.getGeneID();
-      String sequence = entry.getSequence();
-      String addingDate = entry.getAddingDate();
-      String researcher = entry.getResearcher();
-      // As ';' is the seperator charachter, each inital semicolon is replaced
-      String comments = entry.getComments().replace(';', ',');
-      String leftVector = entry.getLeftVector();
-      String rightVector = entry.getRightVector();
-      String promotor = entry.getPromotor();
-      boolean manuallyChecked = entry.isManuallyChecked();
-      String mutation = entry.getMutation();
-      MutationType mType = entry.getMutationType();
-
-      // Concatenate the Strings together to one line to be written
-      StringBuilder builder = new StringBuilder();
-      builder.append(id).append("; ");
-      builder.append(fileName).append("; ");
-      builder.append(geneID).append("; ");
-      builder.append(sequence).append("; ");
-      builder.append(addingDate).append("; ");
-      builder.append(researcher).append("; ");
-      builder.append(comments).append("; ");
-      builder.append(leftVector).append("; ");
-      builder.append(rightVector).append("; ");
-      builder.append(promotor).append("; ");
-      builder.append(manuallyChecked).append("; ");
-      builder.append(mutation).append("; ");
-      builder.append(mType).append(System.lineSeparator());
-
-      // write the String into the file
-      String toWrite = builder.toString();
-      writer.write(toWrite);
-    }
-
-    writer.close();
+	  try {
+		  
+		// mutation table
+		DatabaseEntry entry = queue.getFirst();	
+		pstmt.setLong(0, entry.getID());
+		pstmt.setString(1, entry.getMutation());
+		pstmt.setString(2, "" + entry.getMutationType());	
+		  
+	} catch (SQLException e) {
+		throw new DatabaseErrorException();
+	}
+	  
+	  
+	  
+	  
+	  
   }
 
 
@@ -137,7 +133,6 @@ public class DatabaseConnection {
    * @author Ben Kohr
    */
   public static void addIntoQueue(DatabaseEntry entry) {
-    setIdOnEntry(entry);
     queue.add(entry);
   }
 
@@ -154,31 +149,7 @@ public class DatabaseConnection {
   }
 
 
-  /**
-   * Sets the momentarily used id for a DatabaseEntry. Increments it afterwards to keep it up to
-   * date (unique).
-   * 
-   * @param entry The DatabaseEntry object which has no id right now
-   * 
-   * @author Ben Kohr
-   */
-  public static void setIdOnEntry(DatabaseEntry entry) {
-    entry.setID(id);
-    id++;
-  }
-
-
-
-  /**
-   * Sets the momentarily used id to zero.
-   * 
-   * @author Ben Kohr
-   */
-  public static void resetIDs() {
-    id = 0;
-  }
-
-
+ 
   /**
    * Empties the current waiting queue.
    * 
@@ -188,26 +159,62 @@ public class DatabaseConnection {
     queue.clear();
   }
 
-
-  /**
-   * Sets the path where local files shall be created if necessary.
-   * 
-   * @param path The path to create local files as a String
-   * 
-   * @author Ben Kohr
-   */
-  public static void setLocalPath(String path) {
-    localPath = path;
+  
+  
+  public void resetDatabaseConnection() {
+	  flushQueue();
   }
+  
+  
+  
+  private static Connection establishConnection() throws DatabaseConnectionException {
 
+	  Connection conn;
+	  
+		  try {
+			  conn = DriverManager.getConnection(CONNECTION_STRING, "testname", "password");
+	  		} catch (SQLException e) {
+	  			throw new DatabaseConnectionException();
+	  		}
+	
+	  return conn;
+	  
+  }
+  
+  
+  
 
   /**
    * Retrieves all genes from the database and returns them.
    * 
    * @return List of genes currently stored in the database
+ * @throws DatabaseConnectionException 
+ * @throws DatabaseErrorException 
    */
-  public static LinkedList<Gene> retrieveAllGenes() {
-    return null;
+  public static LinkedList<Gene> retrieveAllGenes() throws DatabaseConnectionException, DatabaseErrorException {
+    
+	LinkedList<Gene> allGenes = new LinkedList<Gene>();
+	  
+	conn = establishConnection();
+    try {
+	    PreparedStatement pstmt = conn.prepareStatement("SELECT id, name, sequence, researcher FROM genes");
+	    
+	    ResultSet result = pstmt.executeQuery();
+	    while(result.next()) {
+	    	int id = result.getInt(0);
+	    	String name = result.getString(1);
+	    	String sequence = result.getString(2);
+	    	String researcher = result.getString(3);
+	    	Gene current = new Gene(sequence, id, name, researcher);
+	    	allGenes.add(current); 
+	    }
+	    
+	    
+    } catch (SQLException e) {
+    	throw new DatabaseErrorException();
+    }
+    
+    return allGenes;
   }
 
 }
