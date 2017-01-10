@@ -8,6 +8,9 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.LinkedList;
 
 import org.junit.Before;
@@ -370,17 +373,19 @@ public class WritingTests {
     reader.close();
 
     // Check whether the input is correct
+    
+    DateFormat df = new SimpleDateFormat("dd/MM/yy");
+    String addingDate = df.format(new Date());
+    
     String[] correctResults = new String[] {
-        "0; sequence3.ab1; 3; ATC; 2016-11-25; Kurt Bohne; Nothing to say; null; null; null; false; AAA7CAA; SILENT",
-        "1; sequence3.ab1; 3; ATC; 2016-11-25; Kurt Bohne; Nothing to say; null; null; null; false; -1H5; DELETION"};
+        "0; sequence3.ab1; 3; ATC; " + addingDate + "; Kurt Bohne; Nothing to say; null; null; null; false; AAA7CAA; SILENT",
+        "1; sequence3.ab1; 3; ATC; " + addingDate + "; Kurt Bohne; Nothing to say; null; null; null; false; -1H5; DELETION"};
 
     for (int i = 0; i < correctResults.length; i++) {
       String[] correctInfo = correctResults[i].split(";");
       String[] testInfo = results.get(i).split(";");
       for (int j = 0; j < correctInfo.length; j++)
-
-        // Date cannot be compared
-        if (j != 4) assertEquals(correctInfo[i], testInfo[i]);
+        assertEquals(correctInfo[j], testInfo[j]);
     }
 
     // Size should be three, for there a two initial entries.
@@ -514,17 +519,20 @@ public class WritingTests {
     reader.close();
 
     // Check whether the input is correct
+    
+    DateFormat df = new SimpleDateFormat("dd/MM/yy");
+    String addingDate = df.format(new Date());
+    
     String[] correctResults = new String[] {
-        "0; sequence3.ab1; 3; ATC; null; Kurt Bohne; Nothing to say; null; null; null; false; AAA7CAA; SILENT",
-        "1; sequence3.ab1; 3; ATC; null; Kurt Bohne; Nothing to say; null; null; null; false; -1H5; DELETION"};
+        "0; sequence3.ab1; 3; ATC; " + addingDate + "; Kurt Bohne; Nothing to say; null; null; null; false; AAA7CAA; SILENT",
+        "1; sequence3.ab1; 3; ATC; " + addingDate + "; Kurt Bohne; Nothing to say; null; null; null; false; -1H5; DELETION"};
 
     for (int i = 0; i < correctResults.length; i++) {
         String[] correctInfo = correctResults[i].split(";");
         String[] testInfo = results.get(i).split(";");
         for (int j = 0; j < correctInfo.length; j++)
 
-          // Date cannot be compared
-          if (j != 4) assertEquals(correctInfo[i], testInfo[i]);
+          assertEquals(correctInfo[j], testInfo[j]);
       }
 
     assertTrue(results.size() == 2);

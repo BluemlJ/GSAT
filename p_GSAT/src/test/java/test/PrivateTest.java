@@ -49,7 +49,7 @@ public class PrivateTest {
 	}
 	
 	
-	
+	@Ignore
     @Test
     public void testLocalFile()
 	    throws FileReadingException, IOException, UndefinedTypeOfMutationException, CorruptedSequenceException {
