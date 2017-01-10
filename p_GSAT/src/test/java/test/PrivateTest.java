@@ -1,7 +1,9 @@
 package test;
 
 import java.io.IOException;
+import java.util.HashMap;
 
+import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
 
@@ -17,11 +19,41 @@ import io.SequenceReader;
 
 public class PrivateTest {
 
+	
+	// TO CHANGE: ---------------------------------------------------
+	
+	/*  0 Jannis, 
+	*	1 Ben,
+	*	2 Lovis,
+	*	3 Kevin
+	*/
+	private static int userNr = 1;
+	
+	// Name of the file
+	private String fileName = "93GH02_C09.ab1";
+	
+	// --------------------------------------------------------------
+	
+	
+	private static String[] paths = new String[]{
+			"C:/Users/Jannis/Dropbox/BP_GSAT/Materialien/Dateien/Bsp/AB/",
+			"C:\\Users\\Business\\Dropbox\\BP_GSAT\\Materialien\\Dateien\\Bsp\\AB\\",
+			"/Users/lovisheindrich/Dropbox/BP_GSAT/Materialien/Dateien/Bsp/AB/",
+			"C:/GSAT Tests/"};
+	
+	private static String pathToUse;
+	
+	@BeforeClass
+	public static void setup() {
+		pathToUse = paths[userNr];
+	}
+	
+	
+	
     @Test
     public void testLocalFile()
 	    throws FileReadingException, IOException, UndefinedTypeOfMutationException, CorruptedSequenceException {
-	// TODO set local path
-	SequenceReader.configurePath("C:/Users/Jannis/Dropbox/BP_GSAT/Materialien/Dateien/Bsp/AB/93GH02_C09.ab1");
+	SequenceReader.configurePath(pathToUse + fileName);
 	System.out.println("Path set");
 	AnalysedSequence testSeq = SequenceReader.convertFileIntoSequence();
 	System.out.println("File read");
@@ -70,7 +102,7 @@ public class PrivateTest {
     public void kevinLocalTest()
 	    throws FileReadingException, IOException, UndefinedTypeOfMutationException, CorruptedSequenceException {
 	// TODO set local path
-	SequenceReader.configurePath("C:/GSAT Tests/93GH02_A01.ab1");
+	SequenceReader.configurePath(pathToUse + fileName);
 
 	AnalysedSequence sequence = SequenceReader.convertFileIntoSequence();
 
