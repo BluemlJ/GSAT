@@ -1,3 +1,3 @@
 id; file name; gene id; sequence; date; researcher; comments; left vector; right vector; promotor; manually checked; mutation; mutation type
-0; sequence3.ab1; 3; ATC; 10/01/17; Kurt Bohne; Nothing to say; null; null; null; false; AAA7CAA; SILENT
-1; sequence3.ab1; 3; ATC; 10/01/17; Kurt Bohne; Nothing to say; null; null; null; false; -1H5; DELETION
+0; sequence3.ab1; 3; ATC; 11/01/17; Kurt Bohne; Nothing to say; null; null; null; false; AAA7CAA; SILENT
+1; sequence3.ab1; 3; ATC; 11/01/17; Kurt Bohne; Nothing to say; null; null; null; false; -1H5; DELETION
