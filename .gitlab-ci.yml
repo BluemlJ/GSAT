@@ -9,6 +9,7 @@ image: openjdk:8-jdk
 
 stages:
   - build
+  - buildJAR
   - test
 
 # Make the gradle wrapper executable. This essentially downloads a copy of
@@ -33,19 +34,28 @@ variables:
 build:
   stage: build
   script:
-  - $GRADLE_COMMAND clean assemble
-  artifacts:
+  - $GRADLE_COMMAND clean assemble 
+   artifacts:
     when: always
     paths:
     - build/
   allow_failure: false
 
+buildJAR:
+ stage: buildJAR
+ script:  
+ - $GRADLE_COMMAND jfxJar
+ artifacts:
+    when: always
+    paths:
+    - build/
+  allow_failure: true
+  
+  
 # Use the generated build output to run the tests.
 test:
   stage: test
   script:
-  - ./gradlew --gradle-user-home /cache --no-daemon clean build jacocoTestReport
-  - ./gradlew --gradle-user-home /cache --no-daemon clean test jacocoTestReport
   #- $GRADLE_COMMAND clean check
   artifacts:
     when: always
