@@ -5,7 +5,7 @@
 # This is the Gradle build system for JVM applications
 # https://gradle.org/
 # https://github.com/gradle/gradle
-image: openjdk:8-jdk
+image: rburgst/java8-openjfx-docker
 
 stages:
   - build
@@ -35,20 +35,18 @@ build:
   stage: build
   script:
   - $GRADLE_COMMAND clean assemble 
-   allow_failure: false
-
+ 
 buildJAR:
  stage: buildJAR
  script:  
  - $GRADLE_COMMAND jfxJar
- allow_failure: true
   
   
 # Use the generated build output to run the tests.
 test:
   stage: test
   script:
-  #- $GRADLE_COMMAND clean check
+  - $GRADLE_COMMAND check
   artifacts:
     when: always
     expire_in: 1 week
