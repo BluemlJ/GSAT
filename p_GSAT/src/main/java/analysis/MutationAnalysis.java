@@ -102,10 +102,15 @@ public class MutationAnalysis {
       // silent mutation in them.
 
 
-      if (position > lastposition + 1 || i == differences.size() - 1) {
+      if (position > lastposition + 1 || i == differences.size()-1) {
 
         for (int tempPosition = lastposition + 1; tempPosition < position - toAnalyze.getOffset()
-            - 1; tempPosition++) {
+            ; tempPosition++) {
+          
+          if(i == 0) 
+            tempPosition = position;
+          
+          System.out.println(tempPosition +"*"+tmpshift +"*" + toAnalyze.getOffset());
           if ((tempPosition +tmpshift)* 3 + toAnalyze.getOffset() * 3 + 3 > originalSequence.length()
               || (tempPosition +tmpshift) * 3 + 3 > mutatedSequence.length()) {
             break;

@@ -51,7 +51,7 @@ public class QualityAnalysis {
           countertoStart = 0;
         }
         if (countertoStart == startcounter) {
-          trimmingPosition[0] = counter + (3 - (counter % 3) % 3);
+          trimmingPosition[0] = counter + ((3 - (counter % 3)) % 3);
           startfound = true;
           trimmingPosition[2] = trimmingPosition[0] / 3;
           counter += startcounter;
@@ -65,7 +65,7 @@ public class QualityAnalysis {
           countertoBreak = 0;
         }
         if (countertoBreak == breakcounter) {
-          trimmingPosition[1] = counter + (3 - (counter % 3) % 3);
+          trimmingPosition[1] = counter + ((3 - (counter % 3)) % 3);
           break;
         }
       }

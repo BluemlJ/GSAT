@@ -25,7 +25,8 @@ public class PrivateTest {
 	/*  0 Jannis, 
 	*	1 Ben,
 	*	2 Lovis,
-	*	3 Kevin
+	*	3 Kevin,
+	*   4 Jannis Laptop
 	*/
 	private static int userNr = 1;
 	
@@ -39,7 +40,7 @@ public class PrivateTest {
 			"C:/Users/Jannis/Dropbox/BP_GSAT/Materialien/Dateien/Bsp/AB/",
 			"C:\\Users\\Business\\Dropbox\\BP_GSAT\\Materialien\\Dateien\\Bsp\\AB\\",
 			"/Users/lovisheindrich/Dropbox/BP_GSAT/Materialien/Dateien/Bsp/AB/",
-			"C:/GSAT Tests/"};
+			"C:/GSAT Tests/", "/home/bluemlj/Dropbox/BP_GSAT/Materialien/Dateien/Bsp/AB/"};
 	
 	private static String pathToUse;
 	
@@ -85,9 +86,6 @@ public class PrivateTest {
 	System.err.println(testSeq.getReferencedGene().getSequence().substring(testSeq.getOffset()*3));
 	System.out.println(testSeq.getSequence());
 	
-	for (int i = 0; i < testSeq.getQuality().length; i++) {
-	    //System.err.println(testSeq.getQuality()[i]);
-	}
 	
 	System.out.println("__________________________________________________________________________________________________");
 	
@@ -96,31 +94,4 @@ public class PrivateTest {
 	    System.out.println(s);
 	}
     }
-
-    @Ignore
-    @Test
-    public void kevinLocalTest()
-	    throws FileReadingException, IOException, UndefinedTypeOfMutationException, CorruptedSequenceException {
-	// TODO set local path
-	SequenceReader.configurePath(pathToUse + fileName);
-
-	AnalysedSequence sequence = SequenceReader.convertFileIntoSequence();
-
-	String gene = "ATGGAACTGTATCTGGATACTTCAGACGTTGTTGCGGTGAAGGCGCTGTCACGTATTTTTCCGCTGGCGGGTGTGACCACTAACCCAAGCATTATCGCCGCGGGTAAAAAACCGCTGGATGTTGTGCTTCCGCAACTTCATGAAGCGATGGGCGGTCAGGGGCGTCTGTTTGCCCAGGTAATGGCTACCACTGCCGAAGGGATGGTTAATGACGCGCTTAAGCTGCGTTCTATTATTGCGGATATCGTGGTGAAAGTTCCGGTGACCGCCGAGGGGCTGGCAGCTATTAAGATGTTAAAAGCGGAAGGGATTCCGACGCTGGGAACCGCGGTATATGGCGCAGCACAAGGGCTGCTGTCGGCGCTGGCAGGTGCGGAATATGTTGCGCCTTACGTTAATCGTATTGATGCTCAGGGCGGTAGCGGCATTCAGACTGTGACCGACTTACACCAGTTATTGAAAATGCATGCGCCGCAGGCGAAAGTGCTGGCAGCGAGTTTCAAAACCCCGCGTCAGGCGCTGGACTGCTTACTGGCAGGATGTGAATCAATTACTCTGCCACTGGATGTGGCACAACAGATGATTAGCTATCCGGCGGTTGATGCCGCTGTGGCGAAGTTTGAGCAGGACTGGCAGGGAGCGTTTGGCAGAACGTCGATTtaa";
-	Gene fsa = new Gene(gene.toUpperCase(), 0, "FSA", "");
-	sequence.setReferencedGene(fsa);
-
-	System.out.println(sequence);
-
-	// StringAnalysis.trimVector(sequence, fsa);
-	StringAnalysis.trimVector(sequence);
-	System.out.println(sequence.getOffset());
-	// System.out.println(sequence.getOffset());
-
-	System.err.println(sequence);
-	System.out.println();
-	System.out.println(fsa);
-
-    }
-
 }

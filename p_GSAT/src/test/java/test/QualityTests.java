@@ -71,14 +71,14 @@ public class QualityTests {
   @Test
   public void qualityTestA() throws IOException {
     // quality cutoff after 8 nucleotide
-    int[] qualitiesA = {100, 100, 100, 100, 100, 100, 100, 100, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+    int[] qualitiesA = {100, 100, 100, 100, 100, 100, 100, 100, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
     AnalysedSequence testSequenceA =
-        new AnalysedSequence("aaatttgggaaaaaaaaaaa", "", "", qualitiesA, 33.3);
+        new AnalysedSequence("aaatttgggaaaaaaaaaaaa", "", "", qualitiesA, 33);
     int[] trim = QualityAnalysis.findLowQuality(testSequenceA);
     assertEquals(trim[0], 0);
-    assertEquals(trim[1], 8);
+    assertEquals(trim[1], 9);
     QualityAnalysis.trimLowQuality(testSequenceA);
-    assertEquals(testSequenceA.getSequence(), "aaatttgg");
+    assertEquals(testSequenceA.getSequence(), "AAATTTGGG");
   }
 
   /**
@@ -94,7 +94,7 @@ public class QualityTests {
     assertEquals(trim[1], 9);
     assertEquals(trim[0], 0);
     QualityAnalysis.trimLowQuality(testSequenceB);
-    assertEquals(testSequenceB.getSequence(), "aaatttggg");
+    assertEquals(testSequenceB.getSequence(), "AAATTTGGG");
   }
 
   /**
@@ -120,14 +120,14 @@ public class QualityTests {
   @Test
   public void qualityTestD() throws IOException {
     // start is bad quality, end is low quality
-    int[] qualitiesD = {0, 0, 100, 100, 100, 100, 100, 0, 0, 0, 0, 0, 0};
+    int[] qualitiesD = {0, 0, 0, 100, 100, 100, 100, 100, 0, 0, 0, 0, 0, 0, 0, 0, 0,0 ,0,0};
     AnalysedSequence testSequenceD =
-        new AnalysedSequence("aaatttgggaaatt", "", "", qualitiesD, 33.3);
+        new AnalysedSequence("aaatttgggaaattt", "", "", qualitiesD, 33.3);
     int[] trim = QualityAnalysis.findLowQuality(testSequenceD);
-    assertEquals(trim[1], 7);
-    assertEquals(trim[0], 2);
+    assertEquals(trim[1], 9);
+    assertEquals(trim[0], 3);
     QualityAnalysis.trimLowQuality(testSequenceD);
-    assertEquals(testSequenceD.getSequence(), "atttg");
+    assertEquals(testSequenceD.getSequence(), "TTTGGG");
   }
 
   /**
@@ -137,12 +137,12 @@ public class QualityTests {
   @Test
   public void qualityTestE() throws IOException {
     // start is bad quality, end is low quality
-    int[] qualitiesE = {0, 0, 100, 100, 100, 100, 100, 100, 100};
+    int[] qualitiesE = {0, 0, 0, 100, 100, 100, 100, 100, 100};
     AnalysedSequence testSequenceE = new AnalysedSequence("aaatttggg", "", "", qualitiesE, 33.3);
     int[] trim = QualityAnalysis.findLowQuality(testSequenceE);
     assertEquals(trim[1], 9);
-    assertEquals(trim[0], 2);
+    assertEquals(trim[0], 3);
     QualityAnalysis.trimLowQuality(testSequenceE);
-    assertEquals(testSequenceE.getSequence(), "atttggg");
+    assertEquals(testSequenceE.getSequence(), "TTTGGG");
   }
 }
