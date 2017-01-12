@@ -42,7 +42,7 @@ buildJAR:
  - $GRADLE_COMMAND jfxJar
  artifacts:
   paths:
-  - build/jfx/*
+  - jfx/
   
   
 # Use the generated build output to run the tests.
