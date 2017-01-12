@@ -110,9 +110,7 @@ jfx {
     additionalAppResources = null // path to some additional resources when creating application-bundle
     noBlobSigning = false // when using bundler "jnlp", you can choose to NOT use blob signing
     customBundlers = null // List<String>
-    onlyCustomBundlers = false
-    skipJNLP = true
-
+    
     // gradle jfxRun
     runJavaParameter = null // String
     runAppParameter = null // String
