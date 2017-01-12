@@ -53,11 +53,10 @@ public class MutationAnalysis {
     for (int i = 0; i < differences.size(); i++) {
 
       if (checkFrameerrorCounter == warningReadingFrameError)
-        System.err.println("Warning: Frame Error possible");
-      if (checkFrameerrorCounter == readingFrameErrorBorder) {
+        if (checkFrameerrorCounter == readingFrameErrorBorder) {
         readingFrameError = true;
         return false;
-      }
+        }
 
 
       String difference = differences.get(i);
@@ -102,17 +101,15 @@ public class MutationAnalysis {
       // silent mutation in them.
 
 
-      if (position > lastposition + 1 || i == differences.size()-1) {
+      if (position > lastposition + 1 || i == differences.size() - 1) {
 
-        for (int tempPosition = lastposition + 1; tempPosition < position - toAnalyze.getOffset()
-            ; tempPosition++) {
-          
-          if(i == 0) 
-            tempPosition = position;
-          
-          System.out.println(tempPosition +"*"+tmpshift +"*" + toAnalyze.getOffset());
-          if ((tempPosition +tmpshift)* 3 + toAnalyze.getOffset() * 3 + 3 > originalSequence.length()
-              || (tempPosition +tmpshift) * 3 + 3 > mutatedSequence.length()) {
+        for (int tempPosition = lastposition + 1; tempPosition < position
+            - toAnalyze.getOffset(); tempPosition++) {
+
+          tempPosition = position + 1;
+
+          if ((tempPosition + tmpshift) * 3 + toAnalyze.getOffset() * 3 + 3 > originalSequence
+              .length() || (tempPosition + tmpshift) * 3 + 3 > mutatedSequence.length()) {
             break;
           } else {
             String oldAcid = originalSequence.substring(
@@ -136,12 +133,13 @@ public class MutationAnalysis {
 
     if (differences.size() == 0) {
       for (int tempPosition = 0; tempPosition < mutatedSequence.length(); tempPosition++) {
-        if (tempPosition * 3 + toAnalyze.getOffset() + 3 > originalSequence.length()
+        if ( (tempPosition + tmpshift) * 3 + toAnalyze.getOffset() * 3 + 3 > originalSequence.length()
             || tempPosition * 3 + 3 > mutatedSequence.length()) {
           break;
         } else {
-          String oldAcid = originalSequence.substring(tempPosition * 3 + toAnalyze.getOffset() * 3,
-              tempPosition * 3 + toAnalyze.getOffset() * 3 + 3);
+          String oldAcid = originalSequence.substring(
+            (tempPosition + tmpshift) * 3 + toAnalyze.getOffset() * 3,
+            (tempPosition + tmpshift) * 3 + toAnalyze.getOffset() * 3 + 3);
           String newAcid = mutatedSequence.substring(tempPosition * 3, tempPosition * 3 + 3);
 
           if (!oldAcid.equals(newAcid)) {
@@ -195,8 +193,8 @@ public class MutationAnalysis {
     int begin = seq.getOffset() * 3;
     int end = seq.getOffset() * 3 + seq.length();
 
-    first =
-        StringAnalysis.codonsToAminoAcids(seq.getReferencedGene().sequence.substring(begin, Math.min(end, seq.getReferencedGene().getSequence().length())));
+    first = StringAnalysis.codonsToAminoAcids(seq.getReferencedGene().sequence.substring(begin,
+        Math.min(end, seq.getReferencedGene().getSequence().length())));
     second = StringAnalysis.codonsToAminoAcids(seq.sequence);
     return reportDifferences(first.split("#")[0], second.split("#")[0]);
     /*

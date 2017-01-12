@@ -110,7 +110,7 @@ public class SequenceReader {
       lastID = 0;
 
     // for every files or path
-    for (int fileID = 0; fileID < lastID; fileID++) {
+    for (int fileID = 0; fileID <= lastID; fileID++) {
       File activeFile = allFiles[fileID];
       String fileName = activeFile.getName();
       String fileEnding = fileName.split("\\.")[fileName.split("\\.").length - 1];

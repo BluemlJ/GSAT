@@ -3,6 +3,7 @@ package test;
 import java.io.IOException;
 import java.util.HashMap;
 
+import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -29,10 +30,10 @@ public class PrivateTest {
 	*   4 Jannis Laptop,
 	*   5 Kevins Laptop
 	*/
-	private static int userNr = 5;
+	private static int userNr = 4;
 	
 	// Name of the file
-	private String fileName = "93GH02_B12.ab1";
+	private String fileName = "93GH02_B11.ab1";
 	
 	// --------------------------------------------------------------
 	
@@ -49,14 +50,21 @@ public class PrivateTest {
 	@BeforeClass
 	public static void setup() {
 		pathToUse = paths[userNr];
+		System.out.println("Start");
 	}
 	
 	
-	@Ignore
+	/**
+	 * 
+	 * @throws FileReadingException
+	 * @throws IOException
+	 * @throws UndefinedTypeOfMutationException
+	 * @throws CorruptedSequenceException
+	 */
     @Test
     public void testLocalFile()
 	    throws FileReadingException, IOException, UndefinedTypeOfMutationException, CorruptedSequenceException {
-	SequenceReader.configurePath(pathToUse + fileName);
+	  SequenceReader.configurePath(pathToUse + fileName);
 	System.out.println("Path set");
 	AnalysedSequence testSeq = SequenceReader.convertFileIntoSequence();
 	System.out.println("File read");
@@ -95,5 +103,6 @@ public class PrivateTest {
 	for (String s : testSeq.getMutations()) {
 	    System.out.println(s);
 	}
+	Assert.assertTrue(true);
     }
 }

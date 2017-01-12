@@ -376,13 +376,13 @@ public class ConsoleVersion {
     } else{
     activeSequence.setReferencedGene(gene);}
     
-    // cut out low Quality parts of sequence
-    QualityAnalysis.trimLowQuality(activeSequence);
     
-
     // cut out vector
     StringAnalysis.trimVector(activeSequence, gene);
 
+    // cut out low Quality parts of sequence
+    QualityAnalysis.trimLowQuality(activeSequence);
+    
     // mutation analysis
     processMutations(activeSequence, file);
 
