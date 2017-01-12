@@ -43,7 +43,7 @@ buildJAR:
  artifacts:
   untracked: true
   paths:
-  - build/
+  - build/jfx/
   
   
 # Use the generated build output to run the tests.
