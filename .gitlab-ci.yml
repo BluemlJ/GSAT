@@ -40,6 +40,9 @@ buildJAR:
  stage: buildJAR
  script:  
  - $GRADLE_COMMAND jfxJar
+ artifacts:
+  paths:
+  - build/jfx/*
   
   
 # Use the generated build output to run the tests.
@@ -47,8 +50,4 @@ test:
   stage: test
   script:
   - $GRADLE_COMMAND check
-  artifacts:
-    when: always
-    expire_in: 1 week
-    paths:
-    - build/reports
+
