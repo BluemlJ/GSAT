@@ -41,9 +41,8 @@ buildJAR:
  script:  
  - $GRADLE_COMMAND jfxJar
  artifacts:
-  untracked: true
   paths:
-  - build/jfx/
+  - build/jfx/*
   
   
 # Use the generated build output to run the tests.
