@@ -41,8 +41,9 @@ buildJAR:
  script:  
  - $GRADLE_COMMAND jfxJar
  artifacts:
-  paths:
-  - jfx/
+  name: "$CI_BUILD_NAME"
+  path:
+  - p_GSAT/build/jfx/
   
   
 # Use the generated build output to run the tests.
