@@ -6,11 +6,8 @@ import java.util.LinkedList;
 import java.util.Map;
 import java.util.TreeMap;
 
-import javax.swing.plaf.synth.SynthScrollBarUI;
-
 import exceptions.CorruptedSequenceException;
 import exceptions.DissimilarGeneException;
-import io.ConsoleIO;
 
 /**
  * This class contains the logic of analyzing sequence strings. This class serves for
@@ -382,6 +379,7 @@ public class StringAnalysis {
    * @return
    */
   public static String trimbyLeve(AnalysedSequence toAlign, boolean beginCorect) {
+
     Gene template = toAlign.getReferencedGene();
     int[][] levenMatrix = calculateLevenshteinMatrix(template.sequence, toAlign.sequence);
 
@@ -411,7 +409,11 @@ public class StringAnalysis {
         //TODO try result
         potentialBegin = true;
         potentialBeginPosition = line;
-        if (bestScore < checkSimilarity(toAlign.getSequence().substring(bestBegin,end), toAlign.getSequence().substring(line,end))) {
+        double score = checkSimilarity(toAlign.getSequence().substring(bestBegin,end), toAlign.getSequence().substring(line,end));
+        if (bestScore < score) {
+          bestScore = score;
+          bestBegin = line;
+          
           
         }
         
@@ -521,7 +523,7 @@ System.out.println("exact: = " + offsetExact);
     codon = "false";//TODO fix
 
     // if found cut at stopcodon
-    for (int i = 0; i < 6; i++) {
+    /*for (int i = 0; i < 6; i++) {
       int hitIndex = newSequence.indexOf(codon);
       if (hitIndex >= 0 && hitIndex == newSequence.lastIndexOf(codon)) {
         newSequence = newSequence.substring(0, hitIndex + 3);
@@ -553,12 +555,12 @@ System.out.println("exact: = " + offsetExact);
         default:
           break;
       }
-    }
+    }*/
 
 
     // calculate the end of the sequence (as long as the gene if possible els till end)
     // if necessary cut off begin
-    if (offsetExact) {
+    //if (offsetExact) {
       // negative offset -> sequence goes over left site of gene
       // -> cut of left of offset
       String leftVector = newSequence.substring(0, Math.abs(toAlign.getOffset()));
@@ -570,14 +572,15 @@ System.out.println("exact: = " + offsetExact);
       toAlign.setOffset(0);
 
       toAlign.setSequence(newSequence);
-    }
+    //}
 
 
 
     // calculate exact offset if necessary;
-    if (!(endexact && offsetExact)) {
-      newSequence = trimbyLeve(toAlign, offsetExact);
-    }
+    //if (!(endexact && offsetExact)) {
+      System.err.println("OfsetExact = " + offsetExact);
+      //newSequence = trimbyLeve(toAlign, offsetExact);
+    //}
 
     // int sequenceEnd = Math.min(newSequence.length(), gene.sequence.length());
     // String rightVector = newSequence.substring(sequenceEnd);
@@ -586,6 +589,7 @@ System.out.println("exact: = " + offsetExact);
     // **********complex Vector Cutting*****************
     // TODO implement
 
+    System.err.println(toAlign.getOffset() + "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
     // **********modulo Cutting*****************
     if (toAlign.getOffset() != 0) {
       int begin = (3 - (toAlign.getOffset() % 3) % 3);
@@ -649,10 +653,11 @@ System.out.println("exact: = " + offsetExact);
         // OFFSET found:
         // Set offset
         offsetNotFound = false;
-        seqence.setOffset(targetIndex + testIndex);
+        seqence.setOffset(targetIndex - testIndex);//changed + to - for test
         if (testIndex == 0) {
           return true;
         }
+        System.err.println("Warning, Trimming may be inexact");
         return false;
 
         

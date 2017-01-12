@@ -298,5 +298,25 @@ public class VectorTrimTests {
     }
     return sequenceBuilder.toString();
   }
+  
+  
 
+
+  /**
+   * 
+   * 
+   * @author Kevin Otto
+   */
+  @Test
+  public void trimLevenTest() {
+    String a = "ATGABCDEFGSTOP";
+    String b = "ATFABCDEFGSTOP";
+    int[] q = {1,2,3,4,5,6,7,8,9,10,11,12,13,14};
+    AnalysedSequence seq = new AnalysedSequence(b, "", "", q, 0);
+    seq.setReferencedGene(new Gene(a, 0, "", ""));
+    
+    String tmp = StringAnalysis.trimbyLeve(seq, false);
+    System.out.println(tmp);
+  }
+  
 }

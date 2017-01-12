@@ -26,12 +26,13 @@ public class PrivateTest {
 	*	1 Ben,
 	*	2 Lovis,
 	*	3 Kevin,
-	*   4 Jannis Laptop
+	*   4 Jannis Laptop,
+	*   5 Kevins Laptop
 	*/
-	private static int userNr = 1;
+	private static int userNr = 5;
 	
 	// Name of the file
-	private String fileName = "93GH02_C09.ab1";
+	private String fileName = "93GH02_B12.ab1";
 	
 	// --------------------------------------------------------------
 	
@@ -40,7 +41,8 @@ public class PrivateTest {
 			"C:/Users/Jannis/Dropbox/BP_GSAT/Materialien/Dateien/Bsp/AB/",
 			"C:\\Users\\Business\\Dropbox\\BP_GSAT\\Materialien\\Dateien\\Bsp\\AB\\",
 			"/Users/lovisheindrich/Dropbox/BP_GSAT/Materialien/Dateien/Bsp/AB/",
-			"C:/GSAT Tests/", "/home/bluemlj/Dropbox/BP_GSAT/Materialien/Dateien/Bsp/AB/"};
+			"C:/GSAT Tests/", "/home/bluemlj/Dropbox/BP_GSAT/Materialien/Dateien/Bsp/AB/",
+			"/home/kevin/Documents/GSAT_Tests/"};
 	
 	private static String pathToUse;
 	
