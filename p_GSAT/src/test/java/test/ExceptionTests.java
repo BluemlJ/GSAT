@@ -276,8 +276,8 @@ public class ExceptionTests {
       // Check if the fields are set
       assertEquals(toAnalyse, e.toAnalyse);
       assertEquals(bestGene, e.bestGene);
-      assertTrue(e.similarity == 20.3);
-
+      assertTrue(Math.abs(e.similarity - 20.3) < 0.1);
+      
     }
   }
 

@@ -392,7 +392,6 @@ public class StringAnalysis {
     boolean potentialBegin = false;
     int potentialBeginPosition = 0;
     
-    int bestEnd = toAlign.length();
     int bestBegin = 0;
     double bestScore = 0.0;
 
