@@ -49,16 +49,18 @@ public class QualityTests {
    * Tests if the quality trim function is usable
    * 
    * @throws IOException
+   * @throws FileReadingException
    */
   @Test
-  public void testQualityTrim() throws IOException {
+  public void testQualityTrim() throws IOException, FileReadingException {
     // Debug code for adjusting QualityAnalysis.BREAKCOUNTER
     /*
-     * System.out.println("Gesamtlaenge der Sequenz: " + testSequence.length());
-     * System.out.println("Anfang der hohen Qualitaet: " +
-     * QualityAnalysis.findLowQualityStart(testSequence));
-     * System.out.println("Ende der hohen Qualitaet " +
-     * QualityAnalysis.findLowQualityEnd(testSequence));
+     * testSequence = SequenceReader.convertFileIntoSequence(new
+     * File("D:/Dokumente/Dropbox/BP_GSAT/Materialien/Dateien/Bsp/AB/93GH02_G05.ab1"));
+     * System.out.println("Gesamtlaenge der Sequenz: " + testSequence.length()); System.out
+     * .println("Anfang der hohen Qualitaet: " + QualityAnalysis.findLowQuality(testSequence)[0]);
+     * System.out .println("Ende der hohen Qualitaet " +
+     * QualityAnalysis.findLowQuality(testSequence)[1]);
      */
   }
 
@@ -69,9 +71,9 @@ public class QualityTests {
   @Test
   public void qualityTestA() throws IOException {
     // quality cutoff after 8 nucleotide
-    int[] qualitiesA = {100, 100, 100, 100, 100, 100, 100, 100, 0, 0, 0, 0, 0, 0};
+    int[] qualitiesA = {100, 100, 100, 100, 100, 100, 100, 100, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
     AnalysedSequence testSequenceA =
-        new AnalysedSequence("aaatttgggaaaaaa", "", "", qualitiesA, 33.3);
+        new AnalysedSequence("aaatttgggaaaaaaaaaaa", "", "", qualitiesA, 33.3);
     int[] trim = QualityAnalysis.findLowQuality(testSequenceA);
     assertEquals(trim[0], 0);
     assertEquals(trim[1], 8);

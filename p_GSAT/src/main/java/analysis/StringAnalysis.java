@@ -391,6 +391,9 @@ public class StringAnalysis {
     boolean endFound = false;
     boolean potentialBegin = false;
     int potentialBeginPosition = 0;
+    
+    int bestBegin = 0;
+    double bestScore = 0.0;
 
     int row = levenMatrix.length - 1;// gen
     int line = levenMatrix[0].length - 1;// sequence
@@ -405,9 +408,14 @@ public class StringAnalysis {
 
         line--;
         endFound = true;
-
+        //TODO try result
         potentialBegin = true;
         potentialBeginPosition = line;
+        if (bestScore < checkSimilarity(toAlign.getSequence().substring(bestBegin,end), toAlign.getSequence().substring(line,end))) {
+          
+        }
+        
+        
         originalBegin = row;
 
       } else if (levenMatrix[row - 1][line] < levenMatrix[row][line - 1]) {

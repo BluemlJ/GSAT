@@ -57,21 +57,21 @@ public class DatabaseConnection {
 				  				"comments, leftvector, rightvector, promotor, manuallychecked) VALUES " + 
 				  				"(?, '?', '?', '?', '?', '?', '?', '?', '?', '?', ?)");
 		
-		pstmt.setLong(0, entry.getID());
-		pstmt.setString(1, entry.getFileName());
-		pstmt.setInt(2, entry.getGeneID());
-		pstmt.setString(3, entry.getSequence());
-		pstmt.setString(4, entry.getAddingDate());
-		pstmt.setString(5, entry.getResearcher());
-		pstmt.setString(6, entry.getComments().replace(';', ','));
-		pstmt.setString(7, entry.getLeftVector());
-		pstmt.setString(8, entry.getRightVector());
-		pstmt.setString(9, entry.getPromotor());
-		pstmt.setString(10, "" + entry.isManuallyChecked());
+		pstmt.setLong(1, entry.getID());
+		pstmt.setString(2, entry.getFileName());
+		pstmt.setInt(3, entry.getGeneID());
+		pstmt.setString(4, entry.getSequence());
+		pstmt.setString(5, entry.getAddingDate());
+		pstmt.setString(6, entry.getResearcher());
+		pstmt.setString(7, entry.getComments().replace(';', ','));
+		pstmt.setString(8, entry.getLeftVector());
+		pstmt.setString(9, entry.getRightVector());
+		pstmt.setString(10, entry.getPromotor());
+		pstmt.setString(11, "" + entry.isManuallyChecked());
 		
 		pstmt.execute();
 		queue.removeFirst();
-		
+		pstmt.close();
 	} catch (SQLException e) {
 		throw new DatabaseErrorException();
 	}
@@ -79,6 +79,8 @@ public class DatabaseConnection {
 	try {
 		pstmt = conn.prepareStatement("INSERT INTO mutations (id, mutation, mtype) "+ 
 				"VALUES (?, '?', '?')");
+		pstmt.execute();
+		pstmt.close();
 	} catch (SQLException e1) {
 		throw new DatabaseErrorException();
 	}
@@ -86,12 +88,6 @@ public class DatabaseConnection {
 	while (!queue.isEmpty()) {
       insertIntoDatabase(pstmt);
     }
-	
-	try {
-		pstmt.close();
-	} catch (SQLException e1) {
-		throw new DatabaseErrorException();
-	}
 	
     try {
 		conn.close();
@@ -110,9 +106,9 @@ public class DatabaseConnection {
 		  
 		// mutation table
 		DatabaseEntry entry = queue.getFirst();	
-		pstmt.setLong(0, entry.getID());
-		pstmt.setString(1, entry.getMutation());
-		pstmt.setString(2, "" + entry.getMutationType());	
+		pstmt.setLong(1, entry.getID());
+		pstmt.setString(2, entry.getMutation());
+		pstmt.setString(3, "" + entry.getMutationType());	
 		  
 	} catch (SQLException e) {
 		throw new DatabaseErrorException();
@@ -201,14 +197,15 @@ public class DatabaseConnection {
 	    
 	    ResultSet result = pstmt.executeQuery();
 	    while(result.next()) {
-	    	int id = result.getInt(0);
-	    	String name = result.getString(1);
-	    	String sequence = result.getString(2);
-	    	String researcher = result.getString(3);
+	    	int id = result.getInt(1);
+	    	String name = result.getString(2);
+	    	String sequence = result.getString(3);
+	    	String researcher = result.getString(4);
 	    	Gene current = new Gene(sequence, id, name, researcher);
 	    	allGenes.add(current); 
 	    }
 	    
+	    pstmt.close();
 	    
     } catch (SQLException e) {
     	throw new DatabaseErrorException();
