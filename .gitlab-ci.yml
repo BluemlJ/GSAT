@@ -35,17 +35,20 @@ build:
   stage: build
   script:
   - $GRADLE_COMMAND clean assemble 
-  
+   allow_failure: false
+
 buildJAR:
  stage: buildJAR
  script:  
  - $GRADLE_COMMAND jfxJar
+ allow_failure: true
+  
   
 # Use the generated build output to run the tests.
 test:
   stage: test
   script:
-  #- $GRADLE_COMMAND clean check
+  - $GRADLE_COMMAND clean check
   artifacts:
     when: always
     expire_in: 1 week
