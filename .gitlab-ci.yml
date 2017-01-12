@@ -42,7 +42,7 @@ buildJAR:
  - $GRADLE_COMMAND jfxJar
  artifacts:
   name: "$CI_BUILD_NAME"
-  path:
+  paths:
   - p_GSAT/build/jfx/
   
   
