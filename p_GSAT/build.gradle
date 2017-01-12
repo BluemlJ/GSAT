@@ -78,7 +78,7 @@ jacocoTestReport {
 
 jfx {
     verbose = true
-    mainClass = "GSAT"
+    mainClass = "core.Main"
     jfxAppOutputDir = "build/jfx/app"
     jfxMainAppJarName = "project-jfx.jar"
     deployDir = "src/main/deploy"
