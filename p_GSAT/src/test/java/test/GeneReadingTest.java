@@ -34,16 +34,6 @@ public class GeneReadingTest {
   }
 
   /**
-   * This tests checks if a list of genes is created after reading
-   * 
-   */
-  @Test
-  public void testGeneListNotEmpty() {
-    System.out.println(path);
-    assertEquals(GeneReader.getGeneList().isEmpty(), false);
-  }
-
-  /**
    * This test confirms that all genes in the file have been correctly parsed
    */
   @Test
@@ -57,6 +47,16 @@ public class GeneReadingTest {
   }
 
   /**
+   * This tests checks if a list of genes is created after reading
+   * 
+   */
+  @Test
+  public void testGeneListNotEmpty() {
+    System.out.println(path);
+    assertEquals(GeneReader.getGeneList().isEmpty(), false);
+  }
+
+  /**
    * This test checks if it is possible to access a gene by its name
    */
   @Test
@@ -65,9 +65,10 @@ public class GeneReadingTest {
         "atgGAACTGTATCTGGATACTTCAGACGTTGTTGCGGTGAAGGCGCTGTCACGTATTTTTCCGCTGGCGGGTGTGACCACTAACCCAAGCATTATCGCCGCGGGTAAAAAACCGCTGGATGTTGTGCTTCCGCAACTTCATGAAGCGATGGGCGGTCAGGGGCGTCTGTTTGCCCAGGTAATGGCTACCACTGCCGAAGGGATGGTTAATGACGCGCTTAAGCTGCGTTCTATTATTGCGGATATCGTGGTGAAAGTTCCGGTGACCGCCGAGGGGCTGGCAGCTATTAAGATGTTAAAAGCGGAAGGGATTCCGACGCTGGGAACCGCGGTATATGGCGCAGCACAAGGGCTGCTGTCGGCGCTGGCAGGTGCGGAATATGTTGCGCCTTACGTTAATCGTATTGATGCTCAGGGCGGTAGCGGCATTCAGACTGTGACCGACTTACACCAGTTATTGAAAATGCATGCGCCGCAGGCGAAAGTGCTGGCAGCGAGTTTCAAAACCCCGCGTCAGGCGCTGGACTGCTTACTGGCAGGATGTGAATCAATTACTCTGCCACTGGATGTGGCACAACAGATGATTAGCTATCCGGCGGTTGATGCCGCTGTGGCGAAGTTTGAGCAGGACTGGCAGGGAGCGTTTGGCAGAACGTCGATTtaa"
             .toUpperCase());
   }
-  
+
   /**
    * This test tries to write a single new Gene and then tries to read this gene from the file
+   * 
    * @throws DuplicateGeneException
    * @throws IOException
    */
@@ -78,9 +79,10 @@ public class GeneReadingTest {
         "aaatttaaaggg");
     assertEquals(GeneReader.getGene("testGene").getSequence(), "aaatttaaaggg".toUpperCase());
   }
-  
+
   /**
    * This test tries to write multiple new genes and then tries to read the genes from the file
+   * 
    * @throws DuplicateGeneException
    * @throws IOException
    */
@@ -89,24 +91,25 @@ public class GeneReadingTest {
     GeneReader.clearTxtFile(getClass().getResource("/GeneData/GenesWriteTest.txt").getFile());
     GeneReader.addGene(getClass().getResource("/GeneData/GenesWriteTest.txt").getFile(), "testGene",
         "aaatttaaaggg");
-    GeneReader.addGene(getClass().getResource("/GeneData/GenesWriteTest.txt").getFile(), "testGene2",
-        "aaatttaaaggg");
+    GeneReader.addGene(getClass().getResource("/GeneData/GenesWriteTest.txt").getFile(),
+        "testGene2", "aaatttaaaggg");
     assertEquals(GeneReader.getGene("testGene").getSequence(), "aaatttaaaggg".toUpperCase());
     assertEquals(GeneReader.getGene("testGene2").getSequence(), "aaatttaaaggg".toUpperCase());
   }
-  
+
   /**
    * This test checks if adding a gene that already exists causes a duplicate gene exception
+   * 
    * @throws IOException
    */
   @Test
-  public void writeDuplicateGene() throws IOException{
-    GeneReader.clearTxtFile(getClass().getResource("/GeneData/GenesWriteTest.txt").getFile());  
+  public void writeDuplicateGene() throws IOException {
+    GeneReader.clearTxtFile(getClass().getResource("/GeneData/GenesWriteTest.txt").getFile());
     try {
-      GeneReader.addGene(getClass().getResource("/GeneData/GenesWriteTest.txt").getFile(), "testGene",
-          "aaatttaaaggg");
-      GeneReader.addGene(getClass().getResource("/GeneData/GenesWriteTest.txt").getFile(), "testGene",
-          "aaatttaaaggg");
+      GeneReader.addGene(getClass().getResource("/GeneData/GenesWriteTest.txt").getFile(),
+          "testGene", "aaatttaaaggg");
+      GeneReader.addGene(getClass().getResource("/GeneData/GenesWriteTest.txt").getFile(),
+          "testGene", "aaatttaaaggg");
     } catch (DuplicateGeneException e) {
       assertEquals(e.getMessage(), "Gene testGene already exists");
     }

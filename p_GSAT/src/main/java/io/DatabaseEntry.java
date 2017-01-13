@@ -16,102 +16,6 @@ import exceptions.UndefinedTypeOfMutationException;
 public class DatabaseEntry {
 
   /**
-   * The id for this entry. It is given by the DatabaseConnection class. Until the id is given, -1
-   * is the placeholder id.
-   */
-  private long id = -1;
-
-  /**
-   * The name of the file this entry was retrieved from.
-   */
-  private String fileName;
-
-  /**
-   * The id for the referenced gene.
-   */
-  private int geneID;
-
-  /**
-   * The sequence of nucleotides.
-   */
-  private String sequence;
-
-  /**
-   * The date at which this sequence was added.
-   */
-  private String addingDate;
-
-  /**
-   * The researcher who added this sequence.
-   */
-  private String researcher;
-
-  /**
-   * The used primer.
-   */
-  private String comments;
-
-  /**
-   * A mutation string; might be empty.
-   */
-  private String mutation;
-
-  /**
-   * Indicates the mutation type.
-   */
-  private MutationType mType;
-
-  /**
-   * Indicates whether the results of this analysis have been checked by a researcher.
-   */
-  private boolean manuallyChecked;
-
-
-  /**
-   * The left vector to be stored with the sequence.
-   */
-  private String leftVector;
-
-  /**
-   * The right vector to be stored with the sequence.
-   */
-  private String rightVector;
-
-
-  /**
-   * The promotor to be stored with the sequence.
-   */
-  private String promotor;
-
-
-
-  /**
-   * Constructor that sets up all attributes except the id (which is given by the DatabaseConnection
-   * class).
-   * 
-   * @author Ben Kohr
-   */
-  public DatabaseEntry(String fileName, int geneID, String sequence, String addingDate,
-      String researcher, String comments, String leftVector, String rightVector, String promotor,
-      boolean manuallyChecked, String mutation, MutationType mType) {
-
-    this.fileName = fileName;
-    this.geneID = geneID;
-    this.sequence = sequence;
-    this.addingDate = addingDate;
-    this.researcher = researcher;
-    this.comments = comments;
-    this.leftVector = leftVector;
-    this.rightVector = rightVector;
-    this.promotor = promotor;
-    this.manuallyChecked = manuallyChecked;
-    this.mutation = mutation;
-    this.mType = mType;
-
-  }
-
-
-  /**
    * This method converts a given sequence into a list of database entries to be stored and returns
    * them.
    * 
@@ -158,7 +62,6 @@ public class DatabaseEntry {
 
   }
 
-
   /**
    * Determines the type of a given String-encoded mutation.
    * 
@@ -201,32 +104,141 @@ public class DatabaseEntry {
 
   }
 
+  /**
+   * The id for this entry. It is given by the DatabaseConnection class. Until the id is given, -1
+   * is the placeholder id.
+   */
+  private long id = -1;
+
+  /**
+   * The name of the file this entry was retrieved from.
+   */
+  private String fileName;
+
+  /**
+   * The id for the referenced gene.
+   */
+  private int geneID;
+
+  /**
+   * The sequence of nucleotides.
+   */
+  private String sequence;
+
+  /**
+   * The date at which this sequence was added.
+   */
+  private String addingDate;
+
+  /**
+   * The researcher who added this sequence.
+   */
+  private String researcher;
+
+  /**
+   * The used primer.
+   */
+  private String comments;
+
+  /**
+   * A mutation string; might be empty.
+   */
+  private String mutation;
 
 
   /**
-   * Sets the id of this entry. Typically used be DatabaseConnection to update the ids correctly.
-   * 
-   * @param id The current id
+   * Indicates the mutation type.
+   */
+  private MutationType mType;
+
+  /**
+   * Indicates whether the results of this analysis have been checked by a researcher.
+   */
+  private boolean manuallyChecked;
+
+
+  /**
+   * The left vector to be stored with the sequence.
+   */
+  private String leftVector;
+
+
+
+  /**
+   * The right vector to be stored with the sequence.
+   */
+  private String rightVector;
+
+
+  /**
+   * The promotor to be stored with the sequence.
+   */
+  private String promotor;
+
+
+  /**
+   * Constructor that sets up all attributes except the id (which is given by the DatabaseConnection
+   * class).
    * 
    * @author Ben Kohr
    */
-  public void setID(long id) {
-    this.id = id;
+  public DatabaseEntry(String fileName, int geneID, String sequence, String addingDate,
+      String researcher, String comments, String leftVector, String rightVector, String promotor,
+      boolean manuallyChecked, String mutation, MutationType mType) {
+
+    this.fileName = fileName;
+    this.geneID = geneID;
+    this.sequence = sequence;
+    this.addingDate = addingDate;
+    this.researcher = researcher;
+    this.comments = comments;
+    this.leftVector = leftVector;
+    this.rightVector = rightVector;
+    this.promotor = promotor;
+    this.manuallyChecked = manuallyChecked;
+    this.mutation = mutation;
+    this.mType = mType;
+
   }
 
 
 
   /**
-   * Returns the id of this entry.
+   * Returns this entry's adding date
    * 
-   * @return id
+   * @return adding date
    * 
    * @author Ben Kohr
    */
-  public long getID() {
-    return id;
+  public String getAddingDate() {
+    return addingDate;
   }
 
+
+
+  /**
+   * Returns this entry's stored comments
+   * 
+   * @return comments
+   * 
+   * @author Ben Kohr
+   */
+  public String getComments() {
+    return comments;
+  }
+
+
+
+  /**
+   * Returns the file name this database entry was obtained from.
+   * 
+   * @return the file name
+   * 
+   * @author Ben Kohr
+   */
+  public String getFileName() {
+    return fileName;
+  }
 
 
   /**
@@ -242,49 +254,37 @@ public class DatabaseEntry {
 
 
   /**
-   * Returns this entry's nucleotide sequence
+   * Returns the id of this entry.
    * 
-   * @return the nucleotide sequence
+   * @return id
    * 
    * @author Ben Kohr
    */
-  public String getSequence() {
-    return sequence;
+  public long getID() {
+    return id;
   }
 
 
   /**
-   * Returns this entry's adding date
+   * Returns this entry's left vector
    * 
-   * @return adding date
-   * 
-   * @author Ben Kohr
-   */
-  public String getAddingDate() {
-    return addingDate;
-  }
-
-
-  /**
-   * Returns this entry's reasercher
-   * 
-   * @return this entry's researcher
+   * @return the vector
    * 
    * @author Ben Kohr
    */
-  public String getResearcher() {
-    return researcher;
+  public String getLeftVector() {
+    return leftVector;
   }
 
   /**
-   * Returns this entry's stored comments
+   * Returns the single mutation of this entry.
    * 
-   * @return comments
+   * @return mutation
    * 
    * @author Ben Kohr
    */
-  public String getComments() {
-    return comments;
+  public String getMutation() {
+    return mutation;
   }
 
 
@@ -301,26 +301,26 @@ public class DatabaseEntry {
 
 
   /**
-   * Returns a boolean indicating whether this result is manually checked
+   * Returns this entry's promotor
    * 
-   * @return Is this mutation silent?
+   * @return the promotor
    * 
    * @author Ben Kohr
    */
-  public boolean isManuallyChecked() {
-    return manuallyChecked;
+  public String getPromotor() {
+    return promotor;
   }
 
 
   /**
-   * Returns this entry's left vector
+   * Returns this entry's reasercher
    * 
-   * @return the vector
+   * @return this entry's researcher
    * 
    * @author Ben Kohr
    */
-  public String getLeftVector() {
-    return leftVector;
+  public String getResearcher() {
+    return researcher;
   }
 
   /**
@@ -336,39 +336,39 @@ public class DatabaseEntry {
 
 
   /**
-   * Returns this entry's promotor
+   * Returns this entry's nucleotide sequence
    * 
-   * @return the promotor
+   * @return the nucleotide sequence
    * 
    * @author Ben Kohr
    */
-  public String getPromotor() {
-    return promotor;
+  public String getSequence() {
+    return sequence;
   }
 
 
   /**
-   * Returns the file name this database entry was obtained from.
+   * Returns a boolean indicating whether this result is manually checked
    * 
-   * @return the file name
+   * @return Is this mutation silent?
    * 
    * @author Ben Kohr
    */
-  public String getFileName() {
-    return fileName;
+  public boolean isManuallyChecked() {
+    return manuallyChecked;
   }
 
 
 
   /**
-   * Returns the single mutation of this entry.
+   * Sets the id of this entry. Typically used be DatabaseConnection to update the ids correctly.
    * 
-   * @return mutation
+   * @param id The current id
    * 
    * @author Ben Kohr
    */
-  public String getMutation() {
-    return mutation;
+  public void setID(long id) {
+    this.id = id;
   }
 
 }

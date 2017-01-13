@@ -20,20 +20,6 @@ import io.Config;
 public class ConfigTests {
 
   /**
-   * Test reading a researcher name from a sample config file (Userstory 017 - Expected behavior)
-   * 
-   * @throws IOException
-   * @throws ConfigReadException
-   * @throws ConfigNotFoundException
-   */
-  @Test
-  public void testConfigRead() throws IOException, ConfigReadException, ConfigNotFoundException {
-    Config.setPath(getClass().getResource("/lh_config").getFile());
-    Config.readConfig();
-    assertEquals(Config.researcher, "lovis heindrich");
-  }
-
-  /**
    * Test reading a researcher name from a sample config file and sets the researcher in an analysed
    * sequence (Userstory 017 - Expected behavior)
    * 
@@ -49,6 +35,20 @@ public class ConfigTests {
     AnalysedSequence testSeq =
         new AnalysedSequence("atg", Config.researcher, "seq1.abi", new int[] {100, 100, 100}, 100);
     assertEquals(testSeq.getResearcher(), "lovis heindrich");
+  }
+
+  /**
+   * Test reading a researcher name from a sample config file (Userstory 017 - Expected behavior)
+   * 
+   * @throws IOException
+   * @throws ConfigReadException
+   * @throws ConfigNotFoundException
+   */
+  @Test
+  public void testConfigRead() throws IOException, ConfigReadException, ConfigNotFoundException {
+    Config.setPath(getClass().getResource("/lh_config").getFile());
+    Config.readConfig();
+    assertEquals(Config.researcher, "lovis heindrich");
   }
 
   /**

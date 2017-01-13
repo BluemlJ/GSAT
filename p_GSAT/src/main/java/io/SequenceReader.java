@@ -89,6 +89,21 @@ public class SequenceReader {
     return parsedSequence;
   }
 
+  public static String getPath() {
+    return path;
+  }
+
+  /**
+   * Indicates whether there is a path set at the moment.
+   * 
+   * @return Whether a path is set or not
+   * 
+   * @author Ben Kohr
+   */
+  public static boolean isPathSet() {
+    return path != null;
+  }
+
   /**
    * Returns a list of all AB1 files in the path that was set via configurePath()
    * 
@@ -99,7 +114,7 @@ public class SequenceReader {
     // get list of all files and Pathes in given path
     File folder = new File(path);
     File[] allFiles = folder.listFiles();
-    
+
     LinkedList<File> ab1Files = new LinkedList<File>();
     LinkedList<File> oddFiles = new LinkedList<File>();
 
@@ -125,6 +140,7 @@ public class SequenceReader {
     return new Pair<LinkedList<File>, LinkedList<File>>(ab1Files, oddFiles);
   }
 
+
   /**
    * Discards the current path and files.
    * 
@@ -133,21 +149,5 @@ public class SequenceReader {
   public static void resetInputData() {
     path = null;
     files.clear();
-  }
-
-  /**
-   * Indicates whether there is a path set at the moment.
-   * 
-   * @return Whether a path is set or not
-   * 
-   * @author Ben Kohr
-   */
-  public static boolean isPathSet() {
-    return path != null;
-  }
-
-
-  public static String getPath() {
-    return path;
   }
 }

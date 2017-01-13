@@ -21,31 +21,9 @@ public class GeneReader {
   private static ArrayList<Gene> geneList;
   private final static String SEPARATOR = ";";
 
-  /**
-   * reads a gene.txt from a given path
-   * 
-   * @param genePath
-   * @throws IOException
-   */
-  public static void readGenes(String genePath) throws IOException {
-    path = genePath;
-    geneList = new ArrayList<Gene>();
-    BufferedReader geneReader = new BufferedReader(new FileReader(genePath));
-    String line;
-    int id = 0;
-    // for each line
-    while ((line = geneReader.readLine()) != null) {
-      // format "name=atgAAT..."
-      String sepLine[] = line.split(SEPARATOR);
-      String name = sepLine[0];
-      String gene = sepLine[1];
-      if (getGene(name) == null) {
-        geneList.add(new Gene(gene, id, name, Config.researcher));
-        id++;
-      }
-    }
-
-    geneReader.close();
+  public static void addGene(String geneName, String geneSequence)
+      throws DuplicateGeneException, IOException {
+    addGene(path, geneName, geneSequence);
   }
 
   /**
@@ -66,8 +44,8 @@ public class GeneReader {
     path = genePath;
     BufferedWriter geneWriter = new BufferedWriter(new FileWriter(genePath));
     // TODO new genes need to be in a new line, no way to know if file starts with an empty line or
-    
-    for(Gene gene: geneList){
+
+    for (Gene gene : geneList) {
       geneWriter.write(gene.getName() + SEPARATOR + gene.getSequence());
       geneWriter.write(System.getProperty("line.separator"));
     }
@@ -77,27 +55,16 @@ public class GeneReader {
     readGenes(genePath);
   }
 
-  public static void addGene(String geneName, String geneSequence)
-      throws DuplicateGeneException, IOException {
-    addGene(path, geneName, geneSequence);
-  }
-
   /**
-   * reads genes from gene file at the locally stored path
-   * 
-   * @throws IOException
-   */
-  public static void readGenes() throws IOException {
-    readGenes(path);
-  }
-
-  /**
-   * set the path of the gene.txt file
+   * clears the txt file at a given path
    * 
    * @param path
+   * @throws IOException
    */
-  public static void setPath(String path) {
-    GeneReader.path = path;
+  public static void clearTxtFile(String path) throws IOException {
+    BufferedWriter writer = new BufferedWriter(new FileWriter(path));
+    writer.write("");
+    writer.close();
   }
 
   /**
@@ -129,16 +96,8 @@ public class GeneReader {
     return null;
   }
 
-  /**
-   * clears the txt file at a given path
-   * 
-   * @param path
-   * @throws IOException
-   */
-  public static void clearTxtFile(String path) throws IOException {
-    BufferedWriter writer = new BufferedWriter(new FileWriter(path));
-    writer.write("");
-    writer.close();
+  public static Gene getGeneAt(int index) {
+    return geneList.get(index);
   }
 
   public static ArrayList<Gene> getGeneList() {
@@ -157,8 +116,49 @@ public class GeneReader {
     return geneList.size();
   }
 
-  public static Gene getGeneAt(int index) {
-    return geneList.get(index);
+  /**
+   * reads genes from gene file at the locally stored path
+   * 
+   * @throws IOException
+   */
+  public static void readGenes() throws IOException {
+    readGenes(path);
+  }
+
+  /**
+   * reads a gene.txt from a given path
+   * 
+   * @param genePath
+   * @throws IOException
+   */
+  public static void readGenes(String genePath) throws IOException {
+    path = genePath;
+    geneList = new ArrayList<Gene>();
+    BufferedReader geneReader = new BufferedReader(new FileReader(genePath));
+    String line;
+    int id = 0;
+    // for each line
+    while ((line = geneReader.readLine()) != null) {
+      // format "name=atgAAT..."
+      String sepLine[] = line.split(SEPARATOR);
+      String name = sepLine[0];
+      String gene = sepLine[1];
+      if (getGene(name) == null) {
+        geneList.add(new Gene(gene, id, name, Config.researcher));
+        id++;
+      }
+    }
+
+    geneReader.close();
+  }
+
+  /**
+   * set the path of the gene.txt file
+   * 
+   * @param path
+   */
+  public static void setPath(String path) {
+    GeneReader.path = path;
   }
 }
 

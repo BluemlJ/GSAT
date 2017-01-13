@@ -3,8 +3,8 @@ package analysis;
 import java.util.LinkedList;
 
 /**
- * Models a sequence under analysis (i.e. obtained from an AB1 file), which may have mutations.
- * The Sequence class defines it's basic behavior.
+ * Models a sequence under analysis (i.e. obtained from an AB1 file), which may have mutations. The
+ * Sequence class defines it's basic behavior.
  * 
  * @author Ben Kohr
  * @author Jannis Blueml
@@ -24,7 +24,8 @@ public class AnalysedSequence extends Sequence {
   private Gene referencedGene;
 
   /**
-   * Information to be stored in the database together with the sequence. Can be entered by the user.
+   * Information to be stored in the database together with the sequence. Can be entered by the
+   * user.
    */
   private String comments = "";
 
@@ -34,14 +35,14 @@ public class AnalysedSequence extends Sequence {
   private boolean manuallyChecked = false;
 
   /**
-   * The left vector to be stored with this sequence, i.e. the nucleotides at the left side of the 
+   * The left vector to be stored with this sequence, i.e. the nucleotides at the left side of the
    * sequence that corresponds to the gene.
    */
   private String leftVector;
 
   /**
-   * The right vector to be stored with this sequence, i.e. the nucleotides at the right hand side of the 
-   * sequence that corresponds to the gene.
+   * The right vector to be stored with this sequence, i.e. the nucleotides at the right hand side
+   * of the sequence that corresponds to the gene.
    */
   private String rightVector;
 
@@ -62,7 +63,8 @@ public class AnalysedSequence extends Sequence {
 
 
   /**
-   * Indicates how the nucleotides corresponding to the original gene are shifted in the complete sequence.
+   * Indicates how the nucleotides corresponding to the original gene are shifted in the complete
+   * sequence.
    */
   private int offset = 0;
 
@@ -73,7 +75,7 @@ public class AnalysedSequence extends Sequence {
 
   /**
    * Constructor calling the super constructor (which sets all given attributes).
-   *  
+   * 
    * @param sequence the nucleotide sequence as a String
    * @param researcher the researcher's name
    * @param fileName the name of the file this sequence was obtained from
@@ -90,7 +92,7 @@ public class AnalysedSequence extends Sequence {
     this.qualities = qualities;
   }
 
-  
+
   /**
    * Add a discovered, String-encoded mutation to the list of already discovered mutations.
    * 
@@ -102,27 +104,109 @@ public class AnalysedSequence extends Sequence {
     mutations.add(mutation);
   }
 
-  
-  /**
-   * This method trims a sequence, i.e. it cuts out the desired part of the nucleotide sequence. It
-   * keeps the start index character, and all following characters including the end index
-   * character. The rest is discarded. The result is stored within the object.
-   * 
-   * @param startIndex The start of the sequence to be cut off
-   * @param endIndex The end of the sequence to be cut off
-   * 
-   * @author Ben Kohr
-   */
-  public void trimSequence(int startIndex, int endIndex) {
-    String trimmed = sequence.substring(startIndex, endIndex + 1);
-    this.sequence = trimmed;
+
+  public double getAvgQuality() {
+    return qualityAvg;
   }
 
-  
+
+  public String getComments() {
+    return comments;
+  }
+
+
+  public String getFileName() {
+    return fileName;
+  }
+
+
+
+  // GETTERs and SETTERs:
+
+  public String getLeftVector() {
+    return leftVector;
+  }
+
+  public LinkedList<String> getMutations() {
+    return mutations;
+  }
+
+
+  public int getOffset() {
+    return offset;
+  }
+
+  public String getPromotor() {
+    return promotor;
+  }
+
+
+  public int[] getQuality() {
+    return qualities;
+  }
+
+  public Gene getReferencedGene() {
+    return referencedGene;
+  }
+
+
+  public String getRightVector() {
+    return rightVector;
+  }
+
+  public boolean isManuallyChecked() {
+    return manuallyChecked;
+  }
+
+
+  /**
+   * Returns the length of the sequence (the number of nucleotides in it).
+   * 
+   * @return the sequence's length
+   * 
+   * @author Jannis Blueml
+   */
+  public int length() {
+    return sequence.length();
+  }
+
+  public void setComments(String comments) {
+    this.comments = comments;
+  }
+
+
+  public void setLeftVector(String vector) {
+    this.leftVector = vector;
+  }
+
+  public void setManuallyChecked(boolean manuallyChecked) {
+    this.manuallyChecked = manuallyChecked;
+  }
+
+
+  public void setOffset(int offset) {
+    this.offset = offset;
+  }
+
+  public void setPromotor(String promotor) {
+    this.promotor = promotor;
+  }
+
+
+  public void setReferencedGene(Gene gene) {
+    referencedGene = gene;
+  }
+
+  public void setRightVector(String vector) {
+    this.rightVector = vector;
+  }
+
+
   /**
    * This method trims a quality array, i.e. it cuts out the desired part of the nucleotide sequence
    * out of it. It keeps the quality for the start index character, and all following characters
-   * including the end index character. The rest is discarded. The result is stored within the object.
+   * including the end index character. The rest is discarded. The result is stored within the
+   * object.
    * 
    * @param startIndex The start of the array to be cut off
    * @param endIndex The end of the array to be cut off
@@ -139,100 +223,19 @@ public class AnalysedSequence extends Sequence {
     this.qualities = trimmed;
   }
 
-  
   /**
-   * Returns the length of the sequence (the number of nucleotides in it).
+   * This method trims a sequence, i.e. it cuts out the desired part of the nucleotide sequence. It
+   * keeps the start index character, and all following characters including the end index
+   * character. The rest is discarded. The result is stored within the object.
    * 
-   * @return the sequence's length
+   * @param startIndex The start of the sequence to be cut off
+   * @param endIndex The end of the sequence to be cut off
    * 
-   * @author Jannis Blueml
+   * @author Ben Kohr
    */
-  public int length() {
-	    return sequence.length();
-  }
-  
-  
-
-  // GETTERs and SETTERs:
-  
-  public Gene getReferencedGene() {
-	    return referencedGene;
-  }
-
-  public void setReferencedGene(Gene gene) {
-    referencedGene = gene;
-  }
-
-
-  public String getFileName() {
-    return fileName;
-  }
-
-  public LinkedList<String> getMutations() {
-    return mutations;
-  }
-
-  
-  public String getComments() {
-    return comments;
-  }
-
-  public void setComments(String comments) {
-    this.comments = comments;
-  }
-
-  
-  public boolean isManuallyChecked() {
-    return manuallyChecked;
-  }
-
-  public void setManuallyChecked(boolean manuallyChecked) {
-    this.manuallyChecked = manuallyChecked;
-  }
-
-  
-  public String getLeftVector() {
-    return leftVector;
-  }
-
-  public void setLeftVector(String vector) {
-    this.leftVector = vector;
-  }
-
-  
-  public String getRightVector() {
-    return rightVector;
-  }
-
-  public void setRightVector(String vector) {
-    this.rightVector = vector;
-  }
-
-  
-  public String getPromotor() {
-    return promotor;
-  }
-
-  public void setPromotor(String promotor) {
-    this.promotor = promotor;
-  }
-
-  
-  public int[] getQuality() {
-    return qualities;
-  }
-
-  public double getAvgQuality() {
-    return qualityAvg;
-  }
-
-
-  public int getOffset() {
-    return offset;
-  }
-
-  public void setOffset(int offset) {
-    this.offset = offset;
+  public void trimSequence(int startIndex, int endIndex) {
+    String trimmed = sequence.substring(startIndex, endIndex + 1);
+    this.sequence = trimmed;
   }
 
 }

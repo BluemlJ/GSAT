@@ -34,44 +34,14 @@ public class QualityTests {
   }
 
   /**
-   * Tests if the quality information is accessible (Userstory 008 - Expected behavior)
-   */
-  @Test
-  public void testQualityAccessibility() {
-    // test if average quality information is accessible
-    assertEquals((int) testSequence.getAvgQuality(), 36);
-    // test if the quality array is accessible
-    assertEquals(testSequence.getQuality()[0], 16);
-
-  }
-
-  /**
-   * Tests if the quality trim function is usable
-   * 
-   * @throws IOException
-   * @throws FileReadingException
-   */
-  @Test
-  public void testQualityTrim() throws IOException, FileReadingException {
-    // Debug code for adjusting QualityAnalysis.BREAKCOUNTER
-    /*
-     * testSequence = SequenceReader.convertFileIntoSequence(new
-     * File("D:/Dokumente/Dropbox/BP_GSAT/Materialien/Dateien/Bsp/AB/93GH02_G05.ab1"));
-     * System.out.println("Gesamtlaenge der Sequenz: " + testSequence.length()); System.out
-     * .println("Anfang der hohen Qualitaet: " + QualityAnalysis.findLowQuality(testSequence)[0]);
-     * System.out .println("Ende der hohen Qualitaet " +
-     * QualityAnalysis.findLowQuality(testSequence)[1]);
-     */
-  }
-
-  /**
    * This test confirms expected quality trimming behaviour for a synthetic sequence (Userstory 008
    * - Expected behavior)
    */
   @Test
   public void qualityTestA() throws IOException {
     // quality cutoff after 8 nucleotide
-    int[] qualitiesA = {100, 100, 100, 100, 100, 100, 100, 100, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+    int[] qualitiesA =
+        {100, 100, 100, 100, 100, 100, 100, 100, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
     AnalysedSequence testSequenceA =
         new AnalysedSequence("aaatttgggaaaaaaaaaaaa", "", "", qualitiesA, 33);
     int[] trim = QualityAnalysis.findLowQuality(testSequenceA);
@@ -120,7 +90,7 @@ public class QualityTests {
   @Test
   public void qualityTestD() throws IOException {
     // start is bad quality, end is low quality
-    int[] qualitiesD = {0, 0, 0, 100, 100, 100, 100, 100, 0, 0, 0, 0, 0, 0, 0, 0, 0,0 ,0,0};
+    int[] qualitiesD = {0, 0, 0, 100, 100, 100, 100, 100, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
     AnalysedSequence testSequenceD =
         new AnalysedSequence("aaatttgggaaattt", "", "", qualitiesD, 33.3);
     int[] trim = QualityAnalysis.findLowQuality(testSequenceD);
@@ -144,5 +114,36 @@ public class QualityTests {
     assertEquals(trim[0], 3);
     QualityAnalysis.trimLowQuality(testSequenceE);
     assertEquals(testSequenceE.getSequence(), "TTTGGG");
+  }
+
+  /**
+   * Tests if the quality information is accessible (Userstory 008 - Expected behavior)
+   */
+  @Test
+  public void testQualityAccessibility() {
+    // test if average quality information is accessible
+    assertEquals((int) testSequence.getAvgQuality(), 36);
+    // test if the quality array is accessible
+    assertEquals(testSequence.getQuality()[0], 16);
+
+  }
+
+  /**
+   * Tests if the quality trim function is usable
+   * 
+   * @throws IOException
+   * @throws FileReadingException
+   */
+  @Test
+  public void testQualityTrim() throws IOException, FileReadingException {
+    // Debug code for adjusting QualityAnalysis.BREAKCOUNTER
+    /*
+     * testSequence = SequenceReader.convertFileIntoSequence(new
+     * File("D:/Dokumente/Dropbox/BP_GSAT/Materialien/Dateien/Bsp/AB/93GH02_G05.ab1"));
+     * System.out.println("Gesamtlaenge der Sequenz: " + testSequence.length()); System.out
+     * .println("Anfang der hohen Qualitaet: " + QualityAnalysis.findLowQuality(testSequence)[0]);
+     * System.out .println("Ende der hohen Qualitaet " +
+     * QualityAnalysis.findLowQuality(testSequence)[1]);
+     */
   }
 }

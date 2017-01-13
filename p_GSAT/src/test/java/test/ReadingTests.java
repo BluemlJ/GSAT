@@ -43,6 +43,56 @@ public class ReadingTests {
     testSequence = SequenceReader.convertFileIntoSequence();
   }
 
+  @Test
+  public void listFilesAllABITest() {
+    File parsedFile = new File(getClass().getResource("/ab1/Tk_Gs40Hits/Forward/").getFile());
+
+    SequenceReader.configurePath(parsedFile.getAbsolutePath());
+    Pair<LinkedList<File>, LinkedList<File>> pair = SequenceReader.listFiles();
+    boolean working = true;
+    for (File f : pair.first) {
+      if (!f.getName().substring(f.getName().length() - 3).equals("ab1")) {
+        working = false;
+        System.err.println(f.getName());
+      }
+    }
+    assertTrue(working);
+  }
+
+  @Test
+  public void listFilesEmptyFolderTest() {
+    // File parsedFile = new File(getClass().getResource("/test-results/test/binary").getFile());
+    File f = new File("/p_GSAT/build/test-results/test/empty");
+    SequenceReader.configurePath(f.getAbsolutePath());
+    Pair<LinkedList<File>, LinkedList<File>> pair = SequenceReader.listFiles();
+    assertTrue(pair.first.size() == 0 && pair.second.size() == 0);
+  }
+
+  @Test
+  public void listFilesHalfABITest() {
+    File parsedFile = new File(getClass().getResource("/ab1/").getFile());
+
+    SequenceReader.configurePath(parsedFile.getAbsolutePath());
+    Pair<LinkedList<File>, LinkedList<File>> pair = SequenceReader.listFiles();
+
+    assertTrue(pair.first.size() == 1 && pair.second.size() == 2);
+  }
+
+  /**
+   * This test reads a sequence by passing the file directly as an argument (Userstory 003 -
+   * Expected behavior)
+   * 
+   * @throws FileReadingException
+   * @throws IOException
+   */
+  @Test
+  public void readFromFileTest() throws FileReadingException, IOException {
+    File parsedFile =
+        new File(getClass().getResource("/ab1/Tk_Gs40Hits/Forward/95EI60.ab1").getFile());
+    AnalysedSequence parsedSequence = SequenceReader.convertFileIntoSequence(parsedFile);
+    assertEquals(parsedSequence.getSequence().toLowerCase(), correctSequence.toLowerCase());
+  }
+
   /**
    * This tests checks if it is possible to read a correct DNA Sequence from an .abi file (Userstory
    * 003 - Expected behavior)
@@ -70,56 +120,6 @@ public class ReadingTests {
     } catch (IOException e) {
       assertEquals(e.getMessage(), "unknown chromatogram format (not ab1, scf or ztr)");
     }
-  }
-
-  /**
-   * This test reads a sequence by passing the file directly as an argument (Userstory 003 -
-   * Expected behavior)
-   * 
-   * @throws FileReadingException
-   * @throws IOException
-   */
-  @Test
-  public void readFromFileTest() throws FileReadingException, IOException {
-    File parsedFile =
-        new File(getClass().getResource("/ab1/Tk_Gs40Hits/Forward/95EI60.ab1").getFile());
-    AnalysedSequence parsedSequence = SequenceReader.convertFileIntoSequence(parsedFile);
-    assertEquals(parsedSequence.getSequence().toLowerCase(), correctSequence.toLowerCase());
-  }
-
-  @Test
-  public void listFilesAllABITest() {
-    File parsedFile = new File(getClass().getResource("/ab1/Tk_Gs40Hits/Forward/").getFile());
-
-    SequenceReader.configurePath(parsedFile.getAbsolutePath());
-    Pair<LinkedList<File>, LinkedList<File>> pair = SequenceReader.listFiles();
-    boolean working = true;
-    for (File f : pair.first) {
-      if (!f.getName().substring(f.getName().length()-3).equals("ab1")) {
-        working = false;
-        System.err.println(f.getName());
-      }
-    }
-    assertTrue(working);
-  }
-  
-  @Test
-  public void listFilesHalfABITest() {
-    File parsedFile = new File(getClass().getResource("/ab1/").getFile());
-
-    SequenceReader.configurePath(parsedFile.getAbsolutePath());
-    Pair<LinkedList<File>, LinkedList<File>> pair = SequenceReader.listFiles();
-    
-    assertTrue(pair.first.size() == 1 && pair.second.size() == 2);
-  }
-  
-  @Test
-  public void listFilesEmptyFolderTest() {
-    //File parsedFile = new File(getClass().getResource("/test-results/test/binary").getFile());
-    File f = new File("/p_GSAT/build/test-results/test/empty");
-    SequenceReader.configurePath(f.getAbsolutePath());
-    Pair<LinkedList<File>, LinkedList<File>> pair = SequenceReader.listFiles();
-    assertTrue(pair.first.size() == 0 && pair.second.size() == 0);
   }
 
 }

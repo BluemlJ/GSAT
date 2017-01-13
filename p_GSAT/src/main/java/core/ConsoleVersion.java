@@ -31,41 +31,30 @@ public class ConsoleVersion {
   private static boolean geneRecognition = false;
 
   /**
-   * starts the console version of the programs
+   * adds a database entry for a sequence
+   * 
+   * @param activeSequence
+   * @param file
+   * @param destinationPath
    */
-  public static void startConsoleVersion() {
-    ConsoleIO.clearConsole();
-    // ask user for filepath
-    Pair<LinkedList<File>, LinkedList<File>> okayAndOddFiles = askForAB1Files();
-
-    // read config file
-    String configReport = getConfig(SequenceReader.getPath());
-
-    // set path for results and set database path
-    String destinationPath = processPath();
-
-    // does the user want one or multiple files for local storage?
-    askForOneOrMultipleFiles();
-
-    // write a report on parsed files
-    reportOnInput(destinationPath, okayAndOddFiles.first, okayAndOddFiles.second, configReport);
-
-    // ask user for reference gene
-    // Gene gene = askForGene();
-
-    Gene gene = readGene();
-
-    // get ab1 files
-    LinkedList<File> files = okayAndOddFiles.first;
-
-    // process all ab1 files
-    for (File file : files) {
-      // run pipeline for every sequence
-      processSequence(gene, file, destinationPath);
+  private static void addLocalEntry(AnalysedSequence activeSequence, File file,
+      String destinationPath) {
+    try {
+      LinkedList<DatabaseEntry> entries = DatabaseEntry.convertSequenceIntoEntries(activeSequence);
+      FileSaver.addAllIntoQueue(entries);
+      FileSaver.storeAllLocally(file.getName().replaceFirst("[.][^.]+$", "") + "_result");
+      Main.preparePipelineForNextRun();
+    } catch (UndefinedTypeOfMutationException e) {
+      System.err.println("Unknown mutation type found.");
+      System.err.println("Mutation:" + e.mutationString);
+      System.out.println();
+    } catch (MissingPathException e) {
+      FileSaver.setLocalPath(destinationPath);
+    } catch (IOException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
     }
 
-    // close console
-    closeProgram();
   }
 
 
@@ -104,50 +93,53 @@ public class ConsoleVersion {
   }
 
   /**
-   * Reads in the config file.
+   * Asks user for a comment and sets the comment field of the referenced analysedSequence
    * 
-   * @return Message indicating the level of success for reading the configuration.
-   * 
-   * @author Ben Kohr
+   * @param sequence
+   * @param file
    */
-  private static String getConfig(String readingPath) {
-
-    Config.setPath(readingPath);
-    String report = "found";
+  private static void askForComment(AnalysedSequence sequence, File file) {
     try {
-      Config.readConfig();
-    } catch (ConfigReadException e) {
-      report = "An error occured while reading the configuration file.";
-    } catch (ConfigNotFoundException e) {
-      report = "No configuration file was found at the given path.";
-    } catch (IOException e) {
-      System.out.println("Error during reading occurred.");
+      sequence.setComments(ConsoleIO.readLine(
+          "Please enter a comment for file " + file.getName() + " or press ENTER to skip."));
+    } catch (IOException e1) {
+      // TODO Auto-generated catch block
+      e1.printStackTrace();
     }
-    return report;
   }
 
   /**
-   * asks user for destination path and sets the value in DatanbaseConnection
+   * Asks user for gene and gene name and adds it to the gene database
    * 
-   * @return
+   * @return Gene containing the parsed data
+   * @throws DuplicateGeneException
    */
-  private static String processPath() {
-    String message = "Please enter the path where the results will be stored."
-        + System.lineSeparator() + "DESTINATION PATH: ";
-    boolean invalidPath = true;
-    while (invalidPath) {
+  private static Gene askForGene() {
+    String strGene = null;
+    String strGeneName = null;
+    String saveGene = null;
+    boolean noGene = true;
+    while (noGene) {
       try {
-        String path = ConsoleIO.readLine(message);
-        invalidPath = false;
-        // set destination path for database entries
-        FileSaver.setLocalPath(path);
-        return path;
-      } catch (IOException e) {
-        invalidPath = true;
-        e.printStackTrace();
+        strGene = ConsoleIO.readLine("Please enter the nulceotide sequence of the reference gene."
+            + System.lineSeparator() + "REFERENCE GENE SEQUENCE: ");
+        noGene = false;
+        strGeneName = ConsoleIO.readLine("Please enter the name of the gene."
+            + System.lineSeparator() + "REFERENCE GENE NAME: ");
+        saveGene = ConsoleIO.readLine("Do you want to save this gene for future use? (y/n)");
+        if (saveGene.toLowerCase().equals("y")) {
+          try {
+            GeneReader.addGene(strGeneName, strGene);
+          } catch (DuplicateGeneException e) {
+            System.out.println(e.getMessage());
+          }
+        }
+      } catch (IOException e2) {
+        noGene = true;
       }
     }
-    return null;
+
+    return new Gene(strGene, 0, strGeneName, "");
   }
 
 
@@ -182,6 +174,211 @@ public class ConsoleVersion {
   }
 
 
+
+  /**
+   * prints done message and closes the console
+   */
+  private static void closeProgram() {
+    System.out.println();
+    System.out.println("DONE");
+    System.out.println("Press enter to close console");
+    try {
+      ConsoleIO.readLine("");
+      System.exit(0);
+    } catch (IOException e) {
+      System.exit(0);
+    }
+  }
+
+  /**
+   * Reads in the config file.
+   * 
+   * @return Message indicating the level of success for reading the configuration.
+   * 
+   * @author Ben Kohr
+   */
+  private static String getConfig(String readingPath) {
+
+    Config.setPath(readingPath);
+    String report = "found";
+    try {
+      Config.readConfig();
+    } catch (ConfigReadException e) {
+      report = "An error occured while reading the configuration file.";
+    } catch (ConfigNotFoundException e) {
+      report = "No configuration file was found at the given path.";
+    } catch (IOException e) {
+      System.out.println("Error during reading occurred.");
+    }
+    return report;
+  }
+
+
+  /**
+   * Calls all necessary functions to process Mutations of a sequence
+   * 
+   * @param sequence
+   * @param file
+   */
+  private static void processMutations(AnalysedSequence sequence, File file) {
+    try {
+      MutationAnalysis.findMutations(sequence);
+    } catch (UndefinedTypeOfMutationException e) {
+      System.err.println("Unknown mutation type found.");
+      System.err.println("Mutation: " + e.mutationString);
+      System.out.println();
+    } catch (CorruptedSequenceException e) {
+      System.err.println("The file " + file.getName()
+          + " seems to be corrupted. An unknown nulceotide symbol was detected.");
+      e.printStackTrace();
+    }
+  }
+
+
+  /**
+   * asks user for destination path and sets the value in DatanbaseConnection
+   * 
+   * @return
+   */
+  private static String processPath() {
+    String message = "Please enter the path where the results will be stored."
+        + System.lineSeparator() + "DESTINATION PATH: ";
+    boolean invalidPath = true;
+    while (invalidPath) {
+      try {
+        String path = ConsoleIO.readLine(message);
+        invalidPath = false;
+        // set destination path for database entries
+        FileSaver.setLocalPath(path);
+        return path;
+      } catch (IOException e) {
+        invalidPath = true;
+        e.printStackTrace();
+      }
+    }
+    return null;
+  }
+
+  /**
+   * runs the complete analysis pipeline for a single sequence and adds a database entry for the
+   * sequence
+   * 
+   * @param activeSequence
+   * @param gene
+   * @param file
+   */
+  private static void processSequence(Gene gene, File file, String destinationPath) {
+    AnalysedSequence activeSequence = null;
+
+    // read sequence from file
+    activeSequence = readSequenceFromFile(file);
+
+
+    if (geneRecognition) {
+      LinkedList<Gene> geneList = new LinkedList<Gene>();
+      for (Gene g : GeneReader.getGeneList()) {
+        geneList.add(g);
+      }
+      try {
+        gene = StringAnalysis.findRightGene(activeSequence, geneList);
+      } catch (DissimilarGeneException e) {
+        gene = e.bestGene;
+        System.out.println(e.getMessage());
+      }
+    } else {
+      activeSequence.setReferencedGene(gene);
+    }
+
+
+    // cut out vector
+    StringAnalysis.trimVector(activeSequence, gene);
+
+    // cut out low Quality parts of sequence
+    QualityAnalysis.trimLowQuality(activeSequence);
+
+    // mutation analysis
+    processMutations(activeSequence, file);
+
+    // ask for comment
+    askForComment(activeSequence, file);
+
+    // add entry to database
+    addLocalEntry(activeSequence, file, destinationPath);
+  }
+
+  /**
+   * reads genes from file and returns the correct gene genes must be in a txt file named genes.txt
+   * in the same folder as the ab1 files if genes.txt can not be found it asks the user for a gene
+   * 
+   * @return
+   * 
+   */
+  private static Gene readGene() {
+    String path = SequenceReader.getPath() + "/genes.txt";
+    try {
+      GeneReader.readGenes(path);
+      if (GeneReader.getNumGenes() == 0) {
+        // genes.txt empty
+        System.out.println("Genes.txt is empty");
+        return askForGene();
+      } else {
+        System.out.println("The following genes have been found:");
+        String[] geneNames = GeneReader.getGeneNames();
+        for (int i = 0; i < geneNames.length; i++) {
+          System.out.println((i + 1) + ": " + geneNames[i]);
+        }
+        System.out.println((geneNames.length + 1) + ": Enter new gene");
+        System.out.println(
+            (geneNames.length + 2) + ": Use automatic gene recognition (gene must be in database)");
+        System.out.println();
+        int index = Integer
+            .parseInt(ConsoleIO.readLine("Please enter the Index of the gene you want to use."
+                + System.lineSeparator() + "INDEX: "))
+            - 1;
+
+        // add new gene
+        if (index == geneNames.length) {
+          return askForGene();
+        }
+        // use automatic gene recognition
+        else if (index == geneNames.length + 1) {
+          geneRecognition = true;
+          return null;
+        }
+        // an existing gene has been chosen
+        else if (index >= 0 && index < geneNames.length) {
+          return GeneReader.getGeneAt(index);
+        }
+        // bad user input
+        else
+          return null;
+      }
+    } catch (IOException e) {
+      // no genes.txt found
+      System.out.println("Error reading genes.txt");
+      // ask user for gene
+      return askForGene();
+    }
+  }
+
+  /**
+   * Reads the Sequence of the given File and prints Errors if necessary
+   * 
+   * @param file
+   * @return
+   * @author Kevin
+   */
+  private static AnalysedSequence readSequenceFromFile(File file) {
+    try {
+      return SequenceReader.convertFileIntoSequence(file);
+    } catch (FileReadingException e) {
+      System.err.println("Could not read file " + e.filename + ". This file might be corrupted.");
+      System.out.println();
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+    return null;
+  }
 
   /**
    * Creates, prints and stores a report of the reading of the files.
@@ -257,237 +454,41 @@ public class ConsoleVersion {
   }
 
   /**
-   * Asks user for gene and gene name and adds it to the gene database
-   * 
-   * @return Gene containing the parsed data
-   * @throws DuplicateGeneException
+   * starts the console version of the programs
    */
-  private static Gene askForGene() {
-    String strGene = null;
-    String strGeneName = null;
-    String saveGene = null;
-    boolean noGene = true;
-    while (noGene) {
-      try {
-        strGene = ConsoleIO.readLine("Please enter the nulceotide sequence of the reference gene."
-            + System.lineSeparator() + "REFERENCE GENE SEQUENCE: ");
-        noGene = false;
-        strGeneName = ConsoleIO.readLine("Please enter the name of the gene."
-            + System.lineSeparator() + "REFERENCE GENE NAME: ");
-        saveGene = ConsoleIO.readLine("Do you want to save this gene for future use? (y/n)");
-        if (saveGene.toLowerCase().equals("y")) {
-          try {
-            GeneReader.addGene(strGeneName, strGene);
-          } catch (DuplicateGeneException e) {
-            System.out.println(e.getMessage());
-          }
-        }
-      } catch (IOException e2) {
-        noGene = true;
-      }
+  public static void startConsoleVersion() {
+    ConsoleIO.clearConsole();
+    // ask user for filepath
+    Pair<LinkedList<File>, LinkedList<File>> okayAndOddFiles = askForAB1Files();
+
+    // read config file
+    String configReport = getConfig(SequenceReader.getPath());
+
+    // set path for results and set database path
+    String destinationPath = processPath();
+
+    // does the user want one or multiple files for local storage?
+    askForOneOrMultipleFiles();
+
+    // write a report on parsed files
+    reportOnInput(destinationPath, okayAndOddFiles.first, okayAndOddFiles.second, configReport);
+
+    // ask user for reference gene
+    // Gene gene = askForGene();
+
+    Gene gene = readGene();
+
+    // get ab1 files
+    LinkedList<File> files = okayAndOddFiles.first;
+
+    // process all ab1 files
+    for (File file : files) {
+      // run pipeline for every sequence
+      processSequence(gene, file, destinationPath);
     }
 
-    return new Gene(strGene, 0, strGeneName, "");
-  }
-
-
-  /**
-   * reads genes from file and returns the correct gene genes must be in a txt file named genes.txt
-   * in the same folder as the ab1 files if genes.txt can not be found it asks the user for a gene
-   * 
-   * @return
-   * 
-   */
-  private static Gene readGene() {
-    String path = SequenceReader.getPath() + "/genes.txt";
-    try {
-      GeneReader.readGenes(path);
-      if (GeneReader.getNumGenes() == 0) {
-        // genes.txt empty
-        System.out.println("Genes.txt is empty");
-        return askForGene();
-      } else {
-        System.out.println("The following genes have been found:");
-        String[] geneNames = GeneReader.getGeneNames();
-        for (int i = 0; i < geneNames.length; i++) {
-          System.out.println((i + 1) + ": " + geneNames[i]);
-        }
-        System.out.println((geneNames.length + 1) + ": Enter new gene");
-        System.out.println(
-            (geneNames.length + 2) + ": Use automatic gene recognition (gene must be in database)");
-        System.out.println();
-        int index = Integer
-            .parseInt(ConsoleIO.readLine("Please enter the Index of the gene you want to use."
-                + System.lineSeparator() + "INDEX: "))
-            - 1;
-
-        // add new gene
-        if (index == geneNames.length) {
-          return askForGene();
-        }
-        // use automatic gene recognition
-        else if (index == geneNames.length + 1) {
-          geneRecognition = true;
-          return null;
-        }
-        // an existing gene has been chosen
-        else if (index >= 0 && index < geneNames.length) {
-          return GeneReader.getGeneAt(index);
-        }
-        // bad user input
-        else
-          return null;
-      }
-    } catch (IOException e) {
-      // no genes.txt found
-      System.out.println("Error reading genes.txt");
-      // ask user for gene
-      return askForGene();
-    }
-  }
-
-
-  /**
-   * runs the complete analysis pipeline for a single sequence and adds a database entry for the
-   * sequence
-   * 
-   * @param activeSequence
-   * @param gene
-   * @param file
-   */
-  private static void processSequence(Gene gene, File file, String destinationPath) {
-    AnalysedSequence activeSequence = null;
-
-    // read sequence from file
-    activeSequence = readSequenceFromFile(file);
-    
-    
-    if(geneRecognition){
-      LinkedList<Gene> geneList = new LinkedList<Gene>();
-      for(Gene g : GeneReader.getGeneList()){
-        geneList.add(g);
-      }
-      try {
-        gene = StringAnalysis.findRightGene(activeSequence, geneList);
-      } catch (DissimilarGeneException e) {
-        gene = e.bestGene;
-        System.out.println(e.getMessage());
-      }
-    } else{
-    activeSequence.setReferencedGene(gene);}
-    
-    
-    // cut out vector
-    StringAnalysis.trimVector(activeSequence, gene);
-
-    // cut out low Quality parts of sequence
-    QualityAnalysis.trimLowQuality(activeSequence);
-    
-    // mutation analysis
-    processMutations(activeSequence, file);
-
-    // ask for comment
-    askForComment(activeSequence, file);
-
-    // add entry to database
-    addLocalEntry(activeSequence, file, destinationPath);
-  }
-
-  /**
-   * prints done message and closes the console
-   */
-  private static void closeProgram() {
-    System.out.println();
-    System.out.println("DONE");
-    System.out.println("Press enter to close console");
-    try {
-      ConsoleIO.readLine("");
-      System.exit(0);
-    } catch (IOException e) {
-      System.exit(0);
-    }
-  }
-
-  /**
-   * Reads the Sequence of the given File and prints Errors if necessary
-   * 
-   * @param file
-   * @return
-   * @author Kevin
-   */
-  private static AnalysedSequence readSequenceFromFile(File file) {
-    try {
-      return SequenceReader.convertFileIntoSequence(file);
-    } catch (FileReadingException e) {
-      System.err.println("Could not read file " + e.filename + ". This file might be corrupted.");
-      System.out.println();
-    } catch (IOException e) {
-      e.printStackTrace();
-    }
-    return null;
-  }
-
-  /**
-   * Calls all necessary functions to process Mutations of a sequence
-   * 
-   * @param sequence
-   * @param file
-   */
-  private static void processMutations(AnalysedSequence sequence, File file) {
-    try {
-      MutationAnalysis.findMutations(sequence);
-    } catch (UndefinedTypeOfMutationException e) {
-      System.err.println("Unknown mutation type found.");
-      System.err.println("Mutation: " + e.mutationString);
-      System.out.println();
-    } catch (CorruptedSequenceException e) {
-      System.err.println("The file " + file.getName()
-          + " seems to be corrupted. An unknown nulceotide symbol was detected.");
-      e.printStackTrace();
-    }
-  }
-
-  /**
-   * Asks user for a comment and sets the comment field of the referenced analysedSequence
-   * 
-   * @param sequence
-   * @param file
-   */
-  private static void askForComment(AnalysedSequence sequence, File file) {
-    try {
-      sequence.setComments(ConsoleIO.readLine(
-          "Please enter a comment for file " + file.getName() + " or press ENTER to skip."));
-    } catch (IOException e1) {
-      // TODO Auto-generated catch block
-      e1.printStackTrace();
-    }
-  }
-
-  /**
-   * adds a database entry for a sequence
-   * 
-   * @param activeSequence
-   * @param file
-   * @param destinationPath
-   */
-  private static void addLocalEntry(AnalysedSequence activeSequence, File file,
-      String destinationPath) {
-    try {
-      LinkedList<DatabaseEntry> entries = DatabaseEntry.convertSequenceIntoEntries(activeSequence);
-      FileSaver.addAllIntoQueue(entries);
-      FileSaver.storeAllLocally(file.getName().replaceFirst("[.][^.]+$", "") + "_result");
-      Main.preparePipelineForNextRun();
-    } catch (UndefinedTypeOfMutationException e) {
-      System.err.println("Unknown mutation type found.");
-      System.err.println("Mutation:" + e.mutationString);
-      System.out.println();
-    } catch (MissingPathException e) {
-      FileSaver.setLocalPath(destinationPath);
-    } catch (IOException e) {
-      // TODO Auto-generated catch block
-      e.printStackTrace();
-    }
-
+    // close console
+    closeProgram();
   }
 
 

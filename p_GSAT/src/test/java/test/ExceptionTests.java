@@ -37,39 +37,6 @@ public class ExceptionTests {
 
   /**
    * This test checks if the exception indicating a wrong character in a sequence works correctly
-   * (given an AnalyzedSequenceObject).
-   * 
-   * @see exceptions.CorruptedSequenceException
-   * 
-   * @author Ben Kohr
-   */
-  @Test
-  public void testCorruptedSequenceExceptionWithSequence() {
-
-    try {
-      throw new CorruptedSequenceException(2, 'R', seq1);
-
-    } catch (CorruptedSequenceException e) {
-
-      // Check if the error message is correctly produced
-      assertEquals(
-          "Problem in observed AnalyzedSequence: Index 2 is 'R', but should be 'A', 'T', 'C' or 'G'.",
-          e.getMessage());
-
-      // Check whether the fields are set correctly
-      assertEquals(2, e.index);
-      assertEquals('R', e.problem);
-      assertSame(seq1, e.sequence);
-      assertEquals(seq1.getSequence(), e.nucleotides);
-
-    }
-
-  }
-
-
-
-  /**
-   * This test checks if the exception indicating a wrong character in a sequence works correctly
    * (given a nucleotide sequence only).
    * 
    * @see exceptions.CorruptedSequenceException
@@ -96,6 +63,39 @@ public class ExceptionTests {
       // Only a String is given. Therefore, no Sequence should be found in the exception
       assertNull(e.sequence);
       assertEquals("ATUCGGCL", e.nucleotides);
+
+    }
+
+  }
+
+
+
+  /**
+   * This test checks if the exception indicating a wrong character in a sequence works correctly
+   * (given an AnalyzedSequenceObject).
+   * 
+   * @see exceptions.CorruptedSequenceException
+   * 
+   * @author Ben Kohr
+   */
+  @Test
+  public void testCorruptedSequenceExceptionWithSequence() {
+
+    try {
+      throw new CorruptedSequenceException(2, 'R', seq1);
+
+    } catch (CorruptedSequenceException e) {
+
+      // Check if the error message is correctly produced
+      assertEquals(
+          "Problem in observed AnalyzedSequence: Index 2 is 'R', but should be 'A', 'T', 'C' or 'G'.",
+          e.getMessage());
+
+      // Check whether the fields are set correctly
+      assertEquals(2, e.index);
+      assertEquals('R', e.problem);
+      assertSame(seq1, e.sequence);
+      assertEquals(seq1.getSequence(), e.nucleotides);
 
     }
 
@@ -143,6 +143,39 @@ public class ExceptionTests {
 
       // Check if the error message is correctly produced
       assertEquals("Error while database processing.", e.getMessage());
+
+    }
+  }
+
+
+  /**
+   * This test checks if the exception indicating a badly fitting gene works.
+   * 
+   * @see exceptions.DissimilarGeneException
+   * 
+   * @author Ben Kohr
+   */
+  @Test
+  public void testDissimilarGeneException() {
+
+    AnalysedSequence toAnalyse =
+        new AnalysedSequence("TCTCTAGAGC", "Klaus Hafer", "sequence.ab1", null, 0);
+    Gene bestGene = new Gene("AATC", 1, "nicht FSA", "Karl Mueller");
+
+
+    try {
+      throw new DissimilarGeneException(toAnalyse, bestGene, 20.3);
+    } catch (DissimilarGeneException e) {
+
+      // Check if the error message is correctly produced
+      assertEquals(
+          "Best found gene for given sequence (nicht FSA) has a similarity of only 20.3 for the given sequence (file: sequence.ab1).",
+          e.getMessage());
+
+      // Check if the fields are set
+      assertEquals(toAnalyse, e.toAnalyse);
+      assertEquals(bestGene, e.bestGene);
+      assertTrue(Math.abs(e.similarity - 20.3) < 0.1);
 
     }
   }
@@ -246,38 +279,6 @@ public class ExceptionTests {
       // Check if the mutations String is stored in the exception object
       assertEquals("y", e.mutationString);
 
-    }
-  }
-  
-  
-  /**
-   * This test checks if the exception indicating a badly fitting gene works.
-   * 
-   * @see exceptions.DissimilarGeneException
-   * 
-   * @author Ben Kohr
-   */
-  @Test
-  public void testDissimilarGeneException() {
-
-	  AnalysedSequence toAnalyse = new AnalysedSequence("TCTCTAGAGC", "Klaus Hafer", "sequence.ab1", null, 0);
-	  Gene bestGene = new Gene("AATC", 1, "nicht FSA", "Karl Mueller");
-	  
-	  
-    try {
-      throw new DissimilarGeneException(toAnalyse, bestGene, 20.3);
-    } catch (DissimilarGeneException e) {
-
-      // Check if the error message is correctly produced
-      assertEquals(
-          "Best found gene for given sequence (nicht FSA) has a similarity of only 20.3 for the given sequence (file: sequence.ab1).",
-          e.getMessage());
-
-      // Check if the fields are set
-      assertEquals(toAnalyse, e.toAnalyse);
-      assertEquals(bestGene, e.bestGene);
-      assertTrue(Math.abs(e.similarity - 20.3) < 0.1);
-      
     }
   }
 

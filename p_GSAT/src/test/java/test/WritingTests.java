@@ -132,6 +132,84 @@ public class WritingTests {
   }
 
   /**
+   * This test checks whether an AnalyzesSequence is correctly transformed into DatabaseEntries and
+   * if these entries is correctly written in a file. This means, this test checks the complete
+   * local storage mechanism from the obtained sequences. (User Story 006, typical scenario 2)
+   * 
+   * @throws MissingPathException
+   * @throws IOException
+   * 
+   * @see FileSaver#storeAllLocally(String)
+   * @see DatabaseEntry#convertSequenceIntoEntries(AnalysedSequence)
+   * 
+   * @author Ben Kohr
+   * @throws UndefinedTypeOfMutationException
+   */
+  @Test
+  public void testConvertAndStore()
+      throws MissingPathException, IOException, UndefinedTypeOfMutationException {
+
+    // Converting sequence into DBEs
+    LinkedList<DatabaseEntry> entries = DatabaseEntry.convertSequenceIntoEntries(seq4);
+
+    // Storing them in the DatabaseConnection
+    FileSaver.addAllIntoQueue(entries);
+
+    FileSaver.setLocalPath(path);
+    FileSaver.storeAllLocally("convertAndStoreTest");
+
+    // Code for reading the file in again
+    BufferedReader reader =
+        new BufferedReader(new FileReader("writingtests/convertAndStoreTest.csv"));
+
+    LinkedList<String> results = new LinkedList<String>();
+    reader.lines().skip(1).forEach(line -> results.add(line));
+    reader.close();
+
+    // Check whether the input is correct
+
+    DateFormat df = new SimpleDateFormat("dd/MM/yy");
+    String addingDate = df.format(new Date());
+
+    String[] correctResults = new String[] {
+        "0; sequence3.ab1; 3; ATC; " + addingDate
+            + "; Kurt Bohne; Nothing to say; null; null; null; false; AAA7CAA; SILENT",
+        "1; sequence3.ab1; 3; ATC; " + addingDate
+            + "; Kurt Bohne; Nothing to say; null; null; null; false; -1H5; DELETION"};
+
+    for (int i = 0; i < correctResults.length; i++) {
+      String[] correctInfo = correctResults[i].split(";");
+      String[] testInfo = results.get(i).split(";");
+      for (int j = 0; j < correctInfo.length; j++)
+        assertEquals(correctInfo[j], testInfo[j]);
+    }
+
+    // Size should be three, for there a two initial entries.
+    assertTrue(results.size() == 2);
+
+  }
+
+  /**
+   * This tests checks the conversion from a AnalyzedSequence into a DatabaseEntry is working
+   * correctly without any entry to store (i.e. there is no mutation).
+   * 
+   * @see DatabaseEntry#convertSequenceIntoEntries(AnalysedSequence)
+   * 
+   * @author Ben Kohr
+   * @throws UndefinedTypeOfMutationException
+   */
+  @Test
+  public void testConvertSequenceIntoDBEsNoMutation() throws UndefinedTypeOfMutationException {
+
+    // Use method
+    LinkedList<DatabaseEntry> entries = DatabaseEntry.convertSequenceIntoEntries(seq3);
+
+    // No mutation: Size should be zero
+    assertTrue(entries.size() == 0);
+
+  }
+
+  /**
    * This tests checks if the conversion from a AnalyzedSequence into a DatabaseEntry is working
    * correctly.
    * 
@@ -213,23 +291,61 @@ public class WritingTests {
   }
 
   /**
-   * This tests checks the conversion from a AnalyzedSequence into a DatabaseEntry is working
-   * correctly without any entry to store (i.e. there is no mutation).
    * 
-   * @see DatabaseEntry#convertSequenceIntoEntries(AnalysedSequence)
+   * This test checks if a MissingPathException is thrown if the writing path is missing.
+   * 
+   * @throws MissingPathException
+   * @throws IOException
+   * 
+   * @see FileSaver#storeAllLocally(String)
+   * @see MissingPathException
    * 
    * @author Ben Kohr
-   * @throws UndefinedTypeOfMutationException
+   */
+  @Test(expected = MissingPathException.class)
+  public void testStoreAllLocallyMissingPath() throws MissingPathException, IOException {
+
+    // Setting the path to null
+    FileSaver.setLocalPath(null);
+
+    // Now, path is null. This means, a MissingPathException is to be
+    // thrown.
+    FileSaver.storeAllLocally("problemtest");
+
+    // This line should not be reached!
+    fail();
+
+  }
+
+  /**
+   * 
+   * This test checks if there is no problem with the writing even if there are no database entries
+   * given. (User Story 006, unusual scenario)
+   * 
+   * @throws MissingPathException
+   * @throws IOException
+   * 
+   * @see FileSaver#storeAllLocally(String)
+   * 
+   * @author Ben Kohr
    */
   @Test
-  public void testConvertSequenceIntoDBEsNoMutation() throws UndefinedTypeOfMutationException {
+  public void testStoreAllLocallyNoEntries() throws MissingPathException, IOException {
+    // no entries in the DatabaseConnection stored this time
 
-    // Use method
-    LinkedList<DatabaseEntry> entries = DatabaseEntry.convertSequenceIntoEntries(seq3);
+    FileSaver.setLocalPath(path);
 
-    // No mutation: Size should be zero
-    assertTrue(entries.size() == 0);
+    FileSaver.storeAllLocally("notestdata");
 
+    // Code for reading the file in again
+    BufferedReader reader = new BufferedReader(new FileReader("writingtests/notestdata.csv"));
+
+    LinkedList<String> results = new LinkedList<String>();
+    reader.lines().skip(1).forEach(line -> results.add(line));
+
+    // Check whether the input is correctly empty.
+    assertTrue(results.size() == 0);
+    reader.close();
   }
 
   /**
@@ -279,120 +395,132 @@ public class WritingTests {
 
   }
 
-  /**
-   * 
-   * This test checks if there is no problem with the writing even if there are no database entries
-   * given. (User Story 006, unusual scenario)
-   * 
-   * @throws MissingPathException
-   * @throws IOException
-   * 
-   * @see FileSaver#storeAllLocally(String)
-   * 
-   * @author Ben Kohr
-   */
-  @Test
-  public void testStoreAllLocallyNoEntries() throws MissingPathException, IOException {
-    // no entries in the DatabaseConnection stored this time
 
+
+  @Test
+  public void testStoreLocallyAsOneFile1() throws MissingPathException, IOException {
+    FileSaver.setSeparateFiles(false);
     FileSaver.setLocalPath(path);
 
-    FileSaver.storeAllLocally("notestdata");
+    // First bunch of data
+    FileSaver.addIntoQueue(entries[0]);
+    FileSaver.addIntoQueue(entries[1]);
+    FileSaver.storeAllLocally("separate1");
 
-    // Code for reading the file in again
-    BufferedReader reader = new BufferedReader(new FileReader("writingtests/notestdata.csv"));
+    // flush the queue
+    FileSaver.flushQueue();
+
+    // Second bunch, to be stored in a different file
+    FileSaver.addIntoQueue(entries[2]);
+    FileSaver.addIntoQueue(entries[3]);
+    FileSaver.storeAllLocally("separate2");
+
+    // Test the resulting file
+    BufferedReader reader = new BufferedReader(new FileReader("writingtests/gsat_results.csv"));
 
     LinkedList<String> results = new LinkedList<String>();
     reader.lines().skip(1).forEach(line -> results.add(line));
-
-    // Check whether the input is correctly empty.
-    assertTrue(results.size() == 0);
     reader.close();
-  }
 
-  /**
-   * 
-   * This test checks if a MissingPathException is thrown if the writing path is missing.
-   * 
-   * @throws MissingPathException
-   * @throws IOException
-   * 
-   * @see FileSaver#storeAllLocally(String)
-   * @see MissingPathException
-   * 
-   * @author Ben Kohr
-   */
-  @Test(expected = MissingPathException.class)
-  public void testStoreAllLocallyMissingPath() throws MissingPathException, IOException {
+    String[] correctResults = new String[] {
+        "0; a.ab1; 1; ATCGTCGATCGA; 2016-11-28; Klaus Bohne; No comments; CCCCCCCC; CCCCCCCC; ATCG; true; +1H4; INSERTION",
+        "1; b.ab1; 4; TCGATCGATCG; 2016-11-28; Kurt Bohne; No comments; TTTTTT; TTTTTT; ATCG; false; -1H4; DELETION",
+        "2; c.ab1; 0; ATCGA; 2016-11-28; Klaus Bohne; No comments; AAAAAAAT; AAAAAAAT; ATCG; true; ACC4ACG; SILENT",
+        "3; d.ab1; 7; ATCGT; 2016-11-28; Kurt Bohne; No comments; AAAAAAAT; AAAAAAAT; ATCG; false; H4D; SUBSTITUTION",};
 
-    // Setting the path to null
-    FileSaver.setLocalPath(null);
+    for (int i = 0; i < correctResults.length; i++) {
+      assertEquals(correctResults[i], results.get(i));
+    }
 
-    // Now, path is null. This means, a MissingPathException is to be
-    // thrown.
-    FileSaver.storeAllLocally("problemtest");
-
-    // This line should not be reached!
-    fail();
+    // Size should be five, for there a five initial entries
+    assertTrue(results.size() == 4);
 
   }
 
-  /**
-   * This test checks whether an AnalyzesSequence is correctly transformed into DatabaseEntries and
-   * if these entries is correctly written in a file. This means, this test checks the complete
-   * local storage mechanism from the obtained sequences. (User Story 006, typical scenario 2)
-   * 
-   * @throws MissingPathException
-   * @throws IOException
-   * 
-   * @see FileSaver#storeAllLocally(String)
-   * @see DatabaseEntry#convertSequenceIntoEntries(AnalysedSequence)
-   * 
-   * @author Ben Kohr
-   * @throws UndefinedTypeOfMutationException
-   */
+
   @Test
-  public void testConvertAndStore()
+  public void testStoreLocallyAsOneFile2()
       throws MissingPathException, IOException, UndefinedTypeOfMutationException {
+    FileSaver.setSeparateFiles(false);
+    FileSaver.setLocalPath(path);
 
-    // Converting sequence into DBEs
     LinkedList<DatabaseEntry> entries = DatabaseEntry.convertSequenceIntoEntries(seq4);
 
-    // Storing them in the DatabaseConnection
-    FileSaver.addAllIntoQueue(entries);
+    // Two bunches of data
+    FileSaver.addIntoQueue(entries.get(0));
+    FileSaver.storeAllLocally("");
+    FileSaver.flushQueue();
 
-    FileSaver.setLocalPath(path);
-    FileSaver.storeAllLocally("convertAndStoreTest");
+    FileSaver.addIntoQueue(entries.get(1));
+    FileSaver.storeAllLocally("");
+    FileSaver.flushQueue();
+
 
     // Code for reading the file in again
-    BufferedReader reader =
-        new BufferedReader(new FileReader("writingtests/convertAndStoreTest.csv"));
+    BufferedReader reader = new BufferedReader(new FileReader("writingtests/gsat_results.csv"));
 
     LinkedList<String> results = new LinkedList<String>();
     reader.lines().skip(1).forEach(line -> results.add(line));
     reader.close();
 
     // Check whether the input is correct
-    
+
     DateFormat df = new SimpleDateFormat("dd/MM/yy");
     String addingDate = df.format(new Date());
-    
+
     String[] correctResults = new String[] {
-        "0; sequence3.ab1; 3; ATC; " + addingDate + "; Kurt Bohne; Nothing to say; null; null; null; false; AAA7CAA; SILENT",
-        "1; sequence3.ab1; 3; ATC; " + addingDate + "; Kurt Bohne; Nothing to say; null; null; null; false; -1H5; DELETION"};
+        "0; sequence3.ab1; 3; ATC; " + addingDate
+            + "; Kurt Bohne; Nothing to say; null; null; null; false; AAA7CAA; SILENT",
+        "1; sequence3.ab1; 3; ATC; " + addingDate
+            + "; Kurt Bohne; Nothing to say; null; null; null; false; -1H5; DELETION"};
 
     for (int i = 0; i < correctResults.length; i++) {
       String[] correctInfo = correctResults[i].split(";");
       String[] testInfo = results.get(i).split(";");
       for (int j = 0; j < correctInfo.length; j++)
+
         assertEquals(correctInfo[j], testInfo[j]);
     }
 
-    // Size should be three, for there a two initial entries.
     assertTrue(results.size() == 2);
 
   }
 
+
+
+  @Test
+  public void testStoreLocallyAsOneFileEmpty()
+      throws MissingPathException, IOException, UndefinedTypeOfMutationException {
+    FileSaver.setSeparateFiles(false);
+    FileSaver.setLocalPath(path);
+
+    LinkedList<DatabaseEntry> noEntries = new LinkedList<DatabaseEntry>();
+
+    // Nothing added - does it still work?
+    FileSaver.addAllIntoQueue(noEntries);
+    FileSaver.storeAllLocally("");
+    FileSaver.flushQueue();
+
+    FileSaver.addAllIntoQueue(noEntries);
+    FileSaver.storeAllLocally("");
+    FileSaver.flushQueue();
+
+    FileSaver.addAllIntoQueue(noEntries);
+    FileSaver.storeAllLocally("");
+    FileSaver.flushQueue();
+
+
+    // Code for reading the file in again
+    BufferedReader reader = new BufferedReader(new FileReader("writingtests/gsat_results.csv"));
+
+    LinkedList<String> results = new LinkedList<String>();
+    reader.lines().skip(1).forEach(line -> results.add(line));
+    reader.close();
+
+    // No entries expected
+    assertTrue(results.size() == 0);
+
+  }
 
 
   @Test
@@ -447,130 +575,6 @@ public class WritingTests {
 
     // Size should be five, for there a five initial entries
     assertTrue(results2.size() == 2);
-
-  }
-
-
-  @Test
-  public void testStoreLocallyAsOneFile1() throws MissingPathException, IOException {
-    FileSaver.setSeparateFiles(false);
-    FileSaver.setLocalPath(path);
-
-    // First bunch of data
-    FileSaver.addIntoQueue(entries[0]);
-    FileSaver.addIntoQueue(entries[1]);
-    FileSaver.storeAllLocally("separate1");
-
-    // flush the queue
-    FileSaver.flushQueue();
-
-    // Second bunch, to be stored in a different file
-    FileSaver.addIntoQueue(entries[2]);
-    FileSaver.addIntoQueue(entries[3]);
-    FileSaver.storeAllLocally("separate2");
-
-    // Test the resulting file
-    BufferedReader reader = new BufferedReader(new FileReader("writingtests/gsat_results.csv"));
-
-    LinkedList<String> results = new LinkedList<String>();
-    reader.lines().skip(1).forEach(line -> results.add(line));
-    reader.close();
-
-    String[] correctResults = new String[] {
-        "0; a.ab1; 1; ATCGTCGATCGA; 2016-11-28; Klaus Bohne; No comments; CCCCCCCC; CCCCCCCC; ATCG; true; +1H4; INSERTION",
-        "1; b.ab1; 4; TCGATCGATCG; 2016-11-28; Kurt Bohne; No comments; TTTTTT; TTTTTT; ATCG; false; -1H4; DELETION",
-        "2; c.ab1; 0; ATCGA; 2016-11-28; Klaus Bohne; No comments; AAAAAAAT; AAAAAAAT; ATCG; true; ACC4ACG; SILENT",
-        "3; d.ab1; 7; ATCGT; 2016-11-28; Kurt Bohne; No comments; AAAAAAAT; AAAAAAAT; ATCG; false; H4D; SUBSTITUTION",};
-
-    for (int i = 0; i < correctResults.length; i++) {
-      assertEquals(correctResults[i], results.get(i));
-    }
-
-    // Size should be five, for there a five initial entries
-    assertTrue(results.size() == 4);
-
-  }
-
-
-
-  @Test
-  public void testStoreLocallyAsOneFile2()
-      throws MissingPathException, IOException, UndefinedTypeOfMutationException {
-    FileSaver.setSeparateFiles(false);
-    FileSaver.setLocalPath(path);
-
-    LinkedList<DatabaseEntry> entries = DatabaseEntry.convertSequenceIntoEntries(seq4);
-
-    // Two bunches of data
-    FileSaver.addIntoQueue(entries.get(0));
-    FileSaver.storeAllLocally("");
-    FileSaver.flushQueue();
-
-    FileSaver.addIntoQueue(entries.get(1));
-    FileSaver.storeAllLocally("");
-    FileSaver.flushQueue();
-
-
-    // Code for reading the file in again
-    BufferedReader reader = new BufferedReader(new FileReader("writingtests/gsat_results.csv"));
-
-    LinkedList<String> results = new LinkedList<String>();
-    reader.lines().skip(1).forEach(line -> results.add(line));
-    reader.close();
-
-    // Check whether the input is correct
-    
-    DateFormat df = new SimpleDateFormat("dd/MM/yy");
-    String addingDate = df.format(new Date());
-    
-    String[] correctResults = new String[] {
-        "0; sequence3.ab1; 3; ATC; " + addingDate + "; Kurt Bohne; Nothing to say; null; null; null; false; AAA7CAA; SILENT",
-        "1; sequence3.ab1; 3; ATC; " + addingDate + "; Kurt Bohne; Nothing to say; null; null; null; false; -1H5; DELETION"};
-
-    for (int i = 0; i < correctResults.length; i++) {
-        String[] correctInfo = correctResults[i].split(";");
-        String[] testInfo = results.get(i).split(";");
-        for (int j = 0; j < correctInfo.length; j++)
-
-          assertEquals(correctInfo[j], testInfo[j]);
-      }
-
-    assertTrue(results.size() == 2);
-
-  }
-
-
-  @Test
-  public void testStoreLocallyAsOneFileEmpty()
-      throws MissingPathException, IOException, UndefinedTypeOfMutationException {
-    FileSaver.setSeparateFiles(false);
-    FileSaver.setLocalPath(path);
-
-    LinkedList<DatabaseEntry> noEntries = new LinkedList<DatabaseEntry>();
-
-    // Nothing added - does it still work?
-    FileSaver.addAllIntoQueue(noEntries);
-    FileSaver.storeAllLocally("");
-    FileSaver.flushQueue();
-
-    FileSaver.addAllIntoQueue(noEntries);
-    FileSaver.storeAllLocally("");
-    FileSaver.flushQueue();
-
-    FileSaver.addAllIntoQueue(noEntries);
-    FileSaver.storeAllLocally("");
-    FileSaver.flushQueue();
-
-
-    // Code for reading the file in again
-    BufferedReader reader = new BufferedReader(new FileReader("writingtests/gsat_results.csv"));
-
-    LinkedList<String> results = new LinkedList<String>();
-    reader.lines().skip(1).forEach(line -> results.add(line));
-    reader.close();
-
-    // No entries expected
-    assertTrue(results.size() == 0);
 
   }
 

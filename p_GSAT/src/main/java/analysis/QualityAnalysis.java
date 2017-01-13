@@ -74,6 +74,14 @@ public class QualityAnalysis {
     return trimmingPosition;
   }
 
+  public static int getBreakcounter() {
+    return breakcounter;
+  }
+
+  public static void setBreakcounter(int update) {
+    breakcounter = update;
+  }
+
   /**
    * This method trims a sequence by removing the low quality end of the sequence.
    */
@@ -81,14 +89,6 @@ public class QualityAnalysis {
     int[] trimmingpositions = QualityAnalysis.findLowQuality(toAnalyse);
     toAnalyse.setOffset(toAnalyse.getOffset() + trimmingpositions[2]);
     toAnalyse.trimSequence(trimmingpositions[0], trimmingpositions[1] - 1);
-  }
-
-  public static void setBreakcounter(int update) {
-    breakcounter = update;
-  }
-
-  public static int getBreakcounter() {
-    return breakcounter;
   }
 
 }

@@ -1,8 +1,8 @@
 package analysis;
 
 /**
- * This class models a gene, which can be compared with obtained DNA sequences.
- * Genes can be seen as original templates for mutated sequences.
+ * This class models a gene, which can be compared with obtained DNA sequences. Genes can be seen as
+ * original templates for mutated sequences.
  * 
  * @author Ben Kohr
  */
@@ -37,25 +37,25 @@ public class Gene extends Sequence {
     this.id = id;
   }
 
-  
-  
-// GETTERs and SETTERs:
+
+
+  // GETTERs and SETTERs:
+
+  public int getId() {
+    return id;
+  }
 
   public String getName() {
     return name;
   }
 
-  public void setName(String name) {
-    this.name = name;
-  }
-
-  
-  public int getId() {
-    return id;
-  }
 
   public void setId(int id) {
     this.id = id;
+  }
+
+  public void setName(String name) {
+    this.name = name;
   }
 
 

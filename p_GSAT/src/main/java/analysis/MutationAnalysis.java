@@ -133,13 +133,13 @@ public class MutationAnalysis {
 
     if (differences.size() == 0) {
       for (int tempPosition = 0; tempPosition < mutatedSequence.length(); tempPosition++) {
-        if ( (tempPosition + tmpshift) * 3 + toAnalyze.getOffset() * 3 + 3 > originalSequence.length()
-            || tempPosition * 3 + 3 > mutatedSequence.length()) {
+        if ((tempPosition + tmpshift) * 3 + toAnalyze.getOffset() * 3 + 3 > originalSequence
+            .length() || tempPosition * 3 + 3 > mutatedSequence.length()) {
           break;
         } else {
-          String oldAcid = originalSequence.substring(
-            (tempPosition + tmpshift) * 3 + toAnalyze.getOffset() * 3,
-            (tempPosition + tmpshift) * 3 + toAnalyze.getOffset() * 3 + 3);
+          String oldAcid =
+              originalSequence.substring((tempPosition + tmpshift) * 3 + toAnalyze.getOffset() * 3,
+                  (tempPosition + tmpshift) * 3 + toAnalyze.getOffset() * 3 + 3);
           String newAcid = mutatedSequence.substring(tempPosition * 3, tempPosition * 3 + 3);
 
           if (!oldAcid.equals(newAcid)) {

@@ -48,6 +48,39 @@ public class PipelineTests {
   }
 
   /**
+   * This test checks that no error occures when there are neither valid nor invalid files passed to
+   * the method. (User Story 019, unusual behavior)
+   * 
+   * @throws IOException
+   * 
+   * @see Main#reportOnInput(String, LinkedList, LinkedList, String)
+   * 
+   * @author Ben Kohr
+   */
+  @Test
+  public void testReadingReportNoEntries() throws IOException {
+    ConsoleVersion.reportOnInput("reporttests", new LinkedList<File>(), new LinkedList<File>(),
+        "error while reading the configuration file");
+
+    BufferedReader reader = new BufferedReader(new FileReader("reporttests/report.txt"));
+
+    StringBuilder builder = new StringBuilder();
+    reader.lines().forEach(line -> {
+      builder.append(line);
+      builder.append(System.lineSeparator());
+    });
+    reader.close();
+
+    String expectedString = "No valid AB1/ABI found." + System.lineSeparator()
+        + System.lineSeparator() + "No invalid files detected." + System.lineSeparator()
+        + System.lineSeparator() + "Config file: error while reading the configuration file"
+        + System.lineSeparator() + System.lineSeparator();
+
+    assertEquals(expectedString, builder.toString());
+  }
+
+
+  /**
    * This test checks if a report on the reading process is correctly created and stored. (User
    * Story 019, typical behavior 1)
    * 
@@ -90,6 +123,7 @@ public class PipelineTests {
   }
 
 
+
   /**
    * This test checks if a report on the reading process is correctly created and stored. This time,
    * there are less files passed to the reporting method. (User Story 019, typical behavior 2)
@@ -125,40 +159,6 @@ public class PipelineTests {
         + "Number of invalid files: 1" + System.lineSeparator() + System.lineSeparator()
 
         + "Config file: found" + System.lineSeparator() + System.lineSeparator();
-
-    assertEquals(expectedString, builder.toString());
-  }
-
-
-
-  /**
-   * This test checks that no error occures when there are neither valid nor invalid files passed to
-   * the method. (User Story 019, unusual behavior)
-   * 
-   * @throws IOException
-   * 
-   * @see Main#reportOnInput(String, LinkedList, LinkedList, String)
-   * 
-   * @author Ben Kohr
-   */
-  @Test
-  public void testReadingReportNoEntries() throws IOException {
-    ConsoleVersion.reportOnInput("reporttests", new LinkedList<File>(), new LinkedList<File>(),
-        "error while reading the configuration file");
-
-    BufferedReader reader = new BufferedReader(new FileReader("reporttests/report.txt"));
-
-    StringBuilder builder = new StringBuilder();
-    reader.lines().forEach(line -> {
-      builder.append(line);
-      builder.append(System.lineSeparator());
-    });
-    reader.close();
-
-    String expectedString = "No valid AB1/ABI found." + System.lineSeparator()
-        + System.lineSeparator() + "No invalid files detected." + System.lineSeparator()
-        + System.lineSeparator() + "Config file: error while reading the configuration file"
-        + System.lineSeparator() + System.lineSeparator();
 
     assertEquals(expectedString, builder.toString());
   }

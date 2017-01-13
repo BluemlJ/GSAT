@@ -14,15 +14,6 @@ import org.junit.Test;
 public class JillionFileReadTest {
 
   /**
-   * This test confirms the jillion framework is accessible by calling a static method from the
-   * framework
-   */
-  @Test
-  public void testJillionAccessibility() {
-    assertEquals(PrimerUtil.M13_FORWARD_PRIMER.toString(), "TGTAAAACGACGGCCAGT");
-  }
-
-  /**
    * This test tries to access a sample file from our repository by using a relative path
    */
   @Test
@@ -30,6 +21,15 @@ public class JillionFileReadTest {
     File testFile =
         new File(getClass().getResource("/ab1/Tk_Gs40Hits/Forward/95EI60.ab1").getFile());
     assertTrue(testFile.exists());
+  }
+
+  /**
+   * This test confirms the jillion framework is accessible by calling a static method from the
+   * framework
+   */
+  @Test
+  public void testJillionAccessibility() {
+    assertEquals(PrimerUtil.M13_FORWARD_PRIMER.toString(), "TGTAAAACGACGGCCAGT");
   }
 
   /**

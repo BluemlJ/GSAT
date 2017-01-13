@@ -161,165 +161,12 @@ public class StringAnalysis {
     AMINO_ACID_SHORTS = Collections.unmodifiableMap(tmp);
   }
 
-  /**
-   * Changes the sequence representation from nucleotides to aminoacid (shortform)
-   * 
-   * @param nucleotides the sequence presented by nucleotides
-   * @return the sequence presented by aminoAcid (shorts)
-   * 
-   * @author bluemlj
-   */
-  public static String codonsToAminoAcids(String nucleotides) throws CorruptedSequenceException {
-    nucleotides = nucleotides.toUpperCase();
-
-    // check for empty parameter
-    if (nucleotides.isEmpty()) return "empty nucleotides";
-
-
-    StringBuilder builder = new StringBuilder();
-
-    // checks if the nucleotides is % 3 = 0 because if not, there will be an error at the end
-    if (nucleotides.length() % 3 == 0) {
-      // changes the nucleotides to aminoacids in shortform by using the Map
-      for (int i = 0; i < nucleotides.length(); i = i + 3) {
-        String codon = nucleotides.substring(i, i + 3);
-        String aminoacid = AMINO_ACID_SHORTS.get(codon);
-
-
-        if (aminoacid != null)
-          builder.append(aminoacid);
-        // get the index of the corruptedSequenceException
-        else {
-          int index;
-          if (!codon.matches("[ATCGU]..")) {
-            index = 0;
-          } else if (!codon.matches(".[ATCGU].")) {
-            index = 1;
-          } else {
-            index = 2;
-          }
-
-          throw new CorruptedSequenceException(i + index, codon.charAt(index), nucleotides);
-        }
-      }
-    } else
-      return "nucleotides not modulo 3, so not convertable";
-    return builder.toString();
-  }
-
-  /**
-   * Finds the gene that fits best to a given sequence by comparing it to all given genes.
-   * 
-   * @param toAnalyze The sequence, we compare with the list of genes
-   * @param listOfGenes A list of all genes, we want to compare with the sequence
-   * @return the gene, that has the best similarity
-   * @author bluemlj
- * @throws DissimilarGeneException 
-   */
-  public static Gene findRightGene(AnalysedSequence toAnalyze, LinkedList<Gene> listOfGenes) throws DissimilarGeneException {
-    Gene bestgene = listOfGenes.getFirst();
-    double bestSimilarity = 0;
-
-    for (Gene gene : listOfGenes) {
-      double similarity = StringAnalysis.checkSimilarity(toAnalyze, gene);
-      if (similarity > bestSimilarity) {
-        bestSimilarity = similarity;
-        bestgene = gene;
-      }
+  public static String appentStringToLength(String input, int length) {
+    if (length - input.length() > 0) {
+      String expand = new String(new char[length - input.length()]).replace('\0', ' ');
+      input = input + expand;
     }
-
-    // if the Similarity is less then 80%, return null
-    if (bestSimilarity >= 80) {
-      return bestgene;
-    }
-    
-    throw new DissimilarGeneException(toAnalyze, bestgene, bestSimilarity);
-  }
-
-  /**
-   * Finds the gene that fits best to a given sequence by comparing it to all given genes. Known
-   * genes can be found in the local dataset.
-   * 
-   * @param toAnalyze Sequence to be analyzed (i.e. for which the fitting gene is to find)
-   * 
-   * @return The found gene.
-   * 
-   * @author bluemlj
-   */
-  public static Pair<Gene, Double> findRightGeneLocal(AnalysedSequence toAnalyze) {
-    // TODO call findRightGene(sequence, listOfGenes) with listOfGenes with a database sysout export
-    return null;
-  }
-
-  /**
-   * Finds the gene that fits best to a given sequence by comparing it to all given genes. Known
-   * genes can be found in the database.
-   * 
-   * @param toAnalyze Sequence to be analyzed (i.e. for which the fitting gene is to find)
-   * 
-   * @return The found gene.
-   * 
-   * @author bluemlj
-   */
-  public static Pair<Gene, Double> findRightGene(AnalysedSequence toAnalyze) {
-    // TODO call findRightGene(sequence, listOfGenes) with listOfGenes with a database export
-    return null;
-  }
-
-
-
-  /**
-   * Compares to sequences and returns their similarity without finding the exact differences.
-   * 
-   * @param first The first sequence
-   * @param second The second sequence
-   * 
-   * @return Similarity measure
-   * @author Kevin
-   */
-  public static double checkSimilarity(Sequence first, Sequence second) {
-    return checkSimilarity(first.sequence, second.sequence);
-  }
-
-  /**
-   * Compares to String and returns their similarity without finding the exact differences.
-   * 
-   * @param first The first String
-   * @param second The second String
-   * 
-   * @return Similarity measure
-   * @author Kevin
-   */
-  public static double checkSimilarity(String first, String second) {
-    double levenshteinIndex = getLevenshteinIndex(first, second);
-    double avgLength = (first.length() + second.length()) / 2.0;
-    return Math.max(0, 100 - (levenshteinIndex / (avgLength / 100)));
-  }
-
-  /**
-   * calculates Levensthein Matrix of first and second using calculateLevenshteinMatrix(first,
-   * second) and returns the Levenshtein Index
-   * 
-   * @param first
-   * @param second
-   * @return
-   * @author Kevin
-   */
-  public static int getLevenshteinIndex(String first, String second) {
-    int[][] matrix = calculateLevenshteinMatrix(first, second);
-    return getLevenshteinIndex(matrix);
-  }
-
-  /**
-   * gets Levenshtein index out of Levenshtein Matrix
-   * 
-   * @param matrix the Levenshtein Matrix
-   * @return
-   * @author Kevin
-   */
-  public static int getLevenshteinIndex(int[][] matrix) {
-    // get levensthein index out of matrix
-    return matrix[matrix.length - 1][matrix[matrix.length - 1].length - 1];
+    return input;
   }
 
   /**
@@ -371,318 +218,79 @@ public class StringAnalysis {
   }
 
   /**
-   * same as find Best Match but faster
+   * Compares to sequences and returns their similarity without finding the exact differences.
    * 
-   * @param toAlign
-   * @param template
+   * @param first The first sequence
+   * @param second The second sequence
    * 
-   * @return
-   */
-  public static String trimbyLeve(AnalysedSequence toAlign, boolean beginCorect) {
-
-    Gene template = toAlign.getReferencedGene();
-    int[][] levenMatrix = calculateLevenshteinMatrix(template.sequence, toAlign.sequence);
-
-    // begin and end possition of final string
-    int begin = 0;
-    int end = toAlign.length();
-    boolean endFound = false;
-    boolean potentialBegin = false;
-    int potentialBeginPosition = 0;
-    
-    int bestBegin = 0;
-    double bestScore = 0.0;
-
-    int row = levenMatrix.length - 1;// gen
-    int line = levenMatrix[0].length - 1;// sequence
-    int originalBegin = 0;
-    // System.out.println();
-    // ConsoleIO.printIntMatrix(levenMatrix);
-    // System.out.println();
-    while (row > 0 && line > 0) {
-      if (levenMatrix[row - 1][line - 1] <= levenMatrix[row - 1][line]
-          && levenMatrix[row - 1][line - 1] <= levenMatrix[row][line - 1]) {
-        row--;
-
-        line--;
-        endFound = true;
-        //TODO try result
-        potentialBegin = true;
-        potentialBeginPosition = line;
-        double score = checkSimilarity(toAlign.getSequence().substring(bestBegin,end), toAlign.getSequence().substring(line,end));
-        if (bestScore < score) {
-          bestScore = score;
-          bestBegin = line;
-          
-          
-        }
-        
-        
-        originalBegin = row;
-
-      } else if (levenMatrix[row - 1][line] < levenMatrix[row][line - 1]) {
-        row--;
-
-      } else {
-        if (!endFound) {
-          end--;
-        }
-        line--;
-      }
-    }
-    boolean beginOutOfRange = false;
-    if (potentialBeginPosition > 1 && potentialBegin) {
-      begin = potentialBeginPosition;
-
-    } else {
-      begin = 0;
-      beginOutOfRange = true;
-    }
-    String result = toAlign.sequence.substring(begin, end);
-    toAlign.trimQualityArray(begin, end);
-    
-    String startCodon = template.sequence.substring(0, 3);
-    if (result.contains(startCodon)) {
-      int codonIndex = result.indexOf(startCodon);
-      String alternativ = result.substring(codonIndex);
-      // System.err.println(alternativ + " # " + result);
-      if (checkSimilarity(template.sequence, alternativ) <= checkSimilarity(template.sequence,
-          result)) {
-        // System.out.println("BESTMATCH: Start Codon found at " +
-        // (begin + codonIndex));
-        result = alternativ;
-        toAlign.trimQualityArray(codonIndex, toAlign.length());
-        originalBegin = 0;
-        begin = begin + codonIndex;
-      }
-    }
-
-    // TODO EXPLAIN
-    begin = begin + ((3 - (originalBegin % 3)) % 3);
-    if (beginOutOfRange && begin > 0) {
-      begin--;
-    }
-
-    if (beginCorect) {
-      begin = 0;
-    }
-
-
-    result = toAlign.sequence.substring(begin, (end - ((end - begin) % 3)));
-    toAlign.trimQualityArray(begin,  (end - ((end - begin) % 3)));
-    // corect vectors
-    toAlign.setLeftVector(toAlign.getLeftVector() + toAlign.sequence.substring(0, begin));
-    toAlign.setRightVector(toAlign.getRightVector() + toAlign.sequence.substring(end));
-
-    
-    // sequence.setOffset(begin);ORIGINAL
-    //System.out.println(template.sequence);
-    //System.out.println(toAlign.sequence.substring(toAlign.getOffset()));
-    //System.err.println(toAlign.sequence);
-    /*System.out.println(begin);
-    System.out.println("template    = " +template.sequence);
-    System.out.println("result      = " + result);
-    System.out.println("alinght     = " + toAlign);
-    System.out.println("alternative = " + toAlign.sequence.substring(toAlign.getOffset(),Math.min(end, toAlign.sequence.length())));
-    if (checkSimilarity(template.sequence, toAlign.sequence.substring(toAlign.getOffset(),Math.min(end, toAlign.sequence.length()))) <= checkSimilarity(template.sequence,
-        result)) {
-	originalBegin = toAlign.getOffset();
-	result =  toAlign.sequence.substring(toAlign.getOffset(),Math.min(end, toAlign.sequence.length()));
-    }*/
-    toAlign.setSequence(result);
-    toAlign.setOffset(originalBegin + ((3 - (originalBegin % 3)) % 3));
-    // toAlign.setOffset(toAlign.getOffset() + begin);
-    return result;
-    // System.out.println(toAlign.getOffset() + " = OFFSET");
-  }
-
-  public static void trimVector(AnalysedSequence toAlign, Gene gene) {
-    toAlign.setReferencedGene(gene);
-    trimVector(toAlign);
-  }
-
-  /**
-   * 
-   * @param toAlign
+   * @return Similarity measure
    * @author Kevin
    */
-  public static void trimVector(AnalysedSequence toAlign) {
-    // **********simple Vector Cutting*****************
-    boolean offsetExact = findOffset(toAlign);
-System.out.println("OFFSET !!!!!!!!!!!!!!!!!!!!! "+ toAlign.getOffset());
-System.out.println("exact: = " + offsetExact);
-    Gene gene = toAlign.getReferencedGene();
-
-    String newSequence = toAlign.sequence;
-
-    // check for stopcodon //TODO edit
-    boolean endexact = false;
-
-    String codon = gene.sequence.substring(gene.sequence.length() - 3, gene.sequence.length());
-    
-    codon = "false";//TODO fix
-
-    // if found cut at stopcodon
-    /*for (int i = 0; i < 6; i++) {
-      int hitIndex = newSequence.indexOf(codon);
-      if (hitIndex >= 0 && hitIndex == newSequence.lastIndexOf(codon)) {
-        newSequence = newSequence.substring(0, hitIndex + 3);
-        endexact = true;
-        System.out.println();
-        System.err.println("start found " + codon);
-        // TODO save end vector
-        i = 10;
-      }
-      switch (i) {
-        case 0:
-          codon = "UAG";
-          break;
-        case 1:
-          codon = "UAA";
-          break;
-        case 2:
-          codon = "UGA";
-          break;
-        case 3:
-          codon = "TAG";
-          break;
-        case 4:
-          codon = "TAA";
-          break;
-        case 5:
-          codon = "TGA";
-          break;
-        default:
-          break;
-      }
-    }*/
-
-
-    // calculate the end of the sequence (as long as the gene if possible els till end)
-    // if necessary cut off begin
-    //if (offsetExact) {
-      // negative offset -> sequence goes over left site of gene
-      // -> cut of left of offset
-      String leftVector = newSequence.substring(0, Math.abs(toAlign.getOffset()));
-      
-      newSequence = newSequence.substring(Math.abs(toAlign.getOffset()));
-      toAlign.trimQualityArray(Math.abs(toAlign.getOffset()), toAlign.length());
-      // set vector and correct offset
-      toAlign.setLeftVector(leftVector);
-      toAlign.setOffset(0);
-
-      toAlign.setSequence(newSequence);
-    //}
-
-
-
-    // calculate exact offset if necessary;
-    //if (!(endexact && offsetExact)) {
-      System.err.println("OfsetExact = " + offsetExact);
-      //newSequence = trimbyLeve(toAlign, offsetExact);
-    //}
-
-    // int sequenceEnd = Math.min(newSequence.length(), gene.sequence.length());
-    // String rightVector = newSequence.substring(sequenceEnd);
-    // newSequence = newSequence.substring(0, sequenceEnd);
-
-    // **********complex Vector Cutting*****************
-    // TODO implement
-
-    System.err.println(toAlign.getOffset() + "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-    // **********modulo Cutting*****************
-    if (toAlign.getOffset() != 0) {
-      int begin = (3 - (toAlign.getOffset() % 3) % 3);
-      // newSequence = newSequence.substring(begin);
-      // newSequence =
-      // newSequence.substring(0,newSequence.length()-(newSequence.length()%3));
-    }
-    // ******************************************
-
-    // toAlign.setRightVector(rightVector);
-    toAlign.setSequence(newSequence);
+  public static double checkSimilarity(Sequence first, Sequence second) {
+    return checkSimilarity(first.sequence, second.sequence);
   }
 
   /**
-   * calculates offset returns true if offset was corecly found returns false if indirect offset was
-   * found;
+   * Compares to String and returns their similarity without finding the exact differences.
    * 
-   * @param seqence
-   * @return
+   * @param first The first String
+   * @param second The second String
+   * 
+   * @return Similarity measure
+   * @author Kevin
    */
-  public static boolean findOffset(AnalysedSequence seqence) {
+  public static double checkSimilarity(String first, String second) {
+    double levenshteinIndex = getLevenshteinIndex(first, second);
+    double avgLength = (first.length() + second.length()) / 2.0;
+    return Math.max(0, 100 - (levenshteinIndex / (avgLength / 100)));
+  }
 
-    int stepSize = 2;
-    stepSize*=3;
-    // get gene and sequence as String
-    String gene = seqence.getReferencedGene().getSequence();
-    String seq = seqence.getSequence();
 
-    // check for startcodon
-    // if found method can return with exact begining possition
-    if (seq.contains(gene.substring(0, 3))) {
-      String codon = gene.substring(0, 3);
-      
-      int hitIndex = seq.indexOf(codon);
-      if (hitIndex == seq.lastIndexOf(codon)) {
-        seqence.setOffset(hitIndex);        
-        return true;        
-      }
-    }
 
-    boolean offsetNotFound = true;
-    boolean emrgencyMode = false;
+  /**
+   * Changes the sequence representation from nucleotides to aminoacid (shortform)
+   * 
+   * @param nucleotides the sequence presented by nucleotides
+   * @return the sequence presented by aminoAcid (shorts)
+   * 
+   * @author bluemlj
+   */
+  public static String codonsToAminoAcids(String nucleotides) throws CorruptedSequenceException {
+    nucleotides = nucleotides.toUpperCase();
 
-    // part of the sequence that will be testet.
-    String toTest = gene.substring(0, (gene.length() / stepSize));
-    int testIndex = 0;
+    // check for empty parameter
+    if (nucleotides.isEmpty()) return "empty nucleotides";
 
-    // warn if sequence is to short for testing
-    if (toTest.length() < 9) {
-      System.err.println("Usable part of Sequence might be too short for good Results");
-    }
 
-    // if begin was not found
-    // intense search begins
-    while (offsetNotFound) {
-      // index of toTest is gene
-      int targetIndex = seq.indexOf(toTest);
-      
-      // test if toTest was found and if it was found only once
-      if (targetIndex >= 0 && targetIndex == seq.lastIndexOf(toTest)) {
-        // OFFSET found:
-        // Set offset
-        offsetNotFound = false;
-        seqence.setOffset(targetIndex - testIndex);//changed + to - for test
-        if (testIndex == 0) {
-          return true;
-        }
-        System.err.println("Warning, Trimming may be inexact");
-        return false;
+    StringBuilder builder = new StringBuilder();
 
-        
+    // checks if the nucleotides is % 3 = 0 because if not, there will be an error at the end
+    if (nucleotides.length() % 3 == 0) {
+      // changes the nucleotides to aminoacids in shortform by using the Map
+      for (int i = 0; i < nucleotides.length(); i = i + 3) {
+        String codon = nucleotides.substring(i, i + 3);
+        String aminoacid = AMINO_ACID_SHORTS.get(codon);
 
-      } else if (!emrgencyMode) {
-        // check if next step is to big
-        if (toTest.length() > 9) {       
-          toTest = toTest.substring(0, toTest.length()-3);
-        }else {
-          //if (testIndex+3 + gene.length()/stepSize < gene.length()) {
-          if (testIndex+3 < gene.length()/stepSize) {
-            testIndex++;
-            toTest = gene.substring(testIndex, gene.length()/stepSize);
-          }else {
-            emrgencyMode = true;
+
+        if (aminoacid != null)
+          builder.append(aminoacid);
+        // get the index of the corruptedSequenceException
+        else {
+          int index;
+          if (!codon.matches("[ATCGU]..")) {
+            index = 0;
+          } else if (!codon.matches(".[ATCGU].")) {
+            index = 1;
+          } else {
+            index = 2;
           }
+
+          throw new CorruptedSequenceException(i + index, codon.charAt(index), nucleotides);
         }
-      } else {
-        // EMERGENCY MODE
-        System.err.println("EMERGENCY MODE REQUIRED");
-        // TODO Implement
-        offsetNotFound = false;// TODO REMOVE
       }
-    }
-    return false;
+    } else
+      return "nucleotides not modulo 3, so not convertable";
+    return builder.toString();
   }
 
   /**
@@ -740,12 +348,382 @@ System.out.println("exact: = " + offsetExact);
     return matches.pollLastEntry().getValue();
   }
 
-  public static String appentStringToLength(String input, int length) {
-    if (length - input.length() > 0) {
-      String expand = new String(new char[length - input.length()]).replace('\0', ' ');
-      input = input + expand;
+  /**
+   * calculates offset returns true if offset was corecly found returns false if indirect offset was
+   * found;
+   * 
+   * @param seqence
+   * @return
+   */
+  public static boolean findOffset(AnalysedSequence seqence) {
+
+    int stepSize = 2;
+    stepSize *= 3;
+    // get gene and sequence as String
+    String gene = seqence.getReferencedGene().getSequence();
+    String seq = seqence.getSequence();
+
+    // check for startcodon
+    // if found method can return with exact begining possition
+    if (seq.contains(gene.substring(0, 3))) {
+      String codon = gene.substring(0, 3);
+
+      int hitIndex = seq.indexOf(codon);
+      if (hitIndex == seq.lastIndexOf(codon)) {
+        seqence.setOffset(hitIndex);
+        return true;
+      }
     }
-    return input;
+
+    boolean offsetNotFound = true;
+    boolean emrgencyMode = false;
+
+    // part of the sequence that will be testet.
+    String toTest = gene.substring(0, (gene.length() / stepSize));
+    int testIndex = 0;
+
+    // warn if sequence is to short for testing
+    if (toTest.length() < 9) {
+      System.err.println("Usable part of Sequence might be too short for good Results");
+    }
+
+    // if begin was not found
+    // intense search begins
+    while (offsetNotFound) {
+      // index of toTest is gene
+      int targetIndex = seq.indexOf(toTest);
+
+      // test if toTest was found and if it was found only once
+      if (targetIndex >= 0 && targetIndex == seq.lastIndexOf(toTest)) {
+        // OFFSET found:
+        // Set offset
+        offsetNotFound = false;
+        seqence.setOffset(targetIndex - testIndex);// changed + to - for test
+        if (testIndex == 0) {
+          return true;
+        }
+        System.err.println("Warning, Trimming may be inexact");
+        return false;
+
+
+
+      } else if (!emrgencyMode) {
+        // check if next step is to big
+        if (toTest.length() > 9) {
+          toTest = toTest.substring(0, toTest.length() - 3);
+        } else {
+          // if (testIndex+3 + gene.length()/stepSize < gene.length()) {
+          if (testIndex + 3 < gene.length() / stepSize) {
+            testIndex++;
+            toTest = gene.substring(testIndex, gene.length() / stepSize);
+          } else {
+            emrgencyMode = true;
+          }
+        }
+      } else {
+        // EMERGENCY MODE
+        System.err.println("EMERGENCY MODE REQUIRED");
+        // TODO Implement
+        offsetNotFound = false;// TODO REMOVE
+      }
+    }
+    return false;
+  }
+
+  /**
+   * Finds the gene that fits best to a given sequence by comparing it to all given genes. Known
+   * genes can be found in the database.
+   * 
+   * @param toAnalyze Sequence to be analyzed (i.e. for which the fitting gene is to find)
+   * 
+   * @return The found gene.
+   * 
+   * @author bluemlj
+   */
+  public static Pair<Gene, Double> findRightGene(AnalysedSequence toAnalyze) {
+    // TODO call findRightGene(sequence, listOfGenes) with listOfGenes with a database export
+    return null;
+  }
+
+  /**
+   * Finds the gene that fits best to a given sequence by comparing it to all given genes.
+   * 
+   * @param toAnalyze The sequence, we compare with the list of genes
+   * @param listOfGenes A list of all genes, we want to compare with the sequence
+   * @return the gene, that has the best similarity
+   * @author bluemlj
+   * @throws DissimilarGeneException
+   */
+  public static Gene findRightGene(AnalysedSequence toAnalyze, LinkedList<Gene> listOfGenes)
+      throws DissimilarGeneException {
+    Gene bestgene = listOfGenes.getFirst();
+    double bestSimilarity = 0;
+
+    for (Gene gene : listOfGenes) {
+      double similarity = StringAnalysis.checkSimilarity(toAnalyze, gene);
+      if (similarity > bestSimilarity) {
+        bestSimilarity = similarity;
+        bestgene = gene;
+      }
+    }
+
+    // if the Similarity is less then 80%, return null
+    if (bestSimilarity >= 80) {
+      return bestgene;
+    }
+
+    throw new DissimilarGeneException(toAnalyze, bestgene, bestSimilarity);
+  }
+
+  /**
+   * Finds the gene that fits best to a given sequence by comparing it to all given genes. Known
+   * genes can be found in the local dataset.
+   * 
+   * @param toAnalyze Sequence to be analyzed (i.e. for which the fitting gene is to find)
+   * 
+   * @return The found gene.
+   * 
+   * @author bluemlj
+   */
+  public static Pair<Gene, Double> findRightGeneLocal(AnalysedSequence toAnalyze) {
+    // TODO call findRightGene(sequence, listOfGenes) with listOfGenes with a database sysout export
+    return null;
+  }
+
+  /**
+   * gets Levenshtein index out of Levenshtein Matrix
+   * 
+   * @param matrix the Levenshtein Matrix
+   * @return
+   * @author Kevin
+   */
+  public static int getLevenshteinIndex(int[][] matrix) {
+    // get levensthein index out of matrix
+    return matrix[matrix.length - 1][matrix[matrix.length - 1].length - 1];
+  }
+
+  /**
+   * calculates Levensthein Matrix of first and second using calculateLevenshteinMatrix(first,
+   * second) and returns the Levenshtein Index
+   * 
+   * @param first
+   * @param second
+   * @return
+   * @author Kevin
+   */
+  public static int getLevenshteinIndex(String first, String second) {
+    int[][] matrix = calculateLevenshteinMatrix(first, second);
+    return getLevenshteinIndex(matrix);
+  }
+
+  /**
+   * same as find Best Match but faster
+   * 
+   * @param toAlign
+   * @param template
+   * 
+   * @return
+   */
+  @Deprecated
+  public static String trimbyLevevenstein(AnalysedSequence toAlign, boolean isOffsetExact) {
+
+    Gene template = toAlign.getReferencedGene();
+    int[][] levenMatrix = calculateLevenshteinMatrix(template.sequence, toAlign.sequence);
+
+    // begin and end possition of final string
+    int begin = 0;
+    int end = toAlign.length();
+    boolean endFound = false;
+    boolean potentialBegin = false;
+    int potentialBeginPosition = 0;
+
+    int bestBegin = 0;
+    double bestScore = 0.0;
+
+    int row = levenMatrix.length - 1;// gen
+    int line = levenMatrix[0].length - 1;// sequence
+    int originalBegin = 0;
+    // System.out.println();
+    // ConsoleIO.printIntMatrix(levenMatrix);
+    // System.out.println();
+    while (row > 0 && line > 0) {
+      if (levenMatrix[row - 1][line - 1] <= levenMatrix[row - 1][line]
+          && levenMatrix[row - 1][line - 1] <= levenMatrix[row][line - 1]) {
+        row--;
+
+        line--;
+        endFound = true;
+        // TODO try result
+        potentialBegin = true;
+        potentialBeginPosition = line;
+        double score = checkSimilarity(toAlign.getSequence().substring(bestBegin, end),
+            toAlign.getSequence().substring(line, end));
+        if (bestScore < score) {
+          bestScore = score;
+          bestBegin = line;
+
+
+        }
+
+
+        originalBegin = row;
+
+      } else if (levenMatrix[row - 1][line] < levenMatrix[row][line - 1]) {
+        row--;
+
+      } else {
+        if (!endFound) {
+          end--;
+        }
+        line--;
+      }
+    }
+    boolean beginOutOfRange = false;
+    if (potentialBeginPosition > 1 && potentialBegin) {
+      begin = potentialBeginPosition;
+
+    } else {
+      begin = 0;
+      beginOutOfRange = true;
+    }
+    String result = toAlign.sequence.substring(begin, end);
+    toAlign.trimQualityArray(begin, end);
+
+    String startCodon = template.sequence.substring(0, 3);
+    if (result.contains(startCodon)) {
+      int codonIndex = result.indexOf(startCodon);
+      String alternativ = result.substring(codonIndex);
+      // System.err.println(alternativ + " # " + result);
+      if (checkSimilarity(template.sequence, alternativ) <= checkSimilarity(template.sequence,
+          result)) {
+        // System.out.println("BESTMATCH: Start Codon found at " +
+        // (begin + codonIndex));
+        result = alternativ;
+        toAlign.trimQualityArray(codonIndex, toAlign.length());
+        originalBegin = 0;
+        begin = begin + codonIndex;
+      }
+    }
+
+    // TODO EXPLAIN
+    begin = begin + ((3 - (originalBegin % 3)) % 3);
+    if (beginOutOfRange && begin > 0) {
+      begin--;
+    }
+
+    if (isOffsetExact) {
+      begin = 0;
+    }
+
+
+    result = toAlign.sequence.substring(begin, (end - ((end - begin) % 3)));
+    toAlign.trimQualityArray(begin, (end - ((end - begin) % 3)));
+    // corect vectors
+    toAlign.setLeftVector(toAlign.getLeftVector() + toAlign.sequence.substring(0, begin));
+    toAlign.setRightVector(toAlign.getRightVector() + toAlign.sequence.substring(end));
+
+
+    // sequence.setOffset(begin);ORIGINAL
+    // System.out.println(template.sequence);
+    // System.out.println(toAlign.sequence.substring(toAlign.getOffset()));
+    // System.err.println(toAlign.sequence);
+    /*
+     * System.out.println(begin); System.out.println("template    = " +template.sequence);
+     * System.out.println("result      = " + result); System.out.println("alinght     = " +
+     * toAlign); System.out.println("alternative = " +
+     * toAlign.sequence.substring(toAlign.getOffset(),Math.min(end, toAlign.sequence.length()))); if
+     * (checkSimilarity(template.sequence,
+     * toAlign.sequence.substring(toAlign.getOffset(),Math.min(end, toAlign.sequence.length()))) <=
+     * checkSimilarity(template.sequence, result)) { originalBegin = toAlign.getOffset(); result =
+     * toAlign.sequence.substring(toAlign.getOffset(),Math.min(end, toAlign.sequence.length())); }
+     */
+    toAlign.setSequence(result);
+    toAlign.setOffset(originalBegin + ((3 - (originalBegin % 3)) % 3));
+    // toAlign.setOffset(toAlign.getOffset() + begin);
+    return result;
+    // System.out.println(toAlign.getOffset() + " = OFFSET");
+  }
+
+  /**
+   * 
+   * @param toAlign
+   * @author Kevin
+   */
+  public static void trimVector(AnalysedSequence toAlign) {
+    // **********simple Vector Cutting*****************
+    boolean offsetExact = findOffset(toAlign);
+    System.out.println("OFFSET !!!!!!!!!!!!!!!!!!!!! " + toAlign.getOffset());
+    System.out.println("exact: = " + offsetExact);
+    Gene gene = toAlign.getReferencedGene();
+
+    String newSequence = toAlign.sequence;
+
+    // check for stopcodon //TODO edit
+    boolean endexact = false;
+
+    String codon = gene.sequence.substring(gene.sequence.length() - 3, gene.sequence.length());
+
+    codon = "false";// TODO fix
+
+    // if found cut at stopcodon
+    /*
+     * for (int i = 0; i < 6; i++) { int hitIndex = newSequence.indexOf(codon); if (hitIndex >= 0 &&
+     * hitIndex == newSequence.lastIndexOf(codon)) { newSequence = newSequence.substring(0, hitIndex
+     * + 3); endexact = true; System.out.println(); System.err.println("start found " + codon); //
+     * TODO save end vector i = 10; } switch (i) { case 0: codon = "UAG"; break; case 1: codon =
+     * "UAA"; break; case 2: codon = "UGA"; break; case 3: codon = "TAG"; break; case 4: codon =
+     * "TAA"; break; case 5: codon = "TGA"; break; default: break; } }
+     */
+
+
+    // calculate the end of the sequence (as long as the gene if possible els till end)
+    // if necessary cut off begin
+    // if (offsetExact) {
+    // negative offset -> sequence goes over left site of gene
+    // -> cut of left of offset
+    String leftVector = newSequence.substring(0, Math.abs(toAlign.getOffset()));
+
+    newSequence = newSequence.substring(Math.abs(toAlign.getOffset()));
+    toAlign.trimQualityArray(Math.abs(toAlign.getOffset()), toAlign.length());
+    // set vector and correct offset
+    toAlign.setLeftVector(leftVector);
+    toAlign.setOffset(0);
+
+    toAlign.setSequence(newSequence);
+    // }
+
+
+
+    // calculate exact offset if necessary;
+    // if (!(endexact && offsetExact)) {
+    System.err.println("OfsetExact = " + offsetExact);
+    // newSequence = trimbyLevenstein(toAlign, offsetExact);
+    // }
+
+    // int sequenceEnd = Math.min(newSequence.length(), gene.sequence.length());
+    // String rightVector = newSequence.substring(sequenceEnd);
+    // newSequence = newSequence.substring(0, sequenceEnd);
+
+    // **********complex Vector Cutting*****************
+    // TODO implement
+
+    System.err.println(toAlign.getOffset() + "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+    // **********modulo Cutting*****************
+    if (toAlign.getOffset() != 0) {
+      int begin = (3 - (toAlign.getOffset() % 3) % 3);
+      // newSequence = newSequence.substring(begin);
+      // newSequence =
+      // newSequence.substring(0,newSequence.length()-(newSequence.length()%3));
+    }
+    // ******************************************
+
+    // toAlign.setRightVector(rightVector);
+    toAlign.setSequence(newSequence);
+  }
+
+  public static void trimVector(AnalysedSequence toAlign, Gene gene) {
+    toAlign.setReferencedGene(gene);
+    trimVector(toAlign);
   }
 
 }

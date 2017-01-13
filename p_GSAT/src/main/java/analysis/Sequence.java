@@ -7,23 +7,22 @@ import java.util.Date;
 import exceptions.CorruptedSequenceException;
 
 /**
- * This class models an abstract DNA sequence which could be a reference gene or a given mutated sequence to analyze.
- * It encapsulates the shared behavior of genes and sequences under analysis.
+ * This class models an abstract DNA sequence which could be a reference gene or a given mutated
+ * sequence to analyze. It encapsulates the shared behavior of genes and sequences under analysis.
  * 
  * @author Ben Kohr
  */
 public abstract class Sequence {
 
   /**
-   * The sequence of nucleotides, encoded as a String. It consists of the letters A, C, T, G for the 
+   * The sequence of nucleotides, encoded as a String. It consists of the letters A, C, T, G for the
    * four possible nucleotides adenine, cytosine, thymine and guanine.
    */
   protected String sequence;
 
 
   /**
-   * The date at which this sequence was created. 
-   * Useful to find out when a sequence was analyzed.
+   * The date at which this sequence was created. Useful to find out when a sequence was analyzed.
    */
   protected String addingDate;
 
@@ -35,11 +34,11 @@ public abstract class Sequence {
 
 
   /**
-   * Creates a new Sequence object. 
-   * As an abstract class, only inheriting classes can be created via this constructor.
+   * Creates a new Sequence object. As an abstract class, only inheriting classes can be created via
+   * this constructor.
    * 
-   * It sets the nucleotide sequence and the researcher's name as passed via the parameters. Furthermore, it
-   * determines the current date and stores internally.
+   * It sets the nucleotide sequence and the researcher's name as passed via the parameters.
+   * Furthermore, it determines the current date and stores internally.
    * 
    * @param sequence the sequence of nucleotides
    * @param researcher the name of the analyzing researcher
@@ -48,30 +47,17 @@ public abstract class Sequence {
    */
   public Sequence(String sequence, String researcher) {
     setSequence(sequence);
-    
+
     this.researcher = researcher;
-    
+
     DateFormat df = new SimpleDateFormat("dd/MM/yy");
     Date dateobj = new Date();
     addingDate = df.format(dateobj);
   }
 
 
-  /**
-   * Returns the reversed version of this object's nucleotide sequence, i.e. the nucleotide sequence
-   * is inverted.
-   * 
-   * @return The reversed nucleotide sequence as a String
-   * 
-   * @author Ben Kohr
-   */
-  public String getReversedSequence() {
-
-    StringBuilder builder = new StringBuilder(sequence);
-    builder.reverse();
-    String reversedSequence = builder.toString();
-
-    return reversedSequence;
+  public String getAddingDate() {
+    return addingDate;
   }
 
 
@@ -82,7 +68,8 @@ public abstract class Sequence {
    * 
    * @return The complementary nucleotide sequence as a String
    * 
-   * @throws CorruptedSequenceException If a nucleotide letter different from A, T, C and G is observed
+   * @throws CorruptedSequenceException If a nucleotide letter different from A, T, C and G is
+   *         observed
    * 
    * @author Ben Kohr
    */
@@ -117,8 +104,56 @@ public abstract class Sequence {
     return complSequence;
   }
 
-  
-  
+
+
+  public String getResearcher() {
+    return researcher;
+  }
+
+
+
+  // GETTERs and SETTERs:
+
+
+
+  /**
+   * Returns the reversed version of this object's nucleotide sequence, i.e. the nucleotide sequence
+   * is inverted.
+   * 
+   * @return The reversed nucleotide sequence as a String
+   * 
+   * @author Ben Kohr
+   */
+  public String getReversedSequence() {
+
+    StringBuilder builder = new StringBuilder(sequence);
+    builder.reverse();
+    String reversedSequence = builder.toString();
+
+    return reversedSequence;
+  }
+
+  public String getSequence() {
+    return sequence;
+  }
+
+
+
+  public void setAddingDate(String addingDate) {
+    this.addingDate = addingDate;
+  }
+
+  public void setResearcher(String researcher) {
+    this.researcher = researcher;
+  }
+
+
+
+  public void setSequence(String sequence) {
+    this.sequence = sequence.toUpperCase();
+  }
+
+
   /**
    * The toString-Method of Object is used to return the nucleotide sequence.
    * 
@@ -129,42 +164,6 @@ public abstract class Sequence {
   @Override
   public String toString() {
     return sequence;
-  }
-  
-  
-  
-  
-  // GETTERs and SETTERs:
-  
- 
-
-  public String getSequence() {
-    return sequence;
-  }
-
-  public void setSequence(String sequence) {
-    this.sequence = sequence.toUpperCase();
-  }
-
-  
-
-  public String getAddingDate() {
-    return addingDate;
-  }
-
-  public void setAddingDate(String addingDate) {
-    this.addingDate = addingDate;
-  }
-
-  
-
-  public String getResearcher() {
-    return researcher;
-  }
-
-
-  public void setResearcher(String researcher) {
-    this.researcher = researcher;
   }
 
 

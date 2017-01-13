@@ -19,29 +19,6 @@ public class Config {
   public static String path;
 
   /**
-   * sets the path of the configuration file
-   * 
-   * @param path
-   */
-  public static void setPath(String path) {
-    Config.path = path;
-  }
-
-  /**
-   * read the content of the configuration file in the given path and store its values locally
-   * 
-   * @throws IOException
-   * @throws ConfigReadException
-   * @throws ConfigNotFoundException
-   */
-  public static void readConfig(String path)
-      throws ConfigReadException, ConfigNotFoundException, IOException {
-    setPath(path);
-    readConfig();
-  }
-
-
-  /**
    * read the content of the configuration file and store its values locally
    * 
    * @throws IOException
@@ -63,6 +40,29 @@ public class Config {
     }
     Config.researcher = researcherLine.substring(11).trim();
     configReader.close();
+  }
+
+  /**
+   * read the content of the configuration file in the given path and store its values locally
+   * 
+   * @throws IOException
+   * @throws ConfigReadException
+   * @throws ConfigNotFoundException
+   */
+  public static void readConfig(String path)
+      throws ConfigReadException, ConfigNotFoundException, IOException {
+    setPath(path);
+    readConfig();
+  }
+
+
+  /**
+   * sets the path of the configuration file
+   * 
+   * @param path
+   */
+  public static void setPath(String path) {
+    Config.path = path;
   }
 
 }
