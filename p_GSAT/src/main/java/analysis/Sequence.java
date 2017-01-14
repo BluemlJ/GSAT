@@ -148,9 +148,17 @@ public abstract class Sequence {
   }
 
 
-
+  /**
+   * This methods sets the internal nucleotide representation as a String constisting of the 
+   * letters A, T, C and G. It also removes all internal whitespace characters and converts in to uppercase.
+   * 
+   * @param sequence The nucleotide sequence to store in the object
+   * 
+   * @author Ben Kohr
+   */
   public void setSequence(String sequence) {
-    this.sequence = sequence.toUpperCase();
+	  sequence = sequence.replaceAll("\\s+","");
+	  this.sequence = sequence.toUpperCase();
   }
 
 

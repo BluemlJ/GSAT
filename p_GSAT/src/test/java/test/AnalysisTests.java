@@ -682,4 +682,37 @@ public class AnalysisTests {
     }
   }
 
+  
+  
+  /**
+   * Checks if the robust gene sequence setting works.
+   */
+  @Test
+  public void robustGeneTest1() {
+	  Gene gene = new Gene("ATC GATCG ATCG" + System.lineSeparator() + " ATC ", 0, null, null);
+	  assertEquals("ATCGATCGATCGATC", gene.getSequence());
+  }
+  
+  
+  /**
+   * Checks if the robust gene sequence setting works.
+   */
+  @Test
+  public void robustGeneTest2() {
+	  Gene gene = new Gene("A	TGCGC	TCGC " + System.lineSeparator() + "A			A", 0, null, null);
+	  assertEquals("ATGCGCTCGCAA", gene.getSequence());
+  }
+  
+  
+  /**
+   * Does the gene setting work even with a sequence which only contains whitespace characters?
+   */
+  @Test
+  public void robustGeneTestUnusual() {
+	  Gene gene = new Gene("   			" + System.lineSeparator(), 0, null, null);
+	  assertTrue(gene.getSequence().isEmpty());
+  }
+  
+  
+  
 }

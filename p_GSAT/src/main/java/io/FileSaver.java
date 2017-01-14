@@ -5,6 +5,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.LinkedList;
 
+import analysis.AnalysedSequence;
 import exceptions.MissingPathException;
 import exceptions.PathUsage;
 
@@ -16,11 +17,6 @@ import exceptions.PathUsage;
  */
 public class FileSaver {
 
-  /**
-   * List of all entries to be stored locally. These are the results of analyzing one or multiple
-   * AB1 files.
-   */
-  private static LinkedList<DatabaseEntry> queue = new LinkedList<DatabaseEntry>();
 
   /**
    * Specifies the path where local files shall be created. This specifies the folder, not the file!
@@ -48,49 +44,9 @@ public class FileSaver {
 
   /**
    * This value is needed to keep track of the momentarily used id of the data. One number
-   * corresponds to a single entry (not a single sequence!).
+   * corresponds to a single sequence. Id start with one to be human-understandable.
    */
-  private static long id = 0;
-
-
-  /**
-   * Puts all entries from a given list into this class's waiting queue. Also sets the ids.
-   * 
-   * @param entries A list of entries to be stored
-   * 
-   * @see #addIntoQueue(DatabaseEntry)
-   * 
-   * @author Ben Kohr
-   */
-  public static void addAllIntoQueue(LinkedList<DatabaseEntry> entries) {
-    for (DatabaseEntry entry : entries) {
-      addIntoQueue(entry);
-    }
-  }
-
-
-  /**
-   * Puts a single entry in the waiting queue for being written into a file. It first sets it's id
-   * (which is currently not set).
-   * 
-   * @param entry new data point to be written into a file
-   * 
-   * @author Ben Kohr
-   */
-  public static void addIntoQueue(DatabaseEntry entry) {
-    setIdOnEntry(entry);
-    queue.add(entry);
-  }
-
-
-  /**
-   * Empties the current waiting queue. This is necessary to start a new writing process.
-   * 
-   * @author Ben Kohr
-   */
-  public static void flushQueue() {
-    queue.clear();
-  }
+  private static long id = 1;
 
 
   /**
@@ -139,7 +95,7 @@ public class FileSaver {
 
     if (!append) {
       writer.write(
-          "id; file name; gene id; sequence; date; researcher; comments; left vector; right vector; promotor; manually checked; mutation; mutation type"
+          "id; file name; gene id; sequence; date; researcher; comments; left vector; right vector; promotor; manually checked; mutations"
               + System.lineSeparator());
     }
 
@@ -149,55 +105,43 @@ public class FileSaver {
 
 
   /**
-   * This method resets the class's state by flushing the waiting queue, resetting the ids and
+   * This method resets the class's state by resetting the ids and
    * setting {@link #firstCall} to true. This is necessary to start a completely new analyzing
    * process.
    */
   public static void resetAll() {
-    flushQueue();
     resetIDs();
     firstCall = true;
   }
 
 
   /**
-   * Sets the momentarily used id to zero.
+   * Sets the momentarily used id to one.
    * 
    * @author Ben Kohr
    */
   public static void resetIDs() {
-    id = 0;
+    id = 1;
   }
 
 
   /**
-   * Sets the momentarily used id to zero, if separate files are desired (each file has it's own
+   * Sets the momentarily used id to one, if separate files are desired (each file has it's own
    * number range, starting with zero).
    * 
    * @see #resetIDs()
    * 
    * @author Ben Kohr
    */
-  private static void resetIDsIfNecessary() {
+  private static void updateIDs() {
     if (separateFiles) {
       resetIDs();
+    } else {
+    	id++;
     }
   }
 
 
-
-  /**
-   * Sets the momentarily used id for a DatabaseEntry. Increments it afterwards to keep it up to
-   * date (unique).
-   * 
-   * @param entry The DatabaseEntry object which has no id right now
-   * 
-   * @author Ben Kohr
-   */
-  public static void setIdOnEntry(DatabaseEntry entry) {
-    entry.setID(id);
-    id++;
-  }
 
 
   /**
@@ -223,8 +167,6 @@ public class FileSaver {
 
 
 
-  // GETTERs and SETTERs:
-
   /**
    * Inserts the stored data entries into one or multiple local file(s). The name of the AB1 file is
    * given as a parameter. It can be used to create the CSV file name.
@@ -237,7 +179,7 @@ public class FileSaver {
    * 
    * @author Ben Kohr
    */
-  public static void storeAllLocally(String filename) throws MissingPathException, IOException {
+  public static void storeResultsLocally(String filename, AnalysedSequence sequence) throws MissingPathException, IOException {
 
     // Without a path, writing is not possible.
     if (localPath == null) {
@@ -254,30 +196,25 @@ public class FileSaver {
       writer = getNewWriter();
     }
 
-    for (DatabaseEntry entry : queue) {
-
-      // retrieve the data from the Database object
-      long id = entry.getID();
-      String fileName = entry.getFileName();
-      int geneID = entry.getGeneID();
-      String sequence = entry.getSequence();
-      String addingDate = entry.getAddingDate();
-      String researcher = entry.getResearcher();
+      // retrieve the data from the AnalysedSequence object
+      String fileName = sequence.getFileName();
+      int geneID = sequence.getReferencedGene().getId();
+      String nucleotides = sequence.getSequence();
+      String addingDate = sequence.getAddingDate();
+      String researcher = sequence.getResearcher();
       // As ';' is the seperator charachter, each inital semicolon is replaced
-      String comments = entry.getComments().replace(';', ',');
-      String leftVector = entry.getLeftVector();
-      String rightVector = entry.getRightVector();
-      String promotor = entry.getPromotor();
-      boolean manuallyChecked = entry.isManuallyChecked();
-      String mutation = entry.getMutation();
-      MutationType mType = entry.getMutationType();
+      String comments = sequence.getComments().replace(';', ',');
+      String leftVector = sequence.getLeftVector();
+      String rightVector = sequence.getRightVector();
+      String promotor = sequence.getPromotor();
+      boolean manuallyChecked = sequence.isManuallyChecked();
 
       // Concatenate the Strings together to one line to be written
       StringBuilder builder = new StringBuilder();
       builder.append(id).append("; ");
       builder.append(fileName).append("; ");
       builder.append(geneID).append("; ");
-      builder.append(sequence).append("; ");
+      builder.append(nucleotides).append("; ");
       builder.append(addingDate).append("; ");
       builder.append(researcher).append("; ");
       builder.append(comments).append("; ");
@@ -285,18 +222,27 @@ public class FileSaver {
       builder.append(rightVector).append("; ");
       builder.append(promotor).append("; ");
       builder.append(manuallyChecked).append("; ");
-      builder.append(mutation).append("; ");
-      builder.append(mType).append(System.lineSeparator());
+      
+      LinkedList<String> mutations = sequence.getMutations();
+      int numberOfMutations = sequence.getMutations().size();
+      for (int i = 0; i < numberOfMutations; i++) {
+    	  builder.append(mutations.get(i));
+    	  if (i < numberOfMutations - 1) {
+    		  builder.append(", ");
+    	  }
+      }
+      
+      builder.append(System.lineSeparator());
 
       // write the String into the file
       String toWrite = builder.toString();
       writer.write(toWrite);
-    }
+    
 
     writer.close();
 
-    // if several files are desired, then the id field has to be set to zero
-    resetIDsIfNecessary();
+    // if several files are desired, then the id field has to be set to zero. Also, ids have to be incremented.
+    updateIDs();
   }
 
 

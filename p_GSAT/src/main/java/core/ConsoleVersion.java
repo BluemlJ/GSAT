@@ -40,14 +40,7 @@ public class ConsoleVersion {
   private static void addLocalEntry(AnalysedSequence activeSequence, File file,
       String destinationPath) {
     try {
-      LinkedList<DatabaseEntry> entries = DatabaseEntry.convertSequenceIntoEntries(activeSequence);
-      FileSaver.addAllIntoQueue(entries);
-      FileSaver.storeAllLocally(file.getName().replaceFirst("[.][^.]+$", "") + "_result");
-      Main.preparePipelineForNextRun();
-    } catch (UndefinedTypeOfMutationException e) {
-      System.err.println("Unknown mutation type found.");
-      System.err.println("Mutation:" + e.mutationString);
-      System.out.println();
+      FileSaver.storeResultsLocally(file.getName().replaceFirst("[.][^.]+$", "") + "_result", activeSequence);
     } catch (MissingPathException e) {
       FileSaver.setLocalPath(destinationPath);
     } catch (IOException e) {

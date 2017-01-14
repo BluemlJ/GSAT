@@ -63,21 +63,7 @@ public class WritingTests {
   private static AnalysedSequence seq4 =
       new AnalysedSequence("ATC", "Kurt Bohne", "sequence3.ab1", null, 0);
 
-  /**
-   * An array of DatabaseEntries used to test the writing of a file.
-   */
-  private static DatabaseEntry[] entries = new DatabaseEntry[] {
-      new DatabaseEntry("a.ab1", 1, "ATCGTCGATCGA", "2016-11-28", "Klaus Bohne", "No comments",
-          "CCCCCCCC", "CCCCCCCC", "ATCG", true, "+1H4", MutationType.INSERTION),
-      new DatabaseEntry("b.ab1", 4, "TCGATCGATCG", "2016-11-28", "Kurt Bohne", "No comments",
-          "TTTTTT", "TTTTTT", "ATCG", false, "-1H4", MutationType.DELETION),
-      new DatabaseEntry("c.ab1", 0, "ATCGA", "2016-11-28", "Klaus Bohne", "No comments", "AAAAAAAT",
-          "AAAAAAAT", "ATCG", true, "ACC4ACG", MutationType.SILENT),
-      new DatabaseEntry("d.ab1", 7, "ATCGT", "2016-11-28", "Kurt Bohne", "No comments", "AAAAAAAT",
-          "AAAAAAAT", "ATCG", false, "H4D", MutationType.SUBSTITUTION),
-      new DatabaseEntry("e.ab1", 1, "AA", "2016-11-28", "Kurt Bohne", "No comments; nothing to say",
-          "GGGGGG", "GGGGGG", "ATCG", true, "reading frame error", MutationType.ERROR)};
-
+ 
   /**
    * This method sets the genes and adds a few mutations to the AnalyzedSequence objects to make
    * them ready to be used in the tests.
@@ -149,14 +135,8 @@ public class WritingTests {
   public void testConvertAndStore()
       throws MissingPathException, IOException, UndefinedTypeOfMutationException {
 
-    // Converting sequence into DBEs
-    LinkedList<DatabaseEntry> entries = DatabaseEntry.convertSequenceIntoEntries(seq4);
-
-    // Storing them in the DatabaseConnection
-    FileSaver.addAllIntoQueue(entries);
-
     FileSaver.setLocalPath(path);
-    FileSaver.storeAllLocally("convertAndStoreTest");
+    FileSaver.storeResultsLocally("convertAndStoreTest", seq4);
 
     // Code for reading the file in again
     BufferedReader reader =
@@ -172,10 +152,7 @@ public class WritingTests {
     String addingDate = df.format(new Date());
 
     String[] correctResults = new String[] {
-        "0; sequence3.ab1; 3; ATC; " + addingDate
-            + "; Kurt Bohne; Nothing to say; null; null; null; false; AAA7CAA; SILENT",
-        "1; sequence3.ab1; 3; ATC; " + addingDate
-            + "; Kurt Bohne; Nothing to say; null; null; null; false; -1H5; DELETION"};
+        "1; sequence3.ab1; 3; ATC; " + addingDate + "; Kurt Bohne; Nothing to say; null; null; null; false; AAA7CAA, -1H5"};
 
     for (int i = 0; i < correctResults.length; i++) {
       String[] correctInfo = correctResults[i].split(";");
@@ -185,7 +162,7 @@ public class WritingTests {
     }
 
     // Size should be three, for there a two initial entries.
-    assertTrue(results.size() == 2);
+    assertTrue(results.size() == 1);
 
   }
 
@@ -310,7 +287,7 @@ public class WritingTests {
 
     // Now, path is null. This means, a MissingPathException is to be
     // thrown.
-    FileSaver.storeAllLocally("problemtest");
+    FileSaver.storeResultsLocally("problemtest", seq1);
 
     // This line should not be reached!
     fail();
@@ -331,11 +308,10 @@ public class WritingTests {
    */
   @Test
   public void testStoreAllLocallyNoEntries() throws MissingPathException, IOException {
-    // no entries in the DatabaseConnection stored this time
 
     FileSaver.setLocalPath(path);
 
-    FileSaver.storeAllLocally("notestdata");
+    FileSaver.storeResultsLocally("notestdata", seq3);
 
     // Code for reading the file in again
     BufferedReader reader = new BufferedReader(new FileReader("writingtests/notestdata.csv"));
@@ -344,7 +320,7 @@ public class WritingTests {
     reader.lines().skip(1).forEach(line -> results.add(line));
 
     // Check whether the input is correctly empty.
-    assertTrue(results.size() == 0);
+    assertTrue(results.size() == 1);
     reader.close();
   }
 
@@ -362,14 +338,10 @@ public class WritingTests {
   @Test
   public void testStoreAllLocallyNormal() throws MissingPathException, IOException {
 
-    // Setup of the DatabaseConnection
-    for (DatabaseEntry entry : entries) {
-      FileSaver.addIntoQueue(entry);
-    }
 
     FileSaver.setLocalPath(path);
 
-    FileSaver.storeAllLocally("testdata");
+    FileSaver.storeResultsLocally("testdata", seq1);
 
     // Code for reading the file in again
     BufferedReader reader = new BufferedReader(new FileReader("writingtests/testdata.csv"));
@@ -380,18 +352,14 @@ public class WritingTests {
 
     // Check whether the input is correct
     String[] correctResults = new String[] {
-        "0; a.ab1; 1; ATCGTCGATCGA; 2016-11-28; Klaus Bohne; No comments; CCCCCCCC; CCCCCCCC; ATCG; true; +1H4; INSERTION",
-        "1; b.ab1; 4; TCGATCGATCG; 2016-11-28; Kurt Bohne; No comments; TTTTTT; TTTTTT; ATCG; false; -1H4; DELETION",
-        "2; c.ab1; 0; ATCGA; 2016-11-28; Klaus Bohne; No comments; AAAAAAAT; AAAAAAAT; ATCG; true; ACC4ACG; SILENT",
-        "3; d.ab1; 7; ATCGT; 2016-11-28; Kurt Bohne; No comments; AAAAAAAT; AAAAAAAT; ATCG; false; H4D; SUBSTITUTION",
-        "4; e.ab1; 1; AA; 2016-11-28; Kurt Bohne; No comments, nothing to say; GGGGGG; GGGGGG; ATCG; true; reading frame error; ERROR"};
+        "1; sequence1.ab1; 4; ATCG; 14/01/17; Klaus Bohne; No comments; A; B; null; false; A131E, G7K, +2H5"};
 
     for (int i = 0; i < correctResults.length; i++) {
       assertEquals(correctResults[i], results.get(i));
     }
 
     // Size should be five, for there a five initial entries
-    assertTrue(results.size() == 5);
+    assertTrue(results.size() == 1);
 
   }
 
@@ -403,17 +371,10 @@ public class WritingTests {
     FileSaver.setLocalPath(path);
 
     // First bunch of data
-    FileSaver.addIntoQueue(entries[0]);
-    FileSaver.addIntoQueue(entries[1]);
-    FileSaver.storeAllLocally("separate1");
-
-    // flush the queue
-    FileSaver.flushQueue();
+    FileSaver.storeResultsLocally("separate1", seq2);
 
     // Second bunch, to be stored in a different file
-    FileSaver.addIntoQueue(entries[2]);
-    FileSaver.addIntoQueue(entries[3]);
-    FileSaver.storeAllLocally("separate2");
+    FileSaver.storeResultsLocally("separate2", seq3);
 
     // Test the resulting file
     BufferedReader reader = new BufferedReader(new FileReader("writingtests/gsat_results.csv"));
@@ -423,17 +384,15 @@ public class WritingTests {
     reader.close();
 
     String[] correctResults = new String[] {
-        "0; a.ab1; 1; ATCGTCGATCGA; 2016-11-28; Klaus Bohne; No comments; CCCCCCCC; CCCCCCCC; ATCG; true; +1H4; INSERTION",
-        "1; b.ab1; 4; TCGATCGATCG; 2016-11-28; Kurt Bohne; No comments; TTTTTT; TTTTTT; ATCG; false; -1H4; DELETION",
-        "2; c.ab1; 0; ATCGA; 2016-11-28; Klaus Bohne; No comments; AAAAAAAT; AAAAAAAT; ATCG; true; ACC4ACG; SILENT",
-        "3; d.ab1; 7; ATCGT; 2016-11-28; Kurt Bohne; No comments; AAAAAAAT; AAAAAAAT; ATCG; false; H4D; SUBSTITUTION",};
+        "1; sequence2.ab1; 1; ATCTTTG; 14/01/17; Klaus Bohne; No comments; null; null; null; false; reading frame error",
+    	"2; sequence3.ab1; 2; ATCTTGCGTTG; 14/01/17; Klaus Hafer; ; null; null; null; false; ",};
 
     for (int i = 0; i < correctResults.length; i++) {
       assertEquals(correctResults[i], results.get(i));
     }
 
     // Size should be five, for there a five initial entries
-    assertTrue(results.size() == 4);
+    assertTrue(results.size() == 2);
 
   }
 
@@ -444,16 +403,9 @@ public class WritingTests {
     FileSaver.setSeparateFiles(false);
     FileSaver.setLocalPath(path);
 
-    LinkedList<DatabaseEntry> entries = DatabaseEntry.convertSequenceIntoEntries(seq4);
-
     // Two bunches of data
-    FileSaver.addIntoQueue(entries.get(0));
-    FileSaver.storeAllLocally("");
-    FileSaver.flushQueue();
-
-    FileSaver.addIntoQueue(entries.get(1));
-    FileSaver.storeAllLocally("");
-    FileSaver.flushQueue();
+    FileSaver.storeResultsLocally("", seq1);
+    FileSaver.storeResultsLocally("", seq2);
 
 
     // Code for reading the file in again
@@ -469,10 +421,8 @@ public class WritingTests {
     String addingDate = df.format(new Date());
 
     String[] correctResults = new String[] {
-        "0; sequence3.ab1; 3; ATC; " + addingDate
-            + "; Kurt Bohne; Nothing to say; null; null; null; false; AAA7CAA; SILENT",
-        "1; sequence3.ab1; 3; ATC; " + addingDate
-            + "; Kurt Bohne; Nothing to say; null; null; null; false; -1H5; DELETION"};
+        "1; sequence1.ab1; 4; ATCG; " + addingDate + "; Klaus Bohne; No comments; A; B; null; false; A131E, G7K, +2H5",
+        "2; sequence2.ab1; 1; ATCTTTG; " + addingDate + "; Klaus Bohne; No comments; null; null; null; false; reading frame error"};
 
     for (int i = 0; i < correctResults.length; i++) {
       String[] correctInfo = correctResults[i].split(";");
@@ -494,21 +444,8 @@ public class WritingTests {
     FileSaver.setSeparateFiles(false);
     FileSaver.setLocalPath(path);
 
-    LinkedList<DatabaseEntry> noEntries = new LinkedList<DatabaseEntry>();
-
-    // Nothing added - does it still work?
-    FileSaver.addAllIntoQueue(noEntries);
-    FileSaver.storeAllLocally("");
-    FileSaver.flushQueue();
-
-    FileSaver.addAllIntoQueue(noEntries);
-    FileSaver.storeAllLocally("");
-    FileSaver.flushQueue();
-
-    FileSaver.addAllIntoQueue(noEntries);
-    FileSaver.storeAllLocally("");
-    FileSaver.flushQueue();
-
+    // Nothing added (no mutations) - does it still work?
+    FileSaver.storeResultsLocally("", seq3);
 
     // Code for reading the file in again
     BufferedReader reader = new BufferedReader(new FileReader("writingtests/gsat_results.csv"));
@@ -518,7 +455,7 @@ public class WritingTests {
     reader.close();
 
     // No entries expected
-    assertTrue(results.size() == 0);
+    assertTrue(results.size() == 1);
 
   }
 
@@ -529,17 +466,10 @@ public class WritingTests {
     FileSaver.setLocalPath(path);
 
     // First bunch of data
-    FileSaver.addIntoQueue(entries[0]);
-    FileSaver.addIntoQueue(entries[1]);
-    FileSaver.storeAllLocally("separate1");
-
-    // flush the queue
-    FileSaver.flushQueue();
+    FileSaver.storeResultsLocally("separate1", seq2);
 
     // Second bunch, to be stored in a different file
-    FileSaver.addIntoQueue(entries[2]);
-    FileSaver.addIntoQueue(entries[3]);
-    FileSaver.storeAllLocally("separate2");
+    FileSaver.storeResultsLocally("separate2", seq3);
 
     // Test the first file
     BufferedReader reader = new BufferedReader(new FileReader("writingtests/separate1.csv"));
@@ -549,14 +479,13 @@ public class WritingTests {
     reader.close();
 
     String[] correctResults = new String[] {
-        "0; a.ab1; 1; ATCGTCGATCGA; 2016-11-28; Klaus Bohne; No comments; CCCCCCCC; CCCCCCCC; ATCG; true; +1H4; INSERTION",
-        "1; b.ab1; 4; TCGATCGATCG; 2016-11-28; Kurt Bohne; No comments; TTTTTT; TTTTTT; ATCG; false; -1H4; DELETION"};
+        "1; sequence2.ab1; 1; ATCTTTG; 14/01/17; Klaus Bohne; No comments; null; null; null; false; reading frame error"};
 
     for (int i = 0; i < correctResults.length; i++) {
       assertEquals(correctResults[i], results.get(i));
     }
 
-    assertTrue(results.size() == 2);
+    assertTrue(results.size() == 1);
 
     // Test the second file
     reader = new BufferedReader(new FileReader("writingtests/separate2.csv"));
@@ -566,15 +495,14 @@ public class WritingTests {
     reader.close();
 
     correctResults = new String[] {
-        "0; c.ab1; 0; ATCGA; 2016-11-28; Klaus Bohne; No comments; AAAAAAAT; AAAAAAAT; ATCG; true; ACC4ACG; SILENT",
-        "1; d.ab1; 7; ATCGT; 2016-11-28; Kurt Bohne; No comments; AAAAAAAT; AAAAAAAT; ATCG; false; H4D; SUBSTITUTION"};
+        "1; sequence3.ab1; 2; ATCTTGCGTTG; 14/01/17; Klaus Hafer; ; null; null; null; false; "};
 
     for (int i = 0; i < correctResults.length; i++) {
       assertEquals(correctResults[i], results2.get(i));
     }
 
     // Size should be five, for there a five initial entries
-    assertTrue(results2.size() == 2);
+    assertTrue(results2.size() == 1);
 
   }
 

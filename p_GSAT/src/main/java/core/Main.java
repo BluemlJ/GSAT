@@ -31,15 +31,6 @@ public class Main {
   }
 
   /**
-   * Resets the analysis pipeline between the analyses of different files.
-   * 
-   * @author Ben Kohr
-   */
-  static void preparePipelineForNextRun() {
-    FileSaver.flushQueue();
-  }
-
-  /**
    * Resets the analysis pipeline to be able to start with a completely new analyzing process.
    * 
    * @author Ben Kohr
