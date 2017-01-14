@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.ProgressBar?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.FlowPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<VBox prefHeight="400.0" prefWidth="640.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.MainWindow">
+  <children>
+      <MenuBar prefHeight="25.0">
+        <menus>
+          <Menu mnemonicParsing="false" text="Help">
+            <items>
+              <MenuItem mnemonicParsing="false" text="Manual" />
+                  <MenuItem mnemonicParsing="false" text="About" />
+            </items>
+          </Menu>
+        </menus>
+      </MenuBar>
+    <AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="376.0" prefWidth="640.0">
+      <children>
+            <Text layoutX="12.0" layoutY="158.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Gene:">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Text>
+            <ScrollPane layoutX="14.0" layoutY="185.0" prefHeight="145.0" prefWidth="612.0" AnchorPane.bottomAnchor="6.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="185.0">
+              <content>
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="216.0" prefWidth="582.0" />
+              </content>
+            </ScrollPane>
+            <ChoiceBox layoutX="58.0" layoutY="140.0" prefWidth="150.0" />
+            <TextField layoutX="58.0" layoutY="47.0" prefHeight="25.0" prefWidth="412.0" />
+            <Text layoutX="21.0" layoutY="65.0" strokeType="OUTSIDE" strokeWidth="0.0" text="src">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Text>
+            <Text layoutX="16.0" layoutY="109.0" strokeType="OUTSIDE" strokeWidth="0.0" text="dest">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Text>
+            <TextField layoutX="58.0" layoutY="91.0" prefHeight="25.0" prefWidth="412.0" />
+            <Button layoutX="484.0" layoutY="47.0" mnemonicParsing="false" text="..." />
+            <Button layoutX="484.0" layoutY="91.0" mnemonicParsing="false" text="..." />
+            <Button layoutX="223.0" layoutY="140.0" mnemonicParsing="false" text="Settings" />
+      </children>
+    </AnchorPane>
+      <FlowPane alignment="BASELINE_CENTER" hgap="14.0" prefHeight="19.0" prefWidth="640.0">
+         <children>
+            <ProgressBar focusTraversable="false" nodeOrientation="LEFT_TO_RIGHT" prefHeight="25.0" prefWidth="525.0" progress="0.0" />
+            <Button maxHeight="-Infinity" maxWidth="-Infinity" mnemonicParsing="false" prefHeight="25.0" prefWidth="7.0" text="Start" />
+         </children>
+         <VBox.margin>
+            <Insets bottom="14.0" />
+         </VBox.margin>
+      </FlowPane>
+  </children>
+</VBox>
