@@ -399,6 +399,19 @@ public class StringAnalysis {
         // Set offset
         offsetNotFound = false;
         seqence.setOffset(targetIndex - testIndex);// changed + to - for test
+        
+        //dirty fix:
+//        String genOption1 = gene.substring(Math.max(targetIndex - testIndex,0));
+//        String genOption2 = gene.substring(Math.max(targetIndex + testIndex,0));
+//        String seqOption1 = seqence.getSequence().substring(Math.max(targetIndex - testIndex,0));
+//        String seqOption2 = seqence.getSequence().substring(Math.max(targetIndex + testIndex,0));
+//        if (checkSimilarity(genOption1, seqOption1) < checkSimilarity(genOption2, seqOption2)) {
+          //seqence.setOffset(testIndex-targetIndex);
+
+ //         System.err.println(testIndex);
+//        }
+        //Dirty fix end
+        
         if (testIndex == 0) {
           return true;
         }
@@ -680,15 +693,17 @@ public class StringAnalysis {
     // if (offsetExact) {
     // negative offset -> sequence goes over left site of gene
     // -> cut of left of offset
-    System.err.println("OFF = " + toAlign.getOffset());
-    String leftVector = newSequence.substring(0, Math.abs(toAlign.getOffset()));
+    //System.err.println("OFF = " + toAlign.getOffset());
+    String leftVector = newSequence.substring(0, Math.max(toAlign.getOffset(),0));
 
-    newSequence = newSequence.substring(Math.abs(toAlign.getOffset()));
-    toAlign.trimQualityArray(Math.abs(toAlign.getOffset()), toAlign.length());
+    newSequence = newSequence.substring(Math.max(toAlign.getOffset(),0));
+    toAlign.trimQualityArray(Math.max(toAlign.getOffset(),0), toAlign.length());
+    
+    
     // set vector and correct offset
     toAlign.setLeftVector(leftVector);
-    toAlign.setOffset(0);
-
+    toAlign.setOffset(Math.min(toAlign.getOffset(), 0));
+    toAlign.setOffset(-toAlign.getOffset());
     toAlign.setSequence(newSequence);
     // }
 
@@ -722,8 +737,10 @@ public class StringAnalysis {
     //*********OVERSIZE Trim*********************
     //if newSequence with offset is longer than original gen, cut
     //TODO check if OK
+
     if (newSequence.length()+toAlign.getOffset() > gene.getSequence().length()) {
       int end = gene.getSequence().length()-toAlign.getOffset();
+      System.out.println(end);
       newSequence = newSequence.substring(0,end);
       toAlign.trimQualityArray(0, end);
     }
