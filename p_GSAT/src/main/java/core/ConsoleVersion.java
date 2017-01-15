@@ -304,6 +304,7 @@ public class ConsoleVersion {
    * in the same folder as the ab1 files if genes.txt can not be found it asks the user for a gene
    * 
    * @return
+   * @author Lovis Heindrich
    * 
    */
   private static Gene readGene() {
@@ -448,6 +449,8 @@ public class ConsoleVersion {
 
   /**
    * starts the console version of the programs
+   * 
+   * @author Lovis Heindrich
    */
   public static void startConsoleVersion() {
     ConsoleIO.clearConsole();

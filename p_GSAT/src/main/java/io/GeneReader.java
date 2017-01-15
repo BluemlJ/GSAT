@@ -37,19 +37,27 @@ public class GeneReader {
    */
   public static void addGene(String genePath, String geneName, String geneSequence)
       throws DuplicateGeneException, IOException {
+    
+    path = genePath;
+    
+    //read all genes from path to avoid losing data while rewriting
     readGenes(path);
+    
+    //check if the new gene already exists
     if (GeneReader.containsGene(geneName)) {
       throw new DuplicateGeneException(geneName);
     }
-    path = genePath;
+    
+    //clears all genes from file
     BufferedWriter geneWriter = new BufferedWriter(new FileWriter(genePath));
-    // TODO new genes need to be in a new line, no way to know if file starts with an empty line or
-
+    
+    // write all previously known genes
     for (Gene gene : geneList) {
       geneWriter.write(gene.getName() + SEPARATOR + gene.getSequence());
       geneWriter.write(System.getProperty("line.separator"));
     }
-    // with an existing line
+    
+    // add new gene
     geneWriter.write(geneName + SEPARATOR + geneSequence);
     geneWriter.close();
     readGenes(genePath);
