@@ -307,7 +307,7 @@ public class ConsoleVersion {
    * 
    */
   private static Gene readGene() {
-    String path = SequenceReader.getPath() + "/genes.txt";
+    String path = new File("resources/GeneData/Genes.txt").getAbsolutePath();
     try {
       GeneReader.readGenes(path);
       if (GeneReader.getNumGenes() == 0) {
@@ -455,7 +455,7 @@ public class ConsoleVersion {
     Pair<LinkedList<File>, LinkedList<File>> okayAndOddFiles = askForAB1Files();
 
     // read config file
-    String configReport = getConfig(SequenceReader.getPath());
+    String configReport = getConfig(new File("resources").getAbsolutePath());
 
     // set path for results and set database path
     String destinationPath = processPath();

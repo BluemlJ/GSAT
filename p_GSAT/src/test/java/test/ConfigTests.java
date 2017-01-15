@@ -2,6 +2,7 @@ package test;
 
 import static org.junit.Assert.assertEquals;
 
+import java.io.File;
 import java.io.IOException;
 
 import org.junit.Test;
@@ -30,7 +31,8 @@ public class ConfigTests {
   @Test
   public void testAnalysedSeqRead()
       throws IOException, ConfigReadException, ConfigNotFoundException {
-    Config.setPath(getClass().getResource("/lh_config").getFile());
+    File path = new File("resources/lh_config");
+    Config.setPath(path.getAbsolutePath());
     Config.readConfig();
     AnalysedSequence testSeq =
         new AnalysedSequence("atg", Config.researcher, "seq1.abi", new int[] {100, 100, 100}, 100);
@@ -46,7 +48,9 @@ public class ConfigTests {
    */
   @Test
   public void testConfigRead() throws IOException, ConfigReadException, ConfigNotFoundException {
-    Config.setPath(getClass().getResource("/lh_config").getFile());
+    //Config.setPath(getClass().getResource("/lh_config").getFile());
+    File path = new File("resources/lh_config");
+    Config.setPath(path.getAbsolutePath());
     Config.readConfig();
     assertEquals(Config.researcher, "lovis heindrich");
   }
@@ -60,7 +64,8 @@ public class ConfigTests {
    */
   @Test
   public void testCorruptConfig() throws IOException, ConfigNotFoundException {
-    Config.setPath(getClass().getResource("/corrupt_config").getFile());
+    File path = new File("resources/corrupt_config");
+    Config.setPath(path.getAbsolutePath());
     try {
       Config.readConfig();
     } catch (ConfigReadException e) {

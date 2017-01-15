@@ -2,6 +2,7 @@ package test;
 
 import static org.junit.Assert.assertEquals;
 
+import java.io.File;
 import java.io.IOException;
 
 import org.junit.Before;
@@ -19,6 +20,7 @@ import io.GeneReader;
 public class GeneReadingTest {
 
   private String path;
+  private String writePath;
 
   /**
    * initialize the geneReader with a sample gene file
@@ -27,7 +29,9 @@ public class GeneReadingTest {
    */
   @Before
   public void initGeneReader() throws IOException {
-    path = getClass().getResource("/GeneData/Genes.txt").getFile();
+    // path = getClass().getResource("/GeneData/Genes.txt").getFile();
+    path = new File("resources/GeneData/Genes.txt").getAbsolutePath();
+    writePath = new File("resources/GeneData/GenesWriteTest.txt").getAbsolutePath();
     GeneReader.readGenes(path);
 
 
@@ -74,9 +78,8 @@ public class GeneReadingTest {
    */
   @Test
   public void testWriteGene() throws DuplicateGeneException, IOException {
-    GeneReader.clearTxtFile(getClass().getResource("/GeneData/GenesWriteTest.txt").getFile());
-    GeneReader.addGene(getClass().getResource("/GeneData/GenesWriteTest.txt").getFile(), "testGene",
-        "aaatttaaaggg");
+    GeneReader.clearTxtFile(writePath);
+    GeneReader.addGene(writePath, "testGene", "aaatttaaaggg");
     assertEquals(GeneReader.getGene("testGene").getSequence(), "aaatttaaaggg".toUpperCase());
   }
 
@@ -88,11 +91,9 @@ public class GeneReadingTest {
    */
   @Test
   public void testWriteGenes() throws DuplicateGeneException, IOException {
-    GeneReader.clearTxtFile(getClass().getResource("/GeneData/GenesWriteTest.txt").getFile());
-    GeneReader.addGene(getClass().getResource("/GeneData/GenesWriteTest.txt").getFile(), "testGene",
-        "aaatttaaaggg");
-    GeneReader.addGene(getClass().getResource("/GeneData/GenesWriteTest.txt").getFile(),
-        "testGene2", "aaatttaaaggg");
+    GeneReader.clearTxtFile(writePath);
+    GeneReader.addGene(writePath, "testGene", "aaatttaaaggg");
+    GeneReader.addGene(writePath, "testGene2", "aaatttaaaggg");
     assertEquals(GeneReader.getGene("testGene").getSequence(), "aaatttaaaggg".toUpperCase());
     assertEquals(GeneReader.getGene("testGene2").getSequence(), "aaatttaaaggg".toUpperCase());
   }
@@ -104,12 +105,10 @@ public class GeneReadingTest {
    */
   @Test
   public void writeDuplicateGene() throws IOException {
-    GeneReader.clearTxtFile(getClass().getResource("/GeneData/GenesWriteTest.txt").getFile());
+    GeneReader.clearTxtFile(writePath);
     try {
-      GeneReader.addGene(getClass().getResource("/GeneData/GenesWriteTest.txt").getFile(),
-          "testGene", "aaatttaaaggg");
-      GeneReader.addGene(getClass().getResource("/GeneData/GenesWriteTest.txt").getFile(),
-          "testGene", "aaatttaaaggg");
+      GeneReader.addGene(writePath, "testGene", "aaatttaaaggg");
+      GeneReader.addGene(writePath, "testGene", "aaatttaaaggg");
     } catch (DuplicateGeneException e) {
       assertEquals(e.getMessage(), "Gene testGene already exists");
     }
