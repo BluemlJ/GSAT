@@ -141,15 +141,22 @@ public class VectorTrimTests {
    */
   @Test
   public void trimVectorBeginMissingTest() {
-    AnalysedSequence sequence =
-        new AnalysedSequence("wieGehts3dirheute3ABCABCENDYXYX", null, null, null, 0.0);
-    Gene gen = new Gene("BEGhallo3wieGehts3dirheute3ABCABCEND", 0, null, null);
+    String seq = "wieGehts3dirheute3ABCABCENDendeaufgefueltumdasgenlangerzumachenYXYX";
+    int[] qualities = new int[seq.length()];
+
+    AnalysedSequence sequence = new AnalysedSequence(seq, "res", "N", qualities, 0.0);
+    Gene gen = new Gene("BEGhallo3wieGehts3dirheute3ABCABCENDendeaufgefueltumdasgenlangerzumachen", 0, null, null);
 
     StringAnalysis.trimVector(sequence, gen);
     String test = sequence.getSequence();
 
-    String expected = "wieGehts3dirheute3ABCABCEND";
-    assertTrue(expected.equals(test));
+    System.out.println();
+    System.out.println(test);
+    System.out.println(sequence.getOffset());
+    String expected = "wieGehts3dirheute3ABCABCENDendeaufgefueltumdasgenlangerzumachen";
+    System.out.println(expected);
+    
+    assertTrue(expected.toUpperCase().equals(test));
     assertEquals(9, sequence.getOffset());
   }
 
@@ -182,16 +189,18 @@ public class VectorTrimTests {
    */
   @Test
   public void trimVectorDammagedBeginTest() {
-    AnalysedSequence sequence =
-        new AnalysedSequence("XXhaXlo3wieGehts3dirheute3XX", null, null, null, 0.0);
-    Gene gen = new Gene("hallo3wieGehts3dirheute3", 0, null, null);
+    String seq = "XXhaXlo3wieGehts3dirheute3heuheuheuheuheuheuheuheuheuheuheuheuXX";
+    int[] qualities = new int[seq.length()];
+    AnalysedSequence sequence = new AnalysedSequence(seq, "Researcher", "NAME", qualities, 0.0);
+    Gene gen =
+        new Gene("hallo3wieGehts3dirheute3heuheuheuheuheuheuheuheuheuheuheuheu", 0, null, null);
 
     StringAnalysis.trimVector(sequence, gen);
 
     String test = sequence.getSequence();
-    String expected = "haXlo3wieGehts3dirheute3";
+    String expected = "haXlo3wieGehts3dirheute3heuheuheuheuheuheuheuheuheuheuheuheu";
 
-    assertTrue(expected.equals(test));
+    assertTrue(expected.toUpperCase().equals(test));
     assertEquals(0, sequence.getOffset());
   }
 
@@ -284,15 +293,18 @@ public class VectorTrimTests {
    */
   @Test
   public void trimVectorMutatedTest() {
-    AnalysedSequence sequence =
-        new AnalysedSequence("XXhalAo3wieGehts3dirheute3XX", null, null, null, 0.0);
+    String seq = "XXhalAo3wieGehts3dirheute3XX";
+    int[] qualities = new int[seq.length()];
+    AnalysedSequence sequence = new AnalysedSequence(seq, "Researcher", "NAME", qualities, 0.0);
     Gene gen = new Gene("hallo3wieGehts3dirheute3", 0, null, null);
 
     StringAnalysis.trimVector(sequence, gen);
     String test = sequence.getSequence();
     String expected = "halAo3wieGehts3dirheute3";
 
-    assertTrue(expected.equals(test));
+    System.out.println(test);
+    System.out.println(expected);
+    assertTrue(expected.toUpperCase().equals(test));
     assertEquals(0, sequence.getOffset());
   }
 
