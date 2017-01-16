@@ -188,7 +188,7 @@ public class QualityTests {
     int[] qualities = {0, 0, 0, 0, 0, 0, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100,
         0, 0, 0, 30, 0, 0, 0, 30, 0, 0, 0, 30, 0, 0, 0, 30, 0, 0};
     AnalysedSequence testSequence =
-        new AnalysedSequence("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", "", "", qualities, 25);
+        new AnalysedSequence("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", "", "", qualities);
     int[] trim = QualityAnalysis.findLowQuality(testSequence);
     assertEquals(trim[1], 18);
   }

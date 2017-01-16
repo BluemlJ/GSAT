@@ -124,7 +124,7 @@ public class QualityAnalysis {
         // subsequence
         for (int endCandidate = endPosition; endCandidate < qualities.length; endCandidate++) {
           if (qualities[endCandidate] < avgApproximationEnd) {
-            // Kevins math magic
+            //math magic
             return endCandidate + ((3 - (endCandidate % 3)) % 3);
           }
         }
