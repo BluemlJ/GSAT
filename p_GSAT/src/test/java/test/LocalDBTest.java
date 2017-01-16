@@ -7,7 +7,7 @@ import java.sql.SQLException;
 import org.junit.Ignore;
 import org.junit.Test;
 
-import com.mysql.cj.jdbc.MysqlDataSource;
+//import com.mysql.cj.jdbc.MysqlDataSource;
 
 /**
  * local test to try to connect to a local mysql database and read some properties
@@ -30,16 +30,16 @@ public class LocalDBTest {
     java.sql.Statement stmt = null;
     ResultSet rs = null;
     
-    MysqlDataSource dataSource = new MysqlDataSource();
-    dataSource.setUser("root");
-    dataSource.setPassword("rootpassword");
-    dataSource.setPort(3306);
-    dataSource.setServerName("127.0.0.1");
+    //MysqlDataSource dataSource = new MysqlDataSource();
+    //dataSource.setUser("root");
+    //dataSource.setPassword("rootpassword");
+    //dataSource.setPort(3306);
+    //dataSource.setServerName("127.0.0.1");
     
     try {
-       conn = dataSource.getConnection();
-       stmt = conn.createStatement();
-       rs = stmt.executeQuery("SHOW DATABASES");
+      // conn = dataSource.getConnection();
+      // stmt = conn.createStatement();
+      // rs = stmt.executeQuery("SHOW DATABASES");
        while(rs.next()){
          System.out.println(rs.getString(1));
        }

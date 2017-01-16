@@ -350,9 +350,12 @@ public class WritingTests {
     reader.lines().skip(1).forEach(line -> results.add(line));
     reader.close();
 
+    DateFormat df = new SimpleDateFormat("dd/MM/yy");
+    String addingDate = df.format(new Date());
+    
     // Check whether the input is correct
     String[] correctResults = new String[] {
-        "1; sequence1.ab1; 4; ATCG; 14/01/17; Klaus Bohne; No comments; A; B; null; false; A131E, G7K, +2H5"};
+        "1; sequence1.ab1; 4; ATCG; "+ addingDate +"; Klaus Bohne; No comments; A; B; null; false; A131E, G7K, +2H5"};
 
     for (int i = 0; i < correctResults.length; i++) {
       assertEquals(correctResults[i], results.get(i));
@@ -383,9 +386,12 @@ public class WritingTests {
     reader.lines().skip(1).forEach(line -> results.add(line));
     reader.close();
 
+    DateFormat df = new SimpleDateFormat("dd/MM/yy");
+    String addingDate = df.format(new Date());
+    
     String[] correctResults = new String[] {
-        "1; sequence2.ab1; 1; ATCTTTG; 14/01/17; Klaus Bohne; No comments; null; null; null; false; reading frame error",
-    	"2; sequence3.ab1; 2; ATCTTGCGTTG; 14/01/17; Klaus Hafer; ; null; null; null; false; ",};
+        "1; sequence2.ab1; 1; ATCTTTG; " + addingDate + "; Klaus Bohne; No comments; null; null; null; false; reading frame error",
+    	"2; sequence3.ab1; 2; ATCTTGCGTTG; " + addingDate + "; Klaus Hafer; ; null; null; null; false; ",};
 
     for (int i = 0; i < correctResults.length; i++) {
       assertEquals(correctResults[i], results.get(i));
@@ -478,8 +484,11 @@ public class WritingTests {
     reader.lines().skip(1).forEach(line -> results.add(line));
     reader.close();
 
+    DateFormat df = new SimpleDateFormat("dd/MM/yy");
+    String addingDate = df.format(new Date());
+    
     String[] correctResults = new String[] {
-        "1; sequence2.ab1; 1; ATCTTTG; 14/01/17; Klaus Bohne; No comments; null; null; null; false; reading frame error"};
+        "1; sequence2.ab1; 1; ATCTTTG; " + addingDate + "; Klaus Bohne; No comments; null; null; null; false; reading frame error"};
 
     for (int i = 0; i < correctResults.length; i++) {
       assertEquals(correctResults[i], results.get(i));
@@ -493,9 +502,9 @@ public class WritingTests {
     LinkedList<String> results2 = new LinkedList<String>();
     reader.lines().skip(1).forEach(line -> results2.add(line));
     reader.close();
-
+    
     correctResults = new String[] {
-        "1; sequence3.ab1; 2; ATCTTGCGTTG; 14/01/17; Klaus Hafer; ; null; null; null; false; "};
+        "1; sequence3.ab1; 2; ATCTTGCGTTG; " + addingDate + "; Klaus Hafer; ; null; null; null; false; "};
 
     for (int i = 0; i < correctResults.length; i++) {
       assertEquals(correctResults[i], results2.get(i));
