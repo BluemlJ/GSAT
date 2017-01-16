@@ -32,7 +32,7 @@ public class ExceptionTests {
    * An AnalyzedSequence object for test purposes.
    */
   static AnalysedSequence seq1 =
-      new AnalysedSequence("ATRGATCG", "Kurt Hafer", "sequence1.ab1", null, 0);
+      new AnalysedSequence("ATRGATCG", "Kurt Hafer", "sequence1.ab1", null);
 
 
   /**
@@ -159,7 +159,7 @@ public class ExceptionTests {
   public void testDissimilarGeneException() {
 
     AnalysedSequence toAnalyse =
-        new AnalysedSequence("TCTCTAGAGC", "Klaus Hafer", "sequence.ab1", null, 0);
+        new AnalysedSequence("TCTCTAGAGC", "Klaus Hafer", "sequence.ab1", null);
     Gene bestGene = new Gene("AATC", 1, "nicht FSA", "Karl Mueller");
 
 

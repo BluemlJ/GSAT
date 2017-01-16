@@ -8,6 +8,7 @@ import java.util.Arrays;
 import java.util.LinkedList;
 
 import org.junit.Test;
+import org.junit.internal.Throwables;
 
 import analysis.AnalysedSequence;
 import analysis.Gene;
@@ -321,9 +322,9 @@ public class AnalysisTests {
     testDatabase.add(gena);
     testDatabase.add(genb);
     testDatabase.add(genc);
-    AnalysedSequence testSeq = new AnalysedSequence("hello", "Jannis", "toAnalyse", null, 0);
-    AnalysedSequence testSeq2 = new AnalysedSequence("ola", "Jannis", "toAnalyse", null, 0);
-    AnalysedSequence testSeq3 = new AnalysedSequence("mochi", "Jannis", "toAnalyse", null, 0);
+    AnalysedSequence testSeq = new AnalysedSequence("hello", "Jannis", "toAnalyse", null);
+    AnalysedSequence testSeq2 = new AnalysedSequence("ola", "Jannis", "toAnalyse", null);
+    AnalysedSequence testSeq3 = new AnalysedSequence("mochi", "Jannis", "toAnalyse", null);
 
     Gene result = StringAnalysis.findRightGene(testSeq, testDatabase);
     assertTrue(result.getId() == (gena.getId()));
@@ -342,16 +343,15 @@ public class AnalysisTests {
    */
   public void testFindingMultipleMutations() throws CorruptedSequenceException {
     Gene gena = new Gene("ATGUUUCCCCAACCCCCA", 0, "testGen1", "Jannis");
-    AnalysedSequence testSeq = new AnalysedSequence("ATGUUAUUCCCC", "Jannis", "toAnalyse", null, 0);
+    AnalysedSequence testSeq = new AnalysedSequence("ATGUUAUUUCCC", "Jannis", "toAnalyse", null);
     testSeq.setReferencedGene(gena);
 
     try {
       MutationAnalysis.findMutations(testSeq);
 
-      // System.out.println(testSeq.getMutations().get(2));
+      // System.out.println(testSeq.getMutations().get(1));
       assertTrue(testSeq.getMutations().getFirst().equals("+1L1"));
       assertTrue(testSeq.getMutations().get(1).equals("-1Q4"));
-      assertTrue(testSeq.getMutations().get(2).equals("UUU3UUC"));
     } catch (UndefinedTypeOfMutationException e) {
       // TODO Auto-generated catch block
       e.printStackTrace();
@@ -365,7 +365,7 @@ public class AnalysisTests {
    */
   public void testFindingMultipleMutations2() throws CorruptedSequenceException {
     Gene gena = new Gene("ATGUUUCCCCAA", 0, "testGen1", "Jannis");
-    AnalysedSequence testSeq = new AnalysedSequence("ATGUUACCA", "Jannis", "toAnalyse", null, 0);
+    AnalysedSequence testSeq = new AnalysedSequence("ATGUUACCA", "Jannis", "toAnalyse", null);
     testSeq.setReferencedGene(gena);
 
     try {
@@ -387,7 +387,7 @@ public class AnalysisTests {
    */
   public void testFindingMutationOnEmptySequence() throws CorruptedSequenceException {
     Gene gena = new Gene("GGGGGGGGGGGGGGGGGATGGGGGGGGGGG", 0, "testGen1", "Jannis");
-    AnalysedSequence testSeq = new AnalysedSequence("", "Jannis", "toAnalyse", null, 0);
+    AnalysedSequence testSeq = new AnalysedSequence("", "Jannis", "toAnalyse", null);
     testSeq.setReferencedGene(gena);
 
     try {
@@ -401,7 +401,7 @@ public class AnalysisTests {
 
   @Test
   public void testFindingRightGeneOnCorrectUse() throws DissimilarGeneException {
-    AnalysedSequence testA = new AnalysedSequence("AGGGT", "Jannis", "testA", null, 0);
+    AnalysedSequence testA = new AnalysedSequence("AGGGT", "Jannis", "testA", null);
     Gene testGeneA = new Gene("AGGGC", 0, "testGeneA", "Jannis");
     Gene testGeneB = new Gene("AGTTTTTGGC", 1, "testGeneB", "Jannis");
     Gene testGeneC = new Gene("AGCCTCTCTCTCTGGC", 2, "testGeneC", "Jannis");
@@ -417,7 +417,7 @@ public class AnalysisTests {
 
   @Test(expected = DissimilarGeneException.class)
   public void testFindingRightGeneOnIncorrectUse() throws DissimilarGeneException {
-    AnalysedSequence testA = new AnalysedSequence("BBBBCKCKCKCKCS", "Jannis", "testA", null, 0);
+    AnalysedSequence testA = new AnalysedSequence("BBBBCKCKCKCKCS", "Jannis", "testA", null);
     Gene testGeneA = new Gene("AGGGC", 0, "testGeneA", "Jannis");
     Gene testGeneB = new Gene("AGTTTTTGGC", 1, "testGeneB", "Jannis");
     Gene testGeneC = new Gene("AGCCTCTCTCTCTGGC", 2, "testGeneC", "Jannis");
@@ -551,7 +551,7 @@ public class AnalysisTests {
   @Test
   public void testSilentMutationFinding() throws CorruptedSequenceException {
     Gene gena = new Gene("ATGUUAGGGCCC", 0, "testGen1", "Jannis");
-    AnalysedSequence testSeq = new AnalysedSequence("ATGUUGGGGCCC", "Jannis", "toAnalyse", null, 0);
+    AnalysedSequence testSeq = new AnalysedSequence("ATGUUGGGGCCC", "Jannis", "toAnalyse", null);
     testSeq.setReferencedGene(gena);
 
     try {
@@ -567,7 +567,7 @@ public class AnalysisTests {
   public void testSilentMutationFinding2() throws CorruptedSequenceException {
     Gene gena = new Gene("ATGCAAGTTCTAGGGCCC", 0, "testGen1", "Jannis");
     AnalysedSequence testSeq =
-        new AnalysedSequence("ATGCAAGTCCTAGGGCCC", "Jannis", "toAnalyse", null, 0);
+        new AnalysedSequence("ATGCAAGTCCTAGGGCCC", "Jannis", "toAnalyse", null);
     testSeq.setReferencedGene(gena);
 
     try {
@@ -587,7 +587,7 @@ public class AnalysisTests {
    */
   public void testsimpleDeletionFinding() throws CorruptedSequenceException {
     Gene gena = new Gene("UAUUUUUAUCCCCCC", 0, "testGen1", "Jannis");
-    AnalysedSequence testSeq = new AnalysedSequence("UAUUAUCCCCCC", "Jannis", "toAnalyse", null, 0);
+    AnalysedSequence testSeq = new AnalysedSequence("UAUUAUCCCCCC", "Jannis", "toAnalyse", null);
     testSeq.setReferencedGene(gena);
 
     try {
@@ -607,7 +607,7 @@ public class AnalysisTests {
    */
   public void testsimpleDeletionFinding2() throws CorruptedSequenceException {
     Gene gena = new Gene("ATGUUCUUAUUUTAA", 0, "testGen1", "Jannis");
-    AnalysedSequence testSeq = new AnalysedSequence("ATGUUCUUUTAA", "Jannis", "toAnalyse", null, 0);
+    AnalysedSequence testSeq = new AnalysedSequence("ATGUUCUUUTAA", "Jannis", "toAnalyse", null);
     testSeq.setReferencedGene(gena);
 
     try {
@@ -623,7 +623,7 @@ public class AnalysisTests {
   @Test
   public void testsimpleInsertionFinding() throws CorruptedSequenceException {
     Gene gena = new Gene("UAUUAU", 0, "testGen1", "Jannis");
-    AnalysedSequence testSeq = new AnalysedSequence("UAUUUCUAU", "Jannis", "toAnalyse", null, 0);
+    AnalysedSequence testSeq = new AnalysedSequence("UAUUUCUAU", "Jannis", "toAnalyse", null);
     testSeq.setReferencedGene(gena);
 
     try {
@@ -638,8 +638,7 @@ public class AnalysisTests {
   @Test
   public void testsimpleInsertionFinding2() throws CorruptedSequenceException {
     Gene gena = new Gene("ATGCCCAAATAA", 0, "testGen1", "Jannis");
-    AnalysedSequence testSeq =
-        new AnalysedSequence("ATGCCCGGGAAATAA", "Jannis", "toAnalyse", null, 0);
+    AnalysedSequence testSeq = new AnalysedSequence("ATGCCCGGGAAATAA", "Jannis", "toAnalyse", null);
     testSeq.setReferencedGene(gena);
 
     try {
@@ -654,7 +653,7 @@ public class AnalysisTests {
   @Test
   public void testsimpleSubstitutionFinding() throws CorruptedSequenceException {
     Gene gena = new Gene("UUUUUUUUU", 0, "testGenA", "Jannis");
-    AnalysedSequence testSeq = new AnalysedSequence("UUUUUAUUU", "Jannis", "toAnalyse", null, 0);
+    AnalysedSequence testSeq = new AnalysedSequence("UUUUUAUUU", "Jannis", "toAnalyse", null);
     testSeq.setReferencedGene(gena);
 
     try {
@@ -669,8 +668,7 @@ public class AnalysisTests {
   @Test
   public void testsimpleSubstitutionFinding2() throws CorruptedSequenceException {
     Gene gena = new Gene("ATGCCCCACCCCTAA", 0, "testGenA", "Jannis");
-    AnalysedSequence testSeq =
-        new AnalysedSequence("ATGCCCCCCCCCTAA", "Jannis", "toAnalyse", null, 0);
+    AnalysedSequence testSeq = new AnalysedSequence("ATGCCCCCCCCCTAA", "Jannis", "toAnalyse", null);
     testSeq.setReferencedGene(gena);
 
     try {
@@ -682,37 +680,131 @@ public class AnalysisTests {
     }
   }
 
+  /**
+   * 
+   */
+  @Test
+  public void reverseQuality() {
+    int[] Quality = {0, 1, 2, 3, 4};
+    int[] expect = {4, 3, 2, 1, 0};
+    AnalysedSequence toTest = new AnalysedSequence("AAA", "jannis", "TEST", Quality);
+    toTest.reverseQuality();
+    for (int i = 0; i < expect.length; i++) {
+      assertTrue(toTest.getQuality()[i] == expect[i]);
+    }
+
+  }
+
+  /**
+   * 
+   */
+  @Test
+  public void reverseQuality2() {
+    int[] Quality = {0, 0, 0, 0, 100, 100, 100, 100, 100, 0, 0, 0, 0, 100};
+    int[] expect = {100, 0, 0, 0, 0, 100, 100, 100, 100, 100, 0, 0, 0, 0};
+    AnalysedSequence toTest = new AnalysedSequence("AAA", "jannis", "TEST", Quality);
+    toTest.reverseQuality();
+    for (int i = 0; i < expect.length; i++) {
+      assertTrue(toTest.getQuality()[i] == expect[i]);
+    }
+
+  }
+
+  /**
+   * 
+   */
+  @Test
+  public void reverseQualityUnusual() {
+    int[] Quality = null;
+    AnalysedSequence toTest = new AnalysedSequence("AAA", "jannis", "TEST", Quality);
+    toTest.reverseQuality();
+    assertTrue(toTest.getQuality().length == 0);
+  }
+
+  /**
+   * 
+   */
+  @Test
+  public void checkReverseAndComplementary() {
+    Gene gena = new Gene("ATGCCCCACCCCTAA", 0, "testGenA", "Jannis");
+    AnalysedSequence testSeq = new AnalysedSequence("AATCCCCACCCCGTA", "Jannis", "toAnalyse", null);
+    testSeq.setReferencedGene(gena);
+
+    try {
+      StringAnalysis.checkComplementAndReverse(testSeq);
+    } catch (CorruptedSequenceException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    }
+
+    assertTrue(testSeq.getSequence().equals("ATGCCCCACCCCTAA"));
+
+  }
+
+  /**
+   * @throws CorruptedSequenceException
+   * 
+   */
+  @Test
+  public void checkReverseAndComplementary2() throws CorruptedSequenceException {
+    Gene gena = new Gene("ATGGGACCCGGTTAA", 0, "testGenA", "Jannis");
+    AnalysedSequence testSeq =
+        new AnalysedSequence(gena.getComplementarySequence(), "Jannis", "toAnalyse", null);
+    testSeq.setReferencedGene(gena);
+
+    StringAnalysis.checkComplementAndReverse(testSeq);
+
+    assertTrue(testSeq.getSequence().equals("ATGGGACCCGGTTAA"));
+
+  }
   
-  
+  /**
+   * @throws CorruptedSequenceException
+   * 
+   */
+  @Test
+  public void checkReverseAndComplementaryUnusual() throws CorruptedSequenceException {
+    Gene gena = new Gene("AAAAAA", 0, "testGenA", "Jannis");
+    AnalysedSequence testSeq =
+        new AnalysedSequence("AAAAAA", "Jannis", "toAnalyse", null);
+    testSeq.setReferencedGene(gena);
+
+    StringAnalysis.checkComplementAndReverse(testSeq);
+
+    assertTrue(testSeq.getSequence().equals("AAAAAA"));
+
+  }
+
   /**
    * Checks if the robust gene sequence setting works.
    */
   @Test
   public void robustGeneTest1() {
-	  Gene gene = new Gene("ATC GATCG ATCG" + System.lineSeparator() + " ATC ", 0, null, null);
-	  assertEquals("ATCGATCGATCGATC", gene.getSequence());
+    Gene gene = new Gene("ATC GATCG ATCG" + System.lineSeparator() + " ATC ", 0, null, null);
+    assertEquals("ATCGATCGATCGATC", gene.getSequence());
   }
-  
-  
+
+
   /**
    * Checks if the robust gene sequence setting works.
    */
   @Test
   public void robustGeneTest2() {
-	  Gene gene = new Gene("A	TGCGC	TCGC " + System.lineSeparator() + "A			A", 0, null, null);
-	  assertEquals("ATGCGCTCGCAA", gene.getSequence());
+    Gene gene =
+        new Gene("A	TGCGC	TCGC " + System.lineSeparator() + "A			A", 0, null, null);
+    assertEquals("ATGCGCTCGCAA", gene.getSequence());
   }
-  
-  
+
+
   /**
    * Does the gene setting work even with a sequence which only contains whitespace characters?
    */
   @Test
   public void robustGeneTestUnusual() {
-	  Gene gene = new Gene("   			" + System.lineSeparator(), 0, null, null);
-	  assertTrue(gene.getSequence().isEmpty());
+    Gene gene = new Gene("   			" + System.lineSeparator(), 0, null, null);
+    assertTrue(gene.getSequence().isEmpty());
   }
-  
-  
-  
+
+
+
 }

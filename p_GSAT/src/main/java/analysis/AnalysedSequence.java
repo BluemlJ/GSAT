@@ -68,10 +68,6 @@ public class AnalysedSequence extends Sequence {
    */
   private int offset = 0;
 
-  /**
-   * Average quality of the sequence. Measured by the quality analysis.
-   */
-  private double qualityAvg;
 
   /**
    * Constructor calling the super constructor (which sets all given attributes).
@@ -84,14 +80,62 @@ public class AnalysedSequence extends Sequence {
    * 
    * @author Ben Kohr
    */
-  public AnalysedSequence(String sequence, String researcher, String fileName, int[] qualities,
-      double average) {
+  public AnalysedSequence(String sequence, String researcher, String fileName, int[] qualities) {
     super(sequence, researcher);
     this.fileName = fileName;
-    this.qualityAvg = average;
     this.qualities = qualities;
   }
 
+
+  /**
+   * This method trims a quality array, i.e. it cuts out the desired part of the nucleotide sequence
+   * out of it. It keeps the quality for the start index character, and all following characters
+   * including the end index character. The rest is discarded. The result is stored within the
+   * object.
+   * 
+   * @param startIndex The start of the array to be cut off
+   * @param endIndex The end of the array to be cut off
+   * 
+   * @return The trimmed quality array
+   * 
+   * @author Jannis Blueml
+   */
+  public void trimQualityArray(int startIndex, int endIndex) {
+    int[] trimmed = new int[endIndex - startIndex];
+    for (int i = startIndex; i < Math.min(endIndex, this.getQuality().length); i++)
+      trimmed[i - startIndex] = qualities[i];
+
+    this.qualities = trimmed;
+  }
+
+  /**
+   * This method trims a sequence, i.e. it cuts out the desired part of the nucleotide sequence. It
+   * keeps the start index character, and all following characters including the end index
+   * character. The rest is discarded. The result is stored within the object.
+   * 
+   * @param startIndex The start of the sequence to be cut off
+   * @param endIndex The end of the sequence to be cut off
+   * 
+   * @author Ben Kohr
+   */
+  public void trimSequence(int startIndex, int endIndex) {
+    String trimmed = sequence.substring(startIndex, endIndex + 1);
+    this.sequence = trimmed;
+  }
+
+  /**
+   * This method reverses the Qualityarray and set it new.
+   * 
+   * @author bluemlj
+   */
+  public void reverseQuality() {
+    if(qualities == null) qualities = new int[0];
+    int[] qualities2 = new int[qualities.length];
+    for (int i = qualities.length - 1; i >= 0; i--) {
+      qualities2[qualities.length - 1 - i] = qualities[i];
+    }
+    this.qualities = qualities2;
+  }
 
   /**
    * Add a discovered, String-encoded mutation to the list of already discovered mutations.
@@ -106,7 +150,11 @@ public class AnalysedSequence extends Sequence {
 
 
   public double getAvgQuality() {
-    return qualityAvg;
+    int sum = 0;
+    for (int i : qualities) {
+      sum += i;
+    }
+    return sum / qualities.length;
   }
 
 
@@ -202,40 +250,5 @@ public class AnalysedSequence extends Sequence {
   }
 
 
-  /**
-   * This method trims a quality array, i.e. it cuts out the desired part of the nucleotide sequence
-   * out of it. It keeps the quality for the start index character, and all following characters
-   * including the end index character. The rest is discarded. The result is stored within the
-   * object.
-   * 
-   * @param startIndex The start of the array to be cut off
-   * @param endIndex The end of the array to be cut off
-   * 
-   * @return The trimmed quality array
-   * 
-   * @author Jannis Blueml
-   */
-  public void trimQualityArray(int startIndex, int endIndex) {
-    int[] trimmed = new int[endIndex - startIndex];
-    for (int i = startIndex; i < Math.min(endIndex, this.getQuality().length); i++)
-      trimmed[i - startIndex] = qualities[i];
-
-    this.qualities = trimmed;
-  }
-
-  /**
-   * This method trims a sequence, i.e. it cuts out the desired part of the nucleotide sequence. It
-   * keeps the start index character, and all following characters including the end index
-   * character. The rest is discarded. The result is stored within the object.
-   * 
-   * @param startIndex The start of the sequence to be cut off
-   * @param endIndex The end of the sequence to be cut off
-   * 
-   * @author Ben Kohr
-   */
-  public void trimSequence(int startIndex, int endIndex) {
-    String trimmed = sequence.substring(startIndex, endIndex + 1);
-    this.sequence = trimmed;
-  }
 
 }

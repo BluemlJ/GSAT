@@ -73,7 +73,7 @@ public class VectorTrimTests {
     String seqString = sequenceBuilder.toString();
     int[] qualities = new int[seqString.length()];
     AnalysedSequence seq =
-        new AnalysedSequence(seqString, "Coincidence", "FN", qualities, 0.0);
+        new AnalysedSequence(seqString, "Coincidence", "FN", qualities);
     seq.setReferencedGene(getRandomGen(seq));
     seq.setSequence(randomMutation(seq.getSequence(), seq.getOffset(),
         seq.getOffset() + seq.getReferencedGene().getSequence().length()));
@@ -110,7 +110,7 @@ public class VectorTrimTests {
     String a = "ATGABCDEFGSTOP";
     String b = "ATFABCDEFGSTOP";
     int[] q = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14};
-    AnalysedSequence seq = new AnalysedSequence(b, "", "", q, 0);
+    AnalysedSequence seq = new AnalysedSequence(b, "", "", q);
     seq.setReferencedGene(new Gene(a, 0, "", ""));
 
     String tmp = StringAnalysis.trimbyLevevenstein(seq, false);
@@ -128,7 +128,7 @@ public class VectorTrimTests {
     int[] qualities = new int[seq.length()];
 
 
-    AnalysedSequence sequence = new AnalysedSequence(seq, "res", "N", qualities, 0.0);
+    AnalysedSequence sequence = new AnalysedSequence(seq, "res", "N", qualities);
     Gene gen = new Gene("hallo3wieGehts3dirheute3", 0, null, null);
 
     StringAnalysis.trimVector(sequence, gen);
@@ -149,7 +149,7 @@ public class VectorTrimTests {
     String seq = "wieGehts3dirheute3ABCABCENDendeaufgefueltumdasgenlangerzumachenYXYX";
     int[] qualities = new int[seq.length()];
 
-    AnalysedSequence sequence = new AnalysedSequence(seq, "res", "N", qualities, 0.0);
+    AnalysedSequence sequence = new AnalysedSequence(seq, "res", "N", qualities);
     Gene gen = new Gene("BEGhallo3wieGehts3dirheute3ABCABCENDendeaufgefueltumdasgenlangerzumachen",
         0, null, null);
 
@@ -178,7 +178,7 @@ public class VectorTrimTests {
     String seq = "XYXBELhallo3wieGehts3dirheute3mirgehtesgutERDASDF";
     int[] qualities = new int[seq.length()];
 
-    AnalysedSequence sequence = new AnalysedSequence(seq, "res", "N", qualities, 0.0);
+    AnalysedSequence sequence = new AnalysedSequence(seq, "res", "N", qualities);
     Gene gen = new Gene("BEGhallo3wieGehts3dirheute3mirgehtesgutEND", 0, null, null);
 
     StringAnalysis.trimVector(sequence, gen);
@@ -200,7 +200,7 @@ public class VectorTrimTests {
   public void trimVectorDammagedBeginTest() {
     String seq = "XXhaXlo3wieGehts3dirheute3heuheuheuheuheuheuheuheuheuheuheuheuXX";
     int[] qualities = new int[seq.length()];
-    AnalysedSequence sequence = new AnalysedSequence(seq, "Researcher", "NAME", qualities, 0.0);
+    AnalysedSequence sequence = new AnalysedSequence(seq, "Researcher", "NAME", qualities);
     Gene gen =
         new Gene("hallo3wieGehts3dirheute3heuheuheuheuheuheuheuheuheuheuheuheu", 0, null, null);
 
@@ -227,7 +227,7 @@ public class VectorTrimTests {
     String seq = "XXXhallo3wieGehts3dirheute3ERDXYX";
     int[] qualities = new int[seq.length()];
 
-    AnalysedSequence sequence = new AnalysedSequence(seq, "res", "N", qualities, 0.0);
+    AnalysedSequence sequence = new AnalysedSequence(seq, "res", "N", qualities);
     Gene gen = new Gene("hallo3wieGehts3dirheute3END", 0, null, null);
 
     StringAnalysis.trimVector(sequence, gen);
@@ -250,7 +250,7 @@ public class VectorTrimTests {
     String seq = "XXhallo3Gehts3dirheute3XX";
     int[] qualities = new int[seq.length()];
 
-    AnalysedSequence sequence = new AnalysedSequence(seq, "res", "N", qualities, 0.0);
+    AnalysedSequence sequence = new AnalysedSequence(seq, "res", "N", qualities);
     Gene gen = new Gene("hallo3wieGehts3dirheute3", 0, null, null);
 
     StringAnalysis.trimVector(sequence, gen);
@@ -277,7 +277,7 @@ public class VectorTrimTests {
     int[] qualities = new int[seq.length()];
 
 
-    AnalysedSequence sequence = new AnalysedSequence("XXhallow", "res", "N", qualities, 0.0);
+    AnalysedSequence sequence = new AnalysedSequence("XXhallow", "res", "N", qualities);
     Gene gen = new Gene("hallowiegeht", 0, null, null);
 
     StringAnalysis.trimVector(sequence, gen);
@@ -301,7 +301,7 @@ public class VectorTrimTests {
     String seq = "XXhallo3wiewieGehts3dirheute3XXX";
     int[] qualities = new int[seq.length()];
 
-    AnalysedSequence sequence = new AnalysedSequence(seq, "res", "N", qualities, 0.0);
+    AnalysedSequence sequence = new AnalysedSequence(seq, "res", "N", qualities);
     Gene gen = new Gene("hallo3wieGehts3dirheute3", 0, null, null);
 
     StringAnalysis.trimVector(sequence, gen);
@@ -322,7 +322,7 @@ public class VectorTrimTests {
   public void trimVectorMutatedTest() {
     String seq = "XXhalAo3wieGehts3dirheute3XX";
     int[] qualities = new int[seq.length()];
-    AnalysedSequence sequence = new AnalysedSequence(seq, "Researcher", "NAME", qualities, 0.0);
+    AnalysedSequence sequence = new AnalysedSequence(seq, "Researcher", "NAME", qualities);
     Gene gen = new Gene("hallo3wieGehts3dirheute3", 0, null, null);
 
     StringAnalysis.trimVector(sequence, gen);

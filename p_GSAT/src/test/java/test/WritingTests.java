@@ -43,25 +43,25 @@ public class WritingTests {
    * DatabaseEntry).
    */
   static AnalysedSequence seq1 =
-      new AnalysedSequence("ATCG", "Klaus Bohne", "sequence1.ab1", null, 0);
+      new AnalysedSequence("ATCG", "Klaus Bohne", "sequence1.ab1", null);
 
   /**
    * The second sequence for testing the conversion method.
    */
   private static AnalysedSequence seq2 =
-      new AnalysedSequence("ATCTTTG", "Klaus Bohne", "sequence2.ab1", null, 0);
+      new AnalysedSequence("ATCTTTG", "Klaus Bohne", "sequence2.ab1", null);
 
   /**
    * The third test sequence (which will result in no DatabaseEntries).
    */
   private static AnalysedSequence seq3 =
-      new AnalysedSequence("ATCTTGCGTTG", "Klaus Hafer", "sequence3.ab1", null, 0);
+      new AnalysedSequence("ATCTTGCGTTG", "Klaus Hafer", "sequence3.ab1", null);
 
   /**
    * The fourth test sequence.
    */
   private static AnalysedSequence seq4 =
-      new AnalysedSequence("ATC", "Kurt Bohne", "sequence3.ab1", null, 0);
+      new AnalysedSequence("ATC", "Kurt Bohne", "sequence3.ab1", null);
 
  
   /**

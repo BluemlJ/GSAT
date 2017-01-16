@@ -35,7 +35,7 @@ public class ConfigTests {
     Config.setPath(path.getAbsolutePath());
     Config.readConfig();
     AnalysedSequence testSeq =
-        new AnalysedSequence("atg", Config.researcher, "seq1.abi", new int[] {100, 100, 100}, 100);
+        new AnalysedSequence("atg", Config.researcher, "seq1.abi", new int[] {100, 100, 100});
     assertEquals(testSeq.getResearcher(), "lovis heindrich");
   }
 

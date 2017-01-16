@@ -44,7 +44,7 @@ public class PrivateTest {
   }
 
   // Name of the file
-  private String fileName = "93GH02_B11.ab1";
+  private String fileName = "93GH02_A01.ab1";
 
 
   /**
@@ -78,6 +78,7 @@ public class PrivateTest {
     System.out.println("Gene constructed");
     System.err.println("Gene                " + testSeq.getReferencedGene().getSequence());
     System.out.println("Seq before Vector   " + testSeq.getSequence());
+    StringAnalysis.checkComplementAndReverse(testSeq);
     StringAnalysis.trimVector(testSeq, fsa);
     System.out.println("Offset    " + testSeq.getOffset());
     System.out.println("Vector trimmed");

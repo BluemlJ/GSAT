@@ -399,26 +399,26 @@ public class StringAnalysis {
         // Set offset
         offsetNotFound = false;
         seqence.setOffset(targetIndex - testIndex);// changed + to - for test
-        
-        //dirty fix:
-//        String genOption1 = gene.substring(Math.max(targetIndex - testIndex,0));
-//        String genOption2 = gene.substring(Math.max(targetIndex + testIndex,0));
-//        String seqOption1 = seqence.getSequence().substring(Math.max(targetIndex - testIndex,0));
-//        String seqOption2 = seqence.getSequence().substring(Math.max(targetIndex + testIndex,0));
-//        if (checkSimilarity(genOption1, seqOption1) < checkSimilarity(genOption2, seqOption2)) {
-          //seqence.setOffset(testIndex-targetIndex);
 
- //         System.err.println(testIndex);
-//        }
-        //Dirty fix end
-        
+        // dirty fix:
+        // String genOption1 = gene.substring(Math.max(targetIndex - testIndex,0));
+        // String genOption2 = gene.substring(Math.max(targetIndex + testIndex,0));
+        // String seqOption1 = seqence.getSequence().substring(Math.max(targetIndex - testIndex,0));
+        // String seqOption2 = seqence.getSequence().substring(Math.max(targetIndex + testIndex,0));
+        // if (checkSimilarity(genOption1, seqOption1) < checkSimilarity(genOption2, seqOption2)) {
+        // seqence.setOffset(testIndex-targetIndex);
+
+        // System.err.println(testIndex);
+        // }
+        // Dirty fix end
+
         if (testIndex == 0) {
           return true;
         }
         System.err.println("Warning, Trimming may be inexact");
-        //TODO vieleicht hier wieder offset + 2*testIndex?
+        // TODO vieleicht hier wieder offset + 2*testIndex?
         return false;
-        
+
 
       } else if (!emrgencyMode) {
         // check if next step is to big
@@ -665,7 +665,7 @@ public class StringAnalysis {
   public static void trimVector(AnalysedSequence toAlign) {
     // **********simple Vector Cutting*****************
     boolean offsetExact = findOffset(toAlign);
-    
+
     Gene gene = toAlign.getReferencedGene();
 
     String newSequence = toAlign.sequence;
@@ -693,13 +693,13 @@ public class StringAnalysis {
     // if (offsetExact) {
     // negative offset -> sequence goes over left site of gene
     // -> cut of left of offset
-    //System.err.println("OFF = " + toAlign.getOffset());
-    String leftVector = newSequence.substring(0, Math.max(toAlign.getOffset(),0));
+    // System.err.println("OFF = " + toAlign.getOffset());
+    String leftVector = newSequence.substring(0, Math.max(toAlign.getOffset(), 0));
 
-    newSequence = newSequence.substring(Math.max(toAlign.getOffset(),0));
-    toAlign.trimQualityArray(Math.max(toAlign.getOffset(),0), toAlign.length());
-    
-    
+    newSequence = newSequence.substring(Math.max(toAlign.getOffset(), 0));
+    toAlign.trimQualityArray(Math.max(toAlign.getOffset(), 0), toAlign.length());
+
+
     // set vector and correct offset
     toAlign.setLeftVector(leftVector);
     toAlign.setOffset(Math.min(toAlign.getOffset(), 0));
@@ -711,7 +711,7 @@ public class StringAnalysis {
 
     // calculate exact offset if necessary;
     // if (!(endexact && offsetExact)) {
-    
+
     // newSequence = trimbyLevenstein(toAlign, offsetExact);
     // }
 
@@ -722,31 +722,29 @@ public class StringAnalysis {
     // **********complex Vector Cutting*****************
     // TODO implement
 
-    //INFO: wieder einkommentiert am 15.01.2017
+    // INFO: wieder einkommentiert am 15.01.2017
     // **********modulo Cutting*****************
-    /*if (toAlign.getOffset() != 0) {
-      int begin = (3 - (toAlign.getOffset() % 3) % 3);
-      newSequence = newSequence.substring(begin);
-      int end = newSequence.length()-(newSequence.length()%3);
-      newSequence = newSequence.substring(0,end);
-      toAlign.trimQualityArray(begin, toAlign.getQuality().length);
-      toAlign.trimQualityArray(0, end);
-    }*/
+    /*
+     * if (toAlign.getOffset() != 0) { int begin = (3 - (toAlign.getOffset() % 3) % 3); newSequence
+     * = newSequence.substring(begin); int end = newSequence.length()-(newSequence.length()%3);
+     * newSequence = newSequence.substring(0,end); toAlign.trimQualityArray(begin,
+     * toAlign.getQuality().length); toAlign.trimQualityArray(0, end); }
+     */
     // ******************************************
 
-    //*********OVERSIZE Trim*********************
-    //if newSequence with offset is longer than original gen, cut
-    //TODO check if OK
+    // *********OVERSIZE Trim*********************
+    // if newSequence with offset is longer than original gen, cut
+    // TODO check if OK
 
-    if (newSequence.length()+toAlign.getOffset() > gene.getSequence().length()) {
-      int end = gene.getSequence().length()-toAlign.getOffset();
+    if (newSequence.length() + toAlign.getOffset() > gene.getSequence().length()) {
+      int end = gene.getSequence().length() - toAlign.getOffset();
       System.out.println(end);
-      newSequence = newSequence.substring(0,end);
+      newSequence = newSequence.substring(0, end);
       toAlign.trimQualityArray(0, end);
     }
-    
+
     // ******************************************
-    
+
     // toAlign.setRightVector(rightVector);
     toAlign.setSequence(newSequence);
   }
@@ -754,6 +752,50 @@ public class StringAnalysis {
   public static void trimVector(AnalysedSequence toAlign, Gene gene) {
     toAlign.setReferencedGene(gene);
     trimVector(toAlign);
+  }
+  /**
+   * 
+   * @param toAnalyse
+   * @param gene
+   * @throws CorruptedSequenceException
+   * @author bluemlj
+   */
+  public static void checkComplementAndReverse(AnalysedSequence toAnalyse, Gene gene) throws CorruptedSequenceException {
+    toAnalyse.setReferencedGene(gene);
+    checkComplementAndReverse(toAnalyse);
+  }
+  /**
+   * 
+   * @param toAnalyse
+   * @throws CorruptedSequenceException
+   * @author bluemlj
+   */
+  public static void checkComplementAndReverse(AnalysedSequence toAnalyse)
+      throws CorruptedSequenceException {
+    double bestSimilarity = checkSimilarity(toAnalyse, toAnalyse.getReferencedGene());
+    double toTest = checkSimilarity(toAnalyse.getComplementarySequence(),
+        toAnalyse.getReferencedGene().getSequence());
+    if (toTest > bestSimilarity) {
+      toAnalyse.setSequence(toAnalyse.getComplementarySequence());
+      bestSimilarity = toTest;
+    }
+    toTest = checkSimilarity(toAnalyse.getReversedSequence(),
+        toAnalyse.getReferencedGene().getSequence());
+    if (toTest > bestSimilarity) {
+      toAnalyse.setSequence(toAnalyse.getReversedSequence());
+      System.out.println("reverse");
+      toAnalyse.reverseQuality();
+      bestSimilarity = toTest;
+    }
+    toTest = checkSimilarity(toAnalyse.getComplementarySequence(toAnalyse.getReversedSequence()),
+        toAnalyse.getReferencedGene().getSequence());
+    if (toTest > bestSimilarity) {
+      toAnalyse.setSequence(toAnalyse.getComplementarySequence(toAnalyse.getReversedSequence()));
+      System.out.println("reverse");
+      toAnalyse.reverseQuality();
+      bestSimilarity = toTest;
+    }
+
   }
 
 }

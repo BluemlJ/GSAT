@@ -85,7 +85,7 @@ public class SequenceReader {
     }
 
     AnalysedSequence parsedSequence = new AnalysedSequence(sequence, "researcher",
-        referencedFile.getName(), qualitiesInt, average);
+        referencedFile.getName(), qualitiesInt);
     return parsedSequence;
   }
 

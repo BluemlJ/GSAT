@@ -40,7 +40,8 @@ public class ConsoleVersion {
   private static void addLocalEntry(AnalysedSequence activeSequence, File file,
       String destinationPath) {
     try {
-      FileSaver.storeResultsLocally(file.getName().replaceFirst("[.][^.]+$", "") + "_result", activeSequence);
+      FileSaver.storeResultsLocally(file.getName().replaceFirst("[.][^.]+$", "") + "_result",
+          activeSequence);
     } catch (MissingPathException e) {
       FileSaver.setLocalPath(destinationPath);
     } catch (IOException e) {
@@ -281,10 +282,15 @@ public class ConsoleVersion {
     } else {
       activeSequence.setReferencedGene(gene);
     }
-
-
+    // checks if reversed or comeplenetary Sequence is better then the active Sequence
+    try {
+      StringAnalysis.checkComplementAndReverse(activeSequence);
+    } catch (CorruptedSequenceException e) {
+      // TODO HIER FEHLER ANBRINGEN
+      e.printStackTrace();
+    }
     // cut out vector
-    StringAnalysis.trimVector(activeSequence, gene);
+    StringAnalysis.trimVector(activeSequence);
 
     // cut out low Quality parts of sequence
     QualityAnalysis.trimLowQuality(activeSequence);
@@ -293,7 +299,7 @@ public class ConsoleVersion {
     processMutations(activeSequence, file);
 
     // ask for comment
-    askForComment(activeSequence, file);
+    // askForComment(activeSequence, file);
 
     // add entry to database
     addLocalEntry(activeSequence, file, destinationPath);

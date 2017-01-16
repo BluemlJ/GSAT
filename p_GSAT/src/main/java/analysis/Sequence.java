@@ -74,6 +74,22 @@ public abstract class Sequence {
    * @author Ben Kohr
    */
   public String getComplementarySequence() throws CorruptedSequenceException {
+    return this.getComplementarySequence(this.getSequence());
+  }
+  
+  /**
+   * Returns the complementary version of this object's nucleotide sequence, i.e. all A nucleotides
+   * in the original sequence are replaced with T nucleotides (and vice versa) and all C nucleotides
+   * are replaced by G nucleotides (and vice versa).
+   * 
+   * @return The complementary nucleotide sequence as a String
+   * 
+   * @throws CorruptedSequenceException If a nucleotide letter different from A, T, C and G is
+   *         observed
+   * 
+   * @author Ben Kohr
+   */
+  public String getComplementarySequence(String sequence) throws CorruptedSequenceException {
 
     StringBuilder complSeqBuilder = new StringBuilder();
     int stringLength = sequence.length();
@@ -133,6 +149,7 @@ public abstract class Sequence {
     return reversedSequence;
   }
 
+    
   public String getSequence() {
     return sequence;
   }

@@ -106,10 +106,11 @@ public class MutationAnalysis {
         for (int tempPosition = lastposition + 1; tempPosition < position
             - toAnalyze.getOffset(); tempPosition++) {
 
-          tempPosition = position + 1;
-
+          tempPosition = position;
+          
           if ((tempPosition + tmpshift) * 3 + toAnalyze.getOffset() * 3 + 3 > originalSequence
-              .length() || (tempPosition + tmpshift) * 3 + 3 > mutatedSequence.length()) {
+              .length() || Math.max(tempPosition + tmpshift, tempPosition)* 3 + 3 > mutatedSequence
+                  .length()) {
             break;
           } else {
             String oldAcid = originalSequence.substring(
@@ -127,7 +128,7 @@ public class MutationAnalysis {
 
       } else {
         tmpshift = shift;
-        lastposition = position;
+        if (typeOfMutations.charAt(0) == 's') lastposition = position;
       }
     }
 
