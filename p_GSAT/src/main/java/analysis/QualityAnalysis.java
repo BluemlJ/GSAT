@@ -4,7 +4,7 @@ package analysis;
  * This class contains the logic of analyzing the quality of sequences (poin) Thus, it is one of the
  * main parts of the analyzing pipeline.
  * 
- * @author Jannis Blueml
+ * @author Jannis Blueml, Lovis Heindrich
  */
 public class QualityAnalysis {
 
@@ -20,6 +20,12 @@ public class QualityAnalysis {
   private static int avgApproximationEnd = 25;
   private static int avgApproximationStart = 30;
 
+  /*
+   * Number of Nucleotides which will be used for the average Quality calculations
+   */
+  private static int numAverageNucleotides = 20;
+
+
   /**
    * This method checks the nucleotidestring and finds a position to trim the low quality part at
    * the end of the sequence.
@@ -29,7 +35,7 @@ public class QualityAnalysis {
    *         quality part.
    * 
    * 
-   * @author bluemlj
+   * @author bluemlj, Lovis Heindrich
    * 
    */
   public static int[] findLowQuality(AnalysedSequence sequence) {
@@ -71,7 +77,64 @@ public class QualityAnalysis {
       }
     }
 
+    // get the trimming position for trimming by average quality
+    int trimmingPositionAverageEnd = getAverageTrimmingPosition(qualities, trimmingPosition[0]);
+    // use the position that trims earlier
+    if (trimmingPositionAverageEnd < trimmingPosition[1]) {
+      trimmingPosition[1] = trimmingPositionAverageEnd;
+    }
     return trimmingPosition;
+  }
+
+  /**
+   * This method provides an additional quality measurement by detecting substrings with an average
+   * low quality
+   * 
+   * @param qualities the sequence which needs to be trimmed
+   * @param startPosition the first array index which will be used
+   * @return
+   * @author Lovis Heindrich
+   */
+  public static int getAverageTrimmingPosition(int[] qualities, int startPosition) {
+    int endPosition = qualities.length;
+
+    // if sequence is too short for average analysis return the default case
+    if (qualities.length - startPosition <= numAverageNucleotides) {
+      return endPosition;
+    }
+
+    // calculate initial average quality
+    double averageQuality = 0;
+    for (int i = startPosition; i < startPosition + (numAverageNucleotides); i++) {
+      averageQuality += qualities[i];
+    }
+
+    // move to next quality frame by deleting the first quality and adding a new one at the end
+    for (int i = startPosition + 1; i < qualities.length - (numAverageNucleotides) + 1; i++) {
+
+      // remove first element in quality frame
+      averageQuality -= qualities[i - 1];
+      // add new quality to frame
+      averageQuality += qualities[i + numAverageNucleotides - 1];
+
+      // check if the subsequence has bad quality
+      if (averageQuality / numAverageNucleotides < avgApproximationEnd) {
+        endPosition = i;
+        // use first nucleotide below avgApproximationEnd as actual cutting position in bad quality
+        // subsequence
+        for (int endCandidate = endPosition; endCandidate < qualities.length; endCandidate++) {
+          if (qualities[endCandidate] < avgApproximationEnd) {
+            // Kevins math magic
+            return endCandidate + ((3 - (endCandidate % 3)) % 3);
+          }
+        }
+        // should never be called
+        return qualities.length;
+      }
+    }
+
+    // default case if no bad quality sequence has been found
+    return qualities.length;
   }
 
   public static int getBreakcounter() {

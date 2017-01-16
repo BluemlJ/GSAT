@@ -146,4 +146,50 @@ public class QualityTests {
      * QualityAnalysis.findLowQuality(testSequence)[1]);
      */
   }
+
+  /**
+   * Tests if the average Quality Trim detects a regular bad quality ending (Userstory xxx -
+   * Expected Behavior)
+   */
+  @Test
+  public void testAverageQualityTrimA() {
+    int[] qualities = {0, 0, 0, 0, 0, 0, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+    assertEquals(QualityAnalysis.getAverageTrimmingPosition(qualities, 6), 18);
+  }
+
+  /**
+   * Tests if the average Quality Trim detects a bad quality ending which would not have been
+   * detected by findLowQuality (Userstory xxx - Expected Behavior)
+   */
+  @Test
+  public void testAverageQualityTrimB() {
+    int[] qualities = {0, 0, 0, 0, 0, 0, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100,
+        0, 0, 0, 30, 0, 0, 0, 30, 0, 0, 0, 30, 0, 0, 0, 30, 0, 0};
+    assertEquals(QualityAnalysis.getAverageTrimmingPosition(qualities, 6), 18);
+  }
+
+  /**
+   * Tests if a short sequence string produces the default case as output (normal findLowQuality
+   * will handle it) (Userstory xxx - Unusual Behavior)
+   */
+  @Test
+  public void testAverageQualityTrimC() {
+    int[] qualities = {0, 0, 0};
+    assertEquals(QualityAnalysis.getAverageTrimmingPosition(qualities, 0), 3);
+  }
+
+  /**
+   * This tests checks if the average Quality calculation is correctly integrated in findLowQuality
+   * by using testAverageQualityTrimB (Userstory xxx - Expected Behavior)
+   */
+  @Test
+  public void testAverageQualityOnMainQualityFunction() {
+    int[] qualities = {0, 0, 0, 0, 0, 0, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100,
+        0, 0, 0, 30, 0, 0, 0, 30, 0, 0, 0, 30, 0, 0, 0, 30, 0, 0};
+    AnalysedSequence testSequence =
+        new AnalysedSequence("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", "", "", qualities, 25);
+    int[] trim = QualityAnalysis.findLowQuality(testSequence);
+    assertEquals(trim[1], 18);
+  }
 }
