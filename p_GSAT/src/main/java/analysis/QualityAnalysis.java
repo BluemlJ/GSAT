@@ -49,7 +49,7 @@ public class QualityAnalysis {
 
     for (int quality : qualities) {
       if (!startfound) {
-        if (quality > (avgApproximationStart)) {
+        if (quality > avgApproximationStart) {
           countertoStart++;
         } else {
           counter += countertoStart + 1;
@@ -64,7 +64,7 @@ public class QualityAnalysis {
         }
       } else {
 
-        if (quality < (avgApproximationEnd))
+        if (quality < avgApproximationEnd)
           countertoBreak++;
         else {
           counter += countertoBreak + 1;
@@ -105,12 +105,12 @@ public class QualityAnalysis {
 
     // calculate initial average quality
     double averageQuality = 0;
-    for (int i = startPosition; i < startPosition + (numAverageNucleotides); i++) {
+    for (int i = startPosition; i < startPosition + numAverageNucleotides; i++) {
       averageQuality += qualities[i];
     }
 
     // move to next quality frame by deleting the first quality and adding a new one at the end
-    for (int i = startPosition + 1; i < qualities.length - (numAverageNucleotides) + 1; i++) {
+    for (int i = startPosition + 1; i < qualities.length - numAverageNucleotides + 1; i++) {
 
       // remove first element in quality frame
       averageQuality -= qualities[i - 1];

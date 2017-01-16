@@ -21,7 +21,6 @@ import exceptions.MissingPathException;
 import exceptions.UndefinedTypeOfMutationException;
 import io.Config;
 import io.ConsoleIO;
-import io.DatabaseEntry;
 import io.FileSaver;
 import io.GeneReader;
 import io.SequenceReader;

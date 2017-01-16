@@ -103,8 +103,8 @@ public class MutationAnalysis {
 
       if (position > lastposition + 1 || i == differences.size() - 1) {
 
-        for (int tempPosition = lastposition + 1; tempPosition < position
-            - toAnalyze.getOffset(); tempPosition++) {
+    	  int tempPosition = lastposition + 1;
+        while (tempPosition < position - toAnalyze.getOffset()) {
 
           tempPosition = position;
           
@@ -124,8 +124,11 @@ public class MutationAnalysis {
             }
           }
           lastposition = position;
+          tempPosition++;
         }
 
+        
+        
       } else {
         tmpshift = shift;
         if (typeOfMutations.charAt(0) == 's') lastposition = position;
@@ -133,7 +136,8 @@ public class MutationAnalysis {
     }
 
     if (differences.size() == 0) {
-      for (int tempPosition = 0; tempPosition < mutatedSequence.length(); tempPosition++) {
+      int tempPosition = 0;
+      while (tempPosition < mutatedSequence.length()) {
         if ((tempPosition + tmpshift) * 3 + toAnalyze.getOffset() * 3 + 3 > originalSequence
             .length() || tempPosition * 3 + 3 > mutatedSequence.length()) {
           break;
@@ -149,6 +153,7 @@ public class MutationAnalysis {
             tempPosition -= toAnalyze.getOffset() + 1;
           }
         }
+        tempPosition++;
       }
 
     }
@@ -189,7 +194,8 @@ public class MutationAnalysis {
    */
   private static LinkedList<String> reportDifferences(AnalysedSequence seq, boolean type)
       throws CorruptedSequenceException {
-    String first, second;
+    String first;
+    String second;
     // if (type) {
     int begin = seq.getOffset() * 3;
     int end = seq.getOffset() * 3 + seq.length();

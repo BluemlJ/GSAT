@@ -2,22 +2,18 @@ package gui;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.LinkedList;
 
 import analysis.AnalysedSequence;
 import analysis.Gene;
-import analysis.MutationAnalysis;
 import analysis.Pair;
 import analysis.QualityAnalysis;
 import analysis.StringAnalysis;
-import core.ConsoleVersion;
 import exceptions.ConfigNotFoundException;
 import exceptions.ConfigReadException;
 import exceptions.CorruptedSequenceException;
 import exceptions.FileReadingException;
 import exceptions.MissingPathException;
-import exceptions.UndefinedTypeOfMutationException;
 import io.Config;
 import io.ConsoleIO;
 import io.FileSaver;
@@ -31,7 +27,8 @@ public class GUIUtils {
     boolean success = false;
     String report = "Failure within the analysing process, unknown reason.";
 
-    Gene gene = GeneReader.getGeneAt(0); // TODO DROPDOWN EINBINDEN
+    // TODO DROPDOWN EINBINDEN
+    Gene gene = GeneReader.getGeneAt(0); 
     for (File file : sequences) {
       AnalysedSequence toAnalyse = readSequenceFromFile(file).first;
       toAnalyse.setReferencedGene(gene);
@@ -151,7 +148,9 @@ public class GUIUtils {
       ret = new Pair<Boolean, String>(success, report);
       return new Pair<AnalysedSequence, Pair<Boolean, String>>(
           SequenceReader.convertFileIntoSequence(file), ret);
-    } catch (FileReadingException e) {} catch (IOException e) {}
+    } catch (FileReadingException e) {
+    	System.out.println("Could not read from file.");
+    } catch (IOException e) { System.out.println("Error during reading occured."); }
     return new Pair<AnalysedSequence, Pair<Boolean, String>>(null, ret);
   }
 }

@@ -379,7 +379,7 @@ public class StringAnalysis {
     boolean emrgencyMode = false;
 
     // part of the sequence that will be testet.
-    String toTest = gene.substring(0, (gene.length() / stepSize));
+    String toTest = gene.substring(0, gene.length() / stepSize);
     int testIndex = 0;
 
     // warn if sequence is to short for testing
@@ -398,7 +398,9 @@ public class StringAnalysis {
         // OFFSET found:
         // Set offset
         offsetNotFound = false;
-        seqence.setOffset(targetIndex - testIndex);// changed + to - for test
+        
+        // changed + to - for test
+        seqence.setOffset(targetIndex - testIndex);
 
         // dirty fix:
         // String genOption1 = gene.substring(Math.max(targetIndex - testIndex,0));
@@ -437,7 +439,9 @@ public class StringAnalysis {
         // EMERGENCY MODE
         System.err.println("EMERGENCY MODE REQUIRED");
         // TODO Implement
-        offsetNotFound = false;// TODO REMOVE
+        
+        // TODO REMOVE
+        offsetNotFound = false;
       }
     }
     return false;
@@ -552,9 +556,12 @@ public class StringAnalysis {
 
     int bestBegin = 0;
     double bestScore = 0.0;
-
-    int row = levenMatrix.length - 1;// gen
-    int line = levenMatrix[0].length - 1;// sequence
+    
+    // gen
+    int row = levenMatrix.length - 1;
+    // sequence
+    int line = levenMatrix[0].length - 1;
+    
     int originalBegin = 0;
     // System.out.println();
     // ConsoleIO.printIntMatrix(levenMatrix);
@@ -629,8 +636,8 @@ public class StringAnalysis {
     }
 
 
-    result = toAlign.sequence.substring(begin, (end - ((end - begin) % 3)));
-    toAlign.trimQualityArray(begin, (end - ((end - begin) % 3)));
+    result = toAlign.sequence.substring(begin, end - ((end - begin) % 3));
+    toAlign.trimQualityArray(begin, end - ((end - begin) % 3));
     // corect vectors
     toAlign.setLeftVector(toAlign.getLeftVector() + toAlign.sequence.substring(0, begin));
     toAlign.setRightVector(toAlign.getRightVector() + toAlign.sequence.substring(end));
@@ -674,8 +681,9 @@ public class StringAnalysis {
     boolean endexact = false;
 
     String codon = gene.sequence.substring(gene.sequence.length() - 3, gene.sequence.length());
-
-    codon = "false";// TODO fix
+    
+    // TODO fix
+    codon = "false";
 
     // if found cut at stopcodon
     /*
