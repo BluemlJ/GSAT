@@ -6,6 +6,7 @@ import java.util.ResourceBundle;
 
 import com.sun.glass.ui.MenuItem;
 
+import analysis.Gene;
 import javafx.application.Application;
 import javafx.beans.Observable;
 import javafx.beans.value.ChangeListener;
@@ -16,7 +17,10 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
+import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ProgressBar;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
@@ -48,6 +52,18 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
   private TextField srcField;
   @FXML
   private TextField destField;
+  
+  //dropdownMenu
+  @FXML
+  private ChoiceBox<Gene> geneBox;
+  
+  //checkbox
+  @FXML
+  private CheckBox outputCheckbox;
+  
+  //info output area
+  @FXML
+  private TextArea infoArea;
   
   public static void main(String[] args) {
     launch(args);
