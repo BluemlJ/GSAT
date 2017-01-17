@@ -16,6 +16,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ProgressBar;
+import javafx.scene.control.Separator;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
@@ -68,8 +69,10 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
   @Override
   public void initialize(URL arg0, ResourceBundle arg1) {
 
-    geneBox = new ChoiceBox<String>(FXCollections.observableArrayList("A", "B"));
-   
+    //geneBox = new ChoiceBox<String>(FXCollections.observableArrayList("A", "B"));
+    
+    geneBox.setItems(FXCollections.observableArrayList("A", "B"));
+      
     startButton.setOnAction(new EventHandler<ActionEvent>() {
       @Override
       public void handle(ActionEvent arg0) {
