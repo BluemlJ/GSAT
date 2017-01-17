@@ -82,21 +82,15 @@ public class ExceptionTests {
   public void testCorruptedSequenceExceptionWithSequence() {
 
     try {
-      throw new CorruptedSequenceException(2, 'R', seq1);
+      throw new CorruptedSequenceException();
 
     } catch (CorruptedSequenceException e) {
 
       // Check if the error message is correctly produced
       assertEquals(
-          "Problem in observed AnalyzedSequence: Index 2 is 'R', but should be 'A', 'T', 'C' or 'G'.",
+	  "Problem in observed AnalyzedSequence: The Sequence has corrupted nucleptides, which means there are not 'A','C','G','T' or 'U'.",
           e.getMessage());
-
-      // Check whether the fields are set correctly
-      assertEquals(2, e.index);
-      assertEquals('R', e.problem);
-      assertSame(seq1, e.sequence);
-      assertEquals(seq1.getSequence(), e.nucleotides);
-
+   
     }
 
   }

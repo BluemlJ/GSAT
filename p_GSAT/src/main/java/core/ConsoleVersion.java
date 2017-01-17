@@ -294,6 +294,13 @@ public class ConsoleVersion {
     // cut out low Quality parts of sequence
     QualityAnalysis.trimLowQuality(activeSequence);
 
+    //checks if Sequence is corrupted
+    try {
+	QualityAnalysis.checkIfSequenceIsClean(activeSequence);
+    } catch (CorruptedSequenceException e) {
+	System.err.println("CORRUPTED");
+	e.printStackTrace();
+    }
     // mutation analysis
     processMutations(activeSequence, file);
 

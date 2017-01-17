@@ -17,8 +17,6 @@ public class MutationAnalysis {
   public static boolean readingFrameError = false;
   public static int readingFrameErrorBorder = 100;
 
-
-
   /**
    * Compares a sequence to a gene to find mutations. Returns a boolean if there was a reading frame
    * error.
@@ -58,7 +56,6 @@ public class MutationAnalysis {
         return false;
         }
 
-
       String difference = differences.get(i);
       // type of mutation (s,i,d)
       String typeOfMutations = difference.split("\\|")[0];
@@ -92,24 +89,24 @@ public class MutationAnalysis {
           checkFrameerrorCounter++;
           break;
 
-
         default:
           throw new UndefinedTypeOfMutationException(typeOfMutations);
       }
 
-      // in case that between to mutations are more then zero aminoacids, we check if there is any
+      // in case that between to mutations are more then zero aminoacids,
+      // we check if there is any
       // silent mutation in them.
-
 
       if (position > lastposition + 1 || i == differences.size() - 1) {
 
-    	  int tempPosition = lastposition + 1;
+        int tempPosition = lastposition + 1;
         while (tempPosition < position - toAnalyze.getOffset()) {
 
           tempPosition = position;
-          
+
           if ((tempPosition + tmpshift) * 3 + toAnalyze.getOffset() * 3 + 3 > originalSequence
-              .length() || Math.max(tempPosition + tmpshift, tempPosition)* 3 + 3 > mutatedSequence
+              .length()
+              || Math.max(tempPosition + tmpshift, tempPosition) * 3 + 3 > mutatedSequence
                   .length()) {
             break;
           } else {
@@ -127,8 +124,6 @@ public class MutationAnalysis {
           tempPosition++;
         }
 
-        
-        
       } else {
         tmpshift = shift;
         if (typeOfMutations.charAt(0) == 's') lastposition = position;
@@ -136,18 +131,19 @@ public class MutationAnalysis {
     }
 
     if (differences.size() == 0) {
+
       int tempPosition = 0;
       while (tempPosition < mutatedSequence.length()) {
-        if ((tempPosition + tmpshift) * 3 + toAnalyze.getOffset() * 3 + 3 > originalSequence
-            .length() || tempPosition * 3 + 3 > mutatedSequence.length()) {
+        if (tempPosition * 3 + toAnalyze.getOffset() * 3 + 3 > originalSequence.length()
+            || tempPosition * 3 + 3 > mutatedSequence.length()) {
           break;
         } else {
-          String oldAcid =
-              originalSequence.substring((tempPosition + tmpshift) * 3 + toAnalyze.getOffset() * 3,
-                  (tempPosition + tmpshift) * 3 + toAnalyze.getOffset() * 3 + 3);
+          String oldAcid = originalSequence.substring(tempPosition * 3 + toAnalyze.getOffset() * 3,
+              tempPosition * 3 + toAnalyze.getOffset() * 3 + 3);
           String newAcid = mutatedSequence.substring(tempPosition * 3, tempPosition * 3 + 3);
 
           if (!oldAcid.equals(newAcid)) {
+
             tempPosition += toAnalyze.getOffset() + 1;
             toAnalyze.addMutation(oldAcid + tempPosition + newAcid);
             tempPosition -= toAnalyze.getOffset() + 1;
@@ -159,8 +155,6 @@ public class MutationAnalysis {
     }
     return true;
   }
-
-
 
   /**
    * Compares to sequences and returns the differences as a list (represented by the positions). The
@@ -214,8 +208,6 @@ public class MutationAnalysis {
 
   }
 
-
-
   /**
    * Compares to sequences and returns the differences as a list (represented by the positions). The
    * order of the input sequences is irrelevant.
@@ -263,7 +255,6 @@ public class MutationAnalysis {
     System.out.println(
         "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
     System.out.println("");
-
 
     // get Levenshtein Result
     int[][] lev = StringAnalysis.calculateLevenshteinMatrix(gene, sequence);

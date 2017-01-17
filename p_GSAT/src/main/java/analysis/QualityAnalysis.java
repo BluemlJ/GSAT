@@ -1,5 +1,7 @@
 package analysis;
 
+import exceptions.CorruptedSequenceException;
+
 /**
  * This class contains the logic of analyzing the quality of sequences (poin)
  * Thus, it is one of the main parts of the analyzing pipeline.
@@ -14,8 +16,8 @@ public class QualityAnalysis {
      */
     // TODO needs to be adjusted to achieve reasonable values on sample ab1
     // data, 10-40 looks promising
-    private static int breakcounter = 10;
-    private static int startcounter = 5;
+    private static int breakcounter = 9;
+    private static int startcounter = 3;
 
     private static int avgApproximationEnd = 25;
     private static int avgApproximationStart = 30;
@@ -150,26 +152,25 @@ public class QualityAnalysis {
      * @author Jannis
      */
     public static double getQualityPercentage(AnalysedSequence toAnalyse) {
-	if(toAnalyse.getQuality().length == 0) return 0;
-	
-	
+	if (toAnalyse.getQuality().length == 0) return 0;
+
 	double counter = 0;
 	for (int phred : toAnalyse.getQuality()) {
 	    if (phred > avgQualityEdge) counter++;
 	}
-	double tmp = (int) ( counter / toAnalyse.getQuality().length * 1000 );
-	return  tmp / 1000;
+	double tmp = (int) (counter / toAnalyse.getQuality().length * 1000);
+	return tmp / 1000;
     }
 
-    public static int saveLengthBeforeQualityTrim (AnalysedSequence toAnalysedSequence) {
+    public static int saveLengthBeforeQualityTrim(AnalysedSequence toAnalysedSequence) {
 	return toAnalysedSequence.getSequence().length();
     }
-    
-    public static double percentageOfTrimQuality (int lengthBefore, AnalysedSequence toAnalyse){
-	double tmp = (int) ( (double)toAnalyse.getSequence().length()/ (double) lengthBefore*1000);
-	return tmp / 1000 ;
+
+    public static double percentageOfTrimQuality(int lengthBefore, AnalysedSequence toAnalyse) {
+	double tmp = (int) ((double) toAnalyse.getSequence().length() / (double) lengthBefore * 1000);
+	return tmp / 1000;
     }
-    
+
     public static int getBreakcounter() {
 	return breakcounter;
     }
@@ -186,8 +187,15 @@ public class QualityAnalysis {
 	int[] trimmingpositions = QualityAnalysis.findLowQuality(toAnalyse);
 	toAnalyse.setOffset(toAnalyse.getOffset() + trimmingpositions[2]);
 	toAnalyse.trimSequence(trimmingpositions[0], trimmingpositions[1] - 1);
-	
-	
+
+    }
+
+    public static boolean checkIfSequenceIsClean(AnalysedSequence toAnalysedSequence)
+	    throws CorruptedSequenceException {
+	for (char c : toAnalysedSequence.getSequence().toCharArray()) {
+	    if (c == 'X') throw new CorruptedSequenceException();
+	}
+	return true;
     }
 
 }

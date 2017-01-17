@@ -41,21 +41,11 @@ public class CorruptedSequenceException extends Exception {
    * This Constructor specifies the position, the type of wrong character in an observed sequence
    * object and the object itself.
    * 
-   * @param i The index of the wrong character
-   * @param problem The wrong character
-   * @param sequence The problematic sequence object
    * 
-   * @author Ben Kohr
+   * @author Ben Kohr, Jannis Blueml (17.01. Update)
    */
-  public CorruptedSequenceException(int i, char problem, AnalysedSequence sequence) {
-    super("Problem in observed AnalyzedSequence: Index " + i + " is '" + problem
-        + "', but should be 'A', 'T', 'C' or 'G'.");
-
-    this.index = i;
-    this.problem = problem;
-    this.sequence = sequence;
-    this.nucleotides = sequence.getSequence();
-
+  public CorruptedSequenceException() {
+    super("Problem in observed AnalyzedSequence: The Sequence has corrupted nucleptides, which means there are not 'A','C','G','T' or 'U'.");
   }
 
 
