@@ -156,7 +156,7 @@ public class AnalysedSequence extends Sequence {
     }
     return sum / qualities.length;
   }
-
+  
 
   public String getComments() {
     return comments;
