@@ -773,12 +773,12 @@ public class StringAnalysis {
 	// if newSequence with offset is longer than original gen, cut
 	// TODO check if OK
 
-	if (newSequence.length() + toAlign.getOffset() > gene.getSequence().length()) {
+	/*if (newSequence.length() + toAlign.getOffset() > gene.getSequence().length()) {
 	    int end = gene.getSequence().length() - toAlign.getOffset();
 	    System.out.println(end);
 	    newSequence = newSequence.substring(0, end);
 	    toAlign.trimQualityArray(0, end);
-	}
+	}*/
 
 	// ******************************************
 
@@ -823,7 +823,6 @@ public class StringAnalysis {
 	if (toTest > bestSimilarity) {
 	    System.out.println("reverse the sequence");
 	    toAnalyse.setSequence(toAnalyse.getReversedSequence());
-	    System.out.println("reverse");
 	    toAnalyse.reverseQuality();
 	    bestSimilarity = toTest;
 	}
@@ -832,7 +831,6 @@ public class StringAnalysis {
 	if (toTest > bestSimilarity) {
 	    System.out.println("reverse + complementary the sequence");
 	    toAnalyse.setSequence(toAnalyse.getComplementarySequence(toAnalyse.getReversedSequence()));
-	    System.out.println("reverse");
 	    toAnalyse.reverseQuality();
 	    bestSimilarity = toTest;
 	}
