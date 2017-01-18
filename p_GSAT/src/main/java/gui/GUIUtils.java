@@ -54,8 +54,8 @@ public class GUIUtils {
       report.append("Reading .ab1-File(s) was successfull\n");
 
     Gene gene = getGeneFromDropDown(GeneID).first;
-    report.append(getGeneFromDropDown(GeneID).second.second +"\n");
-    
+    report.append(getGeneFromDropDown(GeneID).second.second + "\n");
+
     for (File file : sequences.first) {
       AnalysedSequence toAnalyse = readSequenceFromFile(file).first;
       toAnalyse.setReferencedGene(gene);
@@ -74,6 +74,7 @@ public class GUIUtils {
 
       try {
         MutationAnalysis.findMutations(toAnalyse);
+        report.append("Finding Mutations was successfull.\n");
       } catch (UndefinedTypeOfMutationException | CorruptedSequenceException e) {
         report.append("FindMutation was not successfull because of Exception\n");
         return new Pair<Boolean, String>(success, report.toString());

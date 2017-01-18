@@ -5,6 +5,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 import analysis.Pair;
+import io.FileSaver;
 import io.GeneReader;
 import javafx.application.Application;
 import javafx.beans.value.ChangeListener;
@@ -101,6 +102,7 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
       public void changed(ObservableValue<? extends Boolean> arg0, Boolean oldValue,
           Boolean newValue) {
         outputInOneFile = newValue;
+        FileSaver.setSeparateFiles(newValue);
         if (newValue)
           infoArea.appendText("You will get one single Outputfile \n");
         else
@@ -123,9 +125,9 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
       public void handle(ActionEvent arg0) {
         infoArea.appendText(
             "---------------------------------------------------------------------------------------------------"
-                + "\nStarting Analysing Sequences\n"
+                + "\nStarting analysing Sequences\n"
                 + "---------------------------------------------------------------------------------------------------\n");
-        
+
         infoArea.appendText("Sourcefolder or -file:  " + srcField.getText() + "\n");
         infoArea.appendText("Destinationfolder:  " + destField.getText() + "\n");
         infoArea
@@ -133,9 +135,10 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
         infoArea.appendText(
             "---------------------------------------------------------------------------------------------------\n");
         String output;
-        output = GUIUtils.runAnalysis(srcField.getText(), geneBox.getSelectionModel().getSelectedIndex()).second;
+        output = GUIUtils.runAnalysis(srcField.getText(),
+            geneBox.getSelectionModel().getSelectedIndex()).second;
         infoArea.appendText(output);
-        
+
         bar.setProgress(bar.getProgress() + 0.1);
       }
     });
