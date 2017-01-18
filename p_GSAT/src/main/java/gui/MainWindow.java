@@ -135,11 +135,11 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
         infoArea.appendText(
             "---------------------------------------------------------------------------------------------------\n");
         String output;
+
         output = GUIUtils.runAnalysis(srcField.getText(),
             geneBox.getSelectionModel().getSelectedIndex()).second;
         infoArea.appendText(output);
 
-        bar.setProgress(bar.getProgress() + 0.1);
       }
     });
 

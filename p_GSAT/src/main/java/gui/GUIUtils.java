@@ -146,8 +146,6 @@ public class GUIUtils {
 
     DirectoryChooser chooser = new DirectoryChooser();
     chooser.setTitle("Set Destinationpath");
-    File defaultDirectory = new File("c:/");
-    chooser.setInitialDirectory(defaultDirectory);
     File selectedDirectory = chooser.showDialog(null);
 
     if (selectedDirectory != null) {
@@ -182,14 +180,10 @@ public class GUIUtils {
       report = "Reading path to .ab1-File Folder was unsuccessfull.";
       DirectoryChooser chooser = new DirectoryChooser();
       chooser.setTitle("Set path to the .ab1-Files (Folder)");
-      File defaultDirectory = new File("c:/");
-      chooser.setInitialDirectory(defaultDirectory);
       selectedDirectory = chooser.showDialog(null);
     } else if (result.get() == buttonTypeTwo) {
       FileChooser chooser = new FileChooser();
       chooser.setTitle("Set path to the .ab1-File");
-      File defaultDirectory = new File("c:/");
-      chooser.setInitialDirectory(defaultDirectory);
       selectedDirectory = chooser.showOpenDialog(null);
     } else {
       return new Pair<Boolean, String>(success, "The Action to set a sourcefolder was canceled");
