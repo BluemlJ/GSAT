@@ -7,11 +7,6 @@ public class DissimilarGeneException extends Exception {
 
 
   /**
-   * The sequence for which the gene was found (but with low fitting quality)
-   */
-  public AnalysedSequence toAnalyse;
-
-  /**
    * The gene that fits the sequence best
    */
   public Gene bestGene;
@@ -20,6 +15,11 @@ public class DissimilarGeneException extends Exception {
    * The similarity rate of the sequence and the gene
    */
   public double similarity;
+
+  /**
+   * The sequence for which the gene was found (but with low fitting quality)
+   */
+  public AnalysedSequence toAnalyse;
 
 
   /**

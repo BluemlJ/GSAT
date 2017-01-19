@@ -2,17 +2,16 @@ package test;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
 import analysis.AnalysedSequence;
 import analysis.Gene;
-import exceptions.*;
 import exceptions.CorruptedSequenceException;
 import exceptions.DatabaseConnectionException;
 import exceptions.DatabaseErrorException;
+import exceptions.DissimilarGeneException;
 import exceptions.FileReadingException;
 import exceptions.MissingPathException;
 import exceptions.PathUsage;
@@ -88,9 +87,9 @@ public class ExceptionTests {
 
       // Check if the error message is correctly produced
       assertEquals(
-	  "Problem in observed AnalyzedSequence: The Sequence has corrupted nucleptides, which means there are not 'A','C','G','T' or 'U'.",
+          "Problem in observed AnalyzedSequence: The Sequence has corrupted nucleptides, which means there are not 'A','C','G','T' or 'U'.",
           e.getMessage());
-   
+
     }
 
   }

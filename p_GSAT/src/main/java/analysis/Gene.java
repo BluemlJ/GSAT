@@ -9,15 +9,15 @@ package analysis;
 public class Gene extends Sequence {
 
   /**
-   * Name of the gene (e.g. FSA).
-   */
-  private String name;
-
-
-  /**
    * The globally unique id of this gene. This id is stored in the database.
    */
   private int id;
+
+
+  /**
+   * Name of the gene (e.g. FSA).
+   */
+  private String name;
 
 
 

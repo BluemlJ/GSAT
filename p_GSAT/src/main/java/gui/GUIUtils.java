@@ -18,68 +18,102 @@ import exceptions.FileReadingException;
 import exceptions.MissingPathException;
 import exceptions.UndefinedTypeOfMutationException;
 import io.Config;
-import io.ConsoleIO;
 import io.FileSaver;
 import io.GeneReader;
 import io.SequenceReader;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonBar.ButtonData;
 import javafx.scene.control.ButtonType;
-import javafx.scene.control.CheckBox;
 import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.Dialog;
-import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 
+/**
+ * This class ...
+ * 
+ * @author bluemlj
+ *
+ */
 public class GUIUtils {
 
+  /**
+   * This method initialize the choiceBox and adds all Gene which are stored locally in the
+   * Genes.txt
+   * 
+   * @param genes the choiceBox to initialize
+   * @return reportpair, with indicator Boolean and reportString
+   */
+  public static Pair<Boolean, String> initializeGeneBox(ChoiceBox<String> genes) {
+
+    String path = new File("resources/GeneData/Genes.txt").getAbsolutePath();
+    try {
+      GeneReader.readGenes(path);
+    } catch (IOException e) {
+      return new Pair<Boolean, String>(false, "Failing with finding Gene.txt");
+    }
+
+    genes.setItems(FXCollections.observableArrayList(GeneReader.getGeneNames()));
+    return new Pair<Boolean, String>(true, "Reading Gene.txt was successful");
+  }
+
+  /**
+   * Main method of this class, alias the startbutton function.
+   * 
+   * @param sourcepath path to .ab1-File or folder
+   * @param GeneID ID of the Gene in the Choicebox.
+   * @return a Pair or Boolean, which indicates if the method was successful and a String, which can
+   *         printed in the infoarea.
+   */
   public static Pair<Boolean, String> runAnalysis(String sourcepath, int GeneID) {
     boolean success = false;
     StringBuilder report = new StringBuilder();
 
+    // get all ab1-Files
     Pair<LinkedList<File>, LinkedList<File>> sequences = getSequencesFromSourceFolder(sourcepath);
     if (sequences.first == null)
       if (sequences.second == null)
         return new Pair<Boolean, String>(success,
-            "Reading Sequences unsuccessfull with unknown error");
+            "Reading Sequences unsuccessful with unknown error");
       else
         return new Pair<Boolean, String>(success, "No AB1 files were found at the given path.");
     else
-      report.append("Reading .ab1-File(s) was successfull\n");
+      report.append("Reading .ab1-File(s) was successful\n");
 
+    // get the gene from the coiceboxID
     Gene gene = getGeneFromDropDown(GeneID).first;
     report.append(getGeneFromDropDown(GeneID).second.second + "\n");
 
+    // foreach ab1 file
     for (File file : sequences.first) {
+      // get Sequence
       AnalysedSequence toAnalyse = readSequenceFromFile(file).first;
       toAnalyse.setReferencedGene(gene);
 
+      // checks if complementary and reversed Sequence is better, then standard
       try {
         StringAnalysis.checkComplementAndReverse(toAnalyse);
       } catch (CorruptedSequenceException e) {
         report.append("Its not possible to get the complementary Sequence, analysing stops\n");
         return new Pair<Boolean, String>(success, report.toString());
       }
+
       // cut out vector
       StringAnalysis.trimVector(toAnalyse);
 
       // cut out low Quality parts of sequence
       QualityAnalysis.trimLowQuality(toAnalyse);
 
+      // find all Mutations
       try {
         MutationAnalysis.findMutations(toAnalyse);
-        report.append("Finding Mutations was successfull.\n");
+        report.append("Finding Mutations was successful.\n");
       } catch (UndefinedTypeOfMutationException | CorruptedSequenceException e) {
-        report.append("FindMutation was not successfull because of Exception\n");
+        report.append("FindMutation was not successful because of Exception\n");
         return new Pair<Boolean, String>(success, report.toString());
       }
-      // mutation analysis
 
       // add entry to database
       try {
@@ -95,32 +129,105 @@ public class GUIUtils {
       }
 
     }
-    report.append("Analysing was successfull\n");
+    // set output parameter and return Pair.
+    report.append("Analysing was successful\n");
     success = true;
     return new Pair<Boolean, String>(success, report.toString());
   }
 
-  private static Pair<Gene, Pair<Boolean, String>> getGeneFromDropDown(int dropdownID) {
-    return new Pair<Gene, Pair<Boolean, String>>(GeneReader.getGeneAt(dropdownID),
-        new Pair<Boolean, String>(true, "Reading Gene was successfull"));
+  /**
+   * This method opens a DirectoryChooser to set the destinationpath. Later results and reports will
+   * be saved here.
+   * 
+   * @param destination Textfield, to place path.
+   * @return reportpair of boolean (indicates success) and report String
+   */
+  public static Pair<Boolean, String> setDestination(TextField destination) {
 
+    boolean success = false;
+    String report = "Reading destinationpath was unsuccessful.";
+    String path;
+
+    DirectoryChooser chooser = new DirectoryChooser();
+    chooser.setTitle("Set Destinationpath");
+    File selectedDirectory = chooser.showDialog(null);
+
+    if (selectedDirectory != null) {
+      path = selectedDirectory.getAbsolutePath();
+      success = true;
+      report = "Reading destinationpath was successful. \nDestination is:  " + path;
+      FileSaver.setLocalPath(path);
+      destination.setText(path);
+    }
+    return new Pair<Boolean, String>(success, report);
   }
 
-  public static Pair<Boolean, String> initializeGeneBox(ChoiceBox<String> genes) {
+  /**
+   * This method opens a DirectoryChooser to set the sourcepath. In this path, there should be some
+   * .ab1-files.
+   * 
+   * @param source Textfield, to place path.
+   * @return reportpair of boolean (indicates success) and report String
+   */
+  public static Pair<Boolean, String> setSourceFolder(TextField source) {
+    boolean success = false;
+    String report = "Reading path to .ab1-File was unsuccessful.";
+    String path;
+    File selectedDirectory = null;
 
-    String path = new File("resources/GeneData/Genes.txt").getAbsolutePath();
-    try {
-      GeneReader.readGenes(path);
-    } catch (IOException e) {
-      return new Pair<Boolean, String>(false, "Failing with finding Gene.txt");
+    Alert alert = new Alert(AlertType.CONFIRMATION);
+    alert.setTitle("Set path to the ab1-File(s)");
+    alert.setHeaderText("Do you have a single ab1-File or a folder of ab1-Files?");
+    alert.setContentText("Choose your option.");
+
+    ButtonType buttonTypeOne = new ButtonType("Folder of .ab1-Files");
+    ButtonType buttonTypeTwo = new ButtonType("Single .ab1-File");
+    ButtonType buttonTypeCancel = new ButtonType("Cancel", ButtonData.CANCEL_CLOSE);
+
+    alert.getButtonTypes().setAll(buttonTypeOne, buttonTypeTwo, buttonTypeCancel);
+
+    Optional<ButtonType> result = alert.showAndWait();
+    if (result.get() == buttonTypeOne) {
+      report = "Reading path to .ab1-File Folder was unsuccessful.";
+      DirectoryChooser chooser = new DirectoryChooser();
+      chooser.setTitle("Set path to the .ab1-Files (Folder)");
+      selectedDirectory = chooser.showDialog(null);
+    } else if (result.get() == buttonTypeTwo) {
+      FileChooser chooser = new FileChooser();
+      chooser.setTitle("Set path to the .ab1-File");
+      selectedDirectory = chooser.showOpenDialog(null);
+    } else {
+      return new Pair<Boolean, String>(success, "The Action to set a sourcefolder was canceled");
     }
 
-    genes.setItems(FXCollections.observableArrayList(GeneReader.getGeneNames()));
-    return new Pair<Boolean, String>(true, "Reading Gene.txt was successfull");
+
+    if (selectedDirectory != null) {
+      path = selectedDirectory.getAbsolutePath();
+      success = true;
+      report = "Reading path was successful. \nFoulder is:  " + path;
+      source.setText(path);
+    }
+    return new Pair<Boolean, String>(success, report);
   }
 
+  /**
+   * This method gets the Gene from his ID.
+   * 
+   * @param dropdownID ID of Gene in the choiceBox
+   * @return Gene and reportpair
+   */
+  private static Pair<Gene, Pair<Boolean, String>> getGeneFromDropDown(int dropdownID) {
+    return new Pair<Gene, Pair<Boolean, String>>(GeneReader.getGeneAt(dropdownID),
+        new Pair<Boolean, String>(true, "Reading Gene was successful"));
 
+  }
 
+  /**
+   * This method gets all ab1-Files from an given path. It sorts them to ab1-files and other
+   * 
+   * @param source the path to check about .abi-Files
+   * @return two lists in form of a Pair. The .ab1-Files and the not usuable files.
+   */
   private static Pair<LinkedList<File>, LinkedList<File>> getSequencesFromSourceFolder(
       String source) {
 
@@ -138,90 +245,11 @@ public class GUIUtils {
     return new Pair<LinkedList<File>, LinkedList<File>>(files, oddFiles);
   }
 
-  public static Pair<Boolean, String> setDestination(TextField destination) {
-
-    boolean success = false;
-    String report = "Reading destinationpath was unsuccessfull.";
-    String path;
-
-    DirectoryChooser chooser = new DirectoryChooser();
-    chooser.setTitle("Set Destinationpath");
-    File selectedDirectory = chooser.showDialog(null);
-
-    if (selectedDirectory != null) {
-      path = selectedDirectory.getAbsolutePath();
-      success = true;
-      report = "Reading destinationpath was successfull. \nDestination is:  " + path;
-      FileSaver.setLocalPath(path);
-      destination.setText(path);
-    }
-    return new Pair<Boolean, String>(success, report);
-  }
-
-  public static Pair<Boolean, String> setSourceFolder(TextField sourcefolder) {
-    boolean success = false;
-    String report = "Reading path to .ab1-File was unsuccessfull.";
-    String path;
-    File selectedDirectory = null;
-
-    Alert alert = new Alert(AlertType.CONFIRMATION);
-    alert.setTitle("Set path to the ab1-File(s)");
-    alert.setHeaderText("Do you have a single ab1-File or a folder of ab1-Files?");
-    alert.setContentText("Choose your option.");
-
-    ButtonType buttonTypeOne = new ButtonType("Folder of .ab1-Files");
-    ButtonType buttonTypeTwo = new ButtonType("Single .ab1-File");
-    ButtonType buttonTypeCancel = new ButtonType("Cancel", ButtonData.CANCEL_CLOSE);
-
-    alert.getButtonTypes().setAll(buttonTypeOne, buttonTypeTwo, buttonTypeCancel);
-
-    Optional<ButtonType> result = alert.showAndWait();
-    if (result.get() == buttonTypeOne) {
-      report = "Reading path to .ab1-File Folder was unsuccessfull.";
-      DirectoryChooser chooser = new DirectoryChooser();
-      chooser.setTitle("Set path to the .ab1-Files (Folder)");
-      selectedDirectory = chooser.showDialog(null);
-    } else if (result.get() == buttonTypeTwo) {
-      FileChooser chooser = new FileChooser();
-      chooser.setTitle("Set path to the .ab1-File");
-      selectedDirectory = chooser.showOpenDialog(null);
-    } else {
-      return new Pair<Boolean, String>(success, "The Action to set a sourcefolder was canceled");
-    }
-
-
-    if (selectedDirectory != null) {
-      path = selectedDirectory.getAbsolutePath();
-      success = true;
-      report = "Reading path was successfull. \nFoulder is:  " + path;
-      sourcefolder.setText(path);
-    }
-    return new Pair<Boolean, String>(success, report);
-  }
-
-  private static Pair<Boolean, String> runConfiguration(TextField configpath) {
-    Config.setPath(configpath.getText());
-    boolean success = false;
-    String report = "Reading configfile unsuccessfull with unknown error";
-    try {
-      Config.readConfig();
-      success = true;
-      report = "Reading configfile successfull";
-    } catch (ConfigReadException e) {
-      report = "An error occured while reading the configuration file.";
-    } catch (ConfigNotFoundException e) {
-      report = "No configuration file was found at the given path.";
-    } catch (IOException e) {
-      System.out.println("Error during reading occurred.");
-    }
-    return new Pair<Boolean, String>(success, report);
-  }
-
   /**
    * Reads the Sequence of the given File and prints Errors if necessary
    * 
-   * @param file
-   * @return
+   * @param file the .ab1-File
+   * @return Analysedsequence and reportpair
    * @author Jannis
    */
   private static Pair<AnalysedSequence, Pair<Boolean, String>> readSequenceFromFile(File file) {
@@ -240,5 +268,28 @@ public class GUIUtils {
       System.out.println("Error during reading occured.");
     }
     return new Pair<AnalysedSequence, Pair<Boolean, String>>(null, ret);
+  }
+
+  /**
+   * 
+   * @param configpath
+   * @return
+   */
+  private static Pair<Boolean, String> runConfiguration(TextField configpath) {
+    Config.setPath(configpath.getText());
+    boolean success = false;
+    String report = "Reading configfile unsuccessful with unknown error";
+    try {
+      Config.readConfig();
+      success = true;
+      report = "Reading configfile successful";
+    } catch (ConfigReadException e) {
+      report = "An error occured while reading the configuration file.";
+    } catch (ConfigNotFoundException e) {
+      report = "No configuration file was found at the given path.";
+    } catch (IOException e) {
+      System.out.println("Error during reading occurred.");
+    }
+    return new Pair<Boolean, String>(success, report);
   }
 }

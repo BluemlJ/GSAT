@@ -12,10 +12,10 @@ import exceptions.UndefinedTypeOfMutationException;
  */
 public class MutationAnalysis {
 
-  // A Integer, that specifies the border for the "Reading Frame Error"
-  public static int warningReadingFrameError = 10;
   public static boolean readingFrameError = false;
   public static int readingFrameErrorBorder = 100;
+  // A Integer, that specifies the border for the "Reading Frame Error"
+  public static int warningReadingFrameError = 10;
 
   /**
    * Compares a sequence to a gene to find mutations. Returns a boolean if there was a reading frame
@@ -164,58 +164,6 @@ public class MutationAnalysis {
    * 
    * x|y|n|m
    * 
-   * where: x is element of {s,i,d,e,n} where s stands for substitution i for insertion and d for
-   * deletion
-   * 
-   * y is the index of the char in sOne
-   *
-   * n is the old amino acid placed in the gene
-   *
-   * m is the new amino acid placed in the mutated sequence insertions take place between the given
-   * index and the next index
-   * 
-   * <<<<<<< HEAD
-   * 
-   * @param sOne The mutated sequence
-   * @param seq The gene
-   * @param type 0 = if the we work on nucleotides, 1 = if we work on aminoacids; =======
-   * @param gene The mutated sequence
-   * @param sequence The gene >>>>>>> 2b5f6c1192ca56bd5c615bff808c6f091130fcaf
-   * 
-   * @return A list of differences (represented as String)
-   * @author Kevin Otto, Jannis Blueml
-   * @throws CorruptedSequenceException
-   */
-  private static LinkedList<String> reportDifferences(AnalysedSequence seq, boolean type)
-      throws CorruptedSequenceException {
-    String first;
-    String second;
-    // if (type) {
-    int begin = seq.getOffset() * 3;
-    int end = seq.getOffset() * 3 + seq.length();
-
-    first = StringAnalysis.codonsToAminoAcids(seq.getReferencedGene().sequence.substring(begin,
-        Math.min(end, seq.getReferencedGene().getSequence().length())));
-    second = StringAnalysis.codonsToAminoAcids(seq.sequence);
-    return reportDifferences(first.split("#")[0], second.split("#")[0]);
-    /*
-     * } else {//TODO @Jannis remove type first =
-     * seq.getReferencedGene().sequence.substring(seq.getOffset()); second = seq.sequence; return
-     * reportDifferences(first, second);
-     * 
-     * }
-     */
-
-  }
-
-  /**
-   * Compares to sequences and returns the differences as a list (represented by the positions). The
-   * order of the input sequences is irrelevant.
-   * 
-   * the returned list contains String of the following syntax:
-   * 
-   * x|y|n|m
-   * 
    * where: x is element of {s,i,d,e,n} where s stands for substitution, i for insertion, d for
    * deletion, n for no Operation, e for ERROR
    * 
@@ -322,5 +270,57 @@ public class MutationAnalysis {
       }
     }
     return result;
+  }
+
+  /**
+   * Compares to sequences and returns the differences as a list (represented by the positions). The
+   * order of the input sequences is irrelevant.
+   * 
+   * the returned list contains String of the following syntax:
+   * 
+   * x|y|n|m
+   * 
+   * where: x is element of {s,i,d,e,n} where s stands for substitution i for insertion and d for
+   * deletion
+   * 
+   * y is the index of the char in sOne
+   *
+   * n is the old amino acid placed in the gene
+   *
+   * m is the new amino acid placed in the mutated sequence insertions take place between the given
+   * index and the next index
+   * 
+   * <<<<<<< HEAD
+   * 
+   * @param sOne The mutated sequence
+   * @param seq The gene
+   * @param type 0 = if the we work on nucleotides, 1 = if we work on aminoacids; =======
+   * @param gene The mutated sequence
+   * @param sequence The gene >>>>>>> 2b5f6c1192ca56bd5c615bff808c6f091130fcaf
+   * 
+   * @return A list of differences (represented as String)
+   * @author Kevin Otto, Jannis Blueml
+   * @throws CorruptedSequenceException
+   */
+  private static LinkedList<String> reportDifferences(AnalysedSequence seq, boolean type)
+      throws CorruptedSequenceException {
+    String first;
+    String second;
+    // if (type) {
+    int begin = seq.getOffset() * 3;
+    int end = seq.getOffset() * 3 + seq.length();
+
+    first = StringAnalysis.codonsToAminoAcids(seq.getReferencedGene().sequence.substring(begin,
+        Math.min(end, seq.getReferencedGene().getSequence().length())));
+    second = StringAnalysis.codonsToAminoAcids(seq.sequence);
+    return reportDifferences(first.split("#")[0], second.split("#")[0]);
+    /*
+     * } else {//TODO @Jannis remove type first =
+     * seq.getReferencedGene().sequence.substring(seq.getOffset()); second = seq.sequence; return
+     * reportDifferences(first, second);
+     * 
+     * }
+     */
+
   }
 }

@@ -30,6 +30,120 @@ public class ConsoleVersion {
   private static boolean geneRecognition = false;
 
   /**
+   * Creates, prints and stores a report of the reading of the files.
+   * 
+   * @param destination The destination path (where to store the results)
+   * @param validFiles The list of valid AB1/ABI files
+   * @param badFiles The list of invalid files
+   * @param configReport A message on the level of success from reading the configuration file
+   * 
+   * @author Ben Kohr
+   * 
+   */
+  public static void reportOnInput(String destination, LinkedList<File> validFiles,
+      LinkedList<File> badFiles, String configReport) {
+    StringBuilder builder = new StringBuilder();
+
+    if (validFiles.isEmpty()) {
+      builder.append("No valid AB1/ABI found.");
+    } else {
+      builder.append("The following files have been detected as valid AB1/ABI files:");
+      builder.append(System.lineSeparator());
+
+      // List all valid files
+      for (File goodFile : validFiles) {
+        builder.append(">>> ");
+        builder.append(goodFile.getName());
+        builder.append(System.lineSeparator());
+      }
+
+      builder.append(System.lineSeparator());
+
+      // Number of files
+      builder.append("Number of valid files: " + validFiles.size());
+    }
+    builder.append(System.lineSeparator());
+    builder.append(System.lineSeparator());
+
+    if (badFiles.isEmpty()) {
+      builder.append("No invalid files detected.");
+    } else {
+      builder.append("The following files were invalid:");
+      builder.append(System.lineSeparator());
+
+      // List all valid files
+      for (File badFile : badFiles) {
+        builder.append(">>> ");
+        builder.append(badFile.getName());
+        builder.append(System.lineSeparator());
+      }
+      builder.append(System.lineSeparator());
+
+      // Number of files
+      builder.append("Number of invalid files: " + badFiles.size());
+    }
+    builder.append(System.lineSeparator());
+    builder.append(System.lineSeparator());
+
+    // configuration file
+    builder.append("Config file: " + configReport);
+    builder.append(System.lineSeparator());
+    builder.append(System.lineSeparator());
+
+    String message = builder.toString();
+    System.out.println();
+    System.out.print(message);
+    try {
+      FileWriter writer = new FileWriter(destination + "/report.txt");
+      writer.write(message);
+      writer.close();
+    } catch (IOException e) {
+      System.out.println("Report could not be saved as a file.");
+    }
+  }
+
+
+  /**
+   * starts the console version of the programs
+   * 
+   * @author Lovis Heindrich
+   */
+  public static void startConsoleVersion() {
+    ConsoleIO.clearConsole();
+    // ask user for filepath
+    Pair<LinkedList<File>, LinkedList<File>> okayAndOddFiles = askForAB1Files();
+
+    // read config file
+    String configReport = getConfig(new File("resources").getAbsolutePath());
+
+    // set path for results and set database path
+    String destinationPath = processPath();
+
+    // does the user want one or multiple files for local storage?
+    askForOneOrMultipleFiles();
+
+    // write a report on parsed files
+    reportOnInput(destinationPath, okayAndOddFiles.first, okayAndOddFiles.second, configReport);
+
+    // ask user for reference gene
+    // Gene gene = askForGene();
+
+    Gene gene = readGene();
+
+    // get ab1 files
+    LinkedList<File> files = okayAndOddFiles.first;
+
+    // process all ab1 files
+    for (File file : files) {
+      // run pipeline for every sequence
+      processSequence(gene, file, destinationPath);
+    }
+
+    // close console
+    closeProgram();
+  }
+
+  /**
    * adds a database entry for a sequence
    * 
    * @param activeSequence
@@ -49,7 +163,6 @@ public class ConsoleVersion {
     }
 
   }
-
 
   /**
    * Asks the User for the path to the AB1 files and returns a list of the found files Also checks
@@ -85,6 +198,8 @@ public class ConsoleVersion {
     return new Pair<LinkedList<File>, LinkedList<File>>(files, oddFiles);
   }
 
+
+
   /**
    * Asks user for a comment and sets the comment field of the referenced analysedSequence
    * 
@@ -100,6 +215,8 @@ public class ConsoleVersion {
       e1.printStackTrace();
     }
   }
+
+
 
   /**
    * Asks user for gene and gene name and adds it to the gene database
@@ -135,8 +252,6 @@ public class ConsoleVersion {
     return new Gene(strGene, 0, strGeneName, "");
   }
 
-
-
   /**
    * asks user for destination path and sets the value in DatanbaseConnection
    * 
@@ -167,7 +282,6 @@ public class ConsoleVersion {
   }
 
 
-
   /**
    * prints done message and closes the console
    */
@@ -182,6 +296,7 @@ public class ConsoleVersion {
       System.exit(0);
     }
   }
+
 
   /**
    * Reads in the config file.
@@ -206,7 +321,6 @@ public class ConsoleVersion {
     return report;
   }
 
-
   /**
    * Calls all necessary functions to process Mutations of a sequence
    * 
@@ -226,7 +340,6 @@ public class ConsoleVersion {
       e.printStackTrace();
     }
   }
-
 
   /**
    * asks user for destination path and sets the value in DatanbaseConnection
@@ -279,8 +392,8 @@ public class ConsoleVersion {
         System.out.println(e.getMessage());
       }
     }
-      activeSequence.setReferencedGene(gene);
-    
+    activeSequence.setReferencedGene(gene);
+
     // checks if reversed or comeplenetary Sequence is better then the active Sequence
     try {
       StringAnalysis.checkComplementAndReverse(activeSequence);
@@ -294,12 +407,12 @@ public class ConsoleVersion {
     // cut out low Quality parts of sequence
     QualityAnalysis.trimLowQuality(activeSequence);
 
-    //checks if Sequence is corrupted
+    // checks if Sequence is corrupted
     try {
-	QualityAnalysis.checkIfSequenceIsClean(activeSequence);
+      QualityAnalysis.checkIfSequenceIsClean(activeSequence);
     } catch (CorruptedSequenceException e) {
-	System.err.println("CORRUPTED");
-	e.printStackTrace();
+      System.err.println("CORRUPTED");
+      e.printStackTrace();
     }
     // mutation analysis
     processMutations(activeSequence, file);
@@ -384,119 +497,6 @@ public class ConsoleVersion {
       e.printStackTrace();
     }
     return null;
-  }
-
-  /**
-   * Creates, prints and stores a report of the reading of the files.
-   * 
-   * @param destination The destination path (where to store the results)
-   * @param validFiles The list of valid AB1/ABI files
-   * @param badFiles The list of invalid files
-   * @param configReport A message on the level of success from reading the configuration file
-   * 
-   * @author Ben Kohr
-   * 
-   */
-  public static void reportOnInput(String destination, LinkedList<File> validFiles,
-      LinkedList<File> badFiles, String configReport) {
-    StringBuilder builder = new StringBuilder();
-
-    if (validFiles.isEmpty()) {
-      builder.append("No valid AB1/ABI found.");
-    } else {
-      builder.append("The following files have been detected as valid AB1/ABI files:");
-      builder.append(System.lineSeparator());
-
-      // List all valid files
-      for (File goodFile : validFiles) {
-        builder.append(">>> ");
-        builder.append(goodFile.getName());
-        builder.append(System.lineSeparator());
-      }
-
-      builder.append(System.lineSeparator());
-
-      // Number of files
-      builder.append("Number of valid files: " + validFiles.size());
-    }
-    builder.append(System.lineSeparator());
-    builder.append(System.lineSeparator());
-
-    if (badFiles.isEmpty()) {
-      builder.append("No invalid files detected.");
-    } else {
-      builder.append("The following files were invalid:");
-      builder.append(System.lineSeparator());
-
-      // List all valid files
-      for (File badFile : badFiles) {
-        builder.append(">>> ");
-        builder.append(badFile.getName());
-        builder.append(System.lineSeparator());
-      }
-      builder.append(System.lineSeparator());
-
-      // Number of files
-      builder.append("Number of invalid files: " + badFiles.size());
-    }
-    builder.append(System.lineSeparator());
-    builder.append(System.lineSeparator());
-
-    // configuration file
-    builder.append("Config file: " + configReport);
-    builder.append(System.lineSeparator());
-    builder.append(System.lineSeparator());
-
-    String message = builder.toString();
-    System.out.println();
-    System.out.print(message);
-    try {
-      FileWriter writer = new FileWriter(destination + "/report.txt");
-      writer.write(message);
-      writer.close();
-    } catch (IOException e) {
-      System.out.println("Report could not be saved as a file.");
-    }
-  }
-
-  /**
-   * starts the console version of the programs
-   * 
-   * @author Lovis Heindrich
-   */
-  public static void startConsoleVersion() {
-    ConsoleIO.clearConsole();
-    // ask user for filepath
-    Pair<LinkedList<File>, LinkedList<File>> okayAndOddFiles = askForAB1Files();
-
-    // read config file
-    String configReport = getConfig(new File("resources").getAbsolutePath());
-
-    // set path for results and set database path
-    String destinationPath = processPath();
-
-    // does the user want one or multiple files for local storage?
-    askForOneOrMultipleFiles();
-
-    // write a report on parsed files
-    reportOnInput(destinationPath, okayAndOddFiles.first, okayAndOddFiles.second, configReport);
-
-    // ask user for reference gene
-    // Gene gene = askForGene();
-
-    Gene gene = readGene();
-
-    // get ab1 files
-    LinkedList<File> files = okayAndOddFiles.first;
-
-    // process all ab1 files
-    for (File file : files) {
-      // run pipeline for every sequence
-      processSequence(gene, file, destinationPath);
-    }
-
-    // close console
-    closeProgram();
   }
 
 

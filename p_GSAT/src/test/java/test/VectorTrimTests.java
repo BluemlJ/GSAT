@@ -72,8 +72,7 @@ public class VectorTrimTests {
     }
     String seqString = sequenceBuilder.toString();
     int[] qualities = new int[seqString.length()];
-    AnalysedSequence seq =
-        new AnalysedSequence(seqString, "Coincidence", "FN", qualities);
+    AnalysedSequence seq = new AnalysedSequence(seqString, "Coincidence", "FN", qualities);
     seq.setReferencedGene(getRandomGen(seq));
     seq.setSequence(randomMutation(seq.getSequence(), seq.getOffset(),
         seq.getOffset() + seq.getReferencedGene().getSequence().length()));

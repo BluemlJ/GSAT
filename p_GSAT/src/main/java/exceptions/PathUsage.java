@@ -1,5 +1,5 @@
 package exceptions;
 
 public enum PathUsage {
-  READING, WRITING, DATABASE
+  DATABASE, READING, WRITING
 }

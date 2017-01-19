@@ -48,7 +48,7 @@ public class ConfigTests {
    */
   @Test
   public void testConfigRead() throws IOException, ConfigReadException, ConfigNotFoundException {
-    //Config.setPath(getClass().getResource("/lh_config").getFile());
+    // Config.setPath(getClass().getResource("/lh_config").getFile());
     File path = new File("resources/lh_config");
     Config.setPath(path.getAbsolutePath());
     Config.readConfig();

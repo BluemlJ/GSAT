@@ -20,18 +20,18 @@ import exceptions.DatabaseErrorException;
  */
 public class DatabaseConnection {
 
-  /**
-   * List off all entries to be written into the database. These are typically the results of the
-   * analysis of a single file.
-   */
-  private static LinkedList<DatabaseEntry> queue = new LinkedList<DatabaseEntry>();
+  private static Connection conn;
 
   /**
    * Specifies the location of the database.
    */
   private static final String CONNECTION_STRING = "jdbc:mysql://localhost:5432/test";
 
-  private static Connection conn;
+  /**
+   * List off all entries to be written into the database. These are typically the results of the
+   * analysis of a single file.
+   */
+  private static LinkedList<DatabaseEntry> queue = new LinkedList<DatabaseEntry>();
 
   /**
    * Puts all entries from a given list into this class's waiting queue.
@@ -57,21 +57,6 @@ public class DatabaseConnection {
   }
 
 
-  private static Connection establishConnection() throws DatabaseConnectionException {
-
-    Connection conn;
-
-    try {
-      conn = DriverManager.getConnection(CONNECTION_STRING, "testname", "password");
-    } catch (SQLException e) {
-      throw new DatabaseConnectionException();
-    }
-
-    return conn;
-
-  }
-
-
   /**
    * Empties the current waiting queue.
    * 
@@ -80,7 +65,6 @@ public class DatabaseConnection {
   public static void flushQueue() {
     queue.clear();
   }
-
 
 
   /**
@@ -146,29 +130,6 @@ public class DatabaseConnection {
 
 
   /**
-   * Inserts a single data point into the specified database.
-   */
-  private static void insertIntoDatabase(PreparedStatement pstmt)
-      throws DatabaseConnectionException, DatabaseErrorException {
-    try {
-
-      // mutation table
-      DatabaseEntry entry = queue.getFirst();
-      pstmt.setLong(1, entry.getID());
-      pstmt.setString(2, entry.getMutation());
-      pstmt.setString(3, "" + entry.getMutationType());
-
-    } catch (SQLException e) {
-      throw new DatabaseErrorException();
-    }
-
-
-
-  }
-
-
-
-  /**
    * Retrieves all genes from the database and returns them.
    * 
    * @return List of genes currently stored in the database
@@ -202,6 +163,45 @@ public class DatabaseConnection {
     }
 
     return allGenes;
+  }
+
+
+
+  private static Connection establishConnection() throws DatabaseConnectionException {
+
+    Connection conn;
+
+    try {
+      conn = DriverManager.getConnection(CONNECTION_STRING, "testname", "password");
+    } catch (SQLException e) {
+      throw new DatabaseConnectionException();
+    }
+
+    return conn;
+
+  }
+
+
+
+  /**
+   * Inserts a single data point into the specified database.
+   */
+  private static void insertIntoDatabase(PreparedStatement pstmt)
+      throws DatabaseConnectionException, DatabaseErrorException {
+    try {
+
+      // mutation table
+      DatabaseEntry entry = queue.getFirst();
+      pstmt.setLong(1, entry.getID());
+      pstmt.setString(2, entry.getMutation());
+      pstmt.setString(3, "" + entry.getMutationType());
+
+    } catch (SQLException e) {
+      throw new DatabaseErrorException();
+    }
+
+
+
   }
 
 

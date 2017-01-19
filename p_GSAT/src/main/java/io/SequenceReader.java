@@ -21,14 +21,14 @@ import exceptions.FileReadingException;
 public class SequenceReader {
 
   /**
-   * Path the the source of information (folder/file).
-   */
-  private static String path;
-
-  /**
    * Constructed list of file names in a given folder (in order to not analyze a file twice).
    */
   private static LinkedList<String> files = new LinkedList<String>();
+
+  /**
+   * Path the the source of information (folder/file).
+   */
+  private static String path;
 
   /**
    * Sets the path to the folder or the file to be used. In case of a folder, also gathers the file

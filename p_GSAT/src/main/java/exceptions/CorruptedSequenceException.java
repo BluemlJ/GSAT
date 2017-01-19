@@ -18,6 +18,12 @@ public class CorruptedSequenceException extends Exception {
 
 
   /**
+   * The nucleotide list.
+   */
+  public String nucleotides;
+
+
+  /**
    * The problematic character.
    */
   public char problem;
@@ -30,12 +36,6 @@ public class CorruptedSequenceException extends Exception {
   public AnalysedSequence sequence;
 
 
-  /**
-   * The nucleotide list.
-   */
-  public String nucleotides;
-
-
 
   /**
    * This Constructor specifies the position, the type of wrong character in an observed sequence
@@ -45,7 +45,8 @@ public class CorruptedSequenceException extends Exception {
    * @author Ben Kohr, Jannis Blueml (17.01. Update)
    */
   public CorruptedSequenceException() {
-    super("Problem in observed AnalyzedSequence: The Sequence has corrupted nucleptides, which means there are not 'A','C','G','T' or 'U'.");
+    super(
+        "Problem in observed AnalyzedSequence: The Sequence has corrupted nucleptides, which means there are not 'A','C','G','T' or 'U'.");
   }
 
 
