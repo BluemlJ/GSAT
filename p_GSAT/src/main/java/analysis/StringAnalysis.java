@@ -698,18 +698,18 @@ public class StringAnalysis {
      */
     public static void trimVector(AnalysedSequence toAlign) {
 	// **********simple Vector Cutting*****************
-
+    boolean offsetExact = findOffset(toAlign);
 	Gene gene = toAlign.getReferencedGene();
 
 	String newSequence = toAlign.sequence;
-
+	
 	// check for stopcodon //TODO edit
-	boolean endexact = false;
+	//boolean endexact = false;
 
-	String codon = gene.sequence.substring(gene.sequence.length() - 3, gene.sequence.length());
+	//String codon = gene.sequence.substring(gene.sequence.length() - 3, gene.sequence.length());
 
 	// TODO fix
-	codon = "false";
+	//codon = "false";
 
 	// if found cut at stopcodon
 	/*
