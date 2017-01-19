@@ -74,8 +74,7 @@ public class ReadingTests {
 
     SequenceReader.configurePath(parsedFile.getAbsolutePath());
     Pair<LinkedList<File>, LinkedList<File>> pair = SequenceReader.listFiles();
-
-    assertTrue(pair.first.size() == 1 && pair.second.size() == 2);
+    assertTrue(pair.first.size() == 1 && pair.second.size() == 3);
   }
 
   /**

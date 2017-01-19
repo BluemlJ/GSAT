@@ -124,16 +124,18 @@ public class SequenceReader {
       lastID = 0;
 
     // for every files or path
-    for (int fileID = 0; fileID <= lastID; fileID++) {
-      File activeFile = allFiles[fileID];
-      String fileName = activeFile.getName();
-      String fileEnding = fileName.split("\\.")[fileName.split("\\.").length - 1];
-      // if it is a File and the fileending is abi or ab1 add file
-      if (activeFile.isFile()
-          && (fileEnding.toLowerCase().equals("ab1") || fileEnding.toLowerCase().equals("abi"))) {
-        ab1Files.add(activeFile);
-      } else if (!"config.ini".equals(activeFile.getName())) {
-        oddFiles.add(activeFile);
+    if (allFiles != null && allFiles.length > 0) {
+      for (int fileID = 0; fileID <= lastID; fileID++) {
+        File activeFile = allFiles[fileID];
+        String fileName = activeFile.getName();
+        String fileEnding = fileName.split("\\.")[fileName.split("\\.").length - 1];
+        // if it is a File and the fileending is abi or ab1 add file
+        if (activeFile.isFile()
+            && (fileEnding.toLowerCase().equals("ab1") || fileEnding.toLowerCase().equals("abi"))) {
+          ab1Files.add(activeFile);
+        } else if (!"config.ini".equals(activeFile.getName())) {
+          oddFiles.add(activeFile);
+        }
       }
     }
     return new Pair<LinkedList<File>, LinkedList<File>>(ab1Files, oddFiles);

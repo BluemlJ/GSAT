@@ -712,93 +712,98 @@ public class StringAnalysis {
     // System.out.println(toAlign.getOffset() + " = OFFSET");
   }
 
-  /**
-   * 
-   * @param toAlign
-   * @author Kevin
-   */
-  public static void trimVector(AnalysedSequence toAlign) {
-    // **********simple Vector Cutting*****************
-
-    Gene gene = toAlign.getReferencedGene();
-
-    String newSequence = toAlign.sequence;
-
-    // check for stopcodon //TODO edit
-    boolean endexact = false;
-
-    String codon = gene.sequence.substring(gene.sequence.length() - 3, gene.sequence.length());
-
-    // TODO fix
-    codon = "false";
-
-    // if found cut at stopcodon
-    /*
-     * for (int i = 0; i < 6; i++) { int hitIndex = newSequence.indexOf(codon); if (hitIndex >= 0 &&
-     * hitIndex == newSequence.lastIndexOf(codon)) { newSequence = newSequence.substring(0, hitIndex
-     * + 3); endexact = true; System.out.println(); System.err.println("start found " + codon); //
-     * TODO save end vector i = 10; } switch (i) { case 0: codon = "UAG"; break; case 1: codon =
-     * "UAA"; break; case 2: codon = "UGA"; break; case 3: codon = "TAG"; break; case 4: codon =
-     * "TAA"; break; case 5: codon = "TGA"; break; default: break; } }
+    /**
+     * 
+     * @param toAlign
+     * @author Kevin
      */
+    public static void trimVector(AnalysedSequence toAlign) {
+	// **********simple Vector Cutting*****************
+    boolean offsetExact = findOffset(toAlign);
+	Gene gene = toAlign.getReferencedGene();
 
-    // calculate the end of the sequence (as long as the gene if possible
-    // els till end)
-    // if necessary cut off begin
-    // if (offsetExact) {
-    // negative offset -> sequence goes over left site of gene
-    // -> cut of left of offset
-    // System.err.println("OFF = " + toAlign.getOffset());
-    String leftVector = newSequence.substring(0, Math.max(toAlign.getOffset(), 0));
+	String newSequence = toAlign.sequence;
+	
+	// check for stopcodon //TODO edit
+	//boolean endexact = false;
 
-    newSequence = newSequence.substring(Math.max(toAlign.getOffset(), 0));
-    toAlign.trimQualityArray(Math.max(toAlign.getOffset(), 0), toAlign.length());
+	//String codon = gene.sequence.substring(gene.sequence.length() - 3, gene.sequence.length());
 
-    // set vector and correct offset
-    toAlign.setLeftVector(leftVector);
-    toAlign.setOffset(Math.min(toAlign.getOffset(), 0));
-    toAlign.setOffset(-toAlign.getOffset());
-    toAlign.setSequence(newSequence);
-    // }
+	// TODO fix
+	//codon = "false";
 
-    // calculate exact offset if necessary;
-    // if (!(endexact && offsetExact)) {
+	// if found cut at stopcodon
+	/*
+	 * for (int i = 0; i < 6; i++) { int hitIndex =
+	 * newSequence.indexOf(codon); if (hitIndex >= 0 && hitIndex ==
+	 * newSequence.lastIndexOf(codon)) { newSequence =
+	 * newSequence.substring(0, hitIndex + 3); endexact = true;
+	 * System.out.println(); System.err.println("start found " + codon); //
+	 * TODO save end vector i = 10; } switch (i) { case 0: codon = "UAG";
+	 * break; case 1: codon = "UAA"; break; case 2: codon = "UGA"; break;
+	 * case 3: codon = "TAG"; break; case 4: codon = "TAA"; break; case 5:
+	 * codon = "TGA"; break; default: break; } }
+	 */
 
-    // newSequence = trimbyLevenstein(toAlign, offsetExact);
-    // }
+	// calculate the end of the sequence (as long as the gene if possible
+	// els till end)
+	// if necessary cut off begin
+	// if (offsetExact) {
+	// negative offset -> sequence goes over left site of gene
+	// -> cut of left of offset
+	// System.err.println("OFF = " + toAlign.getOffset());
+	String leftVector = newSequence.substring(0, Math.max(toAlign.getOffset(), 0));
 
-    // int sequenceEnd = Math.min(newSequence.length(),
-    // gene.sequence.length());
-    // String rightVector = newSequence.substring(sequenceEnd);
-    // newSequence = newSequence.substring(0, sequenceEnd);
+	newSequence = newSequence.substring(Math.max(toAlign.getOffset(), 0));
+	toAlign.trimQualityArray(Math.max(toAlign.getOffset(), 0), toAlign.length());
 
-    // **********complex Vector Cutting*****************
-    // TODO implement
+	// set vector and correct offset
+	toAlign.setLeftVector(leftVector);
+	toAlign.setOffset(Math.min(toAlign.getOffset(), 0));
+	toAlign.setOffset(-toAlign.getOffset());
+	toAlign.setSequence(newSequence);
+	// }
 
-    // INFO: wieder einkommentiert am 15.01.2017
-    // **********modulo Cutting*****************
-    /*
-     * if (toAlign.getOffset() != 0) { int begin = (3 - (toAlign.getOffset() % 3) % 3); newSequence
-     * = newSequence.substring(begin); int end = newSequence.length()-(newSequence.length()%3);
-     * newSequence = newSequence.substring(0,end); toAlign.trimQualityArray(begin,
-     * toAlign.getQuality().length); toAlign.trimQualityArray(0, end); }
-     */
-    // ******************************************
+	// calculate exact offset if necessary;
+	// if (!(endexact && offsetExact)) {
 
-    // *********OVERSIZE Trim*********************
-    // if newSequence with offset is longer than original gen, cut
-    // TODO check if OK
+	// newSequence = trimbyLevenstein(toAlign, offsetExact);
+	// }
 
-    /*
-     * if (newSequence.length() + toAlign.getOffset() > gene.getSequence().length()) { int end =
-     * gene.getSequence().length() - toAlign.getOffset(); System.out.println(end); newSequence =
-     * newSequence.substring(0, end); toAlign.trimQualityArray(0, end); }
-     */
+	// int sequenceEnd = Math.min(newSequence.length(),
+	// gene.sequence.length());
+	// String rightVector = newSequence.substring(sequenceEnd);
+	// newSequence = newSequence.substring(0, sequenceEnd);
 
-    // ******************************************
+	// **********complex Vector Cutting*****************
+	// TODO implement
 
-    // toAlign.setRightVector(rightVector);
-    toAlign.setSequence(newSequence);
+	// INFO: wieder einkommentiert am 15.01.2017
+	// **********modulo Cutting*****************
+	/*
+	 * if (toAlign.getOffset() != 0) { int begin = (3 - (toAlign.getOffset()
+	 * % 3) % 3); newSequence = newSequence.substring(begin); int end =
+	 * newSequence.length()-(newSequence.length()%3); newSequence =
+	 * newSequence.substring(0,end); toAlign.trimQualityArray(begin,
+	 * toAlign.getQuality().length); toAlign.trimQualityArray(0, end); }
+	 */
+	// ******************************************
+
+	// *********OVERSIZE Trim*********************
+	// if newSequence with offset is longer than original gen, cut
+	// TODO check if OK
+
+	/*if (newSequence.length() + toAlign.getOffset() > gene.getSequence().length()) {
+	    int end = gene.getSequence().length() - toAlign.getOffset();
+	    System.out.println(end);
+	    newSequence = newSequence.substring(0, end);
+	    toAlign.trimQualityArray(0, end);
+	}*/
+
+	// ******************************************
+
+	// toAlign.setRightVector(rightVector);
+	toAlign.setSequence(newSequence);
   }
 
   public static void trimVector(AnalysedSequence toAlign, Gene gene) {

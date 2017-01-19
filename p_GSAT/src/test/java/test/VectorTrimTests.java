@@ -319,18 +319,19 @@ public class VectorTrimTests {
    */
   @Test
   public void trimVectorMutatedTest() {
-    String seq = "XXhalAo3wieGehts3dirheute3XX";
+    String seq = "XXhalAo3wieGehts3dirheute3mirgehtesgutXX".toUpperCase();
     int[] qualities = new int[seq.length()];
     AnalysedSequence sequence = new AnalysedSequence(seq, "Researcher", "NAME", qualities);
-    Gene gen = new Gene("hallo3wieGehts3dirheute3", 0, null, null);
+    Gene gen = new Gene("hallo3wieGehts3dirheute3mirgehtesgut", 0, null, null);
 
     StringAnalysis.trimVector(sequence, gen);
     String test = sequence.getSequence();
-    String expected = "halAo3wieGehts3dirheute3";
+    String expected = "halAo3wieGehts3dirheute3".toUpperCase();
 
     System.out.println(test);
     System.out.println(expected);
-    assertTrue(expected.toUpperCase().equals(test));
+    System.out.println(sequence.getOffset());
+    assertTrue(expected.equals(test));
     assertEquals(0, sequence.getOffset());
   }
 
