@@ -67,7 +67,7 @@ dependencies {
 
 test {
      exclude 'p_GSAT/src/test/java/userDrivenTests/**' }
-}
+
 
 jacocoTestReport {
     reports {
