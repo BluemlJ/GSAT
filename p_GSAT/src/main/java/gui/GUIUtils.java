@@ -227,7 +227,7 @@ public class GUIUtils {
   private static Pair<AnalysedSequence, Pair<Boolean, String>> readSequenceFromFile(File file) {
     String report = "Failure with" + file.getAbsolutePath() + "\n This file might be corrupted.";
     boolean success = false;
-    Pair<Boolean, String> ret = new Pair<Boolean, String>(success, report);
+    Pair<Boolean, String> ret = null;
     try {
       success = true;
       report = "";

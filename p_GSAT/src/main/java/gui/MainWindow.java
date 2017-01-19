@@ -70,11 +70,11 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
     launch(args);
   }
 
-  public static void OpenWindow() {}
+  public static void openWindow() {}
 
   @Override
   public void initialize(URL arg0, ResourceBundle arg1) {
-    Pair<Boolean, String> output = new Pair<Boolean, String>(false, "");
+    Pair<Boolean, String> output;
     infoArea.setText("Hello, this is GSAT \n");
 
     output = GUIUtils.initializeGeneBox(geneBox);

@@ -141,7 +141,7 @@ public class ConsoleTest {
   @Test
   @Ignore
   public void readNoIntTest() throws IOException {
-    int read = ConsoleIO.readInt("Please press enter");
+    //int read = ConsoleIO.readInt("Please press enter");
   }
   
   /**

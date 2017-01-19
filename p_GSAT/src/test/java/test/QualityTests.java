@@ -200,7 +200,7 @@ public class QualityTests {
 		0, 0, 0, 30, 0, 0, 0, 30, 0, 0, 0, 40, 0, 0 };
 	AnalysedSequence testSequence = new AnalysedSequence("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", "", "", qualities);
 	double avg = QualityAnalysis.getQualityPercentage(testSequence);
-	assertTrue(avg == 0.361);
+	assertTrue(Math.abs(avg - 0.361) < 0.05);
     }
 
     @Test
@@ -208,7 +208,7 @@ public class QualityTests {
 	int[] qualities = { 30, 31, 40, 57, 57, 57, 6, 7, 8, 4, 3, 12 };
 	AnalysedSequence testSequence = new AnalysedSequence("aaaaaaaaaaaa", "", "", qualities);
 	double avg = QualityAnalysis.getQualityPercentage(testSequence);
-	assertTrue(avg == 0.416);
+	assertTrue(Math.abs(avg - 0.46) < 0.05);
     }
 
     @Test
@@ -226,7 +226,7 @@ public class QualityTests {
 	int tmp = QualityAnalysis.saveLengthBeforeQualityTrim(toAnalyze);
 	QualityAnalysis.trimLowQuality(toAnalyze);
 	System.out.println(QualityAnalysis.percentageOfTrimQuality(tmp, toAnalyze));
-	assertTrue(QualityAnalysis.percentageOfTrimQuality(tmp, toAnalyze) == 0.666);
+	assertTrue(Math.abs(QualityAnalysis.percentageOfTrimQuality(tmp, toAnalyze) - 0.666) < 0.05);
     }
 
     @Test
@@ -236,7 +236,7 @@ public class QualityTests {
 	int tmp = QualityAnalysis.saveLengthBeforeQualityTrim(toAnalyze);
 	QualityAnalysis.trimLowQuality(toAnalyze);
 	System.out.println(QualityAnalysis.percentageOfTrimQuality(tmp, toAnalyze));
-	assertTrue(QualityAnalysis.percentageOfTrimQuality(tmp, toAnalyze) == 0.4);
+	assertTrue(Math.abs(QualityAnalysis.percentageOfTrimQuality(tmp, toAnalyze) - 0.4) < 0.05);
     }
     
     @Test

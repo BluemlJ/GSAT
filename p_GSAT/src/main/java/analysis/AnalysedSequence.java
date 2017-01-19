@@ -154,7 +154,7 @@ public class AnalysedSequence extends Sequence {
     for (int i : qualities) {
       sum += i;
     }
-    return sum / qualities.length;
+    return sum / (1.0 * qualities.length);
   }
   
 

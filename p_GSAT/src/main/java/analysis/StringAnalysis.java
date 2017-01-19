@@ -698,7 +698,6 @@ public class StringAnalysis {
      */
     public static void trimVector(AnalysedSequence toAlign) {
 	// **********simple Vector Cutting*****************
-	boolean offsetExact = findOffset(toAlign);
 
 	Gene gene = toAlign.getReferencedGene();
 

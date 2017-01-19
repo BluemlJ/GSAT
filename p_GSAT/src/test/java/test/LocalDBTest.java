@@ -26,9 +26,9 @@ public class LocalDBTest {
      * 
      * OPTION 2
      */
-    Connection conn = null;
-    java.sql.Statement stmt = null;
-    ResultSet rs = null;
+    //Connection conn = null;
+    //java.sql.Statement stmt = null;
+    //ResultSet rs = null;
     
     //MysqlDataSource dataSource = new MysqlDataSource();
     //dataSource.setUser("root");
@@ -36,18 +36,18 @@ public class LocalDBTest {
     //dataSource.setPort(3306);
     //dataSource.setServerName("127.0.0.1");
     
-    try {
+   // try {
       // conn = dataSource.getConnection();
       // stmt = conn.createStatement();
       // rs = stmt.executeQuery("SHOW DATABASES");
-       while(rs.next()){
-         System.out.println(rs.getString(1));
-       }
+      // while(rs.next()){
+       //  System.out.println(rs.getString(1));
+       //}
       //System.out.println(dataSource.getDatabaseName());
-    } catch (SQLException e) {
+    //} catch (SQLException e) {
       // TODO Auto-generated catch block
-      e.printStackTrace();
-    }
+      //e.printStackTrace();
+    //}
     
     
     /*

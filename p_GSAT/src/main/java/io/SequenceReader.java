@@ -74,7 +74,6 @@ public class SequenceReader {
     Chromatogram abifile = ChromatogramFactory.create(referencedFile);
     String sequence = abifile.getNucleotideSequence().toString();
     byte[] qualities = abifile.getQualitySequence().toArray();
-    double average = abifile.getQualitySequence().getAvgQuality();
 
     // TODO Add Primer
 

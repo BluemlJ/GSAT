@@ -278,9 +278,9 @@ public class ConsoleVersion {
         gene = e.bestGene;
         System.out.println(e.getMessage());
       }
-    } else {
-      activeSequence.setReferencedGene(gene);
     }
+      activeSequence.setReferencedGene(gene);
+    
     // checks if reversed or comeplenetary Sequence is better then the active Sequence
     try {
       StringAnalysis.checkComplementAndReverse(activeSequence);
