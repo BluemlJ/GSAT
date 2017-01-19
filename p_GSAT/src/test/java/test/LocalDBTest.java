@@ -78,6 +78,22 @@ public class LocalDBTest {
         System.out.println("");
       }
       
+      
+      // Update new Gene
+      System.out.println("");
+      System.out.println("Update new Gene");
+      stmt.executeUpdate("UPDATE Gen SET sequence='tttttttttt' WHERE name='added from eclipse'");
+      
+      // Get Genes
+      System.out.println("");
+      System.out.println("Print Updated Gene");
+      rs = stmt.executeQuery("SELECT * FROM Gen WHERE name='added from eclipse'");
+      while (rs.next()) {
+        System.out.println("ID: " + rs.getInt("id"));
+        System.out.println("NAME: " + rs.getString("name"));
+        System.out.println("SEQUENCE: " + rs.getString("sequence"));
+        System.out.println("");
+      }
 
       // Delete new Gene
       System.out.println("");
