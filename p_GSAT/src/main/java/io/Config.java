@@ -15,8 +15,8 @@ import exceptions.ConfigReadException;
  *
  */
 public class Config {
-  public static String researcher;
   public static String path;
+  public static String researcher;
 
   /**
    * read the content of the configuration file and store its values locally

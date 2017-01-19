@@ -8,7 +8,6 @@ import java.util.Arrays;
 import java.util.LinkedList;
 
 import org.junit.Test;
-import org.junit.internal.Throwables;
 
 import analysis.AnalysedSequence;
 import analysis.Gene;
@@ -24,6 +23,61 @@ import exceptions.UndefinedTypeOfMutationException;
  *
  */
 public class AnalysisTests {
+
+  /**
+   * 
+   */
+  @Test
+  public void checkReverseAndComplementary() {
+    Gene gena = new Gene("ATGCCCCACCCCTAA", 0, "testGenA", "Jannis");
+    AnalysedSequence testSeq = new AnalysedSequence("AATCCCCACCCCGTA", "Jannis", "toAnalyse", null);
+    testSeq.setReferencedGene(gena);
+
+    try {
+      StringAnalysis.checkComplementAndReverse(testSeq);
+    } catch (CorruptedSequenceException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    }
+
+    assertTrue(testSeq.getSequence().equals("ATGCCCCACCCCTAA"));
+
+  }
+
+
+
+  /**
+   * @throws CorruptedSequenceException
+   * 
+   */
+  @Test
+  public void checkReverseAndComplementary2() throws CorruptedSequenceException {
+    Gene gena = new Gene("ATGGGACCCGGTTAA", 0, "testGenA", "Jannis");
+    AnalysedSequence testSeq =
+        new AnalysedSequence(gena.getComplementarySequence(), "Jannis", "toAnalyse", null);
+    testSeq.setReferencedGene(gena);
+
+    StringAnalysis.checkComplementAndReverse(testSeq);
+
+    assertTrue(testSeq.getSequence().equals("ATGGGACCCGGTTAA"));
+
+  }
+
+  /**
+   * @throws CorruptedSequenceException
+   * 
+   */
+  @Test
+  public void checkReverseAndComplementaryUnusual() throws CorruptedSequenceException {
+    Gene gena = new Gene("AAAAAA", 0, "testGenA", "Jannis");
+    AnalysedSequence testSeq = new AnalysedSequence("AAAAAA", "Jannis", "toAnalyse", null);
+    testSeq.setReferencedGene(gena);
+
+    StringAnalysis.checkComplementAndReverse(testSeq);
+
+    assertTrue(testSeq.getSequence().equals("AAAAAA"));
+
+  }
 
   /**
    * Test if the convention from codons to amino acid (shortform) is correct, if the user uses
@@ -42,8 +96,6 @@ public class AnalysisTests {
     String result = StringAnalysis.codonsToAminoAcids(testA);
     assertTrue(result.equals("IGPI"));
   }
-
-
 
   /**
    * Test if the convention from codons to amino acid (shortform) is correct, if the user uses
@@ -94,6 +146,12 @@ public class AnalysisTests {
 
   }
 
+
+
+  /********************
+   * Test for reportDifferences()
+   ************************************/
+
   /**
    * Test if the convention from codons to amino acid (shortform) is correct, if the user uses
    * codonstrings, that cant be correct condon string (%3) and gets the correct error message
@@ -124,6 +182,76 @@ public class AnalysisTests {
   }
 
   /**
+   * 
+   */
+  @Test
+  public void reverseQuality() {
+    int[] Quality = {0, 1, 2, 3, 4};
+    int[] expect = {4, 3, 2, 1, 0};
+    AnalysedSequence toTest = new AnalysedSequence("AAA", "jannis", "TEST", Quality);
+    toTest.reverseQuality();
+    for (int i = 0; i < expect.length; i++) {
+      assertTrue(toTest.getQuality()[i] == expect[i]);
+    }
+
+  }
+
+  /**
+   * 
+   */
+  @Test
+  public void reverseQuality2() {
+    int[] Quality = {0, 0, 0, 0, 100, 100, 100, 100, 100, 0, 0, 0, 0, 100};
+    int[] expect = {100, 0, 0, 0, 0, 100, 100, 100, 100, 100, 0, 0, 0, 0};
+    AnalysedSequence toTest = new AnalysedSequence("AAA", "jannis", "TEST", Quality);
+    toTest.reverseQuality();
+    for (int i = 0; i < expect.length; i++) {
+      assertTrue(toTest.getQuality()[i] == expect[i]);
+    }
+
+  }
+
+  /**
+   * 
+   */
+  @Test
+  public void reverseQualityUnusual() {
+    int[] Quality = null;
+    AnalysedSequence toTest = new AnalysedSequence("AAA", "jannis", "TEST", Quality);
+    toTest.reverseQuality();
+    assertTrue(toTest.getQuality().length == 0);
+  }
+
+  /**
+   * Checks if the robust gene sequence setting works.
+   */
+  @Test
+  public void robustGeneTest1() {
+    Gene gene = new Gene("ATC GATCG ATCG" + System.lineSeparator() + " ATC ", 0, null, null);
+    assertEquals("ATCGATCGATCGATC", gene.getSequence());
+  }
+
+  /**
+   * Checks if the robust gene sequence setting works.
+   */
+  @Test
+  public void robustGeneTest2() {
+    Gene gene =
+        new Gene("A	TGCGC	TCGC " + System.lineSeparator() + "A			A", 0, null, null);
+    assertEquals("ATGCGCTCGCAA", gene.getSequence());
+  }
+
+
+  /**
+   * Does the gene setting work even with a sequence which only contains whitespace characters?
+   */
+  @Test
+  public void robustGeneTestUnusual() {
+    Gene gene = new Gene("   			" + System.lineSeparator(), 0, null, null);
+    assertTrue(gene.getSequence().isEmpty());
+  }
+
+  /**
    * test the helpermethod appentString for coreckt lenght of the result
    * 
    * 
@@ -133,12 +261,6 @@ public class AnalysisTests {
   public void stringAppentTest() {
     assertTrue(StringAnalysis.appentStringToLength("hallo", 10).length() == 10);
   }
-
-
-
-  /********************
-   * Test for reportDifferences()
-   ************************************/
 
   /**
    * This test checks findBestMatch with a half gene DEPRICATED
@@ -266,7 +388,6 @@ public class AnalysisTests {
     String expected = "i|0|h|, ";
     assertTrue(result.toString().equals(expected));
   }
-
 
   /**
    * Test for correct insertion at end; using the example "hell" -> "hello" with insertion of 'o' at
@@ -415,6 +536,7 @@ public class AnalysisTests {
     assertTrue(result == testGeneA);
   }
 
+
   @Test(expected = DissimilarGeneException.class)
   public void testFindingRightGeneOnIncorrectUse() throws DissimilarGeneException {
     AnalysedSequence testA = new AnalysedSequence("BBBBCKCKCKCKCS", "Jannis", "testA", null);
@@ -452,6 +574,7 @@ public class AnalysisTests {
     Sequence seq4 = new Gene("ATGCTAGCTAGCCCC", 0, "Test4", null);
     assertEquals("TACGATCGATCGGGG", seq4.getComplementarySequence());
   }
+
 
   /**
    * This test checks whether an exception is thrown if a sequence's complementary sequence is
@@ -579,7 +702,6 @@ public class AnalysisTests {
     }
   }
 
-
   @Test
   /**
    * @JANNIS TODO beschreibung
@@ -619,7 +741,6 @@ public class AnalysisTests {
     }
   }
 
-
   @Test
   public void testsimpleInsertionFinding() throws CorruptedSequenceException {
     Gene gena = new Gene("UAUUAU", 0, "testGen1", "Jannis");
@@ -650,6 +771,7 @@ public class AnalysisTests {
     }
   }
 
+
   @Test
   public void testsimpleSubstitutionFinding() throws CorruptedSequenceException {
     Gene gena = new Gene("UUUUUUUUU", 0, "testGenA", "Jannis");
@@ -665,6 +787,7 @@ public class AnalysisTests {
     }
   }
 
+
   @Test
   public void testsimpleSubstitutionFinding2() throws CorruptedSequenceException {
     Gene gena = new Gene("ATGCCCCACCCCTAA", 0, "testGenA", "Jannis");
@@ -678,131 +801,6 @@ public class AnalysisTests {
       // TODO Auto-generated catch block
       e.printStackTrace();
     }
-  }
-
-  /**
-   * 
-   */
-  @Test
-  public void reverseQuality() {
-    int[] Quality = {0, 1, 2, 3, 4};
-    int[] expect = {4, 3, 2, 1, 0};
-    AnalysedSequence toTest = new AnalysedSequence("AAA", "jannis", "TEST", Quality);
-    toTest.reverseQuality();
-    for (int i = 0; i < expect.length; i++) {
-      assertTrue(toTest.getQuality()[i] == expect[i]);
-    }
-
-  }
-
-  /**
-   * 
-   */
-  @Test
-  public void reverseQuality2() {
-    int[] Quality = {0, 0, 0, 0, 100, 100, 100, 100, 100, 0, 0, 0, 0, 100};
-    int[] expect = {100, 0, 0, 0, 0, 100, 100, 100, 100, 100, 0, 0, 0, 0};
-    AnalysedSequence toTest = new AnalysedSequence("AAA", "jannis", "TEST", Quality);
-    toTest.reverseQuality();
-    for (int i = 0; i < expect.length; i++) {
-      assertTrue(toTest.getQuality()[i] == expect[i]);
-    }
-
-  }
-
-  /**
-   * 
-   */
-  @Test
-  public void reverseQualityUnusual() {
-    int[] Quality = null;
-    AnalysedSequence toTest = new AnalysedSequence("AAA", "jannis", "TEST", Quality);
-    toTest.reverseQuality();
-    assertTrue(toTest.getQuality().length == 0);
-  }
-
-  /**
-   * 
-   */
-  @Test
-  public void checkReverseAndComplementary() {
-    Gene gena = new Gene("ATGCCCCACCCCTAA", 0, "testGenA", "Jannis");
-    AnalysedSequence testSeq = new AnalysedSequence("AATCCCCACCCCGTA", "Jannis", "toAnalyse", null);
-    testSeq.setReferencedGene(gena);
-
-    try {
-      StringAnalysis.checkComplementAndReverse(testSeq);
-    } catch (CorruptedSequenceException e) {
-      // TODO Auto-generated catch block
-      e.printStackTrace();
-    }
-
-    assertTrue(testSeq.getSequence().equals("ATGCCCCACCCCTAA"));
-
-  }
-
-  /**
-   * @throws CorruptedSequenceException
-   * 
-   */
-  @Test
-  public void checkReverseAndComplementary2() throws CorruptedSequenceException {
-    Gene gena = new Gene("ATGGGACCCGGTTAA", 0, "testGenA", "Jannis");
-    AnalysedSequence testSeq =
-        new AnalysedSequence(gena.getComplementarySequence(), "Jannis", "toAnalyse", null);
-    testSeq.setReferencedGene(gena);
-
-    StringAnalysis.checkComplementAndReverse(testSeq);
-
-    assertTrue(testSeq.getSequence().equals("ATGGGACCCGGTTAA"));
-
-  }
-  
-  /**
-   * @throws CorruptedSequenceException
-   * 
-   */
-  @Test
-  public void checkReverseAndComplementaryUnusual() throws CorruptedSequenceException {
-    Gene gena = new Gene("AAAAAA", 0, "testGenA", "Jannis");
-    AnalysedSequence testSeq =
-        new AnalysedSequence("AAAAAA", "Jannis", "toAnalyse", null);
-    testSeq.setReferencedGene(gena);
-
-    StringAnalysis.checkComplementAndReverse(testSeq);
-
-    assertTrue(testSeq.getSequence().equals("AAAAAA"));
-
-  }
-
-  /**
-   * Checks if the robust gene sequence setting works.
-   */
-  @Test
-  public void robustGeneTest1() {
-    Gene gene = new Gene("ATC GATCG ATCG" + System.lineSeparator() + " ATC ", 0, null, null);
-    assertEquals("ATCGATCGATCGATC", gene.getSequence());
-  }
-
-
-  /**
-   * Checks if the robust gene sequence setting works.
-   */
-  @Test
-  public void robustGeneTest2() {
-    Gene gene =
-        new Gene("A	TGCGC	TCGC " + System.lineSeparator() + "A			A", 0, null, null);
-    assertEquals("ATGCGCTCGCAA", gene.getSequence());
-  }
-
-
-  /**
-   * Does the gene setting work even with a sequence which only contains whitespace characters?
-   */
-  @Test
-  public void robustGeneTestUnusual() {
-    Gene gene = new Gene("   			" + System.lineSeparator(), 0, null, null);
-    assertTrue(gene.getSequence().isEmpty());
   }
 
 

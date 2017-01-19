@@ -15,13 +15,6 @@ import exceptions.CorruptedSequenceException;
 public abstract class Sequence {
 
   /**
-   * The sequence of nucleotides, encoded as a String. It consists of the letters A, C, T, G for the
-   * four possible nucleotides adenine, cytosine, thymine and guanine.
-   */
-  protected String sequence;
-
-
-  /**
    * The date at which this sequence was created. Useful to find out when a sequence was analyzed.
    */
   protected String addingDate;
@@ -31,6 +24,13 @@ public abstract class Sequence {
    * The researcher who added this sequence.
    */
   protected String researcher;
+
+
+  /**
+   * The sequence of nucleotides, encoded as a String. It consists of the letters A, C, T, G for the
+   * four possible nucleotides adenine, cytosine, thymine and guanine.
+   */
+  protected String sequence;
 
 
   /**
@@ -76,7 +76,7 @@ public abstract class Sequence {
   public String getComplementarySequence() throws CorruptedSequenceException {
     return this.getComplementarySequence(this.getSequence());
   }
-  
+
   /**
    * Returns the complementary version of this object's nucleotide sequence, i.e. all A nucleotides
    * in the original sequence are replaced with T nucleotides (and vice versa) and all C nucleotides
@@ -112,7 +112,7 @@ public abstract class Sequence {
         default:
           char problem = sequence.charAt(i);
           complSeqBuilder.append('X');
-          //throw new CorruptedSequenceException(i, problem, sequence);
+          // throw new CorruptedSequenceException(i, problem, sequence);
       }
     }
 
@@ -150,7 +150,7 @@ public abstract class Sequence {
     return reversedSequence;
   }
 
-    
+
   public String getSequence() {
     return sequence;
   }
@@ -167,16 +167,16 @@ public abstract class Sequence {
 
 
   /**
-   * This methods sets the internal nucleotide representation as a String constisting of the 
-   * letters A, T, C and G. It also removes all internal whitespace characters and converts in to uppercase.
+   * This methods sets the internal nucleotide representation as a String constisting of the letters
+   * A, T, C and G. It also removes all internal whitespace characters and converts in to uppercase.
    * 
    * @param sequence The nucleotide sequence to store in the object
    * 
    * @author Ben Kohr
    */
   public void setSequence(String sequence) {
-	  sequence = sequence.replaceAll("\\s+","");
-	  this.sequence = sequence.toUpperCase();
+    sequence = sequence.replaceAll("\\s+", "");
+    this.sequence = sequence.toUpperCase();
   }
 
 

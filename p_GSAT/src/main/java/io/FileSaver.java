@@ -19,21 +19,10 @@ public class FileSaver {
 
 
   /**
-   * Specifies the path where local files shall be created. This specifies the folder, not the file!
-   */
-  private static File localPath;
-
-  /**
    * This is the standard file name if only one file is desired. (Otherwise, the files are named
    * after the AB1 source files.)
    */
   private static final String DEST_FILE_NAME = "gsat_results";
-
-
-  /**
-   * Indicates whether one or multiple files shall be used for storage.
-   */
-  private static boolean separateFiles = false;
 
   /**
    * Indicating whether this is the first call of the storage method in the current storage process.
@@ -47,6 +36,143 @@ public class FileSaver {
    * corresponds to a single sequence. Id start with one to be human-understandable.
    */
   private static long id = 1;
+
+  /**
+   * Specifies the path where local files shall be created. This specifies the folder, not the file!
+   */
+  private static File localPath;
+
+
+  /**
+   * Indicates whether one or multiple files shall be used for storage.
+   */
+  private static boolean separateFiles = false;
+
+
+  /**
+   * This method resets the class's state by resetting the ids and setting {@link #firstCall} to
+   * true. This is necessary to start a completely new analyzing process.
+   */
+  public static void resetAll() {
+    resetIDs();
+    firstCall = true;
+  }
+
+
+
+  /**
+   * Sets the momentarily used id to one.
+   * 
+   * @author Ben Kohr
+   */
+  public static void resetIDs() {
+    id = 1;
+  }
+
+
+
+  /**
+   * Sets the path where local files shall be created. The String argument is converted into a File.
+   * If null is passed, the path is reset to null.
+   * 
+   * @param path The path to create local files (as String)
+   * 
+   * @author Ben Kohr
+   */
+  public static void setLocalPath(String pathString) {
+    if (pathString != null)
+      localPath = new File(pathString);
+    else {
+      localPath = null;
+    }
+  }
+
+
+  public static void setSeparateFiles(boolean pSeparateFiles) {
+    separateFiles = pSeparateFiles;
+  }
+
+
+  /**
+   * Inserts the stored data entries into one or multiple local file(s). The name of the AB1 file is
+   * given as a parameter. It can be used to create the CSV file name.
+   * 
+   * @param filename the name of the AB1 file the stored entries were obtained from. If only one
+   *        file is desired, then the name will not be used.
+   * 
+   * @throws MissingPathException If the path to store the data is not specified
+   * @throws IOException If the writing process fails (due to the used FileWriter)
+   * 
+   * @author Ben Kohr
+   */
+  public static void storeResultsLocally(String filename, AnalysedSequence sequence)
+      throws MissingPathException, IOException {
+
+    // Without a path, writing is not possible.
+    if (localPath == null) {
+      throw new MissingPathException(PathUsage.WRITING);
+    }
+
+    // The writer to create a file / files.
+    FileWriter writer;
+
+    // One or multiple files?
+    if (separateFiles) {
+      writer = getNewWriter(filename, false);
+    } else {
+      writer = getNewWriter();
+    }
+
+    // retrieve the data from the AnalysedSequence object
+    String fileName = sequence.getFileName();
+    int geneID = sequence.getReferencedGene().getId();
+    String nucleotides = sequence.getSequence();
+    String addingDate = sequence.getAddingDate();
+    String researcher = sequence.getResearcher();
+    // As ';' is the seperator charachter, each inital semicolon is replaced
+    String comments = sequence.getComments().replace(';', ',');
+    String leftVector = sequence.getLeftVector();
+    String rightVector = sequence.getRightVector();
+    String promotor = sequence.getPromotor();
+    boolean manuallyChecked = sequence.isManuallyChecked();
+
+    // Concatenate the Strings together to one line to be written
+    StringBuilder builder = new StringBuilder();
+    builder.append(id).append("; ");
+    builder.append(fileName).append("; ");
+    builder.append(geneID).append("; ");
+    builder.append(nucleotides).append("; ");
+    builder.append(addingDate).append("; ");
+    builder.append(researcher).append("; ");
+    builder.append(comments).append("; ");
+    builder.append(leftVector).append("; ");
+    builder.append(rightVector).append("; ");
+    builder.append(promotor).append("; ");
+    builder.append(manuallyChecked).append("; ");
+
+    LinkedList<String> mutations = sequence.getMutations();
+    int numberOfMutations = sequence.getMutations().size();
+    for (int i = 0; i < numberOfMutations; i++) {
+      builder.append(mutations.get(i));
+      if (i < numberOfMutations - 1) {
+        builder.append(", ");
+      }
+    }
+
+    builder.append(System.lineSeparator());
+
+    // write the String into the file
+    String toWrite = builder.toString();
+    writer.write(toWrite);
+
+
+    writer.close();
+
+    // if several files are desired, then the id field has to be set to zero. Also, ids have to be
+    // incremented.
+    updateIDs();
+  }
+
 
 
   /**
@@ -68,7 +194,6 @@ public class FileSaver {
     }
     return writer;
   }
-
 
 
   /**
@@ -105,27 +230,6 @@ public class FileSaver {
 
 
   /**
-   * This method resets the class's state by resetting the ids and
-   * setting {@link #firstCall} to true. This is necessary to start a completely new analyzing
-   * process.
-   */
-  public static void resetAll() {
-    resetIDs();
-    firstCall = true;
-  }
-
-
-  /**
-   * Sets the momentarily used id to one.
-   * 
-   * @author Ben Kohr
-   */
-  public static void resetIDs() {
-    id = 1;
-  }
-
-
-  /**
    * Sets the momentarily used id to one, if separate files are desired (each file has it's own
    * number range, starting with zero).
    * 
@@ -137,112 +241,8 @@ public class FileSaver {
     if (separateFiles) {
       resetIDs();
     } else {
-    	id++;
+      id++;
     }
-  }
-
-
-
-
-  /**
-   * Sets the path where local files shall be created. The String argument is converted into a File.
-   * If null is passed, the path is reset to null.
-   * 
-   * @param path The path to create local files (as String)
-   * 
-   * @author Ben Kohr
-   */
-  public static void setLocalPath(String pathString) {
-    if (pathString != null)
-      localPath = new File(pathString);
-    else {
-      localPath = null;
-    }
-  }
-
-
-  public static void setSeparateFiles(boolean pSeparateFiles) {
-    separateFiles = pSeparateFiles;
-  }
-
-
-
-  /**
-   * Inserts the stored data entries into one or multiple local file(s). The name of the AB1 file is
-   * given as a parameter. It can be used to create the CSV file name.
-   * 
-   * @param filename the name of the AB1 file the stored entries were obtained from. If only one
-   *        file is desired, then the name will not be used.
-   * 
-   * @throws MissingPathException If the path to store the data is not specified
-   * @throws IOException If the writing process fails (due to the used FileWriter)
-   * 
-   * @author Ben Kohr
-   */
-  public static void storeResultsLocally(String filename, AnalysedSequence sequence) throws MissingPathException, IOException {
-
-    // Without a path, writing is not possible.
-    if (localPath == null) {
-      throw new MissingPathException(PathUsage.WRITING);
-    }
-
-    // The writer to create a file / files.
-    FileWriter writer;
-
-    // One or multiple files?
-    if (separateFiles) {
-      writer = getNewWriter(filename, false);
-    } else {
-      writer = getNewWriter();
-    }
-
-      // retrieve the data from the AnalysedSequence object
-      String fileName = sequence.getFileName();
-      int geneID = sequence.getReferencedGene().getId();
-      String nucleotides = sequence.getSequence();
-      String addingDate = sequence.getAddingDate();
-      String researcher = sequence.getResearcher();
-      // As ';' is the seperator charachter, each inital semicolon is replaced
-      String comments = sequence.getComments().replace(';', ',');
-      String leftVector = sequence.getLeftVector();
-      String rightVector = sequence.getRightVector();
-      String promotor = sequence.getPromotor();
-      boolean manuallyChecked = sequence.isManuallyChecked();
-
-      // Concatenate the Strings together to one line to be written
-      StringBuilder builder = new StringBuilder();
-      builder.append(id).append("; ");
-      builder.append(fileName).append("; ");
-      builder.append(geneID).append("; ");
-      builder.append(nucleotides).append("; ");
-      builder.append(addingDate).append("; ");
-      builder.append(researcher).append("; ");
-      builder.append(comments).append("; ");
-      builder.append(leftVector).append("; ");
-      builder.append(rightVector).append("; ");
-      builder.append(promotor).append("; ");
-      builder.append(manuallyChecked).append("; ");
-      
-      LinkedList<String> mutations = sequence.getMutations();
-      int numberOfMutations = sequence.getMutations().size();
-      for (int i = 0; i < numberOfMutations; i++) {
-    	  builder.append(mutations.get(i));
-    	  if (i < numberOfMutations - 1) {
-    		  builder.append(", ");
-    	  }
-      }
-      
-      builder.append(System.lineSeparator());
-
-      // write the String into the file
-      String toWrite = builder.toString();
-      writer.write(toWrite);
-    
-
-    writer.close();
-
-    // if several files are desired, then the id field has to be set to zero. Also, ids have to be incremented.
-    updateIDs();
   }
 
 

@@ -15,38 +15,38 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
-public class SettingsWindow  extends Application implements javafx.fxml.Initializable{
+public class SettingsWindow extends Application implements javafx.fxml.Initializable {
 
-  //buttons
-  @FXML
-  private Button returnButton;  
-  @FXML
-  private Button restoreButton;
-  @FXML
-  private Button addResearcherButton;
-  @FXML
-  private Button deleteResearcherButton;
   @FXML
   private Button addGeneButton;
   @FXML
+  private Button addResearcherButton;
+  @FXML
   private Button deleteGeneButton;
   @FXML
+  private Button deleteResearcherButton;
+  @FXML
   private Button editGeneButton;
-  
-  //fields
-  @FXML
-  private TextField Parameter1Field;
-  
-  @FXML
-  private ChoiceBox<String> researcherDrobdown;
-  
   @FXML
   private ListView<String> geneList;
+  // fields
+  @FXML
+  private TextField Parameter1Field;
+
+  @FXML
+  private ChoiceBox<String> researcherDrobdown;
+
+  @FXML
+  private Button restoreButton;
+
+  // buttons
+  @FXML
+  private Button returnButton;
 
   @Override
   public void initialize(URL location, ResourceBundle resources) {
     // TODO Auto-generated method stub
-    
+
   }
 
   @Override

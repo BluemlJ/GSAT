@@ -6,65 +6,61 @@ import java.util.ResourceBundle;
 
 import analysis.Pair;
 import io.FileSaver;
-import io.GeneReader;
 import javafx.application.Application;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
-import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ProgressBar;
-import javafx.scene.control.Separator;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-import javafx.stage.DirectoryChooser;
 
 public class MainWindow extends Application implements javafx.fxml.Initializable {
-  private boolean outputInOneFile = true;
+  @FXML
+  private javafx.scene.control.MenuItem aboutButton;
   // WARNING: Do not change variable name under all circumstances!
   @FXML
   private ProgressBar bar;
-  // BUTTONS
-  @FXML
-  private Button startButton;
-  @FXML
-  private Button srcButton;
   @FXML
   private Button destButton;
   @FXML
-  private Button settingsButton;
-
-  // Menu Items
-  @FXML
-  private javafx.scene.control.MenuItem manualButton;
-  @FXML
-  private javafx.scene.control.MenuItem aboutButton;
-
-  // Textfields
-  @FXML
-  private TextField srcField;
-  @FXML
   private TextField destField;
-
   // dropdownMenu
   @FXML
   private ChoiceBox<String> geneBox;
 
-  // checkbox
-  @FXML
-  private CheckBox outputCheckbox;
-
   // info output area
   @FXML
   private TextArea infoArea;
+  // Menu Items
+  @FXML
+  private javafx.scene.control.MenuItem manualButton;
+
+  // checkbox
+  @FXML
+  private CheckBox outputCheckbox;
+  @FXML
+  private Button settingsButton;
+
+  @FXML
+  private Button srcButton;
+
+  // Textfields
+  @FXML
+  private TextField srcField;
+
+  // BUTTONS
+  @FXML
+  private Button startButton;
 
   public static void main(String[] args) {
     launch(args);
@@ -72,14 +68,20 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
 
   public static void openWindow() {}
 
+  /**
+   * Mainwindow to initialize all components and set Eventhandlers.
+   * 
+   * @see Initializable
+   */
   @Override
   public void initialize(URL arg0, ResourceBundle arg1) {
     Pair<Boolean, String> output;
     infoArea.setText("Hello, this is GSAT \n");
-
+    // read Genes and show them in the choicebox
     output = GUIUtils.initializeGeneBox(geneBox);
     infoArea.appendText(output.second + "\n");
 
+    // gives information about new gene selection
     geneBox.getSelectionModel().selectedIndexProperty().addListener(new ChangeListener<Number>() {
       @Override
       public void changed(ObservableValue<? extends Number> arg0, Number value, Number newValue) {
@@ -87,6 +89,7 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
       }
     });
 
+    // set button to select destination
     destButton.setOnAction(new EventHandler<ActionEvent>() {
       @Override
       public void handle(ActionEvent arg0) {
@@ -97,11 +100,11 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
       }
     });
 
+    // select if you get only one output file
     outputCheckbox.selectedProperty().addListener(new ChangeListener<Boolean>() {
       @Override
       public void changed(ObservableValue<? extends Boolean> arg0, Boolean oldValue,
           Boolean newValue) {
-        outputInOneFile = newValue;
         FileSaver.setSeparateFiles(newValue);
         if (newValue)
           infoArea.appendText("You will get one single Outputfile \n");
@@ -110,6 +113,7 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
       }
     });
 
+    // set button to select source files
     srcButton.setOnAction(new EventHandler<ActionEvent>() {
       @Override
       public void handle(ActionEvent arg0) {
@@ -120,6 +124,7 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
       }
     });
 
+    // start analyzing process
     startButton.setOnAction(new EventHandler<ActionEvent>() {
       @Override
       public void handle(ActionEvent arg0) {
@@ -143,6 +148,7 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
       }
     });
 
+    // gives you a short manu
     manualButton.setOnAction(new EventHandler<ActionEvent>() {
       @Override
       public void handle(ActionEvent arg0) {

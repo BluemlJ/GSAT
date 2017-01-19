@@ -16,6 +16,102 @@ import exceptions.UndefinedTypeOfMutationException;
 public class DatabaseEntry {
 
   /**
+   * The date at which this sequence was added.
+   */
+  private String addingDate;
+
+  /**
+   * The used primer.
+   */
+  private String comments;
+
+  /**
+   * The name of the file this entry was retrieved from.
+   */
+  private String fileName;
+
+  /**
+   * The id for the referenced gene.
+   */
+  private int geneID;
+
+  /**
+   * The id for this entry. It is given by the DatabaseConnection class. Until the id is given, -1
+   * is the placeholder id.
+   */
+  private long id = -1;
+
+  /**
+   * The left vector to be stored with the sequence.
+   */
+  private String leftVector;
+
+  /**
+   * Indicates whether the results of this analysis have been checked by a researcher.
+   */
+  private boolean manuallyChecked;
+
+  /**
+   * Indicates the mutation type.
+   */
+  private MutationType mType;
+
+  /**
+   * A mutation string; might be empty.
+   */
+  private String mutation;
+
+  /**
+   * The promotor to be stored with the sequence.
+   */
+  private String promotor;
+
+
+  /**
+   * The researcher who added this sequence.
+   */
+  private String researcher;
+
+  /**
+   * The right vector to be stored with the sequence.
+   */
+  private String rightVector;
+
+
+  /**
+   * The sequence of nucleotides.
+   */
+  private String sequence;
+
+
+
+  /**
+   * Constructor that sets up all attributes except the id (which is given by the DatabaseConnection
+   * class).
+   * 
+   * @author Ben Kohr
+   */
+  public DatabaseEntry(String fileName, int geneID, String sequence, String addingDate,
+      String researcher, String comments, String leftVector, String rightVector, String promotor,
+      boolean manuallyChecked, String mutation, MutationType mType) {
+
+    this.fileName = fileName;
+    this.geneID = geneID;
+    this.sequence = sequence;
+    this.addingDate = addingDate;
+    this.researcher = researcher;
+    this.comments = comments;
+    this.leftVector = leftVector;
+    this.rightVector = rightVector;
+    this.promotor = promotor;
+    this.manuallyChecked = manuallyChecked;
+    this.mutation = mutation;
+    this.mType = mType;
+
+  }
+
+
+  /**
    * This method converts a given sequence into a list of database entries to be stored and returns
    * them.
    * 
@@ -62,6 +158,7 @@ public class DatabaseEntry {
 
   }
 
+
   /**
    * Determines the type of a given String-encoded mutation.
    * 
@@ -101,103 +198,6 @@ public class DatabaseEntry {
 
     // If none of the above conditions fired, throw an exception
     throw new UndefinedTypeOfMutationException(mutation);
-
-  }
-
-  /**
-   * The id for this entry. It is given by the DatabaseConnection class. Until the id is given, -1
-   * is the placeholder id.
-   */
-  private long id = -1;
-
-  /**
-   * The name of the file this entry was retrieved from.
-   */
-  private String fileName;
-
-  /**
-   * The id for the referenced gene.
-   */
-  private int geneID;
-
-  /**
-   * The sequence of nucleotides.
-   */
-  private String sequence;
-
-  /**
-   * The date at which this sequence was added.
-   */
-  private String addingDate;
-
-  /**
-   * The researcher who added this sequence.
-   */
-  private String researcher;
-
-  /**
-   * The used primer.
-   */
-  private String comments;
-
-  /**
-   * A mutation string; might be empty.
-   */
-  private String mutation;
-
-
-  /**
-   * Indicates the mutation type.
-   */
-  private MutationType mType;
-
-  /**
-   * Indicates whether the results of this analysis have been checked by a researcher.
-   */
-  private boolean manuallyChecked;
-
-
-  /**
-   * The left vector to be stored with the sequence.
-   */
-  private String leftVector;
-
-
-
-  /**
-   * The right vector to be stored with the sequence.
-   */
-  private String rightVector;
-
-
-  /**
-   * The promotor to be stored with the sequence.
-   */
-  private String promotor;
-
-
-  /**
-   * Constructor that sets up all attributes except the id (which is given by the DatabaseConnection
-   * class).
-   * 
-   * @author Ben Kohr
-   */
-  public DatabaseEntry(String fileName, int geneID, String sequence, String addingDate,
-      String researcher, String comments, String leftVector, String rightVector, String promotor,
-      boolean manuallyChecked, String mutation, MutationType mType) {
-
-    this.fileName = fileName;
-    this.geneID = geneID;
-    this.sequence = sequence;
-    this.addingDate = addingDate;
-    this.researcher = researcher;
-    this.comments = comments;
-    this.leftVector = leftVector;
-    this.rightVector = rightVector;
-    this.promotor = promotor;
-    this.manuallyChecked = manuallyChecked;
-    this.mutation = mutation;
-    this.mType = mType;
 
   }
 

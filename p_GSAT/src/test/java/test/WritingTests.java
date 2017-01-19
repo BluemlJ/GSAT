@@ -39,13 +39,6 @@ public class WritingTests {
   private static String path = "writingtests/";
 
   /**
-   * The first sequence for testing the conversion method (converting a sequence into a
-   * DatabaseEntry).
-   */
-  static AnalysedSequence seq1 =
-      new AnalysedSequence("ATCG", "Klaus Bohne", "sequence1.ab1", null);
-
-  /**
    * The second sequence for testing the conversion method.
    */
   private static AnalysedSequence seq2 =
@@ -63,7 +56,13 @@ public class WritingTests {
   private static AnalysedSequence seq4 =
       new AnalysedSequence("ATC", "Kurt Bohne", "sequence3.ab1", null);
 
- 
+  /**
+   * The first sequence for testing the conversion method (converting a sequence into a
+   * DatabaseEntry).
+   */
+  static AnalysedSequence seq1 = new AnalysedSequence("ATCG", "Klaus Bohne", "sequence1.ab1", null);
+
+
   /**
    * This method sets the genes and adds a few mutations to the AnalyzedSequence objects to make
    * them ready to be used in the tests.
@@ -151,8 +150,8 @@ public class WritingTests {
     DateFormat df = new SimpleDateFormat("dd/MM/yy");
     String addingDate = df.format(new Date());
 
-    String[] correctResults = new String[] {
-        "1; sequence3.ab1; 3; ATC; " + addingDate + "; Kurt Bohne; Nothing to say; null; null; null; false; AAA7CAA, -1H5"};
+    String[] correctResults = new String[] {"1; sequence3.ab1; 3; ATC; " + addingDate
+        + "; Kurt Bohne; Nothing to say; null; null; null; false; AAA7CAA, -1H5"};
 
     for (int i = 0; i < correctResults.length; i++) {
       String[] correctInfo = correctResults[i].split(";");
@@ -352,10 +351,10 @@ public class WritingTests {
 
     DateFormat df = new SimpleDateFormat("dd/MM/yy");
     String addingDate = df.format(new Date());
-    
+
     // Check whether the input is correct
-    String[] correctResults = new String[] {
-        "1; sequence1.ab1; 4; ATCG; "+ addingDate +"; Klaus Bohne; No comments; A; B; null; false; A131E, G7K, +2H5"};
+    String[] correctResults = new String[] {"1; sequence1.ab1; 4; ATCG; " + addingDate
+        + "; Klaus Bohne; No comments; A; B; null; false; A131E, G7K, +2H5"};
 
     for (int i = 0; i < correctResults.length; i++) {
       assertEquals(correctResults[i], results.get(i));
@@ -388,10 +387,12 @@ public class WritingTests {
 
     DateFormat df = new SimpleDateFormat("dd/MM/yy");
     String addingDate = df.format(new Date());
-    
+
     String[] correctResults = new String[] {
-        "1; sequence2.ab1; 1; ATCTTTG; " + addingDate + "; Klaus Bohne; No comments; null; null; null; false; reading frame error",
-    	"2; sequence3.ab1; 2; ATCTTGCGTTG; " + addingDate + "; Klaus Hafer; ; null; null; null; false; ",};
+        "1; sequence2.ab1; 1; ATCTTTG; " + addingDate
+            + "; Klaus Bohne; No comments; null; null; null; false; reading frame error",
+        "2; sequence3.ab1; 2; ATCTTGCGTTG; " + addingDate
+            + "; Klaus Hafer; ; null; null; null; false; ",};
 
     for (int i = 0; i < correctResults.length; i++) {
       assertEquals(correctResults[i], results.get(i));
@@ -427,8 +428,10 @@ public class WritingTests {
     String addingDate = df.format(new Date());
 
     String[] correctResults = new String[] {
-        "1; sequence1.ab1; 4; ATCG; " + addingDate + "; Klaus Bohne; No comments; A; B; null; false; A131E, G7K, +2H5",
-        "2; sequence2.ab1; 1; ATCTTTG; " + addingDate + "; Klaus Bohne; No comments; null; null; null; false; reading frame error"};
+        "1; sequence1.ab1; 4; ATCG; " + addingDate
+            + "; Klaus Bohne; No comments; A; B; null; false; A131E, G7K, +2H5",
+        "2; sequence2.ab1; 1; ATCTTTG; " + addingDate
+            + "; Klaus Bohne; No comments; null; null; null; false; reading frame error"};
 
     for (int i = 0; i < correctResults.length; i++) {
       String[] correctInfo = correctResults[i].split(";");
@@ -486,9 +489,9 @@ public class WritingTests {
 
     DateFormat df = new SimpleDateFormat("dd/MM/yy");
     String addingDate = df.format(new Date());
-    
-    String[] correctResults = new String[] {
-        "1; sequence2.ab1; 1; ATCTTTG; " + addingDate + "; Klaus Bohne; No comments; null; null; null; false; reading frame error"};
+
+    String[] correctResults = new String[] {"1; sequence2.ab1; 1; ATCTTTG; " + addingDate
+        + "; Klaus Bohne; No comments; null; null; null; false; reading frame error"};
 
     for (int i = 0; i < correctResults.length; i++) {
       assertEquals(correctResults[i], results.get(i));
@@ -502,9 +505,9 @@ public class WritingTests {
     LinkedList<String> results2 = new LinkedList<String>();
     reader.lines().skip(1).forEach(line -> results2.add(line));
     reader.close();
-    
-    correctResults = new String[] {
-        "1; sequence3.ab1; 2; ATCTTGCGTTG; " + addingDate + "; Klaus Hafer; ; null; null; null; false; "};
+
+    correctResults = new String[] {"1; sequence3.ab1; 2; ATCTTGCGTTG; " + addingDate
+        + "; Klaus Hafer; ; null; null; null; false; "};
 
     for (int i = 0; i < correctResults.length; i++) {
       assertEquals(correctResults[i], results2.get(i));
