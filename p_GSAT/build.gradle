@@ -66,6 +66,7 @@ dependencies {
 // In this section we declare the jacocoTestReport structure
 
 //test {
+     exclude 'p_GSAT/src/test/java/userDrivenTests/**'
 //    jacoco {
 //        append = false
 //        destinationFile = file("$buildDir/jacoco/jacocoTest.exec")
