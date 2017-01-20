@@ -209,7 +209,7 @@ public class FileSaver {
    * @throws IOException If the creation or the usage of the FileWriter object fails
    */
   private static FileWriter getNewWriter(String filename, boolean append) throws IOException {
-
+    
     File newFile = new File(localPath.getAbsolutePath() + File.separatorChar + filename + ".csv");
 
     if (!append) {

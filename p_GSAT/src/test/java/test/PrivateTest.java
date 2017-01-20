@@ -4,7 +4,6 @@ import java.io.IOException;
 
 import org.junit.Assert;
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import analysis.AnalysedSequence;
@@ -21,17 +20,17 @@ public class PrivateTest {
 
   // TO CHANGE: ---------------------------------------------------
 
-  private static String[] paths = new String[] {
-      "C:/Users/Jannis/Dropbox/BP_GSAT/Materialien/Dateien/Bsp/AB/",
-      "C:\\Users\\Business\\Dropbox\\BP_GSAT\\Materialien\\Dateien\\Bsp\\AB\\",
-      "/Users/lovisheindrich/Dropbox/BP_GSAT/Materialien/Dateien/Bsp/AB/", "C:/GSAT Tests/",
-      "/home/bluemlj/Dropbox/BP_GSAT/Materialien/Dateien/Bsp/AB/",
-      "/home/kevin/Documents/GSAT_Tests/",
-      "C:/Users/Jannis/Dropbox/BP_GSAT/Materialien/Dateien - mehr/SET 2 17.1 Privat/Sequences/",
-      "C:/Users/Jannis/Dropbox/BP_GSAT/Materialien/Dateien - mehr/SET 3 12.16 �ffentlich/ab1/Tk_Gs40Hits/Forward/",
-      "C:/Users/Jannis/Dropbox/BP_GSAT/Materialien/Dateien - mehr/SET 3 12.16 �ffentlich/ab1/Tk_Gs40Hits/Reverse/",
-      "C:/Users/Jannis/Dropbox/BP_GSAT/Materialien/Dateien - mehr/SET 3 12.16 �ffentlich/ab1/Tk40Hits050215/",
-      "/home/bluemlj/Dropbox/BP_GSAT/Materialien/Dateien - mehr/SET 4 19.1 Privat/"};
+  private static String[] paths =
+      new String[] {"C:/Users/Jannis/Dropbox/BP_GSAT/Materialien/Dateien/Bsp/AB/",
+          "C:\\Users\\Business\\Dropbox\\BP_GSAT\\Materialien\\Dateien\\Bsp\\AB\\",
+          "/Users/lovisheindrich/Dropbox/BP_GSAT/Materialien/Dateien/Bsp/AB/", "C:/GSAT Tests/",
+          "/home/bluemlj/Dropbox/BP_GSAT/Materialien/Dateien/Bsp/AB/",
+          "/home/kevin/Documents/GSAT_Tests/",
+          "C:/Users/Jannis/Dropbox/BP_GSAT/Materialien/Dateien - mehr/SET 2 17.1 Privat/Sequences/",
+          "C:/Users/Jannis/Dropbox/BP_GSAT/Materialien/Dateien - mehr/SET 3 12.16 �ffentlich/ab1/Tk_Gs40Hits/Forward/",
+          "C:/Users/Jannis/Dropbox/BP_GSAT/Materialien/Dateien - mehr/SET 3 12.16 �ffentlich/ab1/Tk_Gs40Hits/Reverse/",
+          "C:/Users/Jannis/Dropbox/BP_GSAT/Materialien/Dateien - mehr/SET 3 12.16 �ffentlich/ab1/Tk40Hits050215/",
+          "/home/bluemlj/Dropbox/BP_GSAT/Materialien/Dateien - mehr/SET 4 19.1 Privat/"};
 
   private static String pathToUse;
 
@@ -107,7 +106,7 @@ public class PrivateTest {
    * @throws UndefinedTypeOfMutationException
    * @throws CorruptedSequenceException
    */
-  //@Ignore
+  // @Ignore
   @Test
   public void testLocalFile() throws FileReadingException, IOException,
       UndefinedTypeOfMutationException, CorruptedSequenceException {
@@ -145,7 +144,7 @@ public class PrivateTest {
     System.out.println("");
     System.err
         .println(testSeq.getReferencedGene().getSequence().substring(testSeq.getOffset() * 3));
-     System.out.println(testSeq.getSequence());
+    System.out.println(testSeq.getSequence());
 
     System.out.println("_________________________________________________________");
 

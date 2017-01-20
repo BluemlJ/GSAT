@@ -175,10 +175,6 @@ public class QualityAnalysis {
     return tmp / 1000;
   }
 
-  public static int saveLengthBeforeQualityTrim(AnalysedSequence toAnalysedSequence) {
-    return toAnalysedSequence.getSequence().length();
-  }
-
   public static void setBreakcounter(int update) {
     breakcounter = update;
   }

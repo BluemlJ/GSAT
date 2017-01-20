@@ -7,8 +7,9 @@ import java.util.ResourceBundle;
 import analysis.Pair;
 import io.FileSaver;
 import javafx.application.Application;
+import javafx.beans.InvalidationListener;
 import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
+import javafx.beans.value.ObservableDoubleValue;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -25,6 +26,7 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
 public class MainWindow extends Application implements javafx.fxml.Initializable {
+  
   @FXML
   private javafx.scene.control.MenuItem aboutButton;
   // WARNING: Do not change variable name under all circumstances!
@@ -66,7 +68,6 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
     launch(args);
   }
 
-  public static void openWindow() {}
 
   /**
    * Mainwindow to initialize all components and set Eventhandlers.
@@ -76,24 +77,18 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
   @Override
   public void initialize(URL arg0, ResourceBundle arg1) {
     Pair<Boolean, String> output;
-    infoArea.setText("Hello, this is GSAT \n");
+    infoArea.setText("Welcome to GSAT! \n");
     // read Genes and show them in the choicebox
     output = GUIUtils.initializeGeneBox(geneBox);
     infoArea.appendText(output.second + "\n");
 
     // gives information about new gene selection
-    geneBox.getSelectionModel().selectedIndexProperty()
+    geneBox.getSelectionModel().selectedItemProperty()
         .addListener((obeservable, value, newValue) -> {
-          infoArea.appendText("new Gene selected with ID   " + newValue + "\n");
+          infoArea.appendText("New Gene selected: " + newValue + "\n");
         });
 
-    destField.textProperty().addListener((observable, oldValue, newValue) -> {
-      infoArea.appendText("Destination changed");
-    });
-
-    srcField.textProperty().addListener((observable, oldValue, newValue) -> {
-      infoArea.appendText("Sourcefolder changed");
-    });
+   
 
     // set button to select destination
     destButton.setOnAction(new EventHandler<ActionEvent>() {
@@ -102,7 +97,6 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
         String output;
         output = GUIUtils.setDestination(destField).second;
         infoArea.appendText(output + "\n");
-
       }
     });
 
@@ -110,10 +104,9 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
     outputCheckbox.selectedProperty().addListener((observable, oldValue, newValue) -> {
       FileSaver.setSeparateFiles(newValue);
       if (newValue)
-        infoArea.appendText("You will get one single Outputfile \n");
+        infoArea.appendText("One single output file will be created. \n");
       else
-        infoArea.appendText("You will get for every File an Outputfile \n");
-
+        infoArea.appendText("There will be one output file for each input file. \n");
     });
 
     // set button to select source files
@@ -133,13 +126,13 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
       public void handle(ActionEvent arg0) {
         infoArea.appendText(
             "---------------------------------------------------------------------------------------------------"
-                + "\nStarting analysing Sequences\n"
+                + "\nStarting analysis\n"
                 + "---------------------------------------------------------------------------------------------------\n");
 
-        infoArea.appendText("Sourcefolder or -file:  " + srcField.getText() + "\n");
-        infoArea.appendText("Destinationfolder:  " + destField.getText() + "\n");
+        infoArea.appendText("Source folder or file:  " + srcField.getText() + "\n");
+        infoArea.appendText("Destination folder:  " + destField.getText() + "\n");
         infoArea
-            .appendText("Selected Gene:  " + geneBox.getSelectionModel().getSelectedItem() + "\n");
+            .appendText("Selected gene:  " + geneBox.getSelectionModel().getSelectedItem() + "\n");
         infoArea.appendText(
             "---------------------------------------------------------------------------------------------------\n");
         String output;
@@ -162,6 +155,8 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
     // ...
 
   }
+  
+  
 
   @Override
   public void start(Stage primaryStage) throws Exception {
@@ -176,9 +171,6 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
     primaryStage.setScene(scene);
     primaryStage.sizeToScene();
     primaryStage.show();
-
-
-
   }
 
 

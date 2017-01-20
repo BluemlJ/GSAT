@@ -89,7 +89,7 @@ public abstract class Sequence {
    * 
    * @author Ben Kohr
    */
-  public String getComplementarySequence(String sequence) throws CorruptedSequenceException {
+  public String getComplementarySequence(String sequence) {
 
     StringBuilder complSeqBuilder = new StringBuilder();
     int stringLength = sequence.length();
@@ -110,8 +110,7 @@ public abstract class Sequence {
           complSeqBuilder.append('C');
           break;
         default:
-          char problem = sequence.charAt(i);
-          complSeqBuilder.append('X');
+           complSeqBuilder.append('X');
           // throw new CorruptedSequenceException(i, problem, sequence);
       }
     }

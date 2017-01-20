@@ -62,7 +62,7 @@ public class GUIUtils {
   /**
    * Main method of this class, alias the startbutton function.
    * 
-   * @param sourcepath path to .ab1-File or folder
+   * @param sourcepath path to .ab1 file or folder
    * @param GeneID ID of the Gene in the Choicebox.
    * @return a Pair or Boolean, which indicates if the method was successful and a String, which can
    *         printed in the infoarea.
@@ -71,16 +71,16 @@ public class GUIUtils {
     boolean success = false;
     StringBuilder report = new StringBuilder();
 
-    // get all ab1-Files
+    // get all ab1 files
     Pair<LinkedList<File>, LinkedList<File>> sequences = getSequencesFromSourceFolder(sourcepath);
     if (sequences.first == null)
       if (sequences.second == null)
         return new Pair<Boolean, String>(success,
-            "Reading Sequences unsuccessful with unknown error");
+            "Reading Sequences unsuccessful, please check the path");
       else
         return new Pair<Boolean, String>(success, "No AB1 files were found at the given path.");
     else
-      report.append("Reading .ab1-File(s) was successful\n");
+      report.append("Reading .ab1 file(s) was successful\n");
 
     // get the gene from the coiceboxID
     Gene gene = getGeneFromDropDown(GeneID).first;
@@ -109,8 +109,9 @@ public class GUIUtils {
       // find all Mutations
       try {
         MutationAnalysis.findMutations(toAnalyse);
-        } catch (UndefinedTypeOfMutationException | CorruptedSequenceException e) {
-        report.append("FindMutation was not successful because of Exception in " + file.getName()+"\n");
+      } catch (UndefinedTypeOfMutationException | CorruptedSequenceException e) {
+        report.append(
+            "FindMutation was not successful because of Exception in " + file.getName() + "\n");
         return new Pair<Boolean, String>(success, report.toString());
       }
 
@@ -148,13 +149,13 @@ public class GUIUtils {
     String path;
 
     DirectoryChooser chooser = new DirectoryChooser();
-    chooser.setTitle("Set Destinationpath");
+    chooser.setTitle("Set Destination path");
     File selectedDirectory = chooser.showDialog(null);
 
     if (selectedDirectory != null) {
       path = selectedDirectory.getAbsolutePath();
       success = true;
-      report = "Reading destinationpath was successful. \nDestination is:  " + path;
+      report = "Reading destination path was successful. \nDestination is:  " + path;
       FileSaver.setLocalPath(path);
       destination.setText(path);
     }
@@ -163,40 +164,40 @@ public class GUIUtils {
 
   /**
    * This method opens a DirectoryChooser to set the sourcepath. In this path, there should be some
-   * .ab1-files.
+   * .ab1 files.
    * 
    * @param source Textfield, to place path.
    * @return reportpair of boolean (indicates success) and report String
    */
   public static Pair<Boolean, String> setSourceFolder(TextField source) {
     boolean success = false;
-    String report = "Reading path to .ab1-File was unsuccessful.";
+    String report = "Reading path to .ab1 file was unsuccessful.";
     String path;
     File selectedDirectory = null;
 
     Alert alert = new Alert(AlertType.CONFIRMATION);
-    alert.setTitle("Set path to the ab1-File(s)");
-    alert.setHeaderText("Do you have a single ab1-File or a folder of ab1-Files?");
-    alert.setContentText("Choose your option.");
+    alert.setTitle("Set path to the ab1 file(s)");
+    alert.setHeaderText("A single ab1 file or a folder of ab1 files?");
 
-    ButtonType buttonTypeOne = new ButtonType("Folder of .ab1-Files");
-    ButtonType buttonTypeTwo = new ButtonType("Single .ab1-File");
+
+    ButtonType buttonTypeOne = new ButtonType("Folder");
+    ButtonType buttonTypeTwo = new ButtonType("Single file");
     ButtonType buttonTypeCancel = new ButtonType("Cancel", ButtonData.CANCEL_CLOSE);
 
     alert.getButtonTypes().setAll(buttonTypeOne, buttonTypeTwo, buttonTypeCancel);
 
     Optional<ButtonType> result = alert.showAndWait();
     if (result.get() == buttonTypeOne) {
-      report = "Reading path to .ab1-File Folder was unsuccessful.";
+      report = "Reading path to .ab1 file folder was unsuccessful.";
       DirectoryChooser chooser = new DirectoryChooser();
-      chooser.setTitle("Set path to the .ab1-Files (Folder)");
+      chooser.setTitle("Set path to the .ab1 files (folder)");
       selectedDirectory = chooser.showDialog(null);
     } else if (result.get() == buttonTypeTwo) {
       FileChooser chooser = new FileChooser();
-      chooser.setTitle("Set path to the .ab1-File");
+      chooser.setTitle("Set path to the .ab1 file");
       selectedDirectory = chooser.showOpenDialog(null);
     } else {
-      return new Pair<Boolean, String>(success, "The Action to set a sourcefolder was canceled");
+      return new Pair<Boolean, String>(success, "The action to set a source folder was cancelled");
     }
 
 
@@ -217,15 +218,15 @@ public class GUIUtils {
    */
   private static Pair<Gene, Pair<Boolean, String>> getGeneFromDropDown(int dropdownID) {
     return new Pair<Gene, Pair<Boolean, String>>(GeneReader.getGeneAt(dropdownID),
-        new Pair<Boolean, String>(true, "Reading Gene was successful"));
+        new Pair<Boolean, String>(true, "Reading gene was successful"));
 
   }
 
   /**
-   * This method gets all ab1-Files from an given path. It sorts them to ab1-files and other
+   * This method gets all ab1 files from an given path. It sorts them to ab1 files and other
    * 
    * @param source the path to check about .abi-Files
-   * @return two lists in form of a Pair. The .ab1-Files and the not usuable files.
+   * @return two lists in form of a Pair. The .ab1 files and the not usuable files.
    */
   private static Pair<LinkedList<File>, LinkedList<File>> getSequencesFromSourceFolder(
       String source) {
@@ -247,7 +248,7 @@ public class GUIUtils {
   /**
    * Reads the Sequence of the given File and prints Errors if necessary
    * 
-   * @param file the .ab1-File
+   * @param file the .ab1 file
    * @return Analysedsequence and reportpair
    * @author Jannis
    */
@@ -275,7 +276,7 @@ public class GUIUtils {
    * @return
    */
   private static Pair<Boolean, String> runConfiguration(TextField configpath) {
-    Config.setPath(configpath.getText());
+    Config.setPath("resources/config.ini");
     boolean success = false;
     String report = "Reading configfile unsuccessful with unknown error";
     try {

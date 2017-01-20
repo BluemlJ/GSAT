@@ -192,7 +192,7 @@ public class QualityTests {
   public void testPercentageOfTrim1() {
     int[] qualities = {0, 0, 0, 100, 100, 100, 100, 100, 100};
     AnalysedSequence toAnalyze = new AnalysedSequence("aaatttggg", "", "", qualities);
-    int tmp = QualityAnalysis.saveLengthBeforeQualityTrim(toAnalyze);
+    int tmp = toAnalyze.getSequence().length();
     QualityAnalysis.trimLowQuality(toAnalyze);
     System.out.println(QualityAnalysis.percentageOfTrimQuality(tmp, toAnalyze));
     assertTrue(Math.abs(QualityAnalysis.percentageOfTrimQuality(tmp, toAnalyze) - 0.666) < 0.05);
@@ -202,7 +202,7 @@ public class QualityTests {
   public void testPercentageOfTrim2() {
     int[] qualities = {0, 0, 0, 100, 100, 100, 100, 100, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
     AnalysedSequence toAnalyze = new AnalysedSequence("aaatttgggaaattt", "", "", qualities);
-    int tmp = QualityAnalysis.saveLengthBeforeQualityTrim(toAnalyze);
+    int tmp = toAnalyze.getSequence().length();
     QualityAnalysis.trimLowQuality(toAnalyze);
     System.out.println(QualityAnalysis.percentageOfTrimQuality(tmp, toAnalyze));
     assertTrue(Math.abs(QualityAnalysis.percentageOfTrimQuality(tmp, toAnalyze) - 0.4) < 0.05);
@@ -212,7 +212,7 @@ public class QualityTests {
   public void testPercentageOfTrimUnsusual() {
     int[] qualities = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
     AnalysedSequence toAnalyze = new AnalysedSequence("aaataaattt", "", "", qualities);
-    int tmp = QualityAnalysis.saveLengthBeforeQualityTrim(toAnalyze);
+    int tmp = toAnalyze.getSequence().length();
     QualityAnalysis.trimLowQuality(toAnalyze);
     System.out.println(QualityAnalysis.percentageOfTrimQuality(tmp, toAnalyze));
     assertTrue(QualityAnalysis.percentageOfTrimQuality(tmp, toAnalyze) == 0);

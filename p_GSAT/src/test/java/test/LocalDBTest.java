@@ -4,7 +4,6 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import org.junit.Ignore;
 import org.junit.Test;
 
 import com.mysql.cj.jdbc.MysqlDataSource;
@@ -20,10 +19,10 @@ import com.mysql.cj.jdbc.MysqlDataSource;
 public class LocalDBTest {
 
 
-  //@Ignore
+  // @Ignore
   @Test
   public void testDBConnection() {
-    
+
     Connection conn = null;
     java.sql.Statement stmt = null;
     ResultSet rs = null;
@@ -37,7 +36,7 @@ public class LocalDBTest {
     try {
       conn = dataSource.getConnection();
       stmt = conn.createStatement();
-      
+
       // Get DB List
       System.out.println("");
       System.out.println("SHOW DATABASES");
@@ -45,12 +44,12 @@ public class LocalDBTest {
       while (rs.next()) {
         System.out.println(rs.getString(1));
       }
-      
+
       // USE Gsat
       System.out.println("");
       System.out.println("USE Gsat");
       stmt.executeQuery("USE Gsat");
-      
+
       // Get Genes
       System.out.println("");
       System.out.println("Get Genes");
@@ -61,12 +60,12 @@ public class LocalDBTest {
         System.out.println("SEQUENCE: " + rs.getString("sequence"));
         System.out.println("");
       }
-      
+
       // Add Entry
       System.out.println("");
       System.out.println("Add Gen: ('3', 'added from eclipse', 'aaaaaaaaaaaaaa')");
       stmt.executeUpdate("INSERT INTO Gen VALUES ('3', 'added from eclipse', 'aaaaaaaaaaaaaa')");
-      
+
       // Get Genes
       System.out.println("");
       System.out.println("Get new Gene");
@@ -77,13 +76,13 @@ public class LocalDBTest {
         System.out.println("SEQUENCE: " + rs.getString("sequence"));
         System.out.println("");
       }
-      
-      
+
+
       // Update new Gene
       System.out.println("");
       System.out.println("Update new Gene");
       stmt.executeUpdate("UPDATE Gen SET sequence='tttttttttt' WHERE name='added from eclipse'");
-      
+
       // Get Genes
       System.out.println("");
       System.out.println("Print Updated Gene");
@@ -99,8 +98,8 @@ public class LocalDBTest {
       System.out.println("");
       System.out.println("Delete new Gene");
       stmt.executeUpdate("DELETE FROM Gen WHERE name='added from eclipse'");
-      
-      
+
+
       // Get Genes
       System.out.println("");
       System.out.println("Try to find deleted Gene");
