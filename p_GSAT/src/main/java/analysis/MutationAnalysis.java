@@ -99,9 +99,7 @@ public class MutationAnalysis {
 
       if (position > lastposition + 1 || i == differences.size() - 1) {
 
-        if (i == differences.size() - 1) {
-          position = toAnalyze.getSequence().length() - 1;
-        }
+       
 
         int tempPosition = lastposition + 1;
         while (tempPosition < position - toAnalyze.getOffset()) {

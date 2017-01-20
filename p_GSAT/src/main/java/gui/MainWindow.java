@@ -26,16 +26,31 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
 public class MainWindow extends Application implements javafx.fxml.Initializable {
-  
+
   @FXML
   private javafx.scene.control.MenuItem aboutButton;
   // WARNING: Do not change variable name under all circumstances!
+
   @FXML
   private ProgressBar bar;
+
+  // BUTTONS
   @FXML
   private Button destButton;
   @FXML
+  private Button startButton;
+  @FXML
+  private Button settingsButton;
+  @FXML
+  private Button srcButton;
+
+  // Textfields
+  @FXML
+  private TextField srcField;
+  @FXML
   private TextField destField;
+
+
   // dropdownMenu
   @FXML
   private ChoiceBox<String> geneBox;
@@ -43,6 +58,7 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
   // info output area
   @FXML
   private TextArea infoArea;
+
   // Menu Items
   @FXML
   private javafx.scene.control.MenuItem manualButton;
@@ -50,19 +66,7 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
   // checkbox
   @FXML
   private CheckBox outputCheckbox;
-  @FXML
-  private Button settingsButton;
 
-  @FXML
-  private Button srcButton;
-
-  // Textfields
-  @FXML
-  private TextField srcField;
-
-  // BUTTONS
-  @FXML
-  private Button startButton;
 
   public static void main(String[] args) {
     launch(args);
@@ -88,7 +92,7 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
           infoArea.appendText("New Gene selected: " + newValue + "\n");
         });
 
-   
+
 
     // set button to select destination
     destButton.setOnAction(new EventHandler<ActionEvent>() {
@@ -124,15 +128,37 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
     startButton.setOnAction(new EventHandler<ActionEvent>() {
       @Override
       public void handle(ActionEvent arg0) {
+        bar.setProgress(-1);
         infoArea.appendText(
             "---------------------------------------------------------------------------------------------------"
                 + "\nStarting analysis\n"
                 + "---------------------------------------------------------------------------------------------------\n");
 
         infoArea.appendText("Source folder or file:  " + srcField.getText() + "\n");
+
+        if (srcField.getText().equals("")) {
+          infoArea.appendText("Source fpath is empty, stop analysis.");
+          bar.setProgress(0);
+          return;
+        }
+
         infoArea.appendText("Destination folder:  " + destField.getText() + "\n");
+
+        if (srcField.getText().equals("")) {
+          infoArea.appendText("Destination path is empty, stop analysis.");
+          bar.setProgress(0);
+          return;
+        }
+
         infoArea
             .appendText("Selected gene:  " + geneBox.getSelectionModel().getSelectedItem() + "\n");
+
+        if (geneBox.getSelectionModel().getSelectedIndex() == -1) {
+          infoArea.appendText("No gene was selected, stop analysis.");
+          bar.setProgress(0);
+          return;
+        }
+
         infoArea.appendText(
             "---------------------------------------------------------------------------------------------------\n");
         String output;
@@ -140,12 +166,12 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
         output = GUIUtils.runAnalysis(srcField.getText(),
             geneBox.getSelectionModel().getSelectedIndex()).second;
         infoArea.appendText(output);
-
+        bar.setProgress(0);
 
       }
     });
 
-    // gives you a short manu
+    // gives you a short menu
     manualButton.setOnAction(new EventHandler<ActionEvent>() {
       @Override
       public void handle(ActionEvent arg0) {
@@ -155,14 +181,14 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
     // ...
 
   }
-  
-  
+
+
 
   @Override
   public void start(Stage primaryStage) throws Exception {
     Parent root;
     try {
-      root = FXMLLoader.load(getClass().getResource("MainWindow.fxml"));
+      root = FXMLLoader.load(getClass().getResource("/fxml/MainWindow.fxml"));
     } catch (IOException e) {
       e.printStackTrace();
       return;

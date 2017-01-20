@@ -559,6 +559,14 @@ public class StringAnalysis {
     return null;
   }
 
+  public static int findStopcodonPosition(AnalysedSequence toAnalyze) {
+    for (int i = 0; i < toAnalyze.getSequence().length() - 3; i = i + 3) {
+      String aminoAcid = toAnalyze.getSequence().substring(i, i + 3);
+       if ((AMINO_ACID_SHORTS.get(aminoAcid).equals("#"))) return i / 3;
+    }
+    return -1;
+  }
+
   /**
    * gets Levenshtein index out of Levenshtein Matrix
    * 
@@ -720,7 +728,7 @@ public class StringAnalysis {
   public static void trimVector(AnalysedSequence toAlign) {
     // **********simple Vector Cutting*****************
     boolean offsetExact = findOffset(toAlign);
-    //Gene gene = toAlign.getReferencedGene();
+    // Gene gene = toAlign.getReferencedGene();
 
     String newSequence = toAlign.sequence;
 

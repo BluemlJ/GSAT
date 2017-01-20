@@ -1,5 +1,6 @@
 package core;
 
+import gui.MainWindow;
 import io.FileSaver;
 
 /**
@@ -17,7 +18,7 @@ public class Main {
   public static void main(String[] args) {
     boolean consoleMode = false;
     // DEBUG: TODO remove
-    consoleMode = true;
+    // consoleMode = true;
     // DEBUG END
     for (int i = 0; i < args.length; i++) {
       if (args[i].toLowerCase().equals("c")) {
@@ -26,7 +27,10 @@ public class Main {
       }
     }
 
-    if (consoleMode) ConsoleVersion.startConsoleVersion();
+    if (consoleMode)
+      ConsoleVersion.startConsoleVersion();
+    else
+      javafx.application.Application.launch(MainWindow.class);
 
   }
 

@@ -106,6 +106,11 @@ public class GUIUtils {
       // cut out low Quality parts of sequence
       QualityAnalysis.trimLowQuality(toAnalyse);
 
+
+      if (StringAnalysis.findStopcodonPosition(toAnalyse) != -1)
+        toAnalyse.trimSequence(0, StringAnalysis.findStopcodonPosition(toAnalyse) * 3+2);
+
+
       // find all Mutations
       try {
         MutationAnalysis.findMutations(toAnalyse);

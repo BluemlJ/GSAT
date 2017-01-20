@@ -45,10 +45,10 @@ public class PrivateTest {
    * 
    * Datenset 4 10 Jannis Laptop
    */
-  private static int userNr = 10;
+  private static int userNr = 4;
 
   // Name of the file
-  private String fileName = "81HC73.ab1";
+  private String fileName = "93GH02_F11.ab1";
 
   String ECDERA =
       "ATGACTGATCTGAAAGCAAGCAGCCTGCGTGCACTGAAATTGATGGACCTGACCACCCTGAATGACGACGACACCGACGAGAAAGTGA"

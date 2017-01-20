@@ -139,10 +139,11 @@ public class AnalysisTests {
    * @see analysis.MutationAnalysis
    * @author bluemlj
    */
-  @Test(expected = CorruptedSequenceException.class)
+  @Test
   public void codonsToAminoAcidsWithNotNukleotideString() throws CorruptedSequenceException {
     String testString = "HNOFClBrI";
-    StringAnalysis.codonsToAminoAcids(testString);
+
+    assertTrue(StringAnalysis.codonsToAminoAcids(testString).contains("X"));
 
   }
 
@@ -179,6 +180,32 @@ public class AnalysisTests {
     String result = MutationAnalysis.reportDifferences("hallo", "hallxo").getFirst();
     String expected = "i|4|x|";
     assertEquals(expected, result);
+  }
+
+  @Test
+  public void findStopcodon1() {
+    AnalysedSequence testSeq =
+        new AnalysedSequence("ATGUUAUUUCCCTAACCCCCCC", "Jannis", "toAnalyse", null);
+    int tmp = StringAnalysis.findStopcodonPosition(testSeq);
+    System.out.println(tmp);
+    assertTrue(tmp == 4);
+  }
+
+  @Test
+  public void findStopcodon2() {
+    AnalysedSequence testSeq =
+        new AnalysedSequence("ATGUUAUUUCCCTAACCCCCCCTAA", "Jannis", "toAnalyse", null);
+    int tmp = StringAnalysis.findStopcodonPosition(testSeq);
+    System.out.println(tmp);
+    assertTrue(tmp == 4);
+  }
+
+  @Test
+  public void findStopcodon3() {
+    AnalysedSequence testSeq = new AnalysedSequence("ATGUUAUUUCCCCCC", "Jannis", "toAnalyse", null);
+    int tmp = StringAnalysis.findStopcodonPosition(testSeq);
+    System.out.println(tmp);
+    assertTrue(tmp == -1);
   }
 
   /**
@@ -584,14 +611,10 @@ public class AnalysisTests {
    * 
    * @author Ben Kohr
    */
-  @Test(expected = CorruptedSequenceException.class)
-
+  @Test
   public void testGetComplementarySequenceWithError() throws CorruptedSequenceException {
-
     Sequence seq = new Gene("AATTCCFGATCG", 0, "Problem", null);
-    seq.getComplementarySequence();
-
-    fail("No exception thrown!");
+    assertTrue(seq.getComplementarySequence().contains("X"));
   }
 
   /**

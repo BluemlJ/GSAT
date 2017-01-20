@@ -407,6 +407,9 @@ public class ConsoleVersion {
     // cut out low Quality parts of sequence
     QualityAnalysis.trimLowQuality(activeSequence);
 
+    if (StringAnalysis.findStopcodonPosition(activeSequence) != -1)
+      activeSequence.trimSequence(0, StringAnalysis.findStopcodonPosition(activeSequence) * 3+2);
+
     // checks if Sequence is corrupted
     try {
       QualityAnalysis.checkIfSequenceIsClean(activeSequence);
