@@ -82,11 +82,17 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
     infoArea.appendText(output.second + "\n");
 
     // gives information about new gene selection
-    geneBox.getSelectionModel().selectedIndexProperty().addListener(new ChangeListener<Number>() {
-      @Override
-      public void changed(ObservableValue<? extends Number> arg0, Number value, Number newValue) {
-        infoArea.appendText("new Gene selected with ID   " + newValue + "\n");
-      }
+    geneBox.getSelectionModel().selectedIndexProperty()
+        .addListener((obeservable, value, newValue) -> {
+          infoArea.appendText("new Gene selected with ID   " + newValue + "\n");
+        });
+
+    destField.textProperty().addListener((observable, oldValue, newValue) -> {
+      infoArea.appendText("Destination changed");
+    });
+
+    srcField.textProperty().addListener((observable, oldValue, newValue) -> {
+      infoArea.appendText("Sourcefolder changed");
     });
 
     // set button to select destination
@@ -101,16 +107,13 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
     });
 
     // select if you get only one output file
-    outputCheckbox.selectedProperty().addListener(new ChangeListener<Boolean>() {
-      @Override
-      public void changed(ObservableValue<? extends Boolean> arg0, Boolean oldValue,
-          Boolean newValue) {
-        FileSaver.setSeparateFiles(newValue);
-        if (newValue)
-          infoArea.appendText("You will get one single Outputfile \n");
-        else
-          infoArea.appendText("You will get for every File an Outputfile \n");
-      }
+    outputCheckbox.selectedProperty().addListener((observable, oldValue, newValue) -> {
+      FileSaver.setSeparateFiles(newValue);
+      if (newValue)
+        infoArea.appendText("You will get one single Outputfile \n");
+      else
+        infoArea.appendText("You will get for every File an Outputfile \n");
+
     });
 
     // set button to select source files
@@ -144,6 +147,7 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
         output = GUIUtils.runAnalysis(srcField.getText(),
             geneBox.getSelectionModel().getSelectedIndex()).second;
         infoArea.appendText(output);
+
 
       }
     });

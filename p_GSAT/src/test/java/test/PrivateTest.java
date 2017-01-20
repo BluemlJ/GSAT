@@ -30,7 +30,8 @@ public class PrivateTest {
       "C:/Users/Jannis/Dropbox/BP_GSAT/Materialien/Dateien - mehr/SET 2 17.1 Privat/Sequences/",
       "C:/Users/Jannis/Dropbox/BP_GSAT/Materialien/Dateien - mehr/SET 3 12.16 �ffentlich/ab1/Tk_Gs40Hits/Forward/",
       "C:/Users/Jannis/Dropbox/BP_GSAT/Materialien/Dateien - mehr/SET 3 12.16 �ffentlich/ab1/Tk_Gs40Hits/Reverse/",
-      "C:/Users/Jannis/Dropbox/BP_GSAT/Materialien/Dateien - mehr/SET 3 12.16 �ffentlich/ab1/Tk40Hits050215/"};
+      "C:/Users/Jannis/Dropbox/BP_GSAT/Materialien/Dateien - mehr/SET 3 12.16 �ffentlich/ab1/Tk40Hits050215/",
+      "/home/bluemlj/Dropbox/BP_GSAT/Materialien/Dateien - mehr/SET 4 19.1 Privat/"};
 
   private static String pathToUse;
 
@@ -42,11 +43,13 @@ public class PrivateTest {
    * Datenset 2 6 Jannis
    * 
    * Datenset 3 7-9 Jannis
+   * 
+   * Datenset 4 10 Jannis Laptop
    */
-  private static int userNr = 8;
+  private static int userNr = 10;
 
   // Name of the file
-  private String fileName = "95EI70.ab1";
+  private String fileName = "81HC73.ab1";
 
   String ECDERA =
       "ATGACTGATCTGAAAGCAAGCAGCCTGCGTGCACTGAAATTGATGGACCTGACCACCCTGAATGACGACGACACCGACGAGAAAGTGA"
@@ -104,7 +107,7 @@ public class PrivateTest {
    * @throws UndefinedTypeOfMutationException
    * @throws CorruptedSequenceException
    */
-  @Ignore
+  //@Ignore
   @Test
   public void testLocalFile() throws FileReadingException, IOException,
       UndefinedTypeOfMutationException, CorruptedSequenceException {
@@ -122,7 +125,7 @@ public class PrivateTest {
     }
 
     //
-    String gene = TKGS;
+    String gene = FSA;
 
     Gene fsa = new Gene(gene, 0, "FSA", "");
     testSeq.setReferencedGene(fsa);
@@ -142,7 +145,7 @@ public class PrivateTest {
     System.out.println("");
     System.err
         .println(testSeq.getReferencedGene().getSequence().substring(testSeq.getOffset() * 3));
-    System.out.println(testSeq.getSequence());
+     System.out.println(testSeq.getSequence());
 
     System.out.println("_________________________________________________________");
 

@@ -109,9 +109,8 @@ public class GUIUtils {
       // find all Mutations
       try {
         MutationAnalysis.findMutations(toAnalyse);
-        report.append("Finding Mutations was successful.\n");
-      } catch (UndefinedTypeOfMutationException | CorruptedSequenceException e) {
-        report.append("FindMutation was not successful because of Exception\n");
+        } catch (UndefinedTypeOfMutationException | CorruptedSequenceException e) {
+        report.append("FindMutation was not successful because of Exception in " + file.getName()+"\n");
         return new Pair<Boolean, String>(success, report.toString());
       }
 
