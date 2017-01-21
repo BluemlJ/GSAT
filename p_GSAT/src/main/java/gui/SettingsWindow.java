@@ -18,6 +18,21 @@ import javafx.stage.Stage;
 public class SettingsWindow extends Application implements javafx.fxml.Initializable {
 
   @FXML
+  private ListView<String> geneList;
+  // fields
+  @FXML
+  private TextField Parameter1Field;
+  @FXML
+  private ChoiceBox<String> researcherDrobdown;
+
+  // buttons
+  @FXML
+  private Button parameterButton;
+  @FXML
+  private Button returnButton;
+  @FXML
+  private Button databaseButton;
+  @FXML
   private Button addGeneButton;
   @FXML
   private Button addResearcherButton;
@@ -27,21 +42,7 @@ public class SettingsWindow extends Application implements javafx.fxml.Initializ
   private Button deleteResearcherButton;
   @FXML
   private Button editGeneButton;
-  @FXML
-  private ListView<String> geneList;
-  // fields
-  @FXML
-  private TextField Parameter1Field;
 
-  @FXML
-  private ChoiceBox<String> researcherDrobdown;
-
-  @FXML
-  private Button restoreButton;
-
-  // buttons
-  @FXML
-  private Button returnButton;
 
   @Override
   public void initialize(URL location, ResourceBundle resources) {
