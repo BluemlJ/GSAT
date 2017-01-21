@@ -13,7 +13,7 @@
   <children>
     <AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="-1.0" prefWidth="-1.0" VBox.vgrow="ALWAYS">
       <children>
-            <Button fx:id="restoreButton" layoutX="14.0" layoutY="362.0" mnemonicParsing="false" text="Edit Parameters" />
+            <Button fx:id="parameterButton" layoutX="14.0" layoutY="362.0" mnemonicParsing="false" text="Edit Parameters" />
             <Button fx:id="returnButton" layoutX="574.0" layoutY="362.0" mnemonicParsing="false" text="return" />
             <Text layoutX="19.0" layoutY="46.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Researcher:">
                <font>
@@ -22,7 +22,7 @@
             </Text>
             <ChoiceBox fx:id="researcherDrobdown" layoutX="113.0" layoutY="28.0" prefWidth="150.0" />
             <Button fx:id="addResearcherButton" layoutX="271.0" layoutY="28.0" mnemonicParsing="false" text="add" />
-            <Button fx:id="deleteResearcherButton" layoutX="321.0" layoutY="28.0" mnemonicParsing="false" text="delete" />
+            <Button fx:id="deleteResearcherButton" layoutX="318.0" layoutY="28.0" mnemonicParsing="false" text="delete" />
             <ScrollPane layoutX="14.0" layoutY="96.0" prefHeight="200.0" prefWidth="422.0">
               <content>
                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="200.0" prefWidth="200.0">
@@ -39,7 +39,7 @@
             </Text>
             <Button fx:id="addGeneButton" layoutX="324.0" layoutY="309.0" mnemonicParsing="false" text="add" />
             <Button fx:id="deleteGeneButton" layoutX="375.0" layoutY="309.0" mnemonicParsing="false" text="delete" />
-            <Button fx:id="restoreButton1" layoutX="148.0" layoutY="362.0" mnemonicParsing="false" text="Configure Database" />
+            <Button fx:id="databaseButton" layoutX="148.0" layoutY="362.0" mnemonicParsing="false" text="Configure Database" />
       </children>
     </AnchorPane>
   </children>
