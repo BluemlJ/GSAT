@@ -68,7 +68,18 @@ public class AnalysedSequence extends Sequence {
    */
   private String rightVector;
 
+  
+  /**
+   * The percentage of trimmed nucleotides due to the quality trim.
+   */
+  private double trimPercentage;
 
+  /**
+   * Specifies the position (starting with 0) where a HIS tag is found in the analysed sequence.
+   * It's -1 if there is no such tag found.
+   */
+  private int hisTagPosition = -1;
+  
   /**
    * Constructor calling the super constructor (which sets all given attributes).
    * 
@@ -113,6 +124,10 @@ public class AnalysedSequence extends Sequence {
   public String getFileName() {
     return fileName;
   }
+  
+  public double getTrimPercentage() {
+	    return trimPercentage;
+	  }
 
 
   public String getLeftVector() {
@@ -141,6 +156,10 @@ public class AnalysedSequence extends Sequence {
     return qualities;
   }
 
+  
+  public int getHisTagPosition() {
+	    return hisTagPosition;
+	  }
 
   public Gene getReferencedGene() {
     return referencedGene;

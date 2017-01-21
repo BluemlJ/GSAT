@@ -134,6 +134,9 @@ public class FileSaver {
     String leftVector = sequence.getLeftVector();
     String rightVector = sequence.getRightVector();
     String promotor = sequence.getPromotor();
+    double avgQuality = sequence.getAvgQuality();
+    double trimPercentage = sequence.getTrimPercentage();
+    int hisTagPosition = sequence.getHisTagPosition();
     boolean manuallyChecked = sequence.isManuallyChecked();
 
     // Concatenate the Strings together to one line to be written
@@ -148,6 +151,15 @@ public class FileSaver {
     builder.append(leftVector).append("; ");
     builder.append(rightVector).append("; ");
     builder.append(promotor).append("; ");
+    builder.append(avgQuality).append("; ");
+    builder.append(trimPercentage).append("; ");
+    
+    // The his tag position starts with 1 in the stored result.
+    if (hisTagPosition == -1)
+    	builder.append("none; ");
+    else
+    	builder.append((hisTagPosition + 1) + "; ");
+    
     builder.append(manuallyChecked).append("; ");
 
     LinkedList<String> mutations = sequence.getMutations();
@@ -220,7 +232,7 @@ public class FileSaver {
 
     if (!append) {
       writer.write(
-          "id; file name; gene id; sequence; date; researcher; comments; left vector; right vector; promotor; manually checked; mutations"
+          "id; file name; gene id; sequence; date; researcher; comments; left vector; right vector; promotor; average quality; percentage of quality trim; HIS tag; manually checked; mutations"
               + System.lineSeparator());
     }
 

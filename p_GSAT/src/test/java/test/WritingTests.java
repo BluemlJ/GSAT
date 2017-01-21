@@ -42,25 +42,25 @@ public class WritingTests {
    * The second sequence for testing the conversion method.
    */
   private static AnalysedSequence seq2 =
-      new AnalysedSequence("ATCTTTG", "Klaus Bohne", "sequence2.ab1", null);
+      new AnalysedSequence("ATCTTTG", "Klaus Bohne", "sequence2.ab1", new int[]{1, 3});
 
   /**
    * The third test sequence (which will result in no DatabaseEntries).
    */
   private static AnalysedSequence seq3 =
-      new AnalysedSequence("ATCTTGCGTTG", "Klaus Hafer", "sequence3.ab1", null);
+      new AnalysedSequence("ATCTTGCGTTG", "Klaus Hafer", "sequence3.ab1", new int[]{1, 3});
 
   /**
    * The fourth test sequence.
    */
   private static AnalysedSequence seq4 =
-      new AnalysedSequence("ATC", "Kurt Bohne", "sequence3.ab1", null);
+      new AnalysedSequence("ATC", "Kurt Bohne", "sequence3.ab1", new int[]{1, 3});
 
   /**
    * The first sequence for testing the conversion method (converting a sequence into a
    * DatabaseEntry).
    */
-  static AnalysedSequence seq1 = new AnalysedSequence("ATCG", "Klaus Bohne", "sequence1.ab1", null);
+  static AnalysedSequence seq1 = new AnalysedSequence("ATCG", "Klaus Bohne", "sequence1.ab1", new int[]{1, 3});
 
 
   /**
@@ -81,7 +81,7 @@ public class WritingTests {
     seq1.addMutation("+2H5");
     seq1.setLeftVector("A");
     seq1.setRightVector("B");
-
+    
     seq2.setReferencedGene(new Gene("ATTTTCG", 1, "FSA", "Karl Mueller"));
     seq2.setComments("No comments");
     seq2.addMutation("reading frame error");
@@ -151,7 +151,7 @@ public class WritingTests {
     String addingDate = df.format(new Date());
 
     String[] correctResults = new String[] {"1; sequence3.ab1; 3; ATC; " + addingDate
-        + "; Kurt Bohne; Nothing to say; null; null; null; false; AAA7CAA, -1H5"};
+        + "; Kurt Bohne; Nothing to say; null; null; null; 2.0; 0.0; none; false; AAA7CAA, -1H5"};
 
     for (int i = 0; i < correctResults.length; i++) {
       String[] correctInfo = correctResults[i].split(";");
@@ -354,7 +354,7 @@ public class WritingTests {
 
     // Check whether the input is correct
     String[] correctResults = new String[] {"1; sequence1.ab1; 4; ATCG; " + addingDate
-        + "; Klaus Bohne; No comments; A; B; null; false; A131E, G7K, +2H5"};
+        + "; Klaus Bohne; No comments; A; B; null; 2.0; 0.0; none; false; A131E, G7K, +2H5"};
 
     for (int i = 0; i < correctResults.length; i++) {
       assertEquals(correctResults[i], results.get(i));
@@ -390,9 +390,9 @@ public class WritingTests {
 
     String[] correctResults = new String[] {
         "1; sequence2.ab1; 1; ATCTTTG; " + addingDate
-            + "; Klaus Bohne; No comments; null; null; null; false; reading frame error",
+            + "; Klaus Bohne; No comments; null; null; null; 2.0; 0.0; none; false; reading frame error",
         "2; sequence3.ab1; 2; ATCTTGCGTTG; " + addingDate
-            + "; Klaus Hafer; ; null; null; null; false; ",};
+            + "; Klaus Hafer; ; null; null; null; 2.0; 0.0; none; false; ",};
 
     for (int i = 0; i < correctResults.length; i++) {
       assertEquals(correctResults[i], results.get(i));
@@ -429,9 +429,9 @@ public class WritingTests {
 
     String[] correctResults = new String[] {
         "1; sequence1.ab1; 4; ATCG; " + addingDate
-            + "; Klaus Bohne; No comments; A; B; null; false; A131E, G7K, +2H5",
+            + "; Klaus Bohne; No comments; A; B; null; 2.0; 0.0; none; false; A131E, G7K, +2H5",
         "2; sequence2.ab1; 1; ATCTTTG; " + addingDate
-            + "; Klaus Bohne; No comments; null; null; null; false; reading frame error"};
+            + "; Klaus Bohne; No comments; null; null; null; 2.0; 0.0; none; false; reading frame error"};
 
     for (int i = 0; i < correctResults.length; i++) {
       String[] correctInfo = correctResults[i].split(";");
@@ -491,7 +491,7 @@ public class WritingTests {
     String addingDate = df.format(new Date());
 
     String[] correctResults = new String[] {"1; sequence2.ab1; 1; ATCTTTG; " + addingDate
-        + "; Klaus Bohne; No comments; null; null; null; false; reading frame error"};
+        + "; Klaus Bohne; No comments; null; null; null; 2.0; 0.0; none; false; reading frame error"};
 
     for (int i = 0; i < correctResults.length; i++) {
       assertEquals(correctResults[i], results.get(i));
@@ -507,7 +507,7 @@ public class WritingTests {
     reader.close();
 
     correctResults = new String[] {"1; sequence3.ab1; 2; ATCTTGCGTTG; " + addingDate
-        + "; Klaus Hafer; ; null; null; null; false; "};
+        + "; Klaus Hafer; ; null; null; null; 2.0; 0.0; none; false; "};
 
     for (int i = 0; i < correctResults.length; i++) {
       assertEquals(correctResults[i], results2.get(i));
