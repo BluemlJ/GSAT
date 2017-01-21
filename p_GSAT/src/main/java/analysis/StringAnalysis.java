@@ -398,104 +398,6 @@ public class StringAnalysis {
    * @param seqence
    * @return
    */
-  public static boolean findOffset(AnalysedSequence seqence) {
-
-    int stepSize = 2;
-    stepSize *= 3;
-    // get gene and sequence as String
-    String gene = seqence.getReferencedGene().getSequence();
-    String seq = seqence.getSequence();
-
-    // check for startcodon
-    // if found method can return with exact begining possition
-    if (seq.contains(gene.substring(0, 3))) {
-      String codon = gene.substring(0, 3);
-
-      int hitIndex = seq.indexOf(codon);
-      if (hitIndex == seq.lastIndexOf(codon)) {
-        seqence.setOffset(hitIndex);
-        return true;
-      }
-    }
-
-    boolean offsetNotFound = true;
-    boolean emrgencyMode = false;
-
-    // part of the sequence that will be testet.
-    String toTest = gene.substring(0, gene.length() / stepSize);
-    int testIndex = 0;
-
-    // warn if sequence is to short for testing
-    if (toTest.length() < 9) {
-      System.err.println("Usable part of Sequence might be too short for good Results");
-    }
-
-    // if begin was not found
-    // intense search begins
-    while (offsetNotFound) {
-      // index of toTest is gene
-      int targetIndex = seq.indexOf(toTest);
-
-      // test if toTest was found and if it was found only once
-      if (targetIndex >= 0 && targetIndex == seq.lastIndexOf(toTest)) {
-        // OFFSET found:
-        // Set offset
-        offsetNotFound = false;
-
-        // changed + to - for test
-        seqence.setOffset(targetIndex - testIndex);
-
-        // dirty fix:
-        // String genOption1 = gene.substring(Math.max(targetIndex -
-        // testIndex,0));
-        // String genOption2 = gene.substring(Math.max(targetIndex +
-        // testIndex,0));
-        // String seqOption1 =
-        // seqence.getSequence().substring(Math.max(targetIndex -
-        // testIndex,0));
-        // String seqOption2 =
-        // seqence.getSequence().substring(Math.max(targetIndex +
-        // testIndex,0));
-        // if (checkSimilarity(genOption1, seqOption1) <
-        // checkSimilarity(genOption2, seqOption2)) {
-        // seqence.setOffset(testIndex-targetIndex);
-
-        // System.err.println(testIndex);
-        // }
-        // Dirty fix end
-
-        if (testIndex == 0) {
-          return true;
-        }
-        System.err.println("Warning, Trimming may be inexact");
-        // TODO vieleicht hier wieder offset + 2*testIndex?
-        return false;
-
-      } else if (!emrgencyMode) {
-        // check if next step is to big
-        if (toTest.length() > 9) {
-          toTest = toTest.substring(0, toTest.length() - 3);
-        } else {
-          // if (testIndex+3 + gene.length()/stepSize < gene.length())
-          // {
-          if (testIndex + 3 < gene.length() / stepSize) {
-            testIndex++;
-            toTest = gene.substring(testIndex, gene.length() / stepSize);
-          } else {
-            emrgencyMode = true;
-          }
-        }
-      } else {
-        // EMERGENCY MODE
-        System.err.println("EMERGENCY MODE REQUIRED");
-        // TODO Implement
-
-        // TODO REMOVE
-        offsetNotFound = false;
-      }
-    }
-    return false;
-  }
 
   /**
    * Finds the gene that fits best to a given sequence by comparing it to all given genes. Known
@@ -719,47 +621,32 @@ public class StringAnalysis {
     return result;
     // System.out.println(toAlign.getOffset() + " = OFFSET");
   }
+  
+
+  public static void trimVector(AnalysedSequence toAlign, Gene gene) {
+    toAlign.setReferencedGene(gene);
+    trimVector(toAlign);
+  }
 
   /**
-   * 
+   * cuts out the Vector off and writes it into the Left vector of the given sequence
+   * Also sets Offset @see findOffset()
    * @param toAlign
    * @author Kevin
    */
   public static void trimVector(AnalysedSequence toAlign) {
     // **********simple Vector Cutting*****************
-    boolean offsetExact = findOffset(toAlign);
-    // Gene gene = toAlign.getReferencedGene();
-
+    
+    //calculate offset
+    findOffset(toAlign);
+    
+    //define new sequence
     String newSequence = toAlign.sequence;
 
-    // check for stopcodon //TODO edit
-    // boolean endexact = false;
-
-    // String codon = gene.sequence.substring(gene.sequence.length() - 3, gene.sequence.length());
-
-    // TODO fix
-    // codon = "false";
-
-    // if found cut at stopcodon
-    /*
-     * for (int i = 0; i < 6; i++) { int hitIndex = newSequence.indexOf(codon); if (hitIndex >= 0 &&
-     * hitIndex == newSequence.lastIndexOf(codon)) { newSequence = newSequence.substring(0, hitIndex
-     * + 3); endexact = true; System.out.println(); System.err.println("start found " + codon); //
-     * TODO save end vector i = 10; } switch (i) { case 0: codon = "UAG"; break; case 1: codon =
-     * "UAA"; break; case 2: codon = "UGA"; break; case 3: codon = "TAG"; break; case 4: codon =
-     * "TAA"; break; case 5: codon = "TGA"; break; default: break; } }
-     */
-
-    // calculate the end of the sequence (as long as the gene if possible
-    // els till end)
-    // if necessary cut off begin
-    // if (offsetExact) {
-    // negative offset -> sequence goes over left site of gene
-    // -> cut of left of offset
-    // System.err.println("OFF = " + toAlign.getOffset());
+    //cut off everything befor begin found by findOffset and write into vector and newSequence
     String leftVector = newSequence.substring(0, Math.max(toAlign.getOffset(), 0));
-
     newSequence = newSequence.substring(Math.max(toAlign.getOffset(), 0));
+    //alsow cut quality array to fit newSequence
     toAlign.trimQualityArray(Math.max(toAlign.getOffset(), 0), toAlign.length());
 
     // set vector and correct offset
@@ -767,23 +654,8 @@ public class StringAnalysis {
     toAlign.setOffset(Math.min(toAlign.getOffset(), 0));
     toAlign.setOffset(-toAlign.getOffset());
     toAlign.setSequence(newSequence);
-    // }
 
-    // calculate exact offset if necessary;
-    // if (!(endexact && offsetExact)) {
-
-    // newSequence = trimbyLevenstein(toAlign, offsetExact);
-    // }
-
-    // int sequenceEnd = Math.min(newSequence.length(),
-    // gene.sequence.length());
-    // String rightVector = newSequence.substring(sequenceEnd);
-    // newSequence = newSequence.substring(0, sequenceEnd);
-
-    // **********complex Vector Cutting*****************
-    // TODO implement
-
-    // INFO: wieder einkommentiert am 15.01.2017
+    //TODO Ask Jannis!
     // **********modulo Cutting*****************
     /*
      * if (toAlign.getOffset() != 0) { int begin = (3 - (toAlign.getOffset() % 3) % 3); newSequence
@@ -793,25 +665,97 @@ public class StringAnalysis {
      */
     // ******************************************
 
-    // *********OVERSIZE Trim*********************
-    // if newSequence with offset is longer than original gen, cut
-    // TODO check if OK
-
-    /*
-     * if (newSequence.length() + toAlign.getOffset() > gene.getSequence().length()) { int end =
-     * gene.getSequence().length() - toAlign.getOffset(); System.out.println(end); newSequence =
-     * newSequence.substring(0, end); toAlign.trimQualityArray(0, end); }
-     */
-
-    // ******************************************
-
-    // toAlign.setRightVector(rightVector);
     toAlign.setSequence(newSequence);
   }
+  
+  /**
+   * calculates the offset and writes it into the sequence
+   * WARNING: does change Offset value!
+   * 
+   * returns false if begin of sequence was not found
+   * Returning false may be an indicator for bad sequence, but may also be perfectly fine
+   * @param sequence
+   * @return
+   */
+  public static boolean findOffset(AnalysedSequence sequence) {
 
-  public static void trimVector(AnalysedSequence toAlign, Gene gene) {
-    toAlign.setReferencedGene(gene);
-    trimVector(toAlign);
+    //step size for traversing
+    int stepSize = 2;
+    stepSize *= 3;
+    // get gene and sequence as String
+    String gene = sequence.getReferencedGene().getSequence();
+    String seq = sequence.getSequence();
+
+    // check for startcodon
+    // if found method can return with exact begining possition
+    if (seq.contains(gene.substring(0, 3))) {
+      String codon = gene.substring(0, 3);
+
+      int hitIndex = seq.indexOf(codon);
+      if (hitIndex == seq.lastIndexOf(codon)) {
+        sequence.setOffset(hitIndex);
+        return true;
+      }
+    }
+
+    boolean offsetNotFound = true;
+    boolean emrgencyMode = false;
+
+    // part of the sequence that will be testet.
+    String toTest = gene.substring(0, gene.length() / stepSize);
+    int testIndex = 0;
+
+    // warn if sequence is to short for testing
+    if (toTest.length() < 9) {
+      System.err.println("Usable part of Sequence might be too short for good Results");
+    }
+
+    // if begin was not found
+    // intense search begins
+    while (offsetNotFound) {
+      // index of toTest is gene
+      int targetIndex = seq.indexOf(toTest);
+
+      // test if toTest was found and if it was found only once
+      if (targetIndex >= 0 && targetIndex == seq.lastIndexOf(toTest)) {
+        // OFFSET found:
+        // Set offset
+        offsetNotFound = false;
+
+        // changed + to - for test
+        sequence.setOffset(targetIndex - testIndex);
+
+        if (testIndex == 0) {
+          return true;
+        }
+        System.err.println("Warning, Trimming may be inexact");
+        return false;
+
+      } else if (!emrgencyMode) {
+        // check if next step is to big
+        if (toTest.length() > 9) {
+          toTest = toTest.substring(0, toTest.length() - 3);
+        } else {
+          // if (testIndex+3 + gene.length()/stepSize < gene.length())
+          // {
+          if (testIndex + 3 < gene.length() / stepSize) {
+            testIndex++;
+            toTest = gene.substring(testIndex, gene.length() / stepSize);
+          } else {
+            emrgencyMode = true;
+          }
+        }
+      } else {
+        // EMERGENCY MODE
+        System.err.println("EMERGENCY MODE REQUIRED");
+        // TODO Implement
+
+        // TODO REMOVE
+        offsetNotFound = false;
+      }
+    }
+    return false;
   }
+
 
 }
