@@ -1,4 +1,4 @@
-package core;
+  package core;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -436,7 +436,7 @@ public class ConsoleVersion {
    * 
    */
   private static Gene readGene() {
-    String path = new File("resources/GeneData/Genes.txt").getAbsolutePath();
+    String path = "/GeneData/Genes.txt";
     try {
       GeneReader.readGenes(path);
       if (GeneReader.getNumGenes() == 0) {

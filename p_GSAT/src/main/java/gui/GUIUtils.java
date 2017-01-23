@@ -2,6 +2,7 @@ package gui;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.LinkedList;
 import java.util.Optional;
 
@@ -46,13 +47,12 @@ public class GUIUtils {
    * @param genes the choiceBox to initialize
    * @return reportpair, with indicator Boolean and reportString
    */
-  public static Pair<Boolean, String> initializeGeneBox(ChoiceBox<String> genes) {
-
-    String path = new File("resources/GeneData/Genes.txt").getAbsolutePath();
+  public static Pair<Boolean, String> initializeGeneBox(ChoiceBox<String> genes, InputStream genetxt) {
     try {
-      GeneReader.readGenes(path);
+      GeneReader.readGenes(genetxt);
     } catch (IOException e) {
-      return new Pair<Boolean, String>(false, "Failing with finding Gene.txt");
+      e.getMessage();
+      return new Pair<Boolean, String>(false, "Reading Gene.txt was unsuccessful\n"+ e.getMessage());
     }
 
     genes.setItems(FXCollections.observableArrayList(GeneReader.getGeneNames()));
@@ -108,7 +108,7 @@ public class GUIUtils {
 
 
       if (StringAnalysis.findStopcodonPosition(toAnalyse) != -1)
-        toAnalyse.trimSequence(0, StringAnalysis.findStopcodonPosition(toAnalyse) * 3+2);
+        toAnalyse.trimSequence(0, StringAnalysis.findStopcodonPosition(toAnalyse) * 3 + 2);
 
 
       // find all Mutations

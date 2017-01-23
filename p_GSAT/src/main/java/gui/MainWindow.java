@@ -1,8 +1,13 @@
 package gui;
 
+import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.Scanner;
+
+import org.xml.sax.InputSource;
 
 import analysis.Pair;
 import io.FileSaver;
@@ -80,10 +85,11 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
    */
   @Override
   public void initialize(URL arg0, ResourceBundle arg1) {
+    bar.setProgress(0);
     Pair<Boolean, String> output;
     infoArea.setText("Welcome to GSAT! \n");
     // read Genes and show them in the choicebox
-    output = GUIUtils.initializeGeneBox(geneBox);
+    output = GUIUtils.initializeGeneBox(geneBox, getFile("/GeneData/Genes.txt"));
     infoArea.appendText(output.second + "\n");
 
     // gives information about new gene selection
@@ -137,18 +143,19 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
         infoArea.appendText("Source folder or file:  " + srcField.getText() + "\n");
 
         if (srcField.getText().equals("")) {
-          infoArea.appendText("Source fpath is empty, stop analysis.");
+          infoArea.appendText("Source path is empty, stop analysis.");
           bar.setProgress(0);
           return;
         }
 
         infoArea.appendText("Destination folder:  " + destField.getText() + "\n");
 
-        if (srcField.getText().equals("")) {
+        if (destField.getText().equals("")) {
           infoArea.appendText("Destination path is empty, stop analysis.");
           bar.setProgress(0);
           return;
-        }
+        } else
+          FileSaver.setLocalPath(destField.getText());
 
         infoArea
             .appendText("Selected gene:  " + geneBox.getSelectionModel().getSelectedItem() + "\n");
@@ -197,6 +204,12 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
     primaryStage.setScene(scene);
     primaryStage.sizeToScene();
     primaryStage.show();
+  }
+
+  private InputStream getFile(String fileName) {
+    // Get file from resources folder
+    ClassLoader classLoader = getClass().getClassLoader();
+    return (classLoader.getClass().getResourceAsStream(fileName));
   }
 
 

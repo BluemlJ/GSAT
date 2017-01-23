@@ -80,9 +80,11 @@ public class FileSaver {
    * @author Ben Kohr
    */
   public static void setLocalPath(String pathString) {
-    if (pathString != null)
+    if (pathString != null) {
+     // System.out.println(pathString);
       localPath = new File(pathString);
-    else {
+
+    } else {
       localPath = null;
     }
   }
@@ -153,13 +155,13 @@ public class FileSaver {
     builder.append(promotor).append("; ");
     builder.append(avgQuality).append("; ");
     builder.append(trimPercentage).append("; ");
-    
+
     // The his tag position starts with 1 in the stored result.
     if (hisTagPosition == -1)
-    	builder.append("none; ");
+      builder.append("none; ");
     else
-    	builder.append((hisTagPosition + 1) + "; ");
-    
+      builder.append((hisTagPosition + 1) + "; ");
+
     builder.append(manuallyChecked).append("; ");
 
     LinkedList<String> mutations = sequence.getMutations();
@@ -221,7 +223,7 @@ public class FileSaver {
    * @throws IOException If the creation or the usage of the FileWriter object fails
    */
   private static FileWriter getNewWriter(String filename, boolean append) throws IOException {
-    
+
     File newFile = new File(localPath.getAbsolutePath() + File.separatorChar + filename + ".csv");
 
     if (!append) {

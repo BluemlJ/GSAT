@@ -48,7 +48,7 @@ public class PrivateTest {
   private static int userNr = 4;
 
   // Name of the file
-  private String fileName = "93GH02_F11.ab1";
+  private String fileName = "93GH02_C09.ab1";
 
   String ECDERA =
       "ATGACTGATCTGAAAGCAAGCAGCCTGCGTGCACTGAAATTGATGGACCTGACCACCCTGAATGACGACGACACCGACGAGAAAGTGA"

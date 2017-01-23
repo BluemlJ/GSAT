@@ -2,10 +2,15 @@ package io;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Scanner;
+
+import org.xml.sax.InputSource;
 
 import analysis.Gene;
 import exceptions.DuplicateGeneException;
@@ -158,6 +163,35 @@ public class GeneReader {
     }
 
     geneReader.close();
+  }
+
+  /*
+   * reads a gene.txt from a given path
+   * 
+   * @param genePath
+   * 
+   * @throws IOException
+   */
+  public static void readGenes(InputStream genes) throws IOException {
+    geneList = new ArrayList<Gene>();
+    Scanner sc = new Scanner(genes);
+
+    String line;
+    int id = 0;
+    // for each line
+    while (sc.hasNextLine()) {
+      // format "name=atgAAT..."
+      line = sc.nextLine();
+      String sepLine[] = line.split(SEPARATOR);
+      String name = sepLine[0];
+      String gene = sepLine[1];
+      if (getGene(name) == null) {
+        geneList.add(new Gene(gene, id, name, Config.researcher));
+        id++;
+      }
+    }
+
+    sc.close();
   }
 
   /**
