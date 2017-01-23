@@ -145,7 +145,7 @@ public class VectorTrimTests {
    */
   @Test
   public void trimVectorBeginMissingTest() {
-    String seq = "wieGehts3dirheute3ABCABCENDendeaufgefueltumdasgenlangerzumachenYXYX";
+    String seq = "wieGehts3dirheute3ABCABCENDendeaufgefueltumdasgenlangerzumachen";
     int[] qualities = new int[seq.length()];
 
     AnalysedSequence sequence = new AnalysedSequence(seq, "res", "N", qualities);
@@ -174,7 +174,7 @@ public class VectorTrimTests {
   @Test
   public void trimVectorDammagedBeginAndEND() {
 
-    String seq = "XYXBELhallo3wieGehts3dirheute3mirgehtesgutERDASDF";
+    String seq = "XYXBELhallo3wieGehts3dirheute3mirgehtesgutERD";
     int[] qualities = new int[seq.length()];
 
     AnalysedSequence sequence = new AnalysedSequence(seq, "res", "N", qualities);
@@ -197,7 +197,7 @@ public class VectorTrimTests {
    */
   @Test
   public void trimVectorDammagedBeginTest() {
-    String seq = "XXhaXlo3wieGehts3dirheute3heuheuheuheuheuheuheuheuheuheuheuheuXX";
+    String seq = "XXhaXlo3wieGehts3dirheute3heuheuheuheuheuheuheuheuheuheuheuheu";
     int[] qualities = new int[seq.length()];
     AnalysedSequence sequence = new AnalysedSequence(seq, "Researcher", "NAME", qualities);
     Gene gen =
@@ -319,14 +319,14 @@ public class VectorTrimTests {
    */
   @Test
   public void trimVectorMutatedTest() {
-    String seq = "XXhalAo3wieGehts3dirheute3mirgehtesgutXX".toUpperCase();
+    String seq = "XXhalAo3wieGehts3dirheute3mirgehtesgut".toUpperCase();
     int[] qualities = new int[seq.length()];
     AnalysedSequence sequence = new AnalysedSequence(seq, "Researcher", "NAME", qualities);
     Gene gen = new Gene("hallo3wieGehts3dirheute3mirgehtesgut", 0, null, null);
 
     StringAnalysis.trimVector(sequence, gen);
     String test = sequence.getSequence();
-    String expected = "halAo3wieGehts3dirheute3".toUpperCase();
+    String expected = "halAo3wieGehts3dirheute3mirgehtesgut".toUpperCase();
 
     System.out.println(test);
     System.out.println(expected);
