@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.mysql.cj.jdbc.MysqlDataSource;
@@ -17,15 +18,44 @@ import com.mysql.cj.jdbc.MysqlDataSource;
  *
  */
 public class LocalDBTest {
+  static String user = "root";
+  static String pass = "rootpassword";
+  static int port = 3306;
+  static String server = "127.0.0.1";
 
+  Connection conn = null;
+  java.sql.Statement stmt = null;
+  ResultSet rs = null;
+  
+  @Ignore
+  @Test
+  public void checkDBExists() {
+    MysqlDataSource dataSource = new MysqlDataSource();
+    dataSource.setUser(user);
+    dataSource.setPassword(pass);
+    dataSource.setPort(port);
+    dataSource.setServerName(server);
 
-  // @Ignore
+    try {
+      conn = dataSource.getConnection();
+      stmt = conn.createStatement();
+      
+      System.out.println("");
+      rs = stmt.executeQuery("SELECT * FROM information_schema.tables WHERE table_schema = 'Gsat' AND table_name = 'Gene' LIMIT 1");
+      
+      if (rs.next()) {
+        if (!rs.getString(1).equals("def")) {
+          System.out.println("false");
+        }}
+    } catch (SQLException e) {
+      e.printStackTrace();
+    }
+
+  }
+
+  @Ignore
   @Test
   public void testDBConnection() {
-
-    Connection conn = null;
-    java.sql.Statement stmt = null;
-    ResultSet rs = null;
 
     MysqlDataSource dataSource = new MysqlDataSource();
     dataSource.setUser("root");

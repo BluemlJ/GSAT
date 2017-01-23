@@ -1,11 +1,13 @@
 package io;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.LinkedList;
+
+import com.mysql.cj.jdbc.MysqlDataSource;
 
 import analysis.Gene;
 import exceptions.DatabaseConnectionException;
@@ -28,10 +30,44 @@ public class DatabaseConnection {
   private static final String CONNECTION_STRING = "jdbc:mysql://localhost:5432/test";
 
   /**
+   * Mysql connection object
+   */
+  static MysqlDataSource dataSource;
+
+
+  /**
+   * Mysql user name
+   */
+  static String user = "root";
+
+  /**
+   * Mysql password
+   */
+  static String pass = "rootpassword";
+
+  /**
+   * Mysql port
+   */
+  static int port = 3306;
+
+  /**
+   * Mysql server address
+   */
+  static String server = "127.0.0.1";
+
+  /**
    * List off all entries to be written into the database. These are typically the results of the
    * analysis of a single file.
    */
   private static LinkedList<DatabaseEntry> queue = new LinkedList<DatabaseEntry>();
+
+  private static void initDatabase() {
+    dataSource = new MysqlDataSource();
+    dataSource.setUser(user);
+    dataSource.setPassword(pass);
+    dataSource.setPort(port);
+    dataSource.setServerName(server);
+  }
 
   /**
    * Puts all entries from a given list into this class's waiting queue.
@@ -142,6 +178,7 @@ public class DatabaseConnection {
     LinkedList<Gene> allGenes = new LinkedList<Gene>();
 
     conn = establishConnection();
+
     try {
       PreparedStatement pstmt =
           conn.prepareStatement("SELECT id, name, sequence, researcher FROM genes");
@@ -172,7 +209,8 @@ public class DatabaseConnection {
     Connection conn;
 
     try {
-      conn = DriverManager.getConnection(CONNECTION_STRING, "testname", "password");
+      // conn = DriverManager.getConnection(CONNECTION_STRING, "testname", "password");
+      conn = dataSource.getConnection();
     } catch (SQLException e) {
       throw new DatabaseConnectionException();
     }
@@ -204,7 +242,62 @@ public class DatabaseConnection {
 
   }
 
+  /**
+   * checks if the given database already has the necessary tables for storing data database name
+   * must be 'gsat' and table names must be ‘genes‘, ‘sequences‘, ‘mutations‘
+   * 
+   * @return true if database exists, false if it does not exist
+   */
+  private static boolean gsatExists() {
+    try {
+      conn = establishConnection();
+      Statement stmt = conn.createStatement();
+      
+      // check if table ‘genes‘ exists
+      ResultSet rs = stmt.executeQuery(
+          "SELECT * FROM information_schema.tables WHERE table_schema = 'gsat' AND table_name = 'genes' LIMIT 1");
+      if (!rs.next()) {
+        return false;
+      }
+      
+      // check if table ‘sequences‘ exists
+      rs = stmt.executeQuery(
+          "SELECT * FROM information_schema.tables WHERE table_schema = 'gsat' AND table_name = 'sequences' LIMIT 1");
+      if (!rs.next()) {
+        return false;
+      }
+      
+      // check if table ‘mutations‘ exists
+      rs = stmt.executeQuery(
+          "SELECT * FROM information_schema.tables WHERE table_schema = 'gsat' AND table_name = 'mutations' LIMIT 1");
+      if (!rs.next()) {
+        return false;
+      }
+      return true;
+    } catch (DatabaseConnectionException | SQLException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    }
+    return false;
+  }
 
+  /**
+   * sets the values of the mysql database to be used and initializes the database
+   * 
+   * @param user mysql user name
+   * @param pass mysql password
+   * @param port mysql server port
+   * @param server mysql server address
+   * @return
+   * @author Lovis Heindrich
+   */
+  public static void setDatabaseConnection(String user, String pass, int port, String server) {
+    DatabaseConnection.user = user;
+    DatabaseConnection.pass = pass;
+    DatabaseConnection.port = port;
+    DatabaseConnection.server = server;
+    DatabaseConnection.initDatabase();
+  }
 
   public void resetDatabaseConnection() {
     flushQueue();
