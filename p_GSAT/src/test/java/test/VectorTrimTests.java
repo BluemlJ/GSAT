@@ -25,7 +25,7 @@ public class VectorTrimTests {
    * @param Sequence
    * @return
    */
-  public static Gene getRandomGen(AnalysedSequence Sequence) {
+  public static Gene getRandomGene(AnalysedSequence Sequence) {
     int end = Sequence.length() - (int) (Math.random() * Sequence.length() / 4);
     end -= end % 3;
     int begin = (int) (Math.random() * Sequence.length() / 4);
@@ -73,7 +73,7 @@ public class VectorTrimTests {
     String seqString = sequenceBuilder.toString();
     int[] qualities = new int[seqString.length()];
     AnalysedSequence seq = new AnalysedSequence(seqString, "Coincidence", "FN", qualities);
-    seq.setReferencedGene(getRandomGen(seq));
+    seq.setReferencedGene(getRandomGene(seq));
     seq.setSequence(randomMutation(seq.getSequence(), seq.getOffset(),
         seq.getOffset() + seq.getReferencedGene().getSequence().length()));
     return seq;
@@ -172,7 +172,7 @@ public class VectorTrimTests {
    * @author Kevin Otto
    */
   @Test
-  public void trimVectorDammagedBeginAndEND() {
+  public void trimVectorDamagedBeginAndEnd() {
 
     String seq = "XYXBELhallo3wieGehts3dirheute3mirgehtesgutERD";
     int[] qualities = new int[seq.length()];
@@ -196,7 +196,7 @@ public class VectorTrimTests {
    * @author Kevin Otto
    */
   @Test
-  public void trimVectorDammagedBeginTest() {
+  public void trimVectorDamagedBeginTest() {
     String seq = "XXhaXlo3wieGehts3dirheute3heuheuheuheuheuheuheuheuheuheuheuheu";
     int[] qualities = new int[seq.length()];
     AnalysedSequence sequence = new AnalysedSequence(seq, "Researcher", "NAME", qualities);
@@ -222,7 +222,7 @@ public class VectorTrimTests {
    * @author Kevin Otto
    */
   @Test
-  public void trimVectorDammagedEND() {
+  public void trimVectorDamagedEnd() {
     String seq = "XXXhallo3wieGehts3dirheute3ERDXYX";
     int[] qualities = new int[seq.length()];
 
@@ -245,7 +245,7 @@ public class VectorTrimTests {
    * @author Kevin Otto
    */
   @Test
-  public void trimVectorDelitionTest() {
+  public void trimVectorDeletionTest() {
     String seq = "XXhallo3Gehts3dirheute3XX";
     int[] qualities = new int[seq.length()];
 
@@ -347,7 +347,7 @@ public class VectorTrimTests {
 
 
     AnalysedSequence randomSequence = getRandomSequence();
-    Gene randomgen = getRandomGen(randomSequence);
+    Gene randomgen = getRandomGene(randomSequence);
 
     Double time = (double) System.nanoTime();
 

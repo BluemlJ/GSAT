@@ -47,8 +47,16 @@ public class PrivateTest {
    */
   private static int userNr = 4;
 
+  @BeforeClass
+  public static void setup() {
+    pathToUse = paths[userNr];
+    System.out.println("Start");
+  }
+
   // Name of the file
   private String fileName = "93GH02_C09.ab1";
+
+  // _____________________________________________________________________
 
   String ECDERA =
       "ATGACTGATCTGAAAGCAAGCAGCCTGCGTGCACTGAAATTGATGGACCTGACCACCCTGAATGACGACGACACCGACGAGAAAGTGA"
@@ -60,8 +68,6 @@ public class PrivateTest {
           + "AAGTGATCCGTGATATGGGCGTAGAAAAAACCGTTGGTTTCAAACCGGCGGGCGGCGTGCGTACTGCGGAAGATGCGCAGAAATATCTCGCCATT"
           + "GCAGATGAACTGTTCGGTGCTGACTGGGCAGATGCGCGTCACTACCGCTTTGGCGCTTCCAGCCTGCTGGCAAGCCTGCTGAAAGCGCTGGGTCA"
           + "CACCACCACCACCACCACTGA";
-
-  // _____________________________________________________________________
 
   String FSA =
       "ATGGAACTGTATCTGGATACTTCAGACGTTGTTGCGGTGAAGGCGCTGTCACGTATTTTTCCGCTGGCGGGTGTGACCACTAACCCAAGCAT"
@@ -92,12 +98,6 @@ public class PrivateTest {
           + "ctccgtcatcagcatgccatcgtgggaccgcttcgaagcgcagccaaaatcgtaccgcgatgaagtgcttccgccggccgtgacgaagcggctcgccattgaaatgggcgcgt"
           + "cgctcggttgggagcgctacgtcggcgccgagggcgacattttggccatcgaccgattcggtgcttccgctccgggagagaaaatcatggccgagtatggctttacggttgac"
           + "aacgtcgtccgccgcacaaaagcgctgctcggcaagtaa";
-
-  @BeforeClass
-  public static void setup() {
-    pathToUse = paths[userNr];
-    System.out.println("Start");
-  }
 
   /**
    * 
