@@ -145,7 +145,7 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
         infoArea.appendText("Source folder or file:  " + srcField.getText() + "\n");
 
         if (srcField.getText().equals("")) {
-          infoArea.appendText("Source path is empty, stop analysis.");
+          infoArea.appendText("Source path is empty, aborting analysis.");
           bar.setProgress(0);
           return;
         }
@@ -153,7 +153,7 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
         infoArea.appendText("Destination folder:  " + destField.getText() + "\n");
 
         if (destField.getText().equals("")) {
-          infoArea.appendText("Destination path is empty, stop analysis.");
+          infoArea.appendText("Destination path is empty, aborting analysis.");
           bar.setProgress(0);
           return;
         } else
@@ -163,7 +163,7 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
             .appendText("Selected gene:  " + geneBox.getSelectionModel().getSelectedItem() + "\n");
 
         if (geneBox.getSelectionModel().getSelectedIndex() == -1) {
-          infoArea.appendText("No gene was selected, stop analysis.");
+          infoArea.appendText("No gene was selected, aborting analysis.");
           bar.setProgress(0);
           return;
         }

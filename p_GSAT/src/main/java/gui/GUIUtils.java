@@ -76,7 +76,7 @@ public class GUIUtils {
     if (sequences.first == null)
       if (sequences.second == null)
         return new Pair<Boolean, String>(success,
-            "Reading Sequences unsuccessful, please check the path");
+            "Reading Sequences unsuccessful, please make sure the given path is correct");
       else
         return new Pair<Boolean, String>(success, "No AB1 files were found at the given path.");
     else
@@ -96,7 +96,7 @@ public class GUIUtils {
       try {
         StringAnalysis.checkComplementAndReverse(toAnalyse);
       } catch (CorruptedSequenceException e) {
-        report.append("Its not possible to get the complementary Sequence, analysing stops\n");
+        report.append("Calculation of complementary sequence unsuccessful, analysing stops\n");
         return new Pair<Boolean, String>(success, report.toString());
       }
 
@@ -116,7 +116,7 @@ public class GUIUtils {
         MutationAnalysis.findMutations(toAnalyse);
       } catch (UndefinedTypeOfMutationException | CorruptedSequenceException e) {
         report.append(
-            "FindMutation was not successful because of Exception in " + file.getName() + "\n");
+            "Mutation analysis was unsuccessful because of error in " + file.getName() + "\n");
         return new Pair<Boolean, String>(success, report.toString());
       }
 
@@ -125,17 +125,17 @@ public class GUIUtils {
         FileSaver.storeResultsLocally(file.getName().replaceFirst("[.][^.]+$", "") + "_result",
             toAnalyse);
       } catch (MissingPathException e2) {
-        report.append("Missing Path to Destination, aborting analysing.\n");
+        report.append("Missing path to destination, aborting analysis.\n");
         FileSaver.setLocalPath("");
         return new Pair<Boolean, String>(success, report.toString());
       } catch (IOException e2) {
-        report.append("IOExeption in storing data, aborting analysing.\n");
+        report.append("Error while storing data, aborting analysis.\n");
         return new Pair<Boolean, String>(success, report.toString());
       }
 
     }
     // set output parameter and return Pair.
-    report.append("Analysing was successful\n");
+    report.append("Analysis was successful\n");
     success = true;
     return new Pair<Boolean, String>(success, report.toString());
   }
@@ -150,11 +150,11 @@ public class GUIUtils {
   public static Pair<Boolean, String> setDestination(TextField destination) {
 
     boolean success = false;
-    String report = "Reading destinationpath was unsuccessful.";
+    String report = "Reading destination path was unsuccessful.";
     String path;
 
     DirectoryChooser chooser = new DirectoryChooser();
-    chooser.setTitle("Set Destination path");
+    chooser.setTitle("Set destination path");
     File selectedDirectory = chooser.showDialog(null);
 
     if (selectedDirectory != null) {
@@ -181,8 +181,8 @@ public class GUIUtils {
     File selectedDirectory = null;
 
     Alert alert = new Alert(AlertType.CONFIRMATION);
-    alert.setTitle("Set path to the ab1 file(s)");
-    alert.setHeaderText("A single ab1 file or a folder of ab1 files?");
+    alert.setTitle("Set path to the .ab1 file(s)");
+    alert.setHeaderText("A single .ab1 file or a folder of .ab1 files?");
 
 
     ButtonType buttonTypeOne = new ButtonType("Folder");
@@ -209,7 +209,7 @@ public class GUIUtils {
     if (selectedDirectory != null) {
       path = selectedDirectory.getAbsolutePath();
       success = true;
-      report = "Reading path was successful. \nFoulder is:  " + path;
+      report = "Reading path was successful. \nFolder is:  " + path;
       source.setText(path);
     }
     return new Pair<Boolean, String>(success, report);
@@ -258,7 +258,7 @@ public class GUIUtils {
    * @author Jannis
    */
   private static Pair<AnalysedSequence, Pair<Boolean, String>> readSequenceFromFile(File file) {
-    String report = "Failure with" + file.getAbsolutePath() + "\n This file might be corrupted.";
+    String report = "Failure with: " + file.getAbsolutePath() + ".\n This file might be corrupted.";
     boolean success = false;
     Pair<Boolean, String> ret = null;
     try {
@@ -283,11 +283,11 @@ public class GUIUtils {
   private static Pair<Boolean, String> runConfiguration(TextField configpath) {
     Config.setPath("resources/config.ini");
     boolean success = false;
-    String report = "Reading configfile unsuccessful with unknown error";
+    String report = "Reading configuration file was unsuccessful with unknown error";
     try {
       Config.readConfig();
       success = true;
-      report = "Reading configfile successful";
+      report = "Reading configuration file was successful";
     } catch (ConfigReadException e) {
       report = "An error occured while reading the configuration file.";
     } catch (ConfigNotFoundException e) {
