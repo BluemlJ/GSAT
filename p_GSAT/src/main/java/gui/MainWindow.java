@@ -28,6 +28,7 @@ import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
 public class MainWindow extends Application implements javafx.fxml.Initializable {
@@ -72,6 +73,7 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
   @FXML
   private CheckBox outputCheckbox;
 
+  Stage primaryStage;
 
   public static void main(String[] args) {
     launch(args);
@@ -187,6 +189,16 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
     });
     // ...
 
+    settingsButton.setOnAction(new EventHandler<ActionEvent>() {
+
+      @Override
+      public void handle(ActionEvent arg0) {
+        AnchorPane content;
+        content.getChildren().setAll(FXMLLoader.load(getClass().getResource("/fxml/SettingsWindow.fxml")));
+
+      }
+    });
+
   }
 
 
@@ -211,7 +223,4 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
     ClassLoader classLoader = getClass().getClassLoader();
     return (classLoader.getClass().getResourceAsStream(fileName));
   }
-
-
-
 }

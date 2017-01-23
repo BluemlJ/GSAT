@@ -110,9 +110,16 @@ public class SequenceReader {
    * @author Kevin
    */
   public static Pair<LinkedList<File>, LinkedList<File>> listFiles() {
+
     // get list of all files and Pathes in given path
+
     File folder = new File(path);
     File[] allFiles = folder.listFiles();
+
+    if (path.endsWith(".ab1")) {
+      allFiles = new File[1];
+      allFiles[0] = folder;
+    }
 
     LinkedList<File> ab1Files = new LinkedList<File>();
     LinkedList<File> oddFiles = new LinkedList<File>();
