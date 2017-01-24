@@ -243,6 +243,38 @@ public class DatabaseConnection {
   }
 
   /**
+   * Creates gsat databse structure
+   */
+  private static void createDatabase() {
+    try {
+      conn = establishConnection();
+      Statement stmt = conn.createStatement();
+
+      stmt.executeQuery("CREATE DATABASE gsat");
+      stmt.executeQuery("USE gsat");
+      stmt.executeQuery(
+          "CREATE TABLE genes (id INT unsigned NOT NULL, name VARCHAR(100) NOT NULL, sequence MEDIUMTEXT NOT NULL, date DATE, researcher unsigned INT,  PRIMARY KEY(id))");
+      stmt.executeQuery("CREATE TABLE sequences (id INT unsigned NOT NULL, name VARCHAR(100) NOT NULL, sequence MEDIUMTEXT NOT NULL, date DATE, researcher unsigned INT, comment VARCHAR(1000), manualcheck CHAR(1), gene unsigned INT, promoter MEDIUMTEXT, vector-left MEDIUMTEXT, vector-right MEDIUMTEXT, quality MEDIUMTEXT, trim-left unsigned INT, trim-right unsigned INT, trim-percent unsigned INT, his-flag VARCHAR(100)");
+      stmt.executeQuery(
+          "CREATE TABLE mutations (id INT unsigned NOT NULL, name VARCHAR(100) NOT NULL, mutation VARCHAR(100) NOT NULL, type VARCHAR(100), PRIMARY KEY(id))");
+      stmt.executeQuery(
+          "CREATE TABLE researchers (id INT unsigned NOT NULL, name VARCHAR(100) NOT NULL, PRIMARY KEY(id))");
+
+
+
+    } catch (DatabaseConnectionException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    } catch (SQLException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    }
+
+
+  }
+
+
+  /**
    * checks if the given database already has the necessary tables for storing data database name
    * must be 'gsat' and table names must be ‘genes‘, ‘sequences‘, ‘mutations‘
    * 
@@ -252,21 +284,21 @@ public class DatabaseConnection {
     try {
       conn = establishConnection();
       Statement stmt = conn.createStatement();
-      
+
       // check if table ‘genes‘ exists
       ResultSet rs = stmt.executeQuery(
           "SELECT * FROM information_schema.tables WHERE table_schema = 'gsat' AND table_name = 'genes' LIMIT 1");
       if (!rs.next()) {
         return false;
       }
-      
+
       // check if table ‘sequences‘ exists
       rs = stmt.executeQuery(
           "SELECT * FROM information_schema.tables WHERE table_schema = 'gsat' AND table_name = 'sequences' LIMIT 1");
       if (!rs.next()) {
         return false;
       }
-      
+
       // check if table ‘mutations‘ exists
       rs = stmt.executeQuery(
           "SELECT * FROM information_schema.tables WHERE table_schema = 'gsat' AND table_name = 'mutations' LIMIT 1");
