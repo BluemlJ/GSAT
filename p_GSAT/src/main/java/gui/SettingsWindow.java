@@ -54,7 +54,7 @@ public class SettingsWindow extends Application implements javafx.fxml.Initializ
   public void start(Stage primaryStage) throws Exception {
     Parent root;
     try {
-      root = FXMLLoader.load(getClass().getResource("SettingsWindow.fxml"));
+      root = FXMLLoader.load(getClass().getResource("/fxml/SettingsWindow.fxml"));
     } catch (IOException e) {
       e.printStackTrace();
       return;

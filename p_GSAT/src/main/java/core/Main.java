@@ -1,6 +1,7 @@
 package core;
 
 import gui.MainWindow;
+import gui.SettingsWindow;
 import io.FileSaver;
 
 /**
@@ -16,10 +17,7 @@ public class Main {
    * @param args Unused input parameters
    */
   public static void main(String[] args) {
-    boolean consoleMode = true;
-    // DEBUG: TODO remove
-    // consoleMode = true;
-    // DEBUG END
+    boolean consoleMode = false;
     for (int i = 0; i < args.length; i++) {
       if (args[i].toLowerCase().equals("c")) {
         consoleMode = true;

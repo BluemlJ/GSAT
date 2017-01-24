@@ -13,8 +13,8 @@
   <children>
     <AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="-1.0" prefWidth="-1.0" VBox.vgrow="ALWAYS">
       <children>
-            <Button fx:id="parameterButton" layoutX="14.0" layoutY="362.0" mnemonicParsing="false" text="Edit Parameters" />
-            <Button fx:id="returnButton" layoutX="574.0" layoutY="362.0" mnemonicParsing="false" text="return" />
+            <Button fx:id="parameterButton" layoutX="14.0" layoutY="362.0" mnemonicParsing="false" text="Edit parameters" />
+            <Button fx:id="returnButton" layoutX="574.0" layoutY="362.0" mnemonicParsing="false" text="Return" />
             <Text layoutX="19.0" layoutY="46.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Researcher:">
                <font>
                   <Font size="14.0" />
@@ -32,14 +32,14 @@
                   </AnchorPane>
               </content>
             </ScrollPane>
-            <Text layoutX="19.0" layoutY="78.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Awailable Genes:">
+            <Text layoutX="19.0" layoutY="78.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Available genes:">
                <font>
                   <Font size="14.0" />
                </font>
             </Text>
             <Button fx:id="addGeneButton" layoutX="324.0" layoutY="309.0" mnemonicParsing="false" text="add" />
             <Button fx:id="deleteGeneButton" layoutX="375.0" layoutY="309.0" mnemonicParsing="false" text="delete" />
-            <Button fx:id="databaseButton" layoutX="148.0" layoutY="362.0" mnemonicParsing="false" text="Configure Database" />
+            <Button fx:id="databaseButton" layoutX="148.0" layoutY="362.0" mnemonicParsing="false" text="Configure database" />
       </children>
     </AnchorPane>
   </children>
