@@ -110,7 +110,7 @@ public abstract class Sequence {
           complSeqBuilder.append('C');
           break;
         default:
-           complSeqBuilder.append('X');
+          complSeqBuilder.append('X');
           // throw new CorruptedSequenceException(i, problem, sequence);
       }
     }

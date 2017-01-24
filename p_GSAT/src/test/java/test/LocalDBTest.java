@@ -28,17 +28,17 @@ public class LocalDBTest {
   Connection conn = null;
   java.sql.Statement stmt = null;
   ResultSet rs = null;
-  
+
   @Ignore
   @Test
-  public void DBConnectionTest(){
+  public void DBConnectionTest() {
     DatabaseConnection.setDatabaseConnection(user, pass, port, server);
     System.out.println(DatabaseConnection.gsatExists());
     DatabaseConnection.createDatabase();
     System.out.println(DatabaseConnection.gsatExists());
 
   }
-  
+
   @Ignore
   @Test
   public void checkDBExists() {
@@ -51,14 +51,16 @@ public class LocalDBTest {
     try {
       conn = dataSource.getConnection();
       stmt = conn.createStatement();
-      
+
       System.out.println("");
-      rs = stmt.executeQuery("SELECT * FROM information_schema.tables WHERE table_schema = 'Gsat' AND table_name = 'Gene' LIMIT 1");
-      
+      rs = stmt.executeQuery(
+          "SELECT * FROM information_schema.tables WHERE table_schema = 'Gsat' AND table_name = 'Gene' LIMIT 1");
+
       if (rs.next()) {
         if (!rs.getString(1).equals("def")) {
           System.out.println("false");
-        }}
+        }
+      }
     } catch (SQLException e) {
       e.printStackTrace();
     }

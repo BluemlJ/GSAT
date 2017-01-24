@@ -42,25 +42,26 @@ public class WritingTests {
    * The second sequence for testing the conversion method.
    */
   private static AnalysedSequence seq2 =
-      new AnalysedSequence("ATCTTTG", "Klaus Bohne", "sequence2.ab1", new int[]{1, 3});
+      new AnalysedSequence("ATCTTTG", "Klaus Bohne", "sequence2.ab1", new int[] {1, 3});
 
   /**
    * The third test sequence (which will result in no DatabaseEntries).
    */
   private static AnalysedSequence seq3 =
-      new AnalysedSequence("ATCTTGCGTTG", "Klaus Hafer", "sequence3.ab1", new int[]{1, 3});
+      new AnalysedSequence("ATCTTGCGTTG", "Klaus Hafer", "sequence3.ab1", new int[] {1, 3});
 
   /**
    * The fourth test sequence.
    */
   private static AnalysedSequence seq4 =
-      new AnalysedSequence("ATC", "Kurt Bohne", "sequence3.ab1", new int[]{1, 3});
+      new AnalysedSequence("ATC", "Kurt Bohne", "sequence3.ab1", new int[] {1, 3});
 
   /**
    * The first sequence for testing the conversion method (converting a sequence into a
    * DatabaseEntry).
    */
-  static AnalysedSequence seq1 = new AnalysedSequence("ATCG", "Klaus Bohne", "sequence1.ab1", new int[]{1, 3});
+  static AnalysedSequence seq1 =
+      new AnalysedSequence("ATCG", "Klaus Bohne", "sequence1.ab1", new int[] {1, 3});
 
 
   /**
@@ -81,7 +82,7 @@ public class WritingTests {
     seq1.addMutation("+2H5");
     seq1.setLeftVector("A");
     seq1.setRightVector("B");
-    
+
     seq2.setReferencedGene(new Gene("ATTTTCG", 1, "FSA", "Karl Mueller"));
     seq2.setComments("No comments");
     seq2.addMutation("reading frame error");

@@ -1,5 +1,6 @@
 package analysis;
 
+import java.io.CharArrayReader;
 import java.util.Collections;
 import java.util.Hashtable;
 import java.util.LinkedList;
@@ -301,22 +302,22 @@ public class StringAnalysis {
    * 
    * @author bluemlj
    */
-  public static String codonsToAminoAcids(String nucleotides) throws CorruptedSequenceException {
+  public static String codonsToAminoAcids(String nucleotides) {
     nucleotides = nucleotides.toUpperCase();
 
     // check for empty parameter
     if (nucleotides.isEmpty()) return "empty nucleotides";
 
-
     StringBuilder builder = new StringBuilder();
 
-    // checks if the nucleotides is % 3 = 0 because if not, there will be an error at the end
+    // checks if the nucleotides is % 3 = 0 because if not, there will be an
+    // error at the end
     if (nucleotides.length() % 3 == 0) {
-      // changes the nucleotides to aminoacids in shortform by using the Map
+      // changes the nucleotides to aminoacids in shortform by using the
+      // Map
       for (int i = 0; i < nucleotides.length(); i = i + 3) {
         String codon = nucleotides.substring(i, i + 3);
         String aminoacid = AMINO_ACID_SHORTS.get(codon);
-
 
         if (aminoacid != null)
           builder.append(aminoacid);
@@ -391,13 +392,19 @@ public class StringAnalysis {
     return matches.pollLastEntry().getValue();
   }
 
-  /**
-   * calculates offset returns true if offset was corecly found returns false if indirect offset was
-   * found;
-   * 
-   * @param seqence
-   * @return
-   */
+  public static int findHISFlags(AnalysedSequence tA) {
+    int result = -1;
+    char[] seq = StringAnalysis.codonsToAminoAcids(tA.getSequence()).toCharArray();
+    int counter = 1;
+
+    while (seq[seq.length - counter - 1] == 'H') {
+      counter++;
+    }
+
+    if (counter > 1) result = tA.getSequence().length() - counter * 3;
+    System.out.println("-> " + result);
+    return result;
+  }
 
   /**
    * Finds the gene that fits best to a given sequence by comparing it to all given genes. Known
@@ -464,7 +471,10 @@ public class StringAnalysis {
   public static int findStopcodonPosition(AnalysedSequence toAnalyze) {
     for (int i = 0; i < toAnalyze.getSequence().length() - 3; i = i + 3) {
       String aminoAcid = toAnalyze.getSequence().substring(i, i + 3);
-       if ((AMINO_ACID_SHORTS.get(aminoAcid).equals("#"))) return i / 3;
+
+      if ((AMINO_ACID_SHORTS.get(aminoAcid) != null
+          && AMINO_ACID_SHORTS.get(aminoAcid).equals("#")))
+        return i / 3;
     }
     return -1;
   }
@@ -621,7 +631,6 @@ public class StringAnalysis {
     return result;
     // System.out.println(toAlign.getOffset() + " = OFFSET");
   }
-  
 
   public static void trimVector(AnalysedSequence toAlign, Gene gene) {
     toAlign.setReferencedGene(gene);
@@ -629,24 +638,26 @@ public class StringAnalysis {
   }
 
   /**
-   * cuts out the Vector off and writes it into the Left vector of the given sequence
-   * Also sets Offset @see findOffset()
+   * cuts out the Vector off and writes it into the Left vector of the given sequence Also sets
+   * Offset @see findOffset()
+   * 
    * @param toAlign
    * @author Kevin
    */
   public static void trimVector(AnalysedSequence toAlign) {
     // **********simple Vector Cutting*****************
-    
-    //calculate offset
+
+    // calculate offset
     findOffset(toAlign);
-    
-    //define new sequence
+
+    // define new sequence
     String newSequence = toAlign.sequence;
 
-    //cut off everything befor begin found by findOffset and write into vector and newSequence
+    // cut off everything befor begin found by findOffset and write into
+    // vector and newSequence
     String leftVector = newSequence.substring(0, Math.max(toAlign.getOffset(), 0));
     newSequence = newSequence.substring(Math.max(toAlign.getOffset(), 0));
-    //alsow cut quality array to fit newSequence
+    // alsow cut quality array to fit newSequence
     toAlign.trimQualityArray(Math.max(toAlign.getOffset(), 0), toAlign.length());
 
     // set vector and correct offset
@@ -655,7 +666,7 @@ public class StringAnalysis {
     toAlign.setOffset(-toAlign.getOffset());
     toAlign.setSequence(newSequence);
 
-    //TODO Ask Jannis!
+    // TODO Ask Jannis!
     // **********modulo Cutting*****************
     /*
      * if (toAlign.getOffset() != 0) { int begin = (3 - (toAlign.getOffset() % 3) % 3); newSequence
@@ -667,19 +678,19 @@ public class StringAnalysis {
 
     toAlign.setSequence(newSequence);
   }
-  
+
   /**
-   * calculates the offset and writes it into the sequence
-   * WARNING: does change Offset value!
+   * calculates the offset and writes it into the sequence WARNING: does change Offset value!
    * 
-   * returns false if begin of sequence was not found
-   * Returning false may be an indicator for bad sequence, but may also be perfectly fine
+   * returns false if begin of sequence was not found Returning false may be an indicator for bad
+   * sequence, but may also be perfectly fine
+   * 
    * @param sequence
    * @return
    */
   public static boolean findOffset(AnalysedSequence sequence) {
 
-    //step size for traversing
+    // step size for traversing
     int stepSize = 2;
     stepSize *= 3;
     // get gene and sequence as String
@@ -756,6 +767,5 @@ public class StringAnalysis {
     }
     return false;
   }
-
 
 }

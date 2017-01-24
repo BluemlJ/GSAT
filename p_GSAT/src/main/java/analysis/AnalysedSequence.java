@@ -2,6 +2,8 @@ package analysis;
 
 import java.util.LinkedList;
 
+import exceptions.CorruptedSequenceException;
+
 /**
  * Models a sequence under analysis (i.e. obtained from an AB1 file), which may have mutations. The
  * Sequence class defines it's basic behavior.
@@ -61,14 +63,12 @@ public class AnalysedSequence extends Sequence {
    */
   private Gene referencedGene;
 
-
   /**
    * The right vector to be stored with this sequence, i.e. the nucleotides at the right hand side
    * of the sequence that corresponds to the gene.
    */
   private String rightVector;
 
-  
   /**
    * The percentage of trimmed nucleotides due to the quality trim.
    */
@@ -79,7 +79,7 @@ public class AnalysedSequence extends Sequence {
    * It's -1 if there is no such tag found.
    */
   private int hisTagPosition = -1;
-  
+
   /**
    * Constructor calling the super constructor (which sets all given attributes).
    * 
@@ -96,7 +96,6 @@ public class AnalysedSequence extends Sequence {
     this.fileName = fileName;
     this.qualities = qualities;
   }
-
 
   /**
    * Add a discovered, String-encoded mutation to the list of already discovered mutations.
@@ -124,27 +123,22 @@ public class AnalysedSequence extends Sequence {
   public String getFileName() {
     return fileName;
   }
-  
-  public double getTrimPercentage() {
-	    return trimPercentage;
-	  }
 
+  public double getTrimPercentage() {
+    return trimPercentage;
+  }
 
   public String getLeftVector() {
     return leftVector;
   }
 
-
   public LinkedList<String> getMutations() {
     return mutations;
   }
 
-
   public int getOffset() {
     return offset;
   }
-
-
 
   // GETTERs and SETTERs:
 
@@ -156,10 +150,9 @@ public class AnalysedSequence extends Sequence {
     return qualities;
   }
 
-  
   public int getHisTagPosition() {
-	    return hisTagPosition;
-	  }
+    return hisTagPosition;
+  }
 
   public Gene getReferencedGene() {
     return referencedGene;
@@ -168,7 +161,6 @@ public class AnalysedSequence extends Sequence {
   public String getRightVector() {
     return rightVector;
   }
-
 
   public boolean isManuallyChecked() {
     return manuallyChecked;
@@ -184,7 +176,6 @@ public class AnalysedSequence extends Sequence {
   public int length() {
     return sequence.length();
   }
-
 
   /**
    * This method reverses the Qualityarray and set it new.
@@ -204,7 +195,6 @@ public class AnalysedSequence extends Sequence {
     this.comments = comments;
   }
 
-
   public void setLeftVector(String vector) {
     this.leftVector = vector;
   }
@@ -212,7 +202,6 @@ public class AnalysedSequence extends Sequence {
   public void setManuallyChecked(boolean manuallyChecked) {
     this.manuallyChecked = manuallyChecked;
   }
-
 
   public void setOffset(int offset) {
     this.offset = offset;
@@ -222,7 +211,6 @@ public class AnalysedSequence extends Sequence {
     this.promotor = promotor;
   }
 
-
   public void setReferencedGene(Gene gene) {
     referencedGene = gene;
   }
@@ -231,6 +219,9 @@ public class AnalysedSequence extends Sequence {
     this.rightVector = vector;
   }
 
+  public void setHisTagPosition(int hisTagPosition) {
+    this.hisTagPosition = hisTagPosition;
+  }
 
   /**
    * This method trims a quality array, i.e. it cuts out the desired part of the nucleotide sequence

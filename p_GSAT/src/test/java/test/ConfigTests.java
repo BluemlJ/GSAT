@@ -20,7 +20,7 @@ import io.Config;
  *
  */
 public class ConfigTests {
-  
+
   /**
    * OS independent path for the configuration file
    */
@@ -29,12 +29,12 @@ public class ConfigTests {
 
   @Ignore
   @Test
-  public void testConfigExists(){
+  public void testConfigExists() {
     System.out.println(path);
     File config = new File(path);
     System.out.println(config.exists());
   }
-  
+
   @Ignore
   @Test
   public void testConfigPath() throws IOException {

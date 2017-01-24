@@ -16,7 +16,7 @@ public class Main {
    * @param args Unused input parameters
    */
   public static void main(String[] args) {
-    boolean consoleMode = false;
+    boolean consoleMode = true;
     // DEBUG: TODO remove
     // consoleMode = true;
     // DEBUG END

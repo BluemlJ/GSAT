@@ -47,12 +47,14 @@ public class GUIUtils {
    * @param genes the choiceBox to initialize
    * @return reportpair, with indicator Boolean and reportString
    */
-  public static Pair<Boolean, String> initializeGeneBox(ChoiceBox<String> genes, InputStream genetxt) {
+  public static Pair<Boolean, String> initializeGeneBox(ChoiceBox<String> genes,
+      InputStream genetxt) {
     try {
       GeneReader.readGenes(genetxt);
     } catch (IOException e) {
       e.getMessage();
-      return new Pair<Boolean, String>(false, "Reading Gene.txt was unsuccessful\n"+ e.getMessage());
+      return new Pair<Boolean, String>(false,
+          "Reading Gene.txt was unsuccessful\n" + e.getMessage());
     }
 
     genes.setItems(FXCollections.observableArrayList(GeneReader.getGeneNames()));

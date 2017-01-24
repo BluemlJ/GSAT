@@ -189,15 +189,7 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
     });
     // ...
 
-    settingsButton.setOnAction(new EventHandler<ActionEvent>() {
 
-      @Override
-      public void handle(ActionEvent arg0) {
-        AnchorPane content;
-        content.getChildren().setAll(FXMLLoader.load(getClass().getResource("/fxml/SettingsWindow.fxml")));
-
-      }
-    });
 
   }
 

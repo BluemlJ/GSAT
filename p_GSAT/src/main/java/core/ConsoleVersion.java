@@ -1,4 +1,4 @@
-  package core;
+package core;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -408,7 +408,7 @@ public class ConsoleVersion {
     QualityAnalysis.trimLowQuality(activeSequence);
 
     if (StringAnalysis.findStopcodonPosition(activeSequence) != -1)
-      activeSequence.trimSequence(0, StringAnalysis.findStopcodonPosition(activeSequence) * 3+2);
+      activeSequence.trimSequence(0, StringAnalysis.findStopcodonPosition(activeSequence) * 3 + 2);
 
     // checks if Sequence is corrupted
     try {

@@ -27,7 +27,7 @@ public class DatabaseConnection {
   /**
    * Specifies the location of the database.
    */
-  //unused
+  // unused
   private static final String CONNECTION_STRING = "jdbc:mysql://localhost:5432/test";
 
   /**
