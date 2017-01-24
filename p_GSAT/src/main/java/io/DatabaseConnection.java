@@ -243,30 +243,33 @@ public class DatabaseConnection {
   }
 
   /**
-   * Creates gsat databse structure
+   * Creates gsat database structure consisting of four tables: genes, sequences, mutations,
+   * researcher. Names must not be changed
    */
-  private static void createDatabase() {
+  public static void createDatabase() {
     try {
+
       conn = establishConnection();
       Statement stmt = conn.createStatement();
-
-      stmt.executeQuery("CREATE DATABASE gsat");
+      // TODO this will delete all data!
+      stmt.executeUpdate("DROP DATABASE gsat");
+      stmt.executeUpdate("CREATE DATABASE gsat");
       stmt.executeQuery("USE gsat");
-      stmt.executeQuery(
-          "CREATE TABLE genes (id INT unsigned NOT NULL, name VARCHAR(100) NOT NULL, sequence MEDIUMTEXT NOT NULL, date DATE, researcher unsigned INT,  PRIMARY KEY(id))");
-      stmt.executeQuery("CREATE TABLE sequences (id INT unsigned NOT NULL, name VARCHAR(100) NOT NULL, sequence MEDIUMTEXT NOT NULL, date DATE, researcher unsigned INT, comment VARCHAR(1000), manualcheck CHAR(1), gene unsigned INT, promoter MEDIUMTEXT, vector-left MEDIUMTEXT, vector-right MEDIUMTEXT, quality MEDIUMTEXT, trim-left unsigned INT, trim-right unsigned INT, trim-percent unsigned INT, his-flag VARCHAR(100)");
-      stmt.executeQuery(
-          "CREATE TABLE mutations (id INT unsigned NOT NULL, name VARCHAR(100) NOT NULL, mutation VARCHAR(100) NOT NULL, type VARCHAR(100), PRIMARY KEY(id))");
-      stmt.executeQuery(
-          "CREATE TABLE researchers (id INT unsigned NOT NULL, name VARCHAR(100) NOT NULL, PRIMARY KEY(id))");
+      stmt.executeUpdate("CREATE TABLE testtable (id INTEGER unsigned NOT NULL, PRIMARY KEY (id))");
+      stmt.executeUpdate(
+          "CREATE TABLE genes (id INTEGER unsigned NOT NULL, name VARCHAR(100) NOT NULL, sequence MEDIUMTEXT NOT NULL, date DATE, researcher INTEGER unsigned,  PRIMARY KEY(id))");
+      stmt.executeUpdate(
+          "CREATE TABLE sequences (id INTEGER unsigned NOT NULL, name VARCHAR(100) NOT NULL, sequence MEDIUMTEXT NOT NULL, date DATE, researcher INTEGER unsigned, comment VARCHAR(1000), manualcheck CHAR(1), gene INTEGER unsigned, promoter MEDIUMTEXT, vectorleft MEDIUMTEXT, vectorright MEDIUMTEXT, quality MEDIUMTEXT, trimleft INTEGER unsigned, trimright INTEGER unsigned, trimpercent INTEGER unsigned, hisflag VARCHAR(100))");
+      stmt.executeUpdate(
+          "CREATE TABLE mutations (id INTEGER unsigned NOT NULL, name VARCHAR(100) NOT NULL, mutation VARCHAR(100) NOT NULL, type VARCHAR(100), PRIMARY KEY(id))");
+      stmt.executeUpdate(
+          "CREATE TABLE researchers (id INTEGER unsigned NOT NULL, name VARCHAR(100) NOT NULL, PRIMARY KEY(id))");
 
 
 
     } catch (DatabaseConnectionException e) {
-      // TODO Auto-generated catch block
       e.printStackTrace();
     } catch (SQLException e) {
-      // TODO Auto-generated catch block
       e.printStackTrace();
     }
 
@@ -280,7 +283,7 @@ public class DatabaseConnection {
    * 
    * @return true if database exists, false if it does not exist
    */
-  private static boolean gsatExists() {
+  public static boolean gsatExists() {
     try {
       conn = establishConnection();
       Statement stmt = conn.createStatement();
@@ -329,6 +332,11 @@ public class DatabaseConnection {
     DatabaseConnection.port = port;
     DatabaseConnection.server = server;
     DatabaseConnection.initDatabase();
+
+    // check if database structure already exists
+    if (!gsatExists()) {
+      createDatabase();
+    }
   }
 
   public void resetDatabaseConnection() {

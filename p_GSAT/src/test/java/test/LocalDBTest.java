@@ -9,6 +9,8 @@ import org.junit.Test;
 
 import com.mysql.cj.jdbc.MysqlDataSource;
 
+import io.DatabaseConnection;
+
 // import com.mysql.cj.jdbc.MysqlDataSource;
 
 /**
@@ -26,6 +28,16 @@ public class LocalDBTest {
   Connection conn = null;
   java.sql.Statement stmt = null;
   ResultSet rs = null;
+  
+  @Ignore
+  @Test
+  public void DBConnectionTest(){
+    DatabaseConnection.setDatabaseConnection(user, pass, port, server);
+    System.out.println(DatabaseConnection.gsatExists());
+    DatabaseConnection.createDatabase();
+    System.out.println(DatabaseConnection.gsatExists());
+
+  }
   
   @Ignore
   @Test
