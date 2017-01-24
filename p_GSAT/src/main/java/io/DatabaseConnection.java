@@ -17,7 +17,7 @@ import exceptions.DatabaseErrorException;
  * Class to communicate with the database. It's also responsible for storing files locally, if there
  * is e.g. no connection to the database available.
  * 
- * @author Ben Kohr
+ * @author Ben Kohr, Lovis Heindrich
  *
  */
 public class DatabaseConnection {
@@ -27,6 +27,7 @@ public class DatabaseConnection {
   /**
    * Specifies the location of the database.
    */
+  //unused
   private static final String CONNECTION_STRING = "jdbc:mysql://localhost:5432/test";
 
   /**
@@ -244,7 +245,10 @@ public class DatabaseConnection {
 
   /**
    * Creates gsat database structure consisting of four tables: genes, sequences, mutations,
-   * researcher. Names must not be changed
+   * researcher. Names must not be changed. If a database called gsat already exists it will be
+   * dropped.
+   * 
+   * @author Lovis Heindrich
    */
   public static void createDatabase() {
     try {
@@ -282,6 +286,7 @@ public class DatabaseConnection {
    * must be 'gsat' and table names must be ‘genes‘, ‘sequences‘, ‘mutations‘
    * 
    * @return true if database exists, false if it does not exist
+   * @author Lovis Heindrich
    */
   public static boolean gsatExists() {
     try {
