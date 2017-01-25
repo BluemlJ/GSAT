@@ -114,7 +114,7 @@ public class ConsoleVersion {
     Pair<LinkedList<File>, LinkedList<File>> okayAndOddFiles = askForAB1Files();
 
     // read config file
-    String configReport = getConfig(new File("resources").getAbsolutePath());
+    String configReport = getConfig(System.getProperty("user.home") + File.separator + "gsat"  + File.separator + "config.txt");
 
     // set path for results and set database path
     String destinationPath = processPath();
@@ -306,13 +306,13 @@ public class ConsoleVersion {
    * @author Ben Kohr
    */
   private static String getConfig(String readingPath) {
-
     Config.setPath(readingPath);
-    String report = "found";
+    String report = "Configuration file found";
     try {
+      Config.initConfig();
       Config.readConfig();
     } catch (ConfigReadException e) {
-      report = "An error occured while reading the configuration file.";
+      report = "An error occurred while reading the configuration file.";
     } catch (ConfigNotFoundException e) {
       report = "No configuration file was found at the given path.";
     } catch (IOException e) {
