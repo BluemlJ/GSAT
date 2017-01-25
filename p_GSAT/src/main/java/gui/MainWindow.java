@@ -1,20 +1,13 @@
 package gui;
 
-import java.io.File;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.ResourceBundle;
-import java.util.Scanner;
-
-import org.xml.sax.InputSource;
-
 import analysis.Pair;
 import io.FileSaver;
 import javafx.application.Application;
-import javafx.beans.InvalidationListener;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableDoubleValue;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -28,10 +21,11 @@ import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
 public class MainWindow extends Application implements javafx.fxml.Initializable {
+
+  public static boolean settingsOpen = false;
 
   @FXML
   private javafx.scene.control.MenuItem aboutButton;
@@ -187,12 +181,29 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
         System.out.println("Manual!");
       }
     });
+
+
+    // set settings button to open settings window
+    settingsButton.setOnAction(new EventHandler<ActionEvent>() {
+      @Override
+      public void handle(ActionEvent arg0) {
+        // only open window if no Settings Window is open
+        if (!settingsOpen) {
+          settingsOpen = true;
+          SettingsWindow settings = new SettingsWindow();
+          try {
+            settings.start(new Stage());
+          } catch (Exception e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+          }
+        }
+      }
+    });
+
     // ...
 
-
-
   }
-
 
 
   @Override
