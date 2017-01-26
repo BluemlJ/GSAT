@@ -15,8 +15,7 @@ import core.ConsoleVersion;
 import core.Main;
 
 /**
- * This class tests the overall behavior of programm's pipeline which consists of reading files,
- * converting them to sequences, doing the analysis and storing them appropriately.
+ * This class tests the writing of reports.
  *
  * @author Ben Kohr
  */

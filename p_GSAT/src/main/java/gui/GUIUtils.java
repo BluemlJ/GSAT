@@ -77,9 +77,9 @@ public class GUIUtils {
     if (sequences.first == null)
       if (sequences.second == null)
         return new Pair<Boolean, String>(success,
-            "Reading Sequences unsuccessful, please make sure the given path is correct");
+            "Reading Sequences unsuccessful, please make sure the given path is correct or the file s valid");
       else
-        return new Pair<Boolean, String>(success, "No AB1 files were found at the given path.");
+        return new Pair<Boolean, String>(success, "No AB1 files were found at the given path or the file is invalid.");
     else
       report.append("Reading .ab1 file(s) was successful\n");
 

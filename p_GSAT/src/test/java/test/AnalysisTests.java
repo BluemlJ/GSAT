@@ -270,6 +270,8 @@ public class AnalysisTests {
 
   /**
    * Checks if the robust gene sequence setting works.
+   * 
+   * @author Ben Kohr
    */
   @Test
   public void robustGeneTest1() {
@@ -278,7 +280,9 @@ public class AnalysisTests {
   }
 
   /**
-   * Checks if the robust gene sequence setting works.
+   * Checks if the robust gene sequence setting works (II).
+   * 
+   * @author Ben Kohr
    */
   @Test
   public void robustGeneTest2() {
@@ -289,6 +293,8 @@ public class AnalysisTests {
 
   /**
    * Does the gene setting work even with a sequence which only contains whitespace characters?
+   * 
+   * @author Ben Kohr
    */
   @Test
   public void robustGeneTestUnusual() {
@@ -598,8 +604,6 @@ public class AnalysisTests {
   /**
    * This test checks whether the complementary sequence is correctly computed.
    * 
-   * @throws CorruptedSequenceException
-   * 
    * @author Ben Kohr
    */
   @Test
@@ -635,8 +639,6 @@ public class AnalysisTests {
 
   /**
    * This test checks if a sequence is correctly reversed.
-   * 
-   * @throws CorruptedSequenceException
    * 
    * @author Ben Kohr
    */
