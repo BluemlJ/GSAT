@@ -1,6 +1,7 @@
 package gui;
 
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
@@ -85,7 +86,7 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
     Pair<Boolean, String> output;
     infoArea.setText("Welcome to GSAT! \n");
     // read Genes and show them in the choicebox
-    output = GUIUtils.initializeGeneBox(geneBox, getFile("/GeneData/Genes.txt"));
+    output = GUIUtils.initializeGeneBox(geneBox);
     infoArea.appendText(output.second + "\n");
 
     // gives information about new gene selection

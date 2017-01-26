@@ -28,6 +28,7 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonBar.ButtonData;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
@@ -47,10 +48,9 @@ public class GUIUtils {
    * @param genes the choiceBox to initialize
    * @return reportpair, with indicator Boolean and reportString
    */
-  public static Pair<Boolean, String> initializeGeneBox(ChoiceBox<String> genes,
-      InputStream genetxt) {
+  public static Pair<Boolean, String> initializeGeneBox(ChoiceBox<String> genes) {
     try {
-      GeneReader.readGenes(genetxt);
+      GeneReader.readGenes();
     } catch (IOException e) {
       return new Pair<Boolean, String>(false,
           "Reading Gene.txt was unsuccessful\n" + e.getMessage());
@@ -59,6 +59,39 @@ public class GUIUtils {
     genes.setItems(FXCollections.observableArrayList(GeneReader.getGeneNames()));
     return new Pair<Boolean, String>(true, "Reading Gene.txt was successful");
   }
+
+  public static Pair<Boolean, String> initializeGeneBox(ListView<String> genes) {
+    try {
+      GeneReader.readGenes();
+    } catch (IOException e) {
+      return new Pair<Boolean, String>(false,
+          "Reading Gene.txt was unsuccessful\n" + e.getMessage());
+    }
+
+    genes.setItems(FXCollections.observableArrayList(GeneReader.getGeneNames()));
+    return new Pair<Boolean, String>(true, "Reading Gene.txt was successful");
+  }
+
+  
+  /**
+   * This method initialize the choiceBox and adds all Gene which are stored locally in the
+   * Genes.txt
+   * 
+   * @param genes the choiceBox to initialize
+   * @return reportpair, with indicator Boolean and reportString
+   */
+  public static Pair<Boolean, String> initializeResearchers(ChoiceBox<String> dropdown) {
+    try {
+      Config.readConfig();
+    } catch (IOException | ConfigReadException | ConfigNotFoundException e) {
+      return new Pair<Boolean, String>(false,
+          "Reading researchers from config.txt was unsuccessful\n" + e.getMessage());
+    }
+    dropdown.setItems(FXCollections.observableArrayList(Config.getResearchers()));
+    dropdown.getSelectionModel().select(Config.getResearcher());;
+    return new Pair<Boolean, String>(true, "Reading researchers from config.txt was successful");
+  }
+
 
   /**
    * Main method of this class, alias the startbutton function.
@@ -79,7 +112,8 @@ public class GUIUtils {
         return new Pair<Boolean, String>(success,
             "Reading Sequences unsuccessful, please make sure the given path is correct or the file s valid");
       else
-        return new Pair<Boolean, String>(success, "No AB1 files were found at the given path or the file is invalid.");
+        return new Pair<Boolean, String>(success,
+            "No AB1 files were found at the given path or the file is invalid.");
     else
       report.append("Reading .ab1 file(s) was successful\n");
 

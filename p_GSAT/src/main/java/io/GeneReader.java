@@ -23,7 +23,8 @@ import exceptions.DuplicateGeneException;
  */
 public class GeneReader {
   private static ArrayList<Gene> geneList;
-  private static String path;
+  private static String path =
+      System.getProperty("user.home") + File.separator + "gsat" + File.separator + "genes.txt";
   private final static String SEPARATOR = ";";
 
   public static void addGene(String geneName, String geneSequence)
@@ -165,34 +166,6 @@ public class GeneReader {
     geneReader.close();
   }
 
-  /*
-   * reads a gene.txt from a given path
-   * 
-   * @param genePath
-   * 
-   * @throws IOException
-   */
-  public static void readGenes(InputStream genes) throws IOException {
-    geneList = new ArrayList<Gene>();
-    Scanner sc = new Scanner(genes);
-
-    String line;
-    int id = 0;
-    // for each line
-    while (sc.hasNextLine()) {
-      // format "name=atgAAT..."
-      line = sc.nextLine();
-      String sepLine[] = line.split(SEPARATOR);
-      String name = sepLine[0];
-      String gene = sepLine[1];
-      if (getGene(name) == null) {
-        geneList.add(new Gene(gene, id, name, Config.researcher));
-        id++;
-      }
-    }
-
-    sc.close();
-  }
 
   /**
    * set the path of the gene.txt file

@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import io.Config;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -45,12 +46,27 @@ public class SettingsWindow extends Application implements javafx.fxml.Initializ
   private Button deleteGeneButton;
   @FXML
   private Button deleteResearcherButton;
-  @FXML
-  private Button editGeneButton;
-
 
   @Override
   public void initialize(URL location, ResourceBundle resources) {
+
+    GUIUtils.initializeResearchers(researcherDrobdown);
+    GUIUtils.initializeGeneBox(geneList);
+
+    researcherDrobdown.getSelectionModel().selectedItemProperty()
+        .addListener((obeservable, value, newValue) -> {
+          Config.setResearcher(newValue);
+          try {
+            Config.writeConfig();
+          } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+          }
+        });
+    
+    
+
+
     // gives you a short menu
     parameterButton.setOnAction(new EventHandler<ActionEvent>() {
       @Override
@@ -114,13 +130,6 @@ public class SettingsWindow extends Application implements javafx.fxml.Initializ
         System.out.println("deleteResearcher Button!");
       }
     });
-
-    editGeneButton.setOnAction(new EventHandler<ActionEvent>() {
-      @Override
-      public void handle(ActionEvent arg0) {
-        System.out.println("editGene Button!");
-      }
-    });
   }
 
   @Override
@@ -153,13 +162,11 @@ public class SettingsWindow extends Application implements javafx.fxml.Initializ
         MainWindow.settingsOpen = false;
       }
     });
-    returnButton.setOnAction(new EventHandler<ActionEvent>() {
-      @Override
-      public void handle(ActionEvent arg0) {
-        primaryStage.close();
-      }
-    });
-
+    /*
+     * returnButton.setOnAction(new EventHandler<ActionEvent>() {
+     * 
+     * @Override public void handle(ActionEvent arg0) { primaryStage.close(); } });
+     */
   }
 
 }

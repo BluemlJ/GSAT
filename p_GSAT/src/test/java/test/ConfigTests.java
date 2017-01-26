@@ -27,17 +27,17 @@ public class ConfigTests {
    */
   private String path =
       System.getProperty("user.home") + File.separator + "gsat" + File.separator + "config.txt";
-  
-  
+
+
   @Ignore
   @Test
-  public void configMethods() throws IOException{
+  public void configMethods() throws IOException {
     System.out.println(Config.exists());
     Config.initConfig();
     System.out.println(Config.exists());
     System.out.println(Config.getPath());
   }
-  
+
   @Ignore
   @Test
   public void testConfigExists() {
@@ -120,15 +120,15 @@ public class ConfigTests {
    */
   @Test
   public void wrongConfigPath() throws IOException, ConfigReadException {
-    Config.setPath("/corrupt_path");
+    Config.setPath(  System.getProperty("user.home") + File.separator + "NOTGSAT" + File.separator + "config.txt");
     try {
       Config.readConfig();
     } catch (ConfigNotFoundException e) {
       assertEquals(e.getMessage(), "Config at path: /corrupt_path could not be found");
     }
   }
-  
-  
+
+
   /**
    * Test reading multiple researchers from a sample config file (Userstory xxx - Expected behavior)
    * 
@@ -137,57 +137,58 @@ public class ConfigTests {
    * @throws ConfigNotFoundException
    */
   @Test
-  public void testMultipleUsersConfigRead() throws IOException, ConfigReadException, ConfigNotFoundException {
+  public void testMultipleUsersConfigRead()
+      throws IOException, ConfigReadException, ConfigNotFoundException {
     Config.researcher = null;
-    Config.researchers = null;
+    Config.setResearchers(null);
     File path = new File("resources/lh_config/config.txt");
     Config.setPath(path.getAbsolutePath());
     Config.readConfig();
-    assertEquals(Config.researchers[0], "lovis heindrich");
-    assertEquals(Config.researchers[1], "jannis blueml");
-    assertEquals(Config.researchers[2], "kevin otto");
-    assertEquals(Config.researchers[3], "ben Kohr");
+    assertEquals(Config.getResearchers()[0], "lovis heindrich");
+    assertEquals(Config.getResearchers()[1], "jannis blueml");
+    assertEquals(Config.getResearchers()[2], "kevin otto");
+    assertEquals(Config.getResearchers()[3], "ben Kohr");
     assertEquals(Config.researcher, "lovis heindrich");
   }
-  
+
   @Test
-  public void testConfigWriting() throws ConfigReadException, ConfigNotFoundException, IOException{
+  public void testConfigWriting() throws ConfigReadException, ConfigNotFoundException, IOException {
     Config.researcher = null;
-    Config.researchers = null;
-    
-    //read config
+    Config.setResearchers(null);
+
+    // read config
     File path = new File("resources/lh_config/config.txt");
     Config.setPath(path.getAbsolutePath());
     Config.readConfig();
-    
-    //change config parameters and write them to the file
+
+    // change config parameters and write them to the file
     Config.researcher = "testresearcher1";
-    Config.researchers[1] = "testresearcher2";
+    Config.setResearchers("testresearcher2", 1);
     Config.writeConfig();
-    
-    //reread configuration file
+
+    // reread configuration file
     Config.researcher = null;
-    Config.researchers = null;
+    Config.setResearchers(null);
     Config.readConfig();
-    
+
     // check for changed parameters
     assertEquals(Config.researcher, "testresearcher1");
-    assertEquals(Config.researchers[1], "testresearcher2");
-    
-    
-    //change parameters back
+    assertEquals(Config.getResearchers()[1], "testresearcher2");
+
+
+    // change parameters back
     Config.researcher = "lovis heindrich";
-    Config.researchers[1] = "jannis blueml";
+    Config.setResearchers("jannis blueml",1);
     Config.writeConfig();
-   
-    
-    //reread configuration file
+
+
+    // reread configuration file
     Config.researcher = null;
-    Config.researchers = null;
+    Config.setResearchers(null);
     Config.readConfig();
-    
-    //check for old values
+
+    // check for old values
     assertEquals(Config.researcher, "lovis heindrich");
-    assertEquals(Config.researchers[1], "jannis blueml");
+    assertEquals(Config.getResearchers()[1], "jannis blueml");
   }
 }

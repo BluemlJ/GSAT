@@ -22,17 +22,17 @@ public class Config {
   public static String path =
       System.getProperty("user.home") + File.separator + "gsat" + File.separator + "config.txt";
   public static String researcher;
-  public static String[] researchers;
-  
-  
-  
+  private static String[] researchers;
+
+
+
   /**
    * char used for separating values in the configuration file
    */
   private final static String SEPARATOR = ";";
-  
-  
-  
+
+
+
   /**
    * read the content of the configuration file and store its values locally
    * 
@@ -55,13 +55,14 @@ public class Config {
         case "researcher":
           Config.researcher = elements[1].trim();
           break;
-        case "researchers":         
+        case "researchers":
           Config.researchers = Arrays.copyOfRange(elements, 1, elements.length);
-          for(int i = 0; i<Config.researchers.length; i++){
+          for (int i = 0; i < Config.researchers.length; i++) {
             Config.researchers[i] = Config.researchers[i].trim();
           }
           break;
-        default: break;
+        default:
+          break;
       }
     }
     /*
@@ -124,27 +125,48 @@ public class Config {
   public static String getPath() {
     return path;
   }
-  
+
   /**
    * writes all parameters in the configuration file
-   * @throws IOException 
+   * 
+   * @throws IOException
    */
-  public static void writeConfig() throws IOException{
+  public static void writeConfig() throws IOException {
     BufferedWriter configWriter = new BufferedWriter(new FileWriter(path));
-    
-    //write researcher
+
+    // write researcher
     configWriter.write("researcher" + SEPARATOR + researcher);
-    
+
     configWriter.write(System.getProperty("line.separator"));
-    
-    //write researchers
+
+    // write researchers
     configWriter.write("researchers");
-    for(String res : researchers){
+    for (String res : researchers) {
       configWriter.write(SEPARATOR);
       configWriter.write(res);
     }
-    
+
     configWriter.close();
+  }
+
+  public static String[] getResearchers() {
+    return researchers;
+  }
+
+  public static void setResearchers(String[] researchers) {
+    Config.researchers = researchers;
+  }
+
+  public static void setResearchers(String researcher, int i) {
+    Config.researchers[i] = researcher;
+  }
+  
+  public static String getResearcher() {
+    return researcher;
+  }
+  
+  public static void setResearcher(String researcher) {
+    Config.researcher = researcher;
   }
 
 }
