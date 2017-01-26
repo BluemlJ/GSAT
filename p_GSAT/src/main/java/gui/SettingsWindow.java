@@ -2,9 +2,15 @@ package gui;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
+import com.sun.javafx.image.impl.General;
+
+import analysis.Gene;
+import exceptions.DuplicateGeneException;
 import io.Config;
+import io.GeneReader;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -16,6 +22,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.TextInputDialog;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
@@ -63,8 +70,7 @@ public class SettingsWindow extends Application implements javafx.fxml.Initializ
             e.printStackTrace();
           }
         });
-    
-    
+
 
 
     // gives you a short menu
@@ -105,7 +111,36 @@ public class SettingsWindow extends Application implements javafx.fxml.Initializ
     addGeneButton.setOnAction(new EventHandler<ActionEvent>() {
       @Override
       public void handle(ActionEvent arg0) {
-        System.out.println("addGene Button!");
+        String genename, gene;
+        TextInputDialog dialog = new TextInputDialog("Gene name");
+        dialog.setTitle("Add a new gene");
+        dialog.setHeaderText("Add a new gene by adding a the name first");
+        dialog.setContentText("Please enter gene name:");
+
+        // Traditional way to get the response value.
+        Optional<String> result = dialog.showAndWait();
+        if (result.isPresent()) {
+          genename = result.get();
+
+
+          dialog = new TextInputDialog("Gene name");
+          dialog.setTitle("Add a new gene");
+          dialog.setHeaderText("Add now the gene");
+          dialog.setContentText("Please enter gene:");
+
+          // Traditional way to get the response value.
+          result = dialog.showAndWait();
+          if (result.isPresent()) {
+            gene = result.get();
+            try {
+              GeneReader.addGene(genename, gene);
+            } catch (DuplicateGeneException | IOException e) {
+              System.out.println("FAIL");
+              // TODO Auto-generated catch block
+              e.printStackTrace();
+            }
+          }
+        }
       }
     });
 
@@ -160,6 +195,7 @@ public class SettingsWindow extends Application implements javafx.fxml.Initializ
       @Override
       public void handle(WindowEvent arg0) {
         MainWindow.settingsOpen = false;
+      
       }
     });
     /*

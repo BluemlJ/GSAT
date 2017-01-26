@@ -221,10 +221,4 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
     primaryStage.sizeToScene();
     primaryStage.show();
   }
-
-  private InputStream getFile(String fileName) {
-    // Get file from resources folder
-    ClassLoader classLoader = getClass().getClassLoader();
-    return (classLoader.getClass().getResourceAsStream(fileName));
-  }
 }

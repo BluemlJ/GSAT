@@ -217,7 +217,8 @@ public class GUIUtils {
 
     Alert alert = new Alert(AlertType.CONFIRMATION);
     alert.setTitle("Set path to the .ab1 file(s)");
-    alert.setHeaderText("A single .ab1 file or a folder of .ab1 files?");
+    alert.setHeaderText(null);
+    alert.setContentText("A single .ab1 file or a folder of .ab1 files?");
 
 
     ButtonType buttonTypeOne = new ButtonType("Folder");
