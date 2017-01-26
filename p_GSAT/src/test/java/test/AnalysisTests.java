@@ -609,13 +609,13 @@ public class AnalysisTests {
     Sequence seq = new Gene("", 0, "Test1", null);
     assertEquals("", seq.getComplementarySequence());
 
-    Sequence seq2 = new Gene("AAA", 0, "Test2", null);
+    Sequence seq2 = new AnalysedSequence("AAA", "test", "Test2.ab1", null);
     assertEquals("TTT", seq2.getComplementarySequence());
 
     Sequence seq3 = new Gene("AATTCCGGATCG", 0, "Test3", null);
     assertEquals("TTAAGGCCTAGC", seq3.getComplementarySequence());
 
-    Sequence seq4 = new Gene("ATGCTAGCTAGCCCC", 0, "Test4", null);
+    Sequence seq4 = new AnalysedSequence("ATGCTAGCTAGCCCC", "test", "Test4.ab1", null);
     assertEquals("TACGATCGATCGGGG", seq4.getComplementarySequence());
   }
 
@@ -646,13 +646,13 @@ public class AnalysisTests {
     Sequence seq = new Gene("", 0, "Test1", null);
     assertEquals("", seq.getReversedSequence());
 
-    Sequence seq2 = new Gene("TTT", 0, "Test2", null);
+    Sequence seq2 = new AnalysedSequence("TTT", "test", "Test2.ab1", null);
     assertEquals("TTT", seq2.getReversedSequence());
 
     Sequence seq3 = new Gene("ATCGATCGATCG", 0, "Test3", null);
     assertEquals("GCTAGCTAGCTA", seq3.getReversedSequence());
 
-    Sequence seq4 = new Gene("GGGTACCGTGTAGG", 0, "Test4", null);
+    Sequence seq4 = new AnalysedSequence("GGGTACCGTGTAGG", "test", "Test4.ab1", null);
     assertEquals("GGATGTGCCATGGG", seq4.getReversedSequence());
 
   }

@@ -92,7 +92,7 @@ public class LocalDBTest {
       // USE Gsat
       System.out.println("");
       System.out.println("USE Gsat");
-      stmt.executeQuery("USE Gsat");
+      stmt.execute("USE Gsat");
 
       // Get Genes
       System.out.println("");

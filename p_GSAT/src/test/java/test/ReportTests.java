@@ -20,7 +20,7 @@ import core.Main;
  *
  * @author Ben Kohr
  */
-public class PipelineTests {
+public class ReportTests {
 
 
   private static LinkedList<File> files1 = new LinkedList<File>();

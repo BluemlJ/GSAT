@@ -258,7 +258,7 @@ public class DatabaseConnection {
       // TODO this will delete all data!
       stmt.executeUpdate("DROP DATABASE gsat");
       stmt.executeUpdate("CREATE DATABASE gsat");
-      stmt.executeQuery("USE gsat");
+      stmt.execute("USE gsat");
       stmt.executeUpdate("CREATE TABLE testtable (id INTEGER unsigned NOT NULL, PRIMARY KEY (id))");
       stmt.executeUpdate(
           "CREATE TABLE genes (id INTEGER unsigned NOT NULL, name VARCHAR(100) NOT NULL, sequence MEDIUMTEXT NOT NULL, date DATE, researcher INTEGER unsigned,  PRIMARY KEY(id))");
@@ -268,7 +268,7 @@ public class DatabaseConnection {
           "CREATE TABLE mutations (id INTEGER unsigned NOT NULL, name VARCHAR(100) NOT NULL, mutation VARCHAR(100) NOT NULL, type VARCHAR(100), PRIMARY KEY(id))");
       stmt.executeUpdate(
           "CREATE TABLE researchers (id INTEGER unsigned NOT NULL, name VARCHAR(100) NOT NULL, PRIMARY KEY(id))");
-
+      stmt.close();
 
 
     } catch (DatabaseConnectionException e) {
@@ -297,22 +297,26 @@ public class DatabaseConnection {
       ResultSet rs = stmt.executeQuery(
           "SELECT * FROM information_schema.tables WHERE table_schema = 'gsat' AND table_name = 'genes' LIMIT 1");
       if (!rs.next()) {
-        return false;
+    	  stmt.close();
+    	  return false;
       }
 
       // check if table ‘sequences‘ exists
       rs = stmt.executeQuery(
           "SELECT * FROM information_schema.tables WHERE table_schema = 'gsat' AND table_name = 'sequences' LIMIT 1");
       if (!rs.next()) {
-        return false;
+    	  stmt.close();
+    	  return false;
       }
 
       // check if table ‘mutations‘ exists
       rs = stmt.executeQuery(
           "SELECT * FROM information_schema.tables WHERE table_schema = 'gsat' AND table_name = 'mutations' LIMIT 1");
       if (!rs.next()) {
-        return false;
+    	  stmt.close();
+    	  return false;
       }
+      stmt.close();
       return true;
     } catch (DatabaseConnectionException | SQLException e) {
       // TODO Auto-generated catch block

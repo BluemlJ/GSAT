@@ -52,7 +52,6 @@ public class GUIUtils {
     try {
       GeneReader.readGenes(genetxt);
     } catch (IOException e) {
-      e.getMessage();
       return new Pair<Boolean, String>(false,
           "Reading Gene.txt was unsuccessful\n" + e.getMessage());
     }
