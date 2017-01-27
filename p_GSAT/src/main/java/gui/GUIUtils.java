@@ -17,9 +17,9 @@ import exceptions.CorruptedSequenceException;
 import exceptions.FileReadingException;
 import exceptions.MissingPathException;
 import exceptions.UndefinedTypeOfMutationException;
-import io.Config;
+import io.ConfigHandler;
 import io.FileSaver;
-import io.GeneReader;
+import io.GeneHandler;
 import io.SequenceReader;
 import javafx.collections.FXCollections;
 import javafx.scene.control.Alert;
@@ -49,45 +49,38 @@ public class GUIUtils {
    */
   public static Pair<Boolean, String> initializeGeneBox(ChoiceBox<String> genes) {
     try {
-      GeneReader.readGenes();
+      GeneHandler.readGenes();
     } catch (IOException e) {
       return new Pair<Boolean, String>(false,
           "Reading Gene.txt was unsuccessful\n" + e.getMessage());
     }
 
-    genes.setItems(FXCollections.observableArrayList(GeneReader.getGeneNames()));
+    genes.setItems(FXCollections.observableArrayList(GeneHandler.getGeneNames()));
     return new Pair<Boolean, String>(true, "Reading Gene.txt was successful");
   }
 
   public static Pair<Boolean, String> initializeGeneBox(ListView<String> genes) {
     try {
-      GeneReader.readGenes();
+      GeneHandler.readGenes();
     } catch (IOException e) {
       return new Pair<Boolean, String>(false,
           "Reading Gene.txt was unsuccessful\n" + e.getMessage());
     }
 
-    genes.setItems(FXCollections.observableArrayList(GeneReader.getGeneNames()));
+    genes.setItems(FXCollections.observableArrayList(GeneHandler.getGeneNames()));
     return new Pair<Boolean, String>(true, "Reading Gene.txt was successful");
   }
 
 
-  /**
-   * This method initialize the choiceBox and adds all Gene which are stored locally in the
-   * Genes.txt
-   * 
-   * @param genes the choiceBox to initialize
-   * @return reportpair, with indicator Boolean and reportString
-   */
   public static Pair<Boolean, String> initializeResearchers(ChoiceBox<String> dropdown) {
     try {
-      Config.readConfig();
+      ConfigHandler.readConfig();
     } catch (IOException | ConfigReadException | ConfigNotFoundException e) {
       return new Pair<Boolean, String>(false,
           "Reading researchers from config.txt was unsuccessful\n" + e.getMessage());
     }
-    dropdown.setItems(FXCollections.observableArrayList(Config.getResearchers()));
-    dropdown.getSelectionModel().select(Config.getResearcher());;
+    dropdown.setItems(FXCollections.observableArrayList(ConfigHandler.getResearchers()));
+    dropdown.getSelectionModel().select(ConfigHandler.getResearcher());;
     return new Pair<Boolean, String>(true, "Reading researchers from config.txt was successful");
   }
 
@@ -142,13 +135,14 @@ public class GUIUtils {
       QualityAnalysis.trimLowQuality(toAnalyse);
 
 
-      if (StringAnalysis.findStopcodonPosition(toAnalyse) != -1)
-        toAnalyse.trimSequence(0, StringAnalysis.findStopcodonPosition(toAnalyse) * 3 + 2);
+      int stopcodonPosition = StringAnalysis.findStopcodonPosition(toAnalyse);
+      if (stopcodonPosition != -1) toAnalyse.trimSequence(0, stopcodonPosition * 3 + 2);
 
 
       toAnalyse.setTrimPercentage(
           QualityAnalysis.percentageOfTrimQuality(lengthBeforeTrimmingQuality, toAnalyse));
-      toAnalyse.setHisTagPosition(StringAnalysis.findHISFlags(toAnalyse));
+
+      toAnalyse.setHisTagPosition(StringAnalysis.findHISTag(toAnalyse));
       // find all Mutations
       try {
         MutationAnalysis.findMutations(toAnalyse);
@@ -261,7 +255,7 @@ public class GUIUtils {
    * @return Gene and reportpair
    */
   private static Pair<Gene, Pair<Boolean, String>> getGeneFromDropDown(int dropdownID) {
-    return new Pair<Gene, Pair<Boolean, String>>(GeneReader.getGeneAt(dropdownID),
+    return new Pair<Gene, Pair<Boolean, String>>(GeneHandler.getGeneAt(dropdownID),
         new Pair<Boolean, String>(true, "Reading gene was successful"));
 
   }

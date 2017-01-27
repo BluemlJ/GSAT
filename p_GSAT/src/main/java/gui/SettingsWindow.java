@@ -6,8 +6,8 @@ import java.util.Optional;
 import java.util.ResourceBundle;
 
 import exceptions.DuplicateGeneException;
-import io.Config;
-import io.GeneReader;
+import io.ConfigHandler;
+import io.GeneHandler;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -39,7 +39,7 @@ public class SettingsWindow extends Application implements javafx.fxml.Initializ
   @FXML
   private Button parameterButton;
   @FXML
-  private Button returnButton;
+  private Button closeButton;
   @FXML
   private Button databaseButton;
   @FXML
@@ -61,9 +61,9 @@ public class SettingsWindow extends Application implements javafx.fxml.Initializ
 
     researcherDrobdown.getSelectionModel().selectedItemProperty()
         .addListener((obeservable, value, newValue) -> {
-          Config.setResearcher(newValue);
+          ConfigHandler.setResearcher(newValue);
           try {
-            Config.writeConfig();
+            ConfigHandler.writeConfig();
           } catch (IOException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
@@ -124,7 +124,7 @@ public class SettingsWindow extends Application implements javafx.fxml.Initializ
 
           dialog = new TextInputDialog("Gene in nucleotides");
           dialog.setTitle("Add a new gene");
-          dialog.setHeaderText("Add now the gene, please in form of nukleotides");
+          dialog.setHeaderText("Add now the gene, please in form of nucleotides");
           dialog.setContentText("Please enter gene:");
 
           // Traditional way to get the response value.
@@ -132,7 +132,7 @@ public class SettingsWindow extends Application implements javafx.fxml.Initializ
           if (result.isPresent()) {
             gene = result.get();
             try {
-              GeneReader.addGene(genename, gene);
+              GeneHandler.addGene(genename, gene);
               GUIUtils.initializeGeneBox(geneList);
             } catch (DuplicateGeneException | IOException e) {
               System.out.println("FAIL");
@@ -156,10 +156,10 @@ public class SettingsWindow extends Application implements javafx.fxml.Initializ
         // Traditional way to get the response value.
         Optional<String> result = dialog.showAndWait();
         if (result.isPresent()) {
-          if (result.get() != null && result.get() != "") Config.addResearcher(result.get());
+          if (result.get() != null && result.get() != "") ConfigHandler.addResearcher(result.get());
         }
         try {
-          Config.writeConfig();
+          ConfigHandler.writeConfig();
           GUIUtils.initializeResearchers(researcherDrobdown);
         } catch (IOException e) {
           // TODO Auto-generated catch block
@@ -174,8 +174,8 @@ public class SettingsWindow extends Application implements javafx.fxml.Initializ
         int geneindex = geneList.getSelectionModel().getSelectedIndex();
         if (geneindex != -1) {
           try {
-            GeneReader.deleteGene(geneList.getSelectionModel().getSelectedItem());
-            GeneReader.writeGenes();
+            GeneHandler.deleteGene(geneList.getSelectionModel().getSelectedItem());
+            GeneHandler.writeGenes();
             GUIUtils.initializeGeneBox(geneList);
           } catch (IOException e) {
             // TODO Auto-generated catch block
@@ -190,18 +190,18 @@ public class SettingsWindow extends Application implements javafx.fxml.Initializ
     deleteResearcherButton.setOnAction(new EventHandler<ActionEvent>() {
       @Override
       public void handle(ActionEvent arg0) {
-        Config.deleteResearcher(researcherDrobdown.getSelectionModel().getSelectedItem());
+        ConfigHandler.deleteResearcher(researcherDrobdown.getSelectionModel().getSelectedItem());
         researcherDrobdown.getSelectionModel().clearSelection();
         GUIUtils.initializeResearchers(researcherDrobdown);
       }
     });
 
-    returnButton.setOnAction(new EventHandler<ActionEvent>() {
+    closeButton.setOnAction(new EventHandler<ActionEvent>() {
 
       @Override
       public void handle(ActionEvent arg0) {
         MainWindow.settingsOpen = false;
-        Stage stage = (Stage) returnButton.getScene().getWindow();
+        Stage stage = (Stage) closeButton.getScene().getWindow();
         stage.close();
       }
     });

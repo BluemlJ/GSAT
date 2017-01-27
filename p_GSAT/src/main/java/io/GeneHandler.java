@@ -17,7 +17,7 @@ import exceptions.DuplicateGeneException;
  * @author lovisheindrich
  *
  */
-public class GeneReader {
+public class GeneHandler {
   private static ArrayList<Gene> geneList;
   private static String path =
       System.getProperty("user.home") + File.separator + "gsat" + File.separator + "genes.txt";
@@ -46,11 +46,11 @@ public class GeneReader {
     readGenes(path);
 
     // check if the new gene already exists
-    if (GeneReader.containsGene(geneName)) {
+    if (GeneHandler.containsGene(geneName)) {
       throw new DuplicateGeneException(geneName);
     }
 
-    geneList.add(new Gene(geneSequence, 0, geneName, Config.researcher));
+    geneList.add(new Gene(geneSequence, 0, geneName, ConfigHandler.researcher));
 
     writeGenes(genePath);
   }
@@ -169,7 +169,7 @@ public class GeneReader {
       String name = sepLine[0];
       String gene = sepLine[1];
       if (getGene(name) == null) {
-        geneList.add(new Gene(gene, id, name, Config.researcher));
+        geneList.add(new Gene(gene, id, name, ConfigHandler.researcher));
         id++;
       }
     }
@@ -207,7 +207,7 @@ public class GeneReader {
    * @param path
    */
   public static void setPath(String path) {
-    GeneReader.path = path;
+    GeneHandler.path = path;
   }
 
   public static void writeGenes() throws IOException {

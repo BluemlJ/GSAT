@@ -391,7 +391,7 @@ public class StringAnalysis {
     return matches.pollLastEntry().getValue();
   }
 
-  public static int findHISFlags(AnalysedSequence tA) {
+  public static int findHISTag(AnalysedSequence tA) {
     int result = -1;
     char[] seq = StringAnalysis.codonsToAminoAcids(tA.getSequence()).toCharArray();
     int counter = 1;
@@ -399,9 +399,7 @@ public class StringAnalysis {
     while (seq.length - counter - 1 > 0 && seq[seq.length - counter - 1] == 'H') {
       counter++;
     }
-
-    if (counter > 1) result = tA.getSequence().length() + tA.getLeftVector().length() - counter * 3;
-    System.out.println("-> " + result);
+    if (counter > 5) result = tA.getSequence().length() + tA.getLeftVector().length() - counter * 3;
     return result;
   }
 

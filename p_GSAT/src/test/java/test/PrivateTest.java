@@ -148,7 +148,7 @@ public class PrivateTest {
     System.out.println("" + QualityAnalysis.percentageOfTrimQuality(i, testSeq));
 
     QualityAnalysis.checkIfSequenceIsClean(testSeq);
-    testSeq.setHisTagPosition(StringAnalysis.findHISFlags(testSeq));
+    testSeq.setHisTagPosition(StringAnalysis.findHISTag(testSeq));
     System.out.println("");
     System.err
         .println(testSeq.getReferencedGene().getSequence().substring(testSeq.getOffset() * 3));

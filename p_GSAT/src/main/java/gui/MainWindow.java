@@ -20,6 +20,7 @@ import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 
 public class MainWindow extends Application implements javafx.fxml.Initializable {
@@ -86,6 +87,10 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
     // read Genes and show them in the choicebox
     output = GUIUtils.initializeGeneBox(geneBox);
     infoArea.appendText(output.second + "\n");
+
+
+    geneBox.setOnMouseClicked(arg01 -> GUIUtils.initializeGeneBox(geneBox));
+
 
     // gives information about new gene selection
     geneBox.getSelectionModel().selectedItemProperty()

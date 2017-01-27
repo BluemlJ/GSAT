@@ -19,10 +19,10 @@ import exceptions.DuplicateGeneException;
 import exceptions.FileReadingException;
 import exceptions.MissingPathException;
 import exceptions.UndefinedTypeOfMutationException;
-import io.Config;
+import io.ConfigHandler;
 import io.ConsoleIO;
 import io.FileSaver;
-import io.GeneReader;
+import io.GeneHandler;
 import io.SequenceReader;
 
 public class ConsoleVersion {
@@ -240,7 +240,7 @@ public class ConsoleVersion {
         saveGene = ConsoleIO.readLine("Do you want to save this gene for future use? (y/n)");
         if (saveGene.toLowerCase().equals("y")) {
           try {
-            GeneReader.addGene(strGeneName, strGene);
+            GeneHandler.addGene(strGeneName, strGene);
           } catch (DuplicateGeneException e) {
             System.out.println(e.getMessage());
           }
@@ -307,11 +307,11 @@ public class ConsoleVersion {
    * @author Ben Kohr
    */
   private static String getConfig(String readingPath) {
-    Config.setPath(readingPath);
+    ConfigHandler.setPath(readingPath);
     String report = "Configuration file found";
     try {
-      Config.initConfig();
-      Config.readConfig();
+      ConfigHandler.initConfig();
+      ConfigHandler.readConfig();
     } catch (ConfigReadException e) {
       report = "An error occurred while reading the configuration file.";
     } catch (ConfigNotFoundException e) {
@@ -383,7 +383,7 @@ public class ConsoleVersion {
 
     if (geneRecognition) {
       LinkedList<Gene> geneList = new LinkedList<Gene>();
-      for (Gene g : GeneReader.getGeneList()) {
+      for (Gene g : GeneHandler.getGeneList()) {
         geneList.add(g);
       }
       try {
@@ -439,14 +439,14 @@ public class ConsoleVersion {
   private static Gene readGene() {
     String path = "/GeneData/Genes.txt";
     try {
-      GeneReader.readGenes(path);
-      if (GeneReader.getNumGenes() == 0) {
+      GeneHandler.readGenes(path);
+      if (GeneHandler.getNumGenes() == 0) {
         // genes.txt empty
         System.out.println("Genes.txt is empty");
         return askForGene();
       } else {
         System.out.println("The following genes have been found:");
-        String[] geneNames = GeneReader.getGeneNames();
+        String[] geneNames = GeneHandler.getGeneNames();
         for (int i = 0; i < geneNames.length; i++) {
           System.out.println((i + 1) + ": " + geneNames[i]);
         }
@@ -470,7 +470,7 @@ public class ConsoleVersion {
         }
         // an existing gene has been chosen
         else if (index >= 0 && index < geneNames.length) {
-          return GeneReader.getGeneAt(index);
+          return GeneHandler.getGeneAt(index);
         }
         // bad user input
         else

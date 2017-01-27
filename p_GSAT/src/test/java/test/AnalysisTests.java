@@ -182,7 +182,7 @@ public class AnalysisTests {
   public void findHISTAG1() throws CorruptedSequenceException {
     AnalysedSequence testSeq =
         new AnalysedSequence("ATGUUAUUUCCCTAACCCCCCCACCACCACCACTAA", "Jannis", "toAnalyse", null);
-    int tmp = StringAnalysis.findHISFlags(testSeq);
+    int tmp = StringAnalysis.findHISTag(testSeq);
     System.out.println(tmp);
     assertTrue(tmp == 21);
   }
@@ -190,7 +190,7 @@ public class AnalysisTests {
   @Test
   public void findHISTAG2() throws CorruptedSequenceException {
     AnalysedSequence testSeq = new AnalysedSequence("ATGCCTCCCCACTAA", "Jannis", "toAnalyse", null);
-    int tmp = StringAnalysis.findHISFlags(testSeq);
+    int tmp = StringAnalysis.findHISTag(testSeq);
     System.out.println(tmp);
     assertTrue(tmp == 9);
   }
@@ -199,7 +199,7 @@ public class AnalysisTests {
   public void findHISTAG3() throws CorruptedSequenceException {
     AnalysedSequence testSeq =
         new AnalysedSequence("ATGUUAUUUCCCCCCTAA", "Jannis", "toAnalyse", null);
-    int tmp = StringAnalysis.findHISFlags(testSeq);
+    int tmp = StringAnalysis.findHISTag(testSeq);
     System.out.println(tmp);
     assertTrue(tmp == -1);
   }

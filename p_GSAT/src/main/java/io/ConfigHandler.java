@@ -18,7 +18,7 @@ import exceptions.ConfigReadException;
  * @author lovisheindrich
  *
  */
-public class Config {
+public class ConfigHandler {
   public static String path =
       System.getProperty("user.home") + File.separator + "gsat" + File.separator + "config.txt";
   public static String researcher;
@@ -44,7 +44,7 @@ public class Config {
     initConfig();
     BufferedReader configReader;
     try {
-      configReader = new BufferedReader(new FileReader(Config.path));
+      configReader = new BufferedReader(new FileReader(ConfigHandler.path));
     } catch (FileNotFoundException e) {
       throw new ConfigNotFoundException(path);
     }
@@ -53,12 +53,12 @@ public class Config {
       String[] elements = line.split(SEPARATOR);
       switch (elements[0]) {
         case "researcher":
-          Config.researcher = elements[1].trim();
+          ConfigHandler.researcher = elements[1].trim();
           break;
         case "researchers":
-          Config.researchers = Arrays.copyOfRange(elements, 1, elements.length);
-          for (int i = 0; i < Config.researchers.length; i++) {
-            Config.researchers[i] = Config.researchers[i].trim();
+          ConfigHandler.researchers = Arrays.copyOfRange(elements, 1, elements.length);
+          for (int i = 0; i < ConfigHandler.researchers.length; i++) {
+            ConfigHandler.researchers[i] = ConfigHandler.researchers[i].trim();
           }
           break;
         default:
@@ -119,7 +119,7 @@ public class Config {
    * @param path
    */
   public static void setPath(String path) {
-    Config.path = path;
+    ConfigHandler.path = path;
   }
 
   public static String getPath() {
@@ -154,11 +154,11 @@ public class Config {
   }
 
   public static void setResearchers(String[] researchers) {
-    Config.researchers = researchers;
+    ConfigHandler.researchers = researchers;
   }
 
   public static void setResearchers(String researcher, int i) {
-    Config.researchers[i] = researcher;
+    ConfigHandler.researchers[i] = researcher;
   }
 
   public static String getResearcher() {
@@ -166,7 +166,7 @@ public class Config {
   }
 
   public static void setResearcher(String researcher) {
-    Config.researcher = researcher;
+    ConfigHandler.researcher = researcher;
   }
 
   /**

@@ -14,7 +14,7 @@
     <AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="-1.0" prefWidth="-1.0" VBox.vgrow="ALWAYS">
       <children>
             <Button fx:id="parameterButton" layoutX="14.0" layoutY="362.0" mnemonicParsing="false" text="Edit parameters" />
-            <Button fx:id="returnButton" layoutX="574.0" layoutY="362.0" mnemonicParsing="false" text="Return" />
+            <Button fx:id="closeButton" layoutX="574.0" layoutY="362.0" mnemonicParsing="false" text="Close" />
             <Text layoutX="19.0" layoutY="46.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Researcher:">
                <font>
                   <Font size="14.0" />
