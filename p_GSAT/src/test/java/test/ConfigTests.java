@@ -1,10 +1,10 @@
 package test;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Arrays;
 
 import org.junit.Ignore;
 import org.junit.Test;
@@ -120,7 +120,8 @@ public class ConfigTests {
    */
   @Test
   public void wrongConfigPath() throws IOException, ConfigReadException {
-    Config.setPath(  System.getProperty("user.home") + File.separator + "NOTGSAT" + File.separator + "config.txt");
+    Config.setPath(System.getProperty("user.home") + File.separator + "NOTGSAT" + File.separator
+        + "config.txt");
     try {
       Config.readConfig();
     } catch (ConfigNotFoundException e) {
@@ -178,7 +179,7 @@ public class ConfigTests {
 
     // change parameters back
     Config.researcher = "lovis heindrich";
-    Config.setResearchers("jannis blueml",1);
+    Config.setResearchers("jannis blueml", 1);
     Config.writeConfig();
 
 
@@ -190,5 +191,33 @@ public class ConfigTests {
     // check for old values
     assertEquals(Config.researcher, "lovis heindrich");
     assertEquals(Config.getResearchers()[1], "jannis blueml");
+  }
+
+  /**
+   * This test checks if it is possible to add a researcher to the researchers array
+   */
+  @Test
+  public void testAddResearcher() {
+    String[] res = {"res1", "res2"};
+    Config.setResearchers(res);
+    Config.addResearcher("res3");
+    res = Config.getResearchers();
+    assertEquals(res[0], "res1");
+    assertEquals(res[1], "res2");
+    assertEquals(res[2], "res3");
+  }
+
+  /**
+   * This test checks if it is possible to delete a researcher from the researchers array
+   */
+  @Test
+  public void testDeleteResearcher() {
+    String[] res = {"res1", "res2", "res3", "res4"};
+    Config.setResearchers(res);
+    Config.deleteResearcher("res2");
+    res = Config.getResearchers();
+    assertEquals(res[0], "res1");
+    assertEquals(res[1], "res3");
+    assertEquals(res[2], "res4");
   }
 }

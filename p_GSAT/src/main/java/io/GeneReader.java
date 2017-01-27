@@ -53,8 +53,23 @@ public class GeneReader {
     if (GeneReader.containsGene(geneName)) {
       throw new DuplicateGeneException(geneName);
     }
-
-    // clears all genes from file
+    
+    geneList.add(new Gene(geneSequence, 0, geneName, Config.researcher));
+    
+    writeGenes(genePath);
+  }
+  
+  public static void deleteGene(String genePath, String geneName) throws IOException{
+    for(int i = 0; i<geneList.size(); i++){
+      if(geneList.get(i).getName().equals(geneName)){
+        geneList.remove(i);
+      }
+    }
+    writeGenes(genePath);
+  }
+  
+  public static void writeGenes(String genePath) throws IOException{
+ // clears all genes from file
     BufferedWriter geneWriter = new BufferedWriter(new FileWriter(genePath));
 
     // write all previously known genes
@@ -63,8 +78,6 @@ public class GeneReader {
       geneWriter.write(System.getProperty("line.separator"));
     }
 
-    // add new gene
-    geneWriter.write(geneName + SEPARATOR + geneSequence);
     geneWriter.close();
     readGenes(genePath);
   }
@@ -146,7 +159,9 @@ public class GeneReader {
    * @throws IOException
    */
   public static void readGenes(String genePath) throws IOException {
+    
     path = genePath;
+    initGenes();
     geneList = new ArrayList<Gene>();
     BufferedReader geneReader = new BufferedReader(new FileReader(genePath));
     String line;
@@ -165,7 +180,30 @@ public class GeneReader {
 
     geneReader.close();
   }
+  
+  /**
+   * check if a genes.txt file exists at the given path
+   * 
+   * @return true if a gene.txt exists
+   */
+  public static boolean exists() {
+    File config = new File(path);
+    return config.exists();
+  }
 
+  /**
+   * create a new gene file in the user home directory in a folder named gsat
+   * 
+   * @throws IOException
+   * 
+   */
+  public static void initGenes() throws IOException {
+    if (!exists()) {
+      File geneFile = new File(path);
+      geneFile.getParentFile().mkdirs();
+      geneFile.createNewFile();
+    }
+  }
 
   /**
    * set the path of the gene.txt file

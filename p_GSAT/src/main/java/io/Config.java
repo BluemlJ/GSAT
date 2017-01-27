@@ -168,5 +168,37 @@ public class Config {
   public static void setResearcher(String researcher) {
     Config.researcher = researcher;
   }
+  
+  /**
+   * adds a new researcher to the list
+   * does not write it directly to configuration file
+   * @param name name of the new researcher
+   */
+  public static void addResearcher(String name){
+    String newResearchers [] = new String[researchers.length+1];
+    for(int i = 0; i<researchers.length; i++){
+      newResearchers[i] = researchers[i];
+    }
+    newResearchers[researchers.length] = name;
+    researchers = newResearchers;
+  }
+  
+  /**
+   * deletes a researcher from the list
+   * does not write it directly to configuration file
+   * @param name name of the researcher which will be deleted
+   */
+  public static void deleteResearcher(String name){
+    String newResearchers [] = new String[researchers.length -1];
+    int j = 0;
+    for(int i = 0; i<researchers.length; i++){
+      if(!researchers[i].equals(name)){
+      newResearchers[j] = researchers[i];
+      j++;
+      }
+    }
+    researchers = newResearchers;
+  }
+  
 
 }
