@@ -1,6 +1,5 @@
 package analysis;
 
-import java.io.CharArrayReader;
 import java.util.Collections;
 import java.util.Hashtable;
 import java.util.LinkedList;
@@ -397,11 +396,11 @@ public class StringAnalysis {
     char[] seq = StringAnalysis.codonsToAminoAcids(tA.getSequence()).toCharArray();
     int counter = 1;
 
-    while (seq[seq.length - counter - 1] == 'H') {
+    while (seq.length - counter - 1 > 0 && seq[seq.length - counter - 1] == 'H') {
       counter++;
     }
 
-    if (counter > 1) result = tA.getSequence().length() - counter * 3;
+    if (counter > 1) result = tA.getSequence().length() + tA.getLeftVector().length() - counter * 3;
     System.out.println("-> " + result);
     return result;
   }

@@ -5,9 +5,6 @@ import java.net.URL;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
-import com.sun.javafx.image.impl.General;
-
-import analysis.Gene;
 import exceptions.DuplicateGeneException;
 import io.Config;
 import io.GeneReader;
@@ -53,6 +50,8 @@ public class SettingsWindow extends Application implements javafx.fxml.Initializ
   private Button deleteGeneButton;
   @FXML
   private Button deleteResearcherButton;
+
+  Scene scene;
 
   @Override
   public void initialize(URL location, ResourceBundle resources) {
@@ -121,11 +120,11 @@ public class SettingsWindow extends Application implements javafx.fxml.Initializ
         Optional<String> result = dialog.showAndWait();
         if (result.isPresent()) {
           genename = result.get();
+          if (genename == "" || genename == null) return;
 
-
-          dialog = new TextInputDialog("Gene name");
+          dialog = new TextInputDialog("Gene in nucleotides");
           dialog.setTitle("Add a new gene");
-          dialog.setHeaderText("Add now the gene");
+          dialog.setHeaderText("Add now the gene, please in form of nukleotides");
           dialog.setContentText("Please enter gene:");
 
           // Traditional way to get the response value.
@@ -134,6 +133,7 @@ public class SettingsWindow extends Application implements javafx.fxml.Initializ
             gene = result.get();
             try {
               GeneReader.addGene(genename, gene);
+              GUIUtils.initializeGeneBox(geneList);
             } catch (DuplicateGeneException | IOException e) {
               System.out.println("FAIL");
               // TODO Auto-generated catch block
@@ -148,21 +148,61 @@ public class SettingsWindow extends Application implements javafx.fxml.Initializ
     addResearcherButton.setOnAction(new EventHandler<ActionEvent>() {
       @Override
       public void handle(ActionEvent arg0) {
-        System.out.println("addResearcher Button!");
+        TextInputDialog dialog = new TextInputDialog("your name");
+        dialog.setTitle("Add a new researcher");
+        dialog.setHeaderText("Add a new researcher by adding a name ");
+        dialog.setContentText("Please enter name:");
+
+        // Traditional way to get the response value.
+        Optional<String> result = dialog.showAndWait();
+        if (result.isPresent()) {
+          if (result.get() != null && result.get() != "") Config.addResearcher(result.get());
+        }
+        try {
+          Config.writeConfig();
+          GUIUtils.initializeResearchers(researcherDrobdown);
+        } catch (IOException e) {
+          // TODO Auto-generated catch block
+          e.printStackTrace();
+        }
       }
     });
 
     deleteGeneButton.setOnAction(new EventHandler<ActionEvent>() {
       @Override
       public void handle(ActionEvent arg0) {
-        System.out.println("deleteGene Button!");
+        int geneindex = geneList.getSelectionModel().getSelectedIndex();
+        if (geneindex != -1) {
+          try {
+            GeneReader.deleteGene(geneList.getSelectionModel().getSelectedItem());
+            GeneReader.writeGenes();
+            GUIUtils.initializeGeneBox(geneList);
+          } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+          }
+        }
+
+
       }
     });
 
     deleteResearcherButton.setOnAction(new EventHandler<ActionEvent>() {
       @Override
       public void handle(ActionEvent arg0) {
-        System.out.println("deleteResearcher Button!");
+        Config.deleteResearcher(researcherDrobdown.getSelectionModel().getSelectedItem());
+        researcherDrobdown.getSelectionModel().clearSelection();
+        GUIUtils.initializeResearchers(researcherDrobdown);
+      }
+    });
+
+    returnButton.setOnAction(new EventHandler<ActionEvent>() {
+
+      @Override
+      public void handle(ActionEvent arg0) {
+        MainWindow.settingsOpen = false;
+        Stage stage = (Stage) returnButton.getScene().getWindow();
+        stage.close();
       }
     });
   }
@@ -185,7 +225,7 @@ public class SettingsWindow extends Application implements javafx.fxml.Initializ
       e.printStackTrace();
       return;
     }
-    Scene scene = new Scene(root);
+    scene = new Scene(root);
     primaryStage.setScene(scene);
     primaryStage.sizeToScene();
     primaryStage.show();
@@ -195,7 +235,7 @@ public class SettingsWindow extends Application implements javafx.fxml.Initializ
       @Override
       public void handle(WindowEvent arg0) {
         MainWindow.settingsOpen = false;
-      
+
       }
     });
     /*

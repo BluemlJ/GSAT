@@ -1,9 +1,7 @@
 package gui;
 
 
-import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 import java.net.URL;
 import java.util.ResourceBundle;
 import analysis.Pair;
@@ -95,7 +93,19 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
           infoArea.appendText("New Gene selected: " + newValue + "\n");
         });
 
-
+    /*
+     * manualButton.setOnAction(new EventHandler<ActionEvent>() {
+     * 
+     * @Override public void handle(ActionEvent arg0) { System.out.println("MANUAL"); Alert alert =
+     * new Alert(AlertType.INFORMATION); alert.setTitle("Manual");
+     * alert.setHeaderText("A short manual and welcome to GSAT"); String content =
+     * convertStreamToString( ClassLoader.getSystemResourceAsStream("manual/WelcomeToGSAT.txt"));
+     * alert.setContentText(content);
+     * 
+     * alert.showAndWait();
+     * 
+     * } });
+     */
 
     // set button to select destination
     destButton.setOnAction(new EventHandler<ActionEvent>() {
@@ -175,15 +185,6 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
       }
     });
 
-    // gives you a short menu
-    manualButton.setOnAction(new EventHandler<ActionEvent>() {
-      @Override
-      public void handle(ActionEvent arg0) {
-        System.out.println("Manual!");
-      }
-    });
-
-
     // set settings button to open settings window
     settingsButton.setOnAction(new EventHandler<ActionEvent>() {
       @Override
@@ -221,4 +222,10 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
     primaryStage.sizeToScene();
     primaryStage.show();
   }
+
+  /*
+   * private static String convertStreamToString(InputStream is) { Scanner s = new Scanner(is);
+   * String ret = ""; while (s.hasNext()) ret = ret + "\n" + s.next(); System.out.println(ret);
+   * s.close(); return ret; }
+   */
 }

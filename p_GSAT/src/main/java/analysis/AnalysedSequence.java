@@ -2,8 +2,6 @@ package analysis;
 
 import java.util.LinkedList;
 
-import exceptions.CorruptedSequenceException;
-
 /**
  * Models a sequence under analysis (i.e. obtained from an AB1 file), which may have mutations. The
  * Sequence class defines it's basic behavior.
@@ -221,6 +219,10 @@ public class AnalysedSequence extends Sequence {
 
   public void setHisTagPosition(int hisTagPosition) {
     this.hisTagPosition = hisTagPosition;
+  }
+
+  public void setTrimPercentage(double trimPercentage) {
+    this.trimPercentage = trimPercentage;
   }
 
   /**

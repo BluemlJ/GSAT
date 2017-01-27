@@ -83,8 +83,8 @@ public class SequenceReader {
       qualitiesInt[i] = qualities[i];
     }
 
-    AnalysedSequence parsedSequence =
-        new AnalysedSequence(sequence, "researcher", referencedFile.getName(), qualitiesInt);
+    AnalysedSequence parsedSequence = new AnalysedSequence(sequence, Config.getResearcher(),
+        referencedFile.getName(), qualitiesInt);
     return parsedSequence;
   }
 

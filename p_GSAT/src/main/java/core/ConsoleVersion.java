@@ -114,7 +114,8 @@ public class ConsoleVersion {
     Pair<LinkedList<File>, LinkedList<File>> okayAndOddFiles = askForAB1Files();
 
     // read config file
-    String configReport = getConfig(System.getProperty("user.home") + File.separator + "gsat"  + File.separator + "config.txt");
+    String configReport = getConfig(
+        System.getProperty("user.home") + File.separator + "gsat" + File.separator + "config.txt");
 
     // set path for results and set database path
     String destinationPath = processPath();

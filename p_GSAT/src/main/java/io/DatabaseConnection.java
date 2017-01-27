@@ -297,24 +297,24 @@ public class DatabaseConnection {
       ResultSet rs = stmt.executeQuery(
           "SELECT * FROM information_schema.tables WHERE table_schema = 'gsat' AND table_name = 'genes' LIMIT 1");
       if (!rs.next()) {
-    	  stmt.close();
-    	  return false;
+        stmt.close();
+        return false;
       }
 
       // check if table ‘sequences‘ exists
       rs = stmt.executeQuery(
           "SELECT * FROM information_schema.tables WHERE table_schema = 'gsat' AND table_name = 'sequences' LIMIT 1");
       if (!rs.next()) {
-    	  stmt.close();
-    	  return false;
+        stmt.close();
+        return false;
       }
 
       // check if table ‘mutations‘ exists
       rs = stmt.executeQuery(
           "SELECT * FROM information_schema.tables WHERE table_schema = 'gsat' AND table_name = 'mutations' LIMIT 1");
       if (!rs.next()) {
-    	  stmt.close();
-    	  return false;
+        stmt.close();
+        return false;
       }
       stmt.close();
       return true;

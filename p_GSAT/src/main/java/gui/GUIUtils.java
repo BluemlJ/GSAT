@@ -2,7 +2,6 @@ package gui;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.LinkedList;
 import java.util.Optional;
 
@@ -72,7 +71,7 @@ public class GUIUtils {
     return new Pair<Boolean, String>(true, "Reading Gene.txt was successful");
   }
 
-  
+
   /**
    * This method initialize the choiceBox and adds all Gene which are stored locally in the
    * Genes.txt
@@ -138,6 +137,7 @@ public class GUIUtils {
       // cut out vector
       StringAnalysis.trimVector(toAnalyse);
 
+      int lengthBeforeTrimmingQuality = toAnalyse.getSequence().length();
       // cut out low Quality parts of sequence
       QualityAnalysis.trimLowQuality(toAnalyse);
 
@@ -146,6 +146,9 @@ public class GUIUtils {
         toAnalyse.trimSequence(0, StringAnalysis.findStopcodonPosition(toAnalyse) * 3 + 2);
 
 
+      toAnalyse.setTrimPercentage(
+          QualityAnalysis.percentageOfTrimQuality(lengthBeforeTrimmingQuality, toAnalyse));
+      toAnalyse.setHisTagPosition(StringAnalysis.findHISFlags(toAnalyse));
       // find all Mutations
       try {
         MutationAnalysis.findMutations(toAnalyse);
@@ -309,28 +312,5 @@ public class GUIUtils {
       System.out.println("Error during reading occured.");
     }
     return new Pair<AnalysedSequence, Pair<Boolean, String>>(null, ret);
-  }
-
-  /**
-   * 
-   * @param configpath
-   * @return
-   */
-  private static Pair<Boolean, String> runConfiguration(TextField configpath) {
-    Config.setPath("resources/config.ini");
-    boolean success = false;
-    String report = "Reading configuration file was unsuccessful with unknown error";
-    try {
-      Config.readConfig();
-      success = true;
-      report = "Reading configuration file was successful";
-    } catch (ConfigReadException e) {
-      report = "An error occured while reading the configuration file.";
-    } catch (ConfigNotFoundException e) {
-      report = "No configuration file was found at the given path.";
-    } catch (IOException e) {
-      System.out.println("Error during reading occurred.");
-    }
-    return new Pair<Boolean, String>(success, report);
   }
 }

@@ -45,7 +45,7 @@ public class PrivateTest {
    * 
    * Datenset 4 10 Jannis Laptop
    */
-  private static int userNr = 6;
+  private static int userNr = 4;
 
   @BeforeClass
   public static void setup() {
@@ -54,7 +54,7 @@ public class PrivateTest {
   }
 
   // Name of the file
-  private String fileName = "24EF81_A03.ab1";
+  private String fileName = "93GH02_A03.ab1";
 
   // _____________________________________________________________________
 
@@ -123,7 +123,7 @@ public class PrivateTest {
     }
 
     //
-    String gene = ECDERA;
+    String gene = FSA;
 
     Gene fsa = new Gene(gene, 0, "FSA", "");
     testSeq.setReferencedGene(fsa);
@@ -135,6 +135,7 @@ public class PrivateTest {
     System.out.println("Offset    " + testSeq.getOffset());
     System.out.println("Vector trimmed");
     System.out.println("Seq after Vector    " + testSeq.getSequence());
+    int i = testSeq.getSequence().length();
     QualityAnalysis.trimLowQuality(testSeq);
     System.out.println("Quality trimmed");
     System.out.println("Offset    " + testSeq.getOffset());
@@ -143,6 +144,8 @@ public class PrivateTest {
       testSeq.trimSequence(0, StringAnalysis.findStopcodonPosition(testSeq) * 3 + 2);
       System.out.println("FIND STOPCODON");
     }
+
+    System.out.println("" + QualityAnalysis.percentageOfTrimQuality(i, testSeq));
 
     QualityAnalysis.checkIfSequenceIsClean(testSeq);
     testSeq.setHisTagPosition(StringAnalysis.findHISFlags(testSeq));

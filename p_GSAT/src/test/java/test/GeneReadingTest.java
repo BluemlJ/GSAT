@@ -56,7 +56,7 @@ public class GeneReadingTest {
    */
   @Test
   public void testGeneListNotEmpty() {
-    //System.out.println(path);
+    // System.out.println(path);
     assertEquals(GeneReader.getGeneList().isEmpty(), false);
   }
 
@@ -97,9 +97,9 @@ public class GeneReadingTest {
     assertEquals(GeneReader.getGene("testGene").getSequence(), "aaatttaaaggg".toUpperCase());
     assertEquals(GeneReader.getGene("testGene2").getSequence(), "aaatttaaaggg".toUpperCase());
   }
-  
+
   @Test
-  public void testGeneDelete() throws IOException, DuplicateGeneException{
+  public void testGeneDelete() throws IOException, DuplicateGeneException {
     GeneReader.clearTxtFile(writePath);
     GeneReader.addGene(writePath, "testGene", "aaatttaaaggg");
     GeneReader.addGene(writePath, "testGene2", "aaatttaaaggg");

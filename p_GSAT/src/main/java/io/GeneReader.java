@@ -6,11 +6,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.Scanner;
-
-import org.xml.sax.InputSource;
 
 import analysis.Gene;
 import exceptions.DuplicateGeneException;
@@ -53,23 +49,23 @@ public class GeneReader {
     if (GeneReader.containsGene(geneName)) {
       throw new DuplicateGeneException(geneName);
     }
-    
+
     geneList.add(new Gene(geneSequence, 0, geneName, Config.researcher));
-    
+
     writeGenes(genePath);
   }
-  
-  public static void deleteGene(String genePath, String geneName) throws IOException{
-    for(int i = 0; i<geneList.size(); i++){
-      if(geneList.get(i).getName().equals(geneName)){
+
+  public static void deleteGene(String newpath, String geneName) throws IOException {
+    for (int i = 0; i < geneList.size(); i++) {
+      if (geneList.get(i).getName().equals(geneName)) {
         geneList.remove(i);
       }
     }
-    writeGenes(genePath);
+    writeGenes(newpath);
   }
-  
-  public static void writeGenes(String genePath) throws IOException{
- // clears all genes from file
+
+  public static void writeGenes(String genePath) throws IOException {
+    // clears all genes from file
     BufferedWriter geneWriter = new BufferedWriter(new FileWriter(genePath));
 
     // write all previously known genes
@@ -159,7 +155,7 @@ public class GeneReader {
    * @throws IOException
    */
   public static void readGenes(String genePath) throws IOException {
-    
+
     path = genePath;
     initGenes();
     geneList = new ArrayList<Gene>();
@@ -180,7 +176,7 @@ public class GeneReader {
 
     geneReader.close();
   }
-  
+
   /**
    * check if a genes.txt file exists at the given path
    * 
@@ -212,5 +208,15 @@ public class GeneReader {
    */
   public static void setPath(String path) {
     GeneReader.path = path;
+  }
+
+  public static void writeGenes() throws IOException {
+    writeGenes(path);
+
+  }
+
+  public static void deleteGene(String string) throws IOException {
+    deleteGene(path, string);
+
   }
 }

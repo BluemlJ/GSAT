@@ -1,7 +1,6 @@
 package core;
 
 import gui.MainWindow;
-import gui.SettingsWindow;
 import io.FileSaver;
 
 /**
