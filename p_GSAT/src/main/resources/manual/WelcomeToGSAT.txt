@@ -1,0 +1,59 @@
+HELP
+
+We’re glad to help!
+Check out the topic you are interested in:
+(1) How to set up and to start a new analysis
+(2) The main menu in further detail
+(3) The settings window in further detail
+
+--------------------------------------------------------------------------
+
+(1) How to set up and to start a new analysis
+To start a new analysis, you first have to choose a folder of AB1 files or a single AB1 file. For doing this, enter a path into the Source input field or click on the Button next to the field. You will be asked whether you want to specify a path or a single file. Choose as preferred and select the folder or the file in the menu which will be presented to you then.
+To tell GSAT where to place the results of your analysis, analogously enter a Destination path in the input field below the Source field. You can also choose a folder by clicking on the button next to the field.
+Next, you have to choose a gene to compare the files with. Choose one from the dropdown menu Gene. 
+Make sure, the output is as desired: One single file or multiple files, one for each input. You can specify this with the checkbox Multiple outfut files.
+Almost done. All you have to do now is click on the Start button. 
+And there you go. When the analysis finished, you can find the results in the folder you specified with Destination.
+
+(2) The main menu in further detail
+Help
+This menu item allows you to get some help on the program’s functionality (when clicking on Help; actually, you already seem to use this) or to read about the authors and the making of GSAT (by clicking on About).
+Source
+This specifies the folder of AB1 files or the single AB1 file which you want to analyze. Enter folder or file path manually or simply choose it by clicking on the button situated on the right of the input field.
+Destination
+This specifies the folder where the results should be written to. You can enter the folder manually or choose it by clicking the button on the right hand side of the input field.
+Gene
+Use this dropdown menu to choose which gene to compare the sequences with.
+Multiple output files
+This checkbox indicates whether multiple output files are produced, one for each input file (checked) or one single file, containing the information of all input files (unchecked).
+Settings
+You can adjust the program’s settings by clicking on this button. The settings window is explained in section (3).
+Start
+After choosing a path for input and output and after selecting a gene, you can click on Start to run the analysis.
+
+
+(3) The settings window in further detail
+Researcher
+Choose your name in the dropdown menu to make sure your analyses are associated with it. If your name is not entered yet, do so by making use of the add button. Remove names from the list with delete.
+Available genes
+The big box contains all currently available genes for an analysis. You can add or delete genes with the buttons add and delete. Only the genes you specify here are presented to you in the main window’s gene dropdown.
+Edit parameters
+You can adjust parameters used in the analysis pipeline by clicking this button.
+Configure database
+The database used to store the results can be configured with this button. NOTE: This functionality is not implemented yet, but coming soon! Stay tuned!
+Return
+Leave the settings window and return to the main window. You changes will be saved.
+
+
+ABOUT
+GSAT can assist you with analysis nucleotide sequences stored in AB1 files by performing quality analysis, finding mutations and collecting information about the sequences.
+
+This program was develop by four students from the TU Darmstadt, namely
+Jannis Blüml,
+Lovis Heindrich,
+Ben Kohr and
+Kevin Otto,
+in the context of their so-called “Bachelor-Praktikum“ (from October 2016 until May 2017).
+
+This program is licensed under the GNU Lesser General Public License, which can be found at https://www.gnu.org/licenses/lgpl-3.0.de.html.
