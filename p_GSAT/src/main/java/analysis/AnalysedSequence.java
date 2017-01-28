@@ -47,9 +47,9 @@ public class AnalysedSequence extends Sequence {
   private int offset = 0;
 
   /**
-   * The promotor which generated the sequence. May be added by the user.
+   * The primer which generated the sequence. May be added by the user.
    */
-  private String promotor;
+  private String primer;
 
   /**
    * Array containing the quality information for the sequence (i.e. for each nucleotide position).
@@ -78,6 +78,8 @@ public class AnalysedSequence extends Sequence {
    */
   private int hisTagPosition = -1;
 
+  
+  
   /**
    * Constructor calling the super constructor (which sets all given attributes).
    * 
@@ -140,8 +142,8 @@ public class AnalysedSequence extends Sequence {
 
   // GETTERs and SETTERs:
 
-  public String getPromotor() {
-    return promotor;
+  public String getPrimer() {
+    return primer;
   }
 
   public int[] getQuality() {
@@ -205,8 +207,8 @@ public class AnalysedSequence extends Sequence {
     this.offset = offset;
   }
 
-  public void setPromotor(String promotor) {
-    this.promotor = promotor;
+  public void setPrimer(String primer) {
+    this.primer = primer;
   }
 
   public void setReferencedGene(Gene gene) {
