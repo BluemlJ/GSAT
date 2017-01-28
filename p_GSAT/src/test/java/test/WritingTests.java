@@ -15,6 +15,7 @@ import java.util.LinkedList;
 
 import org.junit.Before;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import analysis.AnalysedSequence;
@@ -106,13 +107,14 @@ public class WritingTests {
   @Before
   public void setup() {
     FileSaver.setSeparateFiles(true);
+    FileSaver.setDestFileName("");
     FileSaver.resetAll();
 
     File directory = new File(path);
     File[] files = directory.listFiles();
     if (files != null) {
       for (File f : files) {
-        if ("gsat_results.csv".equals(f.getName())) f.delete();
+        f.delete();
       }
     }
   }
@@ -140,7 +142,7 @@ public class WritingTests {
 
     // Code for reading the file in again
     BufferedReader reader =
-        new BufferedReader(new FileReader("writingtests/convertAndStoreTest.csv"));
+        new BufferedReader(new FileReader("writingtests/gsat_results_convertAndStoreTest.csv"));
 
     LinkedList<String> results = new LinkedList<String>();
     reader.lines().skip(1).forEach(line -> results.add(line));
@@ -151,7 +153,7 @@ public class WritingTests {
     DateFormat df = new SimpleDateFormat("dd/MM/yy");
     String addingDate = df.format(new Date());
 
-    String[] correctResults = new String[] {"1; sequence3.ab1; 3; ATC; " + addingDate
+    String[] correctResults = new String[] {"1; sequence3.ab1; FSA; ATC; " + addingDate
         + "; Kurt Bohne; Nothing to say; null; null; null; 2.0; 0.0; none; false; AAA7CAA, -1H5"};
 
     for (int i = 0; i < correctResults.length; i++) {
@@ -314,7 +316,7 @@ public class WritingTests {
     FileSaver.storeResultsLocally("notestdata", seq3);
 
     // Code for reading the file in again
-    BufferedReader reader = new BufferedReader(new FileReader("writingtests/notestdata.csv"));
+    BufferedReader reader = new BufferedReader(new FileReader("writingtests/gsat_results_notestdata.csv"));
 
     LinkedList<String> results = new LinkedList<String>();
     reader.lines().skip(1).forEach(line -> results.add(line));
@@ -344,7 +346,7 @@ public class WritingTests {
     FileSaver.storeResultsLocally("testdata", seq1);
 
     // Code for reading the file in again
-    BufferedReader reader = new BufferedReader(new FileReader("writingtests/testdata.csv"));
+    BufferedReader reader = new BufferedReader(new FileReader("writingtests/gsat_results_testdata.csv"));
 
     LinkedList<String> results = new LinkedList<String>();
     reader.lines().skip(1).forEach(line -> results.add(line));
@@ -354,7 +356,7 @@ public class WritingTests {
     String addingDate = df.format(new Date());
 
     // Check whether the input is correct
-    String[] correctResults = new String[] {"1; sequence1.ab1; 4; ATCG; " + addingDate
+    String[] correctResults = new String[] {"1; sequence1.ab1; FSA; ATCG; " + addingDate
         + "; Klaus Bohne; No comments; A; B; null; 2.0; 0.0; none; false; A131E, G7K, +2H5"};
 
     for (int i = 0; i < correctResults.length; i++) {
@@ -390,9 +392,9 @@ public class WritingTests {
     String addingDate = df.format(new Date());
 
     String[] correctResults = new String[] {
-        "1; sequence2.ab1; 1; ATCTTTG; " + addingDate
+        "1; sequence2.ab1; FSA; ATCTTTG; " + addingDate
             + "; Klaus Bohne; No comments; null; null; null; 2.0; 0.0; none; false; reading frame error",
-        "2; sequence3.ab1; 2; ATCTTGCGTTG; " + addingDate
+        "2; sequence3.ab1; FSA; ATCTTGCGTTG; " + addingDate
             + "; Klaus Hafer; ; null; null; null; 2.0; 0.0; none; false; ",};
 
     for (int i = 0; i < correctResults.length; i++) {
@@ -412,8 +414,8 @@ public class WritingTests {
     FileSaver.setLocalPath(path);
 
     // Two bunches of data
-    FileSaver.storeResultsLocally("", seq1);
-    FileSaver.storeResultsLocally("", seq2);
+    FileSaver.storeResultsLocally("a", seq1);
+    FileSaver.storeResultsLocally("b", seq2);
 
 
     // Code for reading the file in again
@@ -429,9 +431,9 @@ public class WritingTests {
     String addingDate = df.format(new Date());
 
     String[] correctResults = new String[] {
-        "1; sequence1.ab1; 4; ATCG; " + addingDate
+        "1; sequence1.ab1; FSA; ATCG; " + addingDate
             + "; Klaus Bohne; No comments; A; B; null; 2.0; 0.0; none; false; A131E, G7K, +2H5",
-        "2; sequence2.ab1; 1; ATCTTTG; " + addingDate
+        "2; sequence2.ab1; FSA; ATCTTTG; " + addingDate
             + "; Klaus Bohne; No comments; null; null; null; 2.0; 0.0; none; false; reading frame error"};
 
     for (int i = 0; i < correctResults.length; i++) {
@@ -482,7 +484,7 @@ public class WritingTests {
     FileSaver.storeResultsLocally("separate2", seq3);
 
     // Test the first file
-    BufferedReader reader = new BufferedReader(new FileReader("writingtests/separate1.csv"));
+    BufferedReader reader = new BufferedReader(new FileReader("writingtests/gsat_results_separate1.csv"));
 
     LinkedList<String> results = new LinkedList<String>();
     reader.lines().skip(1).forEach(line -> results.add(line));
@@ -491,7 +493,7 @@ public class WritingTests {
     DateFormat df = new SimpleDateFormat("dd/MM/yy");
     String addingDate = df.format(new Date());
 
-    String[] correctResults = new String[] {"1; sequence2.ab1; 1; ATCTTTG; " + addingDate
+    String[] correctResults = new String[] {"1; sequence2.ab1; FSA; ATCTTTG; " + addingDate
         + "; Klaus Bohne; No comments; null; null; null; 2.0; 0.0; none; false; reading frame error"};
 
     for (int i = 0; i < correctResults.length; i++) {
@@ -501,13 +503,13 @@ public class WritingTests {
     assertTrue(results.size() == 1);
 
     // Test the second file
-    reader = new BufferedReader(new FileReader("writingtests/separate2.csv"));
+    reader = new BufferedReader(new FileReader("writingtests/gsat_results_separate2.csv"));
 
     LinkedList<String> results2 = new LinkedList<String>();
     reader.lines().skip(1).forEach(line -> results2.add(line));
     reader.close();
 
-    correctResults = new String[] {"1; sequence3.ab1; 2; ATCTTGCGTTG; " + addingDate
+    correctResults = new String[] {"1; sequence3.ab1; FSA; ATCTTGCGTTG; " + addingDate
         + "; Klaus Hafer; ; null; null; null; 2.0; 0.0; none; false; "};
 
     for (int i = 0; i < correctResults.length; i++) {
@@ -519,6 +521,76 @@ public class WritingTests {
 
   }
 
+  
+  @Test
+  public void testStoreOneFileWithSetFileName() throws MissingPathException, IOException {
+	  
+	FileSaver.setSeparateFiles(false);  
+    FileSaver.setLocalPath(path);
+    FileSaver.setDestFileName("testname");
+    FileSaver.storeResultsLocally("A73817", seq1);
+
+    // Code for reading the file in again
+    BufferedReader reader = new BufferedReader(new FileReader("writingtests/testname.csv"));
+
+    LinkedList<String> results = new LinkedList<String>();
+    reader.lines().skip(1).forEach(line -> results.add(line));
+    reader.close();
+
+    DateFormat df = new SimpleDateFormat("dd/MM/yy");
+    String addingDate = df.format(new Date());
+
+    // Check whether the input is correct
+    String[] correctResults = new String[] {"1; sequence1.ab1; FSA; ATCG; " + addingDate
+        + "; Klaus Bohne; No comments; A; B; null; 2.0; 0.0; none; false; A131E, G7K, +2H5"};
+
+    for (int i = 0; i < correctResults.length; i++) {
+      assertEquals(correctResults[i], results.get(i));
+    }
+
+  }
+  
+  @Ignore
+  @Test
+  public void testStoreSeparateFilesWithSetFileName() throws MissingPathException, IOException {
+	  
+	FileSaver.setSeparateFiles(true);
+    FileSaver.setLocalPath(path);
+    FileSaver.setDestFileName("testname");
+    FileSaver.storeResultsLocally("A73817", seq1);
+    FileSaver.storeResultsLocally("test2", seq1);
+    FileSaver.storeResultsLocally("NEXT", seq1);
+    
+    // Code for reading the file in again
+    BufferedReader reader = new BufferedReader(new FileReader("writingtests/testname_A73817.csv"));
+    LinkedList<String> results1 = new LinkedList<String>();
+    reader.lines().skip(1).forEach(line -> results1.add(line));
+    reader.close();
+
+    reader = new BufferedReader(new FileReader("writingtests/testname_test2.csv"));
+    LinkedList<String> results2 = new LinkedList<String>();
+    reader.lines().skip(1).forEach(line -> results2.add(line));
+    reader.close();
+
+    reader = new BufferedReader(new FileReader("writingtests/testname_NEXT.csv"));
+    LinkedList<String> results3 = new LinkedList<String>();
+    reader.lines().skip(1).forEach(line -> results3.add(line));
+    reader.close();
+
+    DateFormat df = new SimpleDateFormat("dd/MM/yy");
+    String addingDate = df.format(new Date());
+
+    // Check whether the input is correct
+    String[] correctResults = new String[] {"1; sequence1.ab1; FSA; ATCG; " + addingDate
+        + "; Klaus Bohne; No comments; A; B; null; 2.0; 0.0; none; false; A131E, G7K, +2H5"};
+
+    for (int i = 0; i < correctResults.length; i++) {
+      assertEquals(correctResults[i], results1.get(i));
+      assertEquals(correctResults[i], results2.get(i));
+      assertEquals(correctResults[i], results3.get(i));
+    }
+
+  }
 
 
 }

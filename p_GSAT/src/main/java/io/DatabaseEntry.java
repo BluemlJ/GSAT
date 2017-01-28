@@ -135,7 +135,7 @@ public class DatabaseEntry {
     String comments = seq.getComments();
     String leftVector = seq.getLeftVector();
     String rightVector = seq.getRightVector();
-    String promotor = seq.getPromotor();
+    String promotor = seq.getPrimer();
     boolean manuallyChecked = seq.isManuallyChecked();
 
 
