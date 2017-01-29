@@ -20,7 +20,6 @@ import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
-import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 
 public class MainWindow extends Application implements javafx.fxml.Initializable {
@@ -202,7 +201,6 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
             settings.start(new Stage());
           } catch (Exception e) {
             // TODO Auto-generated catch block
-            e.printStackTrace();
           }
         }
       }
@@ -212,13 +210,36 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
     aboutButton.setOnAction(new EventHandler<ActionEvent>() {
       @Override
       public void handle(ActionEvent arg0) {
-        TextWindow textWin = new TextWindow("Dies ist ein Test Text");
+        // TextWindow textWin = new TextWindow();
         try {
-          textWin.start(new Stage());
-        } catch (Exception e) {
-          // TODO Auto-generated catch block
+          final FXMLLoader loader = new FXMLLoader(TextWindow.class.getResource("/fxml/TextWindow.fxml"));
+
+          
+          
+          final Parent root = loader.load();
+          
+          TextWindow texWin = loader.<TextWindow>getController();
+          texWin.setText("Text Goes Here");
+          
+          Scene scene = new Scene(root);
+          Stage s = new Stage();
+          s.setScene(scene);
+          s.sizeToScene();
+          s.show();
+          
+        } catch (IOException e) {
           e.printStackTrace();
+          return;
         }
+
+
+
+        /*
+         * try { textWin.setText("Test Text"); textWin.start(new Stage());
+         * textWin.setText("Test Text"); } catch (Exception e) { // TODO Auto-generated catch block
+         * e.printStackTrace(); }
+         */
+
       }
     });
 
