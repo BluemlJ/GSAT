@@ -117,7 +117,7 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
       @Override
       public void handle(ActionEvent arg0) {
         String output;
-        output = GUIUtils.setDestination(destField).second;
+        output = GUIUtils.setDestination(destField, srcField.getText()).second;
         infoArea.appendText(output + "\n");
       }
     });
