@@ -207,14 +207,12 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
     });
 
     // set settings button to open settings window
-  /*  aboutButton.setOnAction(new EventHandler<ActionEvent>() {
+    aboutButton.setOnAction(new EventHandler<ActionEvent>() {
       @Override
       public void handle(ActionEvent arg0) {
         // TextWindow textWin = new TextWindow();
         try {
           final FXMLLoader loader = new FXMLLoader(TextWindow.class.getResource("/fxml/TextWindow.fxml"));
-
-          
           
           final Parent root = loader.load();
           
@@ -231,20 +229,11 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
           e.printStackTrace();
           return;
         }
-
-
-
-        /*
-         * try { textWin.setText("Test Text"); textWin.start(new Stage());
-         * textWin.setText("Test Text"); } catch (Exception e) { // TODO Auto-generated catch block
-         * e.printStackTrace(); }
-         */
-
       }
     });
 
     // ...
-*/
+
   }
 
 
