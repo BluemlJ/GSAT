@@ -19,9 +19,9 @@ import exceptions.ConfigReadException;
  *
  */
 public class ConfigHandler {
-  public static String path =
+  private static String path =
       System.getProperty("user.home") + File.separator + "gsat" + File.separator + "config.txt";
-  public static String researcher;
+  private static String researcher;
   private static String[] researchers;
 
 

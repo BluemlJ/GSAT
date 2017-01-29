@@ -207,7 +207,7 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
     });
 
     // set settings button to open settings window
-    aboutButton.setOnAction(new EventHandler<ActionEvent>() {
+  /*  aboutButton.setOnAction(new EventHandler<ActionEvent>() {
       @Override
       public void handle(ActionEvent arg0) {
         // TextWindow textWin = new TextWindow();
@@ -244,7 +244,7 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
     });
 
     // ...
-
+*/
   }
 
 

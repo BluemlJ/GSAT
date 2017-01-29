@@ -50,7 +50,7 @@ public class GeneHandler {
       throw new DuplicateGeneException(geneName);
     }
 
-    geneList.add(new Gene(geneSequence, 0, geneName, ConfigHandler.researcher));
+    geneList.add(new Gene(geneSequence, 0, geneName, ConfigHandler.getResearcher()));
 
     writeGenes(genePath);
   }
@@ -169,7 +169,7 @@ public class GeneHandler {
       String name = sepLine[0];
       String gene = sepLine[1];
       if (getGene(name) == null) {
-        geneList.add(new Gene(gene, id, name, ConfigHandler.researcher));
+        geneList.add(new Gene(gene, id, name, ConfigHandler.getResearcher()));
         id++;
       }
     }

@@ -200,7 +200,12 @@ public class GUIUtils {
 		chooser.setInitialDirectory(start);
 	    }
 	}
-	selectedDirectory = chooser.showDialog(null);
+	try {
+	    selectedDirectory = chooser.showDialog(null);
+	} catch (java.lang.IllegalArgumentException e) {
+	    chooser.setInitialDirectory(new File(System.getProperty("user.home")));
+	    selectedDirectory = chooser.showDialog(null);
+	}
 	chooser.setTitle("Set destination path");
 	if (selectedDirectory != null) {
 	    path = selectedDirectory.getAbsolutePath();
@@ -235,9 +240,8 @@ public class GUIUtils {
 		}
 	    }
 
-	   
 	}
-	
+
 	Alert alert = new Alert(AlertType.CONFIRMATION);
 	alert.setTitle("Set path to the .ab1 file(s)");
 	alert.setHeaderText(null);
@@ -249,7 +253,6 @@ public class GUIUtils {
 
 	alert.getButtonTypes().setAll(buttonTypeOne, buttonTypeTwo, buttonTypeCancel);
 
-	
 	Optional<ButtonType> result = alert.showAndWait();
 	if (result.get() == buttonTypeOne) {
 	    report = "Reading path to .ab1 file folder was unsuccessful.";
@@ -259,7 +262,12 @@ public class GUIUtils {
 		File start = new File(defaultPath);
 		chooser.setInitialDirectory(start);
 	    }
-	    selectedDirectory = chooser.showDialog(null);
+	    try {
+		selectedDirectory = chooser.showDialog(null);
+	    } catch (java.lang.IllegalArgumentException e) {
+		chooser.setInitialDirectory(new File(System.getProperty("user.home")));
+		selectedDirectory = chooser.showDialog(null);
+	    }
 	} else if (result.get() == buttonTypeTwo) {
 	    FileChooser chooser = new FileChooser();
 	    chooser.setTitle("Set path to the .ab1 file");
@@ -267,7 +275,12 @@ public class GUIUtils {
 		File start = new File(defaultPath);
 		chooser.setInitialDirectory(start);
 	    }
-	    selectedDirectory = chooser.showOpenDialog(null);
+	    try {
+		selectedDirectory = chooser.showOpenDialog(null);
+	    } catch (java.lang.IllegalArgumentException e) {
+		chooser.setInitialDirectory(new File(System.getProperty("user.home")));
+		selectedDirectory = chooser.showOpenDialog(null);
+	    }
 	} else {
 	    return new Pair<Boolean, String>(success, "The action to set a source folder was cancelled");
 	}

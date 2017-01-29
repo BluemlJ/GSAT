@@ -28,7 +28,6 @@ public class ConfigTests {
   private String path =
       System.getProperty("user.home") + File.separator + "gsat" + File.separator + "config.txt";
 
-
   @Ignore
   @Test
   public void configMethods() throws IOException {
@@ -68,12 +67,12 @@ public class ConfigTests {
   @Test
   public void testAnalysedSeqRead()
       throws IOException, ConfigReadException, ConfigNotFoundException {
-    ConfigHandler.researcher = null;
+    ConfigHandler.setResearcher(null);
     File path = new File("resources/lh_config/config.txt");
     ConfigHandler.setPath(path.getAbsolutePath());
     ConfigHandler.readConfig();
-    AnalysedSequence testSeq =
-        new AnalysedSequence("atg", ConfigHandler.researcher, "seq1.abi", new int[] {100, 100, 100});
+    AnalysedSequence testSeq = new AnalysedSequence("atg", ConfigHandler.getResearcher(),
+        "seq1.abi", new int[] {100, 100, 100});
     assertEquals(testSeq.getResearcher(), "lovis heindrich");
   }
 
@@ -87,11 +86,11 @@ public class ConfigTests {
   @Test
   public void testConfigRead() throws IOException, ConfigReadException, ConfigNotFoundException {
     // Config.setPath(getClass().getResource("/lh_config").getFile());
-    ConfigHandler.researcher = null;
+    ConfigHandler.setResearcher(null);
     File path = new File("resources/lh_config/config.txt");
     ConfigHandler.setPath(path.getAbsolutePath());
     ConfigHandler.readConfig();
-    assertEquals(ConfigHandler.researcher, "lovis heindrich");
+    assertEquals(ConfigHandler.getResearcher(), "lovis heindrich");
   }
 
   /**
@@ -120,15 +119,14 @@ public class ConfigTests {
    */
   @Test
   public void wrongConfigPath() throws IOException, ConfigReadException {
-    ConfigHandler.setPath(System.getProperty("user.home") + File.separator + "NOTGSAT" + File.separator
-        + "config.txt");
+    ConfigHandler.setPath(System.getProperty("user.home") + File.separator + "NOTGSAT"
+        + File.separator + "config.txt");
     try {
       ConfigHandler.readConfig();
     } catch (ConfigNotFoundException e) {
       assertEquals(e.getMessage(), "Config at path: /corrupt_path could not be found");
     }
   }
-
 
   /**
    * Test reading multiple researchers from a sample config file (Userstory xxx - Expected behavior)
@@ -140,7 +138,7 @@ public class ConfigTests {
   @Test
   public void testMultipleUsersConfigRead()
       throws IOException, ConfigReadException, ConfigNotFoundException {
-    ConfigHandler.researcher = null;
+    ConfigHandler.setResearcher(null);
     ConfigHandler.setResearchers(null);
     File path = new File("resources/lh_config/config.txt");
     ConfigHandler.setPath(path.getAbsolutePath());
@@ -149,12 +147,12 @@ public class ConfigTests {
     assertEquals(ConfigHandler.getResearchers()[1], "jannis blueml");
     assertEquals(ConfigHandler.getResearchers()[2], "kevin otto");
     assertEquals(ConfigHandler.getResearchers()[3], "ben Kohr");
-    assertEquals(ConfigHandler.researcher, "lovis heindrich");
+    assertEquals(ConfigHandler.getResearcher(), "lovis heindrich");
   }
 
   @Test
   public void testConfigWriting() throws ConfigReadException, ConfigNotFoundException, IOException {
-    ConfigHandler.researcher = null;
+    ConfigHandler.setResearcher(null);
     ConfigHandler.setResearchers(null);
 
     // read config
@@ -163,33 +161,31 @@ public class ConfigTests {
     ConfigHandler.readConfig();
 
     // change config parameters and write them to the file
-    ConfigHandler.researcher = "testresearcher1";
+    ConfigHandler.setResearcher("testresearcher1");
     ConfigHandler.setResearchers("testresearcher2", 1);
     ConfigHandler.writeConfig();
 
     // reread configuration file
-    ConfigHandler.researcher = null;
+    ConfigHandler.setResearcher(null);
     ConfigHandler.setResearchers(null);
     ConfigHandler.readConfig();
 
     // check for changed parameters
-    assertEquals(ConfigHandler.researcher, "testresearcher1");
+    assertEquals(ConfigHandler.getResearcher(), "testresearcher1");
     assertEquals(ConfigHandler.getResearchers()[1], "testresearcher2");
 
-
     // change parameters back
-    ConfigHandler.researcher = "lovis heindrich";
+    ConfigHandler.setResearcher("lovis heindrich");
     ConfigHandler.setResearchers("jannis blueml", 1);
     ConfigHandler.writeConfig();
 
-
     // reread configuration file
-    ConfigHandler.researcher = null;
+    ConfigHandler.setResearcher(null);
     ConfigHandler.setResearchers(null);
     ConfigHandler.readConfig();
 
     // check for old values
-    assertEquals(ConfigHandler.researcher, "lovis heindrich");
+    assertEquals(ConfigHandler.getResearcher(), "lovis heindrich");
     assertEquals(ConfigHandler.getResearchers()[1], "jannis blueml");
   }
 
