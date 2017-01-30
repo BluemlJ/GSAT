@@ -6,7 +6,9 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import analysis.Gene;
 import exceptions.DuplicateGeneException;
@@ -138,6 +140,8 @@ public class GeneHandler {
     for (int i = 0; i < geneList.size(); i++) {
       names[i] = geneList.get(i).getName();
     }
+    
+    Arrays.sort(names);
     return names;
   }
 

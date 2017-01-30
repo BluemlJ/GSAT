@@ -5,6 +5,8 @@ import java.io.IOException;
 import java.util.LinkedList;
 import java.util.Optional;
 
+import com.sun.javafx.scene.control.skin.VirtualFlow;
+
 import analysis.AnalysedSequence;
 import analysis.Gene;
 import analysis.MutationAnalysis;
@@ -26,9 +28,11 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonBar.ButtonData;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.Cell;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
+import javafx.scene.text.Font;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 
@@ -66,7 +70,7 @@ public class GUIUtils {
       return new Pair<Boolean, String>(false,
           "Reading Gene.txt was unsuccessful\n" + e.getMessage());
     }
-    
+
     genes.setItems(FXCollections.observableArrayList(GeneHandler.getGeneNames()));
     return new Pair<Boolean, String>(true, "Reading Gene.txt was successful");
   }

@@ -7,6 +7,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.util.Arrays;
 
 import exceptions.ConfigNotFoundException;
@@ -147,6 +148,7 @@ public class ConfigHandler {
   }
 
   public static String[] getResearchers() {
+    Arrays.sort(researchers);
     return researchers;
   }
 
