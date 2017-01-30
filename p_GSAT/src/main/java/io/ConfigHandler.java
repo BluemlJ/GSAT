@@ -21,8 +21,8 @@ import exceptions.ConfigReadException;
 public class ConfigHandler {
   private static String path =
       System.getProperty("user.home") + File.separator + "gsat" + File.separator + "config.txt";
-  private static String researcher;
-  private static String[] researchers;
+  private static String researcher = "";
+  private static String[] researchers = {""};
 
 
 
