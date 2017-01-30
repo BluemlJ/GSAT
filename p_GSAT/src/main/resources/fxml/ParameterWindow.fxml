@@ -13,8 +13,8 @@
          <children>
             <AnchorPane prefHeight="0.0" prefWidth="453.0">
                <children>
-                  <TextField layoutX="85.0" layoutY="17.0" prefHeight="25.0" prefWidth="82.0" />
-                  <Text layoutX="14.0" layoutY="34.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Parameter 1" wrappingWidth="63.984375" />
+                  <TextField layoutX="177.0" layoutY="21.0" prefHeight="25.0" prefWidth="82.0" promptText="25" />
+                  <Text layoutX="14.0" layoutY="38.0" strokeType="OUTSIDE" strokeWidth="0.0" text="minimal Start Quality" wrappingWidth="161.984375" />
                </children>
             </AnchorPane>
          </children>
@@ -23,8 +23,8 @@
          <children>
             <AnchorPane prefHeight="0.0" prefWidth="453.0">
                <children>
-                  <TextField layoutX="85.0" layoutY="17.0" prefHeight="25.0" prefWidth="82.0" />
-                  <Text layoutX="14.0" layoutY="34.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Parameter 2" wrappingWidth="63.984375" />
+                  <TextField layoutX="177.0" layoutY="21.0" prefHeight="25.0" prefWidth="82.0" promptText="30" />
+                  <Text layoutX="14.0" layoutY="38.0" strokeType="OUTSIDE" strokeWidth="0.0" text="minimal End Quality" wrappingWidth="161.984375" />
                </children>
             </AnchorPane>
          </children>
@@ -33,20 +33,30 @@
          <children>
             <AnchorPane prefHeight="0.0" prefWidth="453.0">
                <children>
-                  <TextField layoutX="85.0" layoutY="17.0" prefHeight="25.0" prefWidth="82.0" />
-                  <Text layoutX="14.0" layoutY="34.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Parameter 3" wrappingWidth="63.984375" />
+                  <TextField layoutX="177.0" layoutY="21.0" prefHeight="25.0" prefWidth="82.0" promptText="9" />
+                  <Text layoutX="14.0" layoutY="38.0" strokeType="OUTSIDE" strokeWidth="0.0" text="bad Quality margin" wrappingWidth="161.984375" />
                </children>
             </AnchorPane>
          </children>
       </VBox>
       <VBox prefHeight="331.0" prefWidth="453.0">
          <children>
-            <AnchorPane prefHeight="139.0" prefWidth="397.0">
+            <AnchorPane prefHeight="0.0" prefWidth="453.0">
                <children>
-                  <TextField layoutX="85.0" layoutY="17.0" prefHeight="25.0" prefWidth="82.0" />
-                  <Text layoutX="14.0" layoutY="34.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Parameter 4" wrappingWidth="63.984375" />
-                  <Button layoutX="300.0" layoutY="16.0" mnemonicParsing="false" text="Save" />
-                  <Button layoutX="235.0" layoutY="16.0" mnemonicParsing="false" text="cancle" />
+                  <TextField layoutX="177.0" layoutY="21.0" prefHeight="25.0" prefWidth="82.0" promptText="3" />
+                  <Text layoutX="14.0" layoutY="38.0" strokeType="OUTSIDE" strokeWidth="0.0" text="good Quality margin" wrappingWidth="161.984375" />
+               </children>
+            </AnchorPane>
+         </children>
+      </VBox>
+      <VBox prefHeight="331.0" prefWidth="453.0">
+         <children>
+            <AnchorPane prefHeight="0.0" prefWidth="453.0">
+               <children>
+                  <TextField layoutX="177.0" layoutY="21.0" prefHeight="25.0" prefWidth="82.0" promptText="20" />
+                  <Text layoutX="14.0" layoutY="38.0" strokeType="OUTSIDE" strokeWidth="0.0" text="search Radius" wrappingWidth="161.984375" />
+                  <Button layoutX="329.0" layoutY="21.0" mnemonicParsing="false" text="cancle" />
+                  <Button layoutX="269.0" layoutY="21.0" mnemonicParsing="false" text="Save" />
                </children>
             </AnchorPane>
          </children>
@@ -60,5 +70,6 @@
             </AnchorPane>
          </children>
       </VBox>
+      <Pane prefHeight="200.0" prefWidth="200.0" />
   </children>
 </VBox>

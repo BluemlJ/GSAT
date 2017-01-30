@@ -55,9 +55,10 @@ public class SettingsWindow extends Application implements javafx.fxml.Initializ
 
   @Override
   public void initialize(URL location, ResourceBundle resources) {
-
+    
     GUIUtils.initializeResearchers(researcherDrobdown);
     GUIUtils.initializeGeneBox(geneList);
+    
 
     researcherDrobdown.getSelectionModel().selectedItemProperty()
         .addListener((obeservable, value, newValue) -> {
