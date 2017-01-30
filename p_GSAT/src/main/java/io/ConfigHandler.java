@@ -68,7 +68,7 @@ public class ConfigHandler {
     
     configReader.close();
     
-    Arrays.sort(researchers);
+    //Arrays.sort(researchers);
   }
 
   /**
@@ -180,7 +180,7 @@ public class ConfigHandler {
     researchers = newResearchers;
     
     //sort researchers
-    Arrays.sort(researchers);
+    //Arrays.sort(researchers);
   }
 
   /**

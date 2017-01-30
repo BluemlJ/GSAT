@@ -43,7 +43,9 @@ public class GeneHandler {
       throws DuplicateGeneException, IOException {
 
     path = genePath;
-
+    
+    readGenes();
+    
     // check if the new gene already exists
     if (GeneHandler.containsGene(geneName)) {
       throw new DuplicateGeneException(geneName);
@@ -55,6 +57,7 @@ public class GeneHandler {
   }
 
   public static void deleteGene(String newpath, String geneName) throws IOException {
+    
     for (int i = 0; i < geneList.size(); i++) {
       if (geneList.get(i).getName().equals(geneName)) {
         geneList.remove(i);
@@ -183,7 +186,7 @@ public class GeneHandler {
 
     geneReader.close();
 
-
+    /*
     // check if there are no genes
     if (geneList.isEmpty()) {
       try {
@@ -193,10 +196,8 @@ public class GeneHandler {
         // should never happen
         e.printStackTrace();
       }
-    }
+    }*/
 
-    // sort genes alphabetically
-    sortGenes();
   }
 
   /**
@@ -243,19 +244,4 @@ public class GeneHandler {
   }
 
 
-  /**
-   * sort the gene list alphabetically and update genes.txt
-   * 
-   * @throws IOException
-   */
-  public static void sortGenes() throws IOException {
-    Collections.sort(geneList, new Comparator<Gene>() {
-      @Override
-      public int compare(Gene gene1, Gene gene2) {
-
-        return gene1.getName().compareTo(gene2.getName());
-      }
-    });
-    writeGenes();
-  }
 }
