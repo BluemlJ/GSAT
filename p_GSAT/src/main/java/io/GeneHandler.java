@@ -44,9 +44,6 @@ public class GeneHandler {
 
     path = genePath;
 
-    // read all genes from path to avoid losing data while rewriting
-    readGenes(path);
-
     // check if the new gene already exists
     if (GeneHandler.containsGene(geneName)) {
       throw new DuplicateGeneException(geneName);
@@ -66,6 +63,11 @@ public class GeneHandler {
     writeGenes(newpath);
   }
 
+  /**
+   * clears gene.txt and writes all known genes.
+   * @param genePath
+   * @throws IOException
+   */
   public static void writeGenes(String genePath) throws IOException {
     // clears all genes from file
     BufferedWriter geneWriter = new BufferedWriter(new FileWriter(genePath));
@@ -183,7 +185,7 @@ public class GeneHandler {
 
 
     // check if there are no genes
-    if (geneList == null) {
+    if (geneList.isEmpty()) {
       try {
         addGene("FSA",
             "ATGGAACTGTATCTGGATACTTCAGACGTTGTTGCGGTGAAGGCGCTGTCACGTATTTTTCCGCTGGCGGGTGTGACCACTAACCCAAGCATTATCGCCGCGGGTAAAAAACCGCTGGATGTTGTGCTTCCGCAACTTCATGAAGCGATGGGCGGTCAGGGGCGTCTGTTTGCCCAGGTAATGGCTACCACTGCCGAAGGGATGGTTAATGACGCGCTTAAGCTGCGTTCTATTATTGCGGATATCGTGGTGAAAGTTCCGGTGACCGCCGAGGGGCTGGCAGCTATTAAGATGTTAAAAGCGGAAGGGATTCCGACGCTGGGAACCGCGGTATATGGCGCAGCACAAGGGCTGCTGTCGGCGCTGGCAGGTGCGGAATATGTTGCGCCTTACGTTAATCGTATTGATGCTCAGGGCGGTAGCGGCATTCAGACTGTGACCGACTTACACCAGTTATTGAAAATGCATGCGCCGCAGGCGAAAGTGCTGGCAGCGAGTTTCAAAACCCCGCGTCAGGCGCTGGACTGCTTACTGGCAGGATGTGAATCAATTACTCTGCCACTGGATGTGGCACAACAGATGATTAGCTATCCGGCGGTTGATGCCGCTGTGGCGAAGTTTGAGCAGGACTGGCAGGGAGCGTTTGGCAGAACGTCGATTTAA");
