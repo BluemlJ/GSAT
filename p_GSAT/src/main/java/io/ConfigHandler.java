@@ -65,13 +65,10 @@ public class ConfigHandler {
           break;
       }
     }
-    /*
-     * String researcherLine = configReader.readLine(); if (researcherLine == null ||
-     * researcherLine.length() < 12 || !researcherLine.substring(0, 11).equals("researcher:")) {
-     * configReader.close(); throw new ConfigReadException("researcher"); } Config.researcher =
-     * researcherLine.substring(11).trim();
-     */
+    
     configReader.close();
+    
+    Arrays.sort(researchers);
   }
 
   /**
@@ -181,6 +178,9 @@ public class ConfigHandler {
     }
     newResearchers[researchers.length] = name;
     researchers = newResearchers;
+    
+    //sort researchers
+    Arrays.sort(researchers);
   }
 
   /**
@@ -200,6 +200,5 @@ public class ConfigHandler {
     researcher = "";
     researchers = newResearchers;
   }
-
-
+  
 }

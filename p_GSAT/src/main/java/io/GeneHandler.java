@@ -7,6 +7,8 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 import analysis.Gene;
 import exceptions.DuplicateGeneException;
@@ -156,8 +158,11 @@ public class GeneHandler {
    */
   public static void readGenes(String genePath) throws IOException {
 
+    // open genes.txt or initialize it
     path = genePath;
     initGenes();
+
+    // read all genes from the file
     geneList = new ArrayList<Gene>();
     BufferedReader geneReader = new BufferedReader(new FileReader(genePath));
     String line;
@@ -175,18 +180,21 @@ public class GeneHandler {
     }
 
     geneReader.close();
-    
-    
-    //check if there are no genes
-    if(geneList == null){
+
+
+    // check if there are no genes
+    if (geneList == null) {
       try {
-        addGene("FSA", "ATGGAACTGTATCTGGATACTTCAGACGTTGTTGCGGTGAAGGCGCTGTCACGTATTTTTCCGCTGGCGGGTGTGACCACTAACCCAAGCATTATCGCCGCGGGTAAAAAACCGCTGGATGTTGTGCTTCCGCAACTTCATGAAGCGATGGGCGGTCAGGGGCGTCTGTTTGCCCAGGTAATGGCTACCACTGCCGAAGGGATGGTTAATGACGCGCTTAAGCTGCGTTCTATTATTGCGGATATCGTGGTGAAAGTTCCGGTGACCGCCGAGGGGCTGGCAGCTATTAAGATGTTAAAAGCGGAAGGGATTCCGACGCTGGGAACCGCGGTATATGGCGCAGCACAAGGGCTGCTGTCGGCGCTGGCAGGTGCGGAATATGTTGCGCCTTACGTTAATCGTATTGATGCTCAGGGCGGTAGCGGCATTCAGACTGTGACCGACTTACACCAGTTATTGAAAATGCATGCGCCGCAGGCGAAAGTGCTGGCAGCGAGTTTCAAAACCCCGCGTCAGGCGCTGGACTGCTTACTGGCAGGATGTGAATCAATTACTCTGCCACTGGATGTGGCACAACAGATGATTAGCTATCCGGCGGTTGATGCCGCTGTGGCGAAGTTTGAGCAGGACTGGCAGGGAGCGTTTGGCAGAACGTCGATTTAA");
-        writeGenes();
+        addGene("FSA",
+            "ATGGAACTGTATCTGGATACTTCAGACGTTGTTGCGGTGAAGGCGCTGTCACGTATTTTTCCGCTGGCGGGTGTGACCACTAACCCAAGCATTATCGCCGCGGGTAAAAAACCGCTGGATGTTGTGCTTCCGCAACTTCATGAAGCGATGGGCGGTCAGGGGCGTCTGTTTGCCCAGGTAATGGCTACCACTGCCGAAGGGATGGTTAATGACGCGCTTAAGCTGCGTTCTATTATTGCGGATATCGTGGTGAAAGTTCCGGTGACCGCCGAGGGGCTGGCAGCTATTAAGATGTTAAAAGCGGAAGGGATTCCGACGCTGGGAACCGCGGTATATGGCGCAGCACAAGGGCTGCTGTCGGCGCTGGCAGGTGCGGAATATGTTGCGCCTTACGTTAATCGTATTGATGCTCAGGGCGGTAGCGGCATTCAGACTGTGACCGACTTACACCAGTTATTGAAAATGCATGCGCCGCAGGCGAAAGTGCTGGCAGCGAGTTTCAAAACCCCGCGTCAGGCGCTGGACTGCTTACTGGCAGGATGTGAATCAATTACTCTGCCACTGGATGTGGCACAACAGATGATTAGCTATCCGGCGGTTGATGCCGCTGTGGCGAAGTTTGAGCAGGACTGGCAGGGAGCGTTTGGCAGAACGTCGATTTAA");
       } catch (DuplicateGeneException e) {
-        //should never happen
+        // should never happen
         e.printStackTrace();
       }
     }
+
+    // sort genes alphabetically
+    sortGenes();
   }
 
   /**
@@ -230,5 +238,22 @@ public class GeneHandler {
   public static void deleteGene(String string) throws IOException {
     deleteGene(path, string);
 
+  }
+
+
+  /**
+   * sort the gene list alphabetically and update genes.txt
+   * 
+   * @throws IOException
+   */
+  public static void sortGenes() throws IOException {
+    Collections.sort(geneList, new Comparator<Gene>() {
+      @Override
+      public int compare(Gene gene1, Gene gene2) {
+
+        return gene1.getName().compareTo(gene2.getName());
+      }
+    });
+    writeGenes();
   }
 }
