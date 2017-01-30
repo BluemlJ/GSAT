@@ -12,6 +12,7 @@ import java.util.Arrays;
 
 import exceptions.ConfigNotFoundException;
 import exceptions.ConfigReadException;
+import gui.AddGeneWindow;
 
 /**
  * This class is responsible for reading the configuration file and storing its values
@@ -201,6 +202,10 @@ public class ConfigHandler {
     }
     researcher = "";
     researchers = newResearchers;
+  }
+  
+  public static String[] getParameters(){
+    return null; //TODO @Lovis
   }
   
 }

@@ -47,6 +47,10 @@ public class AddGeneWindow extends Application implements javafx.fxml.Initializa
   public void initialize(URL location, ResourceBundle resources) {
   }
 
+  @Override
+  public void stop() throws Exception {
+   super.stop();
+  }
 
   @Override
   public void start(Stage primaryStage) throws Exception {
@@ -57,24 +61,11 @@ public class AddGeneWindow extends Application implements javafx.fxml.Initializa
       e.printStackTrace();
       return;
     }
-    scene = new Scene(root);
+    Scene scene = new Scene(root);
     primaryStage.setScene(scene);
     primaryStage.sizeToScene();
     primaryStage.show();
-    // alow opening again when settingswindow was closed
-    primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
-
-      @Override
-      public void handle(WindowEvent arg0) {
-        MainWindow.settingsOpen = false;
-
-      }
-    });
-    /*
-     * returnButton.setOnAction(new EventHandler<ActionEvent>() {
-     * 
-     * @Override public void handle(ActionEvent arg0) { primaryStage.close(); } });
-     */
   }
+
 
 }

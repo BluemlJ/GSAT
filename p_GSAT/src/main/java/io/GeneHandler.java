@@ -55,6 +55,34 @@ public class GeneHandler {
 
     writeGenes(genePath);
   }
+  
+  /**
+   * add a new gene to genes.txt
+   * 
+   * @param genePath path of the genes.txt file
+   * @param geneName name of the gene
+   * @param geneSequence sequence string of the gene
+   * @param organism more informations about the gene sequence
+   * @param comment specific comment to this gene sequence
+   * @throws DuplicateGeneException gene name already exists
+   * @throws IOException error while writing the file
+   */
+  public static void addGene(String genePath, String geneName, String geneSequence, String organism, String comment)
+      throws DuplicateGeneException, IOException {
+
+    path = genePath;
+
+    readGenes();
+
+    // check if the new gene already exists
+    if (GeneHandler.containsGene(geneName)) {
+      throw new DuplicateGeneException(geneName);
+    }
+
+    geneList.add(new Gene(geneSequence, 0, geneName, ConfigHandler.getResearcher(), organism, comment));
+
+    writeGenes(genePath);
+  }
 
   public static void deleteGene(String newpath, String geneName) throws IOException {
 

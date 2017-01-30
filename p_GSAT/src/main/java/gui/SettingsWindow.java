@@ -55,10 +55,10 @@ public class SettingsWindow extends Application implements javafx.fxml.Initializ
 
   @Override
   public void initialize(URL location, ResourceBundle resources) {
-    
+
     GUIUtils.initializeResearchers(researcherDrobdown);
     GUIUtils.initializeGeneBox(geneList);
-    
+
 
     researcherDrobdown.getSelectionModel().selectedItemProperty()
         .addListener((obeservable, value, newValue) -> {
@@ -111,39 +111,36 @@ public class SettingsWindow extends Application implements javafx.fxml.Initializ
     addGeneButton.setOnAction(new EventHandler<ActionEvent>() {
       @Override
       public void handle(ActionEvent arg0) {
-        String genename, gene;
-        TextInputDialog dialog = new TextInputDialog("Gene name");
-        dialog.setTitle("Add a new gene");
-        dialog.setHeaderText("Please enter the name of the new gene.");
-        dialog.setContentText("Name:");
 
-        // Traditional way to get the response value.
-        Optional<String> result = dialog.showAndWait();
-        if (result.isPresent()) {
-          genename = result.get();
-          if (genename == "" || genename == null) return;
-
-          dialog = new TextInputDialog("Gene in nucleotides");
-          dialog.setTitle("Add a new gene");
-          dialog.setHeaderText("Please enter the gene sequence in form of nucleotides.");
-          dialog.setContentText("Sequence:");
-
-          // Traditional way to get the response value.
-          result = dialog.showAndWait();
-          if (result.isPresent()) {
-            gene = result.get();
-            try {
-              GeneHandler.addGene(genename, gene);
-              GUIUtils.initializeGeneBox(geneList);
-            } catch (DuplicateGeneException | IOException e) {
-              System.out.println("FAIL");
-              // TODO Auto-generated catch block
-              e.printStackTrace();
-            }
-          }
+        AddGeneWindow addgene = new AddGeneWindow();
+        try {
+          addgene.start(new Stage());
+        } catch (Exception e) {
+          System.out.println("FEHLER");
         }
       }
+
     });
+    /*
+     * String genename, gene; TextInputDialog dialog = new TextInputDialog("Gene name");
+     * dialog.setTitle("Add a new gene");
+     * dialog.setHeaderText("Please enter the name of the new gene.");
+     * dialog.setContentText("Name:");
+     * 
+     * // Traditional way to get the response value. Optional<String> result = dialog.showAndWait();
+     * if (result.isPresent()) { genename = result.get(); if (genename == "" || genename == null)
+     * return;
+     * 
+     * dialog = new TextInputDialog("Gene in nucleotides"); dialog.setTitle("Add a new gene");
+     * dialog.setHeaderText("Please enter the gene sequence in form of nucleotides.");
+     * dialog.setContentText("Sequence:");
+     * 
+     * // Traditional way to get the response value. result = dialog.showAndWait(); if
+     * (result.isPresent()) { gene = result.get(); try { GeneHandler.addGene(genename, gene);
+     * GUIUtils.initializeGeneBox(geneList); } catch (DuplicateGeneException | IOException e) {
+     * System.out.println("FAIL"); // TODO Auto-generated catch block e.printStackTrace(); } } } }
+     * });
+     */
 
 
     addResearcherButton.setOnAction(new EventHandler<ActionEvent>() {
@@ -206,6 +203,21 @@ public class SettingsWindow extends Application implements javafx.fxml.Initializ
         stage.close();
       }
     });
+    
+    parameterButton.setOnAction(new EventHandler<ActionEvent>() {
+
+      @Override
+      public void handle(ActionEvent arg0) {
+       
+          ParameterWindow pW = new ParameterWindow();
+          try {
+          pW.start(new Stage());
+          } catch (Exception e) {
+          // TODO Auto-generated catch block
+          }
+      }
+      
+  });
   }
 
   @Override

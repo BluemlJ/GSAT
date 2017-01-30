@@ -19,6 +19,9 @@ public class Gene extends Sequence {
    */
   private String name;
 
+  private String organism;
+  
+  private String comment;
 
 
   /**
@@ -35,6 +38,26 @@ public class Gene extends Sequence {
     super(sequence, researcher);
     this.name = name;
     this.id = id;
+  }
+  
+  /**
+   * Constructor setting all given attributes (by calling the super constructor).
+   * 
+   * @param sequence The nucleotide sequence as a String.
+   * @param id the unique identification number
+   * @param name The name of the gene
+   * @param organism Name of the organism (more information)
+   * @param comment a comment about this specific gene sequence
+   * @param researcher the name of the researcher who added this gene
+   * 
+   * @author Jannis Blueml
+   */
+  public Gene(String sequence, int id, String name, String researcher, String organism, String comment) {
+    super(sequence, researcher);
+    this.name = name;
+    this.id = id;
+    this.organism = organism;
+    this.comment = comment;
   }
 
 
@@ -58,5 +81,20 @@ public class Gene extends Sequence {
     this.name = name;
   }
 
+  public String getOrganism() {
+    return organism;
+  }
+  
+  public String getComment() {
+    return comment;
+  }
+  
+  public void setOrganism(String organism) {
+    this.organism = organism;
+  }
+  
+  public void setComment(String comment) {
+    this.comment = comment;
+  }
 
 }

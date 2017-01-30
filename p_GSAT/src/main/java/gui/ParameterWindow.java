@@ -1,9 +1,13 @@
 package gui;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
 import javafx.application.Application;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 public class ParameterWindow extends Application implements javafx.fxml.Initializable {
@@ -15,9 +19,19 @@ public class ParameterWindow extends Application implements javafx.fxml.Initiali
   }
 
   @Override
-  public void start(Stage arg0) throws Exception {
-    // TODO Auto-generated method stub
-
+  public void start(Stage primaryStage) throws Exception {
+    Parent root;
+    try {
+      root = FXMLLoader.load(getClass().getResource("/fxml/ParameterWindow.fxml"));
+    } catch (IOException e) {
+      e.printStackTrace();
+      return;
+    }
+    Scene scene = new Scene(root);
+    primaryStage.setScene(scene);
+    primaryStage.sizeToScene();
+    primaryStage.show();
   }
+
 
 }
