@@ -113,8 +113,8 @@ public class SettingsWindow extends Application implements javafx.fxml.Initializ
         String genename, gene;
         TextInputDialog dialog = new TextInputDialog("Gene name");
         dialog.setTitle("Add a new gene");
-        dialog.setHeaderText("Add a new gene by adding a the name first");
-        dialog.setContentText("Please enter gene name:");
+        dialog.setHeaderText("Please enter the name of the new gene.");
+        dialog.setContentText("Name:");
 
         // Traditional way to get the response value.
         Optional<String> result = dialog.showAndWait();
@@ -124,8 +124,8 @@ public class SettingsWindow extends Application implements javafx.fxml.Initializ
 
           dialog = new TextInputDialog("Gene in nucleotides");
           dialog.setTitle("Add a new gene");
-          dialog.setHeaderText("Add now the gene, please in form of nucleotides");
-          dialog.setContentText("Please enter gene:");
+          dialog.setHeaderText("Please enter the gene sequence in form of nucleotides.");
+          dialog.setContentText("Sequence:");
 
           // Traditional way to get the response value.
           result = dialog.showAndWait();
@@ -150,8 +150,8 @@ public class SettingsWindow extends Application implements javafx.fxml.Initializ
       public void handle(ActionEvent arg0) {
         TextInputDialog dialog = new TextInputDialog("your name");
         dialog.setTitle("Add a new researcher");
-        dialog.setHeaderText("Add a new researcher by adding a name ");
-        dialog.setContentText("Please enter name:");
+        dialog.setHeaderText("Please enter the name of the new researcher");
+        dialog.setContentText("Name:");
 
         // Traditional way to get the response value.
         Optional<String> result = dialog.showAndWait();
