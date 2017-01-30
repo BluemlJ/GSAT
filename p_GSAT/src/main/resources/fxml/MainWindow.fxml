@@ -41,7 +41,7 @@
                <content>
                   <HBox>
                      <children>
-                        <TextArea fx:id="infoArea" nodeOrientation="LEFT_TO_RIGHT" prefHeight="138.0" prefWidth="608.0" HBox.hgrow="ALWAYS" />
+                        <TextArea fx:id="infoArea" editable="false" nodeOrientation="LEFT_TO_RIGHT" prefHeight="138.0" prefWidth="608.0" HBox.hgrow="ALWAYS" />
                      </children>
                   </HBox>
                </content>

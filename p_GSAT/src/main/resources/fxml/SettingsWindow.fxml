@@ -27,7 +27,7 @@
               <content>
                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="200.0" prefWidth="200.0">
                      <children>
-                        <ListView fx:id="geneList" editable="true" layoutX="6.0" prefHeight="200.0" prefWidth="422.0" />
+                        <ListView fx:id="geneList" layoutX="6.0" prefHeight="200.0" prefWidth="422.0" />
                      </children>
                   </AnchorPane>
               </content>
