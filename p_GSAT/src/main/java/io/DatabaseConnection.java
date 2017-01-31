@@ -263,7 +263,7 @@ public class DatabaseConnection {
       stmt.executeUpdate(
           "CREATE TABLE genes (id INTEGER unsigned NOT NULL, name VARCHAR(100) NOT NULL, sequence MEDIUMTEXT NOT NULL, date DATE, researcher INTEGER unsigned,  PRIMARY KEY(id))");
       stmt.executeUpdate(
-          "CREATE TABLE sequences (id INTEGER unsigned NOT NULL, name VARCHAR(100) NOT NULL, sequence MEDIUMTEXT NOT NULL, date DATE, researcher INTEGER unsigned, comment VARCHAR(1000), manualcheck CHAR(1), gene INTEGER unsigned, promoter MEDIUMTEXT, vectorleft MEDIUMTEXT, vectorright MEDIUMTEXT, quality MEDIUMTEXT, trimleft INTEGER unsigned, trimright INTEGER unsigned, trimpercent INTEGER unsigned, hisflag VARCHAR(100))");
+          "CREATE TABLE sequences (id INTEGER unsigned NOT NULL, name VARCHAR(100) NOT NULL, sequence MEDIUMTEXT NOT NULL, date DATE, researcher INTEGER unsigned, comment VARCHAR(1000), manualcheck CHAR(1), gene INTEGER unsigned, promoter MEDIUMTEXT, vectorleft MEDIUMTEXT, vectorright MEDIUMTEXT, quality MEDIUMTEXT, trimleft INTEGER unsigned, trimright INTEGER unsigned, trimpercent INTEGER unsigned, hisflag INTEGER unsigned)");
       stmt.executeUpdate(
           "CREATE TABLE mutations (id INTEGER unsigned NOT NULL, name VARCHAR(100) NOT NULL, mutation VARCHAR(100) NOT NULL, type VARCHAR(100), PRIMARY KEY(id))");
       stmt.executeUpdate(
