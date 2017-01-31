@@ -50,17 +50,3 @@ The database used to store the results can be configured with this button. NOTE:
 but coming soon! Stay tuned!
 Return
 Leave the settings window and return to the main window. You changes will be saved.
-
-
-ABOUT
-GSAT can assist you with analysis nucleotide sequences stored in AB1 files by performing quality analysis, finding mutations and
-collecting information about the sequences.
-
-This program was develop by four students from the TU Darmstadt, namely
-Jannis Blüml,
-Lovis Heindrich,
-Ben Kohr and
-Kevin Otto,
-in the context of their so-called “Bachelor-Praktikum“ (from October 2016 until May 2017).
-
-This program is licensed under the GNU Lesser General Public License, which can be found at https://www.gnu.org/licenses/lgpl-3.0.de.html.

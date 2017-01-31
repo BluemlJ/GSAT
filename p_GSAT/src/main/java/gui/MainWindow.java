@@ -50,6 +50,9 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
     private TextField srcField;
     @FXML
     private TextField destField;
+    
+    @FXML
+    private TextField fileNameField;
 
     // dropdownMenu
     @FXML
@@ -199,7 +202,9 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
 		    final Parent root = loader.load();
 
 		    TextWindow texWin = loader.<TextWindow> getController();
-		    texWin.setText("Text Goes Here");
+		    String content = convertStreamToString(
+				    ClassLoader.getSystemResourceAsStream("manual/About.txt"));
+		    texWin.setText(content);
 
 		    Scene scene = new Scene(root);
 		    Stage s = new Stage();
