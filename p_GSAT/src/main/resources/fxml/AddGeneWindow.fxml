@@ -11,7 +11,7 @@
   <children>
     <AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="466.0" prefWidth="640.0">
          <children>
-            <Button layoutX="478.0" layoutY="567.0" mnemonicParsing="false" text="Confirm" />
+            <Button fx:id="confirmButton" layoutX="478.0" layoutY="567.0" mnemonicParsing="false" text="Confirm" />
             <ScrollPane layoutX="14.0" layoutY="66.0" prefHeight="200.0" prefWidth="612.0" AnchorPane.bottomAnchor="210.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="66.0">
                <content>
                   <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="200.0" prefWidth="200.0">
@@ -32,7 +32,7 @@
                   </AnchorPane>
               </content>
             </ScrollPane>
-            <Button layoutX="555.0" layoutY="567.0" mnemonicParsing="false" text="Cancle" />
+            <Button fx:id="cancelButton" layoutX="555.0" layoutY="567.0" mnemonicParsing="false" text="Cancel" />
          </children>
     </AnchorPane>
   </children>
