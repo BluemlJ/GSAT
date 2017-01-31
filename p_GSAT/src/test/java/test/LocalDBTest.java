@@ -39,6 +39,7 @@ public class LocalDBTest {
   @Test
   public void testOnlineConUsingDBConnection(){
     DatabaseConnection.setDatabaseConnection(userOnline, passOnline, portOnline, serverOnline);
+    //DatabaseConnection.createDatabase();
     System.out.println(DatabaseConnection.gsatExists());
   }
   
