@@ -95,7 +95,7 @@ public class GUIUtils {
    * @return a Pair or Boolean, which indicates if the method was successful and a String, which can
    *         printed in the infoarea.
    */
-  public static Pair<Boolean, String> runAnalysis(String sourcepath, int GeneID) {
+  public static Pair<Boolean, String> runAnalysis(String sourcepath, String GeneID) {
     boolean success = false;
     StringBuilder report = new StringBuilder();
 
@@ -302,8 +302,8 @@ public class GUIUtils {
    * @param dropdownID ID of Gene in the choiceBox
    * @return Gene and reportpair
    */
-  private static Pair<Gene, Pair<Boolean, String>> getGeneFromDropDown(int dropdownID) {
-    return new Pair<Gene, Pair<Boolean, String>>(GeneHandler.getGeneAt(dropdownID),
+  private static Pair<Gene, Pair<Boolean, String>> getGeneFromDropDown(String name) {
+    return new Pair<Gene, Pair<Boolean, String>>(GeneHandler.getGene(name),
         new Pair<Boolean, String>(true, "Reading gene was successful"));
 
   }

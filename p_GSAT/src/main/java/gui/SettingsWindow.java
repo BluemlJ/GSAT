@@ -112,6 +112,7 @@ public class SettingsWindow extends Application implements javafx.fxml.Initializ
       @Override
       public void handle(ActionEvent arg0) {
 
+
         AddGeneWindow addgene = new AddGeneWindow();
         try {
           addgene.start(new Stage());
@@ -121,6 +122,8 @@ public class SettingsWindow extends Application implements javafx.fxml.Initializ
       }
 
     });
+
+
     /*
      * String genename, gene; TextInputDialog dialog = new TextInputDialog("Gene name");
      * dialog.setTitle("Add a new gene");
@@ -141,6 +144,7 @@ public class SettingsWindow extends Application implements javafx.fxml.Initializ
      * System.out.println("FAIL"); // TODO Auto-generated catch block e.printStackTrace(); } } } }
      * });
      */
+
 
 
     addResearcherButton.setOnAction(new EventHandler<ActionEvent>() {
@@ -203,21 +207,21 @@ public class SettingsWindow extends Application implements javafx.fxml.Initializ
         stage.close();
       }
     });
-    
+
     parameterButton.setOnAction(new EventHandler<ActionEvent>() {
 
       @Override
       public void handle(ActionEvent arg0) {
-       
-          ParameterWindow pW = new ParameterWindow();
-          try {
+
+        ParameterWindow pW = new ParameterWindow();
+        try {
           pW.start(new Stage());
-          } catch (Exception e) {
+        } catch (Exception e) {
           // TODO Auto-generated catch block
-          }
+        }
       }
-      
-  });
+
+    });
   }
 
   @Override

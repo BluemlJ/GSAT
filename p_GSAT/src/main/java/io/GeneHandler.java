@@ -169,13 +169,15 @@ public class GeneHandler {
       names[i] = geneList.get(i).getName();
     }
     
-    Arrays.sort(names);
+    Arrays.sort(names); 
     return names;
   }
 
   public static int getNumGenes() {
     return geneList.size();
   }
+  
+
 
   /**
    * reads genes from gene file at the locally stored path

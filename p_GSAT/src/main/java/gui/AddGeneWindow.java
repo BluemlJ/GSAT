@@ -36,10 +36,10 @@ public class AddGeneWindow extends Application implements javafx.fxml.Initializa
   private TextField organismField;
   
   @FXML
-  private TextArea geneArea;
+  private javafx.scene.control.TextArea geneArea;
   
   @FXML
-  private TextArea commentArea;
+  private javafx.scene.control.TextArea commentArea;
   
   Scene scene;
 
