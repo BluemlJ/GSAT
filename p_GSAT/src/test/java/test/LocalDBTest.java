@@ -24,11 +24,70 @@ public class LocalDBTest {
   static String pass = "rootpassword";
   static int port = 3306;
   static String server = "127.0.0.1";
+  
+  
+  static String userOnline = "gsatadmin";
+  static String passOnline = "";
+  static int portOnline = 3306;
+  static String serverOnline = "130.83.37.145";
 
   Connection conn = null;
   java.sql.Statement stmt = null;
   ResultSet rs = null;
+  
+  @Ignore
+  @Test
+  public void testOnlineConUsingDBConnection(){
+    DatabaseConnection.setDatabaseConnection(userOnline, passOnline, portOnline, serverOnline);
+    //DatabaseConnection.createDatabase();
+    System.out.println(DatabaseConnection.gsatExists());
+  }
+  
+  
+  /**
+   * Working connection setup to online database
+   */
+  @Ignore
+  @Test
+  public void testOnlineDBConnection(){
+    MysqlDataSource dataSource = new MysqlDataSource();
+    dataSource.setUser(userOnline);
+    dataSource.setPassword(passOnline);
+    dataSource.setPort(portOnline);
+    dataSource.setServerName(serverOnline);
 
+    
+      try {
+        conn = dataSource.getConnection();
+        stmt = conn.createStatement();
+        
+        stmt.execute("USE gsat");
+        
+        rs = stmt.executeQuery(
+            "SELECT * FROM information_schema.tables WHERE table_schema = 'gsat' AND table_name = 'mutations' LIMIT 1");
+        while(rs.next()){
+        System.out.println(rs.getString(1));}
+        
+        rs = stmt.executeQuery("SHOW TABLES");
+        while (rs.next()) {
+          System.out.println(rs.getString(1));
+          
+
+        }
+       
+        rs = stmt.executeQuery(
+            "SELECT * FROM information_schema.tables WHERE table_schema = 'gsat' AND table_name = 'mutations' LIMIT 1");
+        while(rs.next()){
+        System.out.println(rs.getString(1));}
+      } catch (SQLException e) {
+        // TODO Auto-generated catch block
+        e.printStackTrace();
+      }
+      
+
+  }
+  
+  
   @Ignore
   @Test
   public void DBConnectionTest() {

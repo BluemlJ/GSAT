@@ -25,6 +25,12 @@ public class ConfigHandler {
       System.getProperty("user.home") + File.separator + "gsat" + File.separator + "config.txt";
   private static String researcher = "-";
   private static String[] researchers = {"-"};
+  
+  // DB connection values
+  private static String dbUrl = "130.83.37.145";
+  private static String dbUser = "gsatadmin";
+  private static String dbPass;
+  private static int dbPort = 3306;
 
 
 
@@ -63,6 +69,19 @@ public class ConfigHandler {
             ConfigHandler.researchers[i] = ConfigHandler.researchers[i].trim();
           }
           break;
+        case "dbuser":
+          ConfigHandler.setDbUser(elements[1].trim());
+          break;
+        case "dbpass":
+          ConfigHandler.setDbPass(elements[1].trim());
+          break;
+        case "dburl":
+          ConfigHandler.setDbUrl(elements[1].trim());
+          break;
+        case "dbport":
+          ConfigHandler.setDbPort(Integer.parseInt(elements[1].trim()));
+          break;
+          
         default:
           break;
       }
@@ -206,6 +225,38 @@ public class ConfigHandler {
   
   public static String[] getParameters(){
     return null; //TODO @Lovis
+  }
+
+  public static String getDbUrl() {
+    return dbUrl;
+  }
+
+  public static void setDbUrl(String dbUrl) {
+    ConfigHandler.dbUrl = dbUrl;
+  }
+
+  public static String getDbUser() {
+    return dbUser;
+  }
+
+  public static void setDbUser(String dbUser) {
+    ConfigHandler.dbUser = dbUser;
+  }
+
+  public static String getDbPass() {
+    return dbPass;
+  }
+
+  public static void setDbPass(String dbPass) {
+    ConfigHandler.dbPass = dbPass;
+  }
+
+  public static int getDbPort() {
+    return dbPort;
+  }
+
+  public static void setDbPort(int dbPort) {
+    ConfigHandler.dbPort = dbPort;
   }
   
 }
