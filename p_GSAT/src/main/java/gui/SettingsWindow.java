@@ -1,5 +1,6 @@
 package gui;
 
+import java.awt.font.GlyphJustificationInfo;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Optional;
@@ -20,13 +21,14 @@ import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextInputDialog;
+import javafx.scene.control.ListView.EditEvent;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
 public class SettingsWindow extends Application implements javafx.fxml.Initializable {
 
   public static boolean subsettingsOpen = false;
-
+  
   @FXML
   private ListView<String> geneList;
   // fields
@@ -124,6 +126,7 @@ public class SettingsWindow extends Application implements javafx.fxml.Initializ
     });
 
 
+
     /*
      * String genename, gene; TextInputDialog dialog = new TextInputDialog("Gene name");
      * dialog.setTitle("Add a new gene");
@@ -163,6 +166,7 @@ public class SettingsWindow extends Application implements javafx.fxml.Initializ
         try {
           ConfigHandler.writeConfig();
           GUIUtils.initializeResearchers(researcherDrobdown);
+          researcherDrobdown.getSelectionModel().select(result.get());
         } catch (IOException e) {
           // TODO Auto-generated catch block
           e.printStackTrace();
