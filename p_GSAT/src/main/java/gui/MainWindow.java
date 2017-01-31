@@ -50,6 +50,9 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
     private TextField srcField;
     @FXML
     private TextField destField;
+    
+    @FXML
+    private TextField fileNameField;
 
     // dropdownMenu
     @FXML
