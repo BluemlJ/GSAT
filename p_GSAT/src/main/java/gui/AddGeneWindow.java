@@ -26,8 +26,7 @@ import javafx.stage.WindowEvent;
 
 public class AddGeneWindow extends Application implements javafx.fxml.Initializable {
 
-  public static boolean subsettingsOpen = false;
-
+ 
   // fields
   @FXML
   private TextField nameField;

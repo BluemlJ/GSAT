@@ -95,7 +95,8 @@ public class GUIUtils {
    * @return a Pair or Boolean, which indicates if the method was successful and a String, which can
    *         printed in the infoarea.
    */
-  public static Pair<Boolean, String> runAnalysis(String sourcepath, String GeneID) {
+  public static Pair<Boolean, String> runAnalysis(String sourcepath, String GeneID,
+      String resultname) {
     boolean success = false;
     StringBuilder report = new StringBuilder();
 
@@ -155,8 +156,12 @@ public class GUIUtils {
 
       // add entry to database
       try {
-        FileSaver.storeResultsLocally(file.getName().replaceFirst("[.][^.]+$", "") + "_result",
-            toAnalyse);
+        if (resultname != "") {
+          FileSaver.storeResultsLocally(file.getName().replaceFirst("[.][^.]+$", "") + "_result",
+              toAnalyse);
+        } else
+          FileSaver.storeResultsLocally(resultname, toAnalyse);
+
       } catch (MissingPathException e2) {
         report.append("Missing path to destination, aborting analysis.\n");
         FileSaver.setLocalPath("");

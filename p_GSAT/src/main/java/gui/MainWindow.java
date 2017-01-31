@@ -167,7 +167,7 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
 		String output;
 
 		output = GUIUtils.runAnalysis(srcField.getText(),
-			geneBox.getSelectionModel().getSelectedItem()).second;
+			geneBox.getSelectionModel().getSelectedItem(), fileNameField.getText()).second;
 		infoArea.appendText(output);
 		bar.setProgress(0);
 
