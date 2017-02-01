@@ -76,7 +76,10 @@ public class WritingTests {
   @BeforeClass
   public static void setupSequences() {
 
-    seq1.setReferencedGene(new Gene("ATTTTCG", 4, "FSA", "Klaus Bohne"));
+	Gene g1 = new Gene("ATTTTCG", 4, "FSA", "Klaus Bohne");
+	g1.setOrganism("bacteria");
+	  
+    seq1.setReferencedGene(g1);
     seq1.setComments("No comments");
     seq1.addMutation("A131E");
     seq1.addMutation("G7K");
@@ -356,7 +359,7 @@ public class WritingTests {
     String addingDate = df.format(new Date());
 
     // Check whether the input is correct
-    String[] correctResults = new String[] {"1; sequence1.ab1; FSA; ATCG; " + addingDate
+    String[] correctResults = new String[] {"1; sequence1.ab1; FSA (bacteria); ATCG; " + addingDate
         + "; Klaus Bohne; No comments; A; B; null; 2.0; 0.0; none; false; A131E, G7K, +2H5"};
 
     for (int i = 0; i < correctResults.length; i++) {
@@ -431,7 +434,7 @@ public class WritingTests {
     String addingDate = df.format(new Date());
 
     String[] correctResults = new String[] {
-        "1; sequence1.ab1; FSA; ATCG; " + addingDate
+        "1; sequence1.ab1; FSA (bacteria); ATCG; " + addingDate
             + "; Klaus Bohne; No comments; A; B; null; 2.0; 0.0; none; false; A131E, G7K, +2H5",
         "2; sequence2.ab1; FSA; ATCTTTG; " + addingDate
             + "; Klaus Bohne; No comments; null; null; null; 2.0; 0.0; none; false; reading frame error"};
@@ -541,7 +544,7 @@ public class WritingTests {
     String addingDate = df.format(new Date());
 
     // Check whether the input is correct
-    String[] correctResults = new String[] {"1; sequence1.ab1; FSA; ATCG; " + addingDate
+    String[] correctResults = new String[] {"1; sequence1.ab1; FSA (bacteria); ATCG; " + addingDate
         + "; Klaus Bohne; No comments; A; B; null; 2.0; 0.0; none; false; A131E, G7K, +2H5"};
 
     for (int i = 0; i < correctResults.length; i++) {
@@ -550,7 +553,6 @@ public class WritingTests {
 
   }
   
-  @Ignore
   @Test
   public void testStoreSeparateFilesWithSetFileName() throws MissingPathException, IOException {
 	  
@@ -581,7 +583,7 @@ public class WritingTests {
     String addingDate = df.format(new Date());
 
     // Check whether the input is correct
-    String[] correctResults = new String[] {"1; sequence1.ab1; FSA; ATCG; " + addingDate
+    String[] correctResults = new String[] {"1; sequence1.ab1; FSA (bacteria); ATCG; " + addingDate
         + "; Klaus Bohne; No comments; A; B; null; 2.0; 0.0; none; false; A131E, G7K, +2H5"};
 
     for (int i = 0; i < correctResults.length; i++) {
