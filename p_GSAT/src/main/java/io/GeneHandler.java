@@ -172,6 +172,20 @@ public class GeneHandler {
     return names;
   }
 
+  public static String[] getGeneNamesAndOrganism() {
+    String[] names = new String[geneList.size()];
+    for (int i = 0; i < geneList.size(); i++) {
+      names[i] = geneList.get(i).getName();
+      if (geneList.get(i).getOrganism() != null)
+        System.out.println("Hallo");
+        names[i] = names[i] + " ( aus " + geneList.get(i).getOrganism() + ")";
+    }
+
+    Arrays.sort(names);
+    return names;
+
+  }
+
   public static int getNumGenes() {
     return geneList.size();
   }

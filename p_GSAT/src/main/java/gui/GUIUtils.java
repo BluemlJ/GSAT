@@ -59,7 +59,7 @@ public class GUIUtils {
           "Reading Gene.txt was unsuccessful\n" + e.getMessage());
     }
 
-    genes.setItems(FXCollections.observableArrayList(GeneHandler.getGeneNames()));
+    genes.setItems(FXCollections.observableArrayList(GeneHandler.getGeneNamesAndOrganism()));
     return new Pair<Boolean, String>(true, "Reading Gene.txt was successful");
   }
 
@@ -71,7 +71,7 @@ public class GUIUtils {
           "Reading Gene.txt was unsuccessful\n" + e.getMessage());
     }
 
-    genes.setItems(FXCollections.observableArrayList(GeneHandler.getGeneNames()));
+    genes.setItems(FXCollections.observableArrayList(GeneHandler.getGeneNamesAndOrganism()));
     return new Pair<Boolean, String>(true, "Reading Gene.txt was successful");
   }
 
@@ -156,11 +156,8 @@ public class GUIUtils {
 
       // add entry to database
       try {
-        if (resultname != "") {
-          FileSaver.storeResultsLocally(file.getName().replaceFirst("[.][^.]+$", "") + "_result",
-              toAnalyse);
-        } else
-          FileSaver.storeResultsLocally(resultname, toAnalyse);
+        FileSaver.setDestFileName(resultname);
+        FileSaver.storeResultsLocally(file.getName().replaceFirst("[.][^.]+$", ""), toAnalyse);
 
       } catch (MissingPathException e2) {
         report.append("Missing path to destination, aborting analysis.\n");

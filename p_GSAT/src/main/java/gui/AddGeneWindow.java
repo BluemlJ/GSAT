@@ -58,7 +58,7 @@ public class AddGeneWindow extends Application implements javafx.fxml.Initializa
             
             Alert alert = new Alert(AlertType.INFORMATION);
             alert.setTitle("Adding gene");
-            alert.setHeaderText("Gene added successful");
+            alert.setHeaderText("Gene added successful" + organismField.getText());
             alert.showAndWait();
             Stage stage = (Stage) cancelButton.getScene().getWindow();
             stage.close();
