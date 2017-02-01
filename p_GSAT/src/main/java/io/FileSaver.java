@@ -143,7 +143,17 @@ public class FileSaver {
 
     // retrieve the data from the AnalysedSequence object
     String fileName = sequence.getFileName();
+    
     String geneName = sequence.getReferencedGene().getName();
+    String organism = sequence.getReferencedGene().getOrganism();
+    
+    String gene;
+    if (organism == null) {
+    	gene = geneName;
+    } else {
+    	gene = geneName + " (" + organism + ")";
+    }
+    
     String nucleotides = sequence.getSequence();
     String addingDate = sequence.getAddingDate();
     String researcher = sequence.getResearcher();
@@ -161,7 +171,7 @@ public class FileSaver {
     StringBuilder builder = new StringBuilder();
     builder.append(id).append("; ");
     builder.append(fileName).append("; ");
-    builder.append(geneName).append("; ");
+    builder.append(gene).append("; ");
     builder.append(nucleotides).append("; ");
     builder.append(addingDate).append("; ");
     builder.append(researcher).append("; ");
