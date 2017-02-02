@@ -22,6 +22,20 @@ import io.SequenceReader;
 public class QualityTests {
 
   AnalysedSequence testSequence;
+  
+  private static int avgApproximationStart = 30;
+  private static int avgQualityEdge = 30;
+  private static int breakcounter = 9;
+  private static int numAverageNucleotides = 20;
+  private static int startcounter = 3;
+  
+  private static int avgApproximationStartTest = 30;
+  private static int avgQualityEdgeTest = 30;
+  private static int breakcounterTest = 9;
+  private static int numAverageNucleotidesTest = 20;
+  private static int startcounterTest = 3;
+
+
 
   /**
    * Initializes a sample file using SequenceReader

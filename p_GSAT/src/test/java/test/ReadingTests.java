@@ -39,13 +39,13 @@ public class ReadingTests {
         "ACCACGTAATTCCCTCTAAAAATAATTTTGTTTACTTTAAGAAGGAGATATACATATGGCACATCACCACCACCATCACTCCGCGGCCCGATTAATGGCGCATTCAATCGAGGAGTTGGCGATTACGACGATTCGAACGCTGTCGATTGACGCGATCGAAAAAGCGAAATCCGGGCATCCGGGCATGCCGATGGGCGCGGCGCCAATGGCGTACACGCTTTGGACGAAATTTATGAATCATAACCCGGCGAATCCAAACTGGTTCAACCGCGACCGTTTTGTCTTGTCAGCCGGGCACGGGTCGATGTTATTGTACAGCTTGCTTCATTTAAGCGGCTACGACGTATCGATGGATGATTTGAAACAATTCCGTCAATGGGGAAGCAAAACGCCGGGCCATCCGGAATACGGCCATACGCCGGGCGTGGAAGCGACGACCGGCCCACTCGGCCAAGGGATTGCGATGGCGGTCGGCATGGCGATGGCGGAACGGCATTTGGCCGCTACATACAACCGCGACGGGTTTGAGATTATCAATCATTATACGTACGCCATTTGCGGCGATGGCGATTTGATGGAAGGAGTGGCGAGCGAAGCTGCGTCACTCGCCGGCCACTTGAAGCTCGGTCGACTGATCGTCCTGTATGACTCGAACGACATTTCGCTGGACGGGGAGCTCAACCTGTCGTTCTCGGAAAACGTCGCCCAACGTTTCCAAGCATACGGCTGGCAATATTTGCGCGTTGAGGACGGCAACAATATTGAAGAAATCGCCAAAGCGCTGGAGGAGGCGCGGGCGGACCTCAGCCGGCCGACGCTCATTGAAGTAAAAACGACGATTGGCTACGGCGCGCCAAATAAAGCGGGCACGTCCGGCGTCCACGGTGCTCCGCTCGGCGCCCAAGAGGCGAAGCTGACGAAAGAGGCGTATCGTTGGACATTTGCGGAAGATTTTTACGTGCCAGAAGAAGTGTACGCCCACTTTCCGTGCGACGGTGCAAGAAGCCGGGAGCGAAAAAAAGAGGCGAAATGGAATGGAGCAGCTCCGCCGCCTATGGAACAGGGCCCATCCCGGAACTGGGCCGCCCAATTTGAAGCCAAGCGATCCGAAGGCAAACTTCCCAGATGGGATGGGAAAGCTTTCTTTTGCCGGGTATACCGAAAGCAGGGCAAAAAGCTTTGGGCAACCCCGCTTCATCCGTCCCGGGGGAAAGTGGATTCAACGCCCAATCGGCCAAAAGCGGGTACCCGCAAATTGGTTTTGGGCGGGTTCCGGCGGGAACTTTGGGCAAAAGCTCCGGAAATAAAAAACGGCCTCCATCCAAAGGCGGGGGGGGCAAACTTTTCTTTCCCCGGGGGCAACCCTACCAAAAAGGGGGGCCCAACCCTTTTTTGGGTTTTGGCGCGGGGGGCCCCAAAATTTTTTCCCCCTTGGGGGGGGGCGCGGGCCCTCTAAAAACCGGGGTTAGGGGGCGGTTTTCC";
     // set SequenceReader file path
     SequenceReader
-        .configurePath(getClass().getResource("/ab1/Tk_Gs40Hits/Forward/95EI60.ab1").getFile());
+        .configurePath(new File("resources/ab1/Tk_Gs40Hits/Forward/95EI60.ab1").getAbsolutePath());
     testSequence = SequenceReader.convertFileIntoSequence();
   }
 
   @Test
   public void listFilesAllABITest() {
-    File parsedFile = new File(getClass().getResource("/ab1/Tk_Gs40Hits/Forward/").getFile());
+    File parsedFile = new File(new File("resources/ab1/Tk_Gs40Hits/Forward/").getAbsolutePath());
 
     SequenceReader.configurePath(parsedFile.getAbsolutePath());
     Pair<LinkedList<File>, LinkedList<File>> pair = SequenceReader.listFiles();
@@ -70,11 +70,11 @@ public class ReadingTests {
 
   @Test
   public void listFilesHalfABITest() {
-    File parsedFile = new File(getClass().getResource("/ab1/").getFile());
+    File parsedFile = new File(new File("resources/ab1/Tk_Gs40Hits/Forward").getAbsolutePath());
 
     SequenceReader.configurePath(parsedFile.getAbsolutePath());
     Pair<LinkedList<File>, LinkedList<File>> pair = SequenceReader.listFiles();
-    assertTrue(pair.first.size() == 1 && pair.second.size() == 3);
+    assertTrue(pair.first.size() == 10 && pair.second.size() == 1);
   }
 
   /**
@@ -86,8 +86,9 @@ public class ReadingTests {
    */
   @Test
   public void readFromFileTest() throws FileReadingException, IOException {
+    
     File parsedFile =
-        new File(getClass().getResource("/ab1/Tk_Gs40Hits/Forward/95EI60.ab1").getFile());
+        new File(new File("resources/ab1/Tk_Gs40Hits/Forward/95EI60.ab1").getAbsolutePath());
     AnalysedSequence parsedSequence = SequenceReader.convertFileIntoSequence(parsedFile);
     assertEquals(parsedSequence.getSequence().toLowerCase(), correctSequence.toLowerCase());
   }
@@ -113,7 +114,7 @@ public class ReadingTests {
    */
   @Test
   public void testCorruptSequence() throws FileReadingException {
-    SequenceReader.configurePath(getClass().getResource("/ab1/corrupt.ab1").getFile());
+    SequenceReader.configurePath(new File("resources/ab1/corrupt.ab1").getAbsolutePath());
     try {
       SequenceReader.convertFileIntoSequence();
     } catch (IOException e) {
