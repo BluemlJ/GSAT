@@ -6,9 +6,12 @@ import java.net.URL;
 import java.util.ResourceBundle;
 import java.util.Scanner;
 
+import com.sun.javafx.tk.Toolkit.Task;
+
 import analysis.Pair;
 import io.FileSaver;
 import javafx.application.Application;
+import javafx.concurrent.WorkerStateEvent;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -84,15 +87,18 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
   @Override
   public void initialize(URL arg0, ResourceBundle arg1) {
     bar.setProgress(0);
+
+
+
     Pair<Boolean, String> output;
     infoArea.setText("Welcome to GSAT! \n");
     // read Genes and show them in the choicebox
-    
-    
+
+
     output = GUIUtils.initializeGeneBox(geneBox);
     geneBox.setStyle("-fx-font-style: italic;");
-    
-    
+
+
     infoArea.appendText(output.second + "\n");
 
     geneBox.setOnMouseClicked(arg01 -> GUIUtils.initializeGeneBox(geneBox));
@@ -137,7 +143,6 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
     startButton.setOnAction(new EventHandler<ActionEvent>() {
       @Override
       public void handle(ActionEvent arg0) {
-     //   bar.setProgress(1);
         infoArea.appendText(
             "---------------------------------------------------------------------------------------------------"
                 + "\nStarting analysis\n"
@@ -147,15 +152,16 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
 
         if (srcField.getText().equals("")) {
           infoArea.appendText("Source path is empty, aborting analysis.");
-          bar.setProgress(0);
+          // bar.setProgress(0);
           return;
         }
+
 
         infoArea.appendText("Destination folder:  " + destField.getText() + "\n");
 
         if (destField.getText().equals("")) {
           infoArea.appendText("Destination path is empty, aborting analysis.");
-          bar.setProgress(0);
+          // bar.setProgress(0);
           return;
         } else
           FileSaver.setLocalPath(destField.getText());
@@ -165,18 +171,42 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
 
         if (geneBox.getSelectionModel().getSelectedIndex() == -1) {
           infoArea.appendText("No gene was selected, aborting analysis.");
-          bar.setProgress(0);
+          // bar.setProgress(0);
           return;
         }
 
         infoArea.appendText(
             "---------------------------------------------------------------------------------------------------\n");
-        String output;
 
-        output = GUIUtils.runAnalysis(srcField.getText(),
-            geneBox.getSelectionModel().getSelectedItem(), fileNameField.getText()).second;
-        infoArea.appendText(output);
-        bar.setProgress(0);
+
+        javafx.concurrent.Task<Void> mainTask = new javafx.concurrent.Task<Void>() {
+
+          @Override
+          protected Void call() throws Exception {
+            String output;
+
+            String srcFieldTest = srcField.getText();
+            String destfileNameText = fileNameField.getText();
+            String geneBoxItem = geneBox.getSelectionModel().getSelectedItem().split(" ")[0];
+
+            output = GUIUtils.runAnalysis(srcFieldTest, geneBoxItem, destfileNameText).second;
+            infoArea.appendText(output);
+
+            return null;
+          }
+
+        };
+
+
+        bar.setProgress(-1);
+        // mainThread.start();
+        mainTask.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
+          @Override
+          public void handle(WorkerStateEvent t) {
+              bar.setProgress(0);
+          }
+      });
+        new Thread(mainTask).start();
 
       }
     });
@@ -277,7 +307,7 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
     String ret;
     StringBuilder builder = new StringBuilder();
     while (s.hasNextLine())
-    	builder.append(s.nextLine()).append("\n");
+      builder.append(s.nextLine()).append("\n");
     ret = builder.toString();
     System.out.println(ret);
     s.close();
