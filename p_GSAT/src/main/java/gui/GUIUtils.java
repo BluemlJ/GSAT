@@ -5,8 +5,6 @@ import java.io.IOException;
 import java.util.LinkedList;
 import java.util.Optional;
 
-import com.sun.javafx.scene.control.skin.VirtualFlow;
-
 import analysis.AnalysedSequence;
 import analysis.Gene;
 import analysis.MutationAnalysis;
@@ -28,11 +26,9 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonBar.ButtonData;
 import javafx.scene.control.ButtonType;
-import javafx.scene.control.Cell;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
-import javafx.scene.text.Font;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 
@@ -83,7 +79,7 @@ public class GUIUtils {
           "Reading researchers from config.txt was unsuccessful\n" + e.getMessage());
     }
     dropdown.setItems(FXCollections.observableArrayList(ConfigHandler.getSortedResearchers()));
-    dropdown.getSelectionModel().select(ConfigHandler.getResearcher());;
+    dropdown.getSelectionModel().select(ConfigHandler.getResearcher());
     return new Pair<Boolean, String>(true, "Reading researchers from config.txt was successful");
   }
 

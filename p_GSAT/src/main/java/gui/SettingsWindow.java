@@ -1,12 +1,10 @@
 package gui;
 
-import java.awt.font.GlyphJustificationInfo;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
-import exceptions.DuplicateGeneException;
 import io.ConfigHandler;
 import io.GeneHandler;
 import javafx.application.Application;
@@ -21,7 +19,6 @@ import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextInputDialog;
-import javafx.scene.control.ListView.EditEvent;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 

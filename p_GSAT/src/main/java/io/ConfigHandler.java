@@ -7,12 +7,10 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.lang.reflect.Array;
 import java.util.Arrays;
 
 import exceptions.ConfigNotFoundException;
 import exceptions.ConfigReadException;
-import gui.AddGeneWindow;
 
 /**
  * This class is responsible for reading the configuration file and storing its values
@@ -228,8 +226,9 @@ public class ConfigHandler {
     researchers = newResearchers;
   }
   
+  //TODO @Lovis
   public static String[] getParameters(){
-    return null; //TODO @Lovis
+    return null; 
   }
 
   public static String getDbUrl() {
