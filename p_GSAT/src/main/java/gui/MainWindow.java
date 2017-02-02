@@ -87,7 +87,12 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
     Pair<Boolean, String> output;
     infoArea.setText("Welcome to GSAT! \n");
     // read Genes and show them in the choicebox
+    
+    
     output = GUIUtils.initializeGeneBox(geneBox);
+    geneBox.setStyle("-fx-font-style: italic;");
+    
+    
     infoArea.appendText(output.second + "\n");
 
     geneBox.setOnMouseClicked(arg01 -> GUIUtils.initializeGeneBox(geneBox));

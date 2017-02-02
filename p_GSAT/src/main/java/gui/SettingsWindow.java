@@ -60,6 +60,7 @@ public class SettingsWindow extends Application implements javafx.fxml.Initializ
 
     GUIUtils.initializeResearchers(researcherDrobdown);
     GUIUtils.initializeGeneBox(geneList);
+    geneList.setStyle("-fx-font-style: italic;");
 
 
     researcherDrobdown.getSelectionModel().selectedItemProperty()
