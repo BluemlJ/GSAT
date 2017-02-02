@@ -12,6 +12,7 @@ public class QualityAnalysis {
 
 
   private static int avgApproximationStart = 30;
+  private static int avgApproximationEnd = 25;
 
   private static int avgQualityEdge = 30;
   /**
@@ -192,7 +193,6 @@ public class QualityAnalysis {
   }
   
   
-  private static int avgApproximationEnd = 25;
   public static int getAvgApproximationEnd() {
     return avgApproximationEnd;
   }

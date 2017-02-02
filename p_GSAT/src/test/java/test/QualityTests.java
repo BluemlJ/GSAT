@@ -3,8 +3,10 @@ package test;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
+import java.io.File;
 import java.io.IOException;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -22,14 +24,19 @@ import io.SequenceReader;
 public class QualityTests {
 
   AnalysedSequence testSequence;
-  
+
+  // store main vars to avoid interfering with other tests
   private static int avgApproximationStart = 30;
+  private static int avgApproximationEnd = 25;
   private static int avgQualityEdge = 30;
   private static int breakcounter = 9;
   private static int numAverageNucleotides = 20;
   private static int startcounter = 3;
-  
+
+
+  // local test values
   private static int avgApproximationStartTest = 30;
+  private static int avgApproximationEndTest = 25;
   private static int avgQualityEdgeTest = 30;
   private static int breakcounterTest = 9;
   private static int numAverageNucleotidesTest = 20;
@@ -44,8 +51,32 @@ public class QualityTests {
   public void initializeSequence() throws FileReadingException, IOException {
     // set SequenceReader file path
     SequenceReader
-        .configurePath(getClass().getResource("/ab1/Tk_Gs40Hits/Forward/95EI60.ab1").getFile());
+        .configurePath(new File("resources/ab1/Tk_Gs40Hits/Forward/95EI60.ab1").getAbsolutePath());
     testSequence = SequenceReader.convertFileIntoSequence();
+
+    avgApproximationStart = QualityAnalysis.getAvgApproximationStart();
+    avgApproximationEnd = QualityAnalysis.getAvgApproximationEnd();
+    avgQualityEdge = QualityAnalysis.getAvgQualityEdge();
+    breakcounter = QualityAnalysis.getBreakcounter();
+    numAverageNucleotides = QualityAnalysis.getNumAverageNucleotides();
+    startcounter = QualityAnalysis.getStartcounter();
+
+    QualityAnalysis.setAvgApproximationStart(avgApproximationStartTest);
+    QualityAnalysis.setAvgApproximationEnd(avgApproximationEndTest);
+    QualityAnalysis.setAvgQualityEdge(avgQualityEdgeTest);
+    QualityAnalysis.setBreakcounter(breakcounterTest);
+    QualityAnalysis.setNumAverageNucleotides(numAverageNucleotidesTest);
+    QualityAnalysis.setStartcounter(startcounterTest);
+  }
+
+  @After
+  public void resetQualityParameters() {
+    QualityAnalysis.setAvgApproximationStart(avgApproximationStart);
+    QualityAnalysis.setAvgApproximationEnd(avgApproximationEnd);
+    QualityAnalysis.setAvgQualityEdge(avgQualityEdge);
+    QualityAnalysis.setBreakcounter(breakcounter);
+    QualityAnalysis.setNumAverageNucleotides(numAverageNucleotides);
+    QualityAnalysis.setStartcounter(startcounter);
   }
 
   @Test
@@ -158,7 +189,7 @@ public class QualityTests {
 
   /**
    * This tests checks if the average Quality calculation is correctly integrated in findLowQuality
-   * by using testAverageQualityTrimB (Userstory xxx - Expected Behavior)
+   * by using testAverageQualityTrimB (Userstory 029 - Expected Behavior)
    */
   @Test
   public void testAverageQualityOnMainQualityFunction() {
@@ -171,7 +202,7 @@ public class QualityTests {
   }
 
   /**
-   * Tests if the average Quality Trim detects a regular bad quality ending (Userstory xxx -
+   * Tests if the average Quality Trim detects a regular bad quality ending (Userstory 029 -
    * Expected Behavior)
    */
   @Test
@@ -183,7 +214,7 @@ public class QualityTests {
 
   /**
    * Tests if the average Quality Trim detects a bad quality ending which would not have been
-   * detected by findLowQuality (Userstory xxx - Expected Behavior)
+   * detected by findLowQuality (Userstory 029 - Expected Behavior)
    */
   @Test
   public void testAverageQualityTrimB() {
@@ -194,7 +225,7 @@ public class QualityTests {
 
   /**
    * Tests if a short sequence string produces the default case as output (normal findLowQuality
-   * will handle it) (Userstory xxx - Unusual Behavior)
+   * will handle it) (Userstory 029 - Unusual Behavior)
    */
   @Test
   public void testAverageQualityTrimC() {

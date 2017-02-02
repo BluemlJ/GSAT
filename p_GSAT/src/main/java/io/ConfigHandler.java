@@ -167,8 +167,12 @@ public class ConfigHandler {
     configWriter.close();
   }
 
-  public static String[] getResearchers() {
+  public static String[] getSortedResearchers() {
     Arrays.sort(researchers);
+    return researchers;
+  }
+  
+  public static String[] getResearchers(){
     return researchers;
   }
 
