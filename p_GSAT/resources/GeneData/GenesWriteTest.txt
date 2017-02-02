@@ -1,1 +1,1 @@
-testGene;AAATTTAAAGGG
+testGene;AAATTTAAAGGG;none
