@@ -37,6 +37,8 @@ public class GeneReadingTest {
 
   }
 
+  
+  
   /**
    * This test confirms that all genes in the file have been correctly parsed
    */

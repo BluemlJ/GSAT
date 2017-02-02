@@ -105,7 +105,11 @@ public class GeneHandler {
 
     // write all previously known genes
     for (Gene gene : geneList) {
-      geneWriter.write(gene.getName() + SEPARATOR + gene.getSequence());
+      if(gene.getOrganism() != null){
+      geneWriter.write(gene.getName() + SEPARATOR + gene.getSequence() + SEPARATOR + gene.getOrganism());}
+      else{
+        geneWriter.write(gene.getName() + SEPARATOR + gene.getSequence() + SEPARATOR + "none");
+      }
       geneWriter.write(System.getProperty("line.separator"));
     }
 
@@ -172,6 +176,7 @@ public class GeneHandler {
     return names;
   }
 
+  // TODO if hat keine klammern - schreibt nur hallo?
   public static String[] getGeneNamesAndOrganism() {
     String[] names = new String[geneList.size()];
     for (int i = 0; i < geneList.size(); i++) {
@@ -224,8 +229,10 @@ public class GeneHandler {
       String sepLine[] = line.split(SEPARATOR);
       String name = sepLine[0];
       String gene = sepLine[1];
+      String organism = sepLine[2];
       if (getGene(name) == null) {
-        geneList.add(new Gene(gene, id, name, ConfigHandler.getResearcher()));
+        if(organism.equals("none")) {organism = null;}
+        geneList.add(new Gene(gene, id, name, ConfigHandler.getResearcher(), organism, null));
         id++;
       }
     }
