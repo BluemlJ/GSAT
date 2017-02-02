@@ -190,7 +190,7 @@ public class GUIUtils {
 
     DirectoryChooser chooser = new DirectoryChooser();
 
-    File selectedDirectory = new File("");
+    File selectedDirectory;
     if (!defaultPath.isEmpty()) {
       defaultPath = defaultPath.trim();
       for (int i = defaultPath.length() - 1; i > 0; i--) {

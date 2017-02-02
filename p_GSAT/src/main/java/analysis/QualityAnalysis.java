@@ -173,7 +173,7 @@ public class QualityAnalysis {
   public static double percentageOfTrimQuality(int lengthBefore, AnalysedSequence toAnalyse) {
     // rounds result to promille
     double tmp = (int) ((double) toAnalyse.getSequence().length() / (double) lengthBefore * 1000);
-    return tmp = 1 - tmp / 1000;
+    return (1 - tmp / 1000);
 
   }
 

@@ -26,11 +26,6 @@ public class FileSaver {
   private static String destinationFileName = "gsat_results";
 
   
-  /**
-   * This specifies the name of the resulting file if one file is desired. For multiple files,
-   * 
-   */
-  private String userSettableDestinationFileName;
   
   /**
    * Indicating whether this is the first call of the storage method in the current storage process.

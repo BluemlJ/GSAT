@@ -51,7 +51,7 @@ public class AddGeneWindow extends Application implements javafx.fxml.Initializa
 
       @Override
       public void handle(ActionEvent arg0) {
-        if (nameField.getText() != "" && geneArea.getText() != "") {
+        if (!nameField.getText().isEmpty() && !geneArea.getText().isEmpty()) {
           try {
             GeneHandler.addGene(nameField.getText(), geneArea.getText(), organismField.getText(),
                 commentArea.getText());

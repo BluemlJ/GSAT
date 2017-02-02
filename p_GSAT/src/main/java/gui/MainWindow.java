@@ -269,9 +269,11 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
 
   private static String convertStreamToString(InputStream is) {
     Scanner s = new Scanner(is);
-    String ret = "";
+    String ret;
+    StringBuilder builder = new StringBuilder();
     while (s.hasNextLine())
-      ret = ret + s.nextLine() + "\n";
+    	builder.append(s.nextLine()).append("\n");
+    ret = builder.toString();
     System.out.println(ret);
     s.close();
     return ret;
