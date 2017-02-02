@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import org.junit.Assert;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import analysis.AnalysedSequence;
@@ -105,7 +106,7 @@ public class PrivateTest {
    * @throws UndefinedTypeOfMutationException
    * @throws CorruptedSequenceException
    */
-  // @Ignore
+  @Ignore
   @Test
   public void testLocalFile() throws FileReadingException, IOException,
       UndefinedTypeOfMutationException, CorruptedSequenceException {
@@ -160,6 +161,6 @@ public class PrivateTest {
     for (String s : testSeq.getMutations()) {
       System.out.println(s);
     }
-    Assert.assertTrue(true);
+ 
   }
 }

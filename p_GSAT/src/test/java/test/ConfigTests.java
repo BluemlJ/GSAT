@@ -114,7 +114,7 @@ public class ConfigTests {
     try {
       ConfigHandler.readConfig();
     } catch (ConfigReadException e) {
-      assertEquals(e.getMessage(), "Error while reading researcher from config");
+      assertEquals(e.getMessage(), "Error while reading resr from config");
     }
   }
 
@@ -126,12 +126,13 @@ public class ConfigTests {
    */
   @Test
   public void wrongConfigPath() throws IOException, ConfigReadException {
-    ConfigHandler.setPath(System.getProperty("user.home") + File.separator + "NOTGSAT"
-        + File.separator + "config.txt");
-    try {
-      ConfigHandler.readConfig();
+	 
+	 File path = new File("resources/");
+	 try {
+        ConfigHandler.setPath(path.getAbsolutePath());
+        ConfigHandler.readConfig();
     } catch (ConfigNotFoundException e) {
-      assertEquals(e.getMessage(), "Config at path: /corrupt_path could not be found");
+      assertEquals(e.getMessage(), "Config at path: "+ path.getAbsolutePath() +" could not be found");
     }
   }
 
@@ -224,6 +225,6 @@ public class ConfigTests {
     assertEquals(res[2], "res4");
   }
   
-  
+
   
 }

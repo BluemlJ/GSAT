@@ -83,7 +83,8 @@ public class ConfigHandler {
           break;
           
         default:
-          break;
+        	throw new ConfigReadException(elements[0]);
+          
       }
     }
     
