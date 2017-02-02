@@ -19,7 +19,7 @@ public class JillionFileReadTest {
   @Test
   public void testFileAccessibility() {
     File testFile =
-        new File(getClass().getResource("/ab1/Tk_Gs40Hits/Forward/95EI60.ab1").getFile());
+        new File(new File("resources/ab1/Tk_Gs40Hits/Forward/95EI60.ab1").getAbsolutePath());
     assertTrue(testFile.exists());
   }
 
@@ -40,7 +40,7 @@ public class JillionFileReadTest {
   @Test
   public void testJillionRead() throws IOException {
     File testFile =
-        new File(getClass().getResource("/ab1/Tk_Gs40Hits/Forward/95EI60.ab1").getFile());
+        new File(new File("resources/ab1/Tk_Gs40Hits/Forward/95EI60.ab1").getAbsolutePath());
     Chromatogram chroma = ChromatogramFactory.create(testFile);
     assertEquals(chroma.getNucleotideSequence().getLength(), 1482);
   }
