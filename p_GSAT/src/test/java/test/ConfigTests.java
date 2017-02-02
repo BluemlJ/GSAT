@@ -36,7 +36,10 @@ public class ConfigTests {
     System.out.println(ConfigHandler.exists());
     System.out.println(ConfigHandler.getPath());
   }
-
+  
+  /**
+   * Test for accessing the home directory 
+   */
   @Ignore
   @Test
   public void testConfigExists() {
@@ -45,6 +48,10 @@ public class ConfigTests {
     System.out.println(config.exists());
   }
 
+  /**
+   * Test for creating a configuration file in the home directory
+   * @throws IOException
+   */
   @Ignore
   @Test
   public void testConfigPath() throws IOException {

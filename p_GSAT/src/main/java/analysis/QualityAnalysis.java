@@ -10,8 +10,9 @@ import exceptions.CorruptedSequenceException;
  */
 public class QualityAnalysis {
 
-  private static int avgApproximationEnd = 25;
+
   private static int avgApproximationStart = 30;
+  private static int avgApproximationEnd = 25;
 
   private static int avgQualityEdge = 30;
   /**
@@ -190,5 +191,47 @@ public class QualityAnalysis {
     toAnalyse.trimSequence(trimmingpositions[0], trimmingpositions[1] - 1);
 
   }
+  
+  
+  public static int getAvgApproximationEnd() {
+    return avgApproximationEnd;
+  }
+
+  public static void setAvgApproximationEnd(int avgApproximationEnd) {
+    QualityAnalysis.avgApproximationEnd = avgApproximationEnd;
+  }
+
+  public static int getAvgApproximationStart() {
+    return avgApproximationStart;
+  }
+
+  public static void setAvgApproximationStart(int avgApproximationStart) {
+    QualityAnalysis.avgApproximationStart = avgApproximationStart;
+  }
+
+  public static int getAvgQualityEdge() {
+    return avgQualityEdge;
+  }
+
+  public static void setAvgQualityEdge(int avgQualityEdge) {
+    QualityAnalysis.avgQualityEdge = avgQualityEdge;
+  }
+
+  public static int getNumAverageNucleotides() {
+    return numAverageNucleotides;
+  }
+
+  public static void setNumAverageNucleotides(int numAverageNucleotides) {
+    QualityAnalysis.numAverageNucleotides = numAverageNucleotides;
+  }
+
+  public static int getStartcounter() {
+    return startcounter;
+  }
+
+  public static void setStartcounter(int startcounter) {
+    QualityAnalysis.startcounter = startcounter;
+  }
+
 
 }

@@ -1,2 +1,2 @@
-researcher;testresearcher1
-researchers;lovis heindrich;testresearcher2;kevin otto;ben Kohr
+researcher;lovis heindrich
+researchers;lovis heindrich;jannis blueml;kevin otto;ben Kohr
