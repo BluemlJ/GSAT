@@ -123,7 +123,7 @@ public class VectorTrimTests {
    */
   @Test
   public void trimVectorBasicTest() {
-    String seq = "XXhallo3wieGehts3dirheute3XX";
+    String seq = "XXhallo3wieGehts3dirheute3";
     int[] qualities = new int[seq.length()];
 
 
@@ -134,6 +134,7 @@ public class VectorTrimTests {
     String test = sequence.getSequence();
     String expected = "hallo3wieGehts3dirheute3";
 
+    System.out.println(test);
     assertTrue(expected.toUpperCase().equals(test));
     assertEquals(0, sequence.getOffset());
   }
@@ -223,7 +224,7 @@ public class VectorTrimTests {
    */
   @Test
   public void trimVectorDamagedEnd() {
-    String seq = "XXXhallo3wieGehts3dirheute3ERDXYX";
+    String seq = "XXXhallo3wieGehts3dirheute3ERD";
     int[] qualities = new int[seq.length()];
 
     AnalysedSequence sequence = new AnalysedSequence(seq, "res", "N", qualities);
@@ -233,7 +234,7 @@ public class VectorTrimTests {
 
     String test = sequence.getSequence();
     String expected = "hallo3wieGehts3dirheute3ERD";
-
+    System.err.println(test);
     assertTrue(expected.toUpperCase().equals(test));
     assertEquals(0, sequence.getOffset());
   }
@@ -246,7 +247,7 @@ public class VectorTrimTests {
    */
   @Test
   public void trimVectorDeletionTest() {
-    String seq = "XXhallo3Gehts3dirheute3XX";
+    String seq = "XXhallo3Gehts3dirheute3";
     int[] qualities = new int[seq.length()];
 
     AnalysedSequence sequence = new AnalysedSequence(seq, "res", "N", qualities);
@@ -297,7 +298,7 @@ public class VectorTrimTests {
   @Test
   public void trimVectorInsertTest() {
 
-    String seq = "XXhallo3wiewieGehts3dirheute3XXX";
+    String seq = "XXhallo3wiewieGehts3dirheute3";
     int[] qualities = new int[seq.length()];
 
     AnalysedSequence sequence = new AnalysedSequence(seq, "res", "N", qualities);
