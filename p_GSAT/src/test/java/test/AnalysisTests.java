@@ -166,7 +166,7 @@ public class AnalysisTests {
   }
 
   /**
-   * test the helpermethod appentString for coreckt lenght of the result
+   * test if findDifferences finds insertions
    * 
    * 
    * @author Kevin Otto
@@ -177,6 +177,22 @@ public class AnalysisTests {
     String expected = "i|4|x|";
     assertEquals(expected, result);
   }
+  
+  /**
+   * test if findDifferences finds deletions at begining
+   * 
+   * 
+   * @author Kevin Otto
+   */
+  @Test
+  public void findDifferencesDeletedBeginTest() {
+    String result = MutationAnalysis.reportDifferences("hallo", "allo").getFirst();
+    String expected = "d|1|h|";
+    System.out.println(result);
+    assertEquals(expected, result);
+  }
+  
+  
 
   @Test
   public void findHISTAG1() throws CorruptedSequenceException {
