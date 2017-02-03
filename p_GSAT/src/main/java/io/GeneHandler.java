@@ -176,13 +176,12 @@ public class GeneHandler {
     return names;
   }
 
-  // TODO if hat keine klammern - schreibt nur hallo?
-  public static String[] getGeneNamesAndOrganism() {
+  public static String[] getGeneNamesAndOrganisms() {
     String[] names = new String[geneList.size()];
     for (int i = 0; i < geneList.size(); i++) {
       names[i] = geneList.get(i).getName();
-      if (geneList.get(i).getOrganism() != null)
-        names[i] = names[i] + " (aus " + geneList.get(i).getOrganism() + ")";
+      if (geneList.get(i).getOrganism() != null && geneList.get(i).getOrganism() != "none")
+        names[i] = names[i] + " ("+ geneList.get(i).getOrganism() + ")";
     }
 
     Arrays.sort(names);

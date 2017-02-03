@@ -55,7 +55,7 @@ public class GUIUtils {
           "Reading Gene.txt was unsuccessful\n" + e.getMessage());
     }
 
-    genes.setItems(FXCollections.observableArrayList(GeneHandler.getGeneNamesAndOrganism()));
+    genes.setItems(FXCollections.observableArrayList(GeneHandler.getGeneNamesAndOrganisms()));
     return new Pair<Boolean, String>(true, "Reading Gene.txt was successful");
   }
 
@@ -67,7 +67,7 @@ public class GUIUtils {
           "Reading Gene.txt was unsuccessful\n" + e.getMessage());
     }
 
-    genes.setItems(FXCollections.observableArrayList(GeneHandler.getGeneNamesAndOrganism()));
+    genes.setItems(FXCollections.observableArrayList(GeneHandler.getGeneNamesAndOrganisms()));
     return new Pair<Boolean, String>(true, "Reading Gene.txt was successful");
   }
 
@@ -176,9 +176,10 @@ public class GUIUtils {
    * be saved here.
    * 
    * @param destination Textfield, to place path.
+   * @param sourcepath path from the source field
    * @return reportpair of boolean (indicates success) and report String
    */
-  public static Pair<Boolean, String> setDestination(TextField destination, String defaultPath) {
+  public static Pair<Boolean, String> setDestination(TextField destination, String sourcePath) {
 
     boolean success = false;
     String report = "Reading destination path was unsuccessful.";
@@ -187,19 +188,17 @@ public class GUIUtils {
     DirectoryChooser chooser = new DirectoryChooser();
 
     File selectedDirectory;
-    if (!defaultPath.isEmpty()) {
-      defaultPath = defaultPath.trim();
-      for (int i = defaultPath.length() - 1; i > 0; i--) {
-        if (defaultPath.charAt(i) == '\\' || defaultPath.charAt(i) == '/') {
-          defaultPath = defaultPath.substring(0, i);
+    if (!sourcePath.isEmpty()) {
+      sourcePath = sourcePath.trim();
+      for (int i = sourcePath.length() - 1; i > 0; i--) {
+        if (sourcePath.charAt(i) == File.separatorChar) {
+          sourcePath = sourcePath.substring(0, i);
           break;
         }
       }
-
-      if (!defaultPath.isEmpty()) {
-        File start = new File(defaultPath);
+        File start = new File(sourcePath);
         chooser.setInitialDirectory(start);
-      }
+      
     }
     try {
       selectedDirectory = chooser.showDialog(null);
@@ -234,7 +233,7 @@ public class GUIUtils {
     if (!defaultPath.isEmpty()) {
       defaultPath = defaultPath.trim();
       for (int i = defaultPath.length() - 1; i > 0; i--) {
-        if (defaultPath.charAt(i) == '\\' || defaultPath.charAt(i) == '/') {
+        if (defaultPath.charAt(i) == File.separatorChar) {
           defaultPath = defaultPath.substring(0, i);
           break;
         }

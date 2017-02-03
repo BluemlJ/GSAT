@@ -117,7 +117,7 @@ public class SettingsWindow extends Application implements javafx.fxml.Initializ
         try {
           addgene.start(new Stage());
         } catch (Exception e) {
-          System.out.println("FEHLER");
+          
         }
       }
 
