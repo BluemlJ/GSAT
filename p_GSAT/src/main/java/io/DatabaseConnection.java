@@ -25,12 +25,6 @@ public class DatabaseConnection {
   private static Connection conn;
 
   /**
-   * Specifies the location of the database.
-   */
-  // unused
-  private static final String CONNECTION_STRING = "jdbc:mysql://localhost:5432/test";
-
-  /**
    * Mysql connection object
    */
   static MysqlDataSource dataSource;

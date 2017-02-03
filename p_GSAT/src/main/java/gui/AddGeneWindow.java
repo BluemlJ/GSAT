@@ -55,7 +55,7 @@ public class AddGeneWindow extends Application implements javafx.fxml.Initializa
           try {
             GeneHandler.addGene(nameField.getText(), geneArea.getText(), organismField.getText(),
                 commentArea.getText());
-            
+
             Alert alert = new Alert(AlertType.INFORMATION);
             alert.setTitle("Adding gene");
             alert.setHeaderText("Gene added successful" + organismField.getText());

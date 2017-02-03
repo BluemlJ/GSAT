@@ -25,7 +25,7 @@ import javafx.stage.WindowEvent;
 public class SettingsWindow extends Application implements javafx.fxml.Initializable {
 
   public static boolean subsettingsOpen = false;
-  
+
   @FXML
   private ListView<String> geneList;
   // fields
@@ -159,7 +159,8 @@ public class SettingsWindow extends Application implements javafx.fxml.Initializ
         // Traditional way to get the response value.
         Optional<String> result = dialog.showAndWait();
         if (result.isPresent()) {
-          if (result.get() != null && !result.get().isEmpty()) ConfigHandler.addResearcher(result.get());
+          if (result.get() != null && !result.get().isEmpty())
+            ConfigHandler.addResearcher(result.get());
         }
         try {
           ConfigHandler.writeConfig();

@@ -7,6 +7,10 @@ package exceptions;
  *
  */
 public class ConfigReadException extends Exception {
+  /**
+   * 
+   */
+  private static final long serialVersionUID = -6005703763452334990L;
   public String field;
 
   public ConfigReadException(String field) {

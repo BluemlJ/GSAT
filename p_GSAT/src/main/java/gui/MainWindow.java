@@ -6,8 +6,6 @@ import java.net.URL;
 import java.util.ResourceBundle;
 import java.util.Scanner;
 
-import com.sun.javafx.tk.Toolkit.Task;
-
 import analysis.Pair;
 import io.FileSaver;
 import javafx.application.Application;
@@ -203,9 +201,9 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
         mainTask.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
           @Override
           public void handle(WorkerStateEvent t) {
-              bar.setProgress(0);
+            bar.setProgress(0);
           }
-      });
+        });
         new Thread(mainTask).start();
 
       }

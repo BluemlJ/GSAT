@@ -207,6 +207,7 @@ public class ConsoleVersion {
    * @param sequence
    * @param file
    */
+  @SuppressWarnings("unused")
   private static void askForComment(AnalysedSequence sequence, File file) {
     try {
       sequence.setComments(ConsoleIO.readLine(

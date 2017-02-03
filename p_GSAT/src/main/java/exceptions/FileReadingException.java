@@ -10,6 +10,10 @@ package exceptions;
 public class FileReadingException extends Exception {
 
   /**
+   * 
+   */
+  private static final long serialVersionUID = 4223179057486820440L;
+  /**
    * Name of the file that caused the problem.
    */
   public String filename;

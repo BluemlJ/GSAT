@@ -178,7 +178,7 @@ public class AnalysisTests {
     String expected = "i|4|x|";
     assertEquals(expected, result);
   }
-  
+
   /**
    * test if findDifferences finds deletions at begining
    * 
@@ -192,8 +192,8 @@ public class AnalysisTests {
     System.out.println(result);
     assertEquals(expected, result);
   }
-  
-  
+
+
   @Ignore
   @Test
   public void findHISTAG1() throws CorruptedSequenceException {
@@ -337,6 +337,7 @@ public class AnalysisTests {
    * 
    * @author Kevin Otto
    */
+  @SuppressWarnings("deprecation")
   @Test
   public void testBestMatchIncompleteSequence() {
     String original = "halloWieGehts".toLowerCase();
@@ -352,6 +353,7 @@ public class AnalysisTests {
    * 
    * @author Kevin Otto
    */
+  @SuppressWarnings("deprecation")
   @Test
   public void testBestMatchOverfit() {
     String original = "halloWieGehts".toLowerCase();
@@ -608,7 +610,6 @@ public class AnalysisTests {
 
   @Test(expected = DissimilarGeneException.class)
   public void testFindingRightGeneOnIncorrectUse() throws DissimilarGeneException {
-    AnalysedSequence testA = new AnalysedSequence("BBBBCKCKCKCKCS", "Jannis", "testA", null);
     Gene testGeneA = new Gene("AGGGC", 0, "testGeneA", "Jannis");
     Gene testGeneB = new Gene("AGTTTTTGGC", 1, "testGeneB", "Jannis");
     Gene testGeneC = new Gene("AGCCTCTCTCTCTGGC", 2, "testGeneC", "Jannis");
@@ -616,8 +617,6 @@ public class AnalysisTests {
     testGenes.add(testGeneA);
     testGenes.add(testGeneB);
     testGenes.add(testGeneC);
-
-    Gene result = StringAnalysis.findRightGene(testA, testGenes);
   }
 
   /**

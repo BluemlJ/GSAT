@@ -104,6 +104,7 @@ public class VectorTrimTests {
    * 
    * @author Kevin Otto
    */
+  @SuppressWarnings("deprecation")
   @Test
   public void trimLevenTest() {
     String a = "ATGABCDEFGSTOP";

@@ -8,6 +8,11 @@ package exceptions;
  */
 public class MissingPathException extends Exception {
 
+  /**
+   * 
+   */
+  private static final long serialVersionUID = -6175068560785854772L;
+  
   public PathUsage usage;
 
   /**

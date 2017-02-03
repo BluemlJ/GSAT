@@ -15,7 +15,6 @@ import java.util.LinkedList;
 
 import org.junit.Before;
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import analysis.AnalysedSequence;
@@ -76,9 +75,9 @@ public class WritingTests {
   @BeforeClass
   public static void setupSequences() {
 
-	Gene g1 = new Gene("ATTTTCG", 4, "FSA", "Klaus Bohne");
-	g1.setOrganism("bacteria");
-	  
+    Gene g1 = new Gene("ATTTTCG", 4, "FSA", "Klaus Bohne");
+    g1.setOrganism("bacteria");
+
     seq1.setReferencedGene(g1);
     seq1.setComments("No comments");
     seq1.addMutation("A131E");
@@ -319,7 +318,8 @@ public class WritingTests {
     FileSaver.storeResultsLocally("notestdata", seq3);
 
     // Code for reading the file in again
-    BufferedReader reader = new BufferedReader(new FileReader("writingtests/gsat_results_notestdata.csv"));
+    BufferedReader reader =
+        new BufferedReader(new FileReader("writingtests/gsat_results_notestdata.csv"));
 
     LinkedList<String> results = new LinkedList<String>();
     reader.lines().skip(1).forEach(line -> results.add(line));
@@ -349,7 +349,8 @@ public class WritingTests {
     FileSaver.storeResultsLocally("testdata", seq1);
 
     // Code for reading the file in again
-    BufferedReader reader = new BufferedReader(new FileReader("writingtests/gsat_results_testdata.csv"));
+    BufferedReader reader =
+        new BufferedReader(new FileReader("writingtests/gsat_results_testdata.csv"));
 
     LinkedList<String> results = new LinkedList<String>();
     reader.lines().skip(1).forEach(line -> results.add(line));
@@ -487,7 +488,8 @@ public class WritingTests {
     FileSaver.storeResultsLocally("separate2", seq3);
 
     // Test the first file
-    BufferedReader reader = new BufferedReader(new FileReader("writingtests/gsat_results_separate1.csv"));
+    BufferedReader reader =
+        new BufferedReader(new FileReader("writingtests/gsat_results_separate1.csv"));
 
     LinkedList<String> results = new LinkedList<String>();
     reader.lines().skip(1).forEach(line -> results.add(line));
@@ -524,11 +526,11 @@ public class WritingTests {
 
   }
 
-  
+
   @Test
   public void testStoreOneFileWithSetFileName() throws MissingPathException, IOException {
-	  
-	FileSaver.setSeparateFiles(false);  
+
+    FileSaver.setSeparateFiles(false);
     FileSaver.setLocalPath(path);
     FileSaver.setDestFileName("testname");
     FileSaver.storeResultsLocally("A73817", seq1);
@@ -552,17 +554,17 @@ public class WritingTests {
     }
 
   }
-  
+
   @Test
   public void testStoreSeparateFilesWithSetFileName() throws MissingPathException, IOException {
-	  
-	FileSaver.setSeparateFiles(true);
+
+    FileSaver.setSeparateFiles(true);
     FileSaver.setLocalPath(path);
     FileSaver.setDestFileName("testname");
     FileSaver.storeResultsLocally("A73817", seq1);
     FileSaver.storeResultsLocally("test2", seq1);
     FileSaver.storeResultsLocally("NEXT", seq1);
-    
+
     // Code for reading the file in again
     BufferedReader reader = new BufferedReader(new FileReader("writingtests/testname_A73817.csv"));
     LinkedList<String> results1 = new LinkedList<String>();

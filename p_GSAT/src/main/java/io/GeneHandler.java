@@ -104,9 +104,10 @@ public class GeneHandler {
 
     // write all previously known genes
     for (Gene gene : geneList) {
-      if(gene.getOrganism() != null){
-      geneWriter.write(gene.getName() + SEPARATOR + gene.getSequence() + SEPARATOR + gene.getOrganism());}
-      else{
+      if (gene.getOrganism() != null) {
+        geneWriter.write(
+            gene.getName() + SEPARATOR + gene.getSequence() + SEPARATOR + gene.getOrganism());
+      } else {
         geneWriter.write(gene.getName() + SEPARATOR + gene.getSequence() + SEPARATOR + "none");
       }
       geneWriter.write(System.getProperty("line.separator"));
@@ -181,8 +182,7 @@ public class GeneHandler {
     for (int i = 0; i < geneList.size(); i++) {
       names[i] = geneList.get(i).getName();
       if (geneList.get(i).getOrganism() != null)
-        System.out.println("Hallo");
-        names[i] = names[i] + " ( aus " + geneList.get(i).getOrganism() + ")";
+        names[i] = names[i] + " (aus " + geneList.get(i).getOrganism() + ")";
     }
 
     Arrays.sort(names);
@@ -230,7 +230,9 @@ public class GeneHandler {
       String gene = sepLine[1];
       String organism = sepLine[2];
       if (getGene(name) == null) {
-        if(organism.equals("none")) {organism = null;}
+        if (organism.equals("none")) {
+          organism = null;
+        }
         geneList.add(new Gene(gene, id, name, ConfigHandler.getResearcher(), organism, null));
         id++;
       }
@@ -270,7 +272,8 @@ public class GeneHandler {
 
       BufferedWriter geneWriter = new BufferedWriter(new FileWriter(path));
       geneWriter.write("FSA" + SEPARATOR
-          + "ATGGAACTGTATCTGGATACTTCAGACGTTGTTGCGGTGAAGGCGCTGTCACGTATTTTTCCGCTGGCGGGTGTGACCACTAACCCAAGCATTATCGCCGCGGGTAAAAAACCGCTGGATGTTGTGCTTCCGCAACTTCATGAAGCGATGGGCGGTCAGGGGCGTCTGTTTGCCCAGGTAATGGCTACCACTGCCGAAGGGATGGTTAATGACGCGCTTAAGCTGCGTTCTATTATTGCGGATATCGTGGTGAAAGTTCCGGTGACCGCCGAGGGGCTGGCAGCTATTAAGATGTTAAAAGCGGAAGGGATTCCGACGCTGGGAACCGCGGTATATGGCGCAGCACAAGGGCTGCTGTCGGCGCTGGCAGGTGCGGAATATGTTGCGCCTTACGTTAATCGTATTGATGCTCAGGGCGGTAGCGGCATTCAGACTGTGACCGACTTACACCAGTTATTGAAAATGCATGCGCCGCAGGCGAAAGTGCTGGCAGCGAGTTTCAAAACCCCGCGTCAGGCGCTGGACTGCTTACTGGCAGGATGTGAATCAATTACTCTGCCACTGGATGTGGCACAACAGATGATTAGCTATCCGGCGGTTGATGCCGCTGTGGCGAAGTTTGAGCAGGACTGGCAGGGAGCGTTTGGCAGAACGTCGATTTAA" + SEPARATOR + "none");
+          + "ATGGAACTGTATCTGGATACTTCAGACGTTGTTGCGGTGAAGGCGCTGTCACGTATTTTTCCGCTGGCGGGTGTGACCACTAACCCAAGCATTATCGCCGCGGGTAAAAAACCGCTGGATGTTGTGCTTCCGCAACTTCATGAAGCGATGGGCGGTCAGGGGCGTCTGTTTGCCCAGGTAATGGCTACCACTGCCGAAGGGATGGTTAATGACGCGCTTAAGCTGCGTTCTATTATTGCGGATATCGTGGTGAAAGTTCCGGTGACCGCCGAGGGGCTGGCAGCTATTAAGATGTTAAAAGCGGAAGGGATTCCGACGCTGGGAACCGCGGTATATGGCGCAGCACAAGGGCTGCTGTCGGCGCTGGCAGGTGCGGAATATGTTGCGCCTTACGTTAATCGTATTGATGCTCAGGGCGGTAGCGGCATTCAGACTGTGACCGACTTACACCAGTTATTGAAAATGCATGCGCCGCAGGCGAAAGTGCTGGCAGCGAGTTTCAAAACCCCGCGTCAGGCGCTGGACTGCTTACTGGCAGGATGTGAATCAATTACTCTGCCACTGGATGTGGCACAACAGATGATTAGCTATCCGGCGGTTGATGCCGCTGTGGCGAAGTTTGAGCAGGACTGGCAGGGAGCGTTTGGCAGAACGTCGATTTAA"
+          + SEPARATOR + "none");
       geneWriter.close();
       /*
        * geneList.add(new Gene(

@@ -7,11 +7,12 @@ package exceptions;
  *
  */
 public class DuplicateGeneException extends Exception {
-  private String name;
-
+  /**
+   * 
+   */
+  private static final long serialVersionUID = -1471737516955714928L;
   public DuplicateGeneException(String name) {
     super("Gene " + name + " already exists");
-    this.name = name;
   }
 
 }

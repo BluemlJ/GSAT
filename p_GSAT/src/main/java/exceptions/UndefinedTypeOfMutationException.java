@@ -12,6 +12,11 @@ public class UndefinedTypeOfMutationException extends Exception {
 
 
   /**
+   * 
+   */
+  private static final long serialVersionUID = 2698862415229527087L;
+  
+  /**
    * The problematic mutation String is stored.
    */
   public String mutationString;

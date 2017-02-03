@@ -12,6 +12,12 @@ import analysis.AnalysedSequence;
 public class CorruptedSequenceException extends Exception {
 
   /**
+   * 
+   */
+  private static final long serialVersionUID = 7566055268314321589L;
+
+
+  /**
    * The index of the observed wrong character
    */
   public int index;
