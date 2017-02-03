@@ -23,7 +23,7 @@ public class ConfigHandler {
       System.getProperty("user.home") + File.separator + "gsat" + File.separator + "config.txt";
   private static String researcher = "-";
   private static String[] researchers = {"-"};
-  
+
   // DB connection values
   private static String dbUrl = "130.83.37.145";
   private static String dbUser = "gsatadmin";
@@ -79,16 +79,16 @@ public class ConfigHandler {
         case "dbport":
           ConfigHandler.setDbPort(Integer.parseInt(elements[1].trim()));
           break;
-          
+
         default:
-        	throw new ConfigReadException(elements[0]);
-          
+          throw new ConfigReadException(elements[0]);
+
       }
     }
-    
+
     configReader.close();
-    
-    //Arrays.sort(researchers);
+
+    // Arrays.sort(researchers);
   }
 
   /**
@@ -170,8 +170,8 @@ public class ConfigHandler {
     Arrays.sort(researchers);
     return researchers;
   }
-  
-  public static String[] getResearchers(){
+
+  public static String[] getResearchers() {
     return researchers;
   }
 
@@ -203,9 +203,9 @@ public class ConfigHandler {
     }
     newResearchers[researchers.length] = name;
     researchers = newResearchers;
-    
-    //sort researchers
-    //Arrays.sort(researchers);
+
+    // sort researchers
+    // Arrays.sort(researchers);
   }
 
   /**
@@ -225,10 +225,10 @@ public class ConfigHandler {
     researcher = "";
     researchers = newResearchers;
   }
-  
-  //TODO @Lovis
-  public static String[] getParameters(){
-    return null; 
+
+  // TODO @Lovis
+  public static String[] getParameters() {
+    return null;
   }
 
   public static String getDbUrl() {
@@ -262,5 +262,5 @@ public class ConfigHandler {
   public static void setDbPort(int dbPort) {
     ConfigHandler.dbPort = dbPort;
   }
-  
+
 }

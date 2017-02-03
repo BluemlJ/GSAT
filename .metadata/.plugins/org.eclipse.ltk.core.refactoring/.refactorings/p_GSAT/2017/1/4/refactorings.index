@@ -1,0 +1,10 @@
+1485510627706	Move file
+1485510634848	Delete element
+1485510698990	Rename resource 'Welcome to GSAT.txt'
+1485515743869	Rename method 'findHISFlags'
+1485515749256	Rename method 'findHISTags'
+1485517935325	Rename type 'Config'
+1485518000095	Rename type 'GeneReader'
+1485519600650	Rename field 'researchers'
+1485519616912	Rename method 'getResearchers'
+1485519622230	Rename method 'setResearchers'

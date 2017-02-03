@@ -86,7 +86,7 @@ public class ReadingTests {
    */
   @Test
   public void readFromFileTest() throws FileReadingException, IOException {
-    
+
     File parsedFile =
         new File(new File("resources/ab1/Tk_Gs40Hits/Forward/95EI60.ab1").getAbsolutePath());
     AnalysedSequence parsedSequence = SequenceReader.convertFileIntoSequence(parsedFile);

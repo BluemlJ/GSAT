@@ -15,7 +15,6 @@ import java.util.LinkedList;
 
 import org.junit.Before;
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import analysis.AnalysedSequence;
@@ -37,7 +36,7 @@ public class WritingTests {
   /**
    * The relative path used for this testing scenario.
    */
-  private static String path = "writingtests/";
+  private static String path = "resources" +File.separator +"writingtests/";
 
   /**
    * The second sequence for testing the conversion method.
@@ -76,9 +75,9 @@ public class WritingTests {
   @BeforeClass
   public static void setupSequences() {
 
-	Gene g1 = new Gene("ATTTTCG", 4, "FSA", "Klaus Bohne");
-	g1.setOrganism("bacteria");
-	  
+    Gene g1 = new Gene("ATTTTCG", 4, "FSA", "Klaus Bohne");
+    g1.setOrganism("bacteria");
+
     seq1.setReferencedGene(g1);
     seq1.setComments("No comments");
     seq1.addMutation("A131E");
@@ -145,7 +144,7 @@ public class WritingTests {
 
     // Code for reading the file in again
     BufferedReader reader =
-        new BufferedReader(new FileReader("writingtests/gsat_results_convertAndStoreTest.csv"));
+        new BufferedReader(new FileReader("resources/writingtests/gsat_results_convertAndStoreTest.csv"));
 
     LinkedList<String> results = new LinkedList<String>();
     reader.lines().skip(1).forEach(line -> results.add(line));
@@ -319,7 +318,8 @@ public class WritingTests {
     FileSaver.storeResultsLocally("notestdata", seq3);
 
     // Code for reading the file in again
-    BufferedReader reader = new BufferedReader(new FileReader("writingtests/gsat_results_notestdata.csv"));
+    BufferedReader reader =
+        new BufferedReader(new FileReader("resources/writingtests/gsat_results_notestdata.csv"));
 
     LinkedList<String> results = new LinkedList<String>();
     reader.lines().skip(1).forEach(line -> results.add(line));
@@ -349,7 +349,8 @@ public class WritingTests {
     FileSaver.storeResultsLocally("testdata", seq1);
 
     // Code for reading the file in again
-    BufferedReader reader = new BufferedReader(new FileReader("writingtests/gsat_results_testdata.csv"));
+    BufferedReader reader =
+        new BufferedReader(new FileReader("resources/writingtests/gsat_results_testdata.csv"));
 
     LinkedList<String> results = new LinkedList<String>();
     reader.lines().skip(1).forEach(line -> results.add(line));
@@ -385,7 +386,7 @@ public class WritingTests {
     FileSaver.storeResultsLocally("separate2", seq3);
 
     // Test the resulting file
-    BufferedReader reader = new BufferedReader(new FileReader("writingtests/gsat_results.csv"));
+    BufferedReader reader = new BufferedReader(new FileReader("resources/writingtests/gsat_results.csv"));
 
     LinkedList<String> results = new LinkedList<String>();
     reader.lines().skip(1).forEach(line -> results.add(line));
@@ -422,7 +423,7 @@ public class WritingTests {
 
 
     // Code for reading the file in again
-    BufferedReader reader = new BufferedReader(new FileReader("writingtests/gsat_results.csv"));
+    BufferedReader reader = new BufferedReader(new FileReader("resources/writingtests/gsat_results.csv"));
 
     LinkedList<String> results = new LinkedList<String>();
     reader.lines().skip(1).forEach(line -> results.add(line));
@@ -463,7 +464,7 @@ public class WritingTests {
     FileSaver.storeResultsLocally("", seq3);
 
     // Code for reading the file in again
-    BufferedReader reader = new BufferedReader(new FileReader("writingtests/gsat_results.csv"));
+    BufferedReader reader = new BufferedReader(new FileReader("resources/writingtests/gsat_results.csv"));
 
     LinkedList<String> results = new LinkedList<String>();
     reader.lines().skip(1).forEach(line -> results.add(line));
@@ -487,7 +488,8 @@ public class WritingTests {
     FileSaver.storeResultsLocally("separate2", seq3);
 
     // Test the first file
-    BufferedReader reader = new BufferedReader(new FileReader("writingtests/gsat_results_separate1.csv"));
+    BufferedReader reader =
+        new BufferedReader(new FileReader("resources/writingtests/gsat_results_separate1.csv"));
 
     LinkedList<String> results = new LinkedList<String>();
     reader.lines().skip(1).forEach(line -> results.add(line));
@@ -506,7 +508,7 @@ public class WritingTests {
     assertTrue(results.size() == 1);
 
     // Test the second file
-    reader = new BufferedReader(new FileReader("writingtests/gsat_results_separate2.csv"));
+    reader = new BufferedReader(new FileReader("resources/writingtests/gsat_results_separate2.csv"));
 
     LinkedList<String> results2 = new LinkedList<String>();
     reader.lines().skip(1).forEach(line -> results2.add(line));
@@ -524,17 +526,17 @@ public class WritingTests {
 
   }
 
-  
+
   @Test
   public void testStoreOneFileWithSetFileName() throws MissingPathException, IOException {
-	  
-	FileSaver.setSeparateFiles(false);  
+
+    FileSaver.setSeparateFiles(false);
     FileSaver.setLocalPath(path);
     FileSaver.setDestFileName("testname");
     FileSaver.storeResultsLocally("A73817", seq1);
 
     // Code for reading the file in again
-    BufferedReader reader = new BufferedReader(new FileReader("writingtests/testname.csv"));
+    BufferedReader reader = new BufferedReader(new FileReader("resources/writingtests/testname.csv"));
 
     LinkedList<String> results = new LinkedList<String>();
     reader.lines().skip(1).forEach(line -> results.add(line));
@@ -552,29 +554,29 @@ public class WritingTests {
     }
 
   }
-  
+
   @Test
   public void testStoreSeparateFilesWithSetFileName() throws MissingPathException, IOException {
-	  
-	FileSaver.setSeparateFiles(true);
+
+    FileSaver.setSeparateFiles(true);
     FileSaver.setLocalPath(path);
     FileSaver.setDestFileName("testname");
     FileSaver.storeResultsLocally("A73817", seq1);
     FileSaver.storeResultsLocally("test2", seq1);
     FileSaver.storeResultsLocally("NEXT", seq1);
-    
+
     // Code for reading the file in again
-    BufferedReader reader = new BufferedReader(new FileReader("writingtests/testname_A73817.csv"));
+    BufferedReader reader = new BufferedReader(new FileReader("resources/writingtests/testname_A73817.csv"));
     LinkedList<String> results1 = new LinkedList<String>();
     reader.lines().skip(1).forEach(line -> results1.add(line));
     reader.close();
 
-    reader = new BufferedReader(new FileReader("writingtests/testname_test2.csv"));
+    reader = new BufferedReader(new FileReader("resources/writingtests/testname_test2.csv"));
     LinkedList<String> results2 = new LinkedList<String>();
     reader.lines().skip(1).forEach(line -> results2.add(line));
     reader.close();
 
-    reader = new BufferedReader(new FileReader("writingtests/testname_NEXT.csv"));
+    reader = new BufferedReader(new FileReader("resources/writingtests/testname_NEXT.csv"));
     LinkedList<String> results3 = new LinkedList<String>();
     reader.lines().skip(1).forEach(line -> results3.add(line));
     reader.close();

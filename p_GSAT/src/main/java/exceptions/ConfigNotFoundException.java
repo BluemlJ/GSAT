@@ -7,6 +7,10 @@ package exceptions;
  *
  */
 public class ConfigNotFoundException extends Exception {
+  /**
+   * 
+   */
+  private static final long serialVersionUID = -4800961894140016693L;
   public String path;
 
   public ConfigNotFoundException(String path) {

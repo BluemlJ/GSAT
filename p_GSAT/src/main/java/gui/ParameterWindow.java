@@ -15,30 +15,30 @@ import javafx.stage.Stage;
 
 public class ParameterWindow extends Application implements javafx.fxml.Initializable {
 
-  
+
   @FXML
   private TextField avgApproximationEnd;
-  
+
   @FXML
   private TextField avgApproximationStart;
-  
+
   @FXML
   private TextField breakcounter;
-  
+
   @FXML
   private TextField startcounter;
-  
+
   @FXML
   private TextField numAverageNucleotides;
-  
+
   @FXML
   private Button saveButton;
-  
+
   @FXML
   private Button cancelButton;
-  
-  
-  
+
+
+
   @Override
   public void initialize(URL arg0, ResourceBundle arg1) {
     // TODO Auto-generated method stub

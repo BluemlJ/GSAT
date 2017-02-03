@@ -19,14 +19,13 @@ public class FileSaver {
 
 
   /**
-   * This is the file name if only one file is desired.
-   * If multiple files are desired, the name of the original AB1 file will be added to this name for each
-   * resulting file.
+   * This is the file name if only one file is desired. If multiple files are desired, the name of
+   * the original AB1 file will be added to this name for each resulting file.
    */
   private static String destinationFileName = "gsat_results";
 
-  
-  
+
+
   /**
    * Indicating whether this is the first call of the storage method in the current storage process.
    * This field is necessary to keep up with the labeling.
@@ -92,13 +91,13 @@ public class FileSaver {
 
 
   public static void setDestFileName(String destFileName) {
-	  if (destFileName.isEmpty())
-		  destinationFileName = "gsat_results";
-	  else
-		  destinationFileName = destFileName;
+    if (destFileName.isEmpty())
+      destinationFileName = "gsat_results";
+    else
+      destinationFileName = destFileName;
   }
-  
-  
+
+
   public static void setSeparateFiles(boolean pSeparateFiles) {
     separateFiles = pSeparateFiles;
   }
@@ -129,26 +128,28 @@ public class FileSaver {
 
     // One or multiple files?
     if (separateFiles) {
-      String finalName = localPath.getAbsolutePath() + File.separatorChar + destinationFileName + "_" + ab1Filename + ".csv";
+      String finalName = localPath.getAbsolutePath() + File.separatorChar + destinationFileName
+          + "_" + ab1Filename + ".csv";
       writer = getNewWriterForSeparateFiles(finalName, false);
     } else {
-      String finalName = localPath.getAbsolutePath() + File.separatorChar + destinationFileName + ".csv";
+      String finalName =
+          localPath.getAbsolutePath() + File.separatorChar + destinationFileName + ".csv";
       writer = getNewWriterForOneFile(finalName);
     }
 
     // retrieve the data from the AnalysedSequence object
     String fileName = sequence.getFileName();
-    
+
     String geneName = sequence.getReferencedGene().getName();
     String organism = sequence.getReferencedGene().getOrganism();
-    
+
     String gene;
     if (organism == null) {
-    	gene = geneName;
+      gene = geneName;
     } else {
-    	gene = geneName + " (" + organism + ")";
+      gene = geneName + " (" + organism + ")";
     }
-    
+
     String nucleotides = sequence.getSequence();
     String addingDate = sequence.getAddingDate();
     String researcher = sequence.getResearcher();
@@ -243,7 +244,8 @@ public class FileSaver {
    * 
    * @throws IOException If the creation or the usage of the FileWriter object fails
    */
-  private static FileWriter getNewWriterForSeparateFiles(String finalName, boolean append) throws IOException {
+  private static FileWriter getNewWriterForSeparateFiles(String finalName, boolean append)
+      throws IOException {
 
     File newFile = new File(finalName);
 

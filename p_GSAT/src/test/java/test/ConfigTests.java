@@ -36,9 +36,9 @@ public class ConfigTests {
     System.out.println(ConfigHandler.exists());
     System.out.println(ConfigHandler.getPath());
   }
-  
+
   /**
-   * Test for accessing the home directory 
+   * Test for accessing the home directory
    */
   @Ignore
   @Test
@@ -50,6 +50,7 @@ public class ConfigTests {
 
   /**
    * Test for creating a configuration file in the home directory
+   * 
    * @throws IOException
    */
   @Ignore
@@ -126,13 +127,14 @@ public class ConfigTests {
    */
   @Test
   public void wrongConfigPath() throws IOException, ConfigReadException {
-	 
-	 File path = new File("resources/");
-	 try {
-        ConfigHandler.setPath(path.getAbsolutePath());
-        ConfigHandler.readConfig();
+
+    File path = new File("resources/");
+    try {
+      ConfigHandler.setPath(path.getAbsolutePath());
+      ConfigHandler.readConfig();
     } catch (ConfigNotFoundException e) {
-      assertEquals(e.getMessage(), "Config at path: "+ path.getAbsolutePath() +" could not be found");
+      assertEquals(e.getMessage(),
+          "Config at path: " + path.getAbsolutePath() + " could not be found");
     }
   }
 
@@ -224,7 +226,7 @@ public class ConfigTests {
     assertEquals(res[1], "res3");
     assertEquals(res[2], "res4");
   }
-  
 
-  
+
+
 }

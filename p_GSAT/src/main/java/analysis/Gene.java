@@ -20,7 +20,7 @@ public class Gene extends Sequence {
   private String name;
 
   private String organism;
-  
+
   private String comment;
 
 
@@ -39,7 +39,7 @@ public class Gene extends Sequence {
     this.name = name;
     this.id = id;
   }
-  
+
   /**
    * Constructor setting all given attributes (by calling the super constructor).
    * 
@@ -52,7 +52,8 @@ public class Gene extends Sequence {
    * 
    * @author Jannis Blueml
    */
-  public Gene(String sequence, int id, String name, String researcher, String organism, String comment) {
+  public Gene(String sequence, int id, String name, String researcher, String organism,
+      String comment) {
     super(sequence, researcher);
     this.name = name;
     this.id = id;
@@ -84,15 +85,15 @@ public class Gene extends Sequence {
   public String getOrganism() {
     return organism;
   }
-  
+
   public String getComment() {
     return comment;
   }
-  
+
   public void setOrganism(String organism) {
     this.organism = organism;
   }
-  
+
   public void setComment(String comment) {
     this.comment = comment;
   }

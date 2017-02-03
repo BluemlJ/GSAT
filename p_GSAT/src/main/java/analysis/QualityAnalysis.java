@@ -191,8 +191,8 @@ public class QualityAnalysis {
     toAnalyse.trimSequence(trimmingpositions[0], trimmingpositions[1] - 1);
 
   }
-  
-  
+
+
   public static int getAvgApproximationEnd() {
     return avgApproximationEnd;
   }

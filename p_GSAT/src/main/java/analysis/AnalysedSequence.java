@@ -78,8 +78,8 @@ public class AnalysedSequence extends Sequence {
    */
   private int hisTagPosition = -1;
 
-  
-  
+
+
   /**
    * Constructor calling the super constructor (which sets all given attributes).
    * 

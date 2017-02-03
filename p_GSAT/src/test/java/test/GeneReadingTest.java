@@ -37,11 +37,11 @@ public class GeneReadingTest {
 
   }
 
-  
-  
+
+
   /**
-   * This test confirms that all genes in the file have been correctly parsed
-   * (Userstory 023 - Expected behavior)
+   * This test confirms that all genes in the file have been correctly parsed (Userstory 023 -
+   * Expected behavior)
    */
   @Test
   public void testGeneListContent() {
@@ -100,10 +100,10 @@ public class GeneReadingTest {
     assertEquals(GeneHandler.getGene("testGene").getSequence(), "aaatttaaaggg".toUpperCase());
     assertEquals(GeneHandler.getGene("testGene2").getSequence(), "aaatttaaaggg".toUpperCase());
   }
-  
+
   /**
-   * This test checks if a deleted gene can´t be accessed anymore
-   * (Userstory 023 - Expected behavior)
+   * This test checks if a deleted gene can´t be accessed anymore (Userstory 023 - Expected
+   * behavior)
    * 
    * @throws IOException
    * @throws DuplicateGeneException

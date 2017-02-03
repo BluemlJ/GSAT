@@ -7,6 +7,11 @@ public class DissimilarGeneException extends Exception {
 
 
   /**
+   * 
+   */
+  private static final long serialVersionUID = -2307633376808123197L;
+
+  /**
    * The gene that fits the sequence best
    */
   public Gene bestGene;
