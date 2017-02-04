@@ -155,8 +155,7 @@ public class WritingTests {
     DateFormat df = new SimpleDateFormat("dd/MM/yy");
     String addingDate = df.format(new Date());
 
-    String[] correctResults = new String[] {"1; sequence3.ab1; FSA; ATC; " + addingDate
-        + "; Kurt Bohne; Nothing to say; null; null; null; 2.0; 0.0; none; false; AAA7CAA, -1H5"};
+    String[] correctResults = new String[] {"1; sequence3.ab1; FSA; null; AAA7CAA, -1H5; Nothing to say; Kurt Bohne; " + addingDate + "; 63; 0; ATC; null; null;  ; none; false"};
 
     for (int i = 0; i < correctResults.length; i++) {
       String[] correctInfo = correctResults[i].split(";");
@@ -282,9 +281,10 @@ public class WritingTests {
    * @see MissingPathException
    * 
    * @author Ben Kohr
+   * @throws UndefinedTypeOfMutationException 
    */
   @Test(expected = MissingPathException.class)
-  public void testStoreAllLocallyMissingPath() throws MissingPathException, IOException {
+  public void testStoreAllLocallyMissingPath() throws MissingPathException, IOException, UndefinedTypeOfMutationException {
 
     // Setting the path to null
     FileSaver.setLocalPath(null);
@@ -309,9 +309,10 @@ public class WritingTests {
    * @see FileSaver#storeAllLocally(String)
    * 
    * @author Ben Kohr
+   * @throws UndefinedTypeOfMutationException 
    */
   @Test
-  public void testStoreAllLocallyNoEntries() throws MissingPathException, IOException {
+  public void testStoreAllLocallyNoEntries() throws MissingPathException, IOException, UndefinedTypeOfMutationException {
 
     FileSaver.setLocalPath(path);
 
@@ -339,9 +340,10 @@ public class WritingTests {
    * @see FileSaver#storeAllLocally(String)
    * 
    * @author Ben Kohr
+   * @throws UndefinedTypeOfMutationException 
    */
   @Test
-  public void testStoreAllLocallyNormal() throws MissingPathException, IOException {
+  public void testStoreAllLocallyNormal() throws MissingPathException, IOException, UndefinedTypeOfMutationException {
 
 
     FileSaver.setLocalPath(path);
@@ -360,9 +362,9 @@ public class WritingTests {
     String addingDate = df.format(new Date());
 
     // Check whether the input is correct
-    String[] correctResults = new String[] {"1; sequence1.ab1; FSA (bacteria); ATCG; " + addingDate
-        + "; Klaus Bohne; No comments; A; B; null; 2.0; 0.0; none; false; A131E, G7K, +2H5"};
-
+    String[] correctResults = new String[] {"1; sequence1.ab1; FSA; bacteria; A131E, G7K, +2H5; No comments; Klaus Bohne; " + 
+    addingDate + "; 63; 0; ATCG; A; B;  ; none; false"
+    };
     for (int i = 0; i < correctResults.length; i++) {
       assertEquals(correctResults[i], results.get(i));
     }
@@ -375,7 +377,7 @@ public class WritingTests {
 
 
   @Test
-  public void testStoreLocallyAsOneFile1() throws MissingPathException, IOException {
+  public void testStoreLocallyAsOneFile1() throws MissingPathException, IOException, UndefinedTypeOfMutationException {
     FileSaver.setSeparateFiles(false);
     FileSaver.setLocalPath(path);
 
@@ -395,11 +397,9 @@ public class WritingTests {
     DateFormat df = new SimpleDateFormat("dd/MM/yy");
     String addingDate = df.format(new Date());
 
-    String[] correctResults = new String[] {
-        "1; sequence2.ab1; FSA; ATCTTTG; " + addingDate
-            + "; Klaus Bohne; No comments; null; null; null; 2.0; 0.0; none; false; reading frame error",
-        "2; sequence3.ab1; FSA; ATCTTGCGTTG; " + addingDate
-            + "; Klaus Hafer; ; null; null; null; 2.0; 0.0; none; false; ",};
+    String[] correctResults = new String[] {"1; sequence2.ab1; FSA; null; reading frame error; No comments; Klaus Bohne; " + addingDate + "; 63; 0; ATCTTTG; null; null;  ; none; false",
+        "2; sequence3.ab1; FSA; null; ; Klaus Hafer; " + addingDate + "; 63; 0; ATCTTGCGTTG; null; null;  ; none; false"
+        };
 
     for (int i = 0; i < correctResults.length; i++) {
       assertEquals(correctResults[i], results.get(i));
@@ -435,17 +435,11 @@ public class WritingTests {
     String addingDate = df.format(new Date());
 
     String[] correctResults = new String[] {
-        "1; sequence1.ab1; FSA (bacteria); ATCG; " + addingDate
-            + "; Klaus Bohne; No comments; A; B; null; 2.0; 0.0; none; false; A131E, G7K, +2H5",
-        "2; sequence2.ab1; FSA; ATCTTTG; " + addingDate
-            + "; Klaus Bohne; No comments; null; null; null; 2.0; 0.0; none; false; reading frame error"};
+        "1; sequence1.ab1; FSA; bacteria; A131E, G7K, +2H5; No comments; Klaus Bohne; " + addingDate + "; 63; 0; ATCG; A; B;  ; none; false",
+        "2; sequence2.ab1; FSA; null; reading frame error; No comments; Klaus Bohne; " + addingDate + "; 63; 0; ATCTTTG; null; null;  ; none; false"};
 
     for (int i = 0; i < correctResults.length; i++) {
-      String[] correctInfo = correctResults[i].split(";");
-      String[] testInfo = results.get(i).split(";");
-      for (int j = 0; j < correctInfo.length; j++)
-
-        assertEquals(correctInfo[j], testInfo[j]);
+        assertEquals(correctResults[i], results.get(i));
     }
 
     assertTrue(results.size() == 2);
@@ -477,7 +471,7 @@ public class WritingTests {
 
 
   @Test
-  public void testStoreLocallyAsSeparateFiles1() throws MissingPathException, IOException {
+  public void testStoreLocallyAsSeparateFiles1() throws MissingPathException, IOException, UndefinedTypeOfMutationException {
     FileSaver.setSeparateFiles(true);
     FileSaver.setLocalPath(path);
 
@@ -498,8 +492,7 @@ public class WritingTests {
     DateFormat df = new SimpleDateFormat("dd/MM/yy");
     String addingDate = df.format(new Date());
 
-    String[] correctResults = new String[] {"1; sequence2.ab1; FSA; ATCTTTG; " + addingDate
-        + "; Klaus Bohne; No comments; null; null; null; 2.0; 0.0; none; false; reading frame error"};
+    String[] correctResults = new String[] {"1; sequence2.ab1; FSA; null; reading frame error; No comments; Klaus Bohne; " + addingDate + "; 63; 0; ATCTTTG; null; null;  ; none; false"};
 
     for (int i = 0; i < correctResults.length; i++) {
       assertEquals(correctResults[i], results.get(i));
@@ -514,8 +507,7 @@ public class WritingTests {
     reader.lines().skip(1).forEach(line -> results2.add(line));
     reader.close();
 
-    correctResults = new String[] {"1; sequence3.ab1; FSA; ATCTTGCGTTG; " + addingDate
-        + "; Klaus Hafer; ; null; null; null; 2.0; 0.0; none; false; "};
+    correctResults = new String[] {"1; sequence3.ab1; FSA; null; ; Klaus Hafer; " + addingDate + "; 63; 0; ATCTTGCGTTG; null; null;  ; none; false"};
 
     for (int i = 0; i < correctResults.length; i++) {
       assertEquals(correctResults[i], results2.get(i));
@@ -528,7 +520,7 @@ public class WritingTests {
 
 
   @Test
-  public void testStoreOneFileWithSetFileName() throws MissingPathException, IOException {
+  public void testStoreOneFileWithSetFileName() throws MissingPathException, IOException, UndefinedTypeOfMutationException {
 
     FileSaver.setSeparateFiles(false);
     FileSaver.setLocalPath(path);
@@ -546,8 +538,8 @@ public class WritingTests {
     String addingDate = df.format(new Date());
 
     // Check whether the input is correct
-    String[] correctResults = new String[] {"1; sequence1.ab1; FSA (bacteria); ATCG; " + addingDate
-        + "; Klaus Bohne; No comments; A; B; null; 2.0; 0.0; none; false; A131E, G7K, +2H5"};
+    String[] correctResults = new String[] {"1; sequence1.ab1; FSA; bacteria; A131E, G7K, +2H5; No comments; Klaus Bohne; " + 
+        addingDate + "; 63; 0; ATCG; A; B;  ; none; false"};
 
     for (int i = 0; i < correctResults.length; i++) {
       assertEquals(correctResults[i], results.get(i));
@@ -556,7 +548,7 @@ public class WritingTests {
   }
 
   @Test
-  public void testStoreSeparateFilesWithSetFileName() throws MissingPathException, IOException {
+  public void testStoreSeparateFilesWithSetFileName() throws MissingPathException, IOException, UndefinedTypeOfMutationException {
 
     FileSaver.setSeparateFiles(true);
     FileSaver.setLocalPath(path);
@@ -585,8 +577,7 @@ public class WritingTests {
     String addingDate = df.format(new Date());
 
     // Check whether the input is correct
-    String[] correctResults = new String[] {"1; sequence1.ab1; FSA (bacteria); ATCG; " + addingDate
-        + "; Klaus Bohne; No comments; A; B; null; 2.0; 0.0; none; false; A131E, G7K, +2H5"};
+    String[] correctResults = new String[] {"1; sequence1.ab1; FSA; bacteria; A131E, G7K, +2H5; No comments; Klaus Bohne; "+ addingDate + "; 63; 0; ATCG; A; B;  ; none; false"};
 
     for (int i = 0; i < correctResults.length; i++) {
       assertEquals(correctResults[i], results1.get(i));
