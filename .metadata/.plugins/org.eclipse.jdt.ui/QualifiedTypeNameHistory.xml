@@ -26,7 +26,6 @@
 <fullyQualifiedTypeName name="io.GeneReader"/>
 <fullyQualifiedTypeName name="java.lang.Override"/>
 <fullyQualifiedTypeName name="gui.MainWindow"/>
-<fullyQualifiedTypeName name="analysis.StringAnalysis"/>
 <fullyQualifiedTypeName name="analysis.QualityAnalysis"/>
 <fullyQualifiedTypeName name="io.Config"/>
 <fullyQualifiedTypeName name="com.sun.javafx.scene.control.skin.VirtualFlow"/>
@@ -48,6 +47,7 @@
 <fullyQualifiedTypeName name="javafx.scene.control.Alert.AlertType"/>
 <fullyQualifiedTypeName name="java.lang.System"/>
 <fullyQualifiedTypeName name="java.lang.Thread"/>
-<fullyQualifiedTypeName name="io.FileSaver"/>
 <fullyQualifiedTypeName name="java.io.File"/>
+<fullyQualifiedTypeName name="io.FileSaver"/>
+<fullyQualifiedTypeName name="analysis.StringAnalysis"/>
 </qualifiedTypeNameHistroy>

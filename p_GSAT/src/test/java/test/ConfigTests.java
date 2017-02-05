@@ -28,24 +28,20 @@ public class ConfigTests {
   private String path =
       System.getProperty("user.home") + File.separator + "gsat" + File.separator + "config.txt";
 
-  @Ignore
+  
   @Test
   public void configMethods() throws IOException {
-    System.out.println(ConfigHandler.exists());
     ConfigHandler.initConfig();
-    System.out.println(ConfigHandler.exists());
-    System.out.println(ConfigHandler.getPath());
+    assertTrue(ConfigHandler.exists());
   }
 
   /**
    * Test for accessing the home directory
    */
-  @Ignore
   @Test
   public void testConfigExists() {
-    System.out.println(path);
     File config = new File(path);
-    System.out.println(config.exists());
+    assertTrue(config.exists());
   }
 
   /**
@@ -53,7 +49,7 @@ public class ConfigTests {
    * 
    * @throws IOException
    */
-  @Ignore
+  
   @Test
   public void testConfigPath() throws IOException {
     File configFile =
