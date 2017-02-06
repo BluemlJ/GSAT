@@ -1,6 +1,6 @@
 HELP
 
-We’re glad to help!
+We're glad to help!
 Check out the topic you are interested in:
 (1) How to set up and to start a new analysis
 (2) The main menu in further detail
@@ -19,7 +19,7 @@ And there you go. When the analysis finished, you can find the results in the fo
 
 (2) The main menu in further detail
 Help
-This menu item allows you to get some help on the program’s functionality (when clicking on Help; actually, you already seem to use this) or to read about the authors and
+This menu item allows you to get some help on the program's functionality (when clicking on Help; actually, you already seem to use this) or to read about the authors and
 the making of GSAT (by clicking on About).
 Source
 This specifies the folder of AB1 files or the single AB1 file which you want to analyze. Enter folder or file path manually or simply choose it by clicking on the button
@@ -31,7 +31,7 @@ Use this dropdown menu to choose which gene to compare the sequences with.
 Multiple output files
 This checkbox indicates whether multiple output files are produced, one for each input file (checked) or one single file, containing the information of all input files (unchecked).
 Settings
-You can adjust the program’s settings by clicking on this button. The settings window is explained in section (3).
+You can adjust the program's settings by clicking on this button. The settings window is explained in section (3).
 Start
 After choosing a path for input and output and after selecting a gene, you can click on Start to run the analysis.
 
@@ -42,7 +42,7 @@ Choose your name in the dropdown menu to make sure your analyses are associated 
 Remove names from the list with delete.
 Available genes
 The big box contains all currently available genes for an analysis. You can add or delete genes with the buttons add and delete. Only the genes you specify here
-are presented to you in the main window’s gene dropdown.
+are presented to you in the main window's gene dropdown.
 Edit parameters
 You can adjust parameters used in the analysis pipeline by clicking this button.
 Configure database

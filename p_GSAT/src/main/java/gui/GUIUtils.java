@@ -162,6 +162,9 @@ public class GUIUtils {
       } catch (IOException e2) {
         report.append("Error while storing data, aborting analysis.\n");
         return new Pair<Boolean, String>(success, report.toString());
+      } catch (UndefinedTypeOfMutationException e) {
+        // TODO Auto-generated catch block
+        e.printStackTrace();
       }
 
     }

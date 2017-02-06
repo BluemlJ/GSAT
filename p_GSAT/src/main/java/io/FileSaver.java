@@ -6,8 +6,10 @@ import java.io.IOException;
 import java.util.LinkedList;
 
 import analysis.AnalysedSequence;
+import analysis.StringAnalysis;
 import exceptions.MissingPathException;
 import exceptions.PathUsage;
+import exceptions.UndefinedTypeOfMutationException;
 
 /**
  * Class to store the analysis results in local files. This class produces comma separated value
@@ -114,9 +116,10 @@ public class FileSaver {
    * @throws IOException If the writing process fails (due to the used FileWriter)
    * 
    * @author Ben Kohr
+   * @throws UndefinedTypeOfMutationException 
    */
   public static void storeResultsLocally(String ab1Filename, AnalysedSequence sequence)
-      throws MissingPathException, IOException {
+      throws MissingPathException, IOException, UndefinedTypeOfMutationException {
 
     // Without a path, writing is not possible.
     if (localPath == null) {
@@ -137,68 +140,7 @@ public class FileSaver {
       writer = getNewWriterForOneFile(finalName);
     }
 
-    // retrieve the data from the AnalysedSequence object
-    String fileName = sequence.getFileName();
-
-    String geneName = sequence.getReferencedGene().getName();
-    String organism = sequence.getReferencedGene().getOrganism();
-
-    String gene;
-    if (organism == null) {
-      gene = geneName;
-    } else {
-      gene = geneName + " (" + organism + ")";
-    }
-
-    String nucleotides = sequence.getSequence();
-    String addingDate = sequence.getAddingDate();
-    String researcher = sequence.getResearcher();
-    // As ';' is the seperator charachter, each inital semicolon is replaced
-    String comments = sequence.getComments().replace(';', ',');
-    String leftVector = sequence.getLeftVector();
-    String rightVector = sequence.getRightVector();
-    String primer = sequence.getPrimer();
-    double avgQuality = sequence.getAvgQuality();
-    double trimPercentage = sequence.getTrimPercentage();
-    int hisTagPosition = sequence.getHisTagPosition();
-    boolean manuallyChecked = sequence.isManuallyChecked();
-
-    // Concatenate the Strings together to one line to be written
-    StringBuilder builder = new StringBuilder();
-    builder.append(id).append("; ");
-    builder.append(fileName).append("; ");
-    builder.append(gene).append("; ");
-    builder.append(nucleotides).append("; ");
-    builder.append(addingDate).append("; ");
-    builder.append(researcher).append("; ");
-    builder.append(comments).append("; ");
-    builder.append(leftVector).append("; ");
-    builder.append(rightVector).append("; ");
-    builder.append(primer).append("; ");
-    builder.append(avgQuality).append("; ");
-    builder.append(trimPercentage).append("; ");
-
-    // The his tag position starts with 1 in the stored result.
-    if (hisTagPosition == -1)
-      builder.append("none; ");
-    else
-      builder.append((hisTagPosition + 1) + "; ");
-
-    builder.append(manuallyChecked).append("; ");
-
-    LinkedList<String> mutations = sequence.getMutations();
-    int numberOfMutations = sequence.getMutations().size();
-    for (int i = 0; i < numberOfMutations; i++) {
-      builder.append(mutations.get(i));
-      if (i < numberOfMutations - 1) {
-        builder.append(", ");
-      }
-    }
-
-    builder.append(System.lineSeparator());
-
-    // write the String into the file
-    String toWrite = builder.toString();
+    String toWrite = constructLineToWrite(sequence);
     writer.write(toWrite);
 
 
@@ -210,6 +152,105 @@ public class FileSaver {
   }
 
 
+  
+  private static String constructLineToWrite(AnalysedSequence sequence) throws UndefinedTypeOfMutationException {
+    
+    StringBuilder builder = new StringBuilder();
+    
+    // id
+    builder.append(id).append("; ");
+    
+    // file name
+    String fileName = sequence.getFileName();
+    builder.append(fileName).append("; ");
+    
+    // gene
+    String geneName = sequence.getReferencedGene().getName();
+    builder.append(geneName).append("; ");
+    
+    // gene organism
+    String organism = sequence.getReferencedGene().getOrganism();
+    builder.append(organism).append("; ");
+    
+    // mutations
+    LinkedList<String> mutations = sequence.getMutations();
+    int numberOfMutations = sequence.getMutations().size();
+    for (int i = 0; i < numberOfMutations; i++) {
+      
+      String mutation = mutations.get(i);
+      builder.append(mutation);
+      if (i < numberOfMutations - 1) {
+        builder.append(", ");
+      } else {
+        builder.append("; ");
+      }
+    }
+    
+    // comments
+    // As ';' is the seperator charachter, each inital semicolon is replaced
+    String comments = sequence.getComments().replace(';', ',');
+    builder.append(comments).append("; ");
+    
+    // researcher
+    String researcher = sequence.getResearcher();
+    builder.append(researcher).append("; ");
+    
+    // date
+    String addingDate = sequence.getAddingDate();
+    builder.append(addingDate).append("; ");
+    
+    // average quality
+    double avgQuality = sequence.getAvgQuality();
+    int avgQualityInPercent = (int) (Math.pow(10, (-avgQuality)/10.0) * 100);
+    builder.append(avgQualityInPercent).append("; ");
+    
+    // trim percentage
+    int trimPercentage = (int) (sequence.getTrimPercentage() * 100);
+    builder.append(trimPercentage).append("; ");
+    
+    // nucleotides
+    String nucleotides = sequence.getSequence();
+    builder.append(nucleotides).append("; ");
+    
+    // left vector
+    String leftVector = sequence.getLeftVector();
+    builder.append(leftVector).append("; ");
+    
+    // right vector
+    String rightVector = sequence.getRightVector();
+    builder.append(rightVector).append("; ");
+    
+    // primer
+    String primer = sequence.getPrimer();
+    if (primer == null)
+      builder.append(" ; ");
+    else
+      builder.append(primer).append("; ");
+    
+    // his tag
+    // The his tag position starts with 1 in the stored result.
+    int hisTagPosition = sequence.getHisTagPosition();
+    if (hisTagPosition == -1)
+      builder.append("none; ");
+    else
+      builder.append((hisTagPosition + 1) + "; ");
+    
+    // manually checked
+    boolean manuallyChecked = sequence.isManuallyChecked();
+    builder.append(manuallyChecked);
+    
+    
+    builder.append(System.lineSeparator());
+
+    String toWrite = builder.toString();
+    
+    return toWrite;
+  }
+  
+ 
+  
+  
+  
 
   /**
    * This method returns and initially uses a new writer, if only one file is desired.
@@ -257,7 +298,7 @@ public class FileSaver {
 
     if (!append) {
       writer.write(
-          "id; file name; gene; sequence; date; researcher; comments; left vector; right vector; primer; average quality; percentage of quality trim; HIS tag; manually checked; mutations"
+        "id; file name; gene; gene organism; mutations; comments; researcher; date; average quality (percent); percentage of quality trim; nucleotide sequence; left vector; right vector; primer; HIS tag; manually checked"
               + System.lineSeparator());
     }
 

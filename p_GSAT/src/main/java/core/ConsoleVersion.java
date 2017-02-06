@@ -154,8 +154,13 @@ public class ConsoleVersion {
   private static void addLocalEntry(AnalysedSequence activeSequence, File file,
       String destinationPath) {
     try {
-      FileSaver.storeResultsLocally(file.getName().replaceFirst("[.][^.]+$", "") + "_result",
-          activeSequence);
+      try {
+        FileSaver.storeResultsLocally(file.getName().replaceFirst("[.][^.]+$", "") + "_result",
+            activeSequence);
+      } catch (UndefinedTypeOfMutationException e) {
+        // TODO Auto-generated catch block
+        e.printStackTrace();
+      }
     } catch (MissingPathException e) {
       FileSaver.setLocalPath(destinationPath);
     } catch (IOException e) {
