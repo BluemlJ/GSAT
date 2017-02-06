@@ -71,10 +71,7 @@ public class GeneHandler {
 
     readGenes();
 
-    // check if the new gene already exists
-    if (GeneHandler.containsGene(geneName)) {
-      throw new DuplicateGeneException(geneName);
-    }
+
 
     geneList
         .add(new Gene(geneSequence, 0, geneName, ConfigHandler.getResearcher(), organism, comment));
@@ -158,6 +155,23 @@ public class GeneHandler {
     return null;
   }
 
+  /**
+   * 
+   * @param geneName
+   * @return
+   */
+  public static Gene getGene(String geneName, String organism) {
+    if (organism != null && organism != "none" && organism != "") {
+      for (int i = 0; i < geneList.size(); i++) {
+        if (geneList.get(i).getName().equals(geneName)) {
+          if (geneList.get(i).getOrganism().equals(organism)) return geneList.get(i);
+        }
+      }
+    } else
+      getGene(geneName);
+    return null;
+  }
+
   public static Gene getGeneAt(int index) {
     return geneList.get(index);
   }
@@ -181,7 +195,7 @@ public class GeneHandler {
     for (int i = 0; i < geneList.size(); i++) {
       names[i] = geneList.get(i).getName();
       if (geneList.get(i).getOrganism() != null && geneList.get(i).getOrganism() != "none")
-        names[i] = names[i] + " ("+ geneList.get(i).getOrganism() + ")";
+        names[i] = names[i] + " (" + geneList.get(i).getOrganism() + ")";
     }
 
     Arrays.sort(names);
@@ -228,7 +242,7 @@ public class GeneHandler {
       String name = sepLine[0];
       String gene = sepLine[1];
       String organism = sepLine[2];
-      if (getGene(name) == null) {
+      if (getGene(name,organism) == null) {
         if (organism.equals("none")) {
           organism = null;
         }
@@ -297,7 +311,7 @@ public class GeneHandler {
   }
 
   public static void deleteGene(String string) throws IOException {
-    deleteGene(path, string);
+    deleteGene(path, string.split(" ")[0]);
 
   }
 

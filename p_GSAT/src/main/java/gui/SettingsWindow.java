@@ -153,7 +153,8 @@ public class SettingsWindow extends Application implements javafx.fxml.Initializ
       public void handle(ActionEvent arg0) {
         TextInputDialog dialog = new TextInputDialog("your name");
         dialog.setTitle("Add a new researcher");
-        dialog.setHeaderText("Please enter the name of the new researcher");
+        dialog.setHeaderText("Please enter the name of the new researcher.");
+        dialog.setContentText("The name should have a form like Max M.");
         dialog.setContentText("Name:");
 
         // Traditional way to get the response value.

@@ -71,6 +71,9 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
   @FXML
   private CheckBox outputCheckbox;
 
+  @FXML
+  private CheckBox findGeneCheckbox;
+
   Stage primaryStage;
 
   public static void main(String[] args) {
@@ -207,6 +210,7 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
         new Thread(mainTask).start();
 
       }
+
     });
 
     // set settings button to open settings window
