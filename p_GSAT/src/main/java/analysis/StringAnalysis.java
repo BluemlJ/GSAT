@@ -1,5 +1,6 @@
 package analysis;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Hashtable;
 import java.util.LinkedList;
@@ -426,11 +427,10 @@ public class StringAnalysis {
    * @param listOfGenes A list of all genes, we want to compare with the sequence
    * @return the gene, that has the best similarity
    * @author bluemlj
-   * @throws DissimilarGeneException
    */
-  public static Gene findRightGene(AnalysedSequence toAnalyze, LinkedList<Gene> listOfGenes)
+  public static Gene findRightGene(AnalysedSequence toAnalyze, ArrayList<Gene> listOfGenes)
       throws DissimilarGeneException {
-    Gene bestgene = listOfGenes.getFirst();
+    Gene bestgene = listOfGenes.get(0);
     double bestSimilarity = 0;
 
     for (Gene gene : listOfGenes) {
@@ -441,12 +441,9 @@ public class StringAnalysis {
       }
     }
 
-    // if the Similarity is less then 80%, return null
-    if (bestSimilarity >= 80) {
-      return bestgene;
-    }
+    return bestgene;
 
-    throw new DissimilarGeneException(toAnalyze, bestgene, bestSimilarity);
+
   }
 
   /**

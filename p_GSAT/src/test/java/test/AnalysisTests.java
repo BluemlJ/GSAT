@@ -4,6 +4,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedList;
 
@@ -194,28 +195,29 @@ public class AnalysisTests {
   }
 
 
-  
+
   @Test
   public void findHISTAG1() throws CorruptedSequenceException {
-    AnalysedSequence testSeq =
-        new AnalysedSequence("ATGUUAUUUCCCTAACCCCCCCACCACCACCACCACTAA", "Jannis", "toAnalyse", null);
+    AnalysedSequence testSeq = new AnalysedSequence("ATGUUAUUUCCCTAACCCCCCCACCACCACCACCACTAA",
+        "Jannis", "toAnalyse", null);
     testSeq.setLeftVector("");
     int tmp = StringAnalysis.findHISTag(testSeq);
     System.out.println(tmp);
     assertTrue(tmp == 21);
   }
 
-  
+
   @Test
   public void findHISTAG2() throws CorruptedSequenceException {
-    AnalysedSequence testSeq = new AnalysedSequence("ATGCCTCCCCACCACCACCACCACCACTAA", "Jannis", "toAnalyse", null);
+    AnalysedSequence testSeq =
+        new AnalysedSequence("ATGCCTCCCCACCACCACCACCACCACTAA", "Jannis", "toAnalyse", null);
     testSeq.setLeftVector("");
     int tmp = StringAnalysis.findHISTag(testSeq);
     System.out.println(tmp);
     assertTrue(tmp == 9);
   }
 
-  
+
   @Test
   public void findHISTAG3() throws CorruptedSequenceException {
     AnalysedSequence testSeq =
@@ -513,7 +515,7 @@ public class AnalysisTests {
     Gene gena = new Gene("hallo", 0, "testGen1", "Jannis");
     Gene genb = new Gene("bonjour", 1, "testGen1", "Jannis");
     Gene genc = new Gene("ola", 2, "testGen1", "Jannis");
-    LinkedList<Gene> testDatabase = new LinkedList<>();
+    ArrayList<Gene> testDatabase = new ArrayList<>();
     testDatabase.add(gena);
     testDatabase.add(genb);
     testDatabase.add(genc);
@@ -600,7 +602,7 @@ public class AnalysisTests {
     Gene testGeneA = new Gene("AGGGC", 0, "testGeneA", "Jannis");
     Gene testGeneB = new Gene("AGTTTTTGGC", 1, "testGeneB", "Jannis");
     Gene testGeneC = new Gene("AGCCTCTCTCTCTGGC", 2, "testGeneC", "Jannis");
-    LinkedList<Gene> testGenes = new LinkedList<>();
+    ArrayList<Gene> testGenes = new ArrayList<>();
     testGenes.add(testGeneA);
     testGenes.add(testGeneB);
     testGenes.add(testGeneC);
@@ -610,14 +612,14 @@ public class AnalysisTests {
     assertTrue(result == testGeneA);
   }
 
-  
+
   @Test(expected = DissimilarGeneException.class)
   public void testFindingRightGeneOnIncorrectUse() throws DissimilarGeneException {
     AnalysedSequence testA = new AnalysedSequence("C", "a", "a", null);
     Gene testGeneA = new Gene("AGGGC", 0, "testGeneA", "Jannis");
     Gene testGeneB = new Gene("AGTTTTTGGC", 1, "testGeneB", "Jannis");
     Gene testGeneC = new Gene("AGCCTCTCTCTCTGGC", 2, "testGeneC", "Jannis");
-    LinkedList<Gene> testGenes = new LinkedList<Gene>();
+    ArrayList<Gene> testGenes = new ArrayList<Gene>();
     testGenes.add(testGeneA);
     testGenes.add(testGeneB);
     testGenes.add(testGeneC);

@@ -21,7 +21,6 @@ import javafx.stage.Stage;
 
 public class AddGeneWindow extends Application implements javafx.fxml.Initializable {
 
-
   // fields
   @FXML
   private TextField nameField;

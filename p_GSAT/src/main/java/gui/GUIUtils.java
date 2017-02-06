@@ -14,6 +14,7 @@ import analysis.StringAnalysis;
 import exceptions.ConfigNotFoundException;
 import exceptions.ConfigReadException;
 import exceptions.CorruptedSequenceException;
+import exceptions.DissimilarGeneException;
 import exceptions.FileReadingException;
 import exceptions.MissingPathException;
 import exceptions.UndefinedTypeOfMutationException;
@@ -90,9 +91,10 @@ public class GUIUtils {
    * @param GeneID ID of the Gene in the Choicebox.
    * @return a Pair or Boolean, which indicates if the method was successful and a String, which can
    *         printed in the infoarea.
+   * @throws DissimilarGeneException 
    */
   public static Pair<Boolean, String> runAnalysis(String sourcepath, String GeneID,
-      String resultname) {
+      String resultname) throws DissimilarGeneException {
     boolean success = false;
     StringBuilder report = new StringBuilder();
 
@@ -109,13 +111,16 @@ public class GUIUtils {
       report.append("Reading .ab1 file(s) was successful\n");
 
     // get the gene from the coiceboxID
-    Gene gene = getGeneFromDropDown(GeneID).first;
+    Gene gene = null;
+    if(!GeneID.equals("-1")){
+    gene = getGeneFromDropDown(GeneID).first;
     report.append(getGeneFromDropDown(GeneID).second.second + "\n");
-
+    }
     // foreach ab1 file
     for (File file : sequences.first) {
       // get Sequence
       AnalysedSequence toAnalyse = readSequenceFromFile(file).first;
+      if(GeneID.equals("-1")) gene = StringAnalysis.findRightGene(toAnalyse, GeneHandler.getGeneList());
       toAnalyse.setReferencedGene(gene);
 
       // checks if complementary and reversed Sequence is better, then

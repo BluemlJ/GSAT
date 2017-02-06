@@ -3,6 +3,7 @@ package gui;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
+import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.Scanner;
 
@@ -17,9 +18,13 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.ListView;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
@@ -28,7 +33,7 @@ import javafx.stage.Stage;
 public class MainWindow extends Application implements javafx.fxml.Initializable {
 
   public static boolean settingsOpen = false;
-
+  public static boolean autoGeneSearch = false;
   @FXML
   private javafx.scene.control.MenuItem aboutButton;
   // WARNING: Do not change variable name under all circumstances!
@@ -107,7 +112,7 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
     // gives information about new gene selection
     geneBox.getSelectionModel().selectedItemProperty()
         .addListener((obeservable, value, newValue) -> {
-          infoArea.appendText("New Gene selected: " + newValue + "\n");
+          if (newValue != null) infoArea.appendText("New Gene selected: " + newValue + "\n");
         });
 
     // set button to select destination
@@ -171,9 +176,19 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
             .appendText("Selected gene:  " + geneBox.getSelectionModel().getSelectedItem() + "\n");
 
         if (geneBox.getSelectionModel().getSelectedIndex() == -1) {
-          infoArea.appendText("No gene was selected, aborting analysis.");
-          // bar.setProgress(0);
-          return;
+          if (autoGeneSearch == false) {
+            Alert alert = new Alert(AlertType.CONFIRMATION);
+            alert.setTitle("Confirmation Dialog");
+            alert.setHeaderText("No gene was selected!");
+            alert.setContentText("Find gene automatically?");
+
+            Optional<ButtonType> result = alert.showAndWait();
+            if (result.get() == ButtonType.OK) {
+
+            } else {
+              return;
+            }
+          }
         }
 
         infoArea.appendText(
@@ -188,7 +203,11 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
 
             String srcFieldTest = srcField.getText();
             String destfileNameText = fileNameField.getText();
-            String geneBoxItem = geneBox.getSelectionModel().getSelectedItem().split(" ")[0];
+            String geneBoxItem;
+            if (autoGeneSearch)
+              geneBoxItem = "-1";
+            else
+              geneBoxItem = geneBox.getSelectionModel().getSelectedItem().split(" ")[0];
 
             output = GUIUtils.runAnalysis(srcFieldTest, geneBoxItem, destfileNameText).second;
             infoArea.appendText(output);
@@ -211,6 +230,19 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
 
       }
 
+    });
+
+    // select if you get only one output file
+    findGeneCheckbox.selectedProperty().addListener((observable, oldValue, newValue) -> {
+      FileSaver.setSeparateFiles(newValue);
+      if (newValue) {
+        autoGeneSearch = true;
+        geneBox.getSelectionModel().clearSelection();
+        infoArea.appendText("TEST, hier text einfügen\n");
+      } else {
+        autoGeneSearch = false;
+        infoArea.appendText("TEST2, hier einfügen\n");
+      }
     });
 
     // set settings button to open settings window
