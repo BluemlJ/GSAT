@@ -45,8 +45,10 @@ public class AddGeneWindow extends Application implements javafx.fxml.Initializa
   @Override
   public void initialize(URL location, ResourceBundle resources) {
 
+	geneArea.setWrapText(true);
+	commentArea.setWrapText(true);
     confirmButton.setOnAction(new EventHandler<ActionEvent>() {
-
+    	
 
       @Override
       public void handle(ActionEvent arg0) {
@@ -57,7 +59,7 @@ public class AddGeneWindow extends Application implements javafx.fxml.Initializa
 
             Alert alert = new Alert(AlertType.INFORMATION);
             alert.setTitle("Adding gene");
-            alert.setHeaderText("Gene added successful" + organismField.getText());
+            alert.setHeaderText("Gene added successfully.");
             alert.showAndWait();
             Stage stage = (Stage) cancelButton.getScene().getWindow();
             stage.close();

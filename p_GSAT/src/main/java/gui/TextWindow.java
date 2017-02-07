@@ -24,7 +24,7 @@ public class TextWindow extends Application implements javafx.fxml.Initializable
   
   @Override
   public void initialize(URL arg0, ResourceBundle arg1) {
-
+	  testArea.setWrapText(true);
   }
 
 

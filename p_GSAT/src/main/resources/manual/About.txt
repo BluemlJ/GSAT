@@ -1,4 +1,3 @@
-ABOUT
 GSAT can assist you with analysis nucleotide sequences stored in AB1 files by performing quality analysis, finding mutations and
 collecting information about the sequences.
 

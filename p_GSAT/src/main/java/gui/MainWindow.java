@@ -7,6 +7,8 @@ import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.Scanner;
 
+import com.sun.prism.paint.Color;
+
 import analysis.Pair;
 import io.FileSaver;
 import javafx.application.Application;
@@ -28,6 +30,7 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.text.TextFlow;
 import javafx.stage.Stage;
 
 public class MainWindow extends Application implements javafx.fxml.Initializable {
@@ -95,7 +98,6 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
     bar.setProgress(0);
 
 
-
     Pair<Boolean, String> output;
     infoArea.setText("Welcome to GSAT! \n");
     // read Genes and show them in the choicebox
@@ -141,7 +143,6 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
         String output;
         output = GUIUtils.setSourceFolder(srcField).second;
         infoArea.appendText(output + "\n");
-
       }
     });
 
@@ -158,7 +159,6 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
 
         if (srcField.getText().equals("")) {
           infoArea.appendText("Source path is empty, aborting analysis.");
-          // bar.setProgress(0);
           return;
         }
 
@@ -238,10 +238,10 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
       if (newValue) {
         autoGeneSearch = true;
         geneBox.getSelectionModel().clearSelection();
-        infoArea.appendText("TEST, hier text einfügen\n");
+        infoArea.appendText("The gene that fits best will be searched.");
       } else {
         autoGeneSearch = false;
-        infoArea.appendText("TEST2, hier einfügen\n");
+        infoArea.appendText("No automatic gene search.");
       }
     });
 
@@ -278,7 +278,7 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
               convertStreamToString(ClassLoader.getSystemResourceAsStream("manual/About.txt"));
           texWin.setText(content);
           texWin.setName("About");
-
+     
           Scene scene = new Scene(root);
           Stage s = new Stage();
           s.setScene(scene);
