@@ -388,13 +388,7 @@ public class ConsoleVersion {
 
 
     if (geneRecognition) {
-      
-      try {
-        gene = StringAnalysis.findRightGene(activeSequence, GeneHandler.getGeneList());
-      } catch (DissimilarGeneException e) {
-        gene = e.bestGene;
-        System.out.println(e.getMessage());
-      }
+      gene = StringAnalysis.findRightGene(activeSequence, GeneHandler.getGeneList());
     }
     activeSequence.setReferencedGene(gene);
 
