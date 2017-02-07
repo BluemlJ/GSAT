@@ -428,8 +428,7 @@ public class StringAnalysis {
    * @return the gene, that has the best similarity
    * @author bluemlj
    */
-  public static Gene findRightGene(AnalysedSequence toAnalyze, ArrayList<Gene> listOfGenes)
-      throws DissimilarGeneException {
+  public static Gene findRightGene(AnalysedSequence toAnalyze, ArrayList<Gene> listOfGenes) {
     Gene bestgene = listOfGenes.get(0);
     double bestSimilarity = 0;
 

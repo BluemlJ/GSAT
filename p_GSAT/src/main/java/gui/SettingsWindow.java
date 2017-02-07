@@ -222,6 +222,7 @@ public class SettingsWindow extends Application implements javafx.fxml.Initializ
       return;
     }
     scene = new Scene(root);
+    primaryStage.setTitle("GSAT - Settings");
     primaryStage.setScene(scene);
     primaryStage.sizeToScene();
     primaryStage.show();

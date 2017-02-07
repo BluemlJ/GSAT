@@ -96,6 +96,7 @@ public class AddGeneWindow extends Application implements javafx.fxml.Initializa
       return;
     }
     Scene scene = new Scene(root);
+    primaryStage.setTitle("GSAT - Adding a gene");
     primaryStage.setScene(scene);
     primaryStage.sizeToScene();
     primaryStage.show();

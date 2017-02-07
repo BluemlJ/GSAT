@@ -55,6 +55,7 @@ public class ParameterWindow extends Application implements javafx.fxml.Initiali
       return;
     }
     Scene scene = new Scene(root);
+    primaryStage.setTitle("GSAT - Adjust analysis parameters");
     primaryStage.setScene(scene);
     primaryStage.sizeToScene();
     primaryStage.show();
