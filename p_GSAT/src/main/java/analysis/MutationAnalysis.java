@@ -72,27 +72,37 @@ public class MutationAnalysis {
 			case "s":
 				newAminoAcid = difference.split("\\|")[2];
 				oldAminoAcid = difference.split("\\|")[3];
+				if(toAnalyze.getSequence().length() > (position-1)*3+3){
 				codonsOfNew = toAnalyze.getSequence().substring((position - 1) * 3, (position - 1) * 3 + 3);
 				toAnalyze.addMutation(oldAminoAcid + position + newAminoAcid + " (" + codonsOfNew + ")");
+				}else
+				toAnalyze.addMutation(oldAminoAcid + position + newAminoAcid);
+				
 				checkFrameerrorCounter++;
 
 				break;
 			// i = injection, inject of an new amino acid (aminoAcid short form)
 			case "i":
 				shift--;
-				oldAminoAcid = difference.split("\\|")[2];
+				newAminoAcid = difference.split("\\|")[2];
+				if(toAnalyze.getSequence().length() > (position-1)*3+3){
 				codonsOfNew = toAnalyze.getSequence().substring((position - 1) * 3, (position - 1) * 3 + 3);
-
-				toAnalyze.addMutation("+1" + oldAminoAcid + position + " (" + codonsOfNew + ")");
+				toAnalyze.addMutation("+1" + newAminoAcid + position + " (" + codonsOfNew + ")");
+				}else 
+					toAnalyze.addMutation("+1" + newAminoAcid + position);
+				
 				checkFrameerrorCounter++;
 				break;
 			// d = deletion, deletion of an amino acid
 			case "d":
 				shift++;
-				newAminoAcid = difference.split("\\|")[2];
-				codonsOfNew = toAnalyze.getSequence().substring((position - 1) * 3, (position - 1) * 3 + 3);
-				toAnalyze.addMutation("-1" + newAminoAcid + position + " (" + codonsOfNew + ")");
-				checkFrameerrorCounter++;
+				oldAminoAcid = difference.split("\\|")[2];
+				if(toAnalyze.getSequence().length() > (position-1)*3+3){
+					codonsOfNew = toAnalyze.getSequence().substring((position - 1) * 3, (position - 1) * 3 + 3);
+					toAnalyze.addMutation("-1" + oldAminoAcid + position + " (" + codonsOfNew + ")");
+					}else 
+						toAnalyze.addMutation("-1" + oldAminoAcid + position);
+					checkFrameerrorCounter++;
 				break;
 
 			default:
