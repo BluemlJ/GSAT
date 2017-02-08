@@ -26,6 +26,8 @@ import javafx.stage.WindowEvent;
 public class SettingsWindow extends Application implements javafx.fxml.Initializable {
 
   public static boolean subsettingsOpen = false;
+  
+  
 
   @FXML
   private ListView<String> geneList;
@@ -103,6 +105,7 @@ public class SettingsWindow extends Application implements javafx.fxml.Initializ
       @Override
       public void handle(ActionEvent arg0) {
         if (!subsettingsOpen) {
+          System.err.println(subsettingsOpen);
           subsettingsOpen = true;
           DatabaseSettingsWindow settings = new DatabaseSettingsWindow();
           try {
@@ -194,21 +197,6 @@ public class SettingsWindow extends Application implements javafx.fxml.Initializ
         Stage stage = (Stage) closeButton.getScene().getWindow();
         stage.close();
       }
-    });
-
-    parameterButton.setOnAction(new EventHandler<ActionEvent>() {
-
-      @Override
-      public void handle(ActionEvent arg0) {
-
-        ParameterWindow pW = new ParameterWindow();
-        try {
-          pW.start(new Stage());
-        } catch (Exception e) {
-          // TODO Auto-generated catch block
-        }
-      }
-
     });
   }
 

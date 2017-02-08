@@ -5,6 +5,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 import javafx.application.Application;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -13,6 +14,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 
 public class ParameterWindow extends Application implements javafx.fxml.Initializable {
 
@@ -62,7 +64,21 @@ public class ParameterWindow extends Application implements javafx.fxml.Initiali
     primaryStage.setScene(scene);
     primaryStage.sizeToScene();
     primaryStage.show();
+    
+    primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+
+      @Override
+      public void handle(WindowEvent arg0) {
+        SettingsWindow.subsettingsOpen = false;
+
+      }
+    });
   }
 
 
+  @Override
+  public void stop() throws Exception {
+    SettingsWindow.subsettingsOpen = false;
+    super.stop();
+  }
 }
