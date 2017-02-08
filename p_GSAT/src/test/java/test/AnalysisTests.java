@@ -543,7 +543,7 @@ public class AnalysisTests {
       MutationAnalysis.findMutations(testSeq);
 
       // System.out.println(testSeq.getMutations().get(1));
-      assertTrue(testSeq.getMutations().getFirst().equals("+1L1"));
+      assertTrue(testSeq.getMutations().getFirst().equals("+1L1 (ATG)"));
       assertTrue(testSeq.getMutations().get(1).equals("-1Q4"));
     } catch (UndefinedTypeOfMutationException e) {
       // TODO Auto-generated catch block
@@ -564,7 +564,7 @@ public class AnalysisTests {
     try {
       MutationAnalysis.findMutations(testSeq);
 
-      assertTrue(testSeq.getMutations().getFirst().equals("F2L"));
+      assertTrue(testSeq.getMutations().getFirst().equals("F2L (UUA)"));
       assertTrue(testSeq.getMutations().get(1).equals("CCC3CCA"));
     } catch (UndefinedTypeOfMutationException e) {
       // TODO Auto-generated catch block
@@ -758,7 +758,7 @@ public class AnalysisTests {
     try {
       MutationAnalysis.findMutations(testSeq);
 
-      assertTrue(testSeq.getMutations().getFirst().equals("-1F2"));
+      assertTrue(testSeq.getMutations().getFirst().equals("-1F2 (UAU)"));
     } catch (UndefinedTypeOfMutationException e) {
       // TODO Auto-generated catch block
       e.printStackTrace();
@@ -777,7 +777,7 @@ public class AnalysisTests {
 
     try {
       MutationAnalysis.findMutations(testSeq);
-      assertTrue(testSeq.getMutations().getFirst().equals("-1L3"));
+      assertTrue(testSeq.getMutations().getFirst().equals("-1L3 (UUU)"));
     } catch (UndefinedTypeOfMutationException e) {
       // TODO Auto-generated catch block
       e.printStackTrace();
@@ -792,7 +792,7 @@ public class AnalysisTests {
 
     try {
       MutationAnalysis.findMutations(testSeq);
-      assertTrue(testSeq.getMutations().getFirst().equals("+1F1"));
+      assertTrue(testSeq.getMutations().getFirst().equals("+1F1 (UAU)"));
     } catch (UndefinedTypeOfMutationException e) {
       // TODO Auto-generated catch block
       e.printStackTrace();
@@ -807,7 +807,7 @@ public class AnalysisTests {
 
     try {
       MutationAnalysis.findMutations(testSeq);
-      assertTrue(testSeq.getMutations().getFirst().equals("+1G2"));
+      assertTrue(testSeq.getMutations().getFirst().equals("+1G2 (CCC)"));
     } catch (UndefinedTypeOfMutationException e) {
       // TODO Auto-generated catch block
       e.printStackTrace();
@@ -822,7 +822,7 @@ public class AnalysisTests {
 
     try {
       MutationAnalysis.findMutations(testSeq);
-      assertTrue(testSeq.getMutations().getFirst().equals("F2L"));
+      assertTrue(testSeq.getMutations().getFirst().equals("F2L (UUA)"));
     } catch (UndefinedTypeOfMutationException e) {
       // TODO Auto-generated catch block
       e.printStackTrace();
@@ -837,7 +837,7 @@ public class AnalysisTests {
 
     try {
       MutationAnalysis.findMutations(testSeq);
-      assertTrue(testSeq.getMutations().getFirst().equals("H3P"));
+      assertTrue(testSeq.getMutations().getFirst().equals("H3P (CCC)"));
     } catch (UndefinedTypeOfMutationException e) {
       // TODO Auto-generated catch block
       e.printStackTrace();

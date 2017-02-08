@@ -80,9 +80,9 @@ public class WritingTests {
 
     seq1.setReferencedGene(g1);
     seq1.setComments("No comments");
-    seq1.addMutation("A131E");
-    seq1.addMutation("G7K");
-    seq1.addMutation("+2H5");
+    seq1.addMutation("A131E (ACC)");
+    seq1.addMutation("G7K (ATC)");
+    seq1.addMutation("+2H5 (AAC)");
     seq1.setLeftVector("A");
     seq1.setRightVector("B");
 
@@ -95,7 +95,7 @@ public class WritingTests {
     seq4.setReferencedGene(new Gene("ATTTTCG", 3, "FSA", "Hans Gans"));
     seq4.setComments("Nothing to say");
     seq4.addMutation("AAA7CAA");
-    seq4.addMutation("-1H5");
+    seq4.addMutation("-1H5 (TCT)");
 
   }
 
@@ -155,7 +155,7 @@ public class WritingTests {
     DateFormat df = new SimpleDateFormat("dd/MM/yy");
     String addingDate = df.format(new Date());
 
-    String[] correctResults = new String[] {"1; sequence3.ab1; FSA; null; AAA7CAA, -1H5; Nothing to say; Kurt Bohne; " + addingDate + "; 63; 0; ATC; null; null;  ; none; false"};
+    String[] correctResults = new String[] {"1; sequence3.ab1; FSA; null; AAA7CAA, -1H5 (TCT); Nothing to say; Kurt Bohne; " + addingDate + "; 63; 0; ATC; null; null;  ; none; AAA7CAA, -1H5; false"};
 
     for (int i = 0; i < correctResults.length; i++) {
       String[] correctInfo = correctResults[i].split(";");
@@ -206,11 +206,11 @@ public class WritingTests {
 
     // Prepare correct result
     DatabaseEntry dbe1 = new DatabaseEntry("sequence1.ab1", 4, "ATCG", "2016-11-28", "Klaus Bohne",
-        "No comments", "A", "B", null, false, "A131E", MutationType.SUBSTITUTION);
+        "No comments", "A", "B", null, false, "A131E (ACC)", MutationType.SUBSTITUTION);
     DatabaseEntry dbe2 = new DatabaseEntry("sequence1.ab1", 4, "ATCG", "2016-11-28", "Klaus Bohne",
-        "No comments", "A", "B", null, false, "G7K", MutationType.SUBSTITUTION);
+        "No comments", "A", "B", null, false, "G7K (ATC)", MutationType.SUBSTITUTION);
     DatabaseEntry dbe3 = new DatabaseEntry("sequence1.ab1", 4, "ATCG", "2016-11-28", "Klaus Bohne",
-        "No comments", "A", "B", null, false, "+2H5", MutationType.INSERTION);
+        "No comments", "A", "B", null, false, "+2H5 (AAC)", MutationType.INSERTION);
     DatabaseEntry[] correctResult = new DatabaseEntry[] {dbe1, dbe2, dbe3};
 
     // compare all attributes in each of the pairings
@@ -362,8 +362,7 @@ public class WritingTests {
     String addingDate = df.format(new Date());
 
     // Check whether the input is correct
-    String[] correctResults = new String[] {"1; sequence1.ab1; FSA; bacteria; A131E, G7K, +2H5; No comments; Klaus Bohne; " + 
-    addingDate + "; 63; 0; ATCG; A; B;  ; none; false"
+    String[] correctResults = new String[] {"1; sequence1.ab1; FSA; bacteria; A131E (ACC), G7K (ATC), +2H5 (AAC); No comments; Klaus Bohne; "+ addingDate + "; 63; 0; ATCG; A; B;  ; none; A131E, G7K, +2H5; false"
     };
     for (int i = 0; i < correctResults.length; i++) {
       assertEquals(correctResults[i], results.get(i));
@@ -397,7 +396,7 @@ public class WritingTests {
     DateFormat df = new SimpleDateFormat("dd/MM/yy");
     String addingDate = df.format(new Date());
 
-    String[] correctResults = new String[] {"1; sequence2.ab1; FSA; null; reading frame error; No comments; Klaus Bohne; " + addingDate + "; 63; 0; ATCTTTG; null; null;  ; none; false",
+    String[] correctResults = new String[] {"1; sequence2.ab1; FSA; null; reading frame error; No comments; Klaus Bohne; " + addingDate + "; 63; 0; ATCTTTG; null; null;  ; none; reading frame error; false",
         "2; sequence3.ab1; FSA; null; ; Klaus Hafer; " + addingDate + "; 63; 0; ATCTTGCGTTG; null; null;  ; none; false"
         };
 
@@ -435,8 +434,8 @@ public class WritingTests {
     String addingDate = df.format(new Date());
 
     String[] correctResults = new String[] {
-        "1; sequence1.ab1; FSA; bacteria; A131E, G7K, +2H5; No comments; Klaus Bohne; " + addingDate + "; 63; 0; ATCG; A; B;  ; none; false",
-        "2; sequence2.ab1; FSA; null; reading frame error; No comments; Klaus Bohne; " + addingDate + "; 63; 0; ATCTTTG; null; null;  ; none; false"};
+        "1; sequence1.ab1; FSA; bacteria; A131E (ACC), G7K (ATC), +2H5 (AAC); No comments; Klaus Bohne; " + addingDate + "; 63; 0; ATCG; A; B;  ; none; A131E, G7K, +2H5; false",
+        "2; sequence2.ab1; FSA; null; reading frame error; No comments; Klaus Bohne; " + addingDate + "; 63; 0; ATCTTTG; null; null;  ; none; reading frame error; false"};
 
     for (int i = 0; i < correctResults.length; i++) {
         assertEquals(correctResults[i], results.get(i));
@@ -492,7 +491,7 @@ public class WritingTests {
     DateFormat df = new SimpleDateFormat("dd/MM/yy");
     String addingDate = df.format(new Date());
 
-    String[] correctResults = new String[] {"1; sequence2.ab1; FSA; null; reading frame error; No comments; Klaus Bohne; " + addingDate + "; 63; 0; ATCTTTG; null; null;  ; none; false"};
+    String[] correctResults = new String[] {"1; sequence2.ab1; FSA; null; reading frame error; No comments; Klaus Bohne; " + addingDate + "; 63; 0; ATCTTTG; null; null;  ; none; reading frame error; false"};
 
     for (int i = 0; i < correctResults.length; i++) {
       assertEquals(correctResults[i], results.get(i));
@@ -538,8 +537,7 @@ public class WritingTests {
     String addingDate = df.format(new Date());
 
     // Check whether the input is correct
-    String[] correctResults = new String[] {"1; sequence1.ab1; FSA; bacteria; A131E, G7K, +2H5; No comments; Klaus Bohne; " + 
-        addingDate + "; 63; 0; ATCG; A; B;  ; none; false"};
+    String[] correctResults = new String[] {"1; sequence1.ab1; FSA; bacteria; A131E (ACC), G7K (ATC), +2H5 (AAC); No comments; Klaus Bohne; "+ addingDate + "; 63; 0; ATCG; A; B;  ; none; A131E, G7K, +2H5; false"};
 
     for (int i = 0; i < correctResults.length; i++) {
       assertEquals(correctResults[i], results.get(i));
@@ -577,7 +575,7 @@ public class WritingTests {
     String addingDate = df.format(new Date());
 
     // Check whether the input is correct
-    String[] correctResults = new String[] {"1; sequence1.ab1; FSA; bacteria; A131E, G7K, +2H5; No comments; Klaus Bohne; "+ addingDate + "; 63; 0; ATCG; A; B;  ; none; false"};
+    String[] correctResults = new String[] {"1; sequence1.ab1; FSA; bacteria; A131E (ACC), G7K (ATC), +2H5 (AAC); No comments; Klaus Bohne; "+ addingDate + "; 63; 0; ATCG; A; B;  ; none; A131E, G7K, +2H5; false"};
 
     for (int i = 0; i < correctResults.length; i++) {
       assertEquals(correctResults[i], results1.get(i));

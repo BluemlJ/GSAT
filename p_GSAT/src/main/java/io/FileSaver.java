@@ -172,7 +172,7 @@ public class FileSaver {
     String organism = sequence.getReferencedGene().getOrganism();
     builder.append(organism).append("; ");
     
-    // mutations
+    // mutations (with nucleotide codons)
     LinkedList<String> mutations = sequence.getMutations();
     int numberOfMutations = sequence.getMutations().size();
     for (int i = 0; i < numberOfMutations; i++) {
@@ -234,6 +234,24 @@ public class FileSaver {
       builder.append("none; ");
     else
       builder.append((hisTagPosition + 1) + "; ");
+    
+    
+    // mutations without nucleotide codons
+    for (int i = 0; i < numberOfMutations; i++) {
+        String mutation = mutations.get(i);
+        String reducedMutation;
+        if(mutation.equals("reading frame error"))
+        	reducedMutation = mutation;
+        else
+        	reducedMutation = (mutation.trim()).split(" ")[0];
+        builder.append(reducedMutation);
+        if (i < numberOfMutations - 1) {
+          builder.append(", ");
+        } else {
+          builder.append("; ");
+        }
+     }
+   
     
     // manually checked
     boolean manuallyChecked = sequence.isManuallyChecked();
