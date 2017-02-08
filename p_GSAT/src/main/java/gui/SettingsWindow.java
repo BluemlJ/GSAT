@@ -242,7 +242,7 @@ public class SettingsWindow extends Application implements javafx.fxml.Initializ
      */
   }
 
-  public void updateGenes() {
+  private void updateGenes() {
     GUIUtils.initializeGeneBox(geneList);
   }
 

@@ -23,9 +23,12 @@ import io.FileSaver;
 import io.GeneHandler;
 import io.SequenceReader;
 import javafx.collections.FXCollections;
+import javafx.event.EventHandler;
+import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonBar.ButtonData;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ListView;
@@ -41,6 +44,10 @@ import javafx.stage.FileChooser;
  */
 public class GUIUtils {
 
+	private static final String NORMAL_COLOR = "linear-gradient(#732423 0%, #553f4e 20%, #f7f553 80%, #63ee5e 100%)";
+	private static final String HOVER_COLOR = "linear-gradient(#745fea 0%, #affeef 20%, #123456 100%)";
+	
+	
   /**
    * This method initialize the choiceBox and adds all Gene which are stored locally in the
    * Genes.txt
@@ -360,4 +367,29 @@ public class GUIUtils {
     }
     return new Pair<AnalysedSequence, Pair<Boolean, String>>(null, ret);
   }
+  
+  
+  
+  public static void setColorStyles(Node[] nodes, String[] normalColors, String[] hoverColors) {
+	  
+	  for(int i = 0; i < nodes.length; i++) {
+		  nodes[i].setStyle("-fx-background-color: " + normalColors[i]);
+		  Node theNode = nodes[i];
+		  String normal = normalColors[i];
+		  String hover = hoverColors[i];
+		  theNode.setOnMouseEntered(new EventHandler<MouseEvent>() {
+		        @Override
+		        public void handle(MouseEvent t) {
+		        	theNode.setStyle("-fx-background-color: " + hover);
+		        }});
+	
+		  theNode.setOnMouseExited(new EventHandler<MouseEvent>() {
+		        @Override
+		        public void handle(MouseEvent t) {
+		        	theNode.setStyle("-fx-background-color: " + normal);
+		        }   
+		    });
+	  	}
+  
+  	}
 }

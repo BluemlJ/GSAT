@@ -18,6 +18,7 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
@@ -30,6 +31,7 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.text.TextFlow;
 import javafx.stage.Stage;
 
@@ -96,8 +98,13 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
   @Override
   public void initialize(URL arg0, ResourceBundle arg1) {
     bar.setProgress(0);
-
-
+    
+    // TODO Maybe use this for coloring of certain buttons? (With different actual colors).
+    /*GUIUtils.setColorStyles(
+    		new Node[]{destButton, startButton, settingsButton, srcButton},
+    		new String[]{"blue", "blue", "blue", "blue"},
+    		new String[]{"green", "green", "green", "green"});
+    */
     Pair<Boolean, String> output;
     infoArea.setText("Welcome to GSAT! \n");
     // read Genes and show them in the choicebox
@@ -349,5 +356,6 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
     s.close();
     return ret;
   }
-
+  
+  
 }
