@@ -6,323 +6,332 @@ import exceptions.CorruptedSequenceException;
 import exceptions.UndefinedTypeOfMutationException;
 
 /**
- * This class contains the logic of analyzing mutations in sequences. Thus, it is one of the main
- * parts of the analyzing pipeline.
+ * This class contains the logic of analyzing mutations in sequences. Thus, it
+ * is one of the main parts of the analyzing pipeline.
  * 
  */
 public class MutationAnalysis {
 
-  public static boolean readingFrameError = false;
-  public static int readingFrameErrorBorder = 100;
-  // A Integer, that specifies the border for the "Reading Frame Error"
-  public static int warningReadingFrameError = 10;
+	public static boolean readingFrameError = false;
+	public static int readingFrameErrorBorder = 100;
+	// A Integer, that specifies the border for the "Reading Frame Error"
+	public static int warningReadingFrameError = 10;
 
-  /**
-   * Compares a sequence to a gene to find mutations. Returns a boolean if there was a reading frame
-   * error.
-   * 
-   * @param toAnalyze The sequence to be analyzed (which may have mutations)
-   * 
-   * @return A boolean, if there was a reading frame error
-   * 
-   * @author bluemlj
-   * @throws CorruptedSequenceException
-   */
-  public static boolean findMutations(AnalysedSequence toAnalyze)
-      throws UndefinedTypeOfMutationException, CorruptedSequenceException {
+	/**
+	 * Compares a sequence to a gene to find mutations. Returns a boolean if
+	 * there was a reading frame error.
+	 * 
+	 * @param toAnalyze
+	 *            The sequence to be analyzed (which may have mutations)
+	 * 
+	 * @return A boolean, if there was a reading frame error
+	 * 
+	 * @author bluemlj
+	 * @throws CorruptedSequenceException
+	 */
+	public static boolean findMutations(AnalysedSequence toAnalyze)
+			throws UndefinedTypeOfMutationException, CorruptedSequenceException {
 
-    // the gene references by the mutated Sequence
-    Gene reference = toAnalyze.getReferencedGene();
-    // the sequence to analyze
-    String mutatedSequence = toAnalyze.getSequence();
-    // the gene sequence
-    String originalSequence = reference.getSequence();
-    // list of differences in form like "s|12|G|H"
+		// the gene references by the mutated Sequence
+		Gene reference = toAnalyze.getReferencedGene();
+		// the sequence to analyze
+		String mutatedSequence = toAnalyze.getSequence();
+		// the gene sequence
+		String originalSequence = reference.getSequence();
+		// list of differences in form like "s|12|G|H"
 
-    warningReadingFrameError = mutatedSequence.length() / 8;
-    readingFrameErrorBorder = mutatedSequence.length() / 3;
+		warningReadingFrameError = mutatedSequence.length() / 8;
+		readingFrameErrorBorder = mutatedSequence.length() / 3;
 
-    LinkedList<String> differences = reportDifferences(toAnalyze, true);
-    int lastposition = 0;
-    int checkFrameerrorCounter = 0;
-    int shift = 0;
-    int tmpshift = 0;
+		LinkedList<String> differences = reportDifferences(toAnalyze, true);
+		int lastposition = 0;
+		int checkFrameerrorCounter = 0;
+		int shift = 0;
+		int tmpshift = 0;
 
-    for (int i = 0; i < differences.size(); i++) {
+		for (int i = 0; i < differences.size(); i++) {
 
-      if (checkFrameerrorCounter == warningReadingFrameError)
-        if (checkFrameerrorCounter == readingFrameErrorBorder) {
-        readingFrameError = true;
-        return false;
-        }
+			if (checkFrameerrorCounter == warningReadingFrameError)
+				if (checkFrameerrorCounter == readingFrameErrorBorder) {
+					readingFrameError = true;
+					return false;
+				}
 
-      String difference = differences.get(i);
-      // type of mutation (s,i,d)
-      String typeOfMutations = difference.split("\\|")[0];
+			String difference = differences.get(i);
+			// type of mutation (s,i,d)
+			String typeOfMutations = difference.split("\\|")[0];
 
-      // position relative to mutatedSequence (of animoAcids)
-      int position = Integer.parseInt(difference.split("\\|")[1]) + toAnalyze.getOffset();
-      String oldAminoAcid;
-      String newAminoAcid;
+			// position relative to mutatedSequence (of animoAcids)
+			int position = Integer.parseInt(difference.split("\\|")[1]) + toAnalyze.getOffset();
+			String newAminoAcid;
+			String oldAminoAcid;
+			String codonsOfNew;
 
-      switch (typeOfMutations) {
-        // s = substitution, normal mutation of one aminoAcid
-        case "s":
-          oldAminoAcid = difference.split("\\|")[2];
-          newAminoAcid = difference.split("\\|")[3];
-          toAnalyze.addMutation(newAminoAcid + position + oldAminoAcid);
-          checkFrameerrorCounter++;
+			switch (typeOfMutations) {
+			// s = substitution, normal mutation of one aminoAcid
+			case "s":
+				newAminoAcid = difference.split("\\|")[2];
+				oldAminoAcid = difference.split("\\|")[3];
+				codonsOfNew = toAnalyze.getSequence().substring((position - 1) * 3, (position - 1) * 3 + 3);
+				toAnalyze.addMutation(oldAminoAcid + position + newAminoAcid + " (" + codonsOfNew + ")");
+				checkFrameerrorCounter++;
 
-          break;
-        // i = injection, inject of an new amino acid (aminoAcid short form)
-        case "i":
-          shift--;
-          newAminoAcid = difference.split("\\|")[2];
-          toAnalyze.addMutation("+1" + newAminoAcid + position);
-          checkFrameerrorCounter++;
-          break;
-        // d = deletion, deletion of an amino acid
-        case "d":
-          shift++;
-          oldAminoAcid = difference.split("\\|")[2];
-          toAnalyze.addMutation("-1" + oldAminoAcid + position);
-          checkFrameerrorCounter++;
-          break;
+				break;
+			// i = injection, inject of an new amino acid (aminoAcid short form)
+			case "i":
+				shift--;
+				oldAminoAcid = difference.split("\\|")[2];
+				codonsOfNew = toAnalyze.getSequence().substring((position - 1) * 3, (position - 1) * 3 + 3);
 
-        default:
-          throw new UndefinedTypeOfMutationException(typeOfMutations);
-      }
+				toAnalyze.addMutation("+1" + oldAminoAcid + position + " (" + codonsOfNew + ")");
+				checkFrameerrorCounter++;
+				break;
+			// d = deletion, deletion of an amino acid
+			case "d":
+				shift++;
+				newAminoAcid = difference.split("\\|")[2];
+				codonsOfNew = toAnalyze.getSequence().substring((position - 1) * 3, (position - 1) * 3 + 3);
+				toAnalyze.addMutation("-1" + newAminoAcid + position + " (" + codonsOfNew + ")");
+				checkFrameerrorCounter++;
+				break;
 
-      // in case that between to mutations are more then zero aminoacids,
-      // we check if there is any
-      // silent mutation in them.
+			default:
+				throw new UndefinedTypeOfMutationException(typeOfMutations);
+			}
 
-      if (position > lastposition + 1 || i == differences.size() - 1) {
+			// in case that between to mutations are more then zero aminoacids,
+			// we check if there is any
+			// silent mutation in them.
 
+			if (position > lastposition + 1 || i == differences.size() - 1) {
 
+				int tempPosition = lastposition + 1;
+				while (tempPosition < position - toAnalyze.getOffset()) {
 
-        int tempPosition = lastposition + 1;
-        while (tempPosition < position - toAnalyze.getOffset()) {
+					tempPosition = position;
 
-          tempPosition = position;
+					if ((tempPosition + tmpshift) * 3 + toAnalyze.getOffset() * 3 + 3 > originalSequence.length()
+							|| Math.max(tempPosition + tmpshift, tempPosition) * 3 + 3 > mutatedSequence.length()) {
+						break;
+					} else {
+						String oldAcid = originalSequence.substring(
+								(tempPosition + tmpshift) * 3 + toAnalyze.getOffset() * 3,
+								(tempPosition + tmpshift) * 3 + toAnalyze.getOffset() * 3 + 3);
+						String newAcid = mutatedSequence.substring(tempPosition * 3, tempPosition * 3 + 3);
 
-          if ((tempPosition + tmpshift) * 3 + toAnalyze.getOffset() * 3 + 3 > originalSequence
-              .length()
-              || Math.max(tempPosition + tmpshift, tempPosition) * 3 + 3 > mutatedSequence
-                  .length()) {
-            break;
-          } else {
-            String oldAcid = originalSequence.substring(
-                (tempPosition + tmpshift) * 3 + toAnalyze.getOffset() * 3,
-                (tempPosition + tmpshift) * 3 + toAnalyze.getOffset() * 3 + 3);
-            String newAcid = mutatedSequence.substring(tempPosition * 3, tempPosition * 3 + 3);
+						if (!oldAcid.equals(newAcid)) {
+							tempPosition += toAnalyze.getOffset() + 1;
+							toAnalyze.addMutation(oldAcid + tempPosition + newAcid);
+						}
+					}
+					lastposition = position;
+					tempPosition++;
+				}
 
-            if (!oldAcid.equals(newAcid)) {
-              tempPosition += toAnalyze.getOffset() + 1;
-              toAnalyze.addMutation(oldAcid + tempPosition + newAcid);
-            }
-          }
-          lastposition = position;
-          tempPosition++;
-        }
+			} else {
+				tmpshift = shift;
+				if (typeOfMutations.charAt(0) == 's')
+					lastposition = position;
+			}
+		}
 
-      } else {
-        tmpshift = shift;
-        if (typeOfMutations.charAt(0) == 's') lastposition = position;
-      }
-    }
+		if (differences.size() == 0) {
 
-    if (differences.size() == 0) {
+			int tempPosition = 0;
+			while (tempPosition < mutatedSequence.length()) {
+				if (tempPosition * 3 + toAnalyze.getOffset() * 3 + 3 > originalSequence.length()
+						|| tempPosition * 3 + 3 > mutatedSequence.length()) {
+					break;
+				} else {
+					String oldAcid = originalSequence.substring(tempPosition * 3 + toAnalyze.getOffset() * 3,
+							tempPosition * 3 + toAnalyze.getOffset() * 3 + 3);
+					String newAcid = mutatedSequence.substring(tempPosition * 3, tempPosition * 3 + 3);
 
-      int tempPosition = 0;
-      while (tempPosition < mutatedSequence.length()) {
-        if (tempPosition * 3 + toAnalyze.getOffset() * 3 + 3 > originalSequence.length()
-            || tempPosition * 3 + 3 > mutatedSequence.length()) {
-          break;
-        } else {
-          String oldAcid = originalSequence.substring(tempPosition * 3 + toAnalyze.getOffset() * 3,
-              tempPosition * 3 + toAnalyze.getOffset() * 3 + 3);
-          String newAcid = mutatedSequence.substring(tempPosition * 3, tempPosition * 3 + 3);
+					if (!oldAcid.equals(newAcid)) {
 
-          if (!oldAcid.equals(newAcid)) {
+						tempPosition += toAnalyze.getOffset() + 1;
+						toAnalyze.addMutation(oldAcid + tempPosition + newAcid);
+						tempPosition -= toAnalyze.getOffset() + 1;
+					}
+				}
+				tempPosition++;
+			}
 
-            tempPosition += toAnalyze.getOffset() + 1;
-            toAnalyze.addMutation(oldAcid + tempPosition + newAcid);
-            tempPosition -= toAnalyze.getOffset() + 1;
-          }
-        }
-        tempPosition++;
-      }
+		}
+		return true;
+	}
 
-    }
-    return true;
-  }
+	/**
+	 * Compares to sequences and returns the differences as a list (represented
+	 * by the positions). The order of the input sequences is irrelevant.
+	 * 
+	 * the returned list contains String of the following syntax:
+	 * 
+	 * x|y|n|m
+	 * 
+	 * where: x is element of {s,i,d,e,n} where s stands for substitution, i for
+	 * insertion, d for deletion, n for no Operation, e for ERROR
+	 * 
+	 * y is the index of the char in sOne
+	 *
+	 * n is the old amino acid placed in the gene
+	 *
+	 * m is the new amino acid placed in the mutated sequence * insertions take
+	 * place between the given index and the next index
+	 * 
+	 * @param gene
+	 *            The mutated sequence
+	 * @param sequence
+	 *            The gene
+	 * 
+	 * @return A list of differences (represented as String)
+	 * @author Kevin Otto
+	 */
+	public static LinkedList<String> reportDifferences(String gene, String sequence) {
+		try {
+			Thread.sleep(5);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		System.out.println("");
+		System.out.println(
+				"!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+		System.out.println("");
+		System.err.println(sequence);
+		try {
+			Thread.sleep(5);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		System.out.println(gene);
+		System.out.println("");
+		System.out.println(
+				"!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+		System.out.println("");
 
-  /**
-   * Compares to sequences and returns the differences as a list (represented by the positions). The
-   * order of the input sequences is irrelevant.
-   * 
-   * the returned list contains String of the following syntax:
-   * 
-   * x|y|n|m
-   * 
-   * where: x is element of {s,i,d,e,n} where s stands for substitution, i for insertion, d for
-   * deletion, n for no Operation, e for ERROR
-   * 
-   * y is the index of the char in sOne
-   *
-   * n is the old amino acid placed in the gene
-   *
-   * m is the new amino acid placed in the mutated sequence * insertions take place between the
-   * given index and the next index
-   * 
-   * @param gene The mutated sequence
-   * @param sequence The gene
-   * 
-   * @return A list of differences (represented as String)
-   * @author Kevin Otto
-   */
-  public static LinkedList<String> reportDifferences(String gene, String sequence) {
-    try {
-      Thread.sleep(5);
-    } catch (InterruptedException e) {
-      // TODO Auto-generated catch block
-      e.printStackTrace();
-    }
-    System.out.println("");
-    System.out.println(
-        "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-    System.out.println("");
-    System.err.println(sequence);
-    try {
-      Thread.sleep(5);
-    } catch (InterruptedException e) {
-      // TODO Auto-generated catch block
-      e.printStackTrace();
-    }
-    System.out.println(gene);
-    System.out.println("");
-    System.out.println(
-        "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-    System.out.println("");
+		// get Levenshtein Result
+		int[][] lev = StringAnalysis.calculateLevenshteinMatrix(gene, sequence);
 
-    // get Levenshtein Result
-    int[][] lev = StringAnalysis.calculateLevenshteinMatrix(gene, sequence);
+		int matrixHeight = lev.length;
+		int matrixWidth = lev[0].length;
 
-    int matrixHeight = lev.length;
-    int matrixWidth = lev[0].length;
+		// counter variables for actual matrix position
+		int row = matrixHeight - 1;
+		int column = matrixWidth - 1;
 
-    // counter variables for actual matrix position
-    int row = matrixHeight - 1;
-    int column = matrixWidth - 1;
+		LinkedList<String> result = new LinkedList<String>();
 
-    LinkedList<String> result = new LinkedList<String>();
+		while (row > 0 && column > 0) {
+			// if previous diagonal cell is best (smallest neighbor cell and
+			// equal or exactly one smaller)
+			if (lev[row - 1][column - 1] <= Math.min(lev[row - 1][column], lev[row][column - 1])
+					&& (lev[row - 1][column - 1] == lev[row][column]
+							|| lev[row - 1][column - 1] == lev[row][column] - 1)) {
+				// Diagonal smaller -> Substitution
+				if (lev[row - 1][column - 1] == lev[row][column] - 1) {
+					// SUBSTITUTION
+					result.addFirst("s|" + row + "|" + sequence.charAt(column - 1) + "|" + gene.charAt(row - 1));
+				}
+				// else -> No Operation
+				// go to next diagonal cell
+				row--;
+				column--;
+			}
+			// if left cell is best
+			else if ((lev[row - 1][column] <= lev[row][column - 1])
+					&& (lev[row - 1][column] == lev[row][column] || lev[row - 1][column] == lev[row][column] - 1)) {
+				// left smaller->deletion;
+				// DELETION
+				if (lev[row - 1][column] == lev[row][column] - 1) {
+					result.addFirst("d|" + row + "|" + gene.charAt(row - 1) + "|");
+				}
 
-    while (row > 0 && column > 0) {
-      // if previous diagonal cell is best (smallest neighbor cell and
-      // equal or exactly one smaller)
-      if (lev[row - 1][column - 1] <= Math.min(lev[row - 1][column], lev[row][column - 1])
-          && (lev[row - 1][column - 1] == lev[row][column]
-              || lev[row - 1][column - 1] == lev[row][column] - 1)) {
-        // Diagonal smaller -> Substitution
-        if (lev[row - 1][column - 1] == lev[row][column] - 1) {
-          // SUBSTITUTION
-          result.addFirst(
-              "s|" + row + "|" + sequence.charAt(column - 1) + "|" + gene.charAt(row - 1));
-        }
-        // else -> No Operation
-        // go to next diagonal cell
-        row--;
-        column--;
-      }
-      // if left cell is best
-      else if ((lev[row - 1][column] <= lev[row][column - 1])
-          && (lev[row - 1][column] == lev[row][column]
-              || lev[row - 1][column] == lev[row][column] - 1)) {
-        // left smaller->deletion;
-        // DELETION
-        if (lev[row - 1][column] == lev[row][column] - 1) {
-          result.addFirst("d|" + row + "|" + gene.charAt(row - 1) + "|");
-        }
+				row--;
+			} else {
+				// up smaller -> insertion
+				// INSERTION
+				if (lev[row][column - 1] == lev[row][column] - 1) {
+					result.addFirst("i|" + row + "|" + sequence.charAt(column - 1) + "|");
+				}
+				column--;
+			}
+		}
 
-        row--;
-      } else {
-        // up smaller -> insertion
-        // INSERTION
-        if (lev[row][column - 1] == lev[row][column] - 1) {
-          result.addFirst("i|" + row + "|" + sequence.charAt(column - 1) + "|");
-        }
-        column--;
-      }
-    }
+		// special cases:
 
-    // special cases:
+		// insertion at begin
+		if (column > 0) {
+			for (; column > 0; column--) {
+				result.addFirst("i|" + row + "|" + sequence.charAt(column - 1) + "|");
+			}
+		}
 
-    // insertion at begin
-    if (column > 0) {
-      for (; column > 0; column--) {
-        result.addFirst("i|" + row + "|" + sequence.charAt(column - 1) + "|");
-      }
-    }
+		// deletion at begin
+		if (row > 0) {
+			for (; row > 0; row--) {
+				result.addFirst("d|" + row + "|" + gene.charAt(row - 1) + "|");
+			}
+		}
+		return result;
+	}
 
-    // deletion at begin
-    if (row > 0) {
-      for (; row > 0; row--) {
-        result.addFirst("d|" + row + "|" + gene.charAt(row - 1) + "|");
-      }
-    }
-    return result;
-  }
+	/**
+	 * Compares to sequences and returns the differences as a list (represented
+	 * by the positions). The order of the input sequences is irrelevant.
+	 * 
+	 * the returned list contains String of the following syntax:
+	 * 
+	 * x|y|n|m
+	 * 
+	 * where: x is element of {s,i,d,e,n} where s stands for substitution i for
+	 * insertion and d for deletion
+	 * 
+	 * y is the index of the char in sOne
+	 *
+	 * n is the old amino acid placed in the gene
+	 *
+	 * m is the new amino acid placed in the mutated sequence insertions take
+	 * place between the given index and the next index
+	 * 
+	 * <<<<<<< HEAD
+	 * 
+	 * @param sOne
+	 *            The mutated sequence
+	 * @param seq
+	 *            The gene
+	 * @param type
+	 *            0 = if the we work on nucleotides, 1 = if we work on
+	 *            aminoacids; =======
+	 * @param gene
+	 *            The mutated sequence
+	 * @param sequence
+	 *            The gene >>>>>>> 2b5f6c1192ca56bd5c615bff808c6f091130fcaf
+	 * 
+	 * @return A list of differences (represented as String)
+	 * @author Kevin Otto, Jannis Blueml
+	 * @throws CorruptedSequenceException
+	 */
+	private static LinkedList<String> reportDifferences(AnalysedSequence seq, boolean type)
+			throws CorruptedSequenceException {
+		String first;
+		String second;
+		// if (type) {
+		int begin = seq.getOffset() * 3;
+		int end = seq.getOffset() * 3 + seq.length();
 
-  /**
-   * Compares to sequences and returns the differences as a list (represented by the positions). The
-   * order of the input sequences is irrelevant.
-   * 
-   * the returned list contains String of the following syntax:
-   * 
-   * x|y|n|m
-   * 
-   * where: x is element of {s,i,d,e,n} where s stands for substitution i for insertion and d for
-   * deletion
-   * 
-   * y is the index of the char in sOne
-   *
-   * n is the old amino acid placed in the gene
-   *
-   * m is the new amino acid placed in the mutated sequence insertions take place between the given
-   * index and the next index
-   * 
-   * <<<<<<< HEAD
-   * 
-   * @param sOne The mutated sequence
-   * @param seq The gene
-   * @param type 0 = if the we work on nucleotides, 1 = if we work on aminoacids; =======
-   * @param gene The mutated sequence
-   * @param sequence The gene >>>>>>> 2b5f6c1192ca56bd5c615bff808c6f091130fcaf
-   * 
-   * @return A list of differences (represented as String)
-   * @author Kevin Otto, Jannis Blueml
-   * @throws CorruptedSequenceException
-   */
-  private static LinkedList<String> reportDifferences(AnalysedSequence seq, boolean type)
-      throws CorruptedSequenceException {
-    String first;
-    String second;
-    // if (type) {
-    int begin = seq.getOffset() * 3;
-    int end = seq.getOffset() * 3 + seq.length();
+		first = StringAnalysis.codonsToAminoAcids(seq.getReferencedGene().sequence.substring(begin,
+				Math.min(end, seq.getReferencedGene().getSequence().length())));
+		second = StringAnalysis.codonsToAminoAcids(seq.sequence);
+		return reportDifferences(first.split("#")[0], second.split("#")[0]);
+		/*
+		 * } else {//TODO @Jannis remove type first =
+		 * seq.getReferencedGene().sequence.substring(seq.getOffset()); second =
+		 * seq.sequence; return reportDifferences(first, second);
+		 * 
+		 * }
+		 */
 
-    first = StringAnalysis.codonsToAminoAcids(seq.getReferencedGene().sequence.substring(begin,
-        Math.min(end, seq.getReferencedGene().getSequence().length())));
-    second = StringAnalysis.codonsToAminoAcids(seq.sequence);
-    return reportDifferences(first.split("#")[0], second.split("#")[0]);
-    /*
-     * } else {//TODO @Jannis remove type first =
-     * seq.getReferencedGene().sequence.substring(seq.getOffset()); second = seq.sequence; return
-     * reportDifferences(first, second);
-     * 
-     * }
-     */
-
-  }
+	}
 }
