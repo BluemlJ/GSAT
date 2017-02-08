@@ -7,6 +7,7 @@ import java.util.ResourceBundle;
 import javafx.application.Application;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -41,7 +42,9 @@ public class ParameterWindow extends Application implements javafx.fxml.Initiali
 
   @Override
   public void initialize(URL arg0, ResourceBundle arg1) {
-    // TODO Auto-generated method stub
+	  
+	  GUIUtils.setColorOnNode(saveButton, Color.GREEN);
+	  GUIUtils.setColorOnNode(cancelButton, Color.RED);
 
   }
 

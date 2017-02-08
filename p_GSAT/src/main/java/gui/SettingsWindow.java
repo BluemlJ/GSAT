@@ -12,6 +12,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -60,6 +61,14 @@ public class SettingsWindow extends Application implements javafx.fxml.Initializ
     geneList.setStyle("-fx-font-style: italic;");
 
 
+    GUIUtils.setColorOnNode(closeButton, Color.BLUE);
+    GUIUtils.setColorOnNode(addGeneButton, Color.GREEN);
+    GUIUtils.setColorOnNode(addResearcherButton, Color.GREEN);
+    GUIUtils.setColorOnNode(deleteGeneButton, Color.RED);
+    GUIUtils.setColorOnNode(deleteResearcherButton, Color.RED);
+   
+    
+    
     researcherDrobdown.getSelectionModel().selectedItemProperty()
         .addListener((obeservable, value, newValue) -> {
           ConfigHandler.setResearcher(newValue);

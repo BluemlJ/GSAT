@@ -370,26 +370,55 @@ public class GUIUtils {
   
   
   
-  public static void setColorStyles(Node[] nodes, String[] normalColors, String[] hoverColors) {
-	  
-	  for(int i = 0; i < nodes.length; i++) {
-		  nodes[i].setStyle("-fx-background-color: " + normalColors[i]);
-		  Node theNode = nodes[i];
-		  String normal = normalColors[i];
-		  String hover = hoverColors[i];
-		  theNode.setOnMouseEntered(new EventHandler<MouseEvent>() {
-		        @Override
-		        public void handle(MouseEvent t) {
-		        	theNode.setStyle("-fx-background-color: " + hover);
-		        }});
-	
-		  theNode.setOnMouseExited(new EventHandler<MouseEvent>() {
-		        @Override
-		        public void handle(MouseEvent t) {
-		        	theNode.setStyle("-fx-background-color: " + normal);
-		        }   
-		    });
-	  	}
   
-  	}
+  public static void setColorOnNode(Node node, Color color) {
+	  
+	  String normalColor1 = "";
+	  String normalColor2 = "";
+	  String hoverColor1 = "";
+	  String hoverColor2 = "";
+	  switch(color) {
+	  	case GREEN:
+	  		normalColor1 = "rgb(184,239,54)";
+	  		normalColor2 = "rgb(128,200,1)";
+	  		hoverColor1 = "rgb(184,239,54)";
+	  		hoverColor2 = "rgb(128,200,1)";
+	  		break;
+	  	case RED:
+	  		normalColor1 = "rgb(251,117,117)";
+	  		normalColor2 = "rgb(255,40,40)";
+	  		hoverColor1 = "rgb(252,158,158)";
+	  		hoverColor2 = "rgb(255,104,104)";
+	  		break;
+	  	case BLUE:
+	  		normalColor1 = "rgb(60,204,204)";
+	  		normalColor2 = "rgb(50,153,255)";
+	  		hoverColor1 = "rgb(118,219,219)";
+	  		hoverColor2 = "rgb(90,173,255)";
+	  		break;
+	  }
+
+	  
+	  String normalStyle = "-fx-background-color: radial-gradient(center 50% -39%, radius 200%, " + normalColor1 + " 45%, " + normalColor2 + " 50%); -fx-border-color: gray; -fx-border-radius: 3px;";
+	  String hoverStyle = "-fx-background-color: radial-gradient(center 50% -39%, radius 200%, " + hoverColor1 + " 45%, " + hoverColor2 + " 50%); -fx-border-color: gray; -fx-border-radius: 3px;";
+	  
+	  
+	  node.setStyle(normalStyle);
+	  node.setOnMouseEntered(new EventHandler<MouseEvent>() {
+	        @Override
+	        public void handle(MouseEvent t) {
+	        	node.setStyle(hoverStyle);
+	        }});
+
+	  node.setOnMouseExited(new EventHandler<MouseEvent>() {
+	        @Override
+	        public void handle(MouseEvent t) {
+	        	node.setStyle(normalStyle);
+	        }   
+	    });
+  	
+  }
+  
+  
+  
 }

@@ -16,6 +16,7 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
@@ -95,13 +96,9 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
   public void initialize(URL arg0, ResourceBundle arg1) {
     bar.setProgress(0);
     FileSaver.setSeparateFiles(false);
+    GUIUtils.setColorOnNode(startButton, Color.BLUE);
+    GUIUtils.setColorOnNode(settingsButton, Color.BLUE);
     
-    // TODO Maybe use this for coloring of certain buttons? (With different actual colors).
-    /*GUIUtils.setColorStyles(
-    		new Node[]{destButton, startButton, settingsButton, srcButton},
-    		new String[]{"blue", "blue", "blue", "blue"},
-    		new String[]{"green", "green", "green", "green"});
-    */
     Pair<Boolean, String> output;
     infoArea.setText("Welcome to GSAT! \n");
     // read Genes and show them in the choicebox
