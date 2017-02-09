@@ -57,8 +57,8 @@ public class AddGeneWindow extends Application implements javafx.fxml.Initializa
       public void handle(ActionEvent arg0) {
         if (!nameField.getText().isEmpty() && !geneArea.getText().isEmpty()) {
           try {
-            GeneHandler.addGene(nameField.getText(), geneArea.getText(), organismField.getText(),
-                commentArea.getText());
+            if(GeneHandler.addGene(nameField.getText(), geneArea.getText(), organismField.getText(),
+                commentArea.getText()) == true){
 
             Alert alert = new Alert(AlertType.INFORMATION);
             alert.setTitle("Adding gene");
@@ -67,6 +67,14 @@ public class AddGeneWindow extends Application implements javafx.fxml.Initializa
             parent.updateGenes();
             Stage stage = (Stage) cancelButton.getScene().getWindow();
             stage.close();
+            }
+            else {
+            	 Alert alert = new Alert(AlertType.INFORMATION);
+                 alert.setTitle("Adding gene failed");
+                 alert.setHeaderText("Gene added not successful because gene already exists in local file.");
+                 alert.showAndWait();
+                 
+            }
           } catch (DuplicateGeneException | IOException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
