@@ -63,6 +63,7 @@ public class AddGeneWindow extends Application implements javafx.fxml.Initializa
             alert.setTitle("Adding gene");
             alert.setHeaderText("Gene added successfully.");
             alert.showAndWait();
+            parent.updateGenes();
             Stage stage = (Stage) cancelButton.getScene().getWindow();
             stage.close();
           } catch (DuplicateGeneException | IOException e) {
