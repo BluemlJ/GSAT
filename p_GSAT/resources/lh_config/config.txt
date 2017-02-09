@@ -1,2 +1,12 @@
 researcher;lovis heindrich
 researchers;lovis heindrich;jannis blueml;kevin otto;ben Kohr
+dbUrl;130.83.37.145
+dbUser;gsatadmin
+dbPass;none
+dbPort;3306
+avgApproximationStart;30
+avgApproximationEnd;25
+avgQualityEdge;30
+breakcounter;9
+numAverageNucleotides;20
+startcounter;3
