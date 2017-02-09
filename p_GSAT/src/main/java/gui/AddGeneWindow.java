@@ -18,6 +18,7 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 
 public class AddGeneWindow extends Application implements javafx.fxml.Initializable {
 
@@ -104,6 +105,15 @@ public class AddGeneWindow extends Application implements javafx.fxml.Initializa
     primaryStage.setScene(scene);
     primaryStage.sizeToScene();
     primaryStage.show();
+    
+    primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+
+      @Override
+      public void handle(WindowEvent arg0) {
+        parent.decNumGenWindows();
+
+      }
+    });
   }
 
   public void setParent(SettingsWindow parent) {

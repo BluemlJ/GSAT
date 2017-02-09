@@ -53,15 +53,17 @@ public class SettingsWindow extends Application implements javafx.fxml.Initializ
   @FXML
   private Button deleteResearcherButton;
 
-  Scene scene;
+  private Scene scene;
+
+  private SettingsWindow self;
   
-  SettingsWindow self;
+  private int numGeneWindows = 0; 
 
   @Override
   public void initialize(URL location, ResourceBundle resources) {
 
     self = this;
-    
+
     GUIUtils.initializeResearchers(researcherDrobdown);
     GUIUtils.initializeGeneBox(geneList);
     geneList.setStyle("-fx-font-style: italic;");
@@ -128,13 +130,9 @@ public class SettingsWindow extends Application implements javafx.fxml.Initializ
       @Override
       public void handle(ActionEvent arg0) {
 
-        /*
-         * AddGeneWindow addgene = new AddGeneWindow(); try { addgene.start(new Stage()); } catch
-         * (Exception e) {
-         * 
-         * }
-         */
-        
+        numGeneWindows++;
+
+
         try {
           final FXMLLoader loader =
               new FXMLLoader(TextWindow.class.getResource("/fxml/AddGeneWindow.fxml"));
@@ -142,9 +140,9 @@ public class SettingsWindow extends Application implements javafx.fxml.Initializ
           final Parent root = loader.load();
 
           AddGeneWindow genWin = loader.<AddGeneWindow>getController();
-          
+
           genWin.setParent(self);
-     
+
           Scene scene = new Scene(root);
           Stage s = new Stage();
           s.setScene(scene);
@@ -252,7 +250,11 @@ public class SettingsWindow extends Application implements javafx.fxml.Initializ
 
       @Override
       public void handle(WindowEvent arg0) {
-        MainWindow.settingsOpen = false;
+        if (numGeneWindows == 0) {
+          MainWindow.settingsOpen = false;
+        }else {
+          arg0.consume();
+        }
 
       }
     });
@@ -262,13 +264,18 @@ public class SettingsWindow extends Application implements javafx.fxml.Initializ
      * @Override public void handle(ActionEvent arg0) { primaryStage.close(); } });
      */
   }
-  
-  public void doSomething(){
+
+  public void doSomething() {
     System.out.println("something is done");
   }
 
   private void updateGenes() {
     GUIUtils.initializeGeneBox(geneList);
+  }
+
+  public void decNumGenWindows() {
+    numGeneWindows--;
+  
   }
 
 }
