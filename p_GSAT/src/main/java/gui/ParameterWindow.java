@@ -74,11 +74,55 @@ public class ParameterWindow extends Application implements javafx.fxml.Initiali
 			}
 		});
 
+		avgApproximationStart.textProperty().addListener(new ChangeListener<String>() {
+			@Override
+			public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+				if (newValue.matches("[0-9]*")) {
+					avgApproximationStart.setText(newValue);
+				} else {
+					avgApproximationStart.setText(oldValue);
+				}
+			}
+		});
+
+		breakcounter.textProperty().addListener(new ChangeListener<String>() {
+			@Override
+			public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+				if (newValue.matches("[0-9]*")) {
+					breakcounter.setText(newValue);
+				} else {
+					breakcounter.setText(oldValue);
+				}
+			}
+		});
+
+		startcounter.textProperty().addListener(new ChangeListener<String>() {
+			@Override
+			public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+				if (newValue.matches("[0-9]*")) {
+					startcounter.setText(newValue);
+				} else {
+					startcounter.setText(oldValue);
+				}
+			}
+		});
+
+		numAverageNucleotides.textProperty().addListener(new ChangeListener<String>() {
+			@Override
+			public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+				if (newValue.matches("[0-9]*")) {
+					numAverageNucleotides.setText(newValue);
+				} else {
+					numAverageNucleotides.setText(oldValue);
+				}
+			}
+		});
+
 		saveButton.setOnAction(new EventHandler<ActionEvent>() {
-			
+
 			@Override
 			public void handle(ActionEvent arg0) {
-			System.out.println("hallo");
+				System.out.println("hallo");
 				if (!avgApproximationStart.getText().equals("")) {
 					ConfigHandler.setAvgApproximationStart(Integer.parseInt(avgApproximationStart.getText()));
 				}
@@ -131,7 +175,7 @@ public class ParameterWindow extends Application implements javafx.fxml.Initiali
 			e.printStackTrace();
 			return;
 		}
-		
+
 		Scene scene = new Scene(root);
 		primaryStage.setTitle("GSAT - Adjust analysis parameters");
 		primaryStage.setScene(scene);
