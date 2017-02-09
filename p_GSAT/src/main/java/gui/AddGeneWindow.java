@@ -21,6 +21,8 @@ import javafx.stage.Stage;
 
 public class AddGeneWindow extends Application implements javafx.fxml.Initializable {
 
+  private SettingsWindow parent;
+  
   // fields
   @FXML
   private TextField nameField;
@@ -102,6 +104,10 @@ public class AddGeneWindow extends Application implements javafx.fxml.Initializa
     primaryStage.setScene(scene);
     primaryStage.sizeToScene();
     primaryStage.show();
+  }
+
+  public void setParent(SettingsWindow parent) {
+      this.parent = parent;
   }
 
 

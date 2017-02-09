@@ -26,8 +26,8 @@ import javafx.stage.WindowEvent;
 public class SettingsWindow extends Application implements javafx.fxml.Initializable {
 
   public static boolean subsettingsOpen = false;
-  
-  
+
+
 
   @FXML
   private ListView<String> geneList;
@@ -54,10 +54,14 @@ public class SettingsWindow extends Application implements javafx.fxml.Initializ
   private Button deleteResearcherButton;
 
   Scene scene;
+  
+  SettingsWindow self;
 
   @Override
   public void initialize(URL location, ResourceBundle resources) {
 
+    self = this;
+    
     GUIUtils.initializeResearchers(researcherDrobdown);
     GUIUtils.initializeGeneBox(geneList);
     geneList.setStyle("-fx-font-style: italic;");
@@ -68,9 +72,9 @@ public class SettingsWindow extends Application implements javafx.fxml.Initializ
     GUIUtils.setColorOnNode(addResearcherButton, Color.GREEN);
     GUIUtils.setColorOnNode(deleteGeneButton, Color.RED);
     GUIUtils.setColorOnNode(deleteResearcherButton, Color.RED);
-   
-    
-    
+
+
+
     researcherDrobdown.getSelectionModel().selectedItemProperty()
         .addListener((obeservable, value, newValue) -> {
           ConfigHandler.setResearcher(newValue);
@@ -124,12 +128,32 @@ public class SettingsWindow extends Application implements javafx.fxml.Initializ
       @Override
       public void handle(ActionEvent arg0) {
 
-
-        AddGeneWindow addgene = new AddGeneWindow();
+        /*
+         * AddGeneWindow addgene = new AddGeneWindow(); try { addgene.start(new Stage()); } catch
+         * (Exception e) {
+         * 
+         * }
+         */
+        
         try {
-          addgene.start(new Stage());
-        } catch (Exception e) {
+          final FXMLLoader loader =
+              new FXMLLoader(TextWindow.class.getResource("/fxml/AddGeneWindow.fxml"));
 
+          final Parent root = loader.load();
+
+          AddGeneWindow genWin = loader.<AddGeneWindow>getController();
+          
+          genWin.setParent(self);
+     
+          Scene scene = new Scene(root);
+          Stage s = new Stage();
+          s.setScene(scene);
+          s.sizeToScene();
+          s.show();
+
+        } catch (IOException e) {
+          e.printStackTrace();
+          return;
         }
       }
 
@@ -237,6 +261,10 @@ public class SettingsWindow extends Application implements javafx.fxml.Initializ
      * 
      * @Override public void handle(ActionEvent arg0) { primaryStage.close(); } });
      */
+  }
+  
+  public void doSomething(){
+    System.out.println("something is done");
   }
 
   private void updateGenes() {
