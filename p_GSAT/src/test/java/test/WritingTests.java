@@ -397,7 +397,7 @@ public class WritingTests {
     String addingDate = df.format(new Date());
 
     String[] correctResults = new String[] {"1; sequence2.ab1; FSA; null; reading frame error; No comments; Klaus Bohne; " + addingDate + "; 63; 0; ATCTTTG; null; null;  ; none; reading frame error; false",
-        "2; sequence3.ab1; FSA; null; ; Klaus Hafer; " + addingDate + "; 63; 0; ATCTTGCGTTG; null; null;  ; none; false"
+        "2; sequence3.ab1; FSA; null; ; ; Klaus Hafer; " + addingDate + "; 63; 0; ATCTTGCGTTG; null; null;  ; none; ; false"
         };
 
     for (int i = 0; i < correctResults.length; i++) {
@@ -506,8 +506,7 @@ public class WritingTests {
     reader.lines().skip(1).forEach(line -> results2.add(line));
     reader.close();
 
-    correctResults = new String[] {"1; sequence3.ab1; FSA; null; ; Klaus Hafer; " + addingDate + "; 63; 0; ATCTTGCGTTG; null; null;  ; none; false"};
-
+    correctResults = new String[] {"1; sequence3.ab1; FSA; null; ; ; Klaus Hafer; "+ addingDate +"; 63; 0; ATCTTGCGTTG; null; null;  ; none; ; false"};
     for (int i = 0; i < correctResults.length; i++) {
       assertEquals(correctResults[i], results2.get(i));
     }

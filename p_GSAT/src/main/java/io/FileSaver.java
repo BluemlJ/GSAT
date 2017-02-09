@@ -175,17 +175,21 @@ public class FileSaver {
     // mutations (with nucleotide codons)
     LinkedList<String> mutations = sequence.getMutations();
     int numberOfMutations = sequence.getMutations().size();
-    for (int i = 0; i < numberOfMutations; i++) {
-      
-      String mutation = mutations.get(i);
-      builder.append(mutation);
-      if (i < numberOfMutations - 1) {
-        builder.append(", ");
-      } else {
-        builder.append("; ");
-      }
-    }
     
+    if (numberOfMutations == 0)
+    	builder.append("; ");
+    else {
+	    for (int i = 0; i < numberOfMutations; i++) {
+	      
+	      String mutation = mutations.get(i);
+	      builder.append(mutation);
+	      if (i < numberOfMutations - 1) {
+	        builder.append(", ");
+	      } else {
+	        builder.append("; ");
+	      }
+	    }
+    }
     // comments
     // As ';' is the seperator charachter, each inital semicolon is replaced
     String comments = sequence.getComments().replace(';', ',');
@@ -237,19 +241,23 @@ public class FileSaver {
     
     
     // mutations without nucleotide codons
-    for (int i = 0; i < numberOfMutations; i++) {
-        String mutation = mutations.get(i);
-        String reducedMutation;
-        if(mutation.equals("reading frame error"))
-        	reducedMutation = mutation;
-        else
-        	reducedMutation = (mutation.trim()).split(" ")[0];
-        builder.append(reducedMutation);
-        if (i < numberOfMutations - 1) {
-          builder.append(", ");
-        } else {
-          builder.append("; ");
-        }
+    if (numberOfMutations == 0)
+    	builder.append("; ");
+    else {
+	    for (int i = 0; i < numberOfMutations; i++) {
+	        String mutation = mutations.get(i);
+	        String reducedMutation;
+	        if(mutation.equals("reading frame error"))
+	        	reducedMutation = mutation;
+	        else
+	        	reducedMutation = (mutation.trim()).split(" ")[0];
+	        builder.append(reducedMutation);
+	        if (i < numberOfMutations - 1) {
+	          builder.append(", ");
+	        } else {
+	          builder.append("; ");
+	        }
+	     }
      }
    
     
@@ -316,7 +324,7 @@ public class FileSaver {
 
     if (!append) {
       writer.write(
-        "id; file name; gene; gene organism; mutations; comments; researcher; date; average quality (percent); percentage of quality trim; nucleotide sequence; left vector; right vector; primer; HIS tag; manually checked"
+        "id; file name; gene; gene organism; mutations (with codons); comments; researcher; date; average quality (percent); percentage of quality trim; nucleotide sequence; left vector; right vector; primer; HIS tag; mutations (without codons); manually checked"
               + System.lineSeparator());
     }
 
