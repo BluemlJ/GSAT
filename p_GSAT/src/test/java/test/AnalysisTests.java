@@ -620,7 +620,7 @@ public class AnalysisTests {
     testGenes.add(testGeneB);
     testGenes.add(testGeneC);
     Gene right = StringAnalysis.findRightGene(testA, testGenes);
-    //assertTrue(right == testGeneB);
+    assertTrue(right == testGeneA);
   }
 
   /**
