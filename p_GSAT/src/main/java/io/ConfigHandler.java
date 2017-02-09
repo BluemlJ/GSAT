@@ -27,10 +27,16 @@ public class ConfigHandler {
   // DB connection values
   private static String dbUrl = "130.83.37.145";
   private static String dbUser = "gsatadmin";
-  private static String dbPass;
+  private static String dbPass  = "none";
   private static int dbPort = 3306;
 
-
+  // quality parameter
+  private static int avgApproximationStart = 30;
+  private static int avgApproximationEnd = 25;
+  private static int avgQualityEdge = 30;
+  private static int breakcounter = 9;
+  private static int numAverageNucleotides = 20;
+  private static int startcounter = 3;
 
   /**
    * char used for separating values in the configuration file
@@ -67,19 +73,41 @@ public class ConfigHandler {
             ConfigHandler.researchers[i] = ConfigHandler.researchers[i].trim();
           }
           break;
-        case "dbuser":
+          
+        // DB Login
+        case "dbUser":
           ConfigHandler.setDbUser(elements[1].trim());
           break;
-        case "dbpass":
+        case "dbPass":
           ConfigHandler.setDbPass(elements[1].trim());
           break;
-        case "dburl":
+        case "dbUrl":
           ConfigHandler.setDbUrl(elements[1].trim());
           break;
-        case "dbport":
+        case "dbPort":
           ConfigHandler.setDbPort(Integer.parseInt(elements[1].trim()));
           break;
+          
+        //Quality analysis parameters  
+        case "avgApproximationStart":
+        	ConfigHandler.setAvgApproximationStart(Integer.parseInt(elements[1].trim()));
+        	break;
+        case "avgApproximationEnd":
+        	ConfigHandler.setAvgApproximationEnd(Integer.parseInt(elements[1].trim()));
+        	break;
+        case "avgQualityEdge":
+        	ConfigHandler.setAvgQualityEdge(Integer.parseInt(elements[1].trim()));
+        	break;
 
+        case "breakcounter":
+        	ConfigHandler.setBreakcounter(Integer.parseInt(elements[1].trim()));
+        	break;
+        case "numAverageNucleotides":
+        	ConfigHandler.setNumAverageNucleotides(Integer.parseInt(elements[1].trim()));
+        	break;
+        case "startcounter":
+        	ConfigHandler.setStartcounter(Integer.parseInt(elements[1].trim()));
+        	break;
         default:
           throw new ConfigReadException(elements[0]);
 
@@ -153,7 +181,6 @@ public class ConfigHandler {
 
     // write researcher
     configWriter.write("researcher" + SEPARATOR + researcher);
-
     configWriter.write(System.getProperty("line.separator"));
 
     // write researchers
@@ -162,7 +189,34 @@ public class ConfigHandler {
       configWriter.write(SEPARATOR);
       configWriter.write(res);
     }
+    configWriter.write(System.getProperty("line.separator"));
+    
+    //write DB data
+    
+    configWriter.write("dbUrl" + SEPARATOR + dbUrl);
+    configWriter.write(System.getProperty("line.separator"));
+    configWriter.write("dbUser" + SEPARATOR + dbUser);
+    configWriter.write(System.getProperty("line.separator"));
+    configWriter.write("dbPass" + SEPARATOR + dbPass);
+    configWriter.write(System.getProperty("line.separator"));
+    configWriter.write("dbPort" + SEPARATOR + dbPort);
+    configWriter.write(System.getProperty("line.separator"));
 
+    //write quality parameter
+
+    configWriter.write("avgApproximationStart" + SEPARATOR + avgApproximationStart);
+    configWriter.write(System.getProperty("line.separator"));
+    configWriter.write("avgApproximationEnd" + SEPARATOR + avgApproximationEnd);
+    configWriter.write(System.getProperty("line.separator"));
+    configWriter.write("avgQualityEdge" + SEPARATOR + avgQualityEdge);
+    configWriter.write(System.getProperty("line.separator"));
+    configWriter.write("breakcounter" + SEPARATOR + breakcounter);
+    configWriter.write(System.getProperty("line.separator"));
+    configWriter.write("numAverageNucleotides" + SEPARATOR + numAverageNucleotides);
+    configWriter.write(System.getProperty("line.separator"));
+    configWriter.write("startcounter" + SEPARATOR + startcounter);
+    configWriter.write(System.getProperty("line.separator"));
+    
     configWriter.close();
   }
 
@@ -262,5 +316,53 @@ public class ConfigHandler {
   public static void setDbPort(int dbPort) {
     ConfigHandler.dbPort = dbPort;
   }
+
+public static int getAvgApproximationStart() {
+	return avgApproximationStart;
+}
+
+public static void setAvgApproximationStart(int avgApproximationStart) {
+	ConfigHandler.avgApproximationStart = avgApproximationStart;
+}
+
+public static int getAvgApproximationEnd() {
+	return avgApproximationEnd;
+}
+
+public static void setAvgApproximationEnd(int avgApproximationEnd) {
+	ConfigHandler.avgApproximationEnd = avgApproximationEnd;
+}
+
+public static int getAvgQualityEdge() {
+	return avgQualityEdge;
+}
+
+public static void setAvgQualityEdge(int avgQualityEdge) {
+	ConfigHandler.avgQualityEdge = avgQualityEdge;
+}
+
+public static int getBreakcounter() {
+	return breakcounter;
+}
+
+public static void setBreakcounter(int breakcounter) {
+	ConfigHandler.breakcounter = breakcounter;
+}
+
+public static int getNumAverageNucleotides() {
+	return numAverageNucleotides;
+}
+
+public static void setNumAverageNucleotides(int numAverageNucleotides) {
+	ConfigHandler.numAverageNucleotides = numAverageNucleotides;
+}
+
+public static int getStartcounter() {
+	return startcounter;
+}
+
+public static void setStartcounter(int startcounter) {
+	ConfigHandler.startcounter = startcounter;
+}
 
 }
