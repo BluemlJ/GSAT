@@ -105,13 +105,13 @@ public class GeneHandler {
     	geneString.append(SEPARATOR);
     	geneString.append(gene.getSequence());
     	geneString.append(SEPARATOR);
-    	if (gene.getOrganism() != null) {
+    	if (gene.getOrganism() != null && !gene.getOrganism().equals("")) {
     		geneString.append(gene.getOrganism());
     	} else{
     		geneString.append("none");
     	}
     	geneString.append(SEPARATOR);
-    	if (gene.getComment() != null) {
+    	if (gene.getComment() != null && !gene.getComment().equals("")) {
     		geneString.append(gene.getComment());
     	} else{
     		geneString.append("none");
@@ -261,15 +261,16 @@ public class GeneHandler {
       String organism = sepLine[2];
       String comment = sepLine[3];
       if (getGene(name,organism) == null) {
-        if (organism.equals("none")) {
+        if (organism.equals("none") || organism.equals("")) {
           organism = null;
         }
-        if(comment.equals("none")){
+        if(comment.equals("none") || comment.equals("")){
         	comment = null;
         }
-        geneList.add(new Gene(gene, id, name, ConfigHandler.getResearcher(), organism, comment));
-        id++;
+        
       }
+      geneList.add(new Gene(gene, id, name, ConfigHandler.getResearcher(), organism, comment));
+      id++;
     }
 
     geneReader.close();
