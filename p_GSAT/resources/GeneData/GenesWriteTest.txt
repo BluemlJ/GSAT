@@ -1,1 +1,2 @@
-testGene;AAATTTAAAGGG;none
+testGene;AAATTTAAAGGG;organism1;comment1
+testGene2;AAATTTAAAGGG;organism2;comment2

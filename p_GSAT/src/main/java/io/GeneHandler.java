@@ -71,8 +71,8 @@ public class GeneHandler {
 
     readGenes();
 
-
-
+    //TODO add duplicate check?
+    
     geneList
         .add(new Gene(geneSequence, 0, geneName, ConfigHandler.getResearcher(), organism, comment));
 
@@ -98,16 +98,33 @@ public class GeneHandler {
   public static void writeGenes(String genePath) throws IOException {
     // clears all genes from file
     BufferedWriter geneWriter = new BufferedWriter(new FileWriter(genePath));
-
     // write all previously known genes
     for (Gene gene : geneList) {
-      if (gene.getOrganism() != null) {
-        geneWriter.write(
+    	StringBuilder geneString = new StringBuilder();
+    	geneString.append(gene.getName());
+    	geneString.append(SEPARATOR);
+    	geneString.append(gene.getSequence());
+    	geneString.append(SEPARATOR);
+    	if (gene.getOrganism() != null) {
+    		geneString.append(gene.getOrganism());
+    	} else{
+    		geneString.append("none");
+    	}
+    	geneString.append(SEPARATOR);
+    	if (gene.getComment() != null) {
+    		geneString.append(gene.getComment());
+    	} else{
+    		geneString.append("none");
+    	}
+    	geneString.append(System.getProperty("line.separator"));
+        //old writing code
+    		/*geneWriter.write(
             gene.getName() + SEPARATOR + gene.getSequence() + SEPARATOR + gene.getOrganism());
       } else {
         geneWriter.write(gene.getName() + SEPARATOR + gene.getSequence() + SEPARATOR + "none");
       }
-      geneWriter.write(System.getProperty("line.separator"));
+      geneWriter.write(System.getProperty("line.separator"));*/
+      geneWriter.write(geneString.toString());
     }
 
     geneWriter.close();
@@ -242,11 +259,15 @@ public class GeneHandler {
       String name = sepLine[0];
       String gene = sepLine[1];
       String organism = sepLine[2];
+      String comment = sepLine[3];
       if (getGene(name,organism) == null) {
         if (organism.equals("none")) {
           organism = null;
         }
-        geneList.add(new Gene(gene, id, name, ConfigHandler.getResearcher(), organism, null));
+        if(comment.equals("none")){
+        	comment = null;
+        }
+        geneList.add(new Gene(gene, id, name, ConfigHandler.getResearcher(), organism, comment));
         id++;
       }
     }
@@ -304,7 +325,11 @@ public class GeneHandler {
   public static void setPath(String path) {
     GeneHandler.path = path;
   }
-
+  
+  public static String getPath(){
+	  return GeneHandler.path;
+  }
+  
   public static void writeGenes() throws IOException {
     writeGenes(path);
 

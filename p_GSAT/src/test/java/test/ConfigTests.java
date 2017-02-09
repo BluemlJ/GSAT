@@ -194,6 +194,26 @@ public class ConfigTests {
     assertEquals(ConfigHandler.getResearcher(), "lovis heindrich");
     assertEquals(ConfigHandler.getResearchers()[1], "jannis blueml");
   }
+  
+  @Test
+  public void testQualityParameter() throws ConfigReadException, ConfigNotFoundException, IOException {
+    // read config
+    File path = new File("resources/lh_config/config.txt");
+    ConfigHandler.setPath(path.getAbsolutePath());
+    ConfigHandler.readConfig();
+    
+    int avgApproximationStartOld = ConfigHandler.getAvgApproximationStart();
+    
+    ConfigHandler.setAvgApproximationStart(50);   
+    ConfigHandler.writeConfig();    
+    ConfigHandler.readConfig();
+    assertEquals(50, ConfigHandler.getAvgApproximationStart());
+    
+    ConfigHandler.setAvgApproximationStart(avgApproximationStartOld);   
+    ConfigHandler.writeConfig();    
+    ConfigHandler.readConfig();
+    assertEquals(avgApproximationStartOld, ConfigHandler.getAvgApproximationStart());
+  }
 
   /**
    * This test checks if it is possible to add a researcher to the researchers array

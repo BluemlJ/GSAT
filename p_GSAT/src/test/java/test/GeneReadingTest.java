@@ -137,4 +137,28 @@ public class GeneReadingTest {
       assertEquals(e.getMessage(), "Gene testGene already exists");
     }
   }
+  
+  /**
+   * This test tries to write multiple new genes including comment and organism and then tries to read the genes from the file
+   * 
+   * @throws DuplicateGeneException
+   * @throws IOException
+   */
+  @Test
+  public void testWriteGenesCommentOrganism() throws DuplicateGeneException, IOException {
+    String oldPath = GeneHandler.getPath();
+    GeneHandler.setPath(writePath);
+	  GeneHandler.clearTxtFile(writePath);
+    GeneHandler.addGene("testGene", "aaatttaaaggg", "organism1", "comment1");
+    GeneHandler.addGene("testGene2", "aaatttaaaggg", "organism2", "comment2");
+    assertEquals(GeneHandler.getGene("testGene").getSequence(), "aaatttaaaggg".toUpperCase());
+    assertEquals(GeneHandler.getGene("testGene2").getSequence(), "aaatttaaaggg".toUpperCase());
+
+    assertEquals(GeneHandler.getGene("testGene").getOrganism(), "organism1");
+    assertEquals(GeneHandler.getGene("testGene2").getOrganism(), "organism2");
+
+    assertEquals(GeneHandler.getGene("testGene").getComment(), "comment1");
+    assertEquals(GeneHandler.getGene("testGene2").getComment(), "comment2");
+    GeneHandler.setPath(oldPath);
+  }
 }
