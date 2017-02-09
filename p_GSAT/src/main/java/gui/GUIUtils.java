@@ -32,6 +32,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ListView;
+import javafx.scene.control.ProgressBar;
 import javafx.scene.control.TextField;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
@@ -43,10 +44,6 @@ import javafx.stage.FileChooser;
  *
  */
 public class GUIUtils {
-
-	private static final String NORMAL_COLOR = "linear-gradient(#732423 0%, #553f4e 20%, #f7f553 80%, #63ee5e 100%)";
-	private static final String HOVER_COLOR = "linear-gradient(#745fea 0%, #affeef 20%, #123456 100%)";
-	
 	
   /**
    * This method initialize the choiceBox and adds all Gene which are stored locally in the
@@ -101,7 +98,7 @@ public class GUIUtils {
    * @throws DissimilarGeneException 
    */
   public static Pair<Boolean, String> runAnalysis(String sourcepath, String GeneID,
-      String resultname) throws DissimilarGeneException {
+      String resultname, ProgressBar bar) throws DissimilarGeneException {
     boolean success = false;
     StringBuilder report = new StringBuilder();
 
@@ -124,6 +121,8 @@ public class GUIUtils {
     report.append(getGeneFromDropDown(GeneID).second.second + "\n");
     }
     // foreach ab1 file
+    int counter = 0;
+    int allFiles = sequences.first.size();
     for (File file : sequences.first) {
       // get Sequence
       AnalysedSequence toAnalyse = readSequenceFromFile(file).first;
@@ -178,7 +177,10 @@ public class GUIUtils {
         // TODO Auto-generated catch block
         e.printStackTrace();
       }
-
+      counter++;
+      bar.setProgress(counter/(double) allFiles);
+      
+      
     }
     // set output parameter and return Pair.
     report.append("Analysis was successful\n");

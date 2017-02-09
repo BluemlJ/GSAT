@@ -212,16 +212,16 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
             else
               geneBoxItem = geneBox.getSelectionModel().getSelectedItem().split(" ")[0];
 
-            output = GUIUtils.runAnalysis(srcFieldTest, geneBoxItem, destfileNameText).second;
+            output = GUIUtils.runAnalysis(srcFieldTest, geneBoxItem, destfileNameText, bar).second;
             infoArea.appendText(output);
-
+         
             return null;
           }
 
         };
 
 
-        bar.setProgress(-1);
+        //bar.setProgress(-1);
         // mainThread.start();
         mainTask.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
           @Override
