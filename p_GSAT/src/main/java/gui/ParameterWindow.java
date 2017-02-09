@@ -105,6 +105,7 @@ public class ParameterWindow extends Application implements javafx.fxml.Initiali
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
+				SettingsWindow.subsettingsOpen = false;
 				Stage stage = (Stage) cancelButton.getScene().getWindow();
 				stage.close();
 			}
@@ -113,6 +114,7 @@ public class ParameterWindow extends Application implements javafx.fxml.Initiali
 		cancelButton.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent arg0) {
+				SettingsWindow.subsettingsOpen = false;
 				Stage stage = (Stage) cancelButton.getScene().getWindow();
 				stage.close();
 
@@ -129,6 +131,7 @@ public class ParameterWindow extends Application implements javafx.fxml.Initiali
 			e.printStackTrace();
 			return;
 		}
+		
 		Scene scene = new Scene(root);
 		primaryStage.setTitle("GSAT - Adjust analysis parameters");
 		primaryStage.setScene(scene);
