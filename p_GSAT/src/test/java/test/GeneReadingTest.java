@@ -150,7 +150,7 @@ public class GeneReadingTest {
     GeneHandler.setPath(writePath);
 	  GeneHandler.clearTxtFile(writePath);
     GeneHandler.addGene("testGene", "aaatttaaaggg", "organism1", "comment1");
-    GeneHandler.addGene("testGene2", "aaatttaaaggg", "organism2", null);
+    GeneHandler.addGene("testGene2", "aaatttaaaggg", "organism2", "comment2");
     
     GeneHandler.writeGenes();
     
