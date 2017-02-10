@@ -62,7 +62,7 @@ public class GUIUtils {
     }
 
     genes.setItems(FXCollections.observableArrayList(GeneHandler.getGeneNamesAndOrganisms()));
-    return new Pair<Boolean, Text>(true, new Text("Reading Gene.txt was successful \n "));
+    return new Pair<Boolean, Text>(true, new Text("Reading Gene.txt was successful\n"));
   }
 
   public static Pair<Boolean, Text> initializeGeneBox(ListView<String> genes) {
@@ -111,7 +111,7 @@ public class GUIUtils {
             new Text("Reading Sequences unsuccessful, please make sure the given path is correct or the file s valid"));
       else
         return new Pair<Boolean, Text>(success,
-            new Text( "No AB1 files were found at the given path or the file is invalid."));
+            new Text("No AB1 files were found at the given path or the file is invalid."));
     else
       report.append("Reading .ab1 file(s) was successful\n");
 
