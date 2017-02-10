@@ -83,10 +83,11 @@ public class GeneHandler {
 		readGenes();
 
 		if (getGene(geneName, organism) != null) {
-			geneList.add(new Gene(geneSequence, 0, geneName, ConfigHandler.getResearcher(), organism, comment));
 			return false;
 		}
-
+		
+		geneList.add(new Gene(geneSequence, 0, geneName, ConfigHandler.getResearcher(), organism, comment));
+		
 		writeGenes();
 		return true;
 	}
