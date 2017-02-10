@@ -9,10 +9,13 @@ import exceptions.UndefinedTypeOfMutationException;
  * This class contains the logic of analyzing mutations in sequences. Thus, it is one of the main
  * parts of the analyzing pipeline.
  * 
+ * @author jannis blueml
  */
 public class MutationAnalysis {
 
+  // boolean if there is a possible reading frame error is detected
   public static boolean readingFrameError = false;
+  // how many bad qualtity nucleotides before we stop analysing
   public static int readingFrameErrorBorder = 100;
   // A Integer, that specifies the border for the "Reading Frame Error"
   public static int warningReadingFrameError = 10;
@@ -42,42 +45,59 @@ public class MutationAnalysis {
     // list of differences in form like "s|12|G|H"
 
     warningReadingFrameError = mutatedSequence.length() / 8;
+    // because we work on amino acids
     readingFrameErrorBorder = mutatedSequence.length() / 3;
 
-    LinkedList<String> differences = reportDifferences(toAnalyze, true);
+    // a List of all differences in form of s|12|d|e
+    LinkedList<String> differenceList = reportDifferences(toAnalyze, true);
+    // the last position we found a mutation. Necessary for silent mutation detection.
     int lastposition = 0;
+    // counter for reading frame error detection
     int checkFrameerrorCounter = 0;
+    // shift created by insertions and deletions
     int shift = 0;
+    // a temporary counter. Necessary for silent mutation detection.
     int tmpshift = 0;
 
-    for (int i = 0; i < differences.size(); i++) {
+    // check all differences and add them to the sequence.
+    // The new form will be -> D6E (ATA), +1/-1 T26 (TTT)
+    for (int i = 0; i < differenceList.size(); i++) {
 
+      // checks reading frame error and warnings
       if (checkFrameerrorCounter == warningReadingFrameError)
         if (checkFrameerrorCounter == readingFrameErrorBorder) {
         readingFrameError = true;
         return false;
         }
 
-      String difference = differences.get(i);
+      // difference in form of s|12|e|d
+      String difference = differenceList.get(i);
       // type of mutation (s,i,d)
       String typeOfMutations = difference.split("\\|")[0];
-
       // position relative to mutatedSequence (of animoAcids)
       int position = Integer.parseInt(difference.split("\\|")[1]) + toAnalyze.getOffset();
+      // the amino acid in the mutated seqeunce
       String newAminoAcid;
+      // the amino acid found in the gene at the same position
       String oldAminoAcid;
+      // represents the codon of newAminoAcid
       String codonsOfNew;
 
       int firstNucleotidePos = (position - 1) * 3;
 
+      // how to proceed mutation
       switch (typeOfMutations) {
         // s = substitution, normal mutation of one aminoAcid
         case "s":
+          // get information out of difference
           newAminoAcid = difference.split("\\|")[2];
           oldAminoAcid = difference.split("\\|")[3];
+          // checks length before getting the codon out of gene
           if (toAnalyze.getSequence().length() > firstNucleotidePos + 3) {
+            // get codon out of gene
             codonsOfNew =
                 toAnalyze.getSequence().substring(firstNucleotidePos, firstNucleotidePos + 3);
+            // add mutation to sequence
             toAnalyze
                 .addMutation(oldAminoAcid + position + newAminoAcid + " (" + codonsOfNew + ")");
           } else
@@ -88,8 +108,11 @@ public class MutationAnalysis {
           break;
         // i = injection, inject of an new amino acid (aminoAcid short form)
         case "i":
+          // set shift and get informations
           shift--;
           newAminoAcid = difference.split("\\|")[2];
+
+          // write mutation into sequence (see substitution)
           if (toAnalyze.getSequence().length() > firstNucleotidePos + 3) {
             codonsOfNew =
                 toAnalyze.getSequence().substring(firstNucleotidePos, firstNucleotidePos + 3);
@@ -99,10 +122,12 @@ public class MutationAnalysis {
 
           checkFrameerrorCounter++;
           break;
-        // d = deletion, deletion of an amino acid
+        // d = deletion, deletion of an amino acid (see insertion and substitution for comment)
         case "d":
+          // increment shift + get informations
           shift++;
           oldAminoAcid = difference.split("\\|")[2];
+          // write informations in sequence
           if (toAnalyze.getSequence().length() > firstNucleotidePos + 3) {
             codonsOfNew =
                 toAnalyze.getSequence().substring(firstNucleotidePos, firstNucleotidePos + 3);
@@ -112,6 +137,7 @@ public class MutationAnalysis {
           checkFrameerrorCounter++;
           break;
 
+        // if report differences find a mutation which is not s,i or d
         default:
           throw new UndefinedTypeOfMutationException(typeOfMutations);
       }
@@ -120,32 +146,44 @@ public class MutationAnalysis {
       // we check if there is any
       // silent mutation in them.
 
-      if (position > lastposition + 1 || i == differences.size() - 1) {
+      // if the step between to mutations is greater 1 or we are the last for iteration
+      if (position > lastposition + 1 || i == differenceList.size() - 1) {
 
+        // starts by the last mutation and test evera amino acid between there and the actual amino
+        // acid
         int tempPosition = lastposition + 1;
         while (tempPosition < position - toAnalyze.getOffset()) {
 
           tempPosition = position;
 
+          // checks boundaries
           if ((tempPosition + tmpshift) * 3 + toAnalyze.getOffset() * 3 + 3 > originalSequence
               .length()
               || Math.max(tempPosition + tmpshift, tempPosition) * 3 + 3 > mutatedSequence
                   .length()) {
             break;
+            // checks amino acid
           } else {
             String oldAcid = originalSequence.substring(
                 (tempPosition + tmpshift) * 3 + toAnalyze.getOffset() * 3,
                 (tempPosition + tmpshift) * 3 + toAnalyze.getOffset() * 3 + 3);
             String newAcid = mutatedSequence.substring(tempPosition * 3, tempPosition * 3 + 3);
 
+            // if there is any silent mutation add them to sequence
             if (!oldAcid.equals(newAcid)) {
               tempPosition += toAnalyze.getOffset() + 1;
               toAnalyze.addMutation(oldAcid + tempPosition + newAcid);
             }
           }
+
+          // set new lastposition and increment tempP. for next run
           lastposition = position;
           tempPosition++;
         }
+
+        // didnt increment tempP. because of insertion or deletion, instead set tmpshift. Because
+        // the actual shift references to actual position not to the room betwenn actual and
+        // lastPosition.
 
       } else {
         tmpshift = shift;
@@ -153,18 +191,24 @@ public class MutationAnalysis {
       }
     }
 
-    if (differences.size() == 0) {
+    // if there is no mutation at all, check all (ignore shift)
+    if (differenceList.size() == 0) {
 
+      // init Position
       int tempPosition = 0;
       while (tempPosition < mutatedSequence.length()) {
+        // check boundaries
         if (tempPosition * 3 + toAnalyze.getOffset() * 3 + 3 > originalSequence.length()
             || tempPosition * 3 + 3 > mutatedSequence.length()) {
           break;
-        } else {
+        }
+        // actual testing
+        else {
           String oldAcid = originalSequence.substring(tempPosition * 3 + toAnalyze.getOffset() * 3,
               tempPosition * 3 + toAnalyze.getOffset() * 3 + 3);
           String newAcid = mutatedSequence.substring(tempPosition * 3, tempPosition * 3 + 3);
-
+          // if silent mutation, add them. tempPosition must adding the offset before adding to
+          // sequence.
           if (!oldAcid.equals(newAcid)) {
 
             tempPosition += toAnalyze.getOffset() + 1;
@@ -315,13 +359,12 @@ public class MutationAnalysis {
    * m is the new amino acid placed in the mutated sequence insertions take place between the given
    * index and the next index
    * 
-   * <<<<<<< HEAD
    * 
    * @param sOne The mutated sequence
    * @param seq The gene
    * @param type 0 = if the we work on nucleotides, 1 = if we work on aminoacids; =======
    * @param gene The mutated sequence
-   * @param sequence The gene >>>>>>> 2b5f6c1192ca56bd5c615bff808c6f091130fcaf
+   * @param sequence The gene
    * 
    * @return A list of differences (represented as String)
    * @author Kevin Otto, Jannis Blueml
@@ -339,13 +382,5 @@ public class MutationAnalysis {
         Math.min(end, seq.getReferencedGene().getSequence().length())));
     second = StringAnalysis.codonsToAminoAcids(seq.sequence);
     return reportDifferences(first.split("#")[0], second.split("#")[0]);
-    /*
-     * } else {//TODO @Jannis remove type first =
-     * seq.getReferencedGene().sequence.substring(seq.getOffset()); second = seq.sequence; return
-     * reportDifferences(first, second);
-     * 
-     * }
-     */
-
   }
 }
