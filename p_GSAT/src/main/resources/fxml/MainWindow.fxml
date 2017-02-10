@@ -36,7 +36,10 @@
                <content>
                   <HBox>
                      <children>
-                        <TextFlow fx:id="infoArea" prefHeight="200.0" prefWidth="200.0" />
+                        <TextFlow fx:id="infoArea" HBox.hgrow="ALWAYS">
+                           <HBox.margin>
+                              <Insets />
+                           </HBox.margin></TextFlow>
                      </children>
                   </HBox>
                </content>
