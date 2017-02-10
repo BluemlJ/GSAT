@@ -6,7 +6,6 @@
 <?import javafx.scene.control.ChoiceBox?>
 <?import javafx.scene.control.ProgressBar?>
 <?import javafx.scene.control.ScrollPane?>
-<?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.ToolBar?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -37,7 +36,7 @@
                <content>
                   <HBox>
                      <children>
-                        <TextArea fx:id="infoArea" editable="false" nodeOrientation="LEFT_TO_RIGHT" prefHeight="138.0" prefWidth="608.0" HBox.hgrow="ALWAYS" />
+                        <TextFlow fx:id="infoArea" prefHeight="200.0" prefWidth="200.0" />
                      </children>
                   </HBox>
                </content>
@@ -76,6 +75,5 @@
             <Insets bottom="14.0" />
          </VBox.margin>
       </FlowPane>
-      <TextFlow prefHeight="200.0" prefWidth="200.0" />
   </children>
 </VBox>
