@@ -383,8 +383,8 @@ public class GUIUtils {
 	  	case GREEN:
 	  		normalColor1 = "rgb(184,239,54)";
 	  		normalColor2 = "rgb(128,200,1)";
-	  		hoverColor1 = "rgb(184,239,54)";
-	  		hoverColor2 = "rgb(128,200,1)";
+	  		hoverColor1 = "rgb(205,243,114)";
+	  		hoverColor2 = "rgb(166,216,77)";
 	  		break;
 	  	case RED:
 	  		normalColor1 = "rgb(251,117,117)";
