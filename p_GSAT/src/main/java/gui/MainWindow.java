@@ -241,10 +241,10 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
       if (newValue) {
         autoGeneSearch = true;
         geneBox.getSelectionModel().clearSelection();
-        infoArea.appendText("The gene that fits best will be searched.");
+        infoArea.appendText("The gene that fits best will be searched.\n");
       } else {
         autoGeneSearch = false;
-        infoArea.appendText("No automatic gene search.");
+        infoArea.appendText("No automatic gene search.\n");
       }
     });
 
