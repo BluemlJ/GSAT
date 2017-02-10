@@ -98,7 +98,7 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
     GUIUtils.setColorOnNode(startButton, Color.BLUE);
     GUIUtils.setColorOnNode(settingsButton, Color.BLUE);
     
-    Pair<Boolean, String> output;
+    Pair<Boolean, Text> output;
     //infoArea.setText("Welcome to GSAT! \n");
     
     infoArea.getChildren().add(new Text("Welcome to GSAT! \n"));
@@ -108,7 +108,7 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
     output = GUIUtils.initializeGeneBox(geneBox);
     geneBox.setStyle("-fx-font-style: italic;");
 
-    infoArea.getChildren().add(new Text(output.second + "\n"));
+    infoArea.getChildren().add(output.second);
 
     geneBox.setOnMouseClicked(arg01 -> GUIUtils.initializeGeneBox(geneBox));
 
@@ -122,7 +122,7 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
     destButton.setOnAction(new EventHandler<ActionEvent>() {
       @Override
       public void handle(ActionEvent arg0) {
-        String output;
+        Text output;
         output = GUIUtils.setDestination(destField, srcField.getText()).second;
         infoArea.getChildren().add(new Text(output + "\n"));
       }
@@ -141,7 +141,7 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
     srcButton.setOnAction(new EventHandler<ActionEvent>() {
       @Override
       public void handle(ActionEvent arg0) {
-        String output;
+        Text output;
         output = GUIUtils.setSourceFolder(srcField).second;
         infoArea.getChildren().add(new Text(output + "\n"));
       }
@@ -199,7 +199,7 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
 
           @Override
           protected Void call() throws Exception {
-            String output;
+            Text output;
 
             String srcFieldTest = srcField.getText();
             String destfileNameText = fileNameField.getText();
@@ -210,7 +210,7 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
               geneBoxItem = geneBox.getSelectionModel().getSelectedItem().split(" ")[0];
 
             output = GUIUtils.runAnalysis(srcFieldTest, geneBoxItem, destfileNameText, bar).second;
-            infoArea.getChildren().add(new Text(output));
+            infoArea.getChildren().add(output);
             return null;
           }
 

@@ -62,7 +62,7 @@ public class GUIUtils {
     }
 
     genes.setItems(FXCollections.observableArrayList(GeneHandler.getGeneNamesAndOrganisms()));
-    return new Pair<Boolean, Text>(true, new Text("Reading Gene.txt was successful"));
+    return new Pair<Boolean, Text>(true, new Text("Reading Gene.txt was successful \n "));
   }
 
   public static Pair<Boolean, Text> initializeGeneBox(ListView<String> genes) {
@@ -200,7 +200,7 @@ public class GUIUtils {
   public static Pair<Boolean, Text> setDestination(TextField destination, String sourcePath) {
 
     boolean success = false;
-    String report = "Reading destination path was unsuccessful.";
+    Text report = new Text("Reading destination path was unsuccessful.");
     String path;
 
     DirectoryChooser chooser = new DirectoryChooser();
@@ -228,11 +228,11 @@ public class GUIUtils {
     if (selectedDirectory != null) {
       path = selectedDirectory.getAbsolutePath();
       success = true;
-      report = "Reading destination path was successful. \nDestination is:  " + path;
+      report = new Text("Reading destination path was successful. \nDestination is:  " + path);
       FileSaver.setLocalPath(path);
       destination.setText(path);
     }
-    return new Pair<Boolean, Text>(success, new Text(report));
+    return new Pair<Boolean, Text>(success, report);
   }
 
   /**
@@ -244,7 +244,7 @@ public class GUIUtils {
    */
   public static Pair<Boolean, Text> setSourceFolder(TextField source) {
     boolean success = false;
-    String report = "Reading path to .ab1 file was unsuccessful.";
+    Text report = new Text("Reading path to .ab1 file was unsuccessful.");
     String path;
     File selectedDirectory = null;
     String defaultPath = source.getText();
@@ -272,7 +272,7 @@ public class GUIUtils {
 
     Optional<ButtonType> result = alert.showAndWait();
     if (result.get() == buttonTypeOne) {
-      report = "Reading path to .ab1 file folder was unsuccessful.";
+      report = new Text("Reading path to .ab1 file folder was unsuccessful.");
       DirectoryChooser chooser = new DirectoryChooser();
       chooser.setTitle("Set path to the .ab1 files (folder)");
       if (!defaultPath.isEmpty()) {
@@ -305,10 +305,10 @@ public class GUIUtils {
     if (selectedDirectory != null) {
       path = selectedDirectory.getAbsolutePath();
       success = true;
-      report = "Reading path was successful. \nFolder is:  " + path;
+      report = new Text("Reading path was successful. \nFolder is:  " + path);
       source.setText(path);
     }
-    return new Pair<Boolean, Text>(success, new Text(report));
+    return new Pair<Boolean, Text>(success, report);
   }
 
   /**
