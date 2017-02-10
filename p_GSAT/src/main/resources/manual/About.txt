@@ -2,10 +2,10 @@ GSAT can assist you with analysis nucleotide sequences stored in AB1 files by pe
 collecting information about the sequences.
 
 This program was develop by four students from the TU Darmstadt, namely
-Jannis Blüml,
+Jannis BlÃ¼ml,
 Lovis Heindrich,
 Ben Kohr and
 Kevin Otto,
-in the context of their so-called “Bachelor-Praktikum“ (from October 2016 until May 2017).
+in the context of their so-called "Bachelor-Praktikum" (from October 2016 until May 2017).
 
 This program is licensed under the GNU Lesser General Public License, which can be found at https://www.gnu.org/licenses/lgpl-3.0.de.html.

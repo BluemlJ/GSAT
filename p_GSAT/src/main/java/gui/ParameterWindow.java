@@ -122,25 +122,22 @@ public class ParameterWindow extends Application implements javafx.fxml.Initiali
 
 			@Override
 			public void handle(ActionEvent arg0) {
-				System.out.println("hallo");
-				if (!avgApproximationStart.getText().equals("")) {
 					ConfigHandler.setAvgApproximationStart(Integer.parseInt(avgApproximationStart.getText()));
-				}
-
+				
 				if (!avgApproximationEnd.getText().equals("")) {
-					ConfigHandler.setAvgApproximationStart(Integer.parseInt(avgApproximationEnd.getText()));
+					ConfigHandler.setAvgApproximationEnd(Integer.parseInt(avgApproximationEnd.getText()));
 				}
 
 				if (!breakcounter.getText().equals("")) {
-					ConfigHandler.setAvgApproximationStart(Integer.parseInt(breakcounter.getText()));
+					ConfigHandler.setBreakcounter(Integer.parseInt(breakcounter.getText()));
 				}
 
 				if (!startcounter.getText().equals("")) {
-					ConfigHandler.setAvgApproximationStart(Integer.parseInt(startcounter.getText()));
+					ConfigHandler.setStartcounter(Integer.parseInt(startcounter.getText()));
 				}
 
 				if (!numAverageNucleotides.getText().equals("")) {
-					ConfigHandler.setAvgApproximationStart(Integer.parseInt(numAverageNucleotides.getText()));
+					ConfigHandler.setNumAverageNucleotides(Integer.parseInt(numAverageNucleotides.getText()));
 				}
 
 				try {
