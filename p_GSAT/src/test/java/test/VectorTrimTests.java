@@ -17,8 +17,6 @@ import analysis.StringAnalysis;
  */
 public class VectorTrimTests {
 
-
-
   /**
    * generates a random gene out of a rendom sequence
    * 
@@ -79,6 +77,7 @@ public class VectorTrimTests {
     return seq;
   }
 
+
   /**
    * randomly mutates the given sequence in range from begin to and it puts up to 10 mutation into
    * one sequence
@@ -99,6 +98,7 @@ public class VectorTrimTests {
     return sequenceBuilder.toString();
   }
 
+
   /**
    * 
    * 
@@ -117,6 +117,7 @@ public class VectorTrimTests {
     System.out.println(tmp);
   }
 
+
   /**
    * 
    * 
@@ -126,7 +127,6 @@ public class VectorTrimTests {
   public void trimVectorBasicTest() {
     String seq = "XXhallo3wieGehts3dirheute3";
     int[] qualities = new int[seq.length()];
-
 
     AnalysedSequence sequence = new AnalysedSequence(seq, "res", "N", qualities);
     Gene gen = new Gene("hallo3wieGehts3dirheute3", 0, null, null);
@@ -139,6 +139,7 @@ public class VectorTrimTests {
     assertTrue(expected.toUpperCase().equals(test));
     assertEquals(0, sequence.getOffset());
   }
+
 
   /**
    * 
@@ -187,10 +188,10 @@ public class VectorTrimTests {
     String test = sequence.getSequence();
     String expected = "BELhallo3wieGehts3dirheute3mirgehtesgutERD";
 
-
     assertTrue(expected.toUpperCase().equals(test));
     assertEquals(0, sequence.getOffset());
   }
+
 
   /**
    * 
@@ -266,6 +267,7 @@ public class VectorTrimTests {
     assertEquals(0, sequence.getOffset());
   }
 
+
   /**
    * 
    * 
@@ -277,7 +279,6 @@ public class VectorTrimTests {
     String seq = "XXhallow";
     int[] qualities = new int[seq.length()];
 
-
     AnalysedSequence sequence = new AnalysedSequence("XXhallow", "res", "N", qualities);
     Gene gen = new Gene("hallowiegeht", 0, null, null);
 
@@ -285,11 +286,10 @@ public class VectorTrimTests {
     String test = sequence.getSequence();
     String expected = "hallow";
 
-
-
     assertTrue(expected.toUpperCase().equals(test));
     assertEquals(0, sequence.getOffset());
   }
+
 
   /**
    * 
@@ -313,6 +313,7 @@ public class VectorTrimTests {
     assertTrue(expected.toUpperCase().equals(test));
     assertEquals(0, sequence.getOffset());
   }
+
 
   /**
    * 
@@ -338,7 +339,6 @@ public class VectorTrimTests {
   }
 
 
-
   /**
    * 
    * 
@@ -347,14 +347,15 @@ public class VectorTrimTests {
   @Test
   public void trimVectorTimingTest() {
 
-
     AnalysedSequence randomSequence = getRandomSequence();
     Gene randomgen = getRandomGene(randomSequence);
 
     Double time = (double) System.nanoTime();
 
     StringAnalysis.trimVector(randomSequence, randomgen);
-    time = ((System.nanoTime() - time)) / 1000000000.0;// calsulate time needet and convert to
+    time = ((System.nanoTime() - time)) / 1000000000.0;// calsulate time
+                                                       // needet and
+                                                       // convert to
                                                        // seconds
 
     assertTrue(time < 5);

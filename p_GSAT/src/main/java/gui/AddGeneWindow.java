@@ -23,7 +23,7 @@ import javafx.stage.WindowEvent;
 public class AddGeneWindow extends Application implements javafx.fxml.Initializable {
 
   private SettingsWindow parent;
-  
+
   // fields
   @FXML
   private TextField nameField;
@@ -45,39 +45,40 @@ public class AddGeneWindow extends Application implements javafx.fxml.Initializa
 
   Scene scene;
 
+
+
   @Override
   public void initialize(URL location, ResourceBundle resources) {
 
-	geneArea.setWrapText(true);
-	commentArea.setWrapText(true);
-	
-	GUIUtils.setColorOnNode(confirmButton, Color.GREEN);
+    geneArea.setWrapText(true);
+    commentArea.setWrapText(true);
+
+    GUIUtils.setColorOnNode(confirmButton, Color.GREEN);
     GUIUtils.setColorOnNode(cancelButton, Color.RED);
-	
+
     confirmButton.setOnAction(new EventHandler<ActionEvent>() {
-    	
 
       @Override
       public void handle(ActionEvent arg0) {
         if (!nameField.getText().isEmpty() && !geneArea.getText().isEmpty()) {
           try {
-            if(GeneHandler.addGene(nameField.getText(), geneArea.getText(), organismField.getText(),
-                commentArea.getText()) == true){
+            if (GeneHandler.addGene(nameField.getText(), geneArea.getText(),
+                organismField.getText(), commentArea.getText()) == true) {
 
-            Alert alert = new Alert(AlertType.INFORMATION);
-            alert.setTitle("Adding gene");
-            alert.setHeaderText("Gene added successfully.");
-            alert.showAndWait();
-            parent.updateGenes();
-            Stage stage = (Stage) cancelButton.getScene().getWindow();
-            stage.close();
-            }
-            else {
-            	 Alert alert = new Alert(AlertType.INFORMATION);
-                 alert.setTitle("Adding gene failed");
-                 alert.setHeaderText("Gene added not successful because gene already exists in local file.");
-                 alert.showAndWait();
-                 
+              Alert alert = new Alert(AlertType.INFORMATION);
+              alert.setTitle("Adding gene");
+              alert.setHeaderText("Gene added successfully.");
+              alert.showAndWait();
+              parent.updateGenes();
+              Stage stage = (Stage) cancelButton.getScene().getWindow();
+              stage.close();
+            } else {
+              Alert alert = new Alert(AlertType.INFORMATION);
+              alert.setTitle("Adding gene failed");
+              alert.setHeaderText(
+                  "Gene added not successful because gene already exists in local file.");
+              alert.showAndWait();
+
             }
           } catch (DuplicateGeneException | IOException e) {
             // TODO Auto-generated catch block
@@ -99,10 +100,12 @@ public class AddGeneWindow extends Application implements javafx.fxml.Initializa
     });
   }
 
+
   @Override
   public void stop() throws Exception {
     super.stop();
   }
+
 
   @Override
   public void start(Stage primaryStage) throws Exception {
@@ -118,7 +121,7 @@ public class AddGeneWindow extends Application implements javafx.fxml.Initializa
     primaryStage.setScene(scene);
     primaryStage.sizeToScene();
     primaryStage.show();
-    
+
     primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
 
       @Override
@@ -129,9 +132,9 @@ public class AddGeneWindow extends Application implements javafx.fxml.Initializa
     });
   }
 
-  public void setParent(SettingsWindow parent) {
-      this.parent = parent;
-  }
 
+  public void setParent(SettingsWindow parent) {
+    this.parent = parent;
+  }
 
 }

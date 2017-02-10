@@ -8,7 +8,6 @@ import java.io.IOException;
 
 import org.junit.After;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import analysis.AnalysedSequence;
@@ -33,7 +32,6 @@ public class QualityTests {
   private static int breakcounter = 9;
   private static int numAverageNucleotides = 20;
   private static int startcounter = 3;
-
 
   // local test values
   private static int avgApproximationStartTest = 30;
@@ -70,6 +68,7 @@ public class QualityTests {
     QualityAnalysis.setStartcounter(startcounterTest);
   }
 
+
   @After
   public void resetQualityParameters() {
     QualityAnalysis.setAvgApproximationStart(avgApproximationStart);
@@ -79,6 +78,7 @@ public class QualityTests {
     QualityAnalysis.setNumAverageNucleotides(numAverageNucleotides);
     QualityAnalysis.setStartcounter(startcounter);
   }
+
 
   @Test
   public void percentageGoodQualityTest1() {
@@ -90,6 +90,7 @@ public class QualityTests {
     assertTrue(Math.abs(avg - 0.361) < 0.05);
   }
 
+
   @Test
   public void percentageGoodQualityTest2() {
     int[] qualities = {30, 31, 40, 57, 57, 57, 6, 7, 8, 4, 3, 12};
@@ -98,6 +99,7 @@ public class QualityTests {
     assertTrue(Math.abs(avg - 0.46) < 0.05);
   }
 
+
   @Test
   public void percentageGoodQualityTestUnusual() {
     int[] qualities = {};
@@ -105,6 +107,7 @@ public class QualityTests {
     double avg = QualityAnalysis.getQualityPercentage(testSequence);
     assertTrue(avg == 0);
   }
+
 
   /**
    * This test confirms expected quality trimming behaviour for a synthetic sequence (Userstory 008
@@ -124,6 +127,7 @@ public class QualityTests {
     assertEquals(testSequenceA.getSequence(), "AAATTTGGG");
   }
 
+
   /**
    * This test confirms expected quality trimming behaviour for a synthetic sequence (Userstory 008
    * - Unusual behavior)
@@ -139,6 +143,7 @@ public class QualityTests {
     QualityAnalysis.trimLowQuality(testSequenceB);
     assertEquals(testSequenceB.getSequence(), "AAATTTGGG");
   }
+
 
   /**
    * This test confirms expected quality trimming behaviour for a synthetic sequence (Userstory 008
@@ -156,6 +161,7 @@ public class QualityTests {
     assertEquals(testSequenceC.getSequence(), "");
   }
 
+
   /**
    * This test confirms expected quality trimming behaviour for a synthetic sequence (Userstory 008
    * - Expected behavior)
@@ -171,6 +177,7 @@ public class QualityTests {
     QualityAnalysis.trimLowQuality(testSequenceD);
     assertEquals(testSequenceD.getSequence(), "TTTGGG");
   }
+
 
   /**
    * This test confirms expected quality trimming behaviour for a synthetic sequence (Userstory 008
@@ -188,6 +195,7 @@ public class QualityTests {
     assertEquals(testSequenceE.getSequence(), "TTTGGG");
   }
 
+
   /**
    * This tests checks if the average Quality calculation is correctly integrated in findLowQuality
    * by using testAverageQualityTrimB (Userstory 029 - Expected Behavior)
@@ -202,6 +210,7 @@ public class QualityTests {
     assertEquals(trim[1], 18);
   }
 
+
   /**
    * Tests if the average Quality Trim detects a regular bad quality ending (Userstory 029 -
    * Expected Behavior)
@@ -212,6 +221,7 @@ public class QualityTests {
         0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
     assertEquals(QualityAnalysis.getAverageTrimmingPosition(qualities, 6), 18);
   }
+
 
   /**
    * Tests if the average Quality Trim detects a bad quality ending which would not have been
@@ -224,6 +234,7 @@ public class QualityTests {
     assertEquals(QualityAnalysis.getAverageTrimmingPosition(qualities, 6), 18);
   }
 
+
   /**
    * Tests if a short sequence string produces the default case as output (normal findLowQuality
    * will handle it) (Userstory 029 - Unusual Behavior)
@@ -234,7 +245,7 @@ public class QualityTests {
     assertEquals(QualityAnalysis.getAverageTrimmingPosition(qualities, 0), 3);
   }
 
-  
+
   @Test
   public void testPercentageOfTrim1() {
     int[] qualities = {0, 0, 0, 100, 100, 100, 100, 100, 100};
@@ -245,7 +256,7 @@ public class QualityTests {
     assertTrue(Math.abs(QualityAnalysis.percentageOfTrimQuality(tmp, toAnalyze) - 0.333) < 0.05);
   }
 
-  
+
   @Test
   public void testPercentageOfTrim2() {
     int[] qualities = {0, 0, 0, 100, 100, 100, 100, 100, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
@@ -256,7 +267,7 @@ public class QualityTests {
     assertTrue(Math.abs(QualityAnalysis.percentageOfTrimQuality(tmp, toAnalyze) - 0.7) < 0.05);
   }
 
-  
+
   @Test
   public void testPercentageOfTrimUnsusual() {
     int[] qualities = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
@@ -266,6 +277,7 @@ public class QualityTests {
     System.out.println(QualityAnalysis.percentageOfTrimQuality(tmp, toAnalyze));
     assertTrue(QualityAnalysis.percentageOfTrimQuality(tmp, toAnalyze) == 1.0);
   }
+
 
   /**
    * Tests if the quality information is accessible (Userstory 008 - Expected behavior)
@@ -278,6 +290,7 @@ public class QualityTests {
     assertEquals(testSequence.getQuality()[0], 16);
 
   }
+
 
   /**
    * Tests if the quality trim function is usable

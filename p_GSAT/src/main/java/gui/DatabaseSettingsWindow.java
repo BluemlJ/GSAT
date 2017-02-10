@@ -20,6 +20,7 @@ public class DatabaseSettingsWindow extends Application implements javafx.fxml.I
 
   }
 
+
   @Override
   public void start(Stage primaryStage) throws Exception {
     Parent root;
@@ -34,7 +35,7 @@ public class DatabaseSettingsWindow extends Application implements javafx.fxml.I
     primaryStage.setScene(scene);
     primaryStage.sizeToScene();
     primaryStage.show();
-    
+
     primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
 
       @Override

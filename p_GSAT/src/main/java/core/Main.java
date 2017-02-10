@@ -31,6 +31,7 @@ public class Main {
 
   }
 
+
   /**
    * Resets the analysis pipeline to be able to start with a completely new analyzing process.
    * 

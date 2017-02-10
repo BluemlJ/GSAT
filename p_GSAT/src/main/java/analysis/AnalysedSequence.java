@@ -97,6 +97,7 @@ public class AnalysedSequence extends Sequence {
     this.qualities = qualities;
   }
 
+
   /**
    * Add a discovered, String-encoded mutation to the list of already discovered mutations.
    * 
@@ -108,6 +109,7 @@ public class AnalysedSequence extends Sequence {
     mutations.add(mutation);
   }
 
+
   public double getAvgQuality() {
     int sum = 0;
     for (int i : qualities) {
@@ -116,29 +118,36 @@ public class AnalysedSequence extends Sequence {
     return sum / (1.0 * qualities.length);
   }
 
+
   public String getComments() {
     return comments;
   }
+
 
   public String getFileName() {
     return fileName;
   }
 
+
   public double getTrimPercentage() {
     return trimPercentage;
   }
+
 
   public String getLeftVector() {
     return leftVector;
   }
 
+
   public LinkedList<String> getMutations() {
     return mutations;
   }
 
+
   public int getOffset() {
     return offset;
   }
+
 
   // GETTERs and SETTERs:
 
@@ -146,25 +155,31 @@ public class AnalysedSequence extends Sequence {
     return primer;
   }
 
+
   public int[] getQuality() {
     return qualities;
   }
+
 
   public int getHisTagPosition() {
     return hisTagPosition;
   }
 
+
   public Gene getReferencedGene() {
     return referencedGene;
   }
+
 
   public String getRightVector() {
     return rightVector;
   }
 
+
   public boolean isManuallyChecked() {
     return manuallyChecked;
   }
+
 
   /**
    * Returns the length of the sequence (the number of nucleotides in it).
@@ -176,6 +191,7 @@ public class AnalysedSequence extends Sequence {
   public int length() {
     return sequence.length();
   }
+
 
   /**
    * This method reverses the Qualityarray and set it new.
@@ -191,41 +207,51 @@ public class AnalysedSequence extends Sequence {
     this.qualities = qualities2;
   }
 
+
   public void setComments(String comments) {
     this.comments = comments;
   }
+
 
   public void setLeftVector(String vector) {
     this.leftVector = vector;
   }
 
+
   public void setManuallyChecked(boolean manuallyChecked) {
     this.manuallyChecked = manuallyChecked;
   }
+
 
   public void setOffset(int offset) {
     this.offset = offset;
   }
 
+
   public void setPrimer(String primer) {
     this.primer = primer;
   }
+
 
   public void setReferencedGene(Gene gene) {
     referencedGene = gene;
   }
 
+
   public void setRightVector(String vector) {
     this.rightVector = vector;
   }
+
 
   public void setHisTagPosition(int hisTagPosition) {
     this.hisTagPosition = hisTagPosition;
   }
 
+
   public void setTrimPercentage(double trimPercentage) {
     this.trimPercentage = trimPercentage;
   }
+
 
   /**
    * This method trims a quality array, i.e. it cuts out the desired part of the nucleotide sequence
@@ -248,6 +274,7 @@ public class AnalysedSequence extends Sequence {
     this.qualities = trimmed;
   }
 
+
   /**
    * This method trims a sequence, i.e. it cuts out the desired part of the nucleotide sequence. It
    * keeps the start index character, and all following characters including the end index
@@ -262,7 +289,5 @@ public class AnalysedSequence extends Sequence {
     String trimmed = sequence.substring(startIndex, endIndex + 1);
     this.sequence = trimmed;
   }
-
-
 
 }

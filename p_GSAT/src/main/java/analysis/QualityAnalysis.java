@@ -10,7 +10,6 @@ import exceptions.CorruptedSequenceException;
  */
 public class QualityAnalysis {
 
-
   private static int avgApproximationStart = 30;
   private static int avgApproximationEnd = 25;
 
@@ -29,6 +28,8 @@ public class QualityAnalysis {
 
   private static int startcounter = 3;
 
+
+
   public static boolean checkIfSequenceIsClean(AnalysedSequence toAnalysedSequence)
       throws CorruptedSequenceException {
     for (char c : toAnalysedSequence.getSequence().toCharArray()) {
@@ -36,6 +37,7 @@ public class QualityAnalysis {
     }
     return true;
   }
+
 
   /**
    * This method checks the nucleotidestring and finds a position to trim the low quality part at
@@ -97,6 +99,7 @@ public class QualityAnalysis {
     return trimmingPosition;
   }
 
+
   /**
    * This method provides an additional quality measurement by detecting substrings with an average
    * low quality
@@ -150,9 +153,11 @@ public class QualityAnalysis {
     return qualities.length;
   }
 
+
   public static int getBreakcounter() {
     return breakcounter;
   }
+
 
   /**
    * 
@@ -171,6 +176,7 @@ public class QualityAnalysis {
     return tmp / 1000;
   }
 
+
   public static double percentageOfTrimQuality(int lengthBefore, AnalysedSequence toAnalyse) {
     // rounds result to promille
     double tmp = (int) ((double) toAnalyse.getSequence().length() / (double) lengthBefore * 1000);
@@ -178,9 +184,11 @@ public class QualityAnalysis {
 
   }
 
+
   public static void setBreakcounter(int update) {
     breakcounter = update;
   }
+
 
   /**
    * This method trims a sequence by removing the low quality end of the sequence.
@@ -197,41 +205,49 @@ public class QualityAnalysis {
     return avgApproximationEnd;
   }
 
+
   public static void setAvgApproximationEnd(int avgApproximationEnd) {
     QualityAnalysis.avgApproximationEnd = avgApproximationEnd;
   }
+
 
   public static int getAvgApproximationStart() {
     return avgApproximationStart;
   }
 
+
   public static void setAvgApproximationStart(int avgApproximationStart) {
     QualityAnalysis.avgApproximationStart = avgApproximationStart;
   }
+
 
   public static int getAvgQualityEdge() {
     return avgQualityEdge;
   }
 
+
   public static void setAvgQualityEdge(int avgQualityEdge) {
     QualityAnalysis.avgQualityEdge = avgQualityEdge;
   }
+
 
   public static int getNumAverageNucleotides() {
     return numAverageNucleotides;
   }
 
+
   public static void setNumAverageNucleotides(int numAverageNucleotides) {
     QualityAnalysis.numAverageNucleotides = numAverageNucleotides;
   }
+
 
   public static int getStartcounter() {
     return startcounter;
   }
 
+
   public static void setStartcounter(int startcounter) {
     QualityAnalysis.startcounter = startcounter;
   }
-
 
 }

@@ -3,12 +3,10 @@ package analysis;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Hashtable;
-import java.util.LinkedList;
 import java.util.Map;
 import java.util.TreeMap;
 
 import exceptions.CorruptedSequenceException;
-import exceptions.DissimilarGeneException;
 
 /**
  * This class contains the logic of analyzing sequence strings. This class serves for
@@ -162,6 +160,8 @@ public class StringAnalysis {
     AMINO_ACID_SHORTS = Collections.unmodifiableMap(tmp);
   }
 
+
+
   public static String appentStringToLength(String input, int length) {
     if (length - input.length() > 0) {
       String expand = new String(new char[length - input.length()]).replace('\0', ' ');
@@ -169,6 +169,7 @@ public class StringAnalysis {
     }
     return input;
   }
+
 
   /**
    * Calculates the Levensthein Matrix of two Strings. The Matrix gives information about the
@@ -218,6 +219,7 @@ public class StringAnalysis {
     return levenMatrix;
   }
 
+
   /**
    * 
    * @param toAnalyse
@@ -253,6 +255,7 @@ public class StringAnalysis {
 
   }
 
+
   /**
    * 
    * @param toAnalyse
@@ -266,6 +269,7 @@ public class StringAnalysis {
     checkComplementAndReverse(toAnalyse);
   }
 
+
   /**
    * Compares to sequences and returns their similarity without finding the exact differences.
    * 
@@ -278,6 +282,7 @@ public class StringAnalysis {
   public static double checkSimilarity(Sequence first, Sequence second) {
     return checkSimilarity(first.sequence, second.sequence);
   }
+
 
   /**
    * Compares to String and returns their similarity without finding the exact differences.
@@ -293,6 +298,7 @@ public class StringAnalysis {
     double avgLength = (first.length() + second.length()) / 2.0;
     return Math.max(0, 100 - (levenshteinIndex / (avgLength / 100)));
   }
+
 
   /**
    * Changes the sequence representation from nucleotides to aminoacid (shortform)
@@ -336,6 +342,7 @@ public class StringAnalysis {
       return "nucleotides not modulo 3, so not convertable";
     return builder.toString();
   }
+
 
   /**
    * Verry slow, do not use
@@ -392,6 +399,7 @@ public class StringAnalysis {
     return matches.pollLastEntry().getValue();
   }
 
+
   public static int findHISTag(AnalysedSequence tA) {
     int result = -1;
     char[] seq = StringAnalysis.codonsToAminoAcids(tA.getSequence()).toCharArray();
@@ -403,6 +411,7 @@ public class StringAnalysis {
     if (counter > 5) result = tA.getSequence().length() + tA.getLeftVector().length() - counter * 3;
     return result;
   }
+
 
   /**
    * Finds the gene that fits best to a given sequence by comparing it to all given genes. Known
@@ -419,6 +428,7 @@ public class StringAnalysis {
     // a database export
     return null;
   }
+
 
   /**
    * Finds the gene that fits best to a given sequence by comparing it to all given genes.
@@ -442,8 +452,8 @@ public class StringAnalysis {
 
     return bestgene;
 
-
   }
+
 
   /**
    * Finds the gene that fits best to a given sequence by comparing it to all given genes. Known
@@ -461,6 +471,7 @@ public class StringAnalysis {
     return null;
   }
 
+
   public static int findStopcodonPosition(AnalysedSequence toAnalyze) {
     for (int i = 0; i < toAnalyze.getSequence().length() - 3; i = i + 3) {
       String aminoAcid = toAnalyze.getSequence().substring(i, i + 3);
@@ -470,6 +481,7 @@ public class StringAnalysis {
     }
     return -1;
   }
+
 
   /**
    * gets Levenshtein index out of Levenshtein Matrix
@@ -482,6 +494,7 @@ public class StringAnalysis {
     // get levensthein index out of matrix
     return matrix[matrix.length - 1][matrix[matrix.length - 1].length - 1];
   }
+
 
   /**
    * calculates Levensthein Matrix of first and second using calculateLevenshteinMatrix(first,
@@ -496,6 +509,7 @@ public class StringAnalysis {
     int[][] matrix = calculateLevenshteinMatrix(first, second);
     return getLevenshteinIndex(matrix);
   }
+
 
   /**
    * same as find Best Match but faster
@@ -624,10 +638,12 @@ public class StringAnalysis {
     // System.out.println(toAlign.getOffset() + " = OFFSET");
   }
 
+
   public static void trimVector(AnalysedSequence toAlign, Gene gene) {
     toAlign.setReferencedGene(gene);
     trimVector(toAlign);
   }
+
 
   /**
    * cuts out the Vector off and writes it into the Left vector of the given sequence Also sets
@@ -670,6 +686,7 @@ public class StringAnalysis {
 
     toAlign.setSequence(newSequence);
   }
+
 
   /**
    * calculates the offset and writes it into the sequence WARNING: does change Offset value!

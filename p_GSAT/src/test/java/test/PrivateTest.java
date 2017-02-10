@@ -3,8 +3,6 @@ package test;
 import java.io.IOException;
 
 import org.junit.BeforeClass;
-import org.junit.Ignore;
-import org.junit.Test;
 
 import analysis.AnalysedSequence;
 import analysis.Gene;
@@ -47,11 +45,15 @@ public class PrivateTest {
    */
   private static int userNr = 4;
 
+
+
   @BeforeClass
   public static void setup() {
     pathToUse = paths[userNr];
     System.out.println("Start");
   }
+
+
 
   // Name of the file
   private String fileName = "93GH02_A01.ab1";
@@ -97,6 +99,8 @@ public class PrivateTest {
           + "ctccgtcatcagcatgccatcgtgggaccgcttcgaagcgcagccaaaatcgtaccgcgatgaagtgcttccgccggccgtgacgaagcggctcgccattgaaatgggcgcgt"
           + "cgctcggttgggagcgctacgtcggcgccgagggcgacattttggccatcgaccgattcggtgcttccgctccgggagagaaaatcatggccgagtatggctttacggttgac"
           + "aacgtcgtccgccgcacaaaagcgctgctcggcaagtaa";
+
+
 
   /**
    * 

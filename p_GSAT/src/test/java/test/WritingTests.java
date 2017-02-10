@@ -37,7 +37,7 @@ public class WritingTests {
   /**
    * The relative path used for this testing scenario.
    */
-  private static String path = "resources" +File.separator +"writingtests/";
+  private static String path = "resources" + File.separator + "writingtests/";
 
   /**
    * The second sequence for testing the conversion method.
@@ -63,6 +63,7 @@ public class WritingTests {
    */
   static AnalysedSequence seq1 =
       new AnalysedSequence("ATCG", "Klaus Bohne", "sequence1.ab1", new int[] {1, 3});
+
 
 
   /**
@@ -100,12 +101,14 @@ public class WritingTests {
 
   }
 
+
   @AfterClass
   public static void rightNewFile() throws IOException {
-	  File newFile = new File(path + "test.txt");
-	  newFile.createNewFile(); 
+    File newFile = new File(path + "test.txt");
+    newFile.createNewFile();
   }
-  
+
+
   /**
    * This method resets the state of the DatabaseConnection before a new test starts to get equal
    * test circumstances.
@@ -127,6 +130,7 @@ public class WritingTests {
       }
     }
   }
+
 
   /**
    * This test checks whether an AnalyzesSequence is correctly transformed into DatabaseEntries and
@@ -150,8 +154,8 @@ public class WritingTests {
     FileSaver.storeResultsLocally("convertAndStoreTest", seq4);
 
     // Code for reading the file in again
-    BufferedReader reader =
-        new BufferedReader(new FileReader("resources/writingtests/gsat_results_convertAndStoreTest.csv"));
+    BufferedReader reader = new BufferedReader(
+        new FileReader("resources/writingtests/gsat_results_convertAndStoreTest.csv"));
 
     LinkedList<String> results = new LinkedList<String>();
     reader.lines().skip(1).forEach(line -> results.add(line));
@@ -162,7 +166,9 @@ public class WritingTests {
     DateFormat df = new SimpleDateFormat("dd/MM/yy");
     String addingDate = df.format(new Date());
 
-    String[] correctResults = new String[] {"1; sequence3.ab1; FSA; null; AAA7CAA, -1H5 (TCT); Nothing to say; Kurt Bohne; " + addingDate + "; 63; 0; ATC; null; null;  ; none; AAA7CAA, -1H5; false"};
+    String[] correctResults = new String[] {
+        "1; sequence3.ab1; FSA; null; AAA7CAA, -1H5 (TCT); Nothing to say; Kurt Bohne; "
+            + addingDate + "; 63; 0; ATC; null; null;  ; none; AAA7CAA, -1H5; false"};
 
     for (int i = 0; i < correctResults.length; i++) {
       String[] correctInfo = correctResults[i].split(";");
@@ -175,6 +181,7 @@ public class WritingTests {
     assertTrue(results.size() == 1);
 
   }
+
 
   /**
    * This tests checks the conversion from a AnalyzedSequence into a DatabaseEntry is working
@@ -195,6 +202,7 @@ public class WritingTests {
     assertTrue(entries.size() == 0);
 
   }
+
 
   /**
    * This tests checks if the conversion from a AnalyzedSequence into a DatabaseEntry is working
@@ -239,6 +247,7 @@ public class WritingTests {
     assertTrue(entries.size() == 3);
   }
 
+
   /**
    * This tests checks the conversion from a AnalyzedSequence into a DatabaseEntry is working
    * correctly with just one entry.
@@ -277,6 +286,7 @@ public class WritingTests {
 
   }
 
+
   /**
    * 
    * This test checks if a MissingPathException is thrown if the writing path is missing.
@@ -288,10 +298,11 @@ public class WritingTests {
    * @see MissingPathException
    * 
    * @author Ben Kohr
-   * @throws UndefinedTypeOfMutationException 
+   * @throws UndefinedTypeOfMutationException
    */
   @Test(expected = MissingPathException.class)
-  public void testStoreAllLocallyMissingPath() throws MissingPathException, IOException, UndefinedTypeOfMutationException {
+  public void testStoreAllLocallyMissingPath()
+      throws MissingPathException, IOException, UndefinedTypeOfMutationException {
 
     // Setting the path to null
     FileSaver.setLocalPath(null);
@@ -305,6 +316,7 @@ public class WritingTests {
 
   }
 
+
   /**
    * 
    * This test checks if there is no problem with the writing even if there are no database entries
@@ -316,10 +328,11 @@ public class WritingTests {
    * @see FileSaver#storeAllLocally(String)
    * 
    * @author Ben Kohr
-   * @throws UndefinedTypeOfMutationException 
+   * @throws UndefinedTypeOfMutationException
    */
   @Test
-  public void testStoreAllLocallyNoEntries() throws MissingPathException, IOException, UndefinedTypeOfMutationException {
+  public void testStoreAllLocallyNoEntries()
+      throws MissingPathException, IOException, UndefinedTypeOfMutationException {
 
     FileSaver.setLocalPath(path);
 
@@ -337,6 +350,7 @@ public class WritingTests {
     reader.close();
   }
 
+
   /**
    * This test checks if the writing of local files is done correctly. (User Story 006, typical
    * scenario 1)
@@ -347,11 +361,11 @@ public class WritingTests {
    * @see FileSaver#storeAllLocally(String)
    * 
    * @author Ben Kohr
-   * @throws UndefinedTypeOfMutationException 
+   * @throws UndefinedTypeOfMutationException
    */
   @Test
-  public void testStoreAllLocallyNormal() throws MissingPathException, IOException, UndefinedTypeOfMutationException {
-
+  public void testStoreAllLocallyNormal()
+      throws MissingPathException, IOException, UndefinedTypeOfMutationException {
 
     FileSaver.setLocalPath(path);
 
@@ -369,8 +383,9 @@ public class WritingTests {
     String addingDate = df.format(new Date());
 
     // Check whether the input is correct
-    String[] correctResults = new String[] {"1; sequence1.ab1; FSA; bacteria; A131E (ACC), G7K (ATC), +2H5 (AAC); No comments; Klaus Bohne; "+ addingDate + "; 63; 0; ATCG; A; B;  ; none; A131E, G7K, +2H5; false"
-    };
+    String[] correctResults = new String[] {
+        "1; sequence1.ab1; FSA; bacteria; A131E (ACC), G7K (ATC), +2H5 (AAC); No comments; Klaus Bohne; "
+            + addingDate + "; 63; 0; ATCG; A; B;  ; none; A131E, G7K, +2H5; false"};
     for (int i = 0; i < correctResults.length; i++) {
       assertEquals(correctResults[i], results.get(i));
     }
@@ -381,9 +396,9 @@ public class WritingTests {
   }
 
 
-
   @Test
-  public void testStoreLocallyAsOneFile1() throws MissingPathException, IOException, UndefinedTypeOfMutationException {
+  public void testStoreLocallyAsOneFile1()
+      throws MissingPathException, IOException, UndefinedTypeOfMutationException {
     FileSaver.setSeparateFiles(false);
     FileSaver.setLocalPath(path);
 
@@ -394,7 +409,8 @@ public class WritingTests {
     FileSaver.storeResultsLocally("separate2", seq3);
 
     // Test the resulting file
-    BufferedReader reader = new BufferedReader(new FileReader("resources/writingtests/gsat_results.csv"));
+    BufferedReader reader =
+        new BufferedReader(new FileReader("resources/writingtests/gsat_results.csv"));
 
     LinkedList<String> results = new LinkedList<String>();
     reader.lines().skip(1).forEach(line -> results.add(line));
@@ -403,9 +419,11 @@ public class WritingTests {
     DateFormat df = new SimpleDateFormat("dd/MM/yy");
     String addingDate = df.format(new Date());
 
-    String[] correctResults = new String[] {"1; sequence2.ab1; FSA; null; reading frame error; No comments; Klaus Bohne; " + addingDate + "; 63; 0; ATCTTTG; null; null;  ; none; reading frame error; false",
-        "2; sequence3.ab1; FSA; null; ; ; Klaus Hafer; " + addingDate + "; 63; 0; ATCTTGCGTTG; null; null;  ; none; ; false"
-        };
+    String[] correctResults = new String[] {
+        "1; sequence2.ab1; FSA; null; reading frame error; No comments; Klaus Bohne; " + addingDate
+            + "; 63; 0; ATCTTTG; null; null;  ; none; reading frame error; false",
+        "2; sequence3.ab1; FSA; null; ; ; Klaus Hafer; " + addingDate
+            + "; 63; 0; ATCTTGCGTTG; null; null;  ; none; ; false"};
 
     for (int i = 0; i < correctResults.length; i++) {
       assertEquals(correctResults[i], results.get(i));
@@ -427,9 +445,9 @@ public class WritingTests {
     FileSaver.storeResultsLocally("a", seq1);
     FileSaver.storeResultsLocally("b", seq2);
 
-
     // Code for reading the file in again
-    BufferedReader reader = new BufferedReader(new FileReader("resources/writingtests/gsat_results.csv"));
+    BufferedReader reader =
+        new BufferedReader(new FileReader("resources/writingtests/gsat_results.csv"));
 
     LinkedList<String> results = new LinkedList<String>();
     reader.lines().skip(1).forEach(line -> results.add(line));
@@ -441,17 +459,18 @@ public class WritingTests {
     String addingDate = df.format(new Date());
 
     String[] correctResults = new String[] {
-        "1; sequence1.ab1; FSA; bacteria; A131E (ACC), G7K (ATC), +2H5 (AAC); No comments; Klaus Bohne; " + addingDate + "; 63; 0; ATCG; A; B;  ; none; A131E, G7K, +2H5; false",
-        "2; sequence2.ab1; FSA; null; reading frame error; No comments; Klaus Bohne; " + addingDate + "; 63; 0; ATCTTTG; null; null;  ; none; reading frame error; false"};
+        "1; sequence1.ab1; FSA; bacteria; A131E (ACC), G7K (ATC), +2H5 (AAC); No comments; Klaus Bohne; "
+            + addingDate + "; 63; 0; ATCG; A; B;  ; none; A131E, G7K, +2H5; false",
+        "2; sequence2.ab1; FSA; null; reading frame error; No comments; Klaus Bohne; " + addingDate
+            + "; 63; 0; ATCTTTG; null; null;  ; none; reading frame error; false"};
 
     for (int i = 0; i < correctResults.length; i++) {
-        assertEquals(correctResults[i], results.get(i));
+      assertEquals(correctResults[i], results.get(i));
     }
 
     assertTrue(results.size() == 2);
 
   }
-
 
 
   @Test
@@ -464,7 +483,8 @@ public class WritingTests {
     FileSaver.storeResultsLocally("", seq3);
 
     // Code for reading the file in again
-    BufferedReader reader = new BufferedReader(new FileReader("resources/writingtests/gsat_results.csv"));
+    BufferedReader reader =
+        new BufferedReader(new FileReader("resources/writingtests/gsat_results.csv"));
 
     LinkedList<String> results = new LinkedList<String>();
     reader.lines().skip(1).forEach(line -> results.add(line));
@@ -477,7 +497,8 @@ public class WritingTests {
 
 
   @Test
-  public void testStoreLocallyAsSeparateFiles1() throws MissingPathException, IOException, UndefinedTypeOfMutationException {
+  public void testStoreLocallyAsSeparateFiles1()
+      throws MissingPathException, IOException, UndefinedTypeOfMutationException {
     FileSaver.setSeparateFiles(true);
     FileSaver.setLocalPath(path);
 
@@ -498,7 +519,9 @@ public class WritingTests {
     DateFormat df = new SimpleDateFormat("dd/MM/yy");
     String addingDate = df.format(new Date());
 
-    String[] correctResults = new String[] {"1; sequence2.ab1; FSA; null; reading frame error; No comments; Klaus Bohne; " + addingDate + "; 63; 0; ATCTTTG; null; null;  ; none; reading frame error; false"};
+    String[] correctResults =
+        new String[] {"1; sequence2.ab1; FSA; null; reading frame error; No comments; Klaus Bohne; "
+            + addingDate + "; 63; 0; ATCTTTG; null; null;  ; none; reading frame error; false"};
 
     for (int i = 0; i < correctResults.length; i++) {
       assertEquals(correctResults[i], results.get(i));
@@ -507,13 +530,15 @@ public class WritingTests {
     assertTrue(results.size() == 1);
 
     // Test the second file
-    reader = new BufferedReader(new FileReader("resources/writingtests/gsat_results_separate2.csv"));
+    reader =
+        new BufferedReader(new FileReader("resources/writingtests/gsat_results_separate2.csv"));
 
     LinkedList<String> results2 = new LinkedList<String>();
     reader.lines().skip(1).forEach(line -> results2.add(line));
     reader.close();
 
-    correctResults = new String[] {"1; sequence3.ab1; FSA; null; ; ; Klaus Hafer; "+ addingDate +"; 63; 0; ATCTTGCGTTG; null; null;  ; none; ; false"};
+    correctResults = new String[] {"1; sequence3.ab1; FSA; null; ; ; Klaus Hafer; " + addingDate
+        + "; 63; 0; ATCTTGCGTTG; null; null;  ; none; ; false"};
     for (int i = 0; i < correctResults.length; i++) {
       assertEquals(correctResults[i], results2.get(i));
     }
@@ -525,7 +550,8 @@ public class WritingTests {
 
 
   @Test
-  public void testStoreOneFileWithSetFileName() throws MissingPathException, IOException, UndefinedTypeOfMutationException {
+  public void testStoreOneFileWithSetFileName()
+      throws MissingPathException, IOException, UndefinedTypeOfMutationException {
 
     FileSaver.setSeparateFiles(false);
     FileSaver.setLocalPath(path);
@@ -533,7 +559,8 @@ public class WritingTests {
     FileSaver.storeResultsLocally("A73817", seq1);
 
     // Code for reading the file in again
-    BufferedReader reader = new BufferedReader(new FileReader("resources/writingtests/testname.csv"));
+    BufferedReader reader =
+        new BufferedReader(new FileReader("resources/writingtests/testname.csv"));
 
     LinkedList<String> results = new LinkedList<String>();
     reader.lines().skip(1).forEach(line -> results.add(line));
@@ -543,7 +570,9 @@ public class WritingTests {
     String addingDate = df.format(new Date());
 
     // Check whether the input is correct
-    String[] correctResults = new String[] {"1; sequence1.ab1; FSA; bacteria; A131E (ACC), G7K (ATC), +2H5 (AAC); No comments; Klaus Bohne; "+ addingDate + "; 63; 0; ATCG; A; B;  ; none; A131E, G7K, +2H5; false"};
+    String[] correctResults = new String[] {
+        "1; sequence1.ab1; FSA; bacteria; A131E (ACC), G7K (ATC), +2H5 (AAC); No comments; Klaus Bohne; "
+            + addingDate + "; 63; 0; ATCG; A; B;  ; none; A131E, G7K, +2H5; false"};
 
     for (int i = 0; i < correctResults.length; i++) {
       assertEquals(correctResults[i], results.get(i));
@@ -551,8 +580,10 @@ public class WritingTests {
 
   }
 
+
   @Test
-  public void testStoreSeparateFilesWithSetFileName() throws MissingPathException, IOException, UndefinedTypeOfMutationException {
+  public void testStoreSeparateFilesWithSetFileName()
+      throws MissingPathException, IOException, UndefinedTypeOfMutationException {
 
     FileSaver.setSeparateFiles(true);
     FileSaver.setLocalPath(path);
@@ -562,7 +593,8 @@ public class WritingTests {
     FileSaver.storeResultsLocally("NEXT", seq1);
 
     // Code for reading the file in again
-    BufferedReader reader = new BufferedReader(new FileReader("resources/writingtests/testname_A73817.csv"));
+    BufferedReader reader =
+        new BufferedReader(new FileReader("resources/writingtests/testname_A73817.csv"));
     LinkedList<String> results1 = new LinkedList<String>();
     reader.lines().skip(1).forEach(line -> results1.add(line));
     reader.close();
@@ -581,7 +613,9 @@ public class WritingTests {
     String addingDate = df.format(new Date());
 
     // Check whether the input is correct
-    String[] correctResults = new String[] {"1; sequence1.ab1; FSA; bacteria; A131E (ACC), G7K (ATC), +2H5 (AAC); No comments; Klaus Bohne; "+ addingDate + "; 63; 0; ATCG; A; B;  ; none; A131E, G7K, +2H5; false"};
+    String[] correctResults = new String[] {
+        "1; sequence1.ab1; FSA; bacteria; A131E (ACC), G7K (ATC), +2H5 (AAC); No comments; Klaus Bohne; "
+            + addingDate + "; 63; 0; ATCG; A; B;  ; none; A131E, G7K, +2H5; false"};
 
     for (int i = 0; i < correctResults.length; i++) {
       assertEquals(correctResults[i], results1.get(i));
@@ -590,6 +624,5 @@ public class WritingTests {
     }
 
   }
-
 
 }

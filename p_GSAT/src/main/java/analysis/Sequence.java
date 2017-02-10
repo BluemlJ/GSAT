@@ -19,18 +19,17 @@ public abstract class Sequence {
    */
   protected String addingDate;
 
-
   /**
    * The researcher who added this sequence.
    */
   protected String researcher;
-
 
   /**
    * The sequence of nucleotides, encoded as a String. It consists of the letters A, C, T, G for the
    * four possible nucleotides adenine, cytosine, thymine and guanine.
    */
   protected String sequence;
+
 
 
   /**
@@ -77,6 +76,7 @@ public abstract class Sequence {
     return this.getComplementarySequence(this.getSequence());
   }
 
+
   /**
    * Returns the complementary version of this object's nucleotide sequence, i.e. all A nucleotides
    * in the original sequence are replaced with T nucleotides (and vice versa) and all C nucleotides
@@ -121,16 +121,12 @@ public abstract class Sequence {
   }
 
 
-
   public String getResearcher() {
     return researcher;
   }
 
 
-
   // GETTERs and SETTERs:
-
-
 
   /**
    * Returns the reversed version of this object's nucleotide sequence, i.e. the nucleotide sequence
@@ -155,10 +151,10 @@ public abstract class Sequence {
   }
 
 
-
   public void setAddingDate(String addingDate) {
     this.addingDate = addingDate;
   }
+
 
   public void setResearcher(String researcher) {
     this.researcher = researcher;
@@ -190,6 +186,5 @@ public abstract class Sequence {
   public String toString() {
     return sequence;
   }
-
 
 }

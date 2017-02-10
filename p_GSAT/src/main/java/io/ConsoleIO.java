@@ -42,6 +42,7 @@ public class ConsoleIO {
     }
   }
 
+
   /**
    * outputs a Char Matrix (char[][]) to Console and Formating it for better readability
    * 
@@ -56,6 +57,7 @@ public class ConsoleIO {
     }
   }
 
+
   /**
    * outputs a Integer Matrix (int[][]) to Console and Formating it for better readability
    * 
@@ -69,6 +71,7 @@ public class ConsoleIO {
       System.out.println();
     }
   }
+
 
   /**
    * Asks the User to type in a Number (Integer) and returns it as int
@@ -99,6 +102,7 @@ public class ConsoleIO {
     }
     return intput;
   }
+
 
   /**
    * Asks the User to type in a Number in range from min to max (Integer) and returns it as int
@@ -147,6 +151,7 @@ public class ConsoleIO {
     }
     return intput;
   }
+
 
   /**
    * Asks the User to Type text into console and returns the text as String.

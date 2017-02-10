@@ -13,7 +13,6 @@ public class Gene extends Sequence {
    */
   private int id;
 
-
   /**
    * Name of the gene (e.g. FSA).
    */
@@ -22,6 +21,7 @@ public class Gene extends Sequence {
   private String organism;
 
   private String comment;
+
 
 
   /**
@@ -39,6 +39,7 @@ public class Gene extends Sequence {
     this.name = name;
     this.id = id;
   }
+
 
   /**
    * Constructor setting all given attributes (by calling the super constructor).
@@ -62,12 +63,12 @@ public class Gene extends Sequence {
   }
 
 
-
   // GETTERs and SETTERs:
 
   public int getId() {
     return id;
   }
+
 
   public String getName() {
     return name;
@@ -78,21 +79,26 @@ public class Gene extends Sequence {
     this.id = id;
   }
 
+
   public void setName(String name) {
     this.name = name;
   }
+
 
   public String getOrganism() {
     return organism;
   }
 
+
   public String getComment() {
     return comment;
   }
 
+
   public void setOrganism(String organism) {
     this.organism = organism;
   }
+
 
   public void setComment(String comment) {
     this.comment = comment;

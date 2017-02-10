@@ -14,7 +14,6 @@ import analysis.StringAnalysis;
 import exceptions.ConfigNotFoundException;
 import exceptions.ConfigReadException;
 import exceptions.CorruptedSequenceException;
-import exceptions.DissimilarGeneException;
 import exceptions.DuplicateGeneException;
 import exceptions.FileReadingException;
 import exceptions.MissingPathException;
@@ -28,6 +27,8 @@ import io.SequenceReader;
 public class ConsoleVersion {
 
   private static boolean geneRecognition = false;
+
+
 
   /**
    * Creates, prints and stores a report of the reading of the files.
@@ -144,6 +145,7 @@ public class ConsoleVersion {
     closeProgram();
   }
 
+
   /**
    * adds a database entry for a sequence
    * 
@@ -169,6 +171,7 @@ public class ConsoleVersion {
     }
 
   }
+
 
   /**
    * Asks the User for the path to the AB1 files and returns a list of the found files Also checks
@@ -205,7 +208,6 @@ public class ConsoleVersion {
   }
 
 
-
   /**
    * Asks user for a comment and sets the comment field of the referenced analysedSequence
    * 
@@ -222,7 +224,6 @@ public class ConsoleVersion {
       e1.printStackTrace();
     }
   }
-
 
 
   /**
@@ -258,6 +259,7 @@ public class ConsoleVersion {
 
     return new Gene(strGene, 0, strGeneName, "");
   }
+
 
   /**
    * asks user for destination path and sets the value in DatanbaseConnection
@@ -328,6 +330,7 @@ public class ConsoleVersion {
     return report;
   }
 
+
   /**
    * Calls all necessary functions to process Mutations of a sequence
    * 
@@ -347,6 +350,7 @@ public class ConsoleVersion {
       e.printStackTrace();
     }
   }
+
 
   /**
    * asks user for destination path and sets the value in DatanbaseConnection
@@ -372,6 +376,7 @@ public class ConsoleVersion {
     return null;
   }
 
+
   /**
    * runs the complete analysis pipeline for a single sequence and adds a database entry for the
    * sequence
@@ -386,13 +391,13 @@ public class ConsoleVersion {
     // read sequence from file
     activeSequence = readSequenceFromFile(file);
 
-
     if (geneRecognition) {
       gene = StringAnalysis.findRightGene(activeSequence, GeneHandler.getGeneList());
     }
     activeSequence.setReferencedGene(gene);
 
-    // checks if reversed or comeplenetary Sequence is better then the active Sequence
+    // checks if reversed or comeplenetary Sequence is better then the
+    // active Sequence
     try {
       StringAnalysis.checkComplementAndReverse(activeSequence);
     } catch (CorruptedSequenceException e) {
@@ -424,6 +429,7 @@ public class ConsoleVersion {
     // add entry to database
     addLocalEntry(activeSequence, file, destinationPath);
   }
+
 
   /**
    * reads genes from file and returns the correct gene genes must be in a txt file named genes.txt
@@ -481,6 +487,7 @@ public class ConsoleVersion {
     }
   }
 
+
   /**
    * Reads the Sequence of the given File and prints Errors if necessary
    * 
@@ -499,7 +506,5 @@ public class ConsoleVersion {
     }
     return null;
   }
-
-
 
 }

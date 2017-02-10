@@ -29,7 +29,6 @@ public class DatabaseConnection {
    */
   static MysqlDataSource dataSource;
 
-
   /**
    * Mysql user name
    */
@@ -56,6 +55,8 @@ public class DatabaseConnection {
    */
   private static LinkedList<DatabaseEntry> queue = new LinkedList<DatabaseEntry>();
 
+
+
   private static void initDatabase() {
     dataSource = new MysqlDataSource();
     dataSource.setUser(user);
@@ -63,6 +64,7 @@ public class DatabaseConnection {
     dataSource.setPort(port);
     dataSource.setServerName(server);
   }
+
 
   /**
    * Puts all entries from a given list into this class's waiting queue.
@@ -159,7 +161,6 @@ public class DatabaseConnection {
   }
 
 
-
   /**
    * Retrieves all genes from the database and returns them.
    * 
@@ -198,13 +199,13 @@ public class DatabaseConnection {
   }
 
 
-
   private static Connection establishConnection() throws DatabaseConnectionException {
 
     Connection conn;
 
     try {
-      // conn = DriverManager.getConnection(CONNECTION_STRING, "testname", "password");
+      // conn = DriverManager.getConnection(CONNECTION_STRING, "testname",
+      // "password");
       conn = dataSource.getConnection();
     } catch (SQLException e) {
       throw new DatabaseConnectionException();
@@ -213,7 +214,6 @@ public class DatabaseConnection {
     return conn;
 
   }
-
 
 
   /**
@@ -233,9 +233,8 @@ public class DatabaseConnection {
       throw new DatabaseErrorException();
     }
 
-
-
   }
+
 
   /**
    * Creates gsat database structure consisting of four tables: genes, sequences, mutations,
@@ -263,13 +262,11 @@ public class DatabaseConnection {
           "CREATE TABLE researchers (id INTEGER unsigned NOT NULL AUTO_INCREMENT, name VARCHAR(100) NOT NULL, PRIMARY KEY(id))");
       stmt.close();
 
-
     } catch (DatabaseConnectionException e) {
       e.printStackTrace();
     } catch (SQLException e) {
       e.printStackTrace();
     }
-
 
   }
 
@@ -318,6 +315,7 @@ public class DatabaseConnection {
     return false;
   }
 
+
   /**
    * sets the values of the mysql database to be used and initializes the database
    * 
@@ -340,6 +338,7 @@ public class DatabaseConnection {
       createDatabase();
     }
   }
+
 
   public void resetDatabaseConnection() {
     flushQueue();

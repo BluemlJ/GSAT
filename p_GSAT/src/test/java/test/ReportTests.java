@@ -21,11 +21,12 @@ import core.Main;
  */
 public class ReportTests {
 
-
   private static LinkedList<File> files1 = new LinkedList<File>();
   private static LinkedList<File> files2 = new LinkedList<File>();
   private static LinkedList<File> oddFiles1 = new LinkedList<File>();
   private static LinkedList<File> oddFiles2 = new LinkedList<File>();
+
+
 
   @BeforeClass
   public static void setupSequences() {
@@ -45,6 +46,7 @@ public class ReportTests {
     files2.add(new File("anotherSeq2.abi"));
 
   }
+
 
   /**
    * This test checks that no error occures when there are neither valid nor invalid files passed to
@@ -122,7 +124,6 @@ public class ReportTests {
   }
 
 
-
   /**
    * This test checks if a report on the reading process is correctly created and stored. This time,
    * there are less files passed to the reporting method. (User Story 019, typical behavior 2)
@@ -161,6 +162,5 @@ public class ReportTests {
 
     assertEquals(expectedString, builder.toString());
   }
-
 
 }

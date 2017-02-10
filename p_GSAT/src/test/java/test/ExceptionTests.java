@@ -26,12 +26,12 @@ import exceptions.UndefinedTypeOfMutationException;
  */
 public class ExceptionTests {
 
-
   /**
    * An AnalyzedSequence object for test purposes.
    */
   static AnalysedSequence seq1 =
       new AnalysedSequence("ATRGATCG", "Kurt Hafer", "sequence1.ab1", null);
+
 
 
   /**
@@ -59,14 +59,14 @@ public class ExceptionTests {
       assertEquals(7, e.index);
       assertEquals('L', e.problem);
 
-      // Only a String is given. Therefore, no Sequence should be found in the exception
+      // Only a String is given. Therefore, no Sequence should be found in
+      // the exception
       assertNull(e.sequence);
       assertEquals("ATUCGGCL", e.nucleotides);
 
     }
 
   }
-
 
 
   /**
@@ -93,6 +93,7 @@ public class ExceptionTests {
     }
 
   }
+
 
   /**
    * This test checks if the exception that is thrown if the database connection could not be set up
@@ -154,7 +155,6 @@ public class ExceptionTests {
     AnalysedSequence toAnalyse =
         new AnalysedSequence("TCTCTAGAGC", "Klaus Hafer", "sequence.ab1", null);
     Gene bestGene = new Gene("AATC", 1, "nicht FSA", "Karl Mueller");
-
 
     try {
       throw new DissimilarGeneException(toAnalyse, bestGene, 20.3);
@@ -274,7 +274,5 @@ public class ExceptionTests {
 
     }
   }
-
-
 
 }

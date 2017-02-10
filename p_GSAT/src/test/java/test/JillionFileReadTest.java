@@ -23,6 +23,7 @@ public class JillionFileReadTest {
     assertTrue(testFile.exists());
   }
 
+
   /**
    * This test confirms the jillion framework is accessible by calling a static method from the
    * framework
@@ -31,6 +32,7 @@ public class JillionFileReadTest {
   public void testJillionAccessibility() {
     assertEquals(PrimerUtil.M13_FORWARD_PRIMER.toString(), "TGTAAAACGACGGCCAGT");
   }
+
 
   /**
    * This test checks if a sample .abi file is readable using jillion

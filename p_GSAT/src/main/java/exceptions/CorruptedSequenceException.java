@@ -16,24 +16,20 @@ public class CorruptedSequenceException extends Exception {
    */
   private static final long serialVersionUID = 7566055268314321589L;
 
-
   /**
    * The index of the observed wrong character
    */
   public int index;
-
 
   /**
    * The nucleotide list.
    */
   public String nucleotides;
 
-
   /**
    * The problematic character.
    */
   public char problem;
-
 
   /**
    * If available, the corrupt sequence is referenced. If only a nucleotide String is given, this
@@ -54,7 +50,6 @@ public class CorruptedSequenceException extends Exception {
     super(
         "Problem in observed AnalyzedSequence: The Sequence has corrupted nucleptides, which means there are not 'A','C','G','T' or 'U'.");
   }
-
 
 
   /**

@@ -19,341 +19,350 @@ import exceptions.DuplicateGeneException;
  *
  */
 public class GeneHandler {
-	private static ArrayList<Gene> geneList;
-	private static String path = System.getProperty("user.home") + File.separator + "gsat" + File.separator
-			+ "genes.txt";
-	private final static String SEPARATOR = ";";
+  private static ArrayList<Gene> geneList;
+  private static String path =
+      System.getProperty("user.home") + File.separator + "gsat" + File.separator + "genes.txt";
+  private final static String SEPARATOR = ";";
 
-	public static void addGene(String geneName, String geneSequence) throws DuplicateGeneException, IOException {
-		addGene(path, geneName, geneSequence);
-	}
 
-	/**
-	 * add a new gene to genes.txt
-	 * 
-	 * @param genePath
-	 *            path of the genes.txt file
-	 * @param geneName
-	 *            name of the gene
-	 * @param geneSequence
-	 *            sequence string of the gene
-	 * @throws DuplicateGeneException
-	 *             gene name already exists
-	 * @throws IOException
-	 *             error while writing the file
-	 */
-	public static void addGene(String genePath, String geneName, String geneSequence)
-			throws DuplicateGeneException, IOException {
 
-		path = genePath;
+  public static void addGene(String geneName, String geneSequence)
+      throws DuplicateGeneException, IOException {
+    addGene(path, geneName, geneSequence);
+  }
 
-		readGenes();
 
-		// check if the new gene already exists
-		if (GeneHandler.containsGene(geneName)) {
-			throw new DuplicateGeneException(geneName);
-		}
+  /**
+   * add a new gene to genes.txt
+   * 
+   * @param genePath path of the genes.txt file
+   * @param geneName name of the gene
+   * @param geneSequence sequence string of the gene
+   * @throws DuplicateGeneException gene name already exists
+   * @throws IOException error while writing the file
+   */
+  public static void addGene(String genePath, String geneName, String geneSequence)
+      throws DuplicateGeneException, IOException {
 
-		geneList.add(new Gene(geneSequence, 0, geneName, ConfigHandler.getResearcher()));
+    path = genePath;
 
-		writeGenes(genePath);
-	}
+    readGenes();
 
-	/**
-	 * add a new gene to genes.txt
-	 * 
-	 * @param genePath
-	 *            path of the genes.txt file
-	 * @param geneName
-	 *            name of the gene
-	 * @param geneSequence
-	 *            sequence string of the gene
-	 * @param organism
-	 *            more informations about the gene sequence
-	 * @param comment
-	 *            specific comment to this gene sequence
-	 * @throws DuplicateGeneException
-	 *             gene name already exists
-	 * @throws IOException
-	 *             error while writing the file
-	 */
-	public static boolean addGene(String geneName, String geneSequence, String organism, String comment)
-			throws DuplicateGeneException, IOException {
+    // check if the new gene already exists
+    if (GeneHandler.containsGene(geneName)) {
+      throw new DuplicateGeneException(geneName);
+    }
 
-		readGenes();
+    geneList.add(new Gene(geneSequence, 0, geneName, ConfigHandler.getResearcher()));
 
-		if (getGene(geneName, organism) != null) {
-			return false;
-		}
-		
-		geneList.add(new Gene(geneSequence, 0, geneName, ConfigHandler.getResearcher(), organism, comment));
-		
-		writeGenes();
-		return true;
-	}
+    writeGenes(genePath);
+  }
 
-	public static void deleteGene(String newpath, String geneName) throws IOException {
 
-		for (int i = 0; i < geneList.size(); i++) {
-			if (geneList.get(i).getName().equals(geneName)) {
-				geneList.remove(i);
-			}
-		}
-		writeGenes(newpath);
-	}
+  /**
+   * add a new gene to genes.txt
+   * 
+   * @param genePath path of the genes.txt file
+   * @param geneName name of the gene
+   * @param geneSequence sequence string of the gene
+   * @param organism more informations about the gene sequence
+   * @param comment specific comment to this gene sequence
+   * @throws DuplicateGeneException gene name already exists
+   * @throws IOException error while writing the file
+   */
+  public static boolean addGene(String geneName, String geneSequence, String organism,
+      String comment) throws DuplicateGeneException, IOException {
 
-	/**
-	 * clears gene.txt and writes all known genes.
-	 * 
-	 * @param genePath
-	 * @throws IOException
-	 */
-	public static void writeGenes(String genePath) throws IOException {
-		// clears all genes from file
-		BufferedWriter geneWriter = new BufferedWriter(new FileWriter(genePath));
-		// write all previously known genes
-		for (Gene gene : geneList) {
-			StringBuilder geneString = new StringBuilder();
-			geneString.append(gene.getName());
-			geneString.append(SEPARATOR);
-			geneString.append(gene.getSequence());
-			geneString.append(SEPARATOR);
-			if (gene.getOrganism() != null && !gene.getOrganism().equals("")) {
-				geneString.append(gene.getOrganism());
-			} else {
-				geneString.append("none");
-			}
-			geneString.append(SEPARATOR);
-			if (gene.getComment() != null && !gene.getComment().equals("")) {
-				geneString.append(gene.getComment());
-			} else {
-				geneString.append("none");
-			}
-			geneString.append(System.getProperty("line.separator"));
-			// old writing code
-			/*
-			 * geneWriter.write( gene.getName() + SEPARATOR + gene.getSequence()
-			 * + SEPARATOR + gene.getOrganism()); } else {
-			 * geneWriter.write(gene.getName() + SEPARATOR + gene.getSequence()
-			 * + SEPARATOR + "none"); }
-			 * geneWriter.write(System.getProperty("line.separator"));
-			 */
-			geneWriter.write(geneString.toString());
-		}
+    readGenes();
 
-		geneWriter.close();
-		readGenes(genePath);
-	}
+    if (getGene(geneName, organism) != null) {
+      return false;
+    }
 
-	/**
-	 * clears the txt file at a given path
-	 * 
-	 * @param path
-	 * @throws IOException
-	 */
-	public static void clearTxtFile(String path) throws IOException {
-		BufferedWriter writer = new BufferedWriter(new FileWriter(path));
-		writer.write("");
-		writer.close();
-	}
+    geneList
+        .add(new Gene(geneSequence, 0, geneName, ConfigHandler.getResearcher(), organism, comment));
 
-	/**
-	 * checks if a gene already exists
-	 * 
-	 * @param name
-	 * @return
-	 */
-	public static boolean containsGene(String name) {
-		for (int i = 0; i < geneList.size(); i++) {
-			if (geneList.get(i).getName().equals(name)) {
-				return true;
-			}
-		}
-		return false;
-	}
+    writeGenes();
+    return true;
+  }
 
-	/**
-	 * 
-	 * @param geneName
-	 * @return
-	 */
-	public static Gene getGene(String geneName) {
-		for (int i = 0; i < geneList.size(); i++) {
-			if (geneList.get(i).getName().equals(geneName)) {
-				return geneList.get(i);
-			}
-		}
-		return null;
-	}
 
-	/**
-	 * 
-	 * @param geneName
-	 * @return
-	 */
-	public static Gene getGene(String geneName, String organism) {
-		if (organism != null && organism != "none" && organism != "") {
-			for (int i = 0; i < geneList.size(); i++) {
-				if (geneList.get(i).getName().equals(geneName)) {
-					if (geneList.get(i).getOrganism().equals(organism))
-						return geneList.get(i);
-				}
-			}
-		} else
-			getGene(geneName);
-		return null;
-	}
+  public static void deleteGene(String newpath, String geneName) throws IOException {
 
-	public static Gene getGeneAt(int index) {
-		return geneList.get(index);
-	}
+    for (int i = 0; i < geneList.size(); i++) {
+      if (geneList.get(i).getName().equals(geneName)) {
+        geneList.remove(i);
+      }
+    }
+    writeGenes(newpath);
+  }
 
-	public static ArrayList<Gene> getGeneList() {
-		return geneList;
-	}
 
-	public static String[] getGeneNames() {
-		String[] names = new String[geneList.size()];
-		for (int i = 0; i < geneList.size(); i++) {
-			names[i] = geneList.get(i).getName();
-		}
+  /**
+   * clears gene.txt and writes all known genes.
+   * 
+   * @param genePath
+   * @throws IOException
+   */
+  public static void writeGenes(String genePath) throws IOException {
+    // clears all genes from file
+    BufferedWriter geneWriter = new BufferedWriter(new FileWriter(genePath));
+    // write all previously known genes
+    for (Gene gene : geneList) {
+      StringBuilder geneString = new StringBuilder();
+      geneString.append(gene.getName());
+      geneString.append(SEPARATOR);
+      geneString.append(gene.getSequence());
+      geneString.append(SEPARATOR);
+      if (gene.getOrganism() != null && !gene.getOrganism().equals("")) {
+        geneString.append(gene.getOrganism());
+      } else {
+        geneString.append("none");
+      }
+      geneString.append(SEPARATOR);
+      if (gene.getComment() != null && !gene.getComment().equals("")) {
+        geneString.append(gene.getComment());
+      } else {
+        geneString.append("none");
+      }
+      geneString.append(System.getProperty("line.separator"));
+      // old writing code
+      /*
+       * geneWriter.write( gene.getName() + SEPARATOR + gene.getSequence() + SEPARATOR +
+       * gene.getOrganism()); } else { geneWriter.write(gene.getName() + SEPARATOR +
+       * gene.getSequence() + SEPARATOR + "none"); }
+       * geneWriter.write(System.getProperty("line.separator"));
+       */
+      geneWriter.write(geneString.toString());
+    }
 
-		Arrays.sort(names);
-		return names;
-	}
+    geneWriter.close();
+    readGenes(genePath);
+  }
 
-	public static String[] getGeneNamesAndOrganisms() {
-		String[] names = new String[geneList.size()];
-		for (int i = 0; i < geneList.size(); i++) {
-			names[i] = geneList.get(i).getName();
-			if (geneList.get(i).getOrganism() != null && geneList.get(i).getOrganism() != "none")
-				names[i] = names[i] + " (" + geneList.get(i).getOrganism() + ")";
-		}
 
-		Arrays.sort(names);
-		return names;
+  /**
+   * clears the txt file at a given path
+   * 
+   * @param path
+   * @throws IOException
+   */
+  public static void clearTxtFile(String path) throws IOException {
+    BufferedWriter writer = new BufferedWriter(new FileWriter(path));
+    writer.write("");
+    writer.close();
+  }
 
-	}
 
-	public static int getNumGenes() {
-		return geneList.size();
-	}
+  /**
+   * checks if a gene already exists
+   * 
+   * @param name
+   * @return
+   */
+  public static boolean containsGene(String name) {
+    for (int i = 0; i < geneList.size(); i++) {
+      if (geneList.get(i).getName().equals(name)) {
+        return true;
+      }
+    }
+    return false;
+  }
 
-	/**
-	 * reads genes from gene file at the locally stored path
-	 * 
-	 * @throws IOException
-	 */
-	public static void readGenes() throws IOException {
-		readGenes(path);
-	}
 
-	/**
-	 * reads a gene.txt from a given path
-	 * 
-	 * @param genePath
-	 * @throws IOException
-	 */
-	public static void readGenes(String genePath) throws IOException {
+  /**
+   * 
+   * @param geneName
+   * @return
+   */
+  public static Gene getGene(String geneName) {
+    for (int i = 0; i < geneList.size(); i++) {
+      if (geneList.get(i).getName().equals(geneName)) {
+        return geneList.get(i);
+      }
+    }
+    return null;
+  }
 
-		// open genes.txt or initialize it
-		path = genePath;
-		initGenes();
 
-		// read all genes from the file
-		geneList = new ArrayList<Gene>();
-		BufferedReader geneReader = new BufferedReader(new FileReader(genePath));
-		String line;
-		int id = 0;
-		// for each line
-		while ((line = geneReader.readLine()) != null) {
-			// format "name=atgAAT..."
-			String sepLine[] = line.split(SEPARATOR);
-			String name = sepLine[0];
-			String gene = sepLine[1];
-			String organism = sepLine[2];
-			String comment = sepLine[3];
-			if (getGene(name, organism) == null) {
-				if (organism.equals("none") || organism.equals("")) {
-					organism = null;
-				}
-				if (comment.equals("none") || comment.equals("")) {
-					comment = null;
-				}
+  /**
+   * 
+   * @param geneName
+   * @return
+   */
+  public static Gene getGene(String geneName, String organism) {
+    if (organism != null && organism != "none" && organism != "") {
+      for (int i = 0; i < geneList.size(); i++) {
+        if (geneList.get(i).getName().equals(geneName)) {
+          if (geneList.get(i).getOrganism().equals(organism)) return geneList.get(i);
+        }
+      }
+    } else
+      getGene(geneName);
+    return null;
+  }
 
-			}
-			geneList.add(new Gene(gene, id, name, ConfigHandler.getResearcher(), organism, comment));
-			id++;
-		}
 
-		geneReader.close();
+  public static Gene getGeneAt(int index) {
+    return geneList.get(index);
+  }
 
-		/*
-		 * // check if there are no genes if (geneList.isEmpty()) { try {
-		 * addGene("FSA",
-		 * "ATGGAACTGTATCTGGATACTTCAGACGTTGTTGCGGTGAAGGCGCTGTCACGTATTTTTCCGCTGGCGGGTGTGACCACTAACCCAAGCATTATCGCCGCGGGTAAAAAACCGCTGGATGTTGTGCTTCCGCAACTTCATGAAGCGATGGGCGGTCAGGGGCGTCTGTTTGCCCAGGTAATGGCTACCACTGCCGAAGGGATGGTTAATGACGCGCTTAAGCTGCGTTCTATTATTGCGGATATCGTGGTGAAAGTTCCGGTGACCGCCGAGGGGCTGGCAGCTATTAAGATGTTAAAAGCGGAAGGGATTCCGACGCTGGGAACCGCGGTATATGGCGCAGCACAAGGGCTGCTGTCGGCGCTGGCAGGTGCGGAATATGTTGCGCCTTACGTTAATCGTATTGATGCTCAGGGCGGTAGCGGCATTCAGACTGTGACCGACTTACACCAGTTATTGAAAATGCATGCGCCGCAGGCGAAAGTGCTGGCAGCGAGTTTCAAAACCCCGCGTCAGGCGCTGGACTGCTTACTGGCAGGATGTGAATCAATTACTCTGCCACTGGATGTGGCACAACAGATGATTAGCTATCCGGCGGTTGATGCCGCTGTGGCGAAGTTTGAGCAGGACTGGCAGGGAGCGTTTGGCAGAACGTCGATTTAA"
-		 * ); } catch (DuplicateGeneException e) { // should never happen
-		 * e.printStackTrace(); } }
-		 */
 
-	}
+  public static ArrayList<Gene> getGeneList() {
+    return geneList;
+  }
 
-	/**
-	 * check if a genes.txt file exists at the given path
-	 * 
-	 * @return true if a gene.txt exists
-	 */
-	public static boolean exists() {
-		File config = new File(path);
-		return config.exists();
-	}
 
-	/**
-	 * create a new gene file in the user home directory in a folder named gsat
-	 * 
-	 * @throws IOException
-	 * 
-	 */
-	public static void initGenes() throws IOException {
-		if (!exists()) {
-			File geneFile = new File(path);
-			geneFile.getParentFile().mkdirs();
-			geneFile.createNewFile();
+  public static String[] getGeneNames() {
+    String[] names = new String[geneList.size()];
+    for (int i = 0; i < geneList.size(); i++) {
+      names[i] = geneList.get(i).getName();
+    }
 
-			BufferedWriter geneWriter = new BufferedWriter(new FileWriter(path));
-			geneWriter.write("FSA" + SEPARATOR
-					+ "ATGGAACTGTATCTGGATACTTCAGACGTTGTTGCGGTGAAGGCGCTGTCACGTATTTTTCCGCTGGCGGGTGTGACCACTAACCCAAGCATTATCGCCGCGGGTAAAAAACCGCTGGATGTTGTGCTTCCGCAACTTCATGAAGCGATGGGCGGTCAGGGGCGTCTGTTTGCCCAGGTAATGGCTACCACTGCCGAAGGGATGGTTAATGACGCGCTTAAGCTGCGTTCTATTATTGCGGATATCGTGGTGAAAGTTCCGGTGACCGCCGAGGGGCTGGCAGCTATTAAGATGTTAAAAGCGGAAGGGATTCCGACGCTGGGAACCGCGGTATATGGCGCAGCACAAGGGCTGCTGTCGGCGCTGGCAGGTGCGGAATATGTTGCGCCTTACGTTAATCGTATTGATGCTCAGGGCGGTAGCGGCATTCAGACTGTGACCGACTTACACCAGTTATTGAAAATGCATGCGCCGCAGGCGAAAGTGCTGGCAGCGAGTTTCAAAACCCCGCGTCAGGCGCTGGACTGCTTACTGGCAGGATGTGAATCAATTACTCTGCCACTGGATGTGGCACAACAGATGATTAGCTATCCGGCGGTTGATGCCGCTGTGGCGAAGTTTGAGCAGGACTGGCAGGGAGCGTTTGGCAGAACGTCGATTTAA"
-					+ SEPARATOR + "none" + SEPARATOR + "none");
-			geneWriter.close();
-			/*
-			 * geneList.add(new Gene(
-			 * "ATGGAACTGTATCTGGATACTTCAGACGTTGTTGCGGTGAAGGCGCTGTCACGTATTTTTCCGCTGGCGGGTGTGACCACTAACCCAAGCATTATCGCCGCGGGTAAAAAACCGCTGGATGTTGTGCTTCCGCAACTTCATGAAGCGATGGGCGGTCAGGGGCGTCTGTTTGCCCAGGTAATGGCTACCACTGCCGAAGGGATGGTTAATGACGCGCTTAAGCTGCGTTCTATTATTGCGGATATCGTGGTGAAAGTTCCGGTGACCGCCGAGGGGCTGGCAGCTATTAAGATGTTAAAAGCGGAAGGGATTCCGACGCTGGGAACCGCGGTATATGGCGCAGCACAAGGGCTGCTGTCGGCGCTGGCAGGTGCGGAATATGTTGCGCCTTACGTTAATCGTATTGATGCTCAGGGCGGTAGCGGCATTCAGACTGTGACCGACTTACACCAGTTATTGAAAATGCATGCGCCGCAGGCGAAAGTGCTGGCAGCGAGTTTCAAAACCCCGCGTCAGGCGCTGGACTGCTTACTGGCAGGATGTGAATCAATTACTCTGCCACTGGATGTGGCACAACAGATGATTAGCTATCCGGCGGTTGATGCCGCTGTGGCGAAGTTTGAGCAGGACTGGCAGGGAGCGTTTGGCAGAACGTCGATTTAA",
-			 * 0, "FSA", ConfigHandler.getResearcher())); writeGenes();
-			 */
-		}
-	}
+    Arrays.sort(names);
+    return names;
+  }
 
-	/**
-	 * set the path of the gene.txt file
-	 * 
-	 * @param path
-	 */
-	public static void setPath(String path) {
-		GeneHandler.path = path;
-	}
 
-	public static String getPath() {
-		return GeneHandler.path;
-	}
+  public static String[] getGeneNamesAndOrganisms() {
+    String[] names = new String[geneList.size()];
+    for (int i = 0; i < geneList.size(); i++) {
+      names[i] = geneList.get(i).getName();
+      if (geneList.get(i).getOrganism() != null && geneList.get(i).getOrganism() != "none")
+        names[i] = names[i] + " (" + geneList.get(i).getOrganism() + ")";
+    }
 
-	public static void writeGenes() throws IOException {
-		writeGenes(path);
+    Arrays.sort(names);
+    return names;
 
-	}
+  }
 
-	public static void deleteGene(String string) throws IOException {
-		deleteGene(path, string.split(" ")[0]);
 
-	}
+  public static int getNumGenes() {
+    return geneList.size();
+  }
+
+
+  /**
+   * reads genes from gene file at the locally stored path
+   * 
+   * @throws IOException
+   */
+  public static void readGenes() throws IOException {
+    readGenes(path);
+  }
+
+
+  /**
+   * reads a gene.txt from a given path
+   * 
+   * @param genePath
+   * @throws IOException
+   */
+  public static void readGenes(String genePath) throws IOException {
+
+    // open genes.txt or initialize it
+    path = genePath;
+    initGenes();
+
+    // read all genes from the file
+    geneList = new ArrayList<Gene>();
+    BufferedReader geneReader = new BufferedReader(new FileReader(genePath));
+    String line;
+    int id = 0;
+    // for each line
+    while ((line = geneReader.readLine()) != null) {
+      // format "name=atgAAT..."
+      String sepLine[] = line.split(SEPARATOR);
+      String name = sepLine[0];
+      String gene = sepLine[1];
+      String organism = sepLine[2];
+      String comment = sepLine[3];
+      if (getGene(name, organism) == null) {
+        if (organism.equals("none") || organism.equals("")) {
+          organism = null;
+        }
+        if (comment.equals("none") || comment.equals("")) {
+          comment = null;
+        }
+
+      }
+      geneList.add(new Gene(gene, id, name, ConfigHandler.getResearcher(), organism, comment));
+      id++;
+    }
+
+    geneReader.close();
+
+    /*
+     * // check if there are no genes if (geneList.isEmpty()) { try { addGene("FSA",
+     * "ATGGAACTGTATCTGGATACTTCAGACGTTGTTGCGGTGAAGGCGCTGTCACGTATTTTTCCGCTGGCGGGTGTGACCACTAACCCAAGCATTATCGCCGCGGGTAAAAAACCGCTGGATGTTGTGCTTCCGCAACTTCATGAAGCGATGGGCGGTCAGGGGCGTCTGTTTGCCCAGGTAATGGCTACCACTGCCGAAGGGATGGTTAATGACGCGCTTAAGCTGCGTTCTATTATTGCGGATATCGTGGTGAAAGTTCCGGTGACCGCCGAGGGGCTGGCAGCTATTAAGATGTTAAAAGCGGAAGGGATTCCGACGCTGGGAACCGCGGTATATGGCGCAGCACAAGGGCTGCTGTCGGCGCTGGCAGGTGCGGAATATGTTGCGCCTTACGTTAATCGTATTGATGCTCAGGGCGGTAGCGGCATTCAGACTGTGACCGACTTACACCAGTTATTGAAAATGCATGCGCCGCAGGCGAAAGTGCTGGCAGCGAGTTTCAAAACCCCGCGTCAGGCGCTGGACTGCTTACTGGCAGGATGTGAATCAATTACTCTGCCACTGGATGTGGCACAACAGATGATTAGCTATCCGGCGGTTGATGCCGCTGTGGCGAAGTTTGAGCAGGACTGGCAGGGAGCGTTTGGCAGAACGTCGATTTAA"
+     * ); } catch (DuplicateGeneException e) { // should never happen e.printStackTrace(); } }
+     */
+
+  }
+
+
+  /**
+   * check if a genes.txt file exists at the given path
+   * 
+   * @return true if a gene.txt exists
+   */
+  public static boolean exists() {
+    File config = new File(path);
+    return config.exists();
+  }
+
+
+  /**
+   * create a new gene file in the user home directory in a folder named gsat
+   * 
+   * @throws IOException
+   * 
+   */
+  public static void initGenes() throws IOException {
+    if (!exists()) {
+      File geneFile = new File(path);
+      geneFile.getParentFile().mkdirs();
+      geneFile.createNewFile();
+
+      BufferedWriter geneWriter = new BufferedWriter(new FileWriter(path));
+      geneWriter.write("FSA" + SEPARATOR
+          + "ATGGAACTGTATCTGGATACTTCAGACGTTGTTGCGGTGAAGGCGCTGTCACGTATTTTTCCGCTGGCGGGTGTGACCACTAACCCAAGCATTATCGCCGCGGGTAAAAAACCGCTGGATGTTGTGCTTCCGCAACTTCATGAAGCGATGGGCGGTCAGGGGCGTCTGTTTGCCCAGGTAATGGCTACCACTGCCGAAGGGATGGTTAATGACGCGCTTAAGCTGCGTTCTATTATTGCGGATATCGTGGTGAAAGTTCCGGTGACCGCCGAGGGGCTGGCAGCTATTAAGATGTTAAAAGCGGAAGGGATTCCGACGCTGGGAACCGCGGTATATGGCGCAGCACAAGGGCTGCTGTCGGCGCTGGCAGGTGCGGAATATGTTGCGCCTTACGTTAATCGTATTGATGCTCAGGGCGGTAGCGGCATTCAGACTGTGACCGACTTACACCAGTTATTGAAAATGCATGCGCCGCAGGCGAAAGTGCTGGCAGCGAGTTTCAAAACCCCGCGTCAGGCGCTGGACTGCTTACTGGCAGGATGTGAATCAATTACTCTGCCACTGGATGTGGCACAACAGATGATTAGCTATCCGGCGGTTGATGCCGCTGTGGCGAAGTTTGAGCAGGACTGGCAGGGAGCGTTTGGCAGAACGTCGATTTAA"
+          + SEPARATOR + "none" + SEPARATOR + "none");
+      geneWriter.close();
+      /*
+       * geneList.add(new Gene(
+       * "ATGGAACTGTATCTGGATACTTCAGACGTTGTTGCGGTGAAGGCGCTGTCACGTATTTTTCCGCTGGCGGGTGTGACCACTAACCCAAGCATTATCGCCGCGGGTAAAAAACCGCTGGATGTTGTGCTTCCGCAACTTCATGAAGCGATGGGCGGTCAGGGGCGTCTGTTTGCCCAGGTAATGGCTACCACTGCCGAAGGGATGGTTAATGACGCGCTTAAGCTGCGTTCTATTATTGCGGATATCGTGGTGAAAGTTCCGGTGACCGCCGAGGGGCTGGCAGCTATTAAGATGTTAAAAGCGGAAGGGATTCCGACGCTGGGAACCGCGGTATATGGCGCAGCACAAGGGCTGCTGTCGGCGCTGGCAGGTGCGGAATATGTTGCGCCTTACGTTAATCGTATTGATGCTCAGGGCGGTAGCGGCATTCAGACTGTGACCGACTTACACCAGTTATTGAAAATGCATGCGCCGCAGGCGAAAGTGCTGGCAGCGAGTTTCAAAACCCCGCGTCAGGCGCTGGACTGCTTACTGGCAGGATGTGAATCAATTACTCTGCCACTGGATGTGGCACAACAGATGATTAGCTATCCGGCGGTTGATGCCGCTGTGGCGAAGTTTGAGCAGGACTGGCAGGGAGCGTTTGGCAGAACGTCGATTTAA",
+       * 0, "FSA", ConfigHandler.getResearcher())); writeGenes();
+       */
+    }
+  }
+
+
+  /**
+   * set the path of the gene.txt file
+   * 
+   * @param path
+   */
+  public static void setPath(String path) {
+    GeneHandler.path = path;
+  }
+
+
+  public static String getPath() {
+    return GeneHandler.path;
+  }
+
+
+  public static void writeGenes() throws IOException {
+    writeGenes(path);
+
+  }
+
+
+  public static void deleteGene(String string) throws IOException {
+    deleteGene(path, string.split(" ")[0]);
+
+  }
 
 }

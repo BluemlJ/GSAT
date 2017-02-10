@@ -6,7 +6,6 @@ import java.io.IOException;
 import java.util.LinkedList;
 
 import analysis.AnalysedSequence;
-import analysis.StringAnalysis;
 import exceptions.MissingPathException;
 import exceptions.PathUsage;
 import exceptions.UndefinedTypeOfMutationException;
@@ -18,7 +17,6 @@ import exceptions.UndefinedTypeOfMutationException;
  * @author Ben Kohr
  */
 public class FileSaver {
-
 
   /**
    * This is the file name if only one file is desired. If multiple files are desired, the name of
@@ -34,7 +32,6 @@ public class FileSaver {
    */
   private static boolean firstCall = true;
 
-
   /**
    * This value is needed to keep track of the momentarily used id of the data. One number
    * corresponds to a single sequence. Id start with one to be human-understandable.
@@ -46,11 +43,11 @@ public class FileSaver {
    */
   private static File localPath;
 
-
   /**
    * Indicates whether one or multiple files shall be used for storage.
    */
   private static boolean separateFiles = false;
+
 
 
   /**
@@ -63,7 +60,6 @@ public class FileSaver {
   }
 
 
-
   /**
    * Sets the momentarily used id to one.
    * 
@@ -72,7 +68,6 @@ public class FileSaver {
   public static void resetIDs() {
     id = 1;
   }
-
 
 
   /**
@@ -116,7 +111,7 @@ public class FileSaver {
    * @throws IOException If the writing process fails (due to the used FileWriter)
    * 
    * @author Ben Kohr
-   * @throws UndefinedTypeOfMutationException 
+   * @throws UndefinedTypeOfMutationException
    */
   public static void storeResultsLocally(String ab1Filename, AnalysedSequence sequence)
       throws MissingPathException, IOException, UndefinedTypeOfMutationException {
@@ -143,94 +138,94 @@ public class FileSaver {
     String toWrite = constructLineToWrite(sequence);
     writer.write(toWrite);
 
-
     writer.close();
 
-    // if several files are desired, then the id field has to be set to zero. Also, ids have to be
+    // if several files are desired, then the id field has to be set to
+    // zero. Also, ids have to be
     // incremented.
     updateIDs();
   }
 
 
-  
-  private static String constructLineToWrite(AnalysedSequence sequence) throws UndefinedTypeOfMutationException {
-    
+  private static String constructLineToWrite(AnalysedSequence sequence)
+      throws UndefinedTypeOfMutationException {
+
     StringBuilder builder = new StringBuilder();
-    
+
     // id
     builder.append(id).append(SEPARATOR_CHAR + " ");
-    
+
     // file name
     String fileName = sequence.getFileName();
     builder.append(fileName).append(SEPARATOR_CHAR + " ");
-    
+
     // gene
     String geneName = sequence.getReferencedGene().getName();
     builder.append(geneName).append(SEPARATOR_CHAR + " ");
-    
+
     // gene organism
     String organism = sequence.getReferencedGene().getOrganism();
     builder.append(organism).append(SEPARATOR_CHAR + " ");
-    
+
     // mutations (with nucleotide codons)
     LinkedList<String> mutations = sequence.getMutations();
     int numberOfMutations = sequence.getMutations().size();
-    
+
     if (numberOfMutations == 0)
-    	builder.append(SEPARATOR_CHAR + " ");
+      builder.append(SEPARATOR_CHAR + " ");
     else {
-	    for (int i = 0; i < numberOfMutations; i++) {
-	      
-	      String mutation = mutations.get(i);
-	      builder.append(mutation);
-	      if (i < numberOfMutations - 1) {
-	        builder.append(", ");
-	      } else {
-	        builder.append(SEPARATOR_CHAR + " ");
-	      }
-	    }
+      for (int i = 0; i < numberOfMutations; i++) {
+
+        String mutation = mutations.get(i);
+        builder.append(mutation);
+        if (i < numberOfMutations - 1) {
+          builder.append(", ");
+        } else {
+          builder.append(SEPARATOR_CHAR + " ");
+        }
+      }
     }
     // comments
     // As ';' is the seperator charachter, each inital semicolon is replaced
     String comments = sequence.getComments().replace(SEPARATOR_CHAR, ',');
     builder.append(comments).append(SEPARATOR_CHAR + " ");
-    
+
     // researcher
     String researcher = sequence.getResearcher();
     builder.append(researcher).append(SEPARATOR_CHAR + " ");
-    
+
     // date
     String addingDate = sequence.getAddingDate();
     builder.append(addingDate).append(SEPARATOR_CHAR + " ");
-    
+
     // average quality
     double avgQuality = sequence.getAvgQuality();
-    int avgQualityInPercent = (int) (Math.pow(10, (-avgQuality)/10.0) * 100);
+    int avgQualityInPercent = (int) (Math.pow(10, (-avgQuality) / 10.0) * 100);
     builder.append(avgQualityInPercent).append(SEPARATOR_CHAR + " ");
-    
+
     // trim percentage
     int trimPercentage = (int) (sequence.getTrimPercentage() * 100);
     builder.append(trimPercentage).append(SEPARATOR_CHAR + " ");
-    
+
     // nucleotides
     String nucleotides = sequence.getSequence();
     builder.append(nucleotides).append(SEPARATOR_CHAR + " ");
-    
+
     // left vector
     String leftVector = sequence.getLeftVector();
     builder.append(leftVector).append(SEPARATOR_CHAR + " ");
-    
+
     // right vector
     String rightVector = sequence.getRightVector();
     builder.append(rightVector).append(SEPARATOR_CHAR + " ");
-    
+
     // primer
     String primer = sequence.getPrimer();
     if (primer == null)
       builder.append(" " + SEPARATOR_CHAR + " ");
     else
       builder.append(primer).append(SEPARATOR_CHAR + " ");
-    
+
     // his tag
     // The his tag position starts with 1 in the stored result.
     int hisTagPosition = sequence.getHisTagPosition();
@@ -238,45 +233,38 @@ public class FileSaver {
       builder.append("none" + SEPARATOR_CHAR + " ");
     else
       builder.append((hisTagPosition + 1) + SEPARATOR_CHAR + " ");
-    
-    
+
     // mutations without nucleotide codons
     if (numberOfMutations == 0)
-    	builder.append("; ");
+      builder.append("; ");
     else {
-	    for (int i = 0; i < numberOfMutations; i++) {
-	        String mutation = mutations.get(i);
-	        String reducedMutation;
-	        if(mutation.equals("reading frame error"))
-	        	reducedMutation = mutation;
-	        else
-	        	reducedMutation = (mutation.trim()).split(" ")[0];
-	        builder.append(reducedMutation);
-	        if (i < numberOfMutations - 1) {
-	          builder.append(", ");
-	        } else {
-	          builder.append(SEPARATOR_CHAR + " ");
-	        }
-	     }
-     }
-   
-    
+      for (int i = 0; i < numberOfMutations; i++) {
+        String mutation = mutations.get(i);
+        String reducedMutation;
+        if (mutation.equals("reading frame error"))
+          reducedMutation = mutation;
+        else
+          reducedMutation = (mutation.trim()).split(" ")[0];
+        builder.append(reducedMutation);
+        if (i < numberOfMutations - 1) {
+          builder.append(", ");
+        } else {
+          builder.append(SEPARATOR_CHAR + " ");
+        }
+      }
+    }
+
     // manually checked
     boolean manuallyChecked = sequence.isManuallyChecked();
     builder.append(manuallyChecked);
-    
-    
+
     builder.append(System.lineSeparator());
 
     String toWrite = builder.toString();
-    
+
     return toWrite;
   }
-  
- 
-  
-  
-  
+
 
   /**
    * This method returns and initially uses a new writer, if only one file is desired.
@@ -323,15 +311,18 @@ public class FileSaver {
     FileWriter writer = new FileWriter(newFile, append);
 
     if (!append) {
-      writer.write(
-        "id" + SEPARATOR_CHAR + " file name" + SEPARATOR_CHAR + " gene" + SEPARATOR_CHAR + " gene organism"
-        + SEPARATOR_CHAR + "mutations (with codons)" + SEPARATOR_CHAR + " comments" + SEPARATOR_CHAR + " researcher" + SEPARATOR_CHAR + " date" + SEPARATOR_CHAR + " average quality (percent)" + SEPARATOR_CHAR +" percentage of quality trim" + SEPARATOR_CHAR + " nucleotide sequence" + SEPARATOR_CHAR +" left vector" + SEPARATOR_CHAR + " right vector"+ SEPARATOR_CHAR +" primer"+ SEPARATOR_CHAR +" HIS tag; mutations (without codons)" + SEPARATOR_CHAR + " manually checked"
-              + System.lineSeparator());
+      writer.write("id" + SEPARATOR_CHAR + " file name" + SEPARATOR_CHAR + " gene" + SEPARATOR_CHAR
+          + " gene organism" + SEPARATOR_CHAR + "mutations (with codons)" + SEPARATOR_CHAR
+          + " comments" + SEPARATOR_CHAR + " researcher" + SEPARATOR_CHAR + " date" + SEPARATOR_CHAR
+          + " average quality (percent)" + SEPARATOR_CHAR + " percentage of quality trim"
+          + SEPARATOR_CHAR + " nucleotide sequence" + SEPARATOR_CHAR + " left vector"
+          + SEPARATOR_CHAR + " right vector" + SEPARATOR_CHAR + " primer" + SEPARATOR_CHAR
+          + " HIS tag; mutations (without codons)" + SEPARATOR_CHAR + " manually checked"
+          + System.lineSeparator());
     }
 
     return writer;
   }
-
 
 
   /**
@@ -349,6 +340,5 @@ public class FileSaver {
       id++;
     }
   }
-
 
 }

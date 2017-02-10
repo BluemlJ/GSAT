@@ -2,7 +2,6 @@ package gui;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.Observable;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
@@ -30,8 +29,6 @@ public class SettingsWindow extends Application implements javafx.fxml.Initializ
 
   public static boolean addParametersOpen = false;
 
-
-
   @FXML
   private ListView<String> geneList;
   // fields
@@ -57,8 +54,10 @@ public class SettingsWindow extends Application implements javafx.fxml.Initializ
   private Button deleteResearcherButton;
 
   private Scene scene;
-  
-  private int numGeneWindows = 0; 
+
+  private int numGeneWindows = 0;
+
+
 
   @Override
   public void initialize(URL location, ResourceBundle resources) {
@@ -67,14 +66,11 @@ public class SettingsWindow extends Application implements javafx.fxml.Initializ
     GUIUtils.initializeGeneBox(geneList);
     geneList.setStyle("-fx-font-style: italic;");
 
-
     GUIUtils.setColorOnNode(closeButton, Color.BLUE);
     GUIUtils.setColorOnNode(addGeneButton, Color.GREEN);
     GUIUtils.setColorOnNode(addResearcherButton, Color.GREEN);
     GUIUtils.setColorOnNode(deleteGeneButton, Color.RED);
     GUIUtils.setColorOnNode(deleteResearcherButton, Color.RED);
-
-
 
     researcherDrobdown.getSelectionModel().selectedItemProperty()
         .addListener((obeservable, value, newValue) -> {
@@ -86,8 +82,6 @@ public class SettingsWindow extends Application implements javafx.fxml.Initializ
             e.printStackTrace();
           }
         });
-
-
 
     // gives you a short menu
     parameterButton.setOnAction(new EventHandler<ActionEvent>() {
@@ -123,7 +117,6 @@ public class SettingsWindow extends Application implements javafx.fxml.Initializ
         System.out.println("Database Button!");
       }
     });
-
 
     SettingsWindow self = this;
     addGeneButton.setOnAction(new EventHandler<ActionEvent>() {
@@ -165,11 +158,11 @@ public class SettingsWindow extends Application implements javafx.fxml.Initializ
         dialog.setContentText("The name should have a form like Max M.");
         dialog.setContentText("Name:");
 
-        ButtonBar buttonBar = (ButtonBar)dialog.getDialogPane().lookup(".button-bar");
+        ButtonBar buttonBar = (ButtonBar) dialog.getDialogPane().lookup(".button-bar");
         ObservableList<Node> nodes = buttonBar.getButtons();
         GUIUtils.setColorOnNode(nodes.get(0), Color.GREEN);
         GUIUtils.setColorOnNode(nodes.get(1), Color.RED);
-        
+
         // Traditional way to get the response value.
         Optional<String> result = dialog.showAndWait();
         if (result.isPresent()) {
@@ -202,7 +195,6 @@ public class SettingsWindow extends Application implements javafx.fxml.Initializ
           }
         }
 
-
       }
     });
 
@@ -226,13 +218,13 @@ public class SettingsWindow extends Application implements javafx.fxml.Initializ
     });
   }
 
+
   @Override
   public void stop() throws Exception {
     MainWindow.settingsOpen = false;
     System.out.println("Settings Closed");
     super.stop();
   }
-
 
 
   @Override
@@ -256,7 +248,7 @@ public class SettingsWindow extends Application implements javafx.fxml.Initializ
       public void handle(WindowEvent arg0) {
         if (numGeneWindows == 0) {
           MainWindow.settingsOpen = false;
-        }else {
+        } else {
           arg0.consume();
         }
 
@@ -269,17 +261,15 @@ public class SettingsWindow extends Application implements javafx.fxml.Initializ
      */
   }
 
-  
-  public void updateGenes(){
-	  GUIUtils.initializeGeneBox(geneList);
+
+  public void updateGenes() {
+    GUIUtils.initializeGeneBox(geneList);
   }
 
- 
-  
 
   public void decNumGenWindows() {
     numGeneWindows--;
-  
+
   }
 
 }

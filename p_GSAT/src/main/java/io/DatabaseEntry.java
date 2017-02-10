@@ -66,7 +66,6 @@ public class DatabaseEntry {
    */
   private String promotor;
 
-
   /**
    * The researcher who added this sequence.
    */
@@ -76,7 +75,6 @@ public class DatabaseEntry {
    * The right vector to be stored with the sequence.
    */
   private String rightVector;
-
 
   /**
    * The sequence of nucleotides.
@@ -138,7 +136,6 @@ public class DatabaseEntry {
     String promotor = seq.getPrimer();
     boolean manuallyChecked = seq.isManuallyChecked();
 
-
     // Initialize lists for mutations
     LinkedList<String> mutations = seq.getMutations();
 
@@ -151,7 +148,6 @@ public class DatabaseEntry {
           comments, leftVector, rightVector, promotor, manuallyChecked, mutation, mType);
       entries.add(dbe);
     }
-
 
     // return the results
     return entries;
@@ -202,7 +198,6 @@ public class DatabaseEntry {
   }
 
 
-
   /**
    * Returns this entry's adding date
    * 
@@ -215,7 +210,6 @@ public class DatabaseEntry {
   }
 
 
-
   /**
    * Returns this entry's stored comments
    * 
@@ -226,7 +220,6 @@ public class DatabaseEntry {
   public String getComments() {
     return comments;
   }
-
 
 
   /**
@@ -276,6 +269,7 @@ public class DatabaseEntry {
     return leftVector;
   }
 
+
   /**
    * Returns the single mutation of this entry.
    * 
@@ -323,6 +317,7 @@ public class DatabaseEntry {
     return researcher;
   }
 
+
   /**
    * Returns this entry's right vector
    * 
@@ -357,7 +352,6 @@ public class DatabaseEntry {
   public boolean isManuallyChecked() {
     return manuallyChecked;
   }
-
 
 
   /**

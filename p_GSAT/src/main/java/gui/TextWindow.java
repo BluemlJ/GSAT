@@ -12,7 +12,6 @@ import javafx.scene.Scene;
 import javafx.scene.control.TextArea;
 import javafx.stage.Stage;
 
-
 public class TextWindow extends Application implements javafx.fxml.Initializable {
 
   Scene scene;
@@ -21,10 +20,12 @@ public class TextWindow extends Application implements javafx.fxml.Initializable
   private TextArea testArea;
   private String text = "";
   private String name = "";
-  
+
+
+
   @Override
   public void initialize(URL arg0, ResourceBundle arg1) {
-	  testArea.setWrapText(true);
+    testArea.setWrapText(true);
   }
 
 
@@ -44,15 +45,18 @@ public class TextWindow extends Application implements javafx.fxml.Initializable
     primaryStage.show();
   }
 
+
   public String getText() {
     return text;
   }
 
+
   public void setName(String name) {
     this.name = name;
-    
+
   }
-  
+
+
   public void setText(String text) {
     testArea.setText(text);
     this.text = text;

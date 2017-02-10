@@ -14,6 +14,8 @@ public class DatabaseErrorException extends Exception {
    */
   private static final long serialVersionUID = -8460699872735061686L;
 
+
+
   /**
    * Constructor calling the super constructor.
    * 

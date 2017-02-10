@@ -4,9 +4,6 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import org.junit.Ignore;
-import org.junit.Test;
-
 import com.mysql.cj.jdbc.MysqlDataSource;
 
 import io.DatabaseConnection;
@@ -25,7 +22,6 @@ public class LocalDBTest {
   static int port = 3306;
   static String server = "127.0.0.1";
 
-
   static String userOnline = "gsatadmin";
   static String passOnline = "";
   static int portOnline = 3306;
@@ -35,7 +31,8 @@ public class LocalDBTest {
   java.sql.Statement stmt = null;
   ResultSet rs = null;
 
-  
+
+
   public void testOnlineConUsingDBConnection() {
     DatabaseConnection.setDatabaseConnection(userOnline, passOnline, portOnline, serverOnline);
     // DatabaseConnection.createDatabase();
@@ -53,7 +50,6 @@ public class LocalDBTest {
     dataSource.setPort(portOnline);
     dataSource.setServerName(serverOnline);
 
-
     try {
       conn = dataSource.getConnection();
       stmt = conn.createStatement();
@@ -70,7 +66,6 @@ public class LocalDBTest {
       while (rs.next()) {
         System.out.println(rs.getString(1));
 
-
       }
 
       rs = stmt.executeQuery(
@@ -83,11 +78,9 @@ public class LocalDBTest {
       e.printStackTrace();
     }
 
-
   }
 
 
- 
   public void DBConnectionTest() {
     DatabaseConnection.setDatabaseConnection(user, pass, port, server);
     System.out.println(DatabaseConnection.gsatExists());
@@ -96,7 +89,7 @@ public class LocalDBTest {
 
   }
 
- 
+
   public void checkDBExists() {
     MysqlDataSource dataSource = new MysqlDataSource();
     dataSource.setUser(user);
@@ -176,7 +169,6 @@ public class LocalDBTest {
         System.out.println("");
       }
 
-
       // Update new Gene
       System.out.println("");
       System.out.println("Update new Gene");
@@ -198,7 +190,6 @@ public class LocalDBTest {
       System.out.println("Delete new Gene");
       stmt.executeUpdate("DELETE FROM Gen WHERE name='added from eclipse'");
 
-
       // Get Genes
       System.out.println("");
       System.out.println("Try to find deleted Gene");
@@ -212,8 +203,6 @@ public class LocalDBTest {
     } catch (SQLException e) {
       e.printStackTrace();
     }
-
-
 
   }
 }

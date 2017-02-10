@@ -30,6 +30,8 @@ public class SequenceReader {
    */
   private static String path;
 
+
+
   /**
    * Sets the path to the folder or the file to be used. In case of a folder, also gathers the file
    * names into the list to be able to check that all files are analyzed, and only once.
@@ -40,6 +42,7 @@ public class SequenceReader {
   public static void configurePath(String path) {
     SequenceReader.path = path;
   }
+
 
   /**
    * Parses one AB1 file (the only one or the next one in the list) into a sequence. If possible,
@@ -55,6 +58,7 @@ public class SequenceReader {
       throws FileReadingException, IOException {
     return convertFileIntoSequence(new File(path));
   }
+
 
   /**
    * Overload taking an input file Parses one AB1 file (the only one or the next one in the list)
@@ -88,9 +92,11 @@ public class SequenceReader {
     return parsedSequence;
   }
 
+
   public static String getPath() {
     return path;
   }
+
 
   /**
    * Indicates whether there is a path set at the moment.
@@ -102,6 +108,7 @@ public class SequenceReader {
   public static boolean isPathSet() {
     return path != null;
   }
+
 
   /**
    * Returns a list of all AB1 files in the path that was set via configurePath()

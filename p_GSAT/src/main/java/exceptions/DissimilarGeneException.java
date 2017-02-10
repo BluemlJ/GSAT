@@ -5,7 +5,6 @@ import analysis.Gene;
 
 public class DissimilarGeneException extends Exception {
 
-
   /**
    * 
    */
@@ -27,6 +26,7 @@ public class DissimilarGeneException extends Exception {
   public AnalysedSequence toAnalyse;
 
 
+
   /**
    * Constructor sets the internal fields.
    * 
@@ -43,6 +43,5 @@ public class DissimilarGeneException extends Exception {
     this.bestGene = bestGene;
     this.similarity = similarity;
   }
-
 
 }

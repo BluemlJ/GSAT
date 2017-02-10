@@ -28,13 +28,13 @@ import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonBar.ButtonData;
-import javafx.scene.input.MouseEvent;
-import javafx.scene.text.Text;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ListView;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.control.TextField;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.text.Text;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 
@@ -45,7 +45,7 @@ import javafx.stage.FileChooser;
  *
  */
 public class GUIUtils {
-	
+
   /**
    * This method initialize the choiceBox and adds all Gene which are stored locally in the
    * Genes.txt
@@ -65,6 +65,7 @@ public class GUIUtils {
     return new Pair<Boolean, Text>(true, new Text("Reading Gene.txt was successful\n"));
   }
 
+
   public static Pair<Boolean, Text> initializeGeneBox(ListView<String> genes) {
     try {
       GeneHandler.readGenes();
@@ -77,17 +78,20 @@ public class GUIUtils {
     return new Pair<Boolean, Text>(true, new Text("Reading Gene.txt was successful"));
   }
 
+
   public static Pair<Boolean, Text> initializeResearchers(ChoiceBox<String> dropdown) {
     try {
       ConfigHandler.readConfig();
     } catch (IOException | ConfigReadException | ConfigNotFoundException e) {
       return new Pair<Boolean, Text>(false,
-         new Text( "Reading researchers from config.txt was unsuccessful\n" + e.getMessage()));
+          new Text("Reading researchers from config.txt was unsuccessful\n" + e.getMessage()));
     }
     dropdown.setItems(FXCollections.observableArrayList(ConfigHandler.getSortedResearcherList()));
     dropdown.getSelectionModel().select(ConfigHandler.getResearcher());
-    return new Pair<Boolean, Text>(true, new Text("Reading researchers from config.txt was successful"));
+    return new Pair<Boolean, Text>(true,
+        new Text("Reading researchers from config.txt was successful"));
   }
+
 
   /**
    * Main method of this class, alias the startbutton function.
@@ -96,10 +100,10 @@ public class GUIUtils {
    * @param GeneID ID of the Gene in the Choicebox.
    * @return a Pair or Boolean, which indicates if the method was successful and a String, which can
    *         printed in the infoarea.
-   * @throws DissimilarGeneException 
+   * @throws DissimilarGeneException
    */
-  public static Pair<Boolean, Text> runAnalysis(String sourcepath, String GeneID,
-      String resultname, ProgressBar bar) throws DissimilarGeneException {
+  public static Pair<Boolean, Text> runAnalysis(String sourcepath, String GeneID, String resultname,
+      ProgressBar bar) throws DissimilarGeneException {
     boolean success = false;
     StringBuilder report = new StringBuilder();
 
@@ -107,8 +111,8 @@ public class GUIUtils {
     Pair<LinkedList<File>, LinkedList<File>> sequences = getSequencesFromSourceFolder(sourcepath);
     if (sequences.first == null)
       if (sequences.second == null)
-        return new Pair<Boolean, Text>(success,
-            new Text("Reading Sequences unsuccessful, please make sure the given path is correct or the file s valid"));
+        return new Pair<Boolean, Text>(success, new Text(
+            "Reading Sequences unsuccessful, please make sure the given path is correct or the file s valid"));
       else
         return new Pair<Boolean, Text>(success,
             new Text("No AB1 files were found at the given path or the file is invalid."));
@@ -117,9 +121,9 @@ public class GUIUtils {
 
     // get the gene from the coiceboxID
     Gene gene = null;
-    if(!GeneID.equals("-1")){
-    gene = getGeneFromDropDown(GeneID).first;
-    report.append(getGeneFromDropDown(GeneID).second.second + "\n");
+    if (!GeneID.equals("-1")) {
+      gene = getGeneFromDropDown(GeneID).first;
+      report.append(getGeneFromDropDown(GeneID).second.second + "\n");
     }
     // foreach ab1 file
     int counter = 0;
@@ -127,7 +131,8 @@ public class GUIUtils {
     for (File file : sequences.first) {
       // get Sequence
       AnalysedSequence toAnalyse = readSequenceFromFile(file).first;
-      if(GeneID.equals("-1")) gene = StringAnalysis.findRightGene(toAnalyse, GeneHandler.getGeneList());
+      if (GeneID.equals("-1"))
+        gene = StringAnalysis.findRightGene(toAnalyse, GeneHandler.getGeneList());
       toAnalyse.setReferencedGene(gene);
 
       // checks if complementary and reversed Sequence is better, then
@@ -179,15 +184,15 @@ public class GUIUtils {
         e.printStackTrace();
       }
       counter++;
-      bar.setProgress(counter/(double) allFiles);
-      
-      
+      bar.setProgress(counter / (double) allFiles);
+
     }
     // set output parameter and return Pair.
     report.append("Analysis was successful\n");
     success = true;
     return new Pair<Boolean, Text>(success, new Text(report.toString()));
   }
+
 
   /**
    * This method opens a DirectoryChooser to set the destinationpath. Later results and reports will
@@ -214,9 +219,9 @@ public class GUIUtils {
           break;
         }
       }
-        File start = new File(sourcePath);
-        chooser.setInitialDirectory(start);
-      
+      File start = new File(sourcePath);
+      chooser.setInitialDirectory(start);
+
     }
     try {
       selectedDirectory = chooser.showDialog(null);
@@ -234,6 +239,7 @@ public class GUIUtils {
     }
     return new Pair<Boolean, Text>(success, report);
   }
+
 
   /**
    * This method opens a DirectoryChooser to set the sourcepath. In this path, there should be some
@@ -299,7 +305,8 @@ public class GUIUtils {
         selectedDirectory = chooser.showOpenDialog(null);
       }
     } else {
-      return new Pair<Boolean, Text>(success, new Text("The action to set a source folder was cancelled"));
+      return new Pair<Boolean, Text>(success,
+          new Text("The action to set a source folder was cancelled"));
     }
 
     if (selectedDirectory != null) {
@@ -311,6 +318,7 @@ public class GUIUtils {
     return new Pair<Boolean, Text>(success, report);
   }
 
+
   /**
    * This method gets the Gene from his ID.
    * 
@@ -319,9 +327,10 @@ public class GUIUtils {
    */
   private static Pair<Gene, Pair<Boolean, Text>> getGeneFromDropDown(String name) {
     return new Pair<Gene, Pair<Boolean, Text>>(GeneHandler.getGene(name),
-        new Pair<Boolean, Text>(true, new Text ("Reading gene was successful")));
+        new Pair<Boolean, Text>(true, new Text("Reading gene was successful")));
 
   }
+
 
   /**
    * This method gets all ab1 files from an given path. It sorts them to ab1 files and other
@@ -346,6 +355,7 @@ public class GUIUtils {
     return new Pair<LinkedList<File>, LinkedList<File>>(files, oddFiles);
   }
 
+
   /**
    * Reads the Sequence of the given File and prints Errors if necessary
    * 
@@ -354,7 +364,8 @@ public class GUIUtils {
    * @author Jannis
    */
   private static Pair<AnalysedSequence, Pair<Boolean, Text>> readSequenceFromFile(File file) {
-    Text report = new Text("Failure with: " + file.getAbsolutePath() + ".\n This file might be corrupted.");
+    Text report =
+        new Text("Failure with: " + file.getAbsolutePath() + ".\n This file might be corrupted.");
     boolean success = false;
     Pair<Boolean, Text> ret = null;
     try {
@@ -370,111 +381,97 @@ public class GUIUtils {
     }
     return new Pair<AnalysedSequence, Pair<Boolean, Text>>(null, ret);
   }
-  
-  
-  
-  
+
+
   public static void setColorOnNode(Node node, Color color) {
-	  
-	  // the upper color is the lighter one
-	  String normalColor1 = "";
-	  String normalColor2 = "";
-	  
-	  String hoverColor1 = "";
-	  String hoverColor2 = "";
-	  
-	  String pressedColor1 = "";
-	  String pressedColor2 = "";
-	  
-	  switch(color) {
-	  	case GREEN:
-	  		normalColor1 = "rgb(209,243,191)";
-	  		normalColor2 = "rgb(179,235,149)";
-	  		hoverColor1 = "rgb(222,246,210)";
-	  		hoverColor2 = "rgb(201,241,180)";
-	  		pressedColor1 = "rgb(188,218,171)";
-	  		pressedColor2 = "rgb(161,211,134)";
-	  		break;
-	  	case RED:
-	  		normalColor1 = "rgb(255,169,169)";
-	  		normalColor2 = "rgb(255,113,113)";
-	  		hoverColor1 = "rgb(255,194,194)";
-	  		hoverColor2 = "rgb(255,155,155)";
-	  		pressedColor1 = "rgb(229,152,152)";
-	  		pressedColor2 = "rgb(229,101,101)";
-	  		break;
-	  	case BLUE:
-	  		normalColor1 = "rgb(177,177,255)";
-	  		normalColor2 = "rgb(125,125,255)";
-	  		hoverColor1 = "rgb(200,200,255)";
-	  		hoverColor2 = "rgb(164,164,255)";
-	  		pressedColor1 = "rgb(159,159,229)";
-	  		pressedColor2 = "rgb(112,112,229)";
-	  		break;
-	  }
 
-	  
-	  String normalStyle = "-fx-background-color: radial-gradient(center 50% -39%, radius 200%, " + normalColor1 + " 45%, " + normalColor2 + " 50%); -fx-border-color: gray; -fx-border-radius: 3px;";
-	  String hoverStyle = "-fx-background-color: radial-gradient(center 50% -39%, radius 200%, " + hoverColor1 + " 45%, " + hoverColor2 + " 50%); -fx-border-color: gray; -fx-border-radius: 3px;";
-	  String pressedStyle = "-fx-background-color: radial-gradient(center 50% -39%, radius 200%, " + pressedColor1 + " 45%, " + pressedColor2 + " 50%); -fx-border-color: gray; -fx-border-radius: 3px;";
-	  
-	  node.setStyle(normalStyle);
-	  node.setOnMouseEntered(new EventHandler<MouseEvent>() {
-	        @Override
-	        public void handle(MouseEvent t) {
-	        	node.setStyle(hoverStyle);
-	        }});
+    // the upper color is the lighter one
+    String normalColor1 = "";
+    String normalColor2 = "";
 
-	  node.setOnMouseExited(new EventHandler<MouseEvent>() {
-	        @Override
-	        public void handle(MouseEvent t) {
-	        	node.setStyle(normalStyle);
-	        }   
-	    });
-	  node.setOnMousePressed(new EventHandler<MouseEvent>() {
-	        @Override
-	        public void handle(MouseEvent t) {
-	        	node.setStyle(pressedStyle);
-	        }   
-	    });
-	  node.setOnMouseReleased(new EventHandler<MouseEvent>() {
-	        @Override
-	        public void handle(MouseEvent t) {
-	        	node.setStyle(hoverStyle);
-	        }   
-	    });
-  	
+    String hoverColor1 = "";
+    String hoverColor2 = "";
+
+    String pressedColor1 = "";
+    String pressedColor2 = "";
+
+    switch (color) {
+      case GREEN:
+        normalColor1 = "rgb(209,243,191)";
+        normalColor2 = "rgb(179,235,149)";
+        hoverColor1 = "rgb(222,246,210)";
+        hoverColor2 = "rgb(201,241,180)";
+        pressedColor1 = "rgb(188,218,171)";
+        pressedColor2 = "rgb(161,211,134)";
+        break;
+      case RED:
+        normalColor1 = "rgb(255,169,169)";
+        normalColor2 = "rgb(255,113,113)";
+        hoverColor1 = "rgb(255,194,194)";
+        hoverColor2 = "rgb(255,155,155)";
+        pressedColor1 = "rgb(229,152,152)";
+        pressedColor2 = "rgb(229,101,101)";
+        break;
+      case BLUE:
+        normalColor1 = "rgb(177,177,255)";
+        normalColor2 = "rgb(125,125,255)";
+        hoverColor1 = "rgb(200,200,255)";
+        hoverColor2 = "rgb(164,164,255)";
+        pressedColor1 = "rgb(159,159,229)";
+        pressedColor2 = "rgb(112,112,229)";
+        break;
+    }
+
+    String normalStyle =
+        "-fx-background-color: radial-gradient(center 50% -39%, radius 200%, " + normalColor1
+            + " 45%, " + normalColor2 + " 50%); -fx-border-color: gray; -fx-border-radius: 3px;";
+    String hoverStyle =
+        "-fx-background-color: radial-gradient(center 50% -39%, radius 200%, " + hoverColor1
+            + " 45%, " + hoverColor2 + " 50%); -fx-border-color: gray; -fx-border-radius: 3px;";
+    String pressedStyle =
+        "-fx-background-color: radial-gradient(center 50% -39%, radius 200%, " + pressedColor1
+            + " 45%, " + pressedColor2 + " 50%); -fx-border-color: gray; -fx-border-radius: 3px;";
+
+    node.setStyle(normalStyle);
+    node.setOnMouseEntered(new EventHandler<MouseEvent>() {
+      @Override
+      public void handle(MouseEvent t) {
+        node.setStyle(hoverStyle);
+      }
+    });
+
+    node.setOnMouseExited(new EventHandler<MouseEvent>() {
+      @Override
+      public void handle(MouseEvent t) {
+        node.setStyle(normalStyle);
+      }
+    });
+    node.setOnMousePressed(new EventHandler<MouseEvent>() {
+      @Override
+      public void handle(MouseEvent t) {
+        node.setStyle(pressedStyle);
+      }
+    });
+    node.setOnMouseReleased(new EventHandler<MouseEvent>() {
+      @Override
+      public void handle(MouseEvent t) {
+        node.setStyle(hoverStyle);
+      }
+    });
+
   }
-  
+
   /*
-   
-   case GREEN:
-	  		normalColor1 = "rgb(184,239,54)";
-	  		normalColor2 = "rgb(128,200,1)";
-	  		hoverColor1 = "rgb(205,243,114)";
-	  		hoverColor2 = "rgb(166,216,77)";
-	  		pressedColor1 = "rgb(184,239,54)";
-	  		pressedColor2 = "rgb(128,200,1)";
-	  		break;
-	  	case RED:
-	  		normalColor1 = "rgb(251,117,117)";
-	  		normalColor2 = "rgb(255,40,40)";
-	  		hoverColor1 = "rgb(252,158,158)";
-	  		hoverColor2 = "rgb(255,104,104)";
-	  		pressedColor1 = "rgb(251,117,117)";
-	  		pressedColor2 = "rgb(255,40,40)";
-	  		break;
-	  	case BLUE:
-	  		normalColor1 = "rgb(60,204,204)";
-	  		normalColor2 = "rgb(50,153,255)";
-	  		hoverColor1 = "rgb(118,219,219)";
-	  		hoverColor2 = "rgb(90,173,255)";
-	  		pressedColor1 = "rgb(60,204,204)";
-	  		pressedColor2 = "rgb(50,153,255)";
-	  		break;
-   
+   * 
+   * case GREEN: normalColor1 = "rgb(184,239,54)"; normalColor2 = "rgb(128,200,1)"; hoverColor1 =
+   * "rgb(205,243,114)"; hoverColor2 = "rgb(166,216,77)"; pressedColor1 = "rgb(184,239,54)";
+   * pressedColor2 = "rgb(128,200,1)"; break; case RED: normalColor1 = "rgb(251,117,117)";
+   * normalColor2 = "rgb(255,40,40)"; hoverColor1 = "rgb(252,158,158)"; hoverColor2 =
+   * "rgb(255,104,104)"; pressedColor1 = "rgb(251,117,117)"; pressedColor2 = "rgb(255,40,40)";
+   * break; case BLUE: normalColor1 = "rgb(60,204,204)"; normalColor2 = "rgb(50,153,255)";
+   * hoverColor1 = "rgb(118,219,219)"; hoverColor2 = "rgb(90,173,255)"; pressedColor1 =
+   * "rgb(60,204,204)"; pressedColor2 = "rgb(50,153,255)"; break;
+   * 
    */
-  
-  
-  
+
 }
