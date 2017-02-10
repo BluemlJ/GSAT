@@ -36,8 +36,6 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
   public static boolean settingsOpen = false;
   public static boolean autoGeneSearch = false;
   
-  @FXML
-  private javafx.scene.control.MenuItem aboutButton;
   // WARNING: Do not change variable name under all circumstances!
 
   @FXML
@@ -52,7 +50,11 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
   private Button settingsButton;
   @FXML
   private Button srcButton;
-
+  @FXML
+  private Button aboutButton;
+  @FXML
+  private Button manualButton;
+  
   // Textfields
   @FXML
   private TextField srcField;
@@ -69,10 +71,6 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
   // info output area
   @FXML
   private TextArea infoArea;
-
-  // Menu Items
-  @FXML
-  private javafx.scene.control.MenuItem manualButton;
 
   // checkbox
   @FXML
