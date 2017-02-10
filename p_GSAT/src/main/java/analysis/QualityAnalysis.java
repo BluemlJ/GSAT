@@ -10,37 +10,74 @@ import exceptions.CorruptedSequenceException;
  */
 public class QualityAnalysis {
 
+  /**
+   * this parameter sets the minimal quality to start a sequence. This can be changed by the user.
+   * The default value is 30.
+   * 
+   * @see io.ConfigHandler
+   * @see gui.ParameterWindow
+   */
   private static int avgApproximationStart = 30;
+  /**
+   * this parameter sets the minimal quality to end a sequence. This can be changed by the user. The
+   * default value is 25.
+   * 
+   * @see io.ConfigHandler
+   * @see gui.ParameterWindow
+   */
   private static int avgApproximationEnd = 25;
 
+  /**
+   * this parameter sets the average quality to calculate the quality of the hole sequence. This can
+   * be changed by the user. The default value is 30.
+   * 
+   * @see io.ConfigHandler
+   * @see gui.ParameterWindow
+   */
   private static int avgQualityEdge = 30;
   /**
    * This variable represents how many bad quality nucleotide are allowed before the sequence gets
-   * cut off. Changing this may cause tests to fail.
+   * cut off. Changing this may cause tests to fail. This can be changed by user.
+   * 
+   * @see io.ConfigHandler
+   * @see gui.ParameterWindow
    */
-  // TODO needs to be adjusted to achieve reasonable values on sample ab1
-  // data, 10-40 looks promising
+
   private static int breakcounter = 9;
-  /*
-   * Number of Nucleotides which will be used for the average Quality calculations
+
+  /**
+   * Number of Nucleotides which will be used for the average Quality calculations. This can be
+   * changed by user.
+   * 
+   * @see io.ConfigHandler
+   * @see gui.ParameterWindow
    */
   private static int numAverageNucleotides = 20;
 
+  // TODO by lovis
   private static int startcounter = 3;
 
 
 
-  public static boolean checkIfSequenceIsClean(AnalysedSequence toAnalysedSequence)
+  /**
+   * This method is called before analysing a sequence but after the trimming them. It checks if any
+   * 'X' are in the trimmed sequence. This would mean the sequence is corrupt and cant be analysed.
+   * 
+   * @see analysis.MutationAnalysis
+   * @param toAnalyse the sequence to check if there is any corrupt nucleotide.
+   * @throws CorruptedSequenceException if there is any corruption then throw this exception.
+   * @author jannis blueml
+   */
+  public static void checkIfSequenceIsClean(AnalysedSequence toAnalyse)
       throws CorruptedSequenceException {
-    for (char c : toAnalysedSequence.getSequence().toCharArray()) {
+    for (char c : toAnalyse.getSequence().toCharArray()) {
       if (c == 'X') throw new CorruptedSequenceException();
     }
-    return true;
   }
 
 
   /**
-   * This method checks the nucleotidestring and finds a position to trim the low quality part at
+   * This method checks the nucleotide string and finds a position to trim the low quality part at
    * the end of the sequence.
    * 
    * @param sequence the sequence getting from the abi file
@@ -48,27 +85,32 @@ public class QualityAnalysis {
    *         quality part.
    * 
    * 
-   * @author bluemlj, Lovis Heindrich
+   * @author jannis blueml, Lovis Heindrich
    * 
    */
   public static int[] findLowQuality(AnalysedSequence sequence) {
+    // the qualityscaling of the sequence in form of Integers between 0 and 128. See phred scale for
+    // more informations.
     int[] qualities = sequence.getQuality();
 
+    // init some parameters
     int trimmingPosition[] = {sequence.length(), sequence.length(), 0};
     int countertoBreak = 0;
     int countertoStart = 0;
     boolean startfound = false;
     int counter = 0;
 
+    // checks for every quality value and find start and end by counting.
     for (int quality : qualities) {
+      // counting start
       if (!startfound) {
         if (quality > avgApproximationStart) {
           countertoStart++;
         } else {
           counter += countertoStart + 1;
-
           countertoStart = 0;
         }
+        // fount start
         if (countertoStart == startcounter) {
           trimmingPosition[0] = counter + ((3 - (counter % 3)) % 3);
           startfound = true;
@@ -76,13 +118,14 @@ public class QualityAnalysis {
           counter += startcounter;
         }
       } else {
-
+        // counting end
         if (quality < avgApproximationEnd)
           countertoBreak++;
         else {
           counter += countertoBreak + 1;
           countertoBreak = 0;
         }
+        // found ending
         if (countertoBreak == breakcounter) {
           trimmingPosition[1] = counter + ((3 - (counter % 3)) % 3);
           break;
@@ -102,7 +145,7 @@ public class QualityAnalysis {
 
   /**
    * This method provides an additional quality measurement by detecting substrings with an average
-   * low quality
+   * low quality.
    * 
    * @param qualities the sequence which needs to be trimmed
    * @param startPosition the first array index which will be used
@@ -160,27 +203,38 @@ public class QualityAnalysis {
 
 
   /**
-   * 
-   * @param toAnalyse
-   * @return
-   * @author Jannis
+   * This method calculate the percentage of quality by the parameter.
+   *
+   * @param toAnalyse the trimmed sequence to get the quality for.
+   * @return a value between 0 and 100. This is a percentage.
+   * @author jannis blueml
    */
   public static double getQualityPercentage(AnalysedSequence toAnalyse) {
-    if (toAnalyse.getQuality().length == 0) return 0;
-
+    // checks if sequence is null or empty
+    if (toAnalyse == null || toAnalyse.getQuality().length == 0) return 0;
+    // counter for calculation
     double counter = 0;
+
     for (int phred : toAnalyse.getQuality()) {
       if (phred > avgQualityEdge) counter++;
     }
-    double tmp = (int) (counter / toAnalyse.getQuality().length * 1000);
-    return tmp / 1000;
+
+    double tmp = (int) (counter / toAnalyse.getQuality().length * 100);
+    return tmp;
   }
 
-
+  /**
+   * This method calculate the percentage how much are trimmed away.
+   * 
+   * @param lengthBefore this gives the length before the sequence is trimmed.
+   * @param toAnalyse the sequence after trimming.
+   * @return a percentage between 0 and 100.
+   * @author jannis blueml
+   */
   public static double percentageOfTrimQuality(int lengthBefore, AnalysedSequence toAnalyse) {
-    // rounds result to promille
-    double tmp = (int) ((double) toAnalyse.getSequence().length() / (double) lengthBefore * 1000);
-    return 1 - tmp / 1000;
+    // rounds result to a percentage
+    double tmp = (int) ((double) toAnalyse.getSequence().length() / (double) lengthBefore * 100);
+    return tmp;
 
   }
 
@@ -192,12 +246,14 @@ public class QualityAnalysis {
 
   /**
    * This method trims a sequence by removing the low quality end of the sequence.
+   * 
+   * @param the sequence to trim
+   * @author jannis blueml
    */
   public static void trimLowQuality(AnalysedSequence toAnalyse) {
     int[] trimmingpositions = QualityAnalysis.findLowQuality(toAnalyse);
     toAnalyse.setOffset(toAnalyse.getOffset() + trimmingpositions[2]);
     toAnalyse.trimSequence(trimmingpositions[0], trimmingpositions[1] - 1);
-
   }
 
 
