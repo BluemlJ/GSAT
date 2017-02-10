@@ -146,7 +146,7 @@ public class ParameterWindow extends Application implements javafx.fxml.Initiali
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-				SettingsWindow.subsettingsOpen = false;
+				SettingsWindow.addParametersOpen = false;
 				Stage stage = (Stage) cancelButton.getScene().getWindow();
 				stage.close();
 			}
@@ -155,7 +155,7 @@ public class ParameterWindow extends Application implements javafx.fxml.Initiali
 		cancelButton.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent arg0) {
-				SettingsWindow.subsettingsOpen = false;
+				SettingsWindow.addParametersOpen = false;
 				Stage stage = (Stage) cancelButton.getScene().getWindow();
 				stage.close();
 
@@ -183,14 +183,14 @@ public class ParameterWindow extends Application implements javafx.fxml.Initiali
 
 			@Override
 			public void handle(WindowEvent arg0) {
-				SettingsWindow.subsettingsOpen = false;
+				SettingsWindow.addParametersOpen = false;
 			}
 		});
 	}
 
 	@Override
 	public void stop() throws Exception {
-		SettingsWindow.subsettingsOpen = false;
+		SettingsWindow.addParametersOpen = false;
 		super.stop();
 	}
 }

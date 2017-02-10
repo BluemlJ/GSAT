@@ -67,13 +67,15 @@ public class MutationAnalysis {
 			String oldAminoAcid;
 			String codonsOfNew;
 
+			int firstNucleotidePos = (position - 1) * 3;
+			
 			switch (typeOfMutations) {
 			// s = substitution, normal mutation of one aminoAcid
 			case "s":
 				newAminoAcid = difference.split("\\|")[2];
 				oldAminoAcid = difference.split("\\|")[3];
-				if(toAnalyze.getSequence().length() > (position-1)*3+3){
-				codonsOfNew = toAnalyze.getSequence().substring((position - 1) * 3, (position - 1) * 3 + 3);
+				if(toAnalyze.getSequence().length() > firstNucleotidePos + 3){ 
+				codonsOfNew = toAnalyze.getSequence().substring(firstNucleotidePos, firstNucleotidePos + 3);
 				toAnalyze.addMutation(oldAminoAcid + position + newAminoAcid + " (" + codonsOfNew + ")");
 				}else
 				toAnalyze.addMutation(oldAminoAcid + position + newAminoAcid);
@@ -85,8 +87,8 @@ public class MutationAnalysis {
 			case "i":
 				shift--;
 				newAminoAcid = difference.split("\\|")[2];
-				if(toAnalyze.getSequence().length() > (position-1)*3+3){
-				codonsOfNew = toAnalyze.getSequence().substring((position - 1) * 3, (position - 1) * 3 + 3);
+				if(toAnalyze.getSequence().length() > firstNucleotidePos + 3){
+				codonsOfNew = toAnalyze.getSequence().substring(firstNucleotidePos, firstNucleotidePos + 3);
 				toAnalyze.addMutation("+1" + newAminoAcid + position + " (" + codonsOfNew + ")");
 				}else 
 					toAnalyze.addMutation("+1" + newAminoAcid + position);
@@ -97,8 +99,8 @@ public class MutationAnalysis {
 			case "d":
 				shift++;
 				oldAminoAcid = difference.split("\\|")[2];
-				if(toAnalyze.getSequence().length() > (position-1)*3+3){
-					codonsOfNew = toAnalyze.getSequence().substring((position - 1) * 3, (position - 1) * 3 + 3);
+				if(toAnalyze.getSequence().length() > firstNucleotidePos + 3){
+					codonsOfNew = toAnalyze.getSequence().substring(firstNucleotidePos, firstNucleotidePos + 3);
 					toAnalyze.addMutation("-1" + oldAminoAcid + position + " (" + codonsOfNew + ")");
 					}else 
 						toAnalyze.addMutation("-1" + oldAminoAcid + position);

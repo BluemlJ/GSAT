@@ -84,7 +84,7 @@ public class GUIUtils {
       return new Pair<Boolean, Text>(false,
          new Text( "Reading researchers from config.txt was unsuccessful\n" + e.getMessage()));
     }
-    dropdown.setItems(FXCollections.observableArrayList(ConfigHandler.getSortedResearchers()));
+    dropdown.setItems(FXCollections.observableArrayList(ConfigHandler.getSortedResearcherList()));
     dropdown.getSelectionModel().select(ConfigHandler.getResearcher());
     return new Pair<Boolean, Text>(true, new Text("Reading researchers from config.txt was successful"));
   }

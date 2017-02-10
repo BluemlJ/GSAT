@@ -28,7 +28,7 @@ import javafx.stage.WindowEvent;
 
 public class SettingsWindow extends Application implements javafx.fxml.Initializable {
 
-  public static boolean subsettingsOpen = false;
+  public static boolean addParametersOpen = false;
 
 
 
@@ -57,15 +57,11 @@ public class SettingsWindow extends Application implements javafx.fxml.Initializ
   private Button deleteResearcherButton;
 
   private Scene scene;
-
-  private SettingsWindow self;
   
   private int numGeneWindows = 0; 
 
   @Override
   public void initialize(URL location, ResourceBundle resources) {
-
-    self = this;
 
     GUIUtils.initializeResearchers(researcherDrobdown);
     GUIUtils.initializeGeneBox(geneList);
@@ -97,8 +93,8 @@ public class SettingsWindow extends Application implements javafx.fxml.Initializ
     parameterButton.setOnAction(new EventHandler<ActionEvent>() {
       @Override
       public void handle(ActionEvent arg0) {
-        if (!subsettingsOpen) {
-          subsettingsOpen = true;
+        if (!addParametersOpen) {
+          addParametersOpen = true;
           ParameterWindow settings = new ParameterWindow();
           try {
             settings.start(new Stage());
@@ -113,9 +109,9 @@ public class SettingsWindow extends Application implements javafx.fxml.Initializ
     databaseButton.setOnAction(new EventHandler<ActionEvent>() {
       @Override
       public void handle(ActionEvent arg0) {
-        if (!subsettingsOpen) {
-          System.err.println(subsettingsOpen);
-          subsettingsOpen = true;
+        if (!addParametersOpen) {
+          System.err.println(addParametersOpen);
+          addParametersOpen = true;
           DatabaseSettingsWindow settings = new DatabaseSettingsWindow();
           try {
             settings.start(new Stage());
@@ -129,12 +125,12 @@ public class SettingsWindow extends Application implements javafx.fxml.Initializ
     });
 
 
+    SettingsWindow self = this;
     addGeneButton.setOnAction(new EventHandler<ActionEvent>() {
       @Override
       public void handle(ActionEvent arg0) {
 
         numGeneWindows++;
-
 
         try {
           final FXMLLoader loader =

@@ -26,7 +26,7 @@ public class FileSaver {
    */
   private static String destinationFileName = "gsat_results";
 
-
+  private static final char SEPARATOR_CHAR = ';';
 
   /**
    * Indicating whether this is the first call of the storage method in the current storage process.
@@ -158,26 +158,26 @@ public class FileSaver {
     StringBuilder builder = new StringBuilder();
     
     // id
-    builder.append(id).append("; ");
+    builder.append(id).append(SEPARATOR_CHAR + " ");
     
     // file name
     String fileName = sequence.getFileName();
-    builder.append(fileName).append("; ");
+    builder.append(fileName).append(SEPARATOR_CHAR + " ");
     
     // gene
     String geneName = sequence.getReferencedGene().getName();
-    builder.append(geneName).append("; ");
+    builder.append(geneName).append(SEPARATOR_CHAR + " ");
     
     // gene organism
     String organism = sequence.getReferencedGene().getOrganism();
-    builder.append(organism).append("; ");
+    builder.append(organism).append(SEPARATOR_CHAR + " ");
     
     // mutations (with nucleotide codons)
     LinkedList<String> mutations = sequence.getMutations();
     int numberOfMutations = sequence.getMutations().size();
     
     if (numberOfMutations == 0)
-    	builder.append("; ");
+    	builder.append(SEPARATOR_CHAR + " ");
     else {
 	    for (int i = 0; i < numberOfMutations; i++) {
 	      
@@ -186,58 +186,58 @@ public class FileSaver {
 	      if (i < numberOfMutations - 1) {
 	        builder.append(", ");
 	      } else {
-	        builder.append("; ");
+	        builder.append(SEPARATOR_CHAR + " ");
 	      }
 	    }
     }
     // comments
     // As ';' is the seperator charachter, each inital semicolon is replaced
-    String comments = sequence.getComments().replace(';', ',');
-    builder.append(comments).append("; ");
+    String comments = sequence.getComments().replace(SEPARATOR_CHAR, ',');
+    builder.append(comments).append(SEPARATOR_CHAR + " ");
     
     // researcher
     String researcher = sequence.getResearcher();
-    builder.append(researcher).append("; ");
+    builder.append(researcher).append(SEPARATOR_CHAR + " ");
     
     // date
     String addingDate = sequence.getAddingDate();
-    builder.append(addingDate).append("; ");
+    builder.append(addingDate).append(SEPARATOR_CHAR + " ");
     
     // average quality
     double avgQuality = sequence.getAvgQuality();
     int avgQualityInPercent = (int) (Math.pow(10, (-avgQuality)/10.0) * 100);
-    builder.append(avgQualityInPercent).append("; ");
+    builder.append(avgQualityInPercent).append(SEPARATOR_CHAR + " ");
     
     // trim percentage
     int trimPercentage = (int) (sequence.getTrimPercentage() * 100);
-    builder.append(trimPercentage).append("; ");
+    builder.append(trimPercentage).append(SEPARATOR_CHAR + " ");
     
     // nucleotides
     String nucleotides = sequence.getSequence();
-    builder.append(nucleotides).append("; ");
+    builder.append(nucleotides).append(SEPARATOR_CHAR + " ");
     
     // left vector
     String leftVector = sequence.getLeftVector();
-    builder.append(leftVector).append("; ");
+    builder.append(leftVector).append(SEPARATOR_CHAR + " ");
     
     // right vector
     String rightVector = sequence.getRightVector();
-    builder.append(rightVector).append("; ");
+    builder.append(rightVector).append(SEPARATOR_CHAR + " ");
     
     // primer
     String primer = sequence.getPrimer();
     if (primer == null)
-      builder.append(" ; ");
+      builder.append(" " + SEPARATOR_CHAR + " ");
     else
-      builder.append(primer).append("; ");
+      builder.append(primer).append(SEPARATOR_CHAR + " ");
     
     // his tag
     // The his tag position starts with 1 in the stored result.
     int hisTagPosition = sequence.getHisTagPosition();
     if (hisTagPosition == -1)
-      builder.append("none; ");
+      builder.append("none" + SEPARATOR_CHAR + " ");
     else
-      builder.append((hisTagPosition + 1) + "; ");
+      builder.append((hisTagPosition + 1) + SEPARATOR_CHAR + " ");
     
     
     // mutations without nucleotide codons
@@ -255,7 +255,7 @@ public class FileSaver {
 	        if (i < numberOfMutations - 1) {
 	          builder.append(", ");
 	        } else {
-	          builder.append("; ");
+	          builder.append(SEPARATOR_CHAR + " ");
 	        }
 	     }
      }
@@ -324,7 +324,8 @@ public class FileSaver {
 
     if (!append) {
       writer.write(
-        "id; file name; gene; gene organism; mutations (with codons); comments; researcher; date; average quality (percent); percentage of quality trim; nucleotide sequence; left vector; right vector; primer; HIS tag; mutations (without codons); manually checked"
+        "id" + SEPARATOR_CHAR + " file name" + SEPARATOR_CHAR + " gene" + SEPARATOR_CHAR + " gene organism"
+        + SEPARATOR_CHAR + "mutations (with codons)" + SEPARATOR_CHAR + " comments" + SEPARATOR_CHAR + " researcher" + SEPARATOR_CHAR + " date" + SEPARATOR_CHAR + " average quality (percent)" + SEPARATOR_CHAR +" percentage of quality trim" + SEPARATOR_CHAR + " nucleotide sequence" + SEPARATOR_CHAR +" left vector" + SEPARATOR_CHAR + " right vector"+ SEPARATOR_CHAR +" primer"+ SEPARATOR_CHAR +" HIS tag; mutations (without codons)" + SEPARATOR_CHAR + " manually checked"
               + System.lineSeparator());
     }
 

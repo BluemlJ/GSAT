@@ -145,21 +145,21 @@ public class ConfigTests {
   public void testMultipleUsersConfigRead()
       throws IOException, ConfigReadException, ConfigNotFoundException {
     ConfigHandler.setResearcher(null);
-    ConfigHandler.setResearchers(null);
+    ConfigHandler.setResearcherList(null);
     File path = new File("resources/lh_config/config.txt");
     ConfigHandler.setPath(path.getAbsolutePath());
     ConfigHandler.readConfig();
-    assertEquals(ConfigHandler.getResearchers()[0], "lovis heindrich");
-    assertEquals(ConfigHandler.getResearchers()[1], "jannis blueml");
-    assertEquals(ConfigHandler.getResearchers()[2], "kevin otto");
-    assertEquals(ConfigHandler.getResearchers()[3], "ben Kohr");
+    assertEquals(ConfigHandler.getResearcherList()[0], "lovis heindrich");
+    assertEquals(ConfigHandler.getResearcherList()[1], "jannis blueml");
+    assertEquals(ConfigHandler.getResearcherList()[2], "kevin otto");
+    assertEquals(ConfigHandler.getResearcherList()[3], "ben Kohr");
     assertEquals(ConfigHandler.getResearcher(), "lovis heindrich");
   }
 
   @Test
   public void testConfigWriting() throws ConfigReadException, ConfigNotFoundException, IOException {
     ConfigHandler.setResearcher(null);
-    ConfigHandler.setResearchers(null);
+    ConfigHandler.setResearcherList(null);
 
     // read config
     File path = new File("resources/lh_config/config.txt");
@@ -168,31 +168,31 @@ public class ConfigTests {
 
     // change config parameters and write them to the file
     ConfigHandler.setResearcher("testresearcher1");
-    ConfigHandler.setResearchers("testresearcher2", 1);
+    ConfigHandler.setResearcherInResearcherList("testresearcher2", 1);
     ConfigHandler.writeConfig();
 
     // reread configuration file
     ConfigHandler.setResearcher(null);
-    ConfigHandler.setResearchers(null);
+    ConfigHandler.setResearcherList(null);
     ConfigHandler.readConfig();
 
     // check for changed parameters
     assertEquals(ConfigHandler.getResearcher(), "testresearcher1");
-    assertEquals(ConfigHandler.getResearchers()[1], "testresearcher2");
+    assertEquals(ConfigHandler.getResearcherList()[1], "testresearcher2");
 
     // change parameters back
     ConfigHandler.setResearcher("lovis heindrich");
-    ConfigHandler.setResearchers("jannis blueml", 1);
+    ConfigHandler.setResearcherInResearcherList("jannis blueml", 1);
     ConfigHandler.writeConfig();
 
     // reread configuration file
     ConfigHandler.setResearcher(null);
-    ConfigHandler.setResearchers(null);
+    ConfigHandler.setResearcherList(null);
     ConfigHandler.readConfig();
 
     // check for old values
     assertEquals(ConfigHandler.getResearcher(), "lovis heindrich");
-    assertEquals(ConfigHandler.getResearchers()[1], "jannis blueml");
+    assertEquals(ConfigHandler.getResearcherList()[1], "jannis blueml");
   }
   
   @Test
@@ -221,9 +221,9 @@ public class ConfigTests {
   @Test
   public void testAddResearcher() {
     String[] res = {"res1", "res2"};
-    ConfigHandler.setResearchers(res);
+    ConfigHandler.setResearcherList(res);
     ConfigHandler.addResearcher("res3");
-    res = ConfigHandler.getResearchers();
+    res = ConfigHandler.getResearcherList();
     assertEquals(res[0], "res1");
     assertEquals(res[1], "res2");
     assertEquals(res[2], "res3");
@@ -235,9 +235,9 @@ public class ConfigTests {
   @Test
   public void testDeleteResearcher() {
     String[] res = {"res1", "res2", "res3", "res4"};
-    ConfigHandler.setResearchers(res);
+    ConfigHandler.setResearcherList(res);
     ConfigHandler.deleteResearcher("res2");
-    res = ConfigHandler.getResearchers();
+    res = ConfigHandler.getResearcherList();
     assertEquals(res[0], "res1");
     assertEquals(res[1], "res3");
     assertEquals(res[2], "res4");

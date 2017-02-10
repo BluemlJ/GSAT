@@ -39,7 +39,7 @@ public class DatabaseSettingsWindow extends Application implements javafx.fxml.I
 
       @Override
       public void handle(WindowEvent arg0) {
-        SettingsWindow.subsettingsOpen = false;
+        SettingsWindow.addParametersOpen = false;
 
       }
     });

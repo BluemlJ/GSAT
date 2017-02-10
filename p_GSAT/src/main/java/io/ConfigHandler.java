@@ -22,7 +22,7 @@ public class ConfigHandler {
   private static String path =
       System.getProperty("user.home") + File.separator + "gsat" + File.separator + "config.txt";
   private static String researcher = "-";
-  private static String[] researchers = {"-"};
+  private static String[] researcherList = {"-"};
 
   // DB connection values
   private static String dbUrl = "130.83.37.145";
@@ -41,7 +41,7 @@ public class ConfigHandler {
   /**
    * char used for separating values in the configuration file
    */
-  private final static String SEPARATOR = ";";
+  private final static String SEPARATOR_CHAR = ";";
 
 
 
@@ -62,54 +62,58 @@ public class ConfigHandler {
     }
     String line = null;
     while ((line = configReader.readLine()) != null) {
-      String[] elements = line.split(SEPARATOR);
-      switch (elements[0]) {
+      String[] elements = line.split(SEPARATOR_CHAR);
+      
+      String key = elements[0];
+      String value = elements[1].trim();
+      
+      switch (key) {
         case "researcher":
           ConfigHandler.researcher = elements[1].trim();
           break;
         case "researchers":
-          ConfigHandler.researchers = Arrays.copyOfRange(elements, 1, elements.length);
-          for (int i = 0; i < ConfigHandler.researchers.length; i++) {
-            ConfigHandler.researchers[i] = ConfigHandler.researchers[i].trim();
+          ConfigHandler.researcherList = Arrays.copyOfRange(elements, 1, elements.length);
+          for (int i = 0; i < ConfigHandler.researcherList.length; i++) {
+            ConfigHandler.researcherList[i] = ConfigHandler.researcherList[i].trim();
           }
           break;
           
         // DB Login
         case "dbUser":
-          ConfigHandler.setDbUser(elements[1].trim());
+          ConfigHandler.setDbUser(value);
           break;
         case "dbPass":
-          ConfigHandler.setDbPass(elements[1].trim());
+          ConfigHandler.setDbPass(value);
           break;
         case "dbUrl":
-          ConfigHandler.setDbUrl(elements[1].trim());
+          ConfigHandler.setDbUrl(value);
           break;
         case "dbPort":
-          ConfigHandler.setDbPort(Integer.parseInt(elements[1].trim()));
+          ConfigHandler.setDbPort(Integer.parseInt(value));
           break;
           
         //Quality analysis parameters  
         case "avgApproximationStart":
-        	ConfigHandler.setAvgApproximationStart(Integer.parseInt(elements[1].trim()));
+        	ConfigHandler.setAvgApproximationStart(Integer.parseInt(value));
         	break;
         case "avgApproximationEnd":
-        	ConfigHandler.setAvgApproximationEnd(Integer.parseInt(elements[1].trim()));
+        	ConfigHandler.setAvgApproximationEnd(Integer.parseInt(value));
         	break;
         case "avgQualityEdge":
-        	ConfigHandler.setAvgQualityEdge(Integer.parseInt(elements[1].trim()));
+        	ConfigHandler.setAvgQualityEdge(Integer.parseInt(value));
         	break;
 
         case "breakcounter":
-        	ConfigHandler.setBreakcounter(Integer.parseInt(elements[1].trim()));
+        	ConfigHandler.setBreakcounter(Integer.parseInt(value));
         	break;
         case "numAverageNucleotides":
-        	ConfigHandler.setNumAverageNucleotides(Integer.parseInt(elements[1].trim()));
+        	ConfigHandler.setNumAverageNucleotides(Integer.parseInt(value));
         	break;
         case "startcounter":
-        	ConfigHandler.setStartcounter(Integer.parseInt(elements[1].trim()));
+        	ConfigHandler.setStartcounter(Integer.parseInt(value));
         	break;
         default:
-          throw new ConfigReadException(elements[0]);
+          throw new ConfigReadException(key);
 
       }
     }
@@ -180,61 +184,61 @@ public class ConfigHandler {
     BufferedWriter configWriter = new BufferedWriter(new FileWriter(path));
 
     // write researcher
-    configWriter.write("researcher" + SEPARATOR + researcher);
+    configWriter.write("researcher" + SEPARATOR_CHAR + researcher);
     configWriter.write(System.getProperty("line.separator"));
 
     // write researchers
     configWriter.write("researchers");
-    for (String res : researchers) {
-      configWriter.write(SEPARATOR);
+    for (String res : researcherList) {
+      configWriter.write(SEPARATOR_CHAR);
       configWriter.write(res);
     }
     configWriter.write(System.getProperty("line.separator"));
     
     //write DB data
     
-    configWriter.write("dbUrl" + SEPARATOR + dbUrl);
+    configWriter.write("dbUrl" + SEPARATOR_CHAR + dbUrl);
     configWriter.write(System.getProperty("line.separator"));
-    configWriter.write("dbUser" + SEPARATOR + dbUser);
+    configWriter.write("dbUser" + SEPARATOR_CHAR + dbUser);
     configWriter.write(System.getProperty("line.separator"));
-    configWriter.write("dbPass" + SEPARATOR + dbPass);
+    configWriter.write("dbPass" + SEPARATOR_CHAR + dbPass);
     configWriter.write(System.getProperty("line.separator"));
-    configWriter.write("dbPort" + SEPARATOR + dbPort);
+    configWriter.write("dbPort" + SEPARATOR_CHAR + dbPort);
     configWriter.write(System.getProperty("line.separator"));
 
     //write quality parameter
 
-    configWriter.write("avgApproximationStart" + SEPARATOR + avgApproximationStart);
+    configWriter.write("avgApproximationStart" + SEPARATOR_CHAR + avgApproximationStart);
     configWriter.write(System.getProperty("line.separator"));
-    configWriter.write("avgApproximationEnd" + SEPARATOR + avgApproximationEnd);
+    configWriter.write("avgApproximationEnd" + SEPARATOR_CHAR + avgApproximationEnd);
     configWriter.write(System.getProperty("line.separator"));
-    configWriter.write("avgQualityEdge" + SEPARATOR + avgQualityEdge);
+    configWriter.write("avgQualityEdge" + SEPARATOR_CHAR + avgQualityEdge);
     configWriter.write(System.getProperty("line.separator"));
-    configWriter.write("breakcounter" + SEPARATOR + breakcounter);
+    configWriter.write("breakcounter" + SEPARATOR_CHAR + breakcounter);
     configWriter.write(System.getProperty("line.separator"));
-    configWriter.write("numAverageNucleotides" + SEPARATOR + numAverageNucleotides);
+    configWriter.write("numAverageNucleotides" + SEPARATOR_CHAR + numAverageNucleotides);
     configWriter.write(System.getProperty("line.separator"));
-    configWriter.write("startcounter" + SEPARATOR + startcounter);
+    configWriter.write("startcounter" + SEPARATOR_CHAR + startcounter);
     configWriter.write(System.getProperty("line.separator"));
     
     configWriter.close();
   }
 
-  public static String[] getSortedResearchers() {
-    Arrays.sort(researchers);
-    return researchers;
+  public static String[] getSortedResearcherList() {
+    Arrays.sort(researcherList);
+    return researcherList;
   }
 
-  public static String[] getResearchers() {
-    return researchers;
+  public static String[] getResearcherList() {
+    return researcherList;
   }
 
-  public static void setResearchers(String[] researchers) {
-    ConfigHandler.researchers = researchers;
+  public static void setResearcherList(String[] researchers) {
+    ConfigHandler.researcherList = researchers;
   }
 
-  public static void setResearchers(String researcher, int i) {
-    ConfigHandler.researchers[i] = researcher;
+  public static void setResearcherInResearcherList(String researcher, int i) {
+    ConfigHandler.researcherList[i] = researcher;
   }
 
   public static String getResearcher() {
@@ -251,12 +255,12 @@ public class ConfigHandler {
    * @param name name of the new researcher
    */
   public static void addResearcher(String name) {
-    String newResearchers[] = new String[researchers.length + 1];
-    for (int i = 0; i < researchers.length; i++) {
-      newResearchers[i] = researchers[i];
+    String newResearchers[] = new String[researcherList.length + 1];
+    for (int i = 0; i < researcherList.length; i++) {
+      newResearchers[i] = researcherList[i];
     }
-    newResearchers[researchers.length] = name;
-    researchers = newResearchers;
+    newResearchers[researcherList.length] = name;
+    researcherList = newResearchers;
 
     // sort researchers
     // Arrays.sort(researchers);
@@ -268,16 +272,16 @@ public class ConfigHandler {
    * @param name name of the researcher which will be deleted
    */
   public static void deleteResearcher(String name) {
-    String newResearchers[] = new String[researchers.length - 1];
+    String newResearchers[] = new String[researcherList.length - 1];
     int j = 0;
-    for (int i = 0; i < researchers.length; i++) {
-      if (!researchers[i].equals(name)) {
-        newResearchers[j] = researchers[i];
+    for (int i = 0; i < researcherList.length; i++) {
+      if (!researcherList[i].equals(name)) {
+        newResearchers[j] = researcherList[i];
         j++;
       }
     }
     researcher = "";
-    researchers = newResearchers;
+    researcherList = newResearchers;
   }
 
   // TODO @Lovis
