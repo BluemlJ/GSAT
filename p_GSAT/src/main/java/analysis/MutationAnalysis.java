@@ -13,11 +13,17 @@ import exceptions.UndefinedTypeOfMutationException;
  */
 public class MutationAnalysis {
 
-  // boolean if there is a possible reading frame error is detected
+  /**
+   * boolean if there is a possible reading frame error is detected
+   */
   public static boolean readingFrameError = false;
-  // how many bad qualtity nucleotides before we stop analysing
+  /**
+   * how many bad qualtity nucleotides before we stop analysing
+   */
   public static int readingFrameErrorBorder = 100;
-  // A Integer, that specifies the border for the "Reading Frame Error"
+  /**
+   * A Integer, that specifies the border for the "Reading Frame Error"
+   */
   public static int warningReadingFrameError = 10;
 
 

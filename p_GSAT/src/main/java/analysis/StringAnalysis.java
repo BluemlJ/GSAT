@@ -12,11 +12,13 @@ import exceptions.CorruptedSequenceException;
  * This class contains the logic of analyzing sequence strings. This class serves for
  * MutationAnaysis by providing useful String Matching methods.
  * 
+ * @author jannis blueml
  */
 public class StringAnalysis {
 
-  // A Map with all possible RNA and DNA codons with the matched AminoAcid in
-  // shortform.
+  /**
+   * A Map with all possible RNA and DNA codons with the matched AminoAcid in short form.
+   */
   public static final Map<String, String> AMINO_ACID_SHORTS;
   static {
     Hashtable<String, String> tmp = new Hashtable<String, String>();
@@ -160,8 +162,12 @@ public class StringAnalysis {
     AMINO_ACID_SHORTS = Collections.unmodifiableMap(tmp);
   }
 
-
-
+  /**
+   * 
+   * @param input
+   * @param length
+   * @return
+   */
   public static String appentStringToLength(String input, int length) {
     if (length - input.length() > 0) {
       String expand = new String(new char[length - input.length()]).replace('\0', ' ');
@@ -221,14 +227,22 @@ public class StringAnalysis {
 
 
   /**
+   * This method checks if the complementary and/or the reverse gene has a better similarity with
+   * the mutated sequence the the original gene. If this so set reference gene of sequence to the
+   * best similarity.
    * 
-   * @param toAnalyse
-   * @throws CorruptedSequenceException
-   * @author bluemlj
+   * @see CorruptedSequenceException
+   * 
+   * @param toAnalyse the sequence to check
+   * @throws CorruptedSequenceException if complementary cant be build
+   * @author jannis blueml
+   * 
    */
   public static void checkComplementAndReverse(AnalysedSequence toAnalyse)
       throws CorruptedSequenceException {
+    // initialize with standard sequence
     double bestSimilarity = checkSimilarity(toAnalyse, toAnalyse.getReferencedGene());
+    // checks complementary sequence
     double toTest = checkSimilarity(toAnalyse.getComplementarySequence(),
         toAnalyse.getReferencedGene().getSequence());
     if (toTest > bestSimilarity) {
@@ -236,6 +250,7 @@ public class StringAnalysis {
       toAnalyse.setSequence(toAnalyse.getComplementarySequence());
       bestSimilarity = toTest;
     }
+    // checks reverse sequence
     toTest = checkSimilarity(toAnalyse.getReversedSequence(),
         toAnalyse.getReferencedGene().getSequence());
     if (toTest > bestSimilarity) {
@@ -244,6 +259,7 @@ public class StringAnalysis {
       toAnalyse.reverseQuality();
       bestSimilarity = toTest;
     }
+    // checks complementary and reversed sequence
     toTest = checkSimilarity(toAnalyse.getComplementarySequence(toAnalyse.getReversedSequence()),
         toAnalyse.getReferencedGene().getSequence());
     if (toTest > bestSimilarity) {
@@ -257,11 +273,13 @@ public class StringAnalysis {
 
 
   /**
+   * This method is used when the gene is not the referenced gene in the AnalysedSequence Note: This
+   * method overrides the old referenced gene with the given gene
    * 
-   * @param toAnalyse
-   * @param gene
+   * @param toAnalyse the sequence to check
+   * @param gene the gene you reference to.
    * @throws CorruptedSequenceException
-   * @author bluemlj
+   * @author jannis blueml
    */
   public static void checkComplementAndReverse(AnalysedSequence toAnalyse, Gene gene)
       throws CorruptedSequenceException {
@@ -306,7 +324,7 @@ public class StringAnalysis {
    * @param nucleotides the sequence presented by nucleotides
    * @return the sequence presented by aminoAcid (shorts)
    * 
-   * @author bluemlj
+   * @author jannis blueml
    */
   public static String codonsToAminoAcids(String nucleotides) {
     nucleotides = nucleotides.toUpperCase();
@@ -331,12 +349,6 @@ public class StringAnalysis {
         else {
           builder.append("X");
         }
-        /*
-         * int index; if (!codon.matches("[ATCGU]..")) { index = 0; } else if
-         * (!codon.matches(".[ATCGU].")) { index = 1; } else { index = 2; }
-         * 
-         * throw new CorruptedSequenceException(i + index, codon.charAt(index), nucleotides); }
-         */
       }
     } else
       return "nucleotides not modulo 3, so not convertable";
@@ -389,26 +401,29 @@ public class StringAnalysis {
         }
       }
     }
-
-    /*
-     * while (!matches.isEmpty()) { System.out.println(matches.pollFirstEntry().getValue().value);
-     * 
-     * }
-     */
-
     return matches.pollLastEntry().getValue();
   }
 
-
-  public static int findHISTag(AnalysedSequence tA) {
+  /**
+   * This method finds the position of the HIS-Tags in the gene.
+   * 
+   * @param toAnalyze the sequence to analyse
+   * @return returns the startposition of the HIS-Tags. This is relative to the beginning of the
+   *         sequence.
+   * @author jannis blueml
+   */
+  public static int findHISTag(AnalysedSequence toAnalyze) {
+    // initialize result and sequence in form of amino acids
     int result = -1;
-    char[] seq = StringAnalysis.codonsToAminoAcids(tA.getSequence()).toCharArray();
+    char[] seq = StringAnalysis.codonsToAminoAcids(toAnalyze.getSequence()).toCharArray();
     int counter = 1;
-
+    // start at the end and count the HIS (H) amino acids
     while (seq.length - counter - 1 > 0 && seq[seq.length - counter - 1] == 'H') {
       counter++;
     }
-    if (counter > 5) result = tA.getSequence().length() + tA.getLeftVector().length() - counter * 3;
+    // if counter greater 5 we got a HISTag.
+    if (counter > 5)
+      result = toAnalyze.getSequence().length() + toAnalyze.getLeftVector().length() - counter * 3;
     return result;
   }
 
@@ -421,7 +436,7 @@ public class StringAnalysis {
    * 
    * @return The found gene.
    * 
-   * @author bluemlj
+   * @author jannis blueml, lovis heindrich
    */
   public static Pair<Gene, Double> findRightGene(AnalysedSequence toAnalyze) {
     // TODO call findRightGene(sequence, listOfGenes) with listOfGenes with
@@ -436,7 +451,7 @@ public class StringAnalysis {
    * @param toAnalyze The sequence, we compare with the list of genes
    * @param listOfGenes A list of all genes, we want to compare with the sequence
    * @return the gene, that has the best similarity
-   * @author bluemlj
+   * @author jannis blueml
    */
   public static Gene findRightGene(AnalysedSequence toAnalyze, ArrayList<Gene> listOfGenes) {
     Gene bestgene = listOfGenes.get(0);
@@ -455,21 +470,6 @@ public class StringAnalysis {
   }
 
 
-  /**
-   * Finds the gene that fits best to a given sequence by comparing it to all given genes. Known
-   * genes can be found in the local dataset.
-   * 
-   * @param toAnalyze Sequence to be analyzed (i.e. for which the fitting gene is to find)
-   * 
-   * @return The found gene.
-   * 
-   * @author bluemlj
-   */
-  public static Pair<Gene, Double> findRightGeneLocal(AnalysedSequence toAnalyze) {
-    // TODO call findRightGene(sequence, listOfGenes) with listOfGenes with
-    // a database sysout export
-    return null;
-  }
 
 
   public static int findStopcodonPosition(AnalysedSequence toAnalyze) {
