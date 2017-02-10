@@ -13,6 +13,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.LinkedList;
 
+import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -99,6 +100,12 @@ public class WritingTests {
 
   }
 
+  @AfterClass
+  public static void rightNewFile() throws IOException {
+	  File newFile = new File(path + "test.txt");
+	  newFile.createNewFile(); 
+  }
+  
   /**
    * This method resets the state of the DatabaseConnection before a new test starts to get equal
    * test circumstances.
