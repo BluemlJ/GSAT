@@ -97,6 +97,8 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
     FileSaver.setSeparateFiles(false);
     GUIUtils.setColorOnNode(startButton, Color.BLUE);
     GUIUtils.setColorOnNode(settingsButton, Color.BLUE);
+    GUIUtils.setColorOnNode(manualButton, Color.BLUE);
+    GUIUtils.setColorOnNode(aboutButton, Color.BLUE);
     
     Pair<Boolean, String> output;
     //infoArea.setText("Welcome to GSAT! \n");

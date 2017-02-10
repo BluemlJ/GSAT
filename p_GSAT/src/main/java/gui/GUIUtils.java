@@ -375,35 +375,47 @@ public class GUIUtils {
   
   public static void setColorOnNode(Node node, Color color) {
 	  
+	  // the upper color is the lighter one
 	  String normalColor1 = "";
 	  String normalColor2 = "";
+	  
 	  String hoverColor1 = "";
 	  String hoverColor2 = "";
+	  
+	  String pressedColor1 = "";
+	  String pressedColor2 = "";
+	  
 	  switch(color) {
 	  	case GREEN:
-	  		normalColor1 = "rgb(184,239,54)";
-	  		normalColor2 = "rgb(128,200,1)";
-	  		hoverColor1 = "rgb(205,243,114)";
-	  		hoverColor2 = "rgb(166,216,77)";
+	  		normalColor1 = "rgb(209,243,191)";
+	  		normalColor2 = "rgb(179,235,149)";
+	  		hoverColor1 = "rgb(222,246,210)";
+	  		hoverColor2 = "rgb(201,241,180)";
+	  		pressedColor1 = "rgb(188,218,171)";
+	  		pressedColor2 = "rgb(161,211,134)";
 	  		break;
 	  	case RED:
-	  		normalColor1 = "rgb(251,117,117)";
-	  		normalColor2 = "rgb(255,40,40)";
-	  		hoverColor1 = "rgb(252,158,158)";
-	  		hoverColor2 = "rgb(255,104,104)";
+	  		normalColor1 = "rgb(255,169,169)";
+	  		normalColor2 = "rgb(255,113,113)";
+	  		hoverColor1 = "rgb(255,194,194)";
+	  		hoverColor2 = "rgb(255,155,155)";
+	  		pressedColor1 = "rgb(229,152,152)";
+	  		pressedColor2 = "rgb(229,101,101)";
 	  		break;
 	  	case BLUE:
-	  		normalColor1 = "rgb(60,204,204)";
-	  		normalColor2 = "rgb(50,153,255)";
-	  		hoverColor1 = "rgb(118,219,219)";
-	  		hoverColor2 = "rgb(90,173,255)";
+	  		normalColor1 = "rgb(177,177,255)";
+	  		normalColor2 = "rgb(125,125,255)";
+	  		hoverColor1 = "rgb(200,200,255)";
+	  		hoverColor2 = "rgb(164,164,255)";
+	  		pressedColor1 = "rgb(159,159,229)";
+	  		pressedColor2 = "rgb(112,112,229)";
 	  		break;
 	  }
 
 	  
 	  String normalStyle = "-fx-background-color: radial-gradient(center 50% -39%, radius 200%, " + normalColor1 + " 45%, " + normalColor2 + " 50%); -fx-border-color: gray; -fx-border-radius: 3px;";
 	  String hoverStyle = "-fx-background-color: radial-gradient(center 50% -39%, radius 200%, " + hoverColor1 + " 45%, " + hoverColor2 + " 50%); -fx-border-color: gray; -fx-border-radius: 3px;";
-	  
+	  String pressedStyle = "-fx-background-color: radial-gradient(center 50% -39%, radius 200%, " + pressedColor1 + " 45%, " + pressedColor2 + " 50%); -fx-border-color: gray; -fx-border-radius: 3px;";
 	  
 	  node.setStyle(normalStyle);
 	  node.setOnMouseEntered(new EventHandler<MouseEvent>() {
@@ -418,8 +430,49 @@ public class GUIUtils {
 	        	node.setStyle(normalStyle);
 	        }   
 	    });
+	  node.setOnMousePressed(new EventHandler<MouseEvent>() {
+	        @Override
+	        public void handle(MouseEvent t) {
+	        	node.setStyle(pressedStyle);
+	        }   
+	    });
+	  node.setOnMouseReleased(new EventHandler<MouseEvent>() {
+	        @Override
+	        public void handle(MouseEvent t) {
+	        	node.setStyle(hoverStyle);
+	        }   
+	    });
   	
   }
+  
+  /*
+   
+   case GREEN:
+	  		normalColor1 = "rgb(184,239,54)";
+	  		normalColor2 = "rgb(128,200,1)";
+	  		hoverColor1 = "rgb(205,243,114)";
+	  		hoverColor2 = "rgb(166,216,77)";
+	  		pressedColor1 = "rgb(184,239,54)";
+	  		pressedColor2 = "rgb(128,200,1)";
+	  		break;
+	  	case RED:
+	  		normalColor1 = "rgb(251,117,117)";
+	  		normalColor2 = "rgb(255,40,40)";
+	  		hoverColor1 = "rgb(252,158,158)";
+	  		hoverColor2 = "rgb(255,104,104)";
+	  		pressedColor1 = "rgb(251,117,117)";
+	  		pressedColor2 = "rgb(255,40,40)";
+	  		break;
+	  	case BLUE:
+	  		normalColor1 = "rgb(60,204,204)";
+	  		normalColor2 = "rgb(50,153,255)";
+	  		hoverColor1 = "rgb(118,219,219)";
+	  		hoverColor2 = "rgb(90,173,255)";
+	  		pressedColor1 = "rgb(60,204,204)";
+	  		pressedColor2 = "rgb(50,153,255)";
+	  		break;
+   
+   */
   
   
   

@@ -2,12 +2,14 @@ package gui;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.Observable;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
 import io.ConfigHandler;
 import io.GeneHandler;
 import javafx.application.Application;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -16,6 +18,7 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonBar;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
@@ -166,6 +169,11 @@ public class SettingsWindow extends Application implements javafx.fxml.Initializ
         dialog.setContentText("The name should have a form like Max M.");
         dialog.setContentText("Name:");
 
+        ButtonBar buttonBar = (ButtonBar)dialog.getDialogPane().lookup(".button-bar");
+        ObservableList<Node> nodes = buttonBar.getButtons();
+        GUIUtils.setColorOnNode(nodes.get(0), Color.GREEN);
+        GUIUtils.setColorOnNode(nodes.get(1), Color.RED);
+        
         // Traditional way to get the response value.
         Optional<String> result = dialog.showAndWait();
         if (result.isPresent()) {

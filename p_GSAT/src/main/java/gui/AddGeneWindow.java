@@ -50,6 +50,10 @@ public class AddGeneWindow extends Application implements javafx.fxml.Initializa
 
 	geneArea.setWrapText(true);
 	commentArea.setWrapText(true);
+	
+	GUIUtils.setColorOnNode(confirmButton, Color.GREEN);
+    GUIUtils.setColorOnNode(cancelButton, Color.RED);
+	
     confirmButton.setOnAction(new EventHandler<ActionEvent>() {
     	
 
