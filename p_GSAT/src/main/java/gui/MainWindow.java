@@ -100,10 +100,9 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
     GUIUtils.setColorOnNode(manualButton, Color.BLUE);
     GUIUtils.setColorOnNode(aboutButton, Color.BLUE);
     
-    Pair<Boolean, String> output;
+    Pair<Boolean, Text> output;
     //infoArea.setText("Welcome to GSAT! \n");
     
-    //TODO alle todos durch volgende schreibweise ersetzen.
     infoArea.getChildren().add(new Text("Welcome to GSAT! \n"));
     // read Genes and show them in the choicebox
 
@@ -111,27 +110,23 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
     output = GUIUtils.initializeGeneBox(geneBox);
     geneBox.setStyle("-fx-font-style: italic;");
 
-
-    //TODO
-    //infoArea.appendText(output.second + "\n");
+    infoArea.getChildren().add(output.second);
 
     geneBox.setOnMouseClicked(arg01 -> GUIUtils.initializeGeneBox(geneBox));
 
     // gives information about new gene selection
     geneBox.getSelectionModel().selectedItemProperty()
         .addListener((obeservable, value, newValue) -> {
-          //TODO
-          //if (newValue != null) infoArea.appendText("New Gene selected: " + newValue + "\n");
+          if (newValue != null) infoArea.getChildren().add(new Text("New Gene selected: " + newValue + "\n"));
         });
 
     // set button to select destination
     destButton.setOnAction(new EventHandler<ActionEvent>() {
       @Override
       public void handle(ActionEvent arg0) {
-        String output;
+        Text output;
         output = GUIUtils.setDestination(destField, srcField.getText()).second;
-        //TODO
-        //infoArea.appendText(output + "\n");
+        infoArea.getChildren().add(new Text(output + "\n"));
       }
     });
 
@@ -139,23 +134,18 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
     outputCheckbox.selectedProperty().addListener((observable, oldValue, newValue) -> {
       FileSaver.setSeparateFiles(newValue);
       if (newValue)
-        ;
-        //TODO
-        //infoArea.appendText("One single output file will be created. \n");
+        infoArea.getChildren().add(new Text("One single output file will be created. \n"));
       else
-        ;
-        //TODO
-        //infoArea.appendText("There will be one output file for each input file. \n");
+        infoArea.getChildren().add(new Text("There will be one output file for each input file. \n"));
     });
 
     // set button to select source files
     srcButton.setOnAction(new EventHandler<ActionEvent>() {
       @Override
       public void handle(ActionEvent arg0) {
-        String output;
+        Text output;
         output = GUIUtils.setSourceFolder(srcField).second;
-        //TODO
-        //infoArea.appendText(output + "\n");
+        infoArea.getChildren().add(new Text(output + "\n"));
       }
     });
 
@@ -163,41 +153,32 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
     startButton.setOnAction(new EventHandler<ActionEvent>() {
       @Override
       public void handle(ActionEvent arg0) {
-        //TODO
-        //infoArea.appendText(
-        //    "---------------------------------------------------------------------------------------------------"
-        //        + "\nStarting analysis\n"
-        //        + "---------------------------------------------------------------------------------------------------\n");
+        infoArea.getChildren().add(new Text("---------------------------------------------------------------------------------------------------"
+            + "\nStarting analysis\n"
+            + "---------------------------------------------------------------------------------------------------\n"));
+            
 
-        //TODO
-        //infoArea.appendText("Source folder or file:  " + srcField.getText() + "\n");
+        infoArea.getChildren().add(new Text("Source folder or file:  " + srcField.getText() + "\n"));
 
         if (srcField.getText().equals("")) {
-          //TODO
-          //infoArea.appendText("Source path is empty, aborting analysis.");
+          infoArea.getChildren().add(new Text("Source path is empty, aborting analysis."));  
           return;
         }
 
-        //TODO
-        //infoArea.appendText("Destination folder:  " + destField.getText() + "\n");
+        infoArea.getChildren().add(new Text("Destination folder:  " + destField.getText() + "\n"));
         
         if (destField.getText().equals("")) {
-          //TODO
-          //infoArea.appendText("Destination path is empty, aborting analysis.");
+          infoArea.getChildren().add(new Text("Destination path is empty, aborting analysis."));
           // bar.setProgress(0);
           return;
         } else
           FileSaver.setLocalPath(destField.getText());
 
         if (autoGeneSearch)
-          ;
-          //TODO
-          //infoArea.appendText("Selected gene:  automatic search\n");
+          infoArea.getChildren().add(new Text("Selected gene:  automatic search\n"));
 		else
-		  ;
-		    //TODO
-		  //infoArea.appendText("Selected gene:  " + geneBox.getSelectionModel().getSelectedItem() + "\n");
-
+		  infoArea.getChildren().add(new Text("Selected gene:  " + geneBox.getSelectionModel().getSelectedItem() + "\n"));
+        
         if (geneBox.getSelectionModel().getSelectedIndex() == -1) {
           if (autoGeneSearch == false) {
             Alert alert = new Alert(AlertType.CONFIRMATION);
@@ -213,16 +194,14 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
             }
           }
         }
-        //TODO
-        //infoArea.appendText(
-        //    "---------------------------------------------------------------------------------------------------\n");
+        infoArea.getChildren().add(new Text("---------------------------------------------------------------------------------------------------\n"));
 
 
         javafx.concurrent.Task<Void> mainTask = new javafx.concurrent.Task<Void>() {
 
           @Override
           protected Void call() throws Exception {
-            String output;
+            Text output;
 
             String srcFieldTest = srcField.getText();
             String destfileNameText = fileNameField.getText();
@@ -233,9 +212,7 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
               geneBoxItem = geneBox.getSelectionModel().getSelectedItem().split(" ")[0];
 
             output = GUIUtils.runAnalysis(srcFieldTest, geneBoxItem, destfileNameText, bar).second;
-            //TODO
-            //infoArea.appendText(output);
-         
+            infoArea.getChildren().add(output);
             return null;
           }
 
@@ -262,12 +239,10 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
       if (newValue) {
         autoGeneSearch = true;
         geneBox.getSelectionModel().clearSelection();
-        //TODO
-        //infoArea.appendText("The gene that fits best will be searched.\n");
+        infoArea.getChildren().add(new Text("The gene that fits best will be searched.\n"));
       } else {
         autoGeneSearch = false;
-        //TODO
-        //infoArea.appendText("No automatic gene search.\n");
+        infoArea.getChildren().add(new Text("No automatic gene search.\n"));
       }
     });
 
