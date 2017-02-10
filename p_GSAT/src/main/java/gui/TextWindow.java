@@ -50,6 +50,7 @@ public class TextWindow extends Application implements javafx.fxml.Initializable
 
   public void setName(String name) {
     this.name = name;
+    
   }
   
   public void setText(String text) {

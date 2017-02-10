@@ -281,12 +281,14 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
               convertStreamToString(ClassLoader.getSystemResourceAsStream("manual/About.txt"));
           texWin.setText(content);
           texWin.setName("About");
-     
+          
           Scene scene = new Scene(root);
           Stage s = new Stage();
           s.setScene(scene);
           s.sizeToScene();
+          s.setTitle("GSAT - About");
           s.show();
+          
 
         } catch (IOException e) {
           e.printStackTrace();
@@ -315,6 +317,7 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
           Stage s = new Stage();
           s.setScene(scene);
           s.sizeToScene();
+          s.setTitle("GSAT - Help");
           s.show();
 
         } catch (IOException e) {
