@@ -3,6 +3,7 @@ Check out the topic you are interested in:
 (1) How to set up and to start a new analysis
 (2) The main menu in further detail
 (3) The settings window in further detail
+(4) The analysis results
 --------------------------------------------------------------------------
 
 
@@ -85,3 +86,66 @@ but coming soon! Stay tuned!
 
 >>> OK
 Leave the settings window and return to the main window. You changes will be saved.
+
+
+
+
+
+
+_________________________________________
+(4) The analysis results
+
+The analysis results are CSV files. Each line corresponds to one AB1 file / nucleotide sequence.
+These are the meanings of the fields:
+
+>>> id:							
+A unique number per line (to quickly refer to a single result entry).
+
+>>> file name:					
+The name of the AB1 file.
+
+>>> gene:						
+The name of the gene that was associated with the analysis of this sequence.
+
+>>> gene organism:				
+The above gene's organism.
+
+>>> mutations (with codons):	
+A list of found mutations (insertions, deletions, substitutions and silent mutations) with the nucleotide codons of the mutated amino acid. 
+This field may contain the information whether a reading frame error was detected.
+
+>>> comments:				
+Comments entered by the user.
+
+>>> researcher:				
+The researcher name associated with the analysis.
+
+>>> date:						
+The date this result was created.
+
+>>> average quality (percent):	
+The average nucleotide quality in percent from 0 to 100 (calculated from the average PHRED score).
+
+>>> percentage of quality trim:	
+The percentage of nucleotides which got cut off from the sequence due to the quality trim.
+
+>>> nucleotide sequence:		
+The nucleotide sequence which was compared against the gene.
+
+>>> left vector:				
+The nucleotide sequence which was cut away at the beginning of the original sequence due to finding the gene part.
+
+>>> right vector:				
+Same as above, but at the END of the original sequence.
+
+>>> primer:						
+The primer associated with the sequence (entered by user).
+
+>>> HIS tag:					
+The nucleotide index (starting with 1) where a HIS tag was found, "none" otherwise.
+
+>>> mutations (without codons):	
+The list of found mutations WITHOUT the codons.
+
+>>> manually checked:			
+The indication whether this result was manually checked by a user.

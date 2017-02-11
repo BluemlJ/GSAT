@@ -317,7 +317,7 @@ public class FileSaver {
           + " average quality (percent)" + SEPARATOR_CHAR + " percentage of quality trim"
           + SEPARATOR_CHAR + " nucleotide sequence" + SEPARATOR_CHAR + " left vector"
           + SEPARATOR_CHAR + " right vector" + SEPARATOR_CHAR + " primer" + SEPARATOR_CHAR
-          + " HIS tag; mutations (without codons)" + SEPARATOR_CHAR + " manually checked"
+          + " HIS tag" + SEPARATOR_CHAR + " mutations (without codons)" + SEPARATOR_CHAR + " manually checked"
           + System.lineSeparator());
     }
 
