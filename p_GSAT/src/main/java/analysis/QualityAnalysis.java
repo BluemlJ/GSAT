@@ -28,7 +28,7 @@ public class QualityAnalysis {
   private static int avgApproximationEnd = 25;
 
   /**
-   * this parameter sets the average quality to calculate the quality of the hole sequence. This can
+   * this parameter sets the average quality to calculate the quality of the whole sequence. This can
    * be changed by the user. The default value is 30.
    * 
    * @see io.ConfigHandler
