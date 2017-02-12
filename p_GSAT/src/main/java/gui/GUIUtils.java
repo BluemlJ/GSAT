@@ -35,6 +35,7 @@ import javafx.scene.control.ProgressBar;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.text.Text;
+import javafx.scene.text.TextFlow;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 
@@ -57,8 +58,7 @@ public class GUIUtils {
     try {
       GeneHandler.readGenes();
     } catch (IOException e) {
-      return new Pair<Boolean, Text>(false,
-          new Text("Reading Gene.txt was unsuccessful\n" + e.getMessage()));
+      return new Pair<Boolean, Text>(false, getRedText("Reading Gene.txt was unsuccessful\n"));
     }
 
     genes.setItems(FXCollections.observableArrayList(GeneHandler.getGeneNamesAndOrganisms()));
@@ -71,7 +71,7 @@ public class GUIUtils {
       GeneHandler.readGenes();
     } catch (IOException e) {
       return new Pair<Boolean, Text>(false,
-          new Text("Reading Gene.txt was unsuccessful\n" + e.getMessage()));
+    		  getRedText("Reading Gene.txt was unsuccessful\n"));
     }
 
     genes.setItems(FXCollections.observableArrayList(GeneHandler.getGeneNamesAndOrganisms()));
@@ -84,7 +84,7 @@ public class GUIUtils {
       ConfigHandler.readConfig();
     } catch (IOException | ConfigReadException | ConfigNotFoundException e) {
       return new Pair<Boolean, Text>(false,
-          new Text("Reading researchers from config.txt was unsuccessful\n" + e.getMessage()));
+    		  getRedText("Reading researchers from config.txt was unsuccessful\n"));
     }
     dropdown.setItems(FXCollections.observableArrayList(ConfigHandler.getSortedResearcherList()));
     dropdown.getSelectionModel().select(ConfigHandler.getResearcher());
@@ -103,27 +103,29 @@ public class GUIUtils {
    * @throws DissimilarGeneException
    */
   public static Pair<Boolean, Text> runAnalysis(String sourcepath, String GeneID, String resultname,
-      ProgressBar bar) throws DissimilarGeneException {
+      ProgressBar bar, TextFlow tf) throws DissimilarGeneException {
     boolean success = false;
     StringBuilder report = new StringBuilder();
 
     // get all ab1 files
     Pair<LinkedList<File>, LinkedList<File>> sequences = getSequencesFromSourceFolder(sourcepath);
     if (sequences.first == null)
-      if (sequences.second == null)
-        return new Pair<Boolean, Text>(success, new Text(
-            "Reading Sequences unsuccessful, please make sure the given path is correct or the file s valid"));
-      else
-        return new Pair<Boolean, Text>(success,
-            new Text("No AB1 files were found at the given path or the file is invalid."));
-    else
-      report.append("Reading .ab1 file(s) was successful\n");
+      if (sequences.second == null) {
+    	  tf.getChildren().add(getRedText("Reading Sequences unsuccessful, please make sure the given path is correct or the file is valid\n"));
+        return new Pair<Boolean, Text>(success, getRedText("Reading Sequences unsuccessful, please make sure the given path is correct or the file is valid\n"));
+      } else {
+    	  tf.getChildren().add(getRedText("No AB1 files were found at the given path or the file is invalid.\n"));
+    	  return new Pair<Boolean, Text>(success,
+        		getRedText("No AB1 files were found at the given path or the file is invalid.\n"));
+      }
+       else
+    	  tf.getChildren().add(new Text("Reading .ab1 file(s) was successful\n"));
 
     // get the gene from the coiceboxID
     Gene gene = null;
     if (!GeneID.equals("-1")) {
       gene = getGeneFromDropDown(GeneID).first;
-      report.append(getGeneFromDropDown(GeneID).second.second + "\n");
+      tf.getChildren().add(new Text(getGeneFromDropDown(GeneID).second.second + "\n"));
     }
     // foreach ab1 file
     int counter = 0;
@@ -140,7 +142,7 @@ public class GUIUtils {
       try {
         StringAnalysis.checkComplementAndReverse(toAnalyse);
       } catch (CorruptedSequenceException e) {
-        report.append("Calculation of complementary sequence unsuccessful, analysing stops\n");
+    	  tf.getChildren().add(getRedText("Calculation of complementary sequence unsuccessful, analysing stops\n"));
         return new Pair<Boolean, Text>(success, new Text(report.toString()));
       }
 
@@ -162,8 +164,8 @@ public class GUIUtils {
       try {
         MutationAnalysis.findMutations(toAnalyse);
       } catch (UndefinedTypeOfMutationException | CorruptedSequenceException e) {
-        report.append(
-            "Mutation analysis was unsuccessful because of error in " + file.getName() + "\n");
+    	  tf.getChildren().add(getRedText(
+            "Mutation analysis was unsuccessful because of error in " + file.getName() + "\n"));
         return new Pair<Boolean, Text>(success, new Text(report.toString()));
       }
 
@@ -173,11 +175,11 @@ public class GUIUtils {
         FileSaver.storeResultsLocally(file.getName().replaceFirst("[.][^.]+$", ""), toAnalyse);
 
       } catch (MissingPathException e2) {
-        report.append("Missing path to destination, aborting analysis.\n");
+    	  tf.getChildren().add(getRedText("Missing path to destination, aborting analysis.\n"));
         FileSaver.setLocalPath("");
         return new Pair<Boolean, Text>(success, new Text(report.toString()));
       } catch (IOException e2) {
-        report.append("Error while storing data, aborting analysis.\n");
+    	  tf.getChildren().add(getRedText("Error while storing data, aborting analysis.\n"));
         return new Pair<Boolean, Text>(success, new Text(report.toString()));
       } catch (UndefinedTypeOfMutationException e) {
         // TODO Auto-generated catch block
@@ -188,7 +190,7 @@ public class GUIUtils {
 
     }
     // set output parameter and return Pair.
-    report.append("Analysis was successful\n");
+    tf.getChildren().add(new Text("Analysis was successful\n"));
     success = true;
     return new Pair<Boolean, Text>(success, new Text(report.toString()));
   }
@@ -205,7 +207,7 @@ public class GUIUtils {
   public static Pair<Boolean, Text> setDestination(TextField destination, String sourcePath) {
 
     boolean success = false;
-    Text report = new Text("Reading destination path was unsuccessful.");
+    Text report = getRedText("Reading destination path was unsuccessful.\n");
     String path;
 
     DirectoryChooser chooser = new DirectoryChooser();
@@ -233,7 +235,7 @@ public class GUIUtils {
     if (selectedDirectory != null) {
       path = selectedDirectory.getAbsolutePath();
       success = true;
-      report = new Text("Reading destination path was successful. \nDestination is:  " + path);
+      report = getRedText("Reading destination path was successful. \nDestination is:  " + path + "\n");
       FileSaver.setLocalPath(path);
       destination.setText(path);
     }
@@ -250,7 +252,7 @@ public class GUIUtils {
    */
   public static Pair<Boolean, Text> setSourceFolder(TextField source) {
     boolean success = false;
-    Text report = new Text("Reading path to .ab1 file was unsuccessful.");
+    Text report = getRedText("Reading path to .ab1 file was unsuccessful.\n");
     String path;
     File selectedDirectory = null;
     String defaultPath = source.getText();
@@ -278,7 +280,7 @@ public class GUIUtils {
 
     Optional<ButtonType> result = alert.showAndWait();
     if (result.get() == buttonTypeOne) {
-      report = new Text("Reading path to .ab1 file folder was unsuccessful.");
+      report = getRedText("Reading path to .ab1 file folder was unsuccessful.\n");
       DirectoryChooser chooser = new DirectoryChooser();
       chooser.setTitle("Set path to the .ab1 files (folder)");
       if (!defaultPath.isEmpty()) {
@@ -306,13 +308,13 @@ public class GUIUtils {
       }
     } else {
       return new Pair<Boolean, Text>(success,
-          new Text("The action to set a source folder was cancelled"));
+    		  getRedText("The action to set a source folder was cancelled\n"));
     }
 
     if (selectedDirectory != null) {
       path = selectedDirectory.getAbsolutePath();
       success = true;
-      report = new Text("Reading path was successful. \nFolder is:  " + path);
+      report = new Text("Reading path was successful. \nFolder is:  " + path + "\n");
       source.setText(path);
     }
     return new Pair<Boolean, Text>(success, report);
@@ -327,7 +329,7 @@ public class GUIUtils {
    */
   private static Pair<Gene, Pair<Boolean, Text>> getGeneFromDropDown(String name) {
     return new Pair<Gene, Pair<Boolean, Text>>(GeneHandler.getGene(name),
-        new Pair<Boolean, Text>(true, new Text("Reading gene was successful")));
+        new Pair<Boolean, Text>(true, new Text("Reading gene was successful\n")));
 
   }
 
@@ -365,7 +367,7 @@ public class GUIUtils {
    */
   private static Pair<AnalysedSequence, Pair<Boolean, Text>> readSequenceFromFile(File file) {
     Text report =
-        new Text("Failure with: " + file.getAbsolutePath() + ".\n This file might be corrupted.");
+    		getRedText("Failure with: " + file.getAbsolutePath() + ".\n This file might be corrupted.\n");
     boolean success = false;
     Pair<Boolean, Text> ret = null;
     try {
@@ -375,9 +377,9 @@ public class GUIUtils {
       return new Pair<AnalysedSequence, Pair<Boolean, Text>>(
           SequenceReader.convertFileIntoSequence(file), ret);
     } catch (FileReadingException e) {
-      System.out.println("Could not read from file.");
+      System.err.println("Could not read from file.\n");
     } catch (IOException e) {
-      System.out.println("Error during reading occured.");
+      System.err.println("Error during reading occured.\n");
     }
     return new Pair<AnalysedSequence, Pair<Boolean, Text>>(null, ret);
   }
@@ -461,6 +463,14 @@ public class GUIUtils {
 
   }
 
+  
+  static Text getRedText(String message) {
+	  Text text = new Text(message);
+	  text.setStyle("-fx-stroke: red; -fx-stroke-width: 1;");
+	  return text;
+  }
+  
+  
   /*
    * 
    * case GREEN: normalColor1 = "rgb(184,239,54)"; normalColor2 = "rgb(128,200,1)"; hoverColor1 =

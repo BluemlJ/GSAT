@@ -231,11 +231,11 @@ public class QualityAnalysis {
    * @return a percentage between 0 and 100.
    * @author jannis blueml
    */
-  public static double percentageOfTrimQuality(int lengthBefore, AnalysedSequence toAnalyse) {
-    // rounds result to a percentage
-    double tmp = (int) ((double) toAnalyse.getSequence().length() / (double) lengthBefore * 100);
-    return tmp;
-
+  public static int percentageOfTrimQuality(int lengthBefore, AnalysedSequence toAnalyse) {
+    
+	 int lengthNow = toAnalyse.getSequence().length();
+	 double percentage = (lengthBefore - lengthNow) / ((double)lengthBefore);
+	 return (int)(percentage * 100);
   }
 
 
