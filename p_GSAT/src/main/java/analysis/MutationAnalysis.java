@@ -10,6 +10,8 @@ import exceptions.UndefinedTypeOfMutationException;
  * parts of the analyzing pipeline.
  * 
  * @author jannis blueml
+ * @category DNA.Utils
+ * @since 11.2.17
  */
 public class MutationAnalysis {
 
@@ -187,8 +189,8 @@ public class MutationAnalysis {
           tempPosition++;
         }
 
-        // didnt increment tempP. because of insertion or deletion, instead set tmpshift. Because
-        // the actual shift references to actual position not to the room betwenn actual and
+        // didn't increment tempP. because of insertion or deletion, instead set tmpshift. Because
+        // the actual shift references to actual position not to the room between actual and
         // lastPosition.
 
       } else {

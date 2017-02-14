@@ -196,13 +196,7 @@ public class QualityAnalysis {
     return qualities.length;
   }
 
-
-  public static int getBreakcounter() {
-    return breakcounter;
-  }
-
-
-  /**
+/**
    * This method calculate the percentage of quality by the parameter.
    *
    * @param toAnalyse the trimmed sequence to get the quality for.
@@ -239,11 +233,6 @@ public class QualityAnalysis {
   }
 
 
-  public static void setBreakcounter(int update) {
-    breakcounter = update;
-  }
-
-
   /**
    * This method trims a sequence by removing the low quality end of the sequence.
    * 
@@ -257,53 +246,85 @@ public class QualityAnalysis {
   }
 
 
-  public static int getAvgApproximationEnd() {
-    return avgApproximationEnd;
-  }
-
-
-  public static void setAvgApproximationEnd(int avgApproximationEnd) {
-    QualityAnalysis.avgApproximationEnd = avgApproximationEnd;
-  }
-
-
+  /**
+   * @return the avgApproximationStart
+   */
   public static int getAvgApproximationStart() {
     return avgApproximationStart;
   }
 
 
+  /**
+   * @param avgApproximationStart the avgApproximationStart to set
+   */
   public static void setAvgApproximationStart(int avgApproximationStart) {
     QualityAnalysis.avgApproximationStart = avgApproximationStart;
   }
 
 
+  /**
+   * @return the avgApproximationEnd
+   */
+  public static int getAvgApproximationEnd() {
+    return avgApproximationEnd;
+  }
+
+
+  /**
+   * @param avgApproximationEnd the avgApproximationEnd to set
+   */
+  public static void setAvgApproximationEnd(int avgApproximationEnd) {
+    QualityAnalysis.avgApproximationEnd = avgApproximationEnd;
+  }
+
+
+  /**
+   * @return the avgQualityEdge
+   */
   public static int getAvgQualityEdge() {
     return avgQualityEdge;
   }
 
 
+  /**
+   * @param avgQualityEdge the avgQualityEdge to set
+   */
   public static void setAvgQualityEdge(int avgQualityEdge) {
     QualityAnalysis.avgQualityEdge = avgQualityEdge;
   }
 
 
+  /**
+   * @return the numAverageNucleotides
+   */
   public static int getNumAverageNucleotides() {
     return numAverageNucleotides;
   }
 
 
+  /**
+   * @param numAverageNucleotides the numAverageNucleotides to set
+   */
   public static void setNumAverageNucleotides(int numAverageNucleotides) {
     QualityAnalysis.numAverageNucleotides = numAverageNucleotides;
   }
 
 
+  /**
+   * @return the startcounter
+   */
   public static int getStartcounter() {
     return startcounter;
   }
 
 
+  /**
+   * @param startcounter the startcounter to set
+   */
   public static void setStartcounter(int startcounter) {
     QualityAnalysis.startcounter = startcounter;
   }
+
+
 
 }
