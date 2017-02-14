@@ -3,6 +3,7 @@ Check out the topic you are interested in:
 (1) How to set up and to start a new analysis
 (2) The main menu in further detail
 (3) The settings window in further detail
+(4) The analysis results
 --------------------------------------------------------------------------
 
 
@@ -13,10 +14,11 @@ _____________________________________________
 To start a new analysis, you first have to choose a folder of AB1 files or a single AB1 file. For doing this, enter a path into the Source input field or click on the Button 
 next to the field. You will be asked whether you want to specify a path or a single file. Choose as preferred and select the folder or the file in the menu which will be presented 
 to you then. To tell GSAT where to place the results of your analysis, analogously enter a Destination path in the input field below the Source field. You can also choose a
-folder by clicking on the button next to the field. Next, you have to choose a gene to compare the files with. Choose one from the dropdown menu Gene. 
-Make sure, the output is as desired: One single file or multiple files, one for each input. You can specify this with the checkbox Multiple outfut files.
+folder by clicking on the button next to the field. 
+Next, you have to choose a gene to compare the files with. Choose one from the gene dropdown menu. 
+Make sure the output is as desired: One single file or multiple files, one for each input. You can specify this with the checkbox 'Multiple outfut files'.
 Almost done. All you have to do now is click on the Start button. 
-And there you go. When the analysis finished, you can find the results in the folder you specified with Destination.
+And there you go. When the analysis finished, you can find the results in the folder you specified with Destination. The progress bar will tell you how far the analysis process hase come.
 
 
 
@@ -24,9 +26,14 @@ And there you go. When the analysis finished, you can find the results in the fo
 ___________________________________
 (2) The main menu in further detail
 
+>>> Settings
+You can adjust the program's settings by clicking on this button. The settings window is explained in section (3).
+
 >>> Help
-This menu item allows you to get some help on the program's functionality (when clicking on Help; actually, you already seem to use this) or to read about the authors and
-the making of GSAT (by clicking on About).
+This button allows you to get some help on the program's functionality (you already seem to use this).
+
+>>> About
+Read about the authors and the making of GSAT!
 
 >>> Source
 This specifies the folder of AB1 files or the single AB1 file which you want to analyze. Enter folder or file path manually or simply choose it by clicking on the button
@@ -35,14 +42,17 @@ situated on the right of the input field.
 >>> Destination
 This specifies the folder where the results should be written to. You can enter the folder manually or choose it by clicking the button on the right hand side of the input field.
 
+>>> File Name
+You can specify the name of the out file(s). By leaving this field blank, "gsat_results" will be used as a default name.
+ 
 >>> Gene
 Use this dropdown menu to choose which gene to compare the sequences with.
 
 >>> Multiple output files
 This checkbox indicates whether multiple output files are produced, one for each input file (checked) or one single file, containing the information of all input files (unchecked).
 
->>> Settings
-You can adjust the program's settings by clicking on this button. The settings window is explained in section (3).
+>>> Find right gene
+Instead of specifying a certain gene, you can also ask the programm to select the gene that fits best to the given sequences. Activate this functionality via this checkbox.
 
 >>> Start
 After choosing a path for input and output and after selecting a gene, you can click on Start to run the analysis.
@@ -60,13 +70,82 @@ Remove names from the list with delete.
 >>> Available genes
 The big box contains all currently available genes for an analysis. You can add or delete genes with the buttons add and delete. Only the genes you specify here
 are presented to you in the main window's gene dropdown.
+When adding a gene you are asked to enter its name, the organism it corresponds to, its nucleotide sequence (with A, T, C and G letters). You may enter a comment if desired.
 
 >>> Edit parameters
 You can adjust parameters used in the analysis pipeline by clicking this button.
+Minimal Start Quality: The minimal PHRED score a nucleotide is allowed to have to not get trimmed away at the BEGINNING of the sequence.
+Minimal End Quality: The minimal PHRED score a nucleotide is allowed to have to not get trimmed away at the END of the sequence.
+Bad Quality Margin: The maximum number of nucleotides in a row with bad quality (less than "Minimal End Quality") that are allowed before the sequence gets cut off AT THE END.
+Good Quality Margin: The minimum number of nucleotides with good quality (better than "Minimal End Quality") that must appear in a row to not get cut away AT THE BEGINNING of a sequence.
+Search Radius: The number of nucleotides with bad quality (less than "Minimal End Quality") that must appear in a row to cut off the sequence AT THE END.
 
 >>> Configure database
 The database used to store the results can be configured with this button. NOTE: This functionality is not implemented yet,
 but coming soon! Stay tuned!
 
->>> Return
+>>> OK
 Leave the settings window and return to the main window. You changes will be saved.
+
+
+
+
+
+
+_________________________________________
+(4) The analysis results
+
+The analysis results are CSV files. Each line corresponds to one AB1 file / nucleotide sequence.
+These are the meanings of the fields:
+
+>>> id:							
+A unique number per line (to quickly refer to a single result entry).
+
+>>> file name:					
+The name of the AB1 file.
+
+>>> gene:						
+The name of the gene that was associated with the analysis of this sequence.
+
+>>> gene organism:				
+The above gene's organism.
+
+>>> mutations (with codons):	
+A list of found mutations (insertions, deletions, substitutions and silent mutations) with the nucleotide codons of the mutated amino acid. 
+This field may contain the information whether a reading frame error was detected.
+
+>>> comments:				
+Comments entered by the user.
+
+>>> researcher:				
+The researcher name associated with the analysis.
+
+>>> date:						
+The date this result was created.
+
+>>> average quality (percent):	
+The average nucleotide quality in percent from 0 to 100 (calculated from the average PHRED score).
+
+>>> percentage of quality trim:	
+The percentage of nucleotides which got cut off from the sequence due to the quality trim.
+
+>>> nucleotide sequence:		
+The nucleotide sequence which was compared against the gene.
+
+>>> left vector:				
+The nucleotide sequence which was cut away at the beginning of the original sequence due to finding the gene part.
+
+>>> right vector:				
+Same as above, but at the END of the original sequence.
+
+>>> primer:						
+The primer associated with the sequence (entered by user).
+
+>>> HIS tag:					
+The nucleotide index (starting with 1) where a HIS tag was found, "none" otherwise.
+
+>>> mutations (without codons):	
+The list of found mutations WITHOUT the codons.
+
+>>> manually checked:			
+The indication whether this result was manually checked by a user.

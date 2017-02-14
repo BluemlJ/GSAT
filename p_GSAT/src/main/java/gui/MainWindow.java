@@ -10,6 +10,8 @@ import java.util.Scanner;
 import analysis.Pair;
 import io.FileSaver;
 import javafx.application.Application;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.concurrent.WorkerStateEvent;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -104,6 +106,14 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
     Pair<Boolean, Text> output;
     // infoArea.setText("Welcome to GSAT! \n");
 
+    infoArea.accessibleTextProperty().addListener(new ChangeListener<String>() {
+
+		@Override
+		public void changed(ObservableValue<? extends String> arg0, String arg1, String arg2) {
+			// TODO scroll down
+			
+		}});
+    
     infoArea.getChildren().add(new Text("Welcome to GSAT! \n"));
     // read Genes and show them in the choicebox
 
@@ -147,7 +157,7 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
       public void handle(ActionEvent arg0) {
         Text output;
         output = GUIUtils.setSourceFolder(srcField).second;
-        infoArea.getChildren().add(new Text(output + "\n"));
+        infoArea.getChildren().add(output);
       }
     });
 
@@ -164,14 +174,14 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
             .add(new Text("Source folder or file:  " + srcField.getText() + "\n"));
 
         if (srcField.getText().equals("")) {
-          infoArea.getChildren().add(new Text("Source path is empty, aborting analysis."));
+          infoArea.getChildren().add(GUIUtils.getRedText("Source path is empty, aborting analysis.\n"));
           return;
         }
 
         infoArea.getChildren().add(new Text("Destination folder:  " + destField.getText() + "\n"));
 
         if (destField.getText().equals("")) {
-          infoArea.getChildren().add(new Text("Destination path is empty, aborting analysis."));
+          infoArea.getChildren().add(GUIUtils.getRedText("Destination path is empty, aborting analysis.\n"));
           // bar.setProgress(0);
           return;
         } else
@@ -215,8 +225,8 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
             else
               geneBoxItem = geneBox.getSelectionModel().getSelectedItem().split(" ")[0];
 
-            output = GUIUtils.runAnalysis(srcFieldTest, geneBoxItem, destfileNameText, bar).second;
-            infoArea.getChildren().add(output);
+            output = GUIUtils.runAnalysis(srcFieldTest, geneBoxItem, destfileNameText, bar, infoArea).second;
+            //infoArea.getChildren().add(output);
             return null;
           }
 

@@ -28,7 +28,7 @@ public class QualityAnalysis {
   private static int avgApproximationEnd = 25;
 
   /**
-   * this parameter sets the average quality to calculate the quality of the hole sequence. This can
+   * this parameter sets the average quality to calculate the quality of the whole sequence. This can
    * be changed by the user. The default value is 30.
    * 
    * @see io.ConfigHandler
@@ -225,11 +225,11 @@ public class QualityAnalysis {
    * @return a percentage between 0 and 100.
    * @author jannis blueml
    */
-  public static double percentageOfTrimQuality(int lengthBefore, AnalysedSequence toAnalyse) {
-    // rounds result to a percentage
-    double tmp = (int) ((double) toAnalyse.getSequence().length() / (double) lengthBefore * 100);
-    return tmp;
-
+  public static int percentageOfTrimQuality(int lengthBefore, AnalysedSequence toAnalyse) {
+    
+	 int lengthNow = toAnalyse.getSequence().length();
+	 double percentage = (lengthBefore - lengthNow) / ((double)lengthBefore);
+	 return (int)(percentage * 100);
   }
 
 
