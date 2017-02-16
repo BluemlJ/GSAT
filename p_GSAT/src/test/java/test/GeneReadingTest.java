@@ -160,11 +160,7 @@ public class GeneReadingTest {
 
     GeneHandler.addGene("testGene", "aaatttaaaggg", "organism1", "comment1");
     GeneHandler.addGene("testGene2", "aaatttaaaggg", "organism2", "comment2");
-    GeneHandler.getGene("testGene").getSequence();
     GeneHandler.writeGenes(writePath);
-    GeneHandler.getGene("testGene").getSequence();
-    GeneHandler.readGenes(writePath);
-    GeneHandler.getGene("testGene").getSequence();
     assertEquals(GeneHandler.getGene("testGene").getSequence(), "aaatttaaaggg".toUpperCase());
     assertEquals(GeneHandler.getGene("testGene2").getSequence(), "aaatttaaaggg".toUpperCase());
 

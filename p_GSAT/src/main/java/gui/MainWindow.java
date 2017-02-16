@@ -215,7 +215,6 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
 
           @Override
           protected Void call() throws Exception {
-            Text output;
 
             String srcFieldTest = srcField.getText();
             String destfileNameText = fileNameField.getText();
@@ -225,7 +224,7 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
             else
               geneBoxItem = geneBox.getSelectionModel().getSelectedItem().split(" ")[0];
 
-            output = GUIUtils.runAnalysis(srcFieldTest, geneBoxItem, destfileNameText, bar, infoArea).second;
+            GUIUtils.runAnalysis(srcFieldTest, geneBoxItem, destfileNameText, bar, infoArea);
             //infoArea.getChildren().add(output);
             return null;
           }
