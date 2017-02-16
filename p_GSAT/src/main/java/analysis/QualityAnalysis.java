@@ -326,5 +326,16 @@ public class QualityAnalysis {
   }
 
 
+public static void setBreakcounter(int breakcounter) {
+	QualityAnalysis.breakcounter = breakcounter;
+	
+}
+
+public static int getBreakcounter() {
+	return breakcounter;
+	
+}
+
+
 
 }
