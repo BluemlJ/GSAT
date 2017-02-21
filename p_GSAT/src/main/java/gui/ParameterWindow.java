@@ -40,6 +40,10 @@ public class ParameterWindow extends Application implements javafx.fxml.Initiali
 
   @FXML
   private Button saveButton;
+  
+  @FXML
+  private Button defaultButton;
+  
 
   @FXML
   private Button cancelButton;
@@ -165,6 +169,14 @@ public class ParameterWindow extends Application implements javafx.fxml.Initiali
         Stage stage = (Stage) cancelButton.getScene().getWindow();
         stage.close();
 
+      }
+    });
+    
+    defaultButton.setOnAction(new EventHandler<ActionEvent>() {
+      @Override
+      public void handle(ActionEvent event) {
+        // TODO Auto-generated method stub
+        System.out.println("test");
       }
     });
   }

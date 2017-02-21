@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Text?>
 
-<VBox prefHeight="91.0" prefWidth="397.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.ParameterWindow">
+<VBox prefHeight="91.0" prefWidth="397.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.ParameterWindow">
   <children>
       <VBox prefHeight="331.0" prefWidth="453.0">
          <children>
@@ -45,6 +45,7 @@
                <children>
                   <TextField fx:id="startcounter" layoutX="177.0" layoutY="21.0" prefHeight="25.0" prefWidth="82.0" promptText="3" />
                   <Text layoutX="14.0" layoutY="38.0" strokeType="OUTSIDE" strokeWidth="0.0" text="good Quality margin" wrappingWidth="161.984375" />
+                  <Button fx:id="defaultButton" layoutX="269.0" layoutY="21.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="112.0" text="Reload Deffault" />
                </children>
             </AnchorPane>
          </children>
@@ -56,7 +57,7 @@
                   <TextField fx:id="numAverageNucleotides" layoutX="177.0" layoutY="21.0" prefHeight="25.0" prefWidth="82.0" promptText="20" />
                   <Text layoutX="14.0" layoutY="38.0" strokeType="OUTSIDE" strokeWidth="0.0" text="search Radius" wrappingWidth="161.984375" />
                   <Button fx:id="cancelButton" layoutX="329.0" layoutY="21.0" mnemonicParsing="false" text="Cancel" />
-                  <Button fx:id="saveButton" layoutX="269.0" layoutY="21.0" mnemonicParsing="false" text="Save" />
+                  <Button fx:id="saveButton" layoutX="269.0" layoutY="21.0" mnemonicParsing="false" text="Save" AnchorPane.leftAnchor="269.0" />
                </children>
             </AnchorPane>
          </children>
