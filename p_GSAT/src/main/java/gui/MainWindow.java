@@ -13,12 +13,14 @@ import io.FileSaver;
 import javafx.application.Application;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.collections.ListChangeListener;
 import javafx.concurrent.WorkerStateEvent;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
@@ -28,6 +30,7 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ProgressBar;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
@@ -81,6 +84,9 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
   @FXML
   private CheckBox findGeneCheckbox;
 
+  @FXML
+  private ScrollPane textScroll;
+
   Stage primaryStage;
 
 
@@ -107,54 +113,66 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
     Pair<Boolean, Text> output;
     // infoArea.setText("Welcome to GSAT! \n");
 
-    infoArea.accessibleTextProperty().addListener(new ChangeListener<String>() {
+    // TODO Wofür ist das?:
+    /*
+     * infoArea.accessibleTextProperty().addListener(new ChangeListener<String>() {
+     * 
+     * @Override public void changed(ObservableValue<? extends String> arg0, String arg1, String
+     * arg2) { // TODO scroll down
+     * 
+     * }});
+     */
+    // :
 
-		@Override
-		public void changed(ObservableValue<? extends String> arg0, String arg1, String arg2) {
-			// TODO scroll down
-			
-		}});
-    
-    
+    // make TextFlow autoscrolling:
+    infoArea.getChildren().addListener((ListChangeListener<Node>) ((change) -> {
+      infoArea.layout();
+      textScroll.layout();
+      textScroll.setVvalue(1.0f);
+    }));
+    textScroll.setContent(infoArea);
+
+
+
     destField.textProperty().addListener(new ChangeListener<String>() {
       @Override
       public void changed(ObservableValue<? extends String> observable, String oldValue,
           String newValue) {
-        if (newValue.matches(ConfigHandler.SEPARATOR_CHAR+"")) {
+        if (newValue.matches(ConfigHandler.SEPARATOR_CHAR + "")) {
           destField.setText(oldValue);
         } else {
           destField.setText(newValue);
         }
       }
     });
-    
+
 
     srcField.textProperty().addListener(new ChangeListener<String>() {
       @Override
       public void changed(ObservableValue<? extends String> observable, String oldValue,
           String newValue) {
-        if (newValue.matches(ConfigHandler.SEPARATOR_CHAR+"")) {
+        if (newValue.matches(ConfigHandler.SEPARATOR_CHAR + "")) {
           srcField.setText(oldValue);
         } else {
           srcField.setText(newValue);
         }
       }
     });
-    
+
     fileNameField.textProperty().addListener(new ChangeListener<String>() {
       @Override
       public void changed(ObservableValue<? extends String> observable, String oldValue,
           String newValue) {
-        if (newValue.matches(ConfigHandler.SEPARATOR_CHAR+"")) {
+        if (newValue.matches(ConfigHandler.SEPARATOR_CHAR + "")) {
           fileNameField.setText(oldValue);
         } else {
           fileNameField.setText(newValue);
         }
       }
     });
-    
-    
-    
+
+
+
     infoArea.getChildren().add(new Text("Welcome to GSAT! \n"));
     // read Genes and show them in the choicebox
 
@@ -215,14 +233,16 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
             .add(new Text("Source folder or file:  " + srcField.getText() + "\n"));
 
         if (srcField.getText().equals("")) {
-          infoArea.getChildren().add(GUIUtils.getRedText("Source path is empty, aborting analysis.\n"));
+          infoArea.getChildren()
+              .add(GUIUtils.getRedText("Source path is empty, aborting analysis.\n"));
           return;
         }
 
         infoArea.getChildren().add(new Text("Destination folder:  " + destField.getText() + "\n"));
 
         if (destField.getText().equals("")) {
-          infoArea.getChildren().add(GUIUtils.getRedText("Destination path is empty, aborting analysis.\n"));
+          infoArea.getChildren()
+              .add(GUIUtils.getRedText("Destination path is empty, aborting analysis.\n"));
           // bar.setProgress(0);
           return;
         } else
@@ -266,7 +286,7 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
               geneBoxItem = geneBox.getSelectionModel().getSelectedItem().split(" ")[0];
 
             GUIUtils.runAnalysis(srcFieldTest, geneBoxItem, destfileNameText, bar, infoArea);
-            //infoArea.getChildren().add(output);
+            // infoArea.getChildren().add(output);
             return null;
           }
 

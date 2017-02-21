@@ -32,7 +32,7 @@
                   <Font size="14.0" />
                </font>
             </Text>
-            <ScrollPane fitToHeight="true" fitToWidth="true" layoutX="14.0" layoutY="185.0" AnchorPane.bottomAnchor="6.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="185.0">
+            <ScrollPane fx:id="textScroll" fitToHeight="true" fitToWidth="true" layoutX="14.0" layoutY="185.0" AnchorPane.bottomAnchor="6.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="185.0">
                <content>
                   <HBox>
                      <children>
