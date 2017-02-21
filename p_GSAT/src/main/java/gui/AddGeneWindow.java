@@ -5,8 +5,11 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 import exceptions.DuplicateGeneException;
+import io.ConfigHandler;
 import io.GeneHandler;
 import javafx.application.Application;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -23,7 +26,7 @@ import javafx.stage.WindowEvent;
 public class AddGeneWindow extends Application implements javafx.fxml.Initializable {
 
   private SettingsWindow parent;
-
+  
   // fields
   @FXML
   private TextField nameField;
@@ -46,7 +49,6 @@ public class AddGeneWindow extends Application implements javafx.fxml.Initializa
   Scene scene;
 
 
-
   @Override
   public void initialize(URL location, ResourceBundle resources) {
 
@@ -56,6 +58,55 @@ public class AddGeneWindow extends Application implements javafx.fxml.Initializa
     GUIUtils.setColorOnNode(confirmButton, Color.GREEN);
     GUIUtils.setColorOnNode(cancelButton, Color.RED);
 
+    nameField.textProperty().addListener(new ChangeListener<String>() {
+      @Override
+      public void changed(ObservableValue<? extends String> observable, String oldValue,
+          String newValue) {
+        if (newValue.matches(ConfigHandler.SEPARATOR_CHAR+"")) {
+          nameField.setText(oldValue);
+        } else {
+          nameField.setText(newValue);
+        }
+      }
+    });
+    
+    organismField.textProperty().addListener(new ChangeListener<String>() {
+      @Override
+      public void changed(ObservableValue<? extends String> observable, String oldValue,
+          String newValue) {
+        if (newValue.matches(ConfigHandler.SEPARATOR_CHAR+"")) {
+          organismField.setText(oldValue);
+        } else {
+          organismField.setText(newValue);
+        }
+      }
+    });
+    
+
+    geneArea.textProperty().addListener(new ChangeListener<String>() {
+      @Override
+      public void changed(ObservableValue<? extends String> observable, String oldValue,
+          String newValue) {
+        if (newValue.matches(ConfigHandler.SEPARATOR_CHAR+"")) {
+          geneArea.setText(oldValue);
+        } else {
+          geneArea.setText(newValue);
+        }
+      }
+    });
+    
+    commentArea.textProperty().addListener(new ChangeListener<String>() {
+      @Override
+      public void changed(ObservableValue<? extends String> observable, String oldValue,
+          String newValue) {
+        if (newValue.matches(ConfigHandler.SEPARATOR_CHAR+"")) {
+          commentArea.setText(oldValue);
+        } else {
+          commentArea.setText(newValue);
+        }
+      }
+    });
+    
     confirmButton.setOnAction(new EventHandler<ActionEvent>() {
 
       @Override

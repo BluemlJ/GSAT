@@ -41,7 +41,7 @@ public class ConfigHandler {
   /**
    * char used for separating values in the configuration file
    */
-  private final static String SEPARATOR_CHAR = ";";
+  public final static char SEPARATOR_CHAR = ';';
 
 
 
@@ -62,7 +62,7 @@ public class ConfigHandler {
     }
     String line = null;
     while ((line = configReader.readLine()) != null) {
-      String[] elements = line.split(SEPARATOR_CHAR);
+      String[] elements = line.split(SEPARATOR_CHAR+"");
 
       String key = elements[0];
       String value = elements[1].trim();

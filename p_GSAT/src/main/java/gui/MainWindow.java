@@ -8,6 +8,7 @@ import java.util.ResourceBundle;
 import java.util.Scanner;
 
 import analysis.Pair;
+import io.ConfigHandler;
 import io.FileSaver;
 import javafx.application.Application;
 import javafx.beans.value.ChangeListener;
@@ -113,6 +114,46 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
 			// TODO scroll down
 			
 		}});
+    
+    
+    destField.textProperty().addListener(new ChangeListener<String>() {
+      @Override
+      public void changed(ObservableValue<? extends String> observable, String oldValue,
+          String newValue) {
+        if (newValue.matches(ConfigHandler.SEPARATOR_CHAR+"")) {
+          destField.setText(oldValue);
+        } else {
+          destField.setText(newValue);
+        }
+      }
+    });
+    
+
+    srcField.textProperty().addListener(new ChangeListener<String>() {
+      @Override
+      public void changed(ObservableValue<? extends String> observable, String oldValue,
+          String newValue) {
+        if (newValue.matches(ConfigHandler.SEPARATOR_CHAR+"")) {
+          srcField.setText(oldValue);
+        } else {
+          srcField.setText(newValue);
+        }
+      }
+    });
+    
+    fileNameField.textProperty().addListener(new ChangeListener<String>() {
+      @Override
+      public void changed(ObservableValue<? extends String> observable, String oldValue,
+          String newValue) {
+        if (newValue.matches(ConfigHandler.SEPARATOR_CHAR+"")) {
+          fileNameField.setText(oldValue);
+        } else {
+          fileNameField.setText(newValue);
+        }
+      }
+    });
+    
+    
     
     infoArea.getChildren().add(new Text("Welcome to GSAT! \n"));
     // read Genes and show them in the choicebox
