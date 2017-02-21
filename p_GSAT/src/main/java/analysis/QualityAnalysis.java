@@ -28,8 +28,8 @@ public class QualityAnalysis {
   private static int avgApproximationEnd = 25;
 
   /**
-   * this parameter sets the average quality to calculate the quality of the whole sequence. This can
-   * be changed by the user. The default value is 30.
+   * this parameter sets the average quality to calculate the quality of the whole sequence. This
+   * can be changed by the user. The default value is 30.
    * 
    * @see io.ConfigHandler
    * @see gui.ParameterWindow
@@ -196,8 +196,8 @@ public class QualityAnalysis {
     return qualities.length;
   }
 
-/**
-   * This method calculate the percentage of quality by the parameter.
+  /**
+   * This method calculate the percentage of trimmed nucleotides by quality of parameters.
    *
    * @param toAnalyse the trimmed sequence to get the quality for.
    * @return a value between 0 and 100. This is a percentage.
@@ -213,8 +213,7 @@ public class QualityAnalysis {
       if (phred > avgQualityEdge) counter++;
     }
 
-    double tmp = (int) (counter / toAnalyse.getQuality().length * 100);
-    return tmp;
+    return (int) (counter / toAnalyse.getQuality().length * 100);
   }
 
   /**
@@ -226,10 +225,10 @@ public class QualityAnalysis {
    * @author jannis blueml
    */
   public static int percentageOfTrimQuality(int lengthBefore, AnalysedSequence toAnalyse) {
-    
-	 int lengthNow = toAnalyse.getSequence().length();
-	 double percentage = (lengthBefore - lengthNow) / ((double)lengthBefore);
-	 return (int)(percentage * 100);
+
+    int lengthNow = toAnalyse.getSequence().length();
+    double percentage = (lengthBefore - lengthNow) / ((double) lengthBefore);
+    return (int) (percentage * 100);
   }
 
 
@@ -326,15 +325,15 @@ public class QualityAnalysis {
   }
 
 
-public static void setBreakcounter(int breakcounter) {
-	QualityAnalysis.breakcounter = breakcounter;
-	
-}
+  public static void setBreakcounter(int breakcounter) {
+    QualityAnalysis.breakcounter = breakcounter;
 
-public static int getBreakcounter() {
-	return breakcounter;
-	
-}
+  }
+
+  public static int getBreakcounter() {
+    return breakcounter;
+
+  }
 
 
 

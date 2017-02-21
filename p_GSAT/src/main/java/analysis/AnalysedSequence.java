@@ -109,13 +109,20 @@ public class AnalysedSequence extends Sequence {
     mutations.add(mutation);
   }
 
-
+  /**
+   * get average Quality in a score between 0 and 100 by getting all phread scores and setting them
+   * in the phread function.
+   * 
+   * @return the average quality between 0 and 100.
+   * @author bluemlj
+   */
   public double getAvgQuality() {
     int sum = 0;
     for (int i : qualities) {
       sum += i;
     }
-    return sum / (1.0 * qualities.length);
+    double tmp = sum / (1.0 * qualities.length);
+    return Math.pow(10, -tmp / 10);
   }
 
 
