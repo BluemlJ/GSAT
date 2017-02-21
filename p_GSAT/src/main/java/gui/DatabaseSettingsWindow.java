@@ -6,17 +6,31 @@ import java.util.ResourceBundle;
 
 import javafx.application.Application;
 import javafx.event.EventHandler;
+import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.PasswordField;
+import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
 public class DatabaseSettingsWindow extends Application implements javafx.fxml.Initializable {
 
+  @FXML
+  private TextField adressField;
+  
+  @FXML
+  private TextField portField;
+  
+  @FXML
+  private TextField userNameField;
+  
+  @FXML
+  private PasswordField passwordField;
+  
   @Override
   public void initialize(URL arg0, ResourceBundle arg1) {
-    // TODO Auto-generated method stub
 
   }
 
@@ -25,13 +39,13 @@ public class DatabaseSettingsWindow extends Application implements javafx.fxml.I
   public void start(Stage primaryStage) throws Exception {
     Parent root;
     try {
-      root = FXMLLoader.load(getClass().getResource("/fxml/ParameterWindow.fxml"));
+      root = FXMLLoader.load(getClass().getResource("/fxml/DatabaseSettingsWindow.fxml"));
     } catch (IOException e) {
       e.printStackTrace();
       return;
     }
     Scene scene = new Scene(root);
-    primaryStage.setTitle("GSAT - Adjust analysis parameters");
+    primaryStage.setTitle("GSAT - Adjust Database parameters");
     primaryStage.setScene(scene);
     primaryStage.sizeToScene();
     primaryStage.show();
