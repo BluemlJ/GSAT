@@ -181,9 +181,6 @@ public class GUIUtils {
       } catch (IOException e2) {
     	  tf.getChildren().add(getRedText("Error while storing data, aborting analysis.\n"));
         return new Pair<Boolean, Text>(success, new Text(report.toString()));
-      } catch (UndefinedTypeOfMutationException e) {
-        // TODO Auto-generated catch block
-        e.printStackTrace();
       }
       counter++;
       bar.setProgress(counter / (double) allFiles);

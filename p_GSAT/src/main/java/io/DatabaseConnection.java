@@ -14,8 +14,7 @@ import exceptions.DatabaseConnectionException;
 import exceptions.DatabaseErrorException;
 
 /**
- * Class to communicate with the database. It's also responsible for storing files locally, if there
- * is e.g. no connection to the database available.
+ * Class to communicate with the database.
  * 
  * @author Ben Kohr, Lovis Heindrich
  *
