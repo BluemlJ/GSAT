@@ -122,7 +122,7 @@ public class AnalysedSequence extends Sequence {
       sum += i;
     }
     double tmp = sum / (1.0 * qualities.length);
-    return Math.pow(10, -tmp / 10);
+    return 100 - Math.pow(10, -tmp / 10);
   }
 
 

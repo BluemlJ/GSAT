@@ -113,7 +113,7 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
     Pair<Boolean, Text> output;
     // infoArea.setText("Welcome to GSAT! \n");
 
-    // TODO Wofür ist das?:
+    // TODO Wofï¿½r ist das?:
     /*
      * infoArea.accessibleTextProperty().addListener(new ChangeListener<String>() {
      * 
@@ -124,14 +124,11 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
      */
     // :
 
-    // make TextFlow autoscrolling:
-    infoArea.getChildren().addListener((ListChangeListener<Node>) ((change) -> {
-      infoArea.layout();
-      textScroll.layout();
-      textScroll.setVvalue(1.0f);
-    }));
-    textScroll.setContent(infoArea);
-
+    /*
+     * make TextFlow autoscrolling: infoArea.getChildren().addListener((ListChangeListener<Node>)
+     * ((change) -> { infoArea.layout(); textScroll.layout(); textScroll.setVvalue(1.0f); }));
+     * textScroll.setContent(infoArea);
+     */
 
 
     destField.textProperty().addListener(new ChangeListener<String>() {
