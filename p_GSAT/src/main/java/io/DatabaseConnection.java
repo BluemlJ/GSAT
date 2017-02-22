@@ -260,8 +260,8 @@ public class DatabaseConnection {
 
 	/**
 	 * checks if the given database already has the necessary tables for storing
-	 * data database name must be 'gsat' and table names must be ‘genes‘,
-	 * ‘sequences‘, ‘mutations‘
+	 * data database name must be 'gsat' and table names must be 'genes',
+	 * 'sequences', 'mutations'
 	 * 
 	 * @return true if database exists, false if it does not exist
 	 * @author Lovis Heindrich
@@ -271,7 +271,7 @@ public class DatabaseConnection {
 			conn = establishConnection();
 			Statement stmt = conn.createStatement();
 
-			// check if table ‘genes‘ exists
+			// check if table 'genes' exists
 			ResultSet rs = stmt.executeQuery(
 					"SELECT * FROM information_schema.tables WHERE table_schema = 'gsat' AND table_name = 'genes' LIMIT 1");
 			if (!rs.next()) {
@@ -279,7 +279,7 @@ public class DatabaseConnection {
 				return false;
 			}
 
-			// check if table ‘sequences‘ exists
+			// check if table 'sequences' exists
 			rs = stmt.executeQuery(
 					"SELECT * FROM information_schema.tables WHERE table_schema = 'gsat' AND table_name = 'sequences' LIMIT 1");
 			if (!rs.next()) {
@@ -287,7 +287,7 @@ public class DatabaseConnection {
 				return false;
 			}
 
-			// check if table ‘mutations‘ exists
+			// check if table 'mutations' exists
 			rs = stmt.executeQuery(
 					"SELECT * FROM information_schema.tables WHERE table_schema = 'gsat' AND table_name = 'mutations' LIMIT 1");
 			if (!rs.next()) {
