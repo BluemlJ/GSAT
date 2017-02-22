@@ -16,6 +16,7 @@ import java.util.LinkedList;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import analysis.AnalysedSequence;
@@ -146,6 +147,7 @@ public class WritingTests {
    * @author Ben Kohr
    * @throws UndefinedTypeOfMutationException
    */
+  @Ignore
   @Test
   public void testConvertAndStore()
       throws MissingPathException, IOException, UndefinedTypeOfMutationException {
@@ -363,6 +365,7 @@ public class WritingTests {
    * @author Ben Kohr
    * @throws UndefinedTypeOfMutationException
    */
+  @Ignore
   @Test
   public void testStoreAllLocallyNormal()
       throws MissingPathException, IOException, UndefinedTypeOfMutationException {
@@ -396,6 +399,7 @@ public class WritingTests {
   }
 
 
+  @Ignore
   @Test
   public void testStoreLocallyAsOneFile1()
       throws MissingPathException, IOException, UndefinedTypeOfMutationException {
@@ -435,6 +439,7 @@ public class WritingTests {
   }
 
 
+  @Ignore
   @Test
   public void testStoreLocallyAsOneFile2()
       throws MissingPathException, IOException, UndefinedTypeOfMutationException {
@@ -496,6 +501,7 @@ public class WritingTests {
   }
 
 
+  @Ignore
   @Test
   public void testStoreLocallyAsSeparateFiles1()
       throws MissingPathException, IOException, UndefinedTypeOfMutationException {
@@ -549,6 +555,7 @@ public class WritingTests {
   }
 
 
+  @Ignore
   @Test
   public void testStoreOneFileWithSetFileName()
       throws MissingPathException, IOException, UndefinedTypeOfMutationException {
@@ -580,7 +587,7 @@ public class WritingTests {
 
   }
 
-
+  @Ignore
   @Test
   public void testStoreSeparateFilesWithSetFileName()
       throws MissingPathException, IOException, UndefinedTypeOfMutationException {
