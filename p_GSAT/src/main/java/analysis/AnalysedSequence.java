@@ -6,8 +6,8 @@ import java.util.LinkedList;
  * Models a sequence under analysis (i.e. obtained from an AB1 file), which may have mutations. The
  * Sequence class defines it's basic behavior.
  * 
- * @author Ben Kohr
- * @author Jannis Blueml
+ * @category object
+ * @author Ben Kohr, Jannis Blueml
  * 
  */
 public class AnalysedSequence extends Sequence {

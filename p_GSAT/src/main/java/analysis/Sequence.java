@@ -10,6 +10,7 @@ import exceptions.CorruptedSequenceException;
  * This class models an abstract DNA sequence which could be a reference gene or a given mutated
  * sequence to analyze. It encapsulates the shared behavior of genes and sequences under analysis.
  * 
+ * @category object (abstract)
  * @author Ben Kohr
  */
 public abstract class Sequence {
