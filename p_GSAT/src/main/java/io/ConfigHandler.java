@@ -31,6 +31,7 @@ public class ConfigHandler {
   private static int dbPort = 3306;
 
   // quality parameter
+  private static int[] defaultValues = {30, 25, 30, 9, 20, 3};
   private static int avgApproximationStart = 30;
   private static int avgApproximationEnd = 25;
   private static int avgQualityEdge = 30;
@@ -62,7 +63,7 @@ public class ConfigHandler {
     }
     String line = null;
     while ((line = configReader.readLine()) != null) {
-      String[] elements = line.split(SEPARATOR_CHAR+"");
+      String[] elements = line.split(SEPARATOR_CHAR + "");
 
       String key = elements[0];
       String value = elements[1].trim();
@@ -122,6 +123,7 @@ public class ConfigHandler {
 
     // Arrays.sort(researchers);
   }
+
 
 
   /**
@@ -401,6 +403,24 @@ public class ConfigHandler {
 
   public static void setStartcounter(int startcounter) {
     ConfigHandler.startcounter = startcounter;
+  }
+
+
+
+  /**
+   * @return the defaultValues
+   */
+  public static int[] getDefaultValues() {
+    return defaultValues;
+  }
+
+
+
+  /**
+   * @param defaultValues the defaultValues to set
+   */
+  public static void setDefaultValues(int[] defaultValues) {
+    ConfigHandler.defaultValues = defaultValues;
   }
 
 }

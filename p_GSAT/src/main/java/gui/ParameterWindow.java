@@ -11,6 +11,7 @@ import javafx.application.Application;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -128,6 +129,17 @@ public class ParameterWindow extends Application implements javafx.fxml.Initiali
       }
     });
 
+    defaultButton.setOnAction(new EventHandler<ActionEvent>(){
+        
+      @Override
+      public void handle(ActionEvent arg0) {
+        avgApproximationEnd.setText(ConfigHandler.getDefaultValues()[0] + "");
+        avgApproximationStart.setText(ConfigHandler.getDefaultValues()[1] + "");
+        breakcounter.setText(ConfigHandler.getDefaultValues()[3] + "");
+        startcounter.setText(ConfigHandler.getDefaultValues()[5] + "");
+        numAverageNucleotides.setText(ConfigHandler.getDefaultValues()[4] + "");
+
+      }});
     saveButton.setOnAction(new EventHandler<ActionEvent>() {
 
       @Override
