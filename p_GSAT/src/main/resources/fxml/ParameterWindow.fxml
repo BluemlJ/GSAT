@@ -45,7 +45,7 @@
                <children>
                   <TextField fx:id="startcounter" layoutX="177.0" layoutY="21.0" prefHeight="25.0" prefWidth="82.0" promptText="3" />
                   <Text layoutX="14.0" layoutY="38.0" strokeType="OUTSIDE" strokeWidth="0.0" text="good Quality margin" wrappingWidth="161.984375" />
-                  <Button fx:id="defaultButton" layoutX="269.0" layoutY="21.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="112.0" text="Reload Deffault" />
+                  <Button fx:id="defaultButton" layoutX="269.0" layoutY="21.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="112.0" text="Default values" />
                </children>
             </AnchorPane>
          </children>

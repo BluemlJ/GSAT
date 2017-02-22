@@ -162,6 +162,38 @@ public class ParameterWindow extends Application implements javafx.fxml.Initiali
       }
     });
 
+    
+    
+    defaultButton.setOnAction(new EventHandler<ActionEvent>() {
+
+        @Override
+        public void handle(ActionEvent arg0) {
+        	
+          ConfigHandler.setAvgApproximationEnd(25);
+          avgApproximationEnd.setText("25");
+         
+          ConfigHandler.setAvgApproximationStart(30);
+          avgApproximationStart.setText("30");
+          
+          ConfigHandler.setBreakcounter(9);
+          breakcounter.setText("9");
+          
+          ConfigHandler.setStartcounter(3);
+          startcounter.setText("3");
+          
+          ConfigHandler.setNumAverageNucleotides(20);
+          numAverageNucleotides.setText("20");
+
+          try {
+            ConfigHandler.writeConfig();
+          } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+          }
+        }
+      });
+    
+    
     cancelButton.setOnAction(new EventHandler<ActionEvent>() {
       @Override
       public void handle(ActionEvent arg0) {
@@ -169,14 +201,6 @@ public class ParameterWindow extends Application implements javafx.fxml.Initiali
         Stage stage = (Stage) cancelButton.getScene().getWindow();
         stage.close();
 
-      }
-    });
-    
-    defaultButton.setOnAction(new EventHandler<ActionEvent>() {
-      @Override
-      public void handle(ActionEvent event) {
-        // TODO Auto-generated method stub
-        System.out.println("test");
       }
     });
   }
