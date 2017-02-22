@@ -4,6 +4,7 @@ package analysis;
  * This class models a gene, which can be compared with obtained DNA sequences. Genes can be seen as
  * original templates for mutated sequences.
  * 
+ * @category object
  * @author Ben Kohr
  */
 public class Gene extends Sequence {
