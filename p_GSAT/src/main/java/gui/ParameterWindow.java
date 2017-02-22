@@ -168,20 +168,11 @@ public class ParameterWindow extends Application implements javafx.fxml.Initiali
 
         @Override
         public void handle(ActionEvent arg0) {
-        	
-          ConfigHandler.setAvgApproximationEnd(25);
+        
           avgApproximationEnd.setText("25");
-         
-          ConfigHandler.setAvgApproximationStart(30);
           avgApproximationStart.setText("30");
-          
-          ConfigHandler.setBreakcounter(9);
           breakcounter.setText("9");
-          
-          ConfigHandler.setStartcounter(3);
           startcounter.setText("3");
-          
-          ConfigHandler.setNumAverageNucleotides(20);
           numAverageNucleotides.setText("20");
 
           try {
