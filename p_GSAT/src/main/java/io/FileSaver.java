@@ -28,7 +28,7 @@ public class FileSaver {
   /**
    * This is the class's separator char. It separates the columns of the resulting CSV file.
    */
-  private static final char SEPARATOR_CHAR = ';';
+  private static final char SEPARATOR_CHAR = ConfigHandler.SEPARATOR_CHAR;
 
 
   /**
