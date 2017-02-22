@@ -89,6 +89,7 @@ public class GUIUtils {
     dropdown.getSelectionModel().select(ConfigHandler.getResearcher());
     return new Pair<Boolean, Text>(true,
         new Text("Reading researchers from config.txt was successful"));
+   
   }
 
 
@@ -101,33 +102,31 @@ public class GUIUtils {
    *         printed in the infoarea.
    * @throws DissimilarGeneException
    */
-  public static Pair<Boolean, Text> runAnalysis(String sourcepath, String GeneID, String resultname,
-      ProgressBar bar, TextFlow tf) throws DissimilarGeneException {
-    boolean success = false;
-    StringBuilder report = new StringBuilder();
+  public static Pair<Boolean, LinkedList<Text>> runAnalysis(String sourcepath, String GeneID, String resultname,
+      ProgressBar bar) throws DissimilarGeneException {
+    
+	LinkedList<Text> resultingLines = new LinkedList<Text>();
+	boolean success = false;
 
     // get all ab1 files
     Pair<LinkedList<File>, LinkedList<File>> sequences = getSequencesFromSourceFolder(sourcepath);
     if (sequences.first == null)
       if (sequences.second == null) {
-        tf.getChildren().add(getRedText(
-            "Reading Sequences unsuccessful, please make sure the given path is correct or the file is valid\n"));
-        return new Pair<Boolean, Text>(success, getRedText(
-            "Reading Sequences unsuccessful, please make sure the given path is correct or the file is valid\n"));
+        return new Pair<Boolean, LinkedList<Text>>(success, 
+        		wrap("Reading Sequences unsuccessful, please make sure the given path is correct or the file is valid\n", resultingLines, true)
+            );
       } else {
-        tf.getChildren()
-            .add(getRedText("No AB1 files were found at the given path or the file is invalid.\n"));
-        return new Pair<Boolean, Text>(success,
-            getRedText("No AB1 files were found at the given path or the file is invalid.\n"));
+        return new Pair<Boolean, LinkedList<Text>>(success,
+        		wrap("No AB1 files were found at the given path or the file is invalid.\n", resultingLines, true));
       }
     else
-      tf.getChildren().add(new Text("Reading .ab1 file(s) was successful\n"));
+    	wrap("Reading .ab1 file(s) was successful\n", resultingLines, false);
 
     // get the gene from the coiceboxID
     Gene gene = null;
     if (!GeneID.equals("-1")) {
       gene = getGeneFromDropDown(GeneID).first;
-      tf.getChildren().add(new Text(getGeneFromDropDown(GeneID).second.second + "\n"));
+      wrap(getGeneFromDropDown(GeneID).second.second, resultingLines, false);
     }
     // foreach ab1 file
     int counter = 0;
@@ -144,9 +143,7 @@ public class GUIUtils {
       try {
         StringAnalysis.checkComplementAndReverse(toAnalyse);
       } catch (CorruptedSequenceException e) {
-        tf.getChildren().add(
-            getRedText("Calculation of complementary sequence unsuccessful, analysing stops\n"));
-        return new Pair<Boolean, Text>(success, new Text(report.toString()));
+        return new Pair<Boolean, LinkedList<Text>>(success, wrap("Calculation of complementary sequence unsuccessful, analysing stops\n", resultingLines, true));
       }
 
       // cut out vector
@@ -167,9 +164,7 @@ public class GUIUtils {
       try {
         MutationAnalysis.findMutations(toAnalyse);
       } catch (UndefinedTypeOfMutationException | CorruptedSequenceException e) {
-        tf.getChildren().add(getRedText(
-            "Mutation analysis was unsuccessful because of error in " + file.getName() + "\n"));
-        return new Pair<Boolean, Text>(success, new Text(report.toString()));
+        return new Pair<Boolean, LinkedList<Text>>(success, wrap("Mutation analysis was unsuccessful because of error in " + file.getName() + "\n", resultingLines, true));
       }
 
       // add entry to database
@@ -178,23 +173,35 @@ public class GUIUtils {
         FileSaver.storeResultsLocally(file.getName().replaceFirst("[.][^.]+$", ""), toAnalyse);
 
       } catch (MissingPathException e2) {
-        tf.getChildren().add(getRedText("Missing path to destination, aborting analysis.\n"));
-        FileSaver.setLocalPath("");
-        return new Pair<Boolean, Text>(success, new Text(report.toString()));
+    	  FileSaver.setLocalPath("");
+    	  return new Pair<Boolean, LinkedList<Text>>(success, wrap("Missing path to destination, aborting analysis.\n", resultingLines, true));
       } catch (IOException e2) {
-        tf.getChildren().add(getRedText("Error while storing data, aborting analysis.\n"));
-        return new Pair<Boolean, Text>(success, new Text(report.toString()));
+    	  return new Pair<Boolean, LinkedList<Text>>(success, wrap("Error while storing data, aborting analysis.\n", resultingLines, true));
       }
       counter++;
       bar.setProgress(counter / (double) allFiles);
 
     }
     // set output parameter and return Pair.
-    tf.getChildren().add(new Text("Analysis was successful\n"));
+    wrap("Analysis was successful\n", resultingLines, false);
     success = true;
-    return new Pair<Boolean, Text>(success, new Text(report.toString()));
+    return new Pair<Boolean, LinkedList<Text>>(success, resultingLines);
   }
 
+  
+  
+  
+  private static LinkedList<Text> wrap(String line, LinkedList<Text> list, boolean red) {
+	  Text text;
+	  if (red)
+		  text = getRedText(line);
+	  else
+		  text = new Text(line);
+	  list.add(text);
+	  return list;
+  }
+  
+  
 
   /**
    * This method opens a DirectoryChooser to set the destinationpath. Later results and reports will
@@ -236,7 +243,7 @@ public class GUIUtils {
       path = selectedDirectory.getAbsolutePath();
       success = true;
       report =
-          getRedText("Reading destination path was successful. \nDestination is:  " + path + "\n");
+          new Text("Reading destination path was successful. \nDestination is:  " + path + "\n");
       FileSaver.setLocalPath(path);
       destination.setText(path);
     }
@@ -328,9 +335,9 @@ public class GUIUtils {
    * @param dropdownID ID of Gene in the choiceBox
    * @return Gene and reportpair
    */
-  private static Pair<Gene, Pair<Boolean, Text>> getGeneFromDropDown(String name) {
-    return new Pair<Gene, Pair<Boolean, Text>>(GeneHandler.getGene(name),
-        new Pair<Boolean, Text>(true, new Text("Reading gene was successful\n")));
+  private static Pair<Gene, Pair<Boolean, String>> getGeneFromDropDown(String name) {
+    return new Pair<Gene, Pair<Boolean, String>>(GeneHandler.getGene(name),
+        new Pair<Boolean, String>(true, "Reading gene was successful\n"));
 
   }
 

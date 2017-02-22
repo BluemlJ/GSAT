@@ -204,11 +204,10 @@ public class FileSaver {
 
     // average quality
     double avgQuality = sequence.getAvgQuality();
-    int avgQualityInPercent = (int) (Math.pow(10, (-avgQuality) / 10.0) * 100);
-    builder.append(avgQualityInPercent).append(SEPARATOR_CHAR + " ");
+    builder.append(avgQuality).append(SEPARATOR_CHAR + " ");
 
     // trim percentage
-    int trimPercentage = (int) (sequence.getTrimPercentage() * 100);
+    int trimPercentage = (int) sequence.getTrimPercentage();
     builder.append(trimPercentage).append(SEPARATOR_CHAR + " ");
 
     // nucleotides

@@ -3,6 +3,7 @@ package gui;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
+import java.util.LinkedList;
 import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.Scanner;
@@ -11,6 +12,7 @@ import analysis.Pair;
 import io.ConfigHandler;
 import io.FileSaver;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.ListChangeListener;
@@ -18,6 +20,7 @@ import javafx.concurrent.WorkerStateEvent;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
@@ -111,19 +114,6 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
     GUIUtils.setColorOnNode(aboutButton, Color.BLUE);
 
     Pair<Boolean, Text> output;
-    // infoArea.setText("Welcome to GSAT! \n");
-
-    // TODO Wof�r ist das?:
-    /*
-     * infoArea.accessibleTextProperty().addListener(new ChangeListener<String>() {
-     * 
-     * @Override public void changed(ObservableValue<? extends String> arg0, String arg1, String
-     * arg2) { // TODO scroll down
-     * 
-     * }});
-     */
-    // :
-
 
     infoArea.getChildren().addListener((ListChangeListener<Node>) ((change) -> {
       infoArea.layout();
@@ -197,7 +187,7 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
       public void handle(ActionEvent arg0) {
         Text output;
         output = GUIUtils.setDestination(destField, srcField.getText()).second;
-        infoArea.getChildren().add(new Text(output + "\n"));
+        infoArea.getChildren().add(output);
       }
     });
 
@@ -274,10 +264,10 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
             "---------------------------------------------------------------------------------------------------\n"));
 
         javafx.concurrent.Task<Void> mainTask = new javafx.concurrent.Task<Void>() {
-
+        	
           @Override
           protected Void call() throws Exception {
-
+     
             String srcFieldTest = srcField.getText();
             String destfileNameText = fileNameField.getText();
             String geneBoxItem;
@@ -286,8 +276,15 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
             else
               geneBoxItem = geneBox.getSelectionModel().getSelectedItem().split(" ")[0];
 
-            GUIUtils.runAnalysis(srcFieldTest, geneBoxItem, destfileNameText, bar, infoArea);
-            // infoArea.getChildren().add(output);
+            LinkedList<Text> resultingLines = GUIUtils.runAnalysis(srcFieldTest, geneBoxItem, destfileNameText, bar).second;
+            Platform.runLater(new Runnable() {
+
+				@Override
+				public void run() {
+					infoArea.getChildren().addAll(resultingLines);
+				}
+        		  
+        	  });
             return null;
           }
 
