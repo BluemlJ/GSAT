@@ -22,8 +22,6 @@ public class Gene extends Sequence {
 
   private String comment;
 
-
-
   /**
    * Constructor setting all given attributes (by calling the super constructor).
    * 
@@ -63,45 +61,68 @@ public class Gene extends Sequence {
   }
 
 
-  // GETTERs and SETTERs:
-
+  /**
+   * @return the id
+   */
   public int getId() {
     return id;
   }
 
 
-  public String getName() {
-    return name;
-  }
-
-
+  /**
+   * @param id the id to set
+   */
   public void setId(int id) {
     this.id = id;
   }
 
 
+  /**
+   * @return the name
+   */
+  public String getName() {
+    return name;
+  }
+
+
+  /**
+   * @param name the name to set
+   */
   public void setName(String name) {
     this.name = name;
   }
 
 
+  /**
+   * @return the organism
+   */
   public String getOrganism() {
     return organism;
   }
 
 
-  public String getComment() {
-    return comment;
-  }
-
-
+  /**
+   * @param organism the organism to set
+   */
   public void setOrganism(String organism) {
     this.organism = organism;
   }
 
 
+  /**
+   * @return the comment
+   */
+  public String getComment() {
+    return comment;
+  }
+
+
+  /**
+   * @param comment the comment to set
+   */
   public void setComment(String comment) {
     this.comment = comment;
   }
+
 
 }

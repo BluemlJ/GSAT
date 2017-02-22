@@ -26,7 +26,7 @@ import javafx.stage.WindowEvent;
 public class AddGeneWindow extends Application implements javafx.fxml.Initializable {
 
   private SettingsWindow parent;
-  
+
   // fields
   @FXML
   private TextField nameField;
@@ -62,51 +62,51 @@ public class AddGeneWindow extends Application implements javafx.fxml.Initializa
       @Override
       public void changed(ObservableValue<? extends String> observable, String oldValue,
           String newValue) {
-        if (newValue.matches(ConfigHandler.SEPARATOR_CHAR+"")) {
+        if (newValue.matches(ConfigHandler.SEPARATOR_CHAR + "")) {
           nameField.setText(oldValue);
         } else {
           nameField.setText(newValue);
         }
       }
     });
-    
+
     organismField.textProperty().addListener(new ChangeListener<String>() {
       @Override
       public void changed(ObservableValue<? extends String> observable, String oldValue,
           String newValue) {
-        if (newValue.matches(ConfigHandler.SEPARATOR_CHAR+"")) {
+        if (newValue.matches(ConfigHandler.SEPARATOR_CHAR + "")) {
           organismField.setText(oldValue);
         } else {
           organismField.setText(newValue);
         }
       }
     });
-    
+
 
     geneArea.textProperty().addListener(new ChangeListener<String>() {
       @Override
       public void changed(ObservableValue<? extends String> observable, String oldValue,
           String newValue) {
-        if (newValue.matches(ConfigHandler.SEPARATOR_CHAR+"")) {
+        if (newValue.matches(ConfigHandler.SEPARATOR_CHAR + "")) {
           geneArea.setText(oldValue);
         } else {
           geneArea.setText(newValue);
         }
       }
     });
-    
+
     commentArea.textProperty().addListener(new ChangeListener<String>() {
       @Override
       public void changed(ObservableValue<? extends String> observable, String oldValue,
           String newValue) {
-        if (newValue.matches(ConfigHandler.SEPARATOR_CHAR+"")) {
+        if (newValue.matches(ConfigHandler.SEPARATOR_CHAR + "")) {
           commentArea.setText(oldValue);
         } else {
           commentArea.setText(newValue);
         }
       }
     });
-    
+
     confirmButton.setOnAction(new EventHandler<ActionEvent>() {
 
       @Override

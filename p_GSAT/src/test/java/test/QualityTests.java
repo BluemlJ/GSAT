@@ -8,7 +8,6 @@ import java.io.IOException;
 
 import org.junit.After;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import analysis.AnalysedSequence;
@@ -286,7 +285,7 @@ public class QualityTests {
   @Test
   public void testQualityAccessibility() {
     // test if average quality information is accessible
-    assertEquals((int) (testSequence.getAvgQuality()*1000), 99999);
+    assertEquals((int) (testSequence.getAvgQuality() * 1000), 99999);
     // test if the quality array is accessible
     assertEquals(testSequence.getQuality()[0], 16);
 

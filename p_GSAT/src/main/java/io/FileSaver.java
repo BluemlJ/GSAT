@@ -8,11 +8,10 @@ import java.util.LinkedList;
 import analysis.AnalysedSequence;
 import exceptions.MissingPathException;
 import exceptions.PathUsage;
-import exceptions.UndefinedTypeOfMutationException;
 
 /**
- * This class is used to store the analysis results in local files. It produces comma separated value
- * files (CSV) which can be read with Excel.
+ * This class is used to store the analysis results in local files. It produces comma separated
+ * value files (CSV) which can be read with Excel.
  * 
  * @author Ben Kohr
  */
@@ -25,40 +24,40 @@ public class FileSaver {
    */
   private static String destinationFileName = "gsat_results";
 
-  
+
   /**
    * This is the class's separator char. It separates the columns of the resulting CSV file.
    */
   private static final char SEPARATOR_CHAR = ';';
 
-  
+
   /**
    * Indicating whether this is the first call of the storage method in the current storage process.
    * This field is necessary to keep up with the labeling.
    */
   private static boolean firstCall = true;
 
-  
+
   /**
    * This value is needed to keep track of the momentarily used id of the data. One number
    * corresponds to a single sequence. Ids start with one to be human-understandable.
    */
   private static long id = 1;
 
-  
+
   /**
    * Specifies the path where local files shall be created. This specifies the folder, not the file!
    */
   private static File localPath;
 
-  
+
   /**
-   * Indicates whether one or multiple files shall be used for storage. By default, only one file will be
-   * generated.
+   * Indicates whether one or multiple files shall be used for storage. By default, only one file
+   * will be generated.
    */
   private static boolean separateFiles = false;
 
-  
+
 
   /**
    * Sets the path where local files shall be created. The String argument is converted into a File.
@@ -93,9 +92,9 @@ public class FileSaver {
 
 
   /**
-   * Inserts the data of an analysed sequence into one or multiple local file(s). 
-   * The name of the AB1 file is given as a parameter. It may be used to create the CSV file name (if 
-   * separate files are desired).
+   * Inserts the data of an analysed sequence into one or multiple local file(s). The name of the
+   * AB1 file is given as a parameter. It may be used to create the CSV file name (if separate files
+   * are desired).
    * 
    * @param ab1Filename the name of the AB1 file the stored entries were obtained from. If only one
    *        file is desired, then the name will not be used.
@@ -308,8 +307,7 @@ public class FileSaver {
    * 
    * @author Ben Kohr
    */
-  private static FileWriter getNewWriter(String finalName, boolean append)
-      throws IOException {
+  private static FileWriter getNewWriter(String finalName, boolean append) throws IOException {
 
     File newFile = new File(finalName);
 
@@ -320,35 +318,25 @@ public class FileSaver {
     FileWriter writer = new FileWriter(newFile, append);
 
     if (!append) {
-      writer.write(
-    		  "id" + SEPARATOR_CHAR + 
-    		  " file name" + SEPARATOR_CHAR + 
-    		  " gene" + SEPARATOR_CHAR + 
-    		  " gene organism" + SEPARATOR_CHAR + 
-    		  " mutations (with codons)" + SEPARATOR_CHAR + 
-    		  " comments" + SEPARATOR_CHAR + 
-    		  " researcher" + SEPARATOR_CHAR + 
-    		  " date" + SEPARATOR_CHAR + 
-    		  " average quality (percent)" + SEPARATOR_CHAR + 
-    		  " percentage of quality trim" + SEPARATOR_CHAR + 
-    		  " nucleotide sequence" + SEPARATOR_CHAR + 
-    		  " left vector" + SEPARATOR_CHAR + 
-    		  " right vector" + SEPARATOR_CHAR + 
-    		  " primer" + SEPARATOR_CHAR + 
-    		  " HIS tag" + SEPARATOR_CHAR + 
-    		  " mutations (without codons)" + SEPARATOR_CHAR + 
-    		  " manually checked"  + System.lineSeparator()
-      );
+      writer.write("id" + SEPARATOR_CHAR + " file name" + SEPARATOR_CHAR + " gene" + SEPARATOR_CHAR
+          + " gene organism" + SEPARATOR_CHAR + " mutations (with codons)" + SEPARATOR_CHAR
+          + " comments" + SEPARATOR_CHAR + " researcher" + SEPARATOR_CHAR + " date" + SEPARATOR_CHAR
+          + " average quality (percent)" + SEPARATOR_CHAR + " percentage of quality trim"
+          + SEPARATOR_CHAR + " nucleotide sequence" + SEPARATOR_CHAR + " left vector"
+          + SEPARATOR_CHAR + " right vector" + SEPARATOR_CHAR + " primer" + SEPARATOR_CHAR
+          + " HIS tag" + SEPARATOR_CHAR + " mutations (without codons)" + SEPARATOR_CHAR
+          + " manually checked" + System.lineSeparator());
     }
 
     return writer;
   }
 
 
-  
+
   /**
    * Sets the momentarily used id to one, if separate files are desired (each file has it's own
-   * number range, starting with one). This method is used within the writing process to handle the ids.
+   * number range, starting with one). This method is used within the writing process to handle the
+   * ids.
    * 
    * @see #resetIDs()
    * 
@@ -362,7 +350,7 @@ public class FileSaver {
     }
   }
 
-  
+
 
   /**
    * Sets the momentarily used id to one.
@@ -373,8 +361,8 @@ public class FileSaver {
     id = 1;
   }
 
-  
-  
+
+
   /**
    * This method resets the class's state by resetting the ids and setting {@link #firstCall} to
    * true. This is necessary to start a completely new analyzing process.
@@ -385,14 +373,13 @@ public class FileSaver {
   }
 
 
-  
+
   // GETTERS AND SETTERS:
-  
+
   public static void setSeparateFiles(boolean separateFiles) {
-	    FileSaver.separateFiles = separateFiles;
+    FileSaver.separateFiles = separateFiles;
   }
-  
-  
-  
-  
+
+
+
 }

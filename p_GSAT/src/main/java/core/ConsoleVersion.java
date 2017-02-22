@@ -157,7 +157,7 @@ public class ConsoleVersion {
       String destinationPath) {
     try {
       FileSaver.storeResultsLocally(file.getName().replaceFirst("[.][^.]+$", "") + "_result",
-	    activeSequence);
+          activeSequence);
     } catch (MissingPathException e) {
       FileSaver.setLocalPath(destinationPath);
     } catch (IOException e) {

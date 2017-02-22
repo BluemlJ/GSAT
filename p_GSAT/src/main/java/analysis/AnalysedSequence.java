@@ -125,69 +125,6 @@ public class AnalysedSequence extends Sequence {
     return 100 - Math.pow(10, -tmp / 10);
   }
 
-
-  public String getComments() {
-    return comments;
-  }
-
-
-  public String getFileName() {
-    return fileName;
-  }
-
-
-  public double getTrimPercentage() {
-    return trimPercentage;
-  }
-
-
-  public String getLeftVector() {
-    return leftVector;
-  }
-
-
-  public LinkedList<String> getMutations() {
-    return mutations;
-  }
-
-
-  public int getOffset() {
-    return offset;
-  }
-
-
-  // GETTERs and SETTERs:
-
-  public String getPrimer() {
-    return primer;
-  }
-
-
-  public int[] getQuality() {
-    return qualities;
-  }
-
-
-  public int getHisTagPosition() {
-    return hisTagPosition;
-  }
-
-
-  public Gene getReferencedGene() {
-    return referencedGene;
-  }
-
-
-  public String getRightVector() {
-    return rightVector;
-  }
-
-
-  public boolean isManuallyChecked() {
-    return manuallyChecked;
-  }
-
-
   /**
    * Returns the length of the sequence (the number of nucleotides in it).
    * 
@@ -215,49 +152,6 @@ public class AnalysedSequence extends Sequence {
   }
 
 
-  public void setComments(String comments) {
-    this.comments = comments;
-  }
-
-
-  public void setLeftVector(String vector) {
-    this.leftVector = vector;
-  }
-
-
-  public void setManuallyChecked(boolean manuallyChecked) {
-    this.manuallyChecked = manuallyChecked;
-  }
-
-
-  public void setOffset(int offset) {
-    this.offset = offset;
-  }
-
-
-  public void setPrimer(String primer) {
-    this.primer = primer;
-  }
-
-
-  public void setReferencedGene(Gene gene) {
-    referencedGene = gene;
-  }
-
-
-  public void setRightVector(String vector) {
-    this.rightVector = vector;
-  }
-
-
-  public void setHisTagPosition(int hisTagPosition) {
-    this.hisTagPosition = hisTagPosition;
-  }
-
-
-  public void setTrimPercentage(double trimPercentage) {
-    this.trimPercentage = trimPercentage;
-  }
 
 
   /**
@@ -295,6 +189,198 @@ public class AnalysedSequence extends Sequence {
   public void trimSequence(int startIndex, int endIndex) {
     String trimmed = sequence.substring(startIndex, endIndex + 1);
     this.sequence = trimmed;
+  }
+
+
+  /**
+   * @return the comments
+   */
+  public String getComments() {
+    return comments;
+  }
+
+
+  /**
+   * @param comments the comments to set
+   */
+  public void setComments(String comments) {
+    this.comments = comments;
+  }
+
+
+  /**
+   * @return the fileName
+   */
+  public String getFileName() {
+    return fileName;
+  }
+
+
+  /**
+   * @param fileName the fileName to set
+   */
+  public void setFileName(String fileName) {
+    this.fileName = fileName;
+  }
+
+
+  /**
+   * @return the leftVector
+   */
+  public String getLeftVector() {
+    return leftVector;
+  }
+
+
+  /**
+   * @param leftVector the leftVector to set
+   */
+  public void setLeftVector(String leftVector) {
+    this.leftVector = leftVector;
+  }
+
+
+  /**
+   * @return the manuallyChecked
+   */
+  public boolean isManuallyChecked() {
+    return manuallyChecked;
+  }
+
+
+  /**
+   * @param manuallyChecked the manuallyChecked to set
+   */
+  public void setManuallyChecked(boolean manuallyChecked) {
+    this.manuallyChecked = manuallyChecked;
+  }
+
+
+  /**
+   * @return the mutations
+   */
+  public LinkedList<String> getMutations() {
+    return mutations;
+  }
+
+
+  /**
+   * @param mutations the mutations to set
+   */
+  public void setMutations(LinkedList<String> mutations) {
+    this.mutations = mutations;
+  }
+
+
+  /**
+   * @return the offset
+   */
+  public int getOffset() {
+    return offset;
+  }
+
+
+  /**
+   * @param offset the offset to set
+   */
+  public void setOffset(int offset) {
+    this.offset = offset;
+  }
+
+
+  /**
+   * @return the primer
+   */
+  public String getPrimer() {
+    return primer;
+  }
+
+
+  /**
+   * @param primer the primer to set
+   */
+  public void setPrimer(String primer) {
+    this.primer = primer;
+  }
+
+
+  /**
+   * @return the qualities
+   */
+  public int[] getQuality() {
+    return qualities;
+  }
+
+
+  /**
+   * @param qualities the qualities to set
+   */
+  public void setQuality(int[] qualities) {
+    this.qualities = qualities;
+  }
+
+
+  /**
+   * @return the referencedGene
+   */
+  public Gene getReferencedGene() {
+    return referencedGene;
+  }
+
+
+  /**
+   * @param referencedGene the referencedGene to set
+   */
+  public void setReferencedGene(Gene referencedGene) {
+    this.referencedGene = referencedGene;
+  }
+
+
+  /**
+   * @return the rightVector
+   */
+  public String getRightVector() {
+    return rightVector;
+  }
+
+
+  /**
+   * @param rightVector the rightVector to set
+   */
+  public void setRightVector(String rightVector) {
+    this.rightVector = rightVector;
+  }
+
+
+  /**
+   * @return the trimPercentage
+   */
+  public double getTrimPercentage() {
+    return trimPercentage;
+  }
+
+
+  /**
+   * @param trimPercentage the trimPercentage to set
+   */
+  public void setTrimPercentage(double trimPercentage) {
+    this.trimPercentage = trimPercentage;
+  }
+
+
+  /**
+   * @return the hisTagPosition
+   */
+  public int getHisTagPosition() {
+    return hisTagPosition;
+  }
+
+
+  /**
+   * @param hisTagPosition the hisTagPosition to set
+   */
+  public void setHisTagPosition(int hisTagPosition) {
+    this.hisTagPosition = hisTagPosition;
   }
 
 }

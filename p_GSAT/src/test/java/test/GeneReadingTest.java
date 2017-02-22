@@ -1,6 +1,7 @@
 package test;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 import java.io.IOException;
@@ -171,62 +172,67 @@ public class GeneReadingTest {
     assertEquals(GeneHandler.getGene("testGene2").getComment(), "comment2");
     GeneHandler.setPath(oldPath);
   }
-  
+
   /**
-   * This test checks if initGenes makes a new file if none exists and if the placeholder gene is written to the new file
+   * This test checks if initGenes makes a new file if none exists and if the placeholder gene is
+   * written to the new file
+   * 
    * @throws IOException
    */
   @Test
-  public void initGeneTestNoFile() throws IOException{
-	 String oldPath = GeneHandler.getPath();
-	 GeneHandler.setPath(writePath);
-	 
-	 File geneFile = new File(writePath);
-	 geneFile.delete();
-	 
-	 GeneHandler.initGenes();
-	 
-	 GeneHandler.readGenes();
-	 
-	 assertTrue(GeneHandler.getGene("FSA") != null);
-	 
-	 GeneHandler.setPath(oldPath);
-  }
-  
-/**
- * This test verifies that initGenes does not overwrite any existing genes if the genes.txt file already exists
- * @throws IOException
- * @throws DuplicateGeneException
- */
-  @Test
-  public void initGeneTestFileExists() throws IOException, DuplicateGeneException{
-		 String oldPath = GeneHandler.getPath();
-		 GeneHandler.setPath(writePath);
-		 
-		 GeneHandler.clearTxtFile(writePath);
+  public void initGeneTestNoFile() throws IOException {
+    String oldPath = GeneHandler.getPath();
+    GeneHandler.setPath(writePath);
 
-		 GeneHandler.addGene("testGene", "aaatttaaaggg", "organism1", "comment1");
-		 GeneHandler.readGenes();
-		 assertEquals(GeneHandler.getGene("testGene").getSequence(), "aaatttaaaggg".toUpperCase());
-		 
-		 
-		 GeneHandler.initGenes();
-		 GeneHandler.readGenes();
-		 
-		 
-		 assertEquals(GeneHandler.getGene("testGene").getSequence(), "aaatttaaaggg".toUpperCase());
-		 GeneHandler.setPath(oldPath);
-	  }
-  
+    File geneFile = new File(writePath);
+    geneFile.delete();
+
+    GeneHandler.initGenes();
+
+    GeneHandler.readGenes();
+
+    assertTrue(GeneHandler.getGene("FSA") != null);
+
+    GeneHandler.setPath(oldPath);
+  }
+
+  /**
+   * This test verifies that initGenes does not overwrite any existing genes if the genes.txt file
+   * already exists
+   * 
+   * @throws IOException
+   * @throws DuplicateGeneException
+   */
+  @Test
+  public void initGeneTestFileExists() throws IOException, DuplicateGeneException {
+    String oldPath = GeneHandler.getPath();
+    GeneHandler.setPath(writePath);
+
+    GeneHandler.clearTxtFile(writePath);
+
+    GeneHandler.addGene("testGene", "aaatttaaaggg", "organism1", "comment1");
+    GeneHandler.readGenes();
+    assertEquals(GeneHandler.getGene("testGene").getSequence(), "aaatttaaaggg".toUpperCase());
+
+
+    GeneHandler.initGenes();
+    GeneHandler.readGenes();
+
+
+    assertEquals(GeneHandler.getGene("testGene").getSequence(), "aaatttaaaggg".toUpperCase());
+    GeneHandler.setPath(oldPath);
+  }
+
   /**
    * this test verifies that an exception is thrown when an invalid path is set
+   * 
    * @throws IOException
    */
   @Test(expected = NullPointerException.class)
-  public void initGeneInvalidPath() throws IOException{
-	  String oldPath = GeneHandler.getPath();
-		 GeneHandler.setPath("aaaa");
-		 GeneHandler.initGenes();
-		 GeneHandler.setPath(oldPath);
+  public void initGeneInvalidPath() throws IOException {
+    String oldPath = GeneHandler.getPath();
+    GeneHandler.setPath("aaaa");
+    GeneHandler.initGenes();
+    GeneHandler.setPath(oldPath);
   }
 }

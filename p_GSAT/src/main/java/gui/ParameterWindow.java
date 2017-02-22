@@ -11,7 +11,6 @@ import javafx.application.Application;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
-import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -41,10 +40,10 @@ public class ParameterWindow extends Application implements javafx.fxml.Initiali
 
   @FXML
   private Button saveButton;
-  
+
   @FXML
   private Button defaultButton;
-  
+
 
   @FXML
   private Button cancelButton;
@@ -129,8 +128,8 @@ public class ParameterWindow extends Application implements javafx.fxml.Initiali
       }
     });
 
-    defaultButton.setOnAction(new EventHandler<ActionEvent>(){
-        
+    defaultButton.setOnAction(new EventHandler<ActionEvent>() {
+
       @Override
       public void handle(ActionEvent arg0) {
         avgApproximationEnd.setText(ConfigHandler.getDefaultValues()[0] + "");
@@ -139,7 +138,8 @@ public class ParameterWindow extends Application implements javafx.fxml.Initiali
         startcounter.setText(ConfigHandler.getDefaultValues()[5] + "");
         numAverageNucleotides.setText(ConfigHandler.getDefaultValues()[4] + "");
 
-      }});
+      }
+    });
     saveButton.setOnAction(new EventHandler<ActionEvent>() {
 
       @Override
@@ -174,29 +174,19 @@ public class ParameterWindow extends Application implements javafx.fxml.Initiali
       }
     });
 
-    
-    
-    defaultButton.setOnAction(new EventHandler<ActionEvent>() {
-
-        @Override
-        public void handle(ActionEvent arg0) {
-        
-          avgApproximationEnd.setText("25");
-          avgApproximationStart.setText("30");
-          breakcounter.setText("9");
-          startcounter.setText("3");
-          numAverageNucleotides.setText("20");
-
-          try {
-            ConfigHandler.writeConfig();
-          } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-          }
-        }
-      });
-    
-    
+    // BEN WARUM MACHST DU MEINE ARBEIT !!!!!
+    /*
+     * defaultButton.setOnAction(new EventHandler<ActionEvent>() {
+     * 
+     * @Override public void handle(ActionEvent arg0) {
+     * 
+     * avgApproximationEnd.setText("25"); avgApproximationStart.setText("30");
+     * breakcounter.setText("9"); startcounter.setText("3"); numAverageNucleotides.setText("20");
+     * 
+     * try { ConfigHandler.writeConfig(); } catch (IOException e) { // TODO Auto-generated catch
+     * block e.printStackTrace(); } } });
+     * 
+     */
     cancelButton.setOnAction(new EventHandler<ActionEvent>() {
       @Override
       public void handle(ActionEvent arg0) {

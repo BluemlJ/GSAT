@@ -19,16 +19,16 @@ public class DatabaseSettingsWindow extends Application implements javafx.fxml.I
 
   @FXML
   private TextField adressField;
-  
+
   @FXML
   private TextField portField;
-  
+
   @FXML
   private TextField userNameField;
-  
+
   @FXML
   private PasswordField passwordField;
-  
+
   @Override
   public void initialize(URL arg0, ResourceBundle arg1) {
 
