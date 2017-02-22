@@ -124,11 +124,16 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
      */
     // :
 
-    /*
-     * make TextFlow autoscrolling: infoArea.getChildren().addListener((ListChangeListener<Node>)
-     * ((change) -> { infoArea.layout(); textScroll.layout(); textScroll.setVvalue(1.0f); }));
-     * textScroll.setContent(infoArea);
-     */
+    
+     infoArea.getChildren().addListener((ListChangeListener<Node>) 
+         ((change) -> 
+    		 {   infoArea.layout(); 
+    			 textScroll.layout(); 
+    			 textScroll.setVvalue(1.0f); 
+         }));
+     
+     textScroll.setContent(infoArea);
+     
 
 
     destField.textProperty().addListener(new ChangeListener<String>() {
