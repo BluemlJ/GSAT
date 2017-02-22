@@ -6,6 +6,7 @@ import exceptions.CorruptedSequenceException;
  * This class contains the logic of analyzing the quality of sequences (poin) Thus, it is one of the
  * main parts of the analyzing pipeline.
  * 
+ * @category DNA.Utils
  * @author Jannis Blueml, Lovis Heindrich
  */
 public class QualityAnalysis {

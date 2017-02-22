@@ -12,7 +12,8 @@ import exceptions.CorruptedSequenceException;
  * This class contains the logic of analyzing sequence strings. This class serves for
  * MutationAnaysis by providing useful String Matching methods.
  * 
- * @author jannis blueml
+ * @category DNA.Utils
+ * @author jannis blueml, kevin otto
  */
 public class StringAnalysis {
 
