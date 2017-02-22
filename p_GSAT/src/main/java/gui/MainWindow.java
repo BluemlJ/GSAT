@@ -107,6 +107,7 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
   @Override
   public void initialize(URL arg0, ResourceBundle arg1) {
     bar.setProgress(0);
+    bar.setStyle("-fx-accent: rgb(130, 177, 255);");
     FileSaver.setSeparateFiles(false);
     GUIUtils.setColorOnNode(startButton, Color.BLUE);
     GUIUtils.setColorOnNode(settingsButton, Color.BLUE);
