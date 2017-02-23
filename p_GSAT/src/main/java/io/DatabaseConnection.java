@@ -327,7 +327,7 @@ public class DatabaseConnection {
     }
   }
 
-  public void resetDatabaseConnection() {
+  public static void resetDatabaseConnection() {
     flushQueue();
   }
 
@@ -339,7 +339,7 @@ public class DatabaseConnection {
    * @author Lovis Heindrich
    * @throws DatabaseConnectionException
    */
-  public void pushAllData() throws SQLException, DatabaseConnectionException {
+  public static void pushAllData() throws SQLException, DatabaseConnectionException {
 
     // get a connection
     conn = establishConnection();
@@ -379,7 +379,7 @@ public class DatabaseConnection {
    * @param sequenceID database id of the sequence
    * @author Lovis Heindrich
    */
-  private void pushMutations(Statement stmt, LinkedList<String> mutations, int sequenceID) {
+  private static void pushMutations(Statement stmt, LinkedList<String> mutations, int sequenceID) {
 
     for (String mutation : mutations) {
 
@@ -400,7 +400,7 @@ public class DatabaseConnection {
    * @return database id of the new entry
    * @author Lovis Heindrich
    */
-  private int pushSequence(Statement stmt, AnalysedSequence sequence, int researcherID,
+  private static int pushSequence(Statement stmt, AnalysedSequence sequence, int researcherID,
       int geneID) {
     // check if sequence exists
 
@@ -416,7 +416,7 @@ public class DatabaseConnection {
    * @return
    * @author Lovis Heindrich
    */
-  private int pushGene(Statement stmt, Gene referencedGene, int researcherID) {
+  private static int pushGene(Statement stmt, Gene referencedGene, int researcherID) {
     // check if gene exists
 
     // push otherwise
@@ -431,7 +431,7 @@ public class DatabaseConnection {
    * @return database index of the researcher
    * @author Lovis Heindrich
    */
-  private int pushReasearcher(Statement stmt, String researcher) {
+  private static int pushReasearcher(Statement stmt, String researcher) {
     // check if researcher exists
 
     // push otherwise
