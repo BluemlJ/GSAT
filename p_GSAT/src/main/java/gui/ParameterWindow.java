@@ -53,8 +53,8 @@ public class ParameterWindow extends Application implements javafx.fxml.Initiali
   @Override
   public void initialize(URL arg0, ResourceBundle arg1) {
 
-    GUIUtils.setColorOnNode(saveButton, Color.GREEN);
-    GUIUtils.setColorOnNode(cancelButton, Color.RED);
+    GUIUtils.setColorOnNode(saveButton, ButtonColor.GREEN);
+    GUIUtils.setColorOnNode(cancelButton, ButtonColor.RED);
 
     try {
       ConfigHandler.readConfig();

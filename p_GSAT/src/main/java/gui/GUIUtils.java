@@ -110,6 +110,7 @@ public class GUIUtils {
 
     // get all ab1 files
     Pair<LinkedList<File>, LinkedList<File>> sequences = getSequencesFromSourceFolder(sourcepath);
+    
     if (sequences.first == null)
       if (sequences.second == null) {
         return new Pair<Boolean, LinkedList<Text>>(success, 
@@ -178,9 +179,10 @@ public class GUIUtils {
       } catch (IOException e2) {
     	  return new Pair<Boolean, LinkedList<Text>>(success, wrap("Error while storing data, aborting analysis.\n", resultingLines, true));
       }
-      counter++;
-      bar.setProgress(counter / (double) allFiles);
-
+      
+    	counter++;
+      	bar.setProgress(counter / (double) allFiles);
+      
     }
     // set output parameter and return Pair.
     wrap("Analysis was successful\n", resultingLines, false);
@@ -394,7 +396,7 @@ public class GUIUtils {
 
 
 
-	public static void setColorOnNode(Node node, Color color) {
+	public static void setColorOnNode(Node node, ButtonColor color) {
 
 		String normalColor = "";
 		String hoverColor = "";

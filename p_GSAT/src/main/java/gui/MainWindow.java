@@ -109,10 +109,10 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
     bar.setProgress(0);
     bar.setStyle("-fx-accent: rgb(130, 177, 255);");
     FileSaver.setSeparateFiles(false);
-    GUIUtils.setColorOnNode(startButton, Color.BLUE);
-    GUIUtils.setColorOnNode(settingsButton, Color.BLUE);
-    GUIUtils.setColorOnNode(manualButton, Color.BLUE);
-    GUIUtils.setColorOnNode(aboutButton, Color.BLUE);
+    GUIUtils.setColorOnNode(startButton, ButtonColor.BLUE);
+    GUIUtils.setColorOnNode(settingsButton, ButtonColor.BLUE);
+    GUIUtils.setColorOnNode(manualButton, ButtonColor.BLUE);
+    GUIUtils.setColorOnNode(aboutButton, ButtonColor.BLUE);
 
     Pair<Boolean, Text> output;
 

@@ -24,7 +24,6 @@ import io.FileSaver;
 import io.GeneHandler;
 import io.SequenceReader;
 
-@Deprecated
 public class ConsoleVersion {
 
   private static boolean geneRecognition = false;

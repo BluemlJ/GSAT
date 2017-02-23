@@ -1,5 +1,5 @@
 package gui;
 
-public enum Color {
+public enum ButtonColor {
   BLUE, GREEN, RED
 }

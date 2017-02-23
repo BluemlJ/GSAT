@@ -67,11 +67,11 @@ public class SettingsWindow extends Application implements javafx.fxml.Initializ
     GUIUtils.initializeGeneBox(geneList);
     geneList.setStyle("-fx-font-style: italic;");
 
-    GUIUtils.setColorOnNode(closeButton, Color.BLUE);
-    GUIUtils.setColorOnNode(addGeneButton, Color.GREEN);
-    GUIUtils.setColorOnNode(addResearcherButton, Color.GREEN);
-    GUIUtils.setColorOnNode(deleteGeneButton, Color.RED);
-    GUIUtils.setColorOnNode(deleteResearcherButton, Color.RED);
+    GUIUtils.setColorOnNode(closeButton, ButtonColor.BLUE);
+    GUIUtils.setColorOnNode(addGeneButton, ButtonColor.GREEN);
+    GUIUtils.setColorOnNode(addResearcherButton, ButtonColor.GREEN);
+    GUIUtils.setColorOnNode(deleteGeneButton, ButtonColor.RED);
+    GUIUtils.setColorOnNode(deleteResearcherButton, ButtonColor.RED);
 
     researcherDrobdown.getSelectionModel().selectedItemProperty()
         .addListener((obeservable, value, newValue) -> {
@@ -162,8 +162,8 @@ public class SettingsWindow extends Application implements javafx.fxml.Initializ
 
         ButtonBar buttonBar = (ButtonBar) dialog.getDialogPane().lookup(".button-bar");
         ObservableList<Node> nodes = buttonBar.getButtons();
-        GUIUtils.setColorOnNode(nodes.get(0), Color.GREEN);
-        GUIUtils.setColorOnNode(nodes.get(1), Color.RED);
+        GUIUtils.setColorOnNode(nodes.get(0), ButtonColor.GREEN);
+        GUIUtils.setColorOnNode(nodes.get(1), ButtonColor.RED);
 
         // Traditional way to get the response value.
         Optional<String> result = dialog.showAndWait();
