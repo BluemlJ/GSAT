@@ -44,11 +44,8 @@ public class ParameterWindow extends Application implements javafx.fxml.Initiali
   @FXML
   private Button defaultButton;
 
-
   @FXML
   private Button cancelButton;
-
-
 
   @Override
   public void initialize(URL arg0, ResourceBundle arg1) {
@@ -198,7 +195,6 @@ public class ParameterWindow extends Application implements javafx.fxml.Initiali
     });
   }
 
-
   @Override
   public void start(Stage primaryStage) throws Exception {
     Parent root;
@@ -223,7 +219,6 @@ public class ParameterWindow extends Application implements javafx.fxml.Initiali
       }
     });
   }
-
 
   @Override
   public void stop() throws Exception {

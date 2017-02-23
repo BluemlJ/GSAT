@@ -25,8 +25,6 @@ public class DissimilarGeneException extends Exception {
    */
   public AnalysedSequence toAnalyse;
 
-
-
   /**
    * Constructor sets the internal fields.
    * 

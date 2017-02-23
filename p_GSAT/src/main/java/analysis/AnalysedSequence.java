@@ -47,10 +47,10 @@ public class AnalysedSequence extends Sequence {
   private int offset = 0;
 
   /**
-   * The id of the primer which generated the sequence. May be added by the user.
-   * The value -1 indicates that there is no primer to be associated with the sequence.
+   * The id of the primer which generated the sequence. May be added by the user. The value -1
+   * indicates that there is no primer to be associated with the sequence.
    */
-  private int primerID = -1;
+  private int primerId = -1;
 
   /**
    * Array containing the quality information for the sequence (i.e. for each nucleotide position).
@@ -79,8 +79,6 @@ public class AnalysedSequence extends Sequence {
    */
   private int hisTagPosition = -1;
 
-
-
   /**
    * Constructor calling the super constructor (which sets all given attributes).
    * 
@@ -97,7 +95,6 @@ public class AnalysedSequence extends Sequence {
     this.fileName = fileName;
     this.qualities = qualities;
   }
-
 
   /**
    * Add a discovered, String-encoded mutation to the list of already discovered mutations.
@@ -137,23 +134,21 @@ public class AnalysedSequence extends Sequence {
     return sequence.length();
   }
 
-
   /**
    * This method reverses the Qualityarray and set it new.
    * 
    * @author bluemlj
    */
   public void reverseQuality() {
-    if (qualities == null) qualities = new int[0];
+    if (qualities == null) {
+      qualities = new int[0];
+    }
     int[] qualities2 = new int[qualities.length];
     for (int i = qualities.length - 1; i >= 0; i--) {
       qualities2[qualities.length - 1 - i] = qualities[i];
     }
     this.qualities = qualities2;
   }
-
-
-
 
   /**
    * This method trims a quality array, i.e. it cuts out the desired part of the nucleotide sequence
@@ -164,18 +159,16 @@ public class AnalysedSequence extends Sequence {
    * @param startIndex The start of the array to be cut off
    * @param endIndex The end of the array to be cut off
    * 
-   * @return The trimmed quality array
-   * 
    * @author Jannis Blueml
    */
   public void trimQualityArray(int startIndex, int endIndex) {
     int[] trimmed = new int[endIndex - startIndex];
-    for (int i = startIndex; i < Math.min(endIndex, this.getQuality().length); i++)
+    for (int i = startIndex; i < Math.min(endIndex, this.getQuality().length); i++) {
       trimmed[i - startIndex] = qualities[i];
+    }
 
     this.qualities = trimmed;
   }
-
 
   /**
    * This method trims a sequence, i.e. it cuts out the desired part of the nucleotide sequence. It
@@ -192,14 +185,12 @@ public class AnalysedSequence extends Sequence {
     this.sequence = trimmed;
   }
 
-
   /**
    * @return the comments
    */
   public String getComments() {
     return comments;
   }
-
 
   /**
    * @param comments the comments to set
@@ -208,14 +199,12 @@ public class AnalysedSequence extends Sequence {
     this.comments = comments;
   }
 
-
   /**
    * @return the fileName
    */
   public String getFileName() {
     return fileName;
   }
-
 
   /**
    * @param fileName the fileName to set
@@ -224,14 +213,12 @@ public class AnalysedSequence extends Sequence {
     this.fileName = fileName;
   }
 
-
   /**
    * @return the leftVector
    */
   public String getLeftVector() {
     return leftVector;
   }
-
 
   /**
    * @param leftVector the leftVector to set
@@ -240,14 +227,12 @@ public class AnalysedSequence extends Sequence {
     this.leftVector = leftVector;
   }
 
-
   /**
    * @return the manuallyChecked
    */
   public boolean isManuallyChecked() {
     return manuallyChecked;
   }
-
 
   /**
    * @param manuallyChecked the manuallyChecked to set
@@ -256,14 +241,12 @@ public class AnalysedSequence extends Sequence {
     this.manuallyChecked = manuallyChecked;
   }
 
-
   /**
    * @return the mutations
    */
   public LinkedList<String> getMutations() {
     return mutations;
   }
-
 
   /**
    * @param mutations the mutations to set
@@ -272,14 +255,12 @@ public class AnalysedSequence extends Sequence {
     this.mutations = mutations;
   }
 
-
   /**
    * @return the offset
    */
   public int getOffset() {
     return offset;
   }
-
 
   /**
    * @param offset the offset to set
@@ -288,22 +269,19 @@ public class AnalysedSequence extends Sequence {
     this.offset = offset;
   }
 
-
   /**
    * @return the primer
    */
-  public int getPrimerID() {
-    return primerID;
+  public int getPrimerId() {
+    return primerId;
   }
-
 
   /**
    * @param primer the primer to set
    */
-  public void setPrimerID(int primerID) {
-    this.primerID = primerID;
+  public void setPrimerId(int primerId) {
+    this.primerId = primerId;
   }
-
 
   /**
    * @return the qualities
@@ -312,14 +290,12 @@ public class AnalysedSequence extends Sequence {
     return qualities;
   }
 
-
   /**
    * @param qualities the qualities to set
    */
   public void setQuality(int[] qualities) {
     this.qualities = qualities;
   }
-
 
   /**
    * @return the referencedGene
@@ -328,14 +304,12 @@ public class AnalysedSequence extends Sequence {
     return referencedGene;
   }
 
-
   /**
    * @param referencedGene the referencedGene to set
    */
   public void setReferencedGene(Gene referencedGene) {
     this.referencedGene = referencedGene;
   }
-
 
   /**
    * @return the rightVector
@@ -344,14 +318,12 @@ public class AnalysedSequence extends Sequence {
     return rightVector;
   }
 
-
   /**
    * @param rightVector the rightVector to set
    */
   public void setRightVector(String rightVector) {
     this.rightVector = rightVector;
   }
-
 
   /**
    * @return the trimPercentage
@@ -360,7 +332,6 @@ public class AnalysedSequence extends Sequence {
     return trimPercentage;
   }
 
-
   /**
    * @param trimPercentage the trimPercentage to set
    */
@@ -368,14 +339,12 @@ public class AnalysedSequence extends Sequence {
     this.trimPercentage = trimPercentage;
   }
 
-
   /**
    * @return the hisTagPosition
    */
   public int getHisTagPosition() {
     return hisTagPosition;
   }
-
 
   /**
    * @param hisTagPosition the hisTagPosition to set

@@ -24,12 +24,10 @@ public class FileSaver {
    */
   private static String destinationFileName = "gsat_results";
 
-
   /**
    * This is the class's separator char. It separates the columns of the resulting CSV file.
    */
   private static final char SEPARATOR_CHAR = ConfigHandler.SEPARATOR_CHAR;
-
 
   /**
    * Indicating whether this is the first call of the storage method in the current storage process.
@@ -37,27 +35,22 @@ public class FileSaver {
    */
   private static boolean firstCall = true;
 
-
   /**
    * This value is needed to keep track of the momentarily used id of the data. One number
    * corresponds to a single sequence. Ids start with one to be human-understandable.
    */
   private static long id = 1;
 
-
   /**
    * Specifies the path where local files shall be created. This specifies the folder, not the file!
    */
   private static File localPath;
-
 
   /**
    * Indicates whether one or multiple files shall be used for storage. By default, only one file
    * will be generated.
    */
   private static boolean separateFiles = false;
-
-
 
   /**
    * Sets the path where local files shall be created. The String argument is converted into a File.
@@ -75,7 +68,6 @@ public class FileSaver {
     }
   }
 
-
   /**
    * The destination file name can be changed by the user. It is passed as a String argument. If the
    * String is empty, the default name "gsat_results" will be used.
@@ -83,13 +75,12 @@ public class FileSaver {
    * @param destFileName the name of the destination file
    */
   public static void setDestFileName(String destFileName) {
-    if (destFileName.isEmpty())
+    if (destFileName.isEmpty()) {
       destinationFileName = "gsat_results";
-    else
+    } else {
       destinationFileName = destFileName;
+    }
   }
-
-
 
   /**
    * Inserts the data of an analysed sequence into one or multiple local file(s). The name of the
@@ -141,7 +132,6 @@ public class FileSaver {
     updateIDs();
   }
 
-
   /**
    * This methods converts the analysed sequence object passed to it into a CSV line containing all
    * the information to store.
@@ -175,9 +165,9 @@ public class FileSaver {
     LinkedList<String> mutations = sequence.getMutations();
     int numberOfMutations = sequence.getMutations().size();
 
-    if (numberOfMutations == 0)
+    if (numberOfMutations == 0) {
       builder.append(SEPARATOR_CHAR + " ");
-    else {
+    } else {
       for (int i = 0; i < numberOfMutations; i++) {
 
         String mutation = mutations.get(i);
@@ -223,31 +213,34 @@ public class FileSaver {
     builder.append(rightVector).append(SEPARATOR_CHAR + " ");
 
     // primer
-    int primerID = sequence.getPrimerID();
-    if (primerID == -1)
+    int primerId = sequence.getPrimerId();
+    if (primerId == -1) {
       builder.append("none" + SEPARATOR_CHAR + " ");
-    else
-      builder.append(primerID).append(SEPARATOR_CHAR + " ");
+    } else {
+      builder.append(primerId).append(SEPARATOR_CHAR + " ");
+    }
 
     // his tag
     // The his tag position starts with 1 in the stored result.
     int hisTagPosition = sequence.getHisTagPosition();
-    if (hisTagPosition == -1)
+    if (hisTagPosition == -1) {
       builder.append("none" + SEPARATOR_CHAR + " ");
-    else
+    } else {
       builder.append((hisTagPosition + 1) + SEPARATOR_CHAR + " ");
+    }
 
     // mutations without nucleotide codons
-    if (numberOfMutations == 0)
+    if (numberOfMutations == 0) {
       builder.append("; ");
-    else {
+    } else {
       for (int i = 0; i < numberOfMutations; i++) {
         String mutation = mutations.get(i);
         String reducedMutation;
-        if (mutation.equals("reading frame error"))
+        if (mutation.equals("reading frame error")) {
           reducedMutation = mutation;
-        else
+        } else {
           reducedMutation = (mutation.trim()).split(" ")[0];
+        }
         builder.append(reducedMutation);
         if (i < numberOfMutations - 1) {
           builder.append(", ");
@@ -268,9 +261,8 @@ public class FileSaver {
     return toWrite;
   }
 
-
   /**
-   * This method returns and initially uses a new writer, if only one file is desired.
+   * This method initializes and initially uses a new writer, if only one file is desired.
    *
    * @see #getNewWriter(String, boolean)
    * 
@@ -290,7 +282,6 @@ public class FileSaver {
     }
     return writer;
   }
-
 
   /**
    * This method creates a new writer for the current writing situation (one or several files?). If
@@ -330,8 +321,6 @@ public class FileSaver {
     return writer;
   }
 
-
-
   /**
    * Sets the momentarily used id to one, if separate files are desired (each file has it's own
    * number range, starting with one). This method is used within the writing process to handle the
@@ -349,8 +338,6 @@ public class FileSaver {
     }
   }
 
-
-
   /**
    * Sets the momentarily used id to one.
    * 
@@ -359,8 +346,6 @@ public class FileSaver {
   public static void resetIDs() {
     id = 1;
   }
-
-
 
   /**
    * This method resets the class's state by resetting the ids and setting {@link #firstCall} to
@@ -371,14 +356,10 @@ public class FileSaver {
     firstCall = true;
   }
 
-
-
   // GETTERS AND SETTERS:
 
   public static void setSeparateFiles(boolean separateFiles) {
     FileSaver.separateFiles = separateFiles;
   }
-
-
 
 }

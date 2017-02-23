@@ -1,10 +1,10 @@
 package analysis;
 
+import exceptions.CorruptedSequenceException;
+
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-
-import exceptions.CorruptedSequenceException;
 
 /**
  * This class models an abstract DNA sequence which could be a reference gene or a given mutated
@@ -31,8 +31,6 @@ public abstract class Sequence {
    */
   protected String sequence;
 
-
-
   /**
    * Creates a new Sequence object. As an abstract class, only inheriting classes can be created via
    * this constructor.
@@ -55,11 +53,9 @@ public abstract class Sequence {
     addingDate = df.format(dateobj);
   }
 
-
   public String getAddingDate() {
     return addingDate;
   }
-
 
   /**
    * Returns the complementary version of this object's nucleotide sequence, i.e. all A nucleotides
@@ -76,7 +72,6 @@ public abstract class Sequence {
   public String getComplementarySequence() throws CorruptedSequenceException {
     return this.getComplementarySequence(this.getSequence());
   }
-
 
   /**
    * Returns the complementary version of this object's nucleotide sequence, i.e. all A nucleotides
@@ -121,11 +116,9 @@ public abstract class Sequence {
     return complSequence;
   }
 
-
   public String getResearcher() {
     return researcher;
   }
-
 
   // GETTERs and SETTERs:
 
@@ -146,21 +139,17 @@ public abstract class Sequence {
     return reversedSequence;
   }
 
-
   public String getSequence() {
     return sequence;
   }
-
 
   public void setAddingDate(String addingDate) {
     this.addingDate = addingDate;
   }
 
-
   public void setResearcher(String researcher) {
     this.researcher = researcher;
   }
-
 
   /**
    * This methods sets the internal nucleotide representation as a String constisting of the letters
@@ -174,7 +163,6 @@ public abstract class Sequence {
     sequence = sequence.replaceAll("\\s+", "");
     this.sequence = sequence.toUpperCase();
   }
-
 
   /**
    * The toString-Method of Object is used to return the nucleotide sequence.

@@ -58,8 +58,6 @@ public class QualityAnalysis {
   // TODO by lovis
   private static int startcounter = 3;
 
-
-
   /**
    * This method is called before analysing a sequence but after the trimming them. It checks if any
    * 'X' are in the trimmed sequence. This would mean the sequence is corrupt and cant be analysed.
@@ -72,10 +70,11 @@ public class QualityAnalysis {
   public static void checkIfSequenceIsClean(AnalysedSequence toAnalyse)
       throws CorruptedSequenceException {
     for (char c : toAnalyse.getSequence().toCharArray()) {
-      if (c == 'X') throw new CorruptedSequenceException();
+      if (c == 'X') {
+        throw new CorruptedSequenceException();
+      }
     }
   }
-
 
   /**
    * This method checks the nucleotide string and finds a position to trim the low quality part at
@@ -90,12 +89,13 @@ public class QualityAnalysis {
    * 
    */
   public static int[] findLowQuality(AnalysedSequence sequence) {
-    // the qualityscaling of the sequence in form of Integers between 0 and 128. See phred scale for
+    // the qualityscaling of the sequence in form of Integers between 0 and
+    // 128. See phred scale for
     // more informations.
     int[] qualities = sequence.getQuality();
 
     // init some parameters
-    int trimmingPosition[] = {sequence.length(), sequence.length(), 0};
+    int[] trimmingPosition = {sequence.length(), sequence.length(), 0};
     int countertoBreak = 0;
     int countertoStart = 0;
     boolean startfound = false;
@@ -120,9 +120,9 @@ public class QualityAnalysis {
         }
       } else {
         // counting end
-        if (quality < avgApproximationEnd)
+        if (quality < avgApproximationEnd) {
           countertoBreak++;
-        else {
+        } else {
           counter += countertoBreak + 1;
           countertoBreak = 0;
         }
@@ -142,7 +142,6 @@ public class QualityAnalysis {
     }
     return trimmingPosition;
   }
-
 
   /**
    * This method provides an additional quality measurement by detecting substrings with an average
@@ -206,12 +205,16 @@ public class QualityAnalysis {
    */
   public static double getQualityPercentage(AnalysedSequence toAnalyse) {
     // checks if sequence is null or empty
-    if (toAnalyse == null || toAnalyse.getQuality().length == 0) return 0;
+    if (toAnalyse == null || toAnalyse.getQuality().length == 0) {
+      return 0;
+    }
     // counter for calculation
     double counter = 0;
 
     for (int phred : toAnalyse.getQuality()) {
-      if (phred > avgQualityEdge) counter++;
+      if (phred > avgQualityEdge) {
+        counter++;
+      }
     }
 
     return (int) (counter / toAnalyse.getQuality().length * 100);
@@ -232,7 +235,6 @@ public class QualityAnalysis {
     return (int) (percentage * 100);
   }
 
-
   /**
    * This method trims a sequence by removing the low quality end of the sequence.
    * 
@@ -245,14 +247,12 @@ public class QualityAnalysis {
     toAnalyse.trimSequence(trimmingpositions[0], trimmingpositions[1] - 1);
   }
 
-
   /**
    * @return the avgApproximationStart
    */
   public static int getAvgApproximationStart() {
     return avgApproximationStart;
   }
-
 
   /**
    * @param avgApproximationStart the avgApproximationStart to set
@@ -261,14 +261,12 @@ public class QualityAnalysis {
     QualityAnalysis.avgApproximationStart = avgApproximationStart;
   }
 
-
   /**
    * @return the avgApproximationEnd
    */
   public static int getAvgApproximationEnd() {
     return avgApproximationEnd;
   }
-
 
   /**
    * @param avgApproximationEnd the avgApproximationEnd to set
@@ -277,14 +275,12 @@ public class QualityAnalysis {
     QualityAnalysis.avgApproximationEnd = avgApproximationEnd;
   }
 
-
   /**
    * @return the avgQualityEdge
    */
   public static int getAvgQualityEdge() {
     return avgQualityEdge;
   }
-
 
   /**
    * @param avgQualityEdge the avgQualityEdge to set
@@ -293,14 +289,12 @@ public class QualityAnalysis {
     QualityAnalysis.avgQualityEdge = avgQualityEdge;
   }
 
-
   /**
    * @return the numAverageNucleotides
    */
   public static int getNumAverageNucleotides() {
     return numAverageNucleotides;
   }
-
 
   /**
    * @param numAverageNucleotides the numAverageNucleotides to set
@@ -309,7 +303,6 @@ public class QualityAnalysis {
     QualityAnalysis.numAverageNucleotides = numAverageNucleotides;
   }
 
-
   /**
    * @return the startcounter
    */
@@ -317,14 +310,12 @@ public class QualityAnalysis {
     return startcounter;
   }
 
-
   /**
    * @param startcounter the startcounter to set
    */
   public static void setStartcounter(int startcounter) {
     QualityAnalysis.startcounter = startcounter;
   }
-
 
   public static void setBreakcounter(int breakcounter) {
     QualityAnalysis.breakcounter = breakcounter;
@@ -335,7 +326,5 @@ public class QualityAnalysis {
     return breakcounter;
 
   }
-
-
 
 }

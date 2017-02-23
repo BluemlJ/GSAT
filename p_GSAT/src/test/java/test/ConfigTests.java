@@ -27,14 +27,11 @@ public class ConfigTests {
   private String path =
       System.getProperty("user.home") + File.separator + "gsat" + File.separator + "config.txt";
 
-
-
   @Test
   public void configMethods() throws IOException {
     ConfigHandler.initConfig();
     assertTrue(ConfigHandler.exists());
   }
-
 
   /**
    * Test for accessing the home directory
@@ -44,7 +41,6 @@ public class ConfigTests {
     File config = new File(path);
     assertTrue(config.exists());
   }
-
 
   /**
    * Test for creating a configuration file in the home directory
@@ -61,7 +57,6 @@ public class ConfigTests {
     System.out.println(path);
     assertTrue(new File(path).exists());
   }
-
 
   /**
    * Test reading a researcher name from a sample config file and sets the researcher in an analysed
@@ -83,7 +78,6 @@ public class ConfigTests {
     assertEquals(testSeq.getResearcher(), "lovis heindrich");
   }
 
-
   /**
    * Test reading a researcher name from a sample config file (Userstory 017 - Expected behavior)
    * 
@@ -100,7 +94,6 @@ public class ConfigTests {
     ConfigHandler.readConfig();
     assertEquals(ConfigHandler.getResearcher(), "lovis heindrich");
   }
-
 
   /**
    * Tests if trying to read a corrupt config file leads to a ConfigReadException (Userstory 017 -
@@ -120,7 +113,6 @@ public class ConfigTests {
     }
   }
 
-
   /**
    * This tests tries to read from a file that doesn't exist (Userstory 017 - Unusual behavior)
    * 
@@ -139,7 +131,6 @@ public class ConfigTests {
           "Config at path: " + path.getAbsolutePath() + " could not be found");
     }
   }
-
 
   /**
    * Test reading multiple researchers from a sample config file (Userstory xxx - Expected behavior)
@@ -162,7 +153,6 @@ public class ConfigTests {
     assertEquals(ConfigHandler.getResearcherList()[3], "ben Kohr");
     assertEquals(ConfigHandler.getResearcher(), "lovis heindrich");
   }
-
 
   @Test
   public void testConfigWriting() throws ConfigReadException, ConfigNotFoundException, IOException {
@@ -203,7 +193,6 @@ public class ConfigTests {
     assertEquals(ConfigHandler.getResearcherList()[1], "jannis blueml");
   }
 
-
   @Test
   public void testQualityParameter()
       throws ConfigReadException, ConfigNotFoundException, IOException {
@@ -225,7 +214,6 @@ public class ConfigTests {
     assertEquals(avgApproximationStartOld, ConfigHandler.getAvgApproximationStart());
   }
 
-
   /**
    * This test checks if it is possible to add a researcher to the researchers array
    */
@@ -239,7 +227,6 @@ public class ConfigTests {
     assertEquals(res[1], "res2");
     assertEquals(res[2], "res3");
   }
-
 
   /**
    * This test checks if it is possible to delete a researcher from the researchers array

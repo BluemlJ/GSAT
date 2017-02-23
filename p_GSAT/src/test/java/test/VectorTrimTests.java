@@ -32,7 +32,6 @@ public class VectorTrimTests {
     return new Gene(Sequence.getSequence().substring(begin, end), 0, "FN", "Coincidence");
   }
 
-
   /**
    * returns a rendom nucleotide (as char) 0 = A 1 = T 2 = C 3 = G everything else will result in an
    * error 'e'
@@ -56,7 +55,6 @@ public class VectorTrimTests {
     }
   }
 
-
   /**
    * generates a random sequence WARNING no qualities are set
    * 
@@ -76,7 +74,6 @@ public class VectorTrimTests {
         seq.getOffset() + seq.getReferencedGene().getSequence().length()));
     return seq;
   }
-
 
   /**
    * randomly mutates the given sequence in range from begin to and it puts up to 10 mutation into
@@ -98,7 +95,6 @@ public class VectorTrimTests {
     return sequenceBuilder.toString();
   }
 
-
   /**
    * 
    * 
@@ -116,7 +112,6 @@ public class VectorTrimTests {
     String tmp = StringAnalysis.trimbyLevevenstein(seq, false);
     System.out.println(tmp);
   }
-
 
   /**
    * 
@@ -139,7 +134,6 @@ public class VectorTrimTests {
     assertTrue(expected.toUpperCase().equals(test));
     assertEquals(0, sequence.getOffset());
   }
-
 
   /**
    * 
@@ -168,7 +162,6 @@ public class VectorTrimTests {
     assertEquals(9, sequence.getOffset());
   }
 
-
   /**
    * 
    * 
@@ -191,7 +184,6 @@ public class VectorTrimTests {
     assertTrue(expected.toUpperCase().equals(test));
     assertEquals(0, sequence.getOffset());
   }
-
 
   /**
    * 
@@ -218,7 +210,6 @@ public class VectorTrimTests {
     assertEquals(0, sequence.getOffset());
   }
 
-
   /**
    * 
    * 
@@ -240,7 +231,6 @@ public class VectorTrimTests {
     assertTrue(expected.toUpperCase().equals(test));
     assertEquals(0, sequence.getOffset());
   }
-
 
   /**
    * 
@@ -267,7 +257,6 @@ public class VectorTrimTests {
     assertEquals(0, sequence.getOffset());
   }
 
-
   /**
    * 
    * 
@@ -289,7 +278,6 @@ public class VectorTrimTests {
     assertTrue(expected.toUpperCase().equals(test));
     assertEquals(0, sequence.getOffset());
   }
-
 
   /**
    * 
@@ -314,7 +302,6 @@ public class VectorTrimTests {
     assertEquals(0, sequence.getOffset());
   }
 
-
   /**
    * 
    * 
@@ -337,7 +324,6 @@ public class VectorTrimTests {
     assertTrue(expected.equals(test));
     assertEquals(0, sequence.getOffset());
   }
-
 
   /**
    * 

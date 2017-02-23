@@ -48,7 +48,6 @@ public class AddGeneWindow extends Application implements javafx.fxml.Initializa
 
   Scene scene;
 
-
   @Override
   public void initialize(URL location, ResourceBundle resources) {
 
@@ -81,7 +80,6 @@ public class AddGeneWindow extends Application implements javafx.fxml.Initializa
         }
       }
     });
-
 
     geneArea.textProperty().addListener(new ChangeListener<String>() {
       @Override
@@ -151,12 +149,10 @@ public class AddGeneWindow extends Application implements javafx.fxml.Initializa
     });
   }
 
-
   @Override
   public void stop() throws Exception {
     super.stop();
   }
-
 
   @Override
   public void start(Stage primaryStage) throws Exception {
@@ -182,7 +178,6 @@ public class AddGeneWindow extends Application implements javafx.fxml.Initializa
       }
     });
   }
-
 
   public void setParent(SettingsWindow parent) {
     this.parent = parent;

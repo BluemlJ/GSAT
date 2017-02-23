@@ -53,7 +53,8 @@ public class DatabaseConnection {
    * List off all entries to be written into the database. These are typically the results of the
    * analysis of a single file.
    */
-  // private static LinkedList<DatabaseEntry> queue = new LinkedList<DatabaseEntry>();
+  // private static LinkedList<DatabaseEntry> queue = new
+  // LinkedList<DatabaseEntry>();
 
   private static void initDatabase() {
     dataSource = new MysqlDataSource();
@@ -68,11 +69,11 @@ public class DatabaseConnection {
    * 
    * @param entries A list of entries to be stored
    */
-//  public static void addAllIntoQueue(LinkedList<DatabaseEntry> entries) {
-//    for (DatabaseEntry entry : entries) {
-//      addIntoQueue(entry);
-//    }
-//  }
+  // public static void addAllIntoQueue(LinkedList<DatabaseEntry> entries) {
+  // for (DatabaseEntry entry : entries) {
+  // addIntoQueue(entry);
+  // }
+  // }
 
   /**
    * Puts a single entry in the waiting queue for being written into the database.
@@ -81,18 +82,18 @@ public class DatabaseConnection {
    * 
    * @author Ben Kohr
    */
-//  public static void addIntoQueue(DatabaseEntry entry) {
-//    queue.add(entry);
-//  }
+  // public static void addIntoQueue(DatabaseEntry entry) {
+  // queue.add(entry);
+  // }
 
   /**
    * Empties the current waiting queue.
    * 
    * @author Ben Kohr
    */
-//  public static void flushQueue() {
-//    queue.clear();
-//  }
+  // public static void flushQueue() {
+  // queue.clear();
+  // }
 
   /**
    * Inserts all currently stored entries into the specified database.
@@ -101,58 +102,59 @@ public class DatabaseConnection {
    * 
    * @author Ben Kohr
    */
-//  public static void insertAllIntoDatabase()
-//      throws DatabaseConnectionException, DatabaseErrorException {
-//    // important: just ONE analyzed file in the queue!
-//    conn = establishConnection();
-//
-//    DatabaseEntry entry = queue.getFirst();
-//    PreparedStatement pstmt;
-//    try {
-//      // main table
-//      pstmt = conn.prepareStatement(
-//          "INSERT INTO analysis (id, filename, geneid, sequence, addingdate, researcher"
-//              + "comments, leftvector, rightvector, promotor, manuallychecked) VALUES "
-//              + "(?, '?', '?', '?', '?', '?', '?', '?', '?', '?', ?)");
-//
-//      pstmt.setLong(1, entry.getID());
-//      pstmt.setString(2, entry.getFileName());
-//      pstmt.setInt(3, entry.getGeneID());
-//      pstmt.setString(4, entry.getSequence());
-//      pstmt.setString(5, entry.getAddingDate());
-//      pstmt.setString(6, entry.getResearcher());
-//      pstmt.setString(7, entry.getComments().replace(';', ','));
-//      pstmt.setString(8, entry.getLeftVector());
-//      pstmt.setString(9, entry.getRightVector());
-//      pstmt.setString(10, entry.getPromotor());
-//      pstmt.setString(11, "" + entry.isManuallyChecked());
-//
-//      pstmt.execute();
-//      queue.removeFirst();
-//      pstmt.close();
-//    } catch (SQLException e) {
-//      throw new DatabaseErrorException();
-//    }
-//
-//    try {
-//      pstmt = conn.prepareStatement(
-//          "INSERT INTO mutations (id, mutation, mtype) " + "VALUES (?, '?', '?')");
-//      pstmt.execute();
-//      pstmt.close();
-//    } catch (SQLException e1) {
-//      throw new DatabaseErrorException();
-//    }
-//
-//    while (!queue.isEmpty()) {
-//      insertIntoDatabase(pstmt);
-//    }
-//
-//    try {
-//      conn.close();
-//    } catch (SQLException e) {
-//      throw new DatabaseConnectionException();
-//    }
-//  }
+  // public static void insertAllIntoDatabase()
+  // throws DatabaseConnectionException, DatabaseErrorException {
+  // // important: just ONE analyzed file in the queue!
+  // conn = establishConnection();
+  //
+  // DatabaseEntry entry = queue.getFirst();
+  // PreparedStatement pstmt;
+  // try {
+  // // main table
+  // pstmt = conn.prepareStatement(
+  // "INSERT INTO analysis (id, filename, geneid, sequence, addingdate,
+  // researcher"
+  // + "comments, leftvector, rightvector, promotor, manuallychecked) VALUES "
+  // + "(?, '?', '?', '?', '?', '?', '?', '?', '?', '?', ?)");
+  //
+  // pstmt.setLong(1, entry.getID());
+  // pstmt.setString(2, entry.getFileName());
+  // pstmt.setInt(3, entry.getGeneID());
+  // pstmt.setString(4, entry.getSequence());
+  // pstmt.setString(5, entry.getAddingDate());
+  // pstmt.setString(6, entry.getResearcher());
+  // pstmt.setString(7, entry.getComments().replace(';', ','));
+  // pstmt.setString(8, entry.getLeftVector());
+  // pstmt.setString(9, entry.getRightVector());
+  // pstmt.setString(10, entry.getPromotor());
+  // pstmt.setString(11, "" + entry.isManuallyChecked());
+  //
+  // pstmt.execute();
+  // queue.removeFirst();
+  // pstmt.close();
+  // } catch (SQLException e) {
+  // throw new DatabaseErrorException();
+  // }
+  //
+  // try {
+  // pstmt = conn.prepareStatement(
+  // "INSERT INTO mutations (id, mutation, mtype) " + "VALUES (?, '?', '?')");
+  // pstmt.execute();
+  // pstmt.close();
+  // } catch (SQLException e1) {
+  // throw new DatabaseErrorException();
+  // }
+  //
+  // while (!queue.isEmpty()) {
+  // insertIntoDatabase(pstmt);
+  // }
+  //
+  // try {
+  // conn.close();
+  // } catch (SQLException e) {
+  // throw new DatabaseConnectionException();
+  // }
+  // }
 
   /**
    * Retrieves all genes from the database and returns them.
@@ -210,21 +212,21 @@ public class DatabaseConnection {
   /**
    * Inserts a single data point into the specified database.
    */
-//  private static void insertIntoDatabase(PreparedStatement pstmt)
-//      throws DatabaseConnectionException, DatabaseErrorException {
-//    try {
-//
-//      // mutation table
-//      DatabaseEntry entry = queue.getFirst();
-//      pstmt.setLong(1, entry.getID());
-//      pstmt.setString(2, entry.getMutation());
-//      pstmt.setString(3, "" + entry.getMutationType());
-//
-//    } catch (SQLException e) {
-//      throw new DatabaseErrorException();
-//    }
-//
-//  }
+  // private static void insertIntoDatabase(PreparedStatement pstmt)
+  // throws DatabaseConnectionException, DatabaseErrorException {
+  // try {
+  //
+  // // mutation table
+  // DatabaseEntry entry = queue.getFirst();
+  // pstmt.setLong(1, entry.getID());
+  // pstmt.setString(2, entry.getMutation());
+  // pstmt.setString(3, "" + entry.getMutationType());
+  //
+  // } catch (SQLException e) {
+  // throw new DatabaseErrorException();
+  // }
+  //
+  // }
 
   /**
    * Creates gsat database structure consisting of four tables: genes, sequences, mutations,
@@ -327,9 +329,9 @@ public class DatabaseConnection {
     }
   }
 
-//  public static void resetDatabaseConnection() {
-//    flushQueue();
-//  }
+  // public static void resetDatabaseConnection() {
+  // flushQueue();
+  // }
 
   /**
    * Pushes all data from a recent analysis: All analysed Sequences, the reference genes, mutations
@@ -352,18 +354,18 @@ public class DatabaseConnection {
     LinkedList<AnalysedSequence> sequences = new LinkedList<AnalysedSequence>();
 
     // push researcher and get id
-    int researcherID = pushReasearcher(stmt, researcher);
+    int researcherId = pushReasearcher(stmt, researcher);
 
     // for each sequence
     for (AnalysedSequence sequence : sequences) {
       // push gene with the researcher id and get gene id
-      int geneID = pushGene(stmt, sequence.getReferencedGene(), researcherID);
+      int geneId = pushGene(stmt, sequence.getReferencedGene(), researcherId);
 
       // push sequence and get id
-      int sequenceID = pushSequence(stmt, sequence, researcherID, geneID);
+      int sequenceId = pushSequence(stmt, sequence, researcherId, geneId);
 
       // push mutations
-      pushMutations(stmt, sequence.getMutations(), sequenceID);
+      pushMutations(stmt, sequence.getMutations(), sequenceId);
 
     }
 
@@ -376,10 +378,10 @@ public class DatabaseConnection {
    * 
    * @param stmt database statement
    * @param mutations list of all mutations for a single sequence
-   * @param sequenceID database id of the sequence
+   * @param sequenceId database id of the sequence
    * @author Lovis Heindrich
    */
-  private static void pushMutations(Statement stmt, LinkedList<String> mutations, int sequenceID) {
+  private static void pushMutations(Statement stmt, LinkedList<String> mutations, int sequenceId) {
 
     for (String mutation : mutations) {
 
@@ -395,13 +397,13 @@ public class DatabaseConnection {
    * 
    * @param stmt database statement
    * @param sequence sequence that will be pushed
-   * @param researcherID database id of the researcher
-   * @param geneID database id of the gene
+   * @param researcherId database id of the researcher
+   * @param geneId database id of the gene
    * @return database id of the new entry
    * @author Lovis Heindrich
    */
-  private static int pushSequence(Statement stmt, AnalysedSequence sequence, int researcherID,
-      int geneID) {
+  private static int pushSequence(Statement stmt, AnalysedSequence sequence, int researcherId,
+      int geneId) {
     // check if sequence exists
 
     // push otherwise
@@ -412,11 +414,11 @@ public class DatabaseConnection {
    * 
    * @param stmt
    * @param referencedGene
-   * @param researcherID
+   * @param researcherId
    * @return
    * @author Lovis Heindrich
    */
-  private static int pushGene(Statement stmt, Gene referencedGene, int researcherID) {
+  private static int pushGene(Statement stmt, Gene referencedGene, int researcherId) {
     // check if gene exists
 
     // push otherwise

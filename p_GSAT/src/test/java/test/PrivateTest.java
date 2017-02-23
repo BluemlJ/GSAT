@@ -45,15 +45,11 @@ public class PrivateTest {
    */
   private static int userNr = 4;
 
-
-
   @BeforeClass
   public static void setup() {
     pathToUse = paths[userNr];
     System.out.println("Start");
   }
-
-
 
   // Name of the file
   private String fileName = "93GH02_A01.ab1";
@@ -99,8 +95,6 @@ public class PrivateTest {
           + "ctccgtcatcagcatgccatcgtgggaccgcttcgaagcgcagccaaaatcgtaccgcgatgaagtgcttccgccggccgtgacgaagcggctcgccattgaaatgggcgcgt"
           + "cgctcggttgggagcgctacgtcggcgccgagggcgacattttggccatcgaccgattcggtgcttccgctccgggagagaaaatcatggccgagtatggctttacggttgac"
           + "aacgtcgtccgccgcacaaaagcgctgctcggcaagtaa";
-
-
 
   /**
    * 
@@ -150,7 +144,7 @@ public class PrivateTest {
     System.out.println("" + QualityAnalysis.percentageOfTrimQuality(i, testSeq));
 
     QualityAnalysis.checkIfSequenceIsClean(testSeq);
-    testSeq.setHisTagPosition(StringAnalysis.findHISTag(testSeq));
+    testSeq.setHisTagPosition(StringAnalysis.findHisTag(testSeq));
     System.out.println("");
     System.err
         .println(testSeq.getReferencedGene().getSequence().substring(testSeq.getOffset() * 3));

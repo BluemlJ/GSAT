@@ -28,8 +28,6 @@ public class MutationAnalysis {
    */
   public static int warningReadingFrameError = 10;
 
-
-
   /**
    * Compares a sequence to a gene to find mutations. Returns a boolean if there was a reading frame
    * error.
@@ -58,7 +56,8 @@ public class MutationAnalysis {
 
     // a List of all differences in form of s|12|d|e
     LinkedList<String> differenceList = reportDifferences(toAnalyze, true);
-    // the last position we found a mutation. Necessary for silent mutation detection.
+    // the last position we found a mutation. Necessary for silent mutation
+    // detection.
     int lastposition = 0;
     // counter for reading frame error detection
     int checkFrameerrorCounter = 0;
@@ -72,11 +71,12 @@ public class MutationAnalysis {
     for (int i = 0; i < differenceList.size(); i++) {
 
       // checks reading frame error and warnings
-      if (checkFrameerrorCounter == warningReadingFrameError)
+      if (checkFrameerrorCounter == warningReadingFrameError) {
         if (checkFrameerrorCounter == readingFrameErrorBorder) {
-        readingFrameError = true;
-        return false;
+          readingFrameError = true;
+          return false;
         }
+      }
 
       // difference in form of s|12|e|d
       String difference = differenceList.get(i);
@@ -108,8 +108,9 @@ public class MutationAnalysis {
             // add mutation to sequence
             toAnalyze
                 .addMutation(oldAminoAcid + position + newAminoAcid + " (" + codonsOfNew + ")");
-          } else
+          } else {
             toAnalyze.addMutation(oldAminoAcid + position + newAminoAcid);
+          }
 
           checkFrameerrorCounter++;
 
@@ -125,12 +126,14 @@ public class MutationAnalysis {
             codonsOfNew =
                 toAnalyze.getSequence().substring(firstNucleotidePos, firstNucleotidePos + 3);
             toAnalyze.addMutation("+1" + newAminoAcid + position + " (" + codonsOfNew + ")");
-          } else
+          } else {
             toAnalyze.addMutation("+1" + newAminoAcid + position);
+          }
 
           checkFrameerrorCounter++;
           break;
-        // d = deletion, deletion of an amino acid (see insertion and substitution for comment)
+        // d = deletion, deletion of an amino acid (see insertion and
+        // substitution for comment)
         case "d":
           // increment shift + get informations
           shift++;
@@ -140,8 +143,9 @@ public class MutationAnalysis {
             codonsOfNew =
                 toAnalyze.getSequence().substring(firstNucleotidePos, firstNucleotidePos + 3);
             toAnalyze.addMutation("-1" + oldAminoAcid + position + " (" + codonsOfNew + ")");
-          } else
+          } else {
             toAnalyze.addMutation("-1" + oldAminoAcid + position);
+          }
           checkFrameerrorCounter++;
           break;
 
@@ -154,10 +158,12 @@ public class MutationAnalysis {
       // we check if there is any
       // silent mutation in them.
 
-      // if the step between to mutations is greater 1 or we are the last for iteration
+      // if the step between to mutations is greater 1 or we are the last
+      // for iteration
       if (position > lastposition + 1 || i == differenceList.size() - 1) {
 
-        // starts by the last mutation and test evera amino acid between there and the actual amino
+        // starts by the last mutation and test evera amino acid between
+        // there and the actual amino
         // acid
         int tempPosition = lastposition + 1;
         while (tempPosition < position - toAnalyze.getOffset()) {
@@ -189,13 +195,17 @@ public class MutationAnalysis {
           tempPosition++;
         }
 
-        // didn't increment tempP. because of insertion or deletion, instead set tmpshift. Because
-        // the actual shift references to actual position not to the room between actual and
+        // didn't increment tempP. because of insertion or deletion,
+        // instead set tmpshift. Because
+        // the actual shift references to actual position not to the
+        // room between actual and
         // lastPosition.
 
       } else {
         tmpshift = shift;
-        if (typeOfMutations.charAt(0) == 's') lastposition = position;
+        if (typeOfMutations.charAt(0) == 's') {
+          lastposition = position;
+        }
       }
     }
 
@@ -209,13 +219,13 @@ public class MutationAnalysis {
         if (tempPosition * 3 + toAnalyze.getOffset() * 3 + 3 > originalSequence.length()
             || tempPosition * 3 + 3 > mutatedSequence.length()) {
           break;
-        }
-        // actual testing
-        else {
+          // actual testing
+        } else {
           String oldAcid = originalSequence.substring(tempPosition * 3 + toAnalyze.getOffset() * 3,
               tempPosition * 3 + toAnalyze.getOffset() * 3 + 3);
           String newAcid = mutatedSequence.substring(tempPosition * 3, tempPosition * 3 + 3);
-          // if silent mutation, add them. tempPosition must adding the offset before adding to
+          // if silent mutation, add them. tempPosition must adding
+          // the offset before adding to
           // sequence.
           if (!oldAcid.equals(newAcid)) {
 
@@ -230,7 +240,6 @@ public class MutationAnalysis {
     }
     return true;
   }
-
 
   /**
    * Compares to sequences and returns the differences as a list (represented by the positions). The
@@ -308,9 +317,9 @@ public class MutationAnalysis {
         // go to next diagonal cell
         row--;
         column--;
-      }
-      // if left cell is best
-      else if ((lev[row - 1][column] <= lev[row][column - 1])
+
+        // if left cell is best
+      } else if ((lev[row - 1][column] <= lev[row][column - 1])
           && (lev[row - 1][column] == lev[row][column]
               || lev[row - 1][column] == lev[row][column] - 1)) {
         // left smaller->deletion;
@@ -347,7 +356,6 @@ public class MutationAnalysis {
     }
     return result;
   }
-
 
   /**
    * Compares to sequences and returns the differences as a list (represented by the positions). The

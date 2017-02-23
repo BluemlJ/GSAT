@@ -1,12 +1,13 @@
 package analysis;
 
+import exceptions.CorruptedSequenceException;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Hashtable;
 import java.util.Map;
 import java.util.TreeMap;
 
-import exceptions.CorruptedSequenceException;
 
 /**
  * This class contains the logic of analyzing sequence strings. This class serves for
@@ -21,6 +22,7 @@ public class StringAnalysis {
    * A Map with all possible RNA and DNA codons with the matched AminoAcid in short form.
    */
   public static final Map<String, String> AMINO_ACID_SHORTS;
+
   static {
     Hashtable<String, String> tmp = new Hashtable<String, String>();
     // RNA
@@ -325,7 +327,9 @@ public class StringAnalysis {
     nucleotides = nucleotides.toUpperCase();
 
     // check for empty parameter
-    if (nucleotides.isEmpty()) return "empty nucleotides";
+    if (nucleotides.isEmpty()) {
+      return "empty nucleotides";
+    }
 
     StringBuilder builder = new StringBuilder();
 
@@ -338,15 +342,15 @@ public class StringAnalysis {
         String codon = nucleotides.substring(i, i + 3);
         String aminoacid = AMINO_ACID_SHORTS.get(codon);
 
-        if (aminoacid != null)
+        if (aminoacid != null) {
           builder.append(aminoacid);
-        // get the index of the corruptedSequenceException
-        else {
+        } else {
           builder.append("X");
         }
       }
-    } else
+    } else {
       return "nucleotides not modulo 3, so not convertable";
+    }
     return builder.toString();
   }
 
@@ -406,7 +410,7 @@ public class StringAnalysis {
    *         sequence.
    * @author jannis blueml
    */
-  public static int findHISTag(AnalysedSequence toAnalyze) {
+  public static int findHisTag(AnalysedSequence toAnalyze) {
     // initialize result and sequence in form of amino acids
     int result = -1;
     char[] seq = StringAnalysis.codonsToAminoAcids(toAnalyze.getSequence()).toCharArray();
@@ -416,8 +420,9 @@ public class StringAnalysis {
       counter++;
     }
     // if counter greater 5 we got a HISTag.
-    if (counter > 5)
+    if (counter > 5) {
       result = toAnalyze.getSequence().length() + toAnalyze.getLeftVector().length() - counter * 3;
+    }
     return result;
   }
 
@@ -465,8 +470,10 @@ public class StringAnalysis {
     for (int i = 0; i < toAnalyze.getSequence().length() - 3; i = i + 3) {
       String aminoAcid = toAnalyze.getSequence().substring(i, i + 3);
 
-      if (AMINO_ACID_SHORTS.get(aminoAcid) != null && AMINO_ACID_SHORTS.get(aminoAcid).equals("#"))
+      if (AMINO_ACID_SHORTS.get(aminoAcid) != null
+          && AMINO_ACID_SHORTS.get(aminoAcid).equals("#")) {
         return i / 3;
+      }
     }
     return -1;
   }

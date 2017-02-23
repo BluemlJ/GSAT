@@ -34,7 +34,7 @@ public class SettingsWindow extends Application implements javafx.fxml.Initializ
   private ListView<String> geneList;
   // fields
   @FXML
-  private TextField Parameter1Field;
+  private TextField parameter1Field;
   @FXML
   private ChoiceBox<String> researcherDrobdown;
 
@@ -57,8 +57,6 @@ public class SettingsWindow extends Application implements javafx.fxml.Initializ
   private Scene scene;
 
   private int numGeneWindows = 0;
-
-
 
   @Override
   public void initialize(URL location, ResourceBundle resources) {
@@ -175,15 +173,17 @@ public class SettingsWindow extends Application implements javafx.fxml.Initializ
           }
 
         }
-        if (addResearcher) try {
-          ConfigHandler.writeConfig();
-          GUIUtils.initializeResearchers(researcherDrobdown);
-          researcherDrobdown.getSelectionModel()
-              .select(result.get().replaceAll(ConfigHandler.SEPARATOR_CHAR + "", ""));
-          addResearcher = false;
-        } catch (IOException e) {
-          // TODO Auto-generated catch block
-          e.printStackTrace();
+        if (addResearcher) {
+          try {
+            ConfigHandler.writeConfig();
+            GUIUtils.initializeResearchers(researcherDrobdown);
+            researcherDrobdown.getSelectionModel()
+                .select(result.get().replaceAll(ConfigHandler.SEPARATOR_CHAR + "", ""));
+            addResearcher = false;
+          } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+          }
         }
       }
     });
@@ -226,14 +226,12 @@ public class SettingsWindow extends Application implements javafx.fxml.Initializ
     });
   }
 
-
   @Override
   public void stop() throws Exception {
     MainWindow.settingsOpen = false;
     System.out.println("Settings Closed");
     super.stop();
   }
-
 
   @Override
   public void start(Stage primaryStage) throws Exception {
@@ -269,11 +267,9 @@ public class SettingsWindow extends Application implements javafx.fxml.Initializ
      */
   }
 
-
   public void updateGenes() {
     GUIUtils.initializeGeneBox(geneList);
   }
-
 
   public void decNumGenWindows() {
     numGeneWindows--;

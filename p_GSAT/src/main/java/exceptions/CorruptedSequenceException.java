@@ -37,8 +37,6 @@ public class CorruptedSequenceException extends Exception {
    */
   public AnalysedSequence sequence;
 
-
-
   /**
    * This Constructor specifies the position, the type of wrong character in an observed sequence
    * object and the object itself.
@@ -50,7 +48,6 @@ public class CorruptedSequenceException extends Exception {
     super(
         "Problem in observed AnalyzedSequence: The Sequence has corrupted nucleptides, which means there are not 'A','C','G','T' or 'U'.");
   }
-
 
   /**
    * Constructor specifies the position, the type of wrong character in an observed sequence and the

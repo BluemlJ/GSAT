@@ -26,8 +26,6 @@ public class ReportTests {
   private static LinkedList<File> oddFiles1 = new LinkedList<File>();
   private static LinkedList<File> oddFiles2 = new LinkedList<File>();
 
-
-
   @BeforeClass
   public static void setupSequences() {
 
@@ -46,7 +44,6 @@ public class ReportTests {
     files2.add(new File("anotherSeq2.abi"));
 
   }
-
 
   /**
    * This test checks that no error occures when there are neither valid nor invalid files passed to
@@ -79,7 +76,6 @@ public class ReportTests {
 
     assertEquals(expectedString, builder.toString());
   }
-
 
   /**
    * This test checks if a report on the reading process is correctly created and stored. (User
@@ -122,7 +118,6 @@ public class ReportTests {
 
     assertEquals(expectedString, builder.toString());
   }
-
 
   /**
    * This test checks if a report on the reading process is correctly created and stored. This time,

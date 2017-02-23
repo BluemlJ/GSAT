@@ -31,14 +31,11 @@ public class LocalDBTest {
   java.sql.Statement stmt = null;
   ResultSet rs = null;
 
-
-
   public void testOnlineConUsingDBConnection() {
     DatabaseConnection.setDatabaseConnection(userOnline, passOnline, portOnline, serverOnline);
     // DatabaseConnection.createDatabase();
     System.out.println(DatabaseConnection.gsatExists());
   }
-
 
   /**
    * Working connection setup to online database
@@ -80,7 +77,6 @@ public class LocalDBTest {
 
   }
 
-
   public void DBConnectionTest() {
     DatabaseConnection.setDatabaseConnection(user, pass, port, server);
     System.out.println(DatabaseConnection.gsatExists());
@@ -88,7 +84,6 @@ public class LocalDBTest {
     System.out.println(DatabaseConnection.gsatExists());
 
   }
-
 
   public void checkDBExists() {
     MysqlDataSource dataSource = new MysqlDataSource();
@@ -115,7 +110,6 @@ public class LocalDBTest {
     }
 
   }
-
 
   public void testDBConnection() {
 

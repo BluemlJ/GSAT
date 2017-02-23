@@ -32,8 +32,6 @@ public class ExceptionTests {
   static AnalysedSequence seq1 =
       new AnalysedSequence("ATRGATCG", "Kurt Hafer", "sequence1.ab1", null);
 
-
-
   /**
    * This test checks if the exception indicating a wrong character in a sequence works correctly
    * (given a nucleotide sequence only).
@@ -68,7 +66,6 @@ public class ExceptionTests {
 
   }
 
-
   /**
    * This test checks if the exception indicating a wrong character in a sequence works correctly
    * (given an AnalyzedSequenceObject).
@@ -94,7 +91,6 @@ public class ExceptionTests {
 
   }
 
-
   /**
    * This test checks if the exception that is thrown if the database connection could not be set up
    * works correctly.
@@ -118,7 +114,6 @@ public class ExceptionTests {
 
   }
 
-
   /**
    * This test checks if the exception indicating and error while working with the database works
    * correctly.
@@ -140,7 +135,6 @@ public class ExceptionTests {
 
     }
   }
-
 
   /**
    * This test checks if the exception indicating a badly fitting gene works.
@@ -173,7 +167,6 @@ public class ExceptionTests {
     }
   }
 
-
   /**
    * This test checks if the exception indicating a reading error works correctly.
    * 
@@ -196,7 +189,6 @@ public class ExceptionTests {
 
     }
   }
-
 
   /**
    * This test checks if the exception that is thrown if a missing path is detected works correctly.
@@ -248,7 +240,6 @@ public class ExceptionTests {
     }
 
   }
-
 
   /**
    * This test checks if the exception indicating an unknown mutation type is working correctly.

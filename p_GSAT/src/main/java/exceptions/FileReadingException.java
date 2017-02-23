@@ -18,8 +18,6 @@ public class FileReadingException extends Exception {
    */
   public String filename;
 
-
-
   /**
    * Constructor specifies the message about the problematic file and also stores it in the object.
    * 

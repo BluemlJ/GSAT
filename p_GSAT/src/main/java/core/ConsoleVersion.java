@@ -28,8 +28,6 @@ public class ConsoleVersion {
 
   private static boolean geneRecognition = false;
 
-
-
   /**
    * Creates, prints and stores a report of the reading of the files.
    * 
@@ -103,7 +101,6 @@ public class ConsoleVersion {
     }
   }
 
-
   /**
    * starts the console version of the programs
    * 
@@ -145,7 +142,6 @@ public class ConsoleVersion {
     closeProgram();
   }
 
-
   /**
    * adds a database entry for a sequence
    * 
@@ -166,7 +162,6 @@ public class ConsoleVersion {
     }
 
   }
-
 
   /**
    * Asks the User for the path to the AB1 files and returns a list of the found files Also checks
@@ -202,7 +197,6 @@ public class ConsoleVersion {
     return new Pair<LinkedList<File>, LinkedList<File>>(files, oddFiles);
   }
 
-
   /**
    * Asks user for a comment and sets the comment field of the referenced analysedSequence
    * 
@@ -219,7 +213,6 @@ public class ConsoleVersion {
       e1.printStackTrace();
     }
   }
-
 
   /**
    * Asks user for gene and gene name and adds it to the gene database
@@ -255,7 +248,6 @@ public class ConsoleVersion {
     return new Gene(strGene, 0, strGeneName, "");
   }
 
-
   /**
    * asks user for destination path and sets the value in DatanbaseConnection
    * 
@@ -285,7 +277,6 @@ public class ConsoleVersion {
     }
   }
 
-
   /**
    * prints done message and closes the console
    */
@@ -300,7 +291,6 @@ public class ConsoleVersion {
       System.exit(0);
     }
   }
-
 
   /**
    * Reads in the config file.
@@ -325,7 +315,6 @@ public class ConsoleVersion {
     return report;
   }
 
-
   /**
    * Calls all necessary functions to process Mutations of a sequence
    * 
@@ -345,7 +334,6 @@ public class ConsoleVersion {
       e.printStackTrace();
     }
   }
-
 
   /**
    * asks user for destination path and sets the value in DatanbaseConnection
@@ -370,7 +358,6 @@ public class ConsoleVersion {
     }
     return null;
   }
-
 
   /**
    * runs the complete analysis pipeline for a single sequence and adds a database entry for the
@@ -405,8 +392,9 @@ public class ConsoleVersion {
     // cut out low Quality parts of sequence
     QualityAnalysis.trimLowQuality(activeSequence);
 
-    if (StringAnalysis.findStopcodonPosition(activeSequence) != -1)
+    if (StringAnalysis.findStopcodonPosition(activeSequence) != -1) {
       activeSequence.trimSequence(0, StringAnalysis.findStopcodonPosition(activeSequence) * 3 + 2);
+    }
 
     // checks if Sequence is corrupted
     try {
@@ -424,7 +412,6 @@ public class ConsoleVersion {
     // add entry to database
     addLocalEntry(activeSequence, file, destinationPath);
   }
-
 
   /**
    * reads genes from file and returns the correct gene genes must be in a txt file named genes.txt
@@ -460,19 +447,20 @@ public class ConsoleVersion {
         // add new gene
         if (index == geneNames.length) {
           return askForGene();
-        }
-        // use automatic gene recognition
-        else if (index == geneNames.length + 1) {
+
+          // use automatic gene recognition
+        } else if (index == geneNames.length + 1) {
           geneRecognition = true;
           return null;
-        }
-        // an existing gene has been chosen
-        else if (index >= 0 && index < geneNames.length) {
+
+          // an existing gene has been chosen
+        } else if (index >= 0 && index < geneNames.length) {
           return GeneHandler.getGeneAt(index);
-        }
-        // bad user input
-        else
+
+          // bad user input
+        } else {
           return null;
+        }
       }
     } catch (IOException e) {
       // no genes.txt found
@@ -481,7 +469,6 @@ public class ConsoleVersion {
       return askForGene();
     }
   }
-
 
   /**
    * Reads the Sequence of the given File and prints Errors if necessary

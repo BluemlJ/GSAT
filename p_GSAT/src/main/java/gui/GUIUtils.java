@@ -65,7 +65,6 @@ public class GUIUtils {
     return new Pair<Boolean, Text>(true, new Text("Reading Gene.txt was successful\n"));
   }
 
-
   public static Pair<Boolean, Text> initializeGeneBox(ListView<String> genes) {
     try {
       GeneHandler.readGenes();
@@ -76,7 +75,6 @@ public class GUIUtils {
     genes.setItems(FXCollections.observableArrayList(GeneHandler.getGeneNamesAndOrganisms()));
     return new Pair<Boolean, Text>(true, new Text("Reading Gene.txt was successful"));
   }
-
 
   public static Pair<Boolean, Text> initializeResearchers(ChoiceBox<String> dropdown) {
     try {
@@ -89,45 +87,47 @@ public class GUIUtils {
     dropdown.getSelectionModel().select(ConfigHandler.getResearcher());
     return new Pair<Boolean, Text>(true,
         new Text("Reading researchers from config.txt was successful"));
-   
-  }
 
+  }
 
   /**
    * Main method of this class, alias the startbutton function.
    * 
    * @param sourcepath path to .ab1 file or folder
-   * @param GeneID ID of the Gene in the Choicebox.
+   * @param geneId ID of the Gene in the Choicebox.
    * @return a Pair or Boolean, which indicates if the method was successful and a String, which can
    *         printed in the infoarea.
    * @throws DissimilarGeneException
    */
-  public static Pair<Boolean, LinkedList<Text>> runAnalysis(String sourcepath, String GeneID, String resultname,
-      ProgressBar bar) throws DissimilarGeneException {
-    
-	LinkedList<Text> resultingLines = new LinkedList<Text>();
-	boolean success = false;
+  public static Pair<Boolean, LinkedList<Text>> runAnalysis(String sourcepath, String geneId,
+      String resultname, ProgressBar bar) throws DissimilarGeneException {
+
+    LinkedList<Text> resultingLines = new LinkedList<Text>();
+    boolean success = false;
 
     // get all ab1 files
     Pair<LinkedList<File>, LinkedList<File>> sequences = getSequencesFromSourceFolder(sourcepath);
-    
-    if (sequences.first == null)
+
+    if (sequences.first == null) {
       if (sequences.second == null) {
-        return new Pair<Boolean, LinkedList<Text>>(success, 
-        		wrap("Reading Sequences unsuccessful, please make sure the given path is correct or the file is valid\n", resultingLines, true)
-            );
+        return new Pair<Boolean, LinkedList<Text>>(success,
+            wrap(
+                "Reading Sequences unsuccessful, please make sure the given path is correct or the file is valid\n",
+                resultingLines, true));
       } else {
         return new Pair<Boolean, LinkedList<Text>>(success,
-        		wrap("No AB1 files were found at the given path or the file is invalid.\n", resultingLines, true));
+            wrap("No AB1 files were found at the given path or the file is invalid.\n",
+                resultingLines, true));
       }
-    else
-    	wrap("Reading .ab1 file(s) was successful\n", resultingLines, false);
+    } else {
+      wrap("Reading .ab1 file(s) was successful\n", resultingLines, false);
+    }
 
     // get the gene from the coiceboxID
     Gene gene = null;
-    if (!GeneID.equals("-1")) {
-      gene = getGeneFromDropDown(GeneID).first;
-      wrap(getGeneFromDropDown(GeneID).second.second, resultingLines, false);
+    if (!geneId.equals("-1")) {
+      gene = getGeneFromDropDown(geneId).first;
+      wrap(getGeneFromDropDown(geneId).second.second, resultingLines, false);
     }
     // foreach ab1 file
     int counter = 0;
@@ -135,8 +135,9 @@ public class GUIUtils {
     for (File file : sequences.first) {
       // get Sequence
       AnalysedSequence toAnalyse = readSequenceFromFile(file).first;
-      if (GeneID.equals("-1"))
+      if (geneId.equals("-1")) {
         gene = StringAnalysis.findRightGene(toAnalyse, GeneHandler.getGeneList());
+      }
       toAnalyse.setReferencedGene(gene);
 
       // checks if complementary and reversed Sequence is better, then
@@ -144,7 +145,9 @@ public class GUIUtils {
       try {
         StringAnalysis.checkComplementAndReverse(toAnalyse);
       } catch (CorruptedSequenceException e) {
-        return new Pair<Boolean, LinkedList<Text>>(success, wrap("Calculation of complementary sequence unsuccessful, analysing stops\n", resultingLines, true));
+        return new Pair<Boolean, LinkedList<Text>>(success,
+            wrap("Calculation of complementary sequence unsuccessful, analysing stops\n",
+                resultingLines, true));
       }
 
       // cut out vector
@@ -155,17 +158,21 @@ public class GUIUtils {
       QualityAnalysis.trimLowQuality(toAnalyse);
 
       int stopcodonPosition = StringAnalysis.findStopcodonPosition(toAnalyse);
-      if (stopcodonPosition != -1) toAnalyse.trimSequence(0, stopcodonPosition * 3 + 2);
+      if (stopcodonPosition != -1) {
+        toAnalyse.trimSequence(0, stopcodonPosition * 3 + 2);
+      }
 
       toAnalyse.setTrimPercentage(
           QualityAnalysis.percentageOfTrimQuality(lengthBeforeTrimmingQuality, toAnalyse));
 
-      toAnalyse.setHisTagPosition(StringAnalysis.findHISTag(toAnalyse));
+      toAnalyse.setHisTagPosition(StringAnalysis.findHisTag(toAnalyse));
       // find all Mutations
       try {
         MutationAnalysis.findMutations(toAnalyse);
       } catch (UndefinedTypeOfMutationException | CorruptedSequenceException e) {
-        return new Pair<Boolean, LinkedList<Text>>(success, wrap("Mutation analysis was unsuccessful because of error in " + file.getName() + "\n", resultingLines, true));
+        return new Pair<Boolean, LinkedList<Text>>(success,
+            wrap("Mutation analysis was unsuccessful because of error in " + file.getName() + "\n",
+                resultingLines, true));
       }
 
       // add entry to database
@@ -174,15 +181,17 @@ public class GUIUtils {
         FileSaver.storeResultsLocally(file.getName().replaceFirst("[.][^.]+$", ""), toAnalyse);
 
       } catch (MissingPathException e2) {
-    	  FileSaver.setLocalPath("");
-    	  return new Pair<Boolean, LinkedList<Text>>(success, wrap("Missing path to destination, aborting analysis.\n", resultingLines, true));
+        FileSaver.setLocalPath("");
+        return new Pair<Boolean, LinkedList<Text>>(success,
+            wrap("Missing path to destination, aborting analysis.\n", resultingLines, true));
       } catch (IOException e2) {
-    	  return new Pair<Boolean, LinkedList<Text>>(success, wrap("Error while storing data, aborting analysis.\n", resultingLines, true));
+        return new Pair<Boolean, LinkedList<Text>>(success,
+            wrap("Error while storing data, aborting analysis.\n", resultingLines, true));
       }
-      
-    	counter++;
-      	bar.setProgress(counter / (double) allFiles);
-      
+
+      counter++;
+      bar.setProgress(counter / (double) allFiles);
+
     }
     // set output parameter and return Pair.
     wrap("Analysis was successful\n", resultingLines, false);
@@ -190,20 +199,16 @@ public class GUIUtils {
     return new Pair<Boolean, LinkedList<Text>>(success, resultingLines);
   }
 
-  
-  
-  
   private static LinkedList<Text> wrap(String line, LinkedList<Text> list, boolean red) {
-	  Text text;
-	  if (red)
-		  text = getRedText(line);
-	  else
-		  text = new Text(line);
-	  list.add(text);
-	  return list;
+    Text text;
+    if (red) {
+      text = getRedText(line);
+    } else {
+      text = new Text(line);
+    }
+    list.add(text);
+    return list;
   }
-  
-  
 
   /**
    * This method opens a DirectoryChooser to set the destinationpath. Later results and reports will
@@ -251,7 +256,6 @@ public class GUIUtils {
     }
     return new Pair<Boolean, Text>(success, report);
   }
-
 
   /**
    * This method opens a DirectoryChooser to set the sourcepath. In this path, there should be some
@@ -330,7 +334,6 @@ public class GUIUtils {
     return new Pair<Boolean, Text>(success, report);
   }
 
-
   /**
    * This method gets the Gene from his ID.
    * 
@@ -342,7 +345,6 @@ public class GUIUtils {
         new Pair<Boolean, String>(true, "Reading gene was successful\n"));
 
   }
-
 
   /**
    * This method gets all ab1 files from an given path. It sorts them to ab1 files and other
@@ -366,7 +368,6 @@ public class GUIUtils {
     }
     return new Pair<LinkedList<File>, LinkedList<File>>(files, oddFiles);
   }
-
 
   /**
    * Reads the Sequence of the given File and prints Errors if necessary
@@ -394,70 +395,70 @@ public class GUIUtils {
     return new Pair<AnalysedSequence, Pair<Boolean, Text>>(null, ret);
   }
 
+  public static void setColorOnNode(Node node, ButtonColor color) {
 
+    String normalColor = "";
+    String hoverColor = "";
+    String pressedColor = "";
 
-	public static void setColorOnNode(Node node, ButtonColor color) {
+    switch (color) {
+      case GREEN:
+        normalColor = "rgb(185, 246, 202)";
+        hoverColor = "rgb(165, 226, 182)";
+        pressedColor = "rgb(145, 206, 162)";
+        break;
+      case RED:
+        normalColor = "rgb(255, 158, 128)";
+        hoverColor = "rgb(235,138,108)";
+        pressedColor = "rgb(215,118,88)";
+        break;
+      case BLUE:
+        normalColor = "rgb(130, 177, 255)";
+        hoverColor = "rgb(120, 157, 235)";
+        pressedColor = "rgb(100,137,215)";
+        break;
+    }
 
-		String normalColor = "";
-		String hoverColor = "";
-		String pressedColor = "";
+    String normalStyle = "-fx-background-color: " + normalColor
+        + "; -fx-border-color: gray; -fx-border-radius: 3px;";
+    String hoverStyle =
+        "-fx-background-color: " + hoverColor + "; -fx-border-color: gray; -fx-border-radius: 3px;";
+    String pressedStyle = "-fx-background-color: " + pressedColor
+        + "; -fx-border-color: gray; -fx-border-radius: 3px;";
 
-		switch (color) {
-		case GREEN:
-			normalColor = "rgb(185, 246, 202)";
-			hoverColor = "rgb(165, 226, 182)";
-			pressedColor = "rgb(145, 206, 162)";
-			break;
-		case RED:
-			normalColor = "rgb(255, 158, 128)";
-			hoverColor = "rgb(235,138,108)";
-			pressedColor = "rgb(215,118,88)";
-			break;
-		case BLUE:
-			normalColor = "rgb(130, 177, 255)";
-			hoverColor = "rgb(120, 157, 235)";
-			pressedColor = "rgb(100,137,215)";
-			break;
-		}
+    node.setStyle(normalStyle);
+    node.setOnMouseEntered(new EventHandler<MouseEvent>() {
+      @Override
+      public void handle(MouseEvent t) {
+        node.setStyle(hoverStyle);
+      }
+    });
 
-		String normalStyle = "-fx-background-color: " + normalColor + "; -fx-border-color: gray; -fx-border-radius: 3px;";
-		String hoverStyle = "-fx-background-color: " +  hoverColor + "; -fx-border-color: gray; -fx-border-radius: 3px;";
-		String pressedStyle = "-fx-background-color: " +  pressedColor + "; -fx-border-color: gray; -fx-border-radius: 3px;";
+    node.setOnMouseExited(new EventHandler<MouseEvent>() {
+      @Override
+      public void handle(MouseEvent t) {
+        node.setStyle(normalStyle);
+      }
+    });
+    node.setOnMousePressed(new EventHandler<MouseEvent>() {
+      @Override
+      public void handle(MouseEvent t) {
+        node.setStyle(pressedStyle);
+      }
+    });
+    node.setOnMouseReleased(new EventHandler<MouseEvent>() {
+      @Override
+      public void handle(MouseEvent t) {
+        node.setStyle(hoverStyle);
+      }
+    });
 
-		node.setStyle(normalStyle);
-		node.setOnMouseEntered(new EventHandler<MouseEvent>() {
-			@Override
-			public void handle(MouseEvent t) {
-				node.setStyle(hoverStyle);
-			}
-		});
+  }
 
-		node.setOnMouseExited(new EventHandler<MouseEvent>() {
-			@Override
-			public void handle(MouseEvent t) {
-				node.setStyle(normalStyle);
-			}
-		});
-		node.setOnMousePressed(new EventHandler<MouseEvent>() {
-			@Override
-			public void handle(MouseEvent t) {
-				node.setStyle(pressedStyle);
-			}
-		});
-		node.setOnMouseReleased(new EventHandler<MouseEvent>() {
-			@Override
-			public void handle(MouseEvent t) {
-				node.setStyle(hoverStyle);
-			}
-		});
-
-	}
-
-	static Text getRedText(String message) {
-		Text text = new Text(message);
-		text.setStyle("-fx-stroke: red; -fx-stroke-width: 1;");
-		return text;
-	}
-
+  static Text getRedText(String message) {
+    Text text = new Text(message);
+    text.setStyle("-fx-stroke: red; -fx-stroke-width: 1;");
+    return text;
+  }
 
 }

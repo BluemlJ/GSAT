@@ -39,7 +39,6 @@ public class Gene extends Sequence {
     this.id = id;
   }
 
-
   /**
    * Constructor setting all given attributes (by calling the super constructor).
    * 
@@ -61,14 +60,12 @@ public class Gene extends Sequence {
     this.comment = comment;
   }
 
-
   /**
    * @return the id
    */
   public int getId() {
     return id;
   }
-
 
   /**
    * @param id the id to set
@@ -77,14 +74,12 @@ public class Gene extends Sequence {
     this.id = id;
   }
 
-
   /**
    * @return the name
    */
   public String getName() {
     return name;
   }
-
 
   /**
    * @param name the name to set
@@ -93,14 +88,12 @@ public class Gene extends Sequence {
     this.name = name;
   }
 
-
   /**
    * @return the organism
    */
   public String getOrganism() {
     return organism;
   }
-
 
   /**
    * @param organism the organism to set
@@ -109,7 +102,6 @@ public class Gene extends Sequence {
     this.organism = organism;
   }
 
-
   /**
    * @return the comment
    */
@@ -117,13 +109,11 @@ public class Gene extends Sequence {
     return comment;
   }
 
-
   /**
    * @param comment the comment to set
    */
   public void setComment(String comment) {
     this.comment = comment;
   }
-
 
 }

@@ -44,7 +44,6 @@ public class AnalysisTests {
 
   }
 
-
   /**
    * @throws CorruptedSequenceException
    * 
@@ -62,7 +61,6 @@ public class AnalysisTests {
 
   }
 
-
   /**
    * @throws CorruptedSequenceException
    * 
@@ -78,7 +76,6 @@ public class AnalysisTests {
     assertTrue(testSeq.getSequence().equals("AAAAAA"));
 
   }
-
 
   /**
    * Test if the convention from codons to amino acid (shortform) is correct, if the user uses
@@ -98,7 +95,6 @@ public class AnalysisTests {
     assertTrue(result.equals("IGPI"));
   }
 
-
   /**
    * Test if the convention from codons to amino acid (shortform) is correct, if the user uses
    * correct codonstrings
@@ -117,7 +113,6 @@ public class AnalysisTests {
     assertTrue(result.equals("MQIVLCQL"));
   }
 
-
   /**
    * Test if the convention from codons to amino acid (shortform) is correct, if the user uses empty
    * codonstrings and gets the correct error
@@ -135,7 +130,6 @@ public class AnalysisTests {
 
   }
 
-
   /**
    * Test if the convention from codons to amino acid (shortform) is correct, if the user uses
    * uncorrect codonstrings (with wrong nukleotides) and gets the correct error String
@@ -150,7 +144,6 @@ public class AnalysisTests {
     assertTrue(StringAnalysis.codonsToAminoAcids(testString).contains("X"));
 
   }
-
 
   /********************
    * Test for reportDifferences()
@@ -172,7 +165,6 @@ public class AnalysisTests {
 
   }
 
-
   /**
    * test if findDifferences finds insertions
    * 
@@ -185,7 +177,6 @@ public class AnalysisTests {
     String expected = "i|4|x|";
     assertEquals(expected, result);
   }
-
 
   /**
    * test if findDifferences finds deletions at begining
@@ -201,38 +192,34 @@ public class AnalysisTests {
     assertEquals(expected, result);
   }
 
-
   @Test
   public void findHISTAG1() throws CorruptedSequenceException {
     AnalysedSequence testSeq = new AnalysedSequence("ATGUUAUUUCCCTAACCCCCCCACCACCACCACCACTAA",
         "Jannis", "toAnalyse", null);
     testSeq.setLeftVector("");
-    int tmp = StringAnalysis.findHISTag(testSeq);
+    int tmp = StringAnalysis.findHisTag(testSeq);
     System.out.println(tmp);
     assertTrue(tmp == 21);
   }
-
 
   @Test
   public void findHISTAG2() throws CorruptedSequenceException {
     AnalysedSequence testSeq =
         new AnalysedSequence("ATGCCTCCCCACCACCACCACCACCACTAA", "Jannis", "toAnalyse", null);
     testSeq.setLeftVector("");
-    int tmp = StringAnalysis.findHISTag(testSeq);
+    int tmp = StringAnalysis.findHisTag(testSeq);
     System.out.println(tmp);
     assertTrue(tmp == 9);
   }
-
 
   @Test
   public void findHISTAG3() throws CorruptedSequenceException {
     AnalysedSequence testSeq =
         new AnalysedSequence("ATGUUAUUUCCCCCCTAA", "Jannis", "toAnalyse", null);
-    int tmp = StringAnalysis.findHISTag(testSeq);
+    int tmp = StringAnalysis.findHisTag(testSeq);
     System.out.println(tmp);
     assertTrue(tmp == -1);
   }
-
 
   @Test
   public void findStopcodon1() {
@@ -242,7 +229,6 @@ public class AnalysisTests {
     assertTrue(tmp == 4);
   }
 
-
   @Test
   public void findStopcodon2() {
     AnalysedSequence testSeq =
@@ -251,14 +237,12 @@ public class AnalysisTests {
     assertTrue(tmp == 4);
   }
 
-
   @Test
   public void findStopcodon3() {
     AnalysedSequence testSeq = new AnalysedSequence("ATGUUAUUUCCCCCC", "Jannis", "toAnalyse", null);
     int tmp = StringAnalysis.findStopcodonPosition(testSeq);
     assertTrue(tmp == -1);
   }
-
 
   /**
    * 
@@ -275,7 +259,6 @@ public class AnalysisTests {
 
   }
 
-
   /**
    * 
    */
@@ -291,7 +274,6 @@ public class AnalysisTests {
 
   }
 
-
   /**
    * 
    */
@@ -303,7 +285,6 @@ public class AnalysisTests {
     assertTrue(toTest.getQuality().length == 0);
   }
 
-
   /**
    * Checks if the robust gene sequence setting works.
    * 
@@ -314,7 +295,6 @@ public class AnalysisTests {
     Gene gene = new Gene("ATC GATCG ATCG" + System.lineSeparator() + " ATC ", 0, null, null);
     assertEquals("ATCGATCGATCGATC", gene.getSequence());
   }
-
 
   /**
    * Checks if the robust gene sequence setting works (II).
@@ -328,7 +308,6 @@ public class AnalysisTests {
     assertEquals("ATGCGCTCGCAA", gene.getSequence());
   }
 
-
   /**
    * Does the gene setting work even with a sequence which only contains whitespace characters?
    * 
@@ -340,7 +319,6 @@ public class AnalysisTests {
     assertTrue(gene.getSequence().isEmpty());
   }
 
-
   /**
    * test the helpermethod appentString for coreckt lenght of the result
    * 
@@ -351,7 +329,6 @@ public class AnalysisTests {
   public void stringAppendTest() {
     assertTrue(StringAnalysis.appentStringToLength("hallo", 10).length() == 10);
   }
-
 
   /**
    * This test checks findBestMatch with a half gene DEPRICATED
@@ -369,7 +346,6 @@ public class AnalysisTests {
     assertTrue(bestFit.equals(result));
   }
 
-
   /**
    * This test checks that find best match is not overfitting DEPRICATED
    * 
@@ -384,7 +360,6 @@ public class AnalysisTests {
     String result = StringAnalysis.findBestMatch(falseFit, original).second;
     assertTrue(bestFit.equals(result));
   }
-
 
   /**
    * Test for correct deletion;
@@ -404,7 +379,6 @@ public class AnalysisTests {
     assertTrue(result.toString().equals(expected));
   }
 
-
   /**
    * Test for correct deletion at end;
    * 
@@ -422,7 +396,6 @@ public class AnalysisTests {
     String expected = "d|6|x|, ";
     assertTrue(result.toString().equals(expected));
   }
-
 
   /**
    * Test with empty String; using the example "" -> "hello" expecting 5 insertions (User Story 007,
@@ -444,7 +417,6 @@ public class AnalysisTests {
     // System.out.println(result);
     assertTrue(result.toString().equals(expected));
   }
-
 
   /**
    * Test for correct insertion; using the example "helo" -> "hello" with insertion of 'l' at
@@ -468,7 +440,6 @@ public class AnalysisTests {
     assertTrue(result.toString().equals(expected));
   }
 
-
   /**
    * Test for correct insertion at begin; using the example "ello" -> "hello" with insertion of 'h'
    * at possition 0 (User Story 007, special case 2)
@@ -487,7 +458,6 @@ public class AnalysisTests {
     String expected = "i|0|h|, ";
     assertTrue(result.toString().equals(expected));
   }
-
 
   /**
    * Test for correct insertion at end; using the example "hell" -> "hello" with insertion of 'o' at
@@ -508,7 +478,6 @@ public class AnalysisTests {
     assertTrue(result.toString().equals(expected));
   }
 
-
   /**
    * Test for correct substitution; using the example "helxo" -> "hello" with substitution of 'x' to
    * 'l' at possition 4 (User Story 007, typical behavior 2)
@@ -528,7 +497,6 @@ public class AnalysisTests {
     // System.out.println(result);
     assertTrue(result.toString().equals(expected));
   }
-
 
   /**
    * Test if FindingGene finds the right Gene
@@ -555,7 +523,6 @@ public class AnalysisTests {
     assertTrue(result.getId() == (genc.getId()));
   }
 
-
   @Test
   /**
    * @JANNIS TODO beschreibung
@@ -578,7 +545,6 @@ public class AnalysisTests {
     }
   }
 
-
   @Test
   /**
    * @JANNIS TODO beschreibung
@@ -600,7 +566,6 @@ public class AnalysisTests {
     }
   }
 
-
   @Test
   /**
    * @JANNIS TODO beschreibung
@@ -621,7 +586,6 @@ public class AnalysisTests {
     }
   }
 
-
   @Test
   public void testFindingRightGeneOnCorrectUse() throws DissimilarGeneException {
     AnalysedSequence testA = new AnalysedSequence("AGGGT", "Jannis", "testA", null);
@@ -638,7 +602,6 @@ public class AnalysisTests {
     assertTrue(result == testGeneA);
   }
 
-
   @Test
   public void testFindingRightGeneOnIncorrectUse() throws DissimilarGeneException {
     AnalysedSequence testA = new AnalysedSequence("C", "a", "a", null);
@@ -652,7 +615,6 @@ public class AnalysisTests {
     Gene right = StringAnalysis.findRightGene(testA, testGenes);
     assertTrue(right == testGeneA);
   }
-
 
   /**
    * This test checks whether the complementary sequence is correctly computed.
@@ -676,7 +638,6 @@ public class AnalysisTests {
     assertEquals("TACGATCGATCGGGG", seq4.getComplementarySequence());
   }
 
-
   /**
    * This test checks whether an exception is thrown if a sequence's complementary sequence is
    * build. It's important to throw the exception and not to hide the error.
@@ -690,7 +651,6 @@ public class AnalysisTests {
     Sequence seq = new Gene("AATTCCFGATCG", 0, "Problem", null);
     assertTrue(seq.getComplementarySequence().contains("X"));
   }
-
 
   /**
    * This test checks if a sequence is correctly reversed.
@@ -714,7 +674,6 @@ public class AnalysisTests {
 
   }
 
-
   /**
    * This test checks the Levenshtein algorythm by putting in one empty and one normal String
    * 
@@ -732,7 +691,6 @@ public class AnalysisTests {
     assertTrue(Arrays.deepEquals(levenMatrix, resultMatrix));
   }
 
-
   /**
    * This test checks the Levenshtein algorythm with empty Strings
    * 
@@ -749,7 +707,6 @@ public class AnalysisTests {
     assertTrue(levenMatrix[0][0] == 0);
   }
 
-
   @Test
   public void testSilentMutationFinding() throws CorruptedSequenceException {
     Gene gena = new Gene("ATGUUAGGGCCC", 0, "testGen1", "Jannis");
@@ -764,7 +721,6 @@ public class AnalysisTests {
       e.printStackTrace();
     }
   }
-
 
   @Test
   public void testSilentMutationFinding2() throws CorruptedSequenceException {
@@ -781,7 +737,6 @@ public class AnalysisTests {
       e.printStackTrace();
     }
   }
-
 
   @Test
   /**
@@ -803,7 +758,6 @@ public class AnalysisTests {
     }
   }
 
-
   @Test
   /**
    * @JANNIS TODO beschreibung
@@ -823,7 +777,6 @@ public class AnalysisTests {
     }
   }
 
-
   @Test
   public void testsimpleInsertionFinding() throws CorruptedSequenceException {
     Gene gena = new Gene("UAUUAU", 0, "testGen1", "Jannis");
@@ -838,7 +791,6 @@ public class AnalysisTests {
       e.printStackTrace();
     }
   }
-
 
   @Test
   public void testsimpleInsertionFinding2() throws CorruptedSequenceException {
@@ -855,7 +807,6 @@ public class AnalysisTests {
     }
   }
 
-
   @Test
   public void testsimpleSubstitutionFinding() throws CorruptedSequenceException {
     Gene gena = new Gene("UUUUUUUUU", 0, "testGenA", "Jannis");
@@ -870,7 +821,6 @@ public class AnalysisTests {
       e.printStackTrace();
     }
   }
-
 
   @Test
   public void testsimpleSubstitutionFinding2() throws CorruptedSequenceException {

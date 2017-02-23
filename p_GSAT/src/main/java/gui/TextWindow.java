@@ -20,13 +20,10 @@ public class TextWindow extends Application implements javafx.fxml.Initializable
   private TextArea testArea;
   private String text = "";
 
-
-
   @Override
   public void initialize(URL arg0, ResourceBundle arg1) {
     testArea.setWrapText(true);
   }
-
 
   @Override
   public void start(Stage primaryStage) throws Exception {
@@ -43,12 +40,9 @@ public class TextWindow extends Application implements javafx.fxml.Initializable
     primaryStage.show();
   }
 
-
   public String getText() {
     return text;
   }
-
-
 
   public void setText(String text) {
     testArea.setText(text);

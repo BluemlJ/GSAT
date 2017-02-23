@@ -22,15 +22,12 @@ public class GeneHandler {
   private static ArrayList<Gene> geneList;
   private static String path =
       System.getProperty("user.home") + File.separator + "gsat" + File.separator + "genes.txt";
-  private final static String SEPARATOR = ";";
-
-
+  private static final String SEPARATOR = ";";
 
   public static void addGene(String geneName, String geneSequence)
       throws DuplicateGeneException, IOException {
     addGene(path, geneName, geneSequence);
   }
-
 
   /**
    * add a new gene to genes.txt
@@ -57,7 +54,6 @@ public class GeneHandler {
 
     writeGenes(genePath);
   }
-
 
   /**
    * add a new gene to genes.txt
@@ -86,7 +82,6 @@ public class GeneHandler {
     return true;
   }
 
-
   public static void deleteGene(String newpath, String geneName) throws IOException {
 
     for (int i = 0; i < geneList.size(); i++) {
@@ -97,6 +92,10 @@ public class GeneHandler {
     writeGenes(newpath);
   }
 
+  public static void deleteGene(String string) throws IOException {
+    deleteGene(path, string.split(" ")[0]);
+
+  }
 
   /**
    * clears gene.txt and writes all known genes.
@@ -141,6 +140,11 @@ public class GeneHandler {
   }
 
 
+  public static void writeGenes() throws IOException {
+    writeGenes(path);
+
+  }
+
   /**
    * clears the txt file at a given path
    * 
@@ -152,7 +156,6 @@ public class GeneHandler {
     writer.write("");
     writer.close();
   }
-
 
   /**
    * checks if a gene already exists
@@ -169,7 +172,6 @@ public class GeneHandler {
     return false;
   }
 
-
   /**
    * 
    * @param geneName
@@ -184,7 +186,6 @@ public class GeneHandler {
     return null;
   }
 
-
   /**
    * 
    * @param geneName
@@ -194,24 +195,24 @@ public class GeneHandler {
     if (organism != null && organism != "none" && organism != "") {
       for (int i = 0; i < geneList.size(); i++) {
         if (geneList.get(i).getName().equals(geneName)) {
-          if (geneList.get(i).getOrganism().equals(organism)) return geneList.get(i);
+          if (geneList.get(i).getOrganism().equals(organism)) {
+            return geneList.get(i);
+          }
         }
       }
-    } else
+    } else {
       getGene(geneName);
+    }
     return null;
   }
-
 
   public static Gene getGeneAt(int index) {
     return geneList.get(index);
   }
 
-
   public static ArrayList<Gene> getGeneList() {
     return geneList;
   }
-
 
   public static String[] getGeneNames() {
     String[] names = new String[geneList.size()];
@@ -223,13 +224,13 @@ public class GeneHandler {
     return names;
   }
 
-
   public static String[] getGeneNamesAndOrganisms() {
     String[] names = new String[geneList.size()];
     for (int i = 0; i < geneList.size(); i++) {
       names[i] = geneList.get(i).getName();
-      if (geneList.get(i).getOrganism() != null && geneList.get(i).getOrganism() != "none")
+      if (geneList.get(i).getOrganism() != null && geneList.get(i).getOrganism() != "none") {
         names[i] = names[i] + " (" + geneList.get(i).getOrganism() + ")";
+      }
     }
 
     Arrays.sort(names);
@@ -237,11 +238,9 @@ public class GeneHandler {
 
   }
 
-
   public static int getNumGenes() {
     return geneList.size();
   }
-
 
   /**
    * reads genes from gene file at the locally stored path
@@ -251,7 +250,6 @@ public class GeneHandler {
   public static void readGenes() throws IOException {
     readGenes(path);
   }
-
 
   /**
    * reads a gene.txt from a given path
@@ -273,7 +271,7 @@ public class GeneHandler {
     // for each line
     while ((line = geneReader.readLine()) != null) {
       // format "name=atgAAT..."
-      String sepLine[] = line.split(SEPARATOR);
+      String[] sepLine = line.split(SEPARATOR);
       String name = sepLine[0];
       String gene = sepLine[1];
       String organism = sepLine[2];
@@ -301,7 +299,6 @@ public class GeneHandler {
 
   }
 
-
   /**
    * check if a genes.txt file exists at the given path
    * 
@@ -311,7 +308,6 @@ public class GeneHandler {
     File config = new File(path);
     return config.exists();
   }
-
 
   /**
    * create a new gene file in the user home directory in a folder named gsat
@@ -338,7 +334,6 @@ public class GeneHandler {
     }
   }
 
-
   /**
    * set the path of the gene.txt file
    * 
@@ -348,21 +343,10 @@ public class GeneHandler {
     GeneHandler.path = path;
   }
 
-
   public static String getPath() {
     return GeneHandler.path;
   }
 
 
-  public static void writeGenes() throws IOException {
-    writeGenes(path);
-
-  }
-
-
-  public static void deleteGene(String string) throws IOException {
-    deleteGene(path, string.split(" ")[0]);
-
-  }
 
 }

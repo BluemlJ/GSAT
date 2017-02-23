@@ -24,13 +24,13 @@ public class Main {
       }
     }
 
-    if (consoleMode)
+    if (consoleMode) {
       ConsoleVersion.startConsoleVersion();
-    else
+    } else {
       javafx.application.Application.launch(MainWindow.class);
+    }
 
   }
-
 
   /**
    * Resets the analysis pipeline to be able to start with a completely new analyzing process.

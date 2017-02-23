@@ -18,8 +18,6 @@ public class UndefinedTypeOfMutationException extends Exception {
    */
   public String mutationString;
 
-
-
   /**
    * Constructor specifies the String that was used to encode a mutation but is not valid.
    * 

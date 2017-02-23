@@ -62,8 +62,6 @@ public class WritingTests {
   static AnalysedSequence seq1 =
       new AnalysedSequence("ATCG", "Klaus Bohne", "sequence1.ab1", new int[] {1, 3});
 
-
-
   /**
    * This method sets the genes and adds a few mutations to the AnalyzedSequence objects to make
    * them ready to be used in the tests.
@@ -99,13 +97,11 @@ public class WritingTests {
 
   }
 
-
   @AfterClass
   public static void rightNewFile() throws IOException {
     File newFile = new File(path + "test.txt");
     newFile.createNewFile();
   }
-
 
   /**
    * This method resets the state of the DatabaseConnection before a new test starts to get equal
@@ -128,7 +124,6 @@ public class WritingTests {
       }
     }
   }
-
 
   /**
    * This test checks whether an AnalyzesSequence is correctly transformed into DatabaseEntries and
@@ -166,7 +161,8 @@ public class WritingTests {
 
     String[] correctResults = new String[] {
         "1; sequence3.ab1; FSA; null; AAA7CAA, -1H5 (TCT); Nothing to say; Kurt Bohne; "
-            + addingDate + "; 99.3690426555198; 0; ATC; null; null; none; none; AAA7CAA, -1H5; false"};
+            + addingDate
+            + "; 99.3690426555198; 0; ATC; null; null; none; none; AAA7CAA, -1H5; false"};
 
     for (int i = 0; i < correctResults.length; i++) {
       String[] correctInfo = correctResults[i].split(";");
@@ -179,8 +175,6 @@ public class WritingTests {
     assertTrue(results.size() == 1);
 
   }
-
-
 
   /**
    * 
@@ -210,7 +204,6 @@ public class WritingTests {
     fail();
 
   }
-
 
   /**
    * 
@@ -244,7 +237,6 @@ public class WritingTests {
     assertTrue(results.size() == 1);
     reader.close();
   }
-
 
   /**
    * This test checks if the writing of local files is done correctly. (User Story 006, typical
@@ -280,7 +272,8 @@ public class WritingTests {
     // Check whether the input is correct
     String[] correctResults = new String[] {
         "1; sequence1.ab1; FSA; bacteria; A131E (ACC), G7K (ATC), +2H5 (AAC); No comments; Klaus Bohne; "
-            + addingDate + "; 99.3690426555198; 0; ATCG; A; B; none; none; A131E, G7K, +2H5; false"};
+            + addingDate
+            + "; 99.3690426555198; 0; ATCG; A; B; none; none; A131E, G7K, +2H5; false"};
     for (int i = 0; i < correctResults.length; i++) {
       assertEquals(correctResults[i], results.get(i));
     }
@@ -289,7 +282,6 @@ public class WritingTests {
     assertTrue(results.size() == 1);
 
   }
-
 
   @Test
   public void testStoreLocallyAsOneFile1()
@@ -329,7 +321,6 @@ public class WritingTests {
 
   }
 
-
   @Test
   public void testStoreLocallyAsOneFile2()
       throws MissingPathException, IOException, UndefinedTypeOfMutationException {
@@ -367,7 +358,6 @@ public class WritingTests {
 
   }
 
-
   @Test
   public void testStoreLocallyAsOneFileEmpty()
       throws MissingPathException, IOException, UndefinedTypeOfMutationException {
@@ -389,7 +379,6 @@ public class WritingTests {
     assertTrue(results.size() == 1);
 
   }
-
 
   @Test
   public void testStoreLocallyAsSeparateFiles1()
@@ -414,9 +403,9 @@ public class WritingTests {
     DateFormat df = new SimpleDateFormat("dd/MM/yy");
     String addingDate = df.format(new Date());
 
-    String[] correctResults =
-        new String[] {"1; sequence2.ab1; FSA; null; reading frame error; No comments; Klaus Bohne; "
-            + addingDate + "; 99.3690426555198; 0; ATCTTTG; null; null; none; none; reading frame error; false"};
+    String[] correctResults = new String[] {
+        "1; sequence2.ab1; FSA; null; reading frame error; No comments; Klaus Bohne; " + addingDate
+            + "; 99.3690426555198; 0; ATCTTTG; null; null; none; none; reading frame error; false"};
 
     for (int i = 0; i < correctResults.length; i++) {
       assertEquals(correctResults[i], results.get(i));
@@ -443,7 +432,6 @@ public class WritingTests {
 
   }
 
-
   @Test
   public void testStoreOneFileWithSetFileName()
       throws MissingPathException, IOException, UndefinedTypeOfMutationException {
@@ -467,7 +455,8 @@ public class WritingTests {
     // Check whether the input is correct
     String[] correctResults = new String[] {
         "1; sequence1.ab1; FSA; bacteria; A131E (ACC), G7K (ATC), +2H5 (AAC); No comments; Klaus Bohne; "
-            + addingDate + "; 99.3690426555198; 0; ATCG; A; B; none; none; A131E, G7K, +2H5; false"};
+            + addingDate
+            + "; 99.3690426555198; 0; ATCG; A; B; none; none; A131E, G7K, +2H5; false"};
 
     for (int i = 0; i < correctResults.length; i++) {
       assertEquals(correctResults[i], results.get(i));
@@ -509,7 +498,8 @@ public class WritingTests {
     // Check whether the input is correct
     String[] correctResults = new String[] {
         "1; sequence1.ab1; FSA; bacteria; A131E (ACC), G7K (ATC), +2H5 (AAC); No comments; Klaus Bohne; "
-            + addingDate + "; 99.3690426555198; 0; ATCG; A; B; none; none; A131E, G7K, +2H5; false"};
+            + addingDate
+            + "; 99.3690426555198; 0; ATCG; A; B; none; none; A131E, G7K, +2H5; false"};
 
     for (int i = 0; i < correctResults.length; i++) {
       assertEquals(correctResults[i], results1.get(i));

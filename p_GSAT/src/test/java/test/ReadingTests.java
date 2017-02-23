@@ -25,8 +25,6 @@ public class ReadingTests {
   String correctSequence;
   AnalysedSequence testSequence;
 
-
-
   /**
    * Initializes a sample .abi File and the correct sequence represented by it
    * 
@@ -45,7 +43,6 @@ public class ReadingTests {
     testSequence = SequenceReader.convertFileIntoSequence();
   }
 
-
   @Test
   public void listFilesAllABITest() {
     File parsedFile = new File(new File("resources/ab1/Tk_Gs40Hits/Forward/").getAbsolutePath());
@@ -62,7 +59,6 @@ public class ReadingTests {
     assertTrue(working);
   }
 
-
   @Test
   public void listFilesEmptyFolderTest() {
     // File parsedFile = new
@@ -73,7 +69,6 @@ public class ReadingTests {
     assertTrue(pair.first.size() == 0 && pair.second.size() == 0);
   }
 
-
   @Test
   public void listFilesHalfABITest() {
     File parsedFile = new File(new File("resources/ab1/Tk_Gs40Hits/Forward").getAbsolutePath());
@@ -82,7 +77,6 @@ public class ReadingTests {
     Pair<LinkedList<File>, LinkedList<File>> pair = SequenceReader.listFiles();
     assertTrue(pair.first.size() == 10 && pair.second.size() == 1);
   }
-
 
   /**
    * This test reads a sequence by passing the file directly as an argument (Userstory 003 -
@@ -100,7 +94,6 @@ public class ReadingTests {
     assertEquals(parsedSequence.getSequence().toLowerCase(), correctSequence.toLowerCase());
   }
 
-
   /**
    * This tests checks if it is possible to read a correct DNA Sequence from an .abi file (Userstory
    * 003 - Expected behavior)
@@ -114,7 +107,6 @@ public class ReadingTests {
 
     assertEquals(testSequence.getSequence().toLowerCase(), correctSequence.toLowerCase());
   }
-
 
   /**
    * This tests checks if a corrupt file leads to an ioexception (Userstory 003 - Unusual behavior)

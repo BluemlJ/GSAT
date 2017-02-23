@@ -42,9 +42,7 @@ public class ConfigHandler {
   /**
    * char used for separating values in the configuration file
    */
-  public final static char SEPARATOR_CHAR = ';';
-
-
+  public static final char SEPARATOR_CHAR = ';';
 
   /**
    * read the content of the configuration file and store its values locally
@@ -124,8 +122,6 @@ public class ConfigHandler {
     // Arrays.sort(researchers);
   }
 
-
-
   /**
    * read the content of the configuration file in the given path and store its values locally
    * 
@@ -140,7 +136,6 @@ public class ConfigHandler {
     readConfig();
   }
 
-
   /**
    * check if a config.ini file exists at the given path
    * 
@@ -150,7 +145,6 @@ public class ConfigHandler {
     File config = new File(path);
     return config.exists();
   }
-
 
   /**
    * create a new configuration file in the user home directory in a folder named gsat
@@ -166,7 +160,6 @@ public class ConfigHandler {
     }
   }
 
-
   /**
    * sets the path of the configuration file
    * 
@@ -176,11 +169,9 @@ public class ConfigHandler {
     ConfigHandler.path = path;
   }
 
-
   public static String getPath() {
     return path;
   }
-
 
   /**
    * writes all parameters in the configuration file
@@ -231,37 +222,30 @@ public class ConfigHandler {
     configWriter.close();
   }
 
-
   public static String[] getSortedResearcherList() {
     Arrays.sort(researcherList);
     return researcherList;
   }
 
-
   public static String[] getResearcherList() {
     return researcherList;
   }
-
 
   public static void setResearcherList(String[] researchers) {
     ConfigHandler.researcherList = researchers;
   }
 
-
   public static void setResearcherInResearcherList(String researcher, int i) {
     ConfigHandler.researcherList[i] = researcher;
   }
-
 
   public static String getResearcher() {
     return researcher;
   }
 
-
   public static void setResearcher(String researcher) {
     ConfigHandler.researcher = researcher;
   }
-
 
   /**
    * adds a new researcher to the list does not write it directly to configuration file
@@ -269,7 +253,7 @@ public class ConfigHandler {
    * @param name name of the new researcher
    */
   public static void addResearcher(String name) {
-    String newResearchers[] = new String[researcherList.length + 1];
+    String[] newResearchers = new String[researcherList.length + 1];
     for (int i = 0; i < researcherList.length; i++) {
       newResearchers[i] = researcherList[i];
     }
@@ -280,14 +264,13 @@ public class ConfigHandler {
     // Arrays.sort(researchers);
   }
 
-
   /**
    * deletes a researcher from the list does not write it directly to configuration file
    * 
    * @param name name of the researcher which will be deleted
    */
   public static void deleteResearcher(String name) {
-    String newResearchers[] = new String[researcherList.length - 1];
+    String[] newResearchers = new String[researcherList.length - 1];
     int j = 0;
     for (int i = 0; i < researcherList.length; i++) {
       if (!researcherList[i].equals(name)) {
@@ -299,113 +282,90 @@ public class ConfigHandler {
     researcherList = newResearchers;
   }
 
-
   // TODO @Lovis
   public static String[] getParameters() {
     return null;
   }
 
-
   public static String getDbUrl() {
     return dbUrl;
   }
-
 
   public static void setDbUrl(String dbUrl) {
     ConfigHandler.dbUrl = dbUrl;
   }
 
-
   public static String getDbUser() {
     return dbUser;
   }
-
 
   public static void setDbUser(String dbUser) {
     ConfigHandler.dbUser = dbUser;
   }
 
-
   public static String getDbPass() {
     return dbPass;
   }
-
 
   public static void setDbPass(String dbPass) {
     ConfigHandler.dbPass = dbPass;
   }
 
-
   public static int getDbPort() {
     return dbPort;
   }
-
 
   public static void setDbPort(int dbPort) {
     ConfigHandler.dbPort = dbPort;
   }
 
-
   public static int getAvgApproximationStart() {
     return avgApproximationStart;
   }
-
 
   public static void setAvgApproximationStart(int avgApproximationStart) {
     ConfigHandler.avgApproximationStart = avgApproximationStart;
   }
 
-
   public static int getAvgApproximationEnd() {
     return avgApproximationEnd;
   }
-
 
   public static void setAvgApproximationEnd(int avgApproximationEnd) {
     ConfigHandler.avgApproximationEnd = avgApproximationEnd;
   }
 
-
   public static int getAvgQualityEdge() {
     return avgQualityEdge;
   }
-
 
   public static void setAvgQualityEdge(int avgQualityEdge) {
     ConfigHandler.avgQualityEdge = avgQualityEdge;
   }
 
-
   public static int getBreakcounter() {
     return breakcounter;
   }
-
 
   public static void setBreakcounter(int breakcounter) {
     ConfigHandler.breakcounter = breakcounter;
   }
 
-
   public static int getNumAverageNucleotides() {
     return numAverageNucleotides;
   }
-
 
   public static void setNumAverageNucleotides(int numAverageNucleotides) {
     ConfigHandler.numAverageNucleotides = numAverageNucleotides;
   }
 
-
   public static int getStartcounter() {
     return startcounter;
   }
 
-
   public static void setStartcounter(int startcounter) {
     ConfigHandler.startcounter = startcounter;
   }
-
-
 
   /**
    * @return the defaultValues
@@ -413,8 +373,6 @@ public class ConfigHandler {
   public static int[] getDefaultValues() {
     return defaultValues;
   }
-
-
 
   /**
    * @param defaultValues the defaultValues to set
