@@ -45,7 +45,7 @@ public class DatabaseSettingsWindow extends Application implements javafx.fxml.I
       return;
     }
     Scene scene = new Scene(root);
-    primaryStage.setTitle("GSAT - Adjust Database parameters");
+    primaryStage.setTitle("GSAT - Adjust database parameters");
     primaryStage.setScene(scene);
     primaryStage.sizeToScene();
     primaryStage.show();

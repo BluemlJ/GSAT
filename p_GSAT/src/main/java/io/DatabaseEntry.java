@@ -133,7 +133,7 @@ public class DatabaseEntry {
     String comments = seq.getComments();
     String leftVector = seq.getLeftVector();
     String rightVector = seq.getRightVector();
-    String promotor = seq.getPrimer();
+    int primer = seq.getPrimerID();
     boolean manuallyChecked = seq.isManuallyChecked();
 
     // Initialize lists for mutations
@@ -145,7 +145,7 @@ public class DatabaseEntry {
       MutationType mType = determineMutationType(mutation);
 
       DatabaseEntry dbe = new DatabaseEntry(fileName, geneID, sequence, addingDate, researcher,
-          comments, leftVector, rightVector, promotor, manuallyChecked, mutation, mType);
+          comments, leftVector, rightVector, primer + "", manuallyChecked, mutation, mType);
       entries.add(dbe);
     }
 

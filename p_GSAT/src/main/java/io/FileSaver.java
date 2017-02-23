@@ -190,7 +190,7 @@ public class FileSaver {
       }
     }
     // comments
-    // As ';' is the seperator charachter, each inital semicolon is replaced
+    // Replace the separator by a comma
     String comments = sequence.getComments().replace(SEPARATOR_CHAR, ',');
     builder.append(comments).append(SEPARATOR_CHAR + " ");
 
@@ -223,11 +223,11 @@ public class FileSaver {
     builder.append(rightVector).append(SEPARATOR_CHAR + " ");
 
     // primer
-    String primer = sequence.getPrimer();
-    if (primer == null)
-      builder.append(" " + SEPARATOR_CHAR + " ");
+    int primerID = sequence.getPrimerID();
+    if (primerID == -1)
+      builder.append("none" + SEPARATOR_CHAR + " ");
     else
-      builder.append(primer).append(SEPARATOR_CHAR + " ");
+      builder.append(primerID).append(SEPARATOR_CHAR + " ");
 
     // his tag
     // The his tag position starts with 1 in the stored result.

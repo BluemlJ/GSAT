@@ -47,9 +47,10 @@ public class AnalysedSequence extends Sequence {
   private int offset = 0;
 
   /**
-   * The primer which generated the sequence. May be added by the user.
+   * The id of the primer which generated the sequence. May be added by the user.
+   * The value -1 indicates that there is no primer to be associated with the sequence.
    */
-  private String primer;
+  private int primerID = -1;
 
   /**
    * Array containing the quality information for the sequence (i.e. for each nucleotide position).
@@ -291,16 +292,16 @@ public class AnalysedSequence extends Sequence {
   /**
    * @return the primer
    */
-  public String getPrimer() {
-    return primer;
+  public int getPrimerID() {
+    return primerID;
   }
 
 
   /**
    * @param primer the primer to set
    */
-  public void setPrimer(String primer) {
-    this.primer = primer;
+  public void setPrimerID(int primerID) {
+    this.primerID = primerID;
   }
 
 

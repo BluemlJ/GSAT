@@ -19,7 +19,6 @@ public class TextWindow extends Application implements javafx.fxml.Initializable
   @FXML
   private TextArea testArea;
   private String text = "";
-  private String name = "";
 
 
 
@@ -39,7 +38,6 @@ public class TextWindow extends Application implements javafx.fxml.Initializable
       return;
     }
     Scene scene = new Scene(root);
-    primaryStage.setTitle("GSAT - " + name);
     primaryStage.setScene(scene);
     primaryStage.sizeToScene();
     primaryStage.show();
@@ -50,11 +48,6 @@ public class TextWindow extends Application implements javafx.fxml.Initializable
     return text;
   }
 
-
-  public void setName(String name) {
-    this.name = name;
-
-  }
 
 
   public void setText(String text) {

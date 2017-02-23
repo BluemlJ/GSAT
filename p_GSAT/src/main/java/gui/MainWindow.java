@@ -350,7 +350,6 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
           String content =
               convertStreamToString(ClassLoader.getSystemResourceAsStream("manual/About.txt"));
           texWin.setText(content);
-          texWin.setName("About");
 
           Scene scene = new Scene(root);
           Stage s = new Stage();
@@ -381,7 +380,6 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
           String content = convertStreamToString(
               ClassLoader.getSystemResourceAsStream("manual/WelcomeToGSAT.txt"));
           texWin.setText(content);
-          texWin.setName("Help");
           Scene scene = new Scene(root);
           Stage s = new Stage();
           s.setScene(scene);

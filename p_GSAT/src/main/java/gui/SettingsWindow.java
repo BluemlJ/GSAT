@@ -140,6 +140,7 @@ public class SettingsWindow extends Application implements javafx.fxml.Initializ
           Stage s = new Stage();
           s.setScene(scene);
           s.sizeToScene();
+          s.setTitle("GSAT - Adding a gene");
           s.show();
 
         } catch (IOException e) {
