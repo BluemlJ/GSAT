@@ -22,9 +22,7 @@ import analysis.AnalysedSequence;
 import analysis.Gene;
 import exceptions.MissingPathException;
 import exceptions.UndefinedTypeOfMutationException;
-import io.DatabaseEntry;
 import io.FileSaver;
-import io.MutationType;
 
 /**
  * This class tests the behavior of the communication with the database and all associated behavior.
@@ -182,109 +180,6 @@ public class WritingTests {
 
   }
 
-
-  /**
-   * This tests checks the conversion from a AnalyzedSequence into a DatabaseEntry is working
-   * correctly without any entry to store (i.e. there is no mutation).
-   * 
-   * @see DatabaseEntry#convertSequenceIntoEntries(AnalysedSequence)
-   * 
-   * @author Ben Kohr
-   * @throws UndefinedTypeOfMutationException
-   */
-  @Test
-  public void testConvertSequenceIntoDBEsNoMutation() throws UndefinedTypeOfMutationException {
-
-    // Use method
-    LinkedList<DatabaseEntry> entries = DatabaseEntry.convertSequenceIntoEntries(seq3);
-
-    // No mutation: Size should be zero
-    assertTrue(entries.size() == 0);
-
-  }
-
-
-  /**
-   * This tests checks if the conversion from a AnalyzedSequence into a DatabaseEntry is working
-   * correctly.
-   * 
-   * @see DatabaseEntry#convertSequenceIntoEntries(AnalysedSequence)
-   * 
-   * @author Ben Kohr
-   * @throws UndefinedTypeOfMutationException
-   */
-  @Test
-  public void testConvertSequenceIntoDBEsNormal() throws UndefinedTypeOfMutationException {
-
-    // Use method
-    LinkedList<DatabaseEntry> entries = DatabaseEntry.convertSequenceIntoEntries(seq1);
-
-    // Prepare correct result
-    DatabaseEntry dbe1 = new DatabaseEntry("sequence1.ab1", 4, "ATCG", "2016-11-28", "Klaus Bohne",
-        "No comments", "A", "B", "-1", false, "A131E (ACC)", MutationType.SUBSTITUTION);
-    DatabaseEntry dbe2 = new DatabaseEntry("sequence1.ab1", 4, "ATCG", "2016-11-28", "Klaus Bohne",
-        "No comments", "A", "B", "-1", false, "G7K (ATC)", MutationType.SUBSTITUTION);
-    DatabaseEntry dbe3 = new DatabaseEntry("sequence1.ab1", 4, "ATCG", "2016-11-28", "Klaus Bohne",
-        "No comments", "A", "B", "-1", false, "+2H5 (AAC)", MutationType.INSERTION);
-    DatabaseEntry[] correctResult = new DatabaseEntry[] {dbe1, dbe2, dbe3};
-
-    // compare all attributes in each of the pairings
-    for (int i = 0; i < correctResult.length; i++) {
-      assertEquals(-1, entries.get(i).getID());
-      assertEquals(correctResult[i].getFileName(), entries.get(i).getFileName());
-      assertEquals(correctResult[i].getGeneID(), entries.get(i).getGeneID());
-      assertEquals(correctResult[i].getSequence(), entries.get(i).getSequence());
-      assertEquals(correctResult[i].getResearcher(), entries.get(i).getResearcher());
-      assertEquals(correctResult[i].getComments(), entries.get(i).getComments());
-      assertEquals(correctResult[i].getLeftVector(), entries.get(i).getLeftVector());
-      assertEquals(correctResult[i].getRightVector(), entries.get(i).getRightVector());
-      assertEquals(correctResult[i].getPromotor(), entries.get(i).getPromotor());
-      assertEquals(correctResult[i].getMutation(), entries.get(i).getMutation());
-      assertEquals(correctResult[i].getMutationType(), entries.get(i).getMutationType());
-    }
-
-    // Result should have 3 elements.
-    assertTrue(entries.size() == 3);
-  }
-
-
-  /**
-   * This tests checks the conversion from a AnalyzedSequence into a DatabaseEntry is working
-   * correctly with just one entry.
-   * 
-   * @see DatabaseEntry#convertSequenceIntoEntries(AnalysedSequence)
-   * 
-   * @author Ben Kohr
-   * @throws UndefinedTypeOfMutationException
-   */
-  @Test
-  public void testConvertSequenceIntoDBEsNormal2() throws UndefinedTypeOfMutationException {
-
-    // Use method
-    LinkedList<DatabaseEntry> entries = DatabaseEntry.convertSequenceIntoEntries(seq2);
-
-    // Prepare correct result
-    DatabaseEntry correctDBE =
-        new DatabaseEntry("sequence2.ab1", 1, "ATCTTTG", "2016-11-29", "Klaus Bohne", "No comments",
-            null, null, "-1", false, "reading frame error", MutationType.ERROR);
-
-    // compare all attributes (except for the date)
-    assertEquals(-1, entries.get(0).getID());
-    assertEquals(correctDBE.getFileName(), entries.get(0).getFileName());
-    assertEquals(correctDBE.getGeneID(), entries.get(0).getGeneID());
-    assertEquals(correctDBE.getSequence(), entries.get(0).getSequence());
-    assertEquals(correctDBE.getResearcher(), entries.get(0).getResearcher());
-    assertEquals(correctDBE.getComments(), entries.get(0).getComments());
-    assertEquals(correctDBE.getLeftVector(), entries.get(0).getLeftVector());
-    assertEquals(correctDBE.getRightVector(), entries.get(0).getRightVector());
-    assertEquals(correctDBE.getPromotor(), entries.get(0).getPromotor());
-    assertEquals(correctDBE.getMutation(), entries.get(0).getMutation());
-    assertEquals(correctDBE.getMutationType(), entries.get(0).getMutationType());
-
-    // Only one entry expected
-    assertTrue(entries.size() == 1);
-
-  }
 
 
   /**
