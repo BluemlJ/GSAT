@@ -56,7 +56,7 @@ public class FileSaver {
    * Sets the path where local files shall be created. The String argument is converted into a File.
    * If null is passed, the path is reset to null.
    * 
-   * @param path The path to create local files (as String)
+   * @param pathString The path to create local files (as String)
    * 
    * @author Ben Kohr
    */

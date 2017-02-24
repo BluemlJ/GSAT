@@ -35,7 +35,6 @@ import javafx.scene.control.ProgressBar;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.text.Text;
-import javafx.scene.text.TextFlow;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 
@@ -112,7 +111,8 @@ public class GUIUtils {
       if (sequences.second == null) {
         return new Pair<Boolean, LinkedList<Text>>(success,
             wrap(
-                "Reading Sequences unsuccessful, please make sure the given path is correct or the file is valid\n",
+                "Reading Sequences unsuccessful: "
+                + "please make sure the given path is correct or the file is valid\n",
                 resultingLines, true));
       } else {
         return new Pair<Boolean, LinkedList<Text>>(success,
@@ -215,7 +215,7 @@ public class GUIUtils {
    * be saved here.
    * 
    * @param destination Textfield, to place path.
-   * @param sourcepath path from the source field
+   * @param sourcePath path from the source field
    * @return reportpair of boolean (indicates success) and report String
    */
   public static Pair<Boolean, Text> setDestination(TextField destination, String sourcePath) {
@@ -417,6 +417,8 @@ public class GUIUtils {
         hoverColor = "rgb(120, 157, 235)";
         pressedColor = "rgb(100,137,215)";
         break;
+      default: 
+        return;
     }
 
     String normalStyle = "-fx-background-color: " + normalColor

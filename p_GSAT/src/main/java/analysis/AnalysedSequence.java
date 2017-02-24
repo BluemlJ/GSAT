@@ -86,7 +86,6 @@ public class AnalysedSequence extends Sequence {
    * @param researcher the researcher's name
    * @param fileName the name of the file this sequence was obtained from
    * @param qualities the int-array of quality measurements
-   * @param average the average quality
    * 
    * @author Ben Kohr
    */
@@ -277,7 +276,7 @@ public class AnalysedSequence extends Sequence {
   }
 
   /**
-   * @param primer the primer to set
+   * @param primerId the primerId to set
    */
   public void setPrimerId(int primerId) {
     this.primerId = primerId;

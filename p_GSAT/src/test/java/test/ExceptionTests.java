@@ -84,7 +84,7 @@ public class ExceptionTests {
 
       // Check if the error message is correctly produced
       assertEquals(
-          "Problem in observed AnalyzedSequence: The Sequence has corrupted nucleptides, which means there are not 'A','C','G','T' or 'U'.",
+        "Problem in observed AnalyzedSequence: The sequence has corrupted nucleptides, which means at least one of them is not 'A','C','G','T' or 'U'.",
           e.getMessage());
 
     }

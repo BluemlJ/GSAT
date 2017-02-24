@@ -245,13 +245,22 @@ public class DatabaseConnection {
       stmt.executeUpdate("CREATE DATABASE gsat");
       stmt.execute("USE gsat");
       stmt.executeUpdate(
-          "CREATE TABLE genes (id INTEGER unsigned NOT NULL AUTO_INCREMENT, name VARCHAR(100) NOT NULL, sequence MEDIUMTEXT NOT NULL, date DATE, researcher INTEGER unsigned, comment VARCHAR(1000),  PRIMARY KEY(id))");
+          "CREATE TABLE genes (id INTEGER unsigned NOT NULL AUTO_INCREMENT, "
+          + "name VARCHAR(100) NOT NULL, sequence MEDIUMTEXT NOT NULL, date DATE, "
+          + "researcher INTEGER unsigned, comment VARCHAR(1000),  PRIMARY KEY(id))");
       stmt.executeUpdate(
-          "CREATE TABLE sequences (id INTEGER unsigned NOT NULL AUTO_INCREMENT, name VARCHAR(100) NOT NULL, sequence MEDIUMTEXT NOT NULL, date DATE, researcher INTEGER unsigned, comment VARCHAR(1000), manualcheck CHAR(1), gene INTEGER unsigned, promoter MEDIUMTEXT, vectorleft MEDIUMTEXT, vectorright MEDIUMTEXT, quality MEDIUMTEXT, trimleft INTEGER unsigned, trimright INTEGER unsigned, trimpercent INTEGER unsigned, hisflag INTEGER unsigned)");
+          "CREATE TABLE sequences (id INTEGER unsigned NOT NULL AUTO_INCREMENT, "
+          + "name VARCHAR(100) NOT NULL, sequence MEDIUMTEXT NOT NULL, date DATE, "
+          + "researcher INTEGER unsigned, comment VARCHAR(1000), manualcheck CHAR(1), "
+          + "gene INTEGER unsigned, promoter MEDIUMTEXT, vectorleft MEDIUMTEXT, "
+          + "vectorright MEDIUMTEXT, quality MEDIUMTEXT, trimleft INTEGER unsigned, "
+          + "trimright INTEGER unsigned, trimpercent INTEGER unsigned, hisflag INTEGER unsigned)");
       stmt.executeUpdate(
-          "CREATE TABLE mutations (id INTEGER unsigned NOT NULL AUTO_INCREMENT, mutation VARCHAR(100) NOT NULL, type VARCHAR(100), PRIMARY KEY(id))");
+          "CREATE TABLE mutations (id INTEGER unsigned NOT NULL AUTO_INCREMENT, "
+          + "mutation VARCHAR(100) NOT NULL, type VARCHAR(100), PRIMARY KEY(id))");
       stmt.executeUpdate(
-          "CREATE TABLE researchers (id INTEGER unsigned NOT NULL AUTO_INCREMENT, name VARCHAR(100) NOT NULL, PRIMARY KEY(id))");
+          "CREATE TABLE researchers (id INTEGER unsigned NOT NULL AUTO_INCREMENT, "
+          + "name VARCHAR(100) NOT NULL, PRIMARY KEY(id))");
       stmt.close();
 
     } catch (DatabaseConnectionException e) {
@@ -276,7 +285,8 @@ public class DatabaseConnection {
 
       // check if table 'genes' exists
       ResultSet rs = stmt.executeQuery(
-          "SELECT * FROM information_schema.tables WHERE table_schema = 'gsat' AND table_name = 'genes' LIMIT 1");
+          "SELECT * FROM information_schema.tables "
+          + "WHERE table_schema = 'gsat' AND table_name = 'genes' LIMIT 1");
       if (!rs.next()) {
         stmt.close();
         return false;
@@ -284,7 +294,8 @@ public class DatabaseConnection {
 
       // check if table 'sequences' exists
       rs = stmt.executeQuery(
-          "SELECT * FROM information_schema.tables WHERE table_schema = 'gsat' AND table_name = 'sequences' LIMIT 1");
+          "SELECT * FROM information_schema.tables "
+         + "WHERE table_schema = 'gsat' AND table_name = 'sequences' LIMIT 1");
       if (!rs.next()) {
         stmt.close();
         return false;
@@ -292,7 +303,8 @@ public class DatabaseConnection {
 
       // check if table 'mutations' exists
       rs = stmt.executeQuery(
-          "SELECT * FROM information_schema.tables WHERE table_schema = 'gsat' AND table_name = 'mutations' LIMIT 1");
+          "SELECT * FROM information_schema.tables "
+        +  "WHERE table_schema = 'gsat' AND table_name = 'mutations' LIMIT 1");
       if (!rs.next()) {
         stmt.close();
         return false;

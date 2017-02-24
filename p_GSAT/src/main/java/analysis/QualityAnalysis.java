@@ -238,7 +238,7 @@ public class QualityAnalysis {
   /**
    * This method trims a sequence by removing the low quality end of the sequence.
    * 
-   * @param the sequence to trim
+   * @param toAnalyse the sequence to trim
    * @author jannis blueml
    */
   public static void trimLowQuality(AnalysedSequence toAnalyse) {

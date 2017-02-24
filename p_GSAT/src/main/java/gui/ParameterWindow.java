@@ -171,7 +171,7 @@ public class ParameterWindow extends Application implements javafx.fxml.Initiali
       }
     });
 
- 
+
     cancelButton.setOnAction(new EventHandler<ActionEvent>() {
       @Override
       public void handle(ActionEvent arg0) {

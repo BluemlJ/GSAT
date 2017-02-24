@@ -20,7 +20,6 @@ import javafx.concurrent.WorkerStateEvent;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
@@ -209,9 +208,9 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
       @Override
       public void handle(ActionEvent arg0) {
         infoArea.getChildren().add(new Text(
-            "---------------------------------------------------------------------------------------------------"
+            "--------------------------------------------------------------------------------------"
                 + "\nStarting analysis\n"
-                + "---------------------------------------------------------------------------------------------------\n"));
+                + "---------------------------------------------------------------------------\n"));
 
         infoArea.getChildren()
             .add(new Text("Source folder or file:  " + srcField.getText() + "\n"));
@@ -254,7 +253,7 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
           }
         }
         infoArea.getChildren().add(new Text(
-            "---------------------------------------------------------------------------------------------------\n"));
+            "---------------------------------------------------------------------------------\n"));
 
         javafx.concurrent.Task<Void> mainTask = new javafx.concurrent.Task<Void>() {
 

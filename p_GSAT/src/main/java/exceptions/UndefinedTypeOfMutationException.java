@@ -21,8 +21,7 @@ public class UndefinedTypeOfMutationException extends Exception {
   /**
    * Constructor specifies the String that was used to encode a mutation but is not valid.
    * 
-   * @param i The index of the wrong character
-   * @param problem The wrong character
+   * @param mutationString The wrong String
    * 
    * @author Ben Kohr
    */

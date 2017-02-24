@@ -28,7 +28,7 @@ public class DissimilarGeneException extends Exception {
   /**
    * Constructor sets the internal fields.
    * 
-   * @param toAnalyze Sequence with a low-fitting-quality gene found
+   * @param toAnalyse Sequence with a low-fitting-quality gene found
    * @param bestGene The gene for this sequence with a low similariy
    * @param similarity The similarity rate
    */

@@ -46,7 +46,9 @@ public class CorruptedSequenceException extends Exception {
    */
   public CorruptedSequenceException() {
     super(
-        "Problem in observed AnalyzedSequence: The Sequence has corrupted nucleptides, which means there are not 'A','C','G','T' or 'U'.");
+        "Problem in observed AnalyzedSequence: " 
+    + "The sequence has corrupted nucleptides, which means at least one " 
+    + "of them is not 'A','C','G','T' or 'U'.");
   }
 
   /**

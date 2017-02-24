@@ -5,15 +5,15 @@ package analysis;
  * 
  * @author Kevin
  *
- * @param <First>
- * @param <Second>
+ * @param <A>
+ * @param <B>
  */
-public class Pair<First, Second> {
+public class Pair<A, B> {
 
-  public First first;
-  public Second second;
+  public A first;
+  public B second;
 
-  public Pair(First first, Second second) {
+  public Pair(A first, B second) {
     this.first = first;
     this.second = second;
   }
