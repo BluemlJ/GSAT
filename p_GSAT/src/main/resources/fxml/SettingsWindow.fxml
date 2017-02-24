@@ -4,6 +4,7 @@
 <?import javafx.scene.control.ChoiceBox?>
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
@@ -37,9 +38,11 @@
                   <Font size="14.0" />
                </font>
             </Text>
-            <Button fx:id="addGeneButton" layoutX="324.0" layoutY="309.0" mnemonicParsing="false" text="add" />
-            <Button fx:id="deleteGeneButton" layoutX="375.0" layoutY="309.0" mnemonicParsing="false" text="delete" />
+            <Button fx:id="addGeneButton" layoutX="469.0" layoutY="271.0" mnemonicParsing="false" text="add" />
+            <Button fx:id="deleteGeneButton" layoutX="550.0" layoutY="271.0" mnemonicParsing="false" text="delete" />
             <Button fx:id="databaseButton" layoutX="148.0" layoutY="362.0" mnemonicParsing="false" text="Configure database" />
+            <TextField fx:id="srcPathField" layoutX="155.0" layoutY="312.0" prefHeight="25.0" prefWidth="281.0" />
+            <Text layoutX="38.0" layoutY="329.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Default source path" />
       </children>
     </AnchorPane>
   </children>

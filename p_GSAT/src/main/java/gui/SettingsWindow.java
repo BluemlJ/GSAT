@@ -37,6 +37,9 @@ public class SettingsWindow extends Application implements javafx.fxml.Initializ
   private TextField parameter1Field;
   @FXML
   private ChoiceBox<String> researcherDrobdown;
+  
+  @FXML
+  private TextField srcPathField;
 
   // buttons
   @FXML
