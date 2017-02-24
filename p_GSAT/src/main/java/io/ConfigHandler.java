@@ -31,13 +31,12 @@ public class ConfigHandler {
   private static int dbPort = 3306;
 
   // quality parameter
-  private static int[] defaultValues = {30, 25, 30, 9, 20, 3};
-  private static int avgApproximationStart = 30;
-  private static int avgApproximationEnd = 25;
-  private static int avgQualityEdge = 30;
-  private static int breakcounter = 9;
-  private static int numAverageNucleotides = 20;
-  private static int startcounter = 3;
+  private static int[] defaultValues = {30, 25, 9, 20, 3};
+  private static int avgApproximationStart = defaultValues[0];
+  private static int avgApproximationEnd = defaultValues[1];
+  private static int breakcounter = defaultValues[2];
+  private static int numAverageNucleotides = defaultValues[3];
+  private static int startcounter = defaultValues[4];
 
   /**
    * char used for separating values in the configuration file
@@ -98,10 +97,6 @@ public class ConfigHandler {
         case "avgApproximationEnd":
           ConfigHandler.setAvgApproximationEnd(Integer.parseInt(value));
           break;
-        case "avgQualityEdge":
-          ConfigHandler.setAvgQualityEdge(Integer.parseInt(value));
-          break;
-
         case "breakcounter":
           ConfigHandler.setBreakcounter(Integer.parseInt(value));
           break;
@@ -209,8 +204,6 @@ public class ConfigHandler {
     configWriter.write("avgApproximationStart" + SEPARATOR_CHAR + avgApproximationStart);
     configWriter.write(System.getProperty("line.separator"));
     configWriter.write("avgApproximationEnd" + SEPARATOR_CHAR + avgApproximationEnd);
-    configWriter.write(System.getProperty("line.separator"));
-    configWriter.write("avgQualityEdge" + SEPARATOR_CHAR + avgQualityEdge);
     configWriter.write(System.getProperty("line.separator"));
     configWriter.write("breakcounter" + SEPARATOR_CHAR + breakcounter);
     configWriter.write(System.getProperty("line.separator"));
@@ -333,14 +326,6 @@ public class ConfigHandler {
 
   public static void setAvgApproximationEnd(int avgApproximationEnd) {
     ConfigHandler.avgApproximationEnd = avgApproximationEnd;
-  }
-
-  public static int getAvgQualityEdge() {
-    return avgQualityEdge;
-  }
-
-  public static void setAvgQualityEdge(int avgQualityEdge) {
-    ConfigHandler.avgQualityEdge = avgQualityEdge;
   }
 
   public static int getBreakcounter() {

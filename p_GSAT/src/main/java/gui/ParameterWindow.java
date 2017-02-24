@@ -129,11 +129,11 @@ public class ParameterWindow extends Application implements javafx.fxml.Initiali
 
       @Override
       public void handle(ActionEvent arg0) {
-        avgApproximationEnd.setText(ConfigHandler.getDefaultValues()[0] + "");
-        avgApproximationStart.setText(ConfigHandler.getDefaultValues()[1] + "");
-        breakcounter.setText(ConfigHandler.getDefaultValues()[3] + "");
-        startcounter.setText(ConfigHandler.getDefaultValues()[5] + "");
-        numAverageNucleotides.setText(ConfigHandler.getDefaultValues()[4] + "");
+        avgApproximationStart.setText(ConfigHandler.getDefaultValues()[0] + "");
+        avgApproximationEnd.setText(ConfigHandler.getDefaultValues()[1] + "");
+        breakcounter.setText(ConfigHandler.getDefaultValues()[2] + "");
+        numAverageNucleotides.setText(ConfigHandler.getDefaultValues()[3] + "");
+        startcounter.setText(ConfigHandler.getDefaultValues()[4] + "");
 
       }
     });
@@ -171,19 +171,7 @@ public class ParameterWindow extends Application implements javafx.fxml.Initiali
       }
     });
 
-    // BEN WARUM MACHST DU MEINE ARBEIT !!!!!
-    /*
-     * defaultButton.setOnAction(new EventHandler<ActionEvent>() {
-     * 
-     * @Override public void handle(ActionEvent arg0) {
-     * 
-     * avgApproximationEnd.setText("25"); avgApproximationStart.setText("30");
-     * breakcounter.setText("9"); startcounter.setText("3"); numAverageNucleotides.setText("20");
-     * 
-     * try { ConfigHandler.writeConfig(); } catch (IOException e) { // TODO Auto-generated catch
-     * block e.printStackTrace(); } } });
-     * 
-     */
+ 
     cancelButton.setOnAction(new EventHandler<ActionEvent>() {
       @Override
       public void handle(ActionEvent arg0) {

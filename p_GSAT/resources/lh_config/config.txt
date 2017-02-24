@@ -6,7 +6,6 @@ dbPass;none
 dbPort;3306
 avgApproximationStart;30
 avgApproximationEnd;25
-avgQualityEdge;30
 breakcounter;9
 numAverageNucleotides;20
 startcounter;3
