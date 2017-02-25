@@ -12,7 +12,7 @@ import analysis.Pair;
 import analysis.QualityAnalysis;
 import analysis.StringAnalysis;
 import exceptions.ConfigNotFoundException;
-import exceptions.ConfigReadException;
+import exceptions.UnknownConfigFieldException;
 import exceptions.CorruptedSequenceException;
 import exceptions.DissimilarGeneException;
 import exceptions.FileReadingException;
@@ -78,7 +78,7 @@ public class GUIUtils {
   public static Pair<Boolean, Text> initializeResearchers(ChoiceBox<String> dropdown) {
     try {
       ConfigHandler.readConfig();
-    } catch (IOException | ConfigReadException | ConfigNotFoundException e) {
+    } catch (IOException | UnknownConfigFieldException | ConfigNotFoundException e) {
       return new Pair<Boolean, Text>(false,
           getRedText("Reading researchers from config.txt was unsuccessful\n"));
     }
@@ -417,8 +417,6 @@ public class GUIUtils {
         hoverColor = "rgb(120, 157, 235)";
         pressedColor = "rgb(100,137,215)";
         break;
-      default: 
-        return;
     }
 
     String normalStyle = "-fx-background-color: " + normalColor

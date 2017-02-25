@@ -138,10 +138,10 @@ public class AnalysisTests {
    * @author bluemlj
    */
   @Test
-  public void codonsToAminoAcidsWithNotNukleotideString() throws CorruptedSequenceException {
-    String testString = "HNOFClBrI";
+  public void codonsToAminoAcidsWithNotNucleotideString() throws CorruptedSequenceException {
+    String testString = "CAAHNOFClBrIATG";
 
-    assertTrue(StringAnalysis.codonsToAminoAcids(testString).contains("X"));
+    assertTrue(StringAnalysis.codonsToAminoAcids(testString).equals("QXXXM"));
 
   }
 

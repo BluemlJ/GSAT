@@ -38,20 +38,6 @@ public class CorruptedSequenceException extends Exception {
   public AnalysedSequence sequence;
 
   /**
-   * This Constructor specifies the position, the type of wrong character in an observed sequence
-   * object and the object itself.
-   * 
-   * 
-   * @author Ben Kohr, Jannis Blueml (17.01. Update)
-   */
-  public CorruptedSequenceException() {
-    super(
-        "Problem in observed AnalyzedSequence: " 
-    + "The sequence has corrupted nucleptides, which means at least one " 
-    + "of them is not 'A','C','G','T' or 'U'.");
-  }
-
-  /**
    * Constructor specifies the position, the type of wrong character in an observed sequence and the
    * nucleotide String.
    * 

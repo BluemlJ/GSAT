@@ -12,7 +12,7 @@ import analysis.Pair;
 import analysis.QualityAnalysis;
 import analysis.StringAnalysis;
 import exceptions.ConfigNotFoundException;
-import exceptions.ConfigReadException;
+import exceptions.UnknownConfigFieldException;
 import exceptions.CorruptedSequenceException;
 import exceptions.DuplicateGeneException;
 import exceptions.FileReadingException;
@@ -305,7 +305,7 @@ public class ConsoleVersion {
     try {
       ConfigHandler.initConfig();
       ConfigHandler.readConfig();
-    } catch (ConfigReadException e) {
+    } catch (UnknownConfigFieldException e) {
       report = "An error occurred while reading the configuration file.";
     } catch (ConfigNotFoundException e) {
       report = "No configuration file was found at the given path.";

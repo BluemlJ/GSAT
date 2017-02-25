@@ -5,7 +5,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 import exceptions.ConfigNotFoundException;
-import exceptions.ConfigReadException;
+import exceptions.UnknownConfigFieldException;
 import io.ConfigHandler;
 import javafx.application.Application;
 import javafx.beans.value.ChangeListener;
@@ -50,12 +50,13 @@ public class ParameterWindow extends Application implements javafx.fxml.Initiali
   @Override
   public void initialize(URL arg0, ResourceBundle arg1) {
 
+    GUIUtils.setColorOnNode(defaultButton, ButtonColor.BLUE);
     GUIUtils.setColorOnNode(saveButton, ButtonColor.GREEN);
     GUIUtils.setColorOnNode(cancelButton, ButtonColor.RED);
 
     try {
       ConfigHandler.readConfig();
-    } catch (ConfigReadException | ConfigNotFoundException | IOException e1) {
+    } catch (UnknownConfigFieldException | ConfigNotFoundException | IOException e1) {
       // TODO Auto-generated catch block
       e1.printStackTrace();
     }
@@ -141,8 +142,9 @@ public class ParameterWindow extends Application implements javafx.fxml.Initiali
 
       @Override
       public void handle(ActionEvent arg0) {
-        ConfigHandler.setAvgApproximationStart(Integer.parseInt(avgApproximationStart.getText()));
-
+        if (!avgApproximationEnd.getText().equals("")) {
+          ConfigHandler.setAvgApproximationStart(Integer.parseInt(avgApproximationStart.getText()));
+        }
         if (!avgApproximationEnd.getText().equals("")) {
           ConfigHandler.setAvgApproximationEnd(Integer.parseInt(avgApproximationEnd.getText()));
         }

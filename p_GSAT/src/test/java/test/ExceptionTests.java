@@ -66,30 +66,6 @@ public class ExceptionTests {
 
   }
 
-  /**
-   * This test checks if the exception indicating a wrong character in a sequence works correctly
-   * (given an AnalyzedSequenceObject).
-   * 
-   * @see exceptions.CorruptedSequenceException
-   * 
-   * @author Ben Kohr
-   */
-  @Test
-  public void testCorruptedSequenceExceptionWithSequence() {
-
-    try {
-      throw new CorruptedSequenceException();
-
-    } catch (CorruptedSequenceException e) {
-
-      // Check if the error message is correctly produced
-      assertEquals(
-        "Problem in observed AnalyzedSequence: The sequence has corrupted nucleptides, which means at least one of them is not 'A','C','G','T' or 'U'.",
-          e.getMessage());
-
-    }
-
-  }
 
   /**
    * This test checks if the exception that is thrown if the database connection could not be set up

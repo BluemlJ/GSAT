@@ -116,6 +116,8 @@ public class ShowGeneWindow extends Application implements javafx.fxml.Initializ
     primaryStage.sizeToScene();
     primaryStage.show();
 
+    GUIUtils.setColorOnNode(okButton, ButtonColor.BLUE);
+    
     /*
      * primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
      * 

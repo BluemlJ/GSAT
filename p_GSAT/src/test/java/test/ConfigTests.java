@@ -10,7 +10,7 @@ import org.junit.Test;
 
 import analysis.AnalysedSequence;
 import exceptions.ConfigNotFoundException;
-import exceptions.ConfigReadException;
+import exceptions.UnknownConfigFieldException;
 import io.ConfigHandler;
 
 /**
@@ -63,12 +63,12 @@ public class ConfigTests {
    * sequence (Userstory 017 - Expected behavior)
    * 
    * @throws IOException
-   * @throws ConfigReadException
+   * @throws UnknownConfigFieldException
    * @throws ConfigNotFoundException
    */
   @Test
   public void testAnalysedSeqRead()
-      throws IOException, ConfigReadException, ConfigNotFoundException {
+      throws IOException, UnknownConfigFieldException, ConfigNotFoundException {
     ConfigHandler.setResearcher(null);
     File path = new File("resources/lh_config/config.txt");
     ConfigHandler.setPath(path.getAbsolutePath());
@@ -82,11 +82,11 @@ public class ConfigTests {
    * Test reading a researcher name from a sample config file (Userstory 017 - Expected behavior)
    * 
    * @throws IOException
-   * @throws ConfigReadException
+   * @throws UnknownConfigFieldException
    * @throws ConfigNotFoundException
    */
   @Test
-  public void testConfigRead() throws IOException, ConfigReadException, ConfigNotFoundException {
+  public void testConfigRead() throws IOException, UnknownConfigFieldException, ConfigNotFoundException {
     // Config.setPath(getClass().getResource("/lh_config").getFile());
     ConfigHandler.setResearcher(null);
     File path = new File("resources/lh_config/config.txt");
@@ -108,8 +108,8 @@ public class ConfigTests {
     ConfigHandler.setPath(path.getAbsolutePath());
     try {
       ConfigHandler.readConfig();
-    } catch (ConfigReadException e) {
-      assertEquals(e.getMessage(), "Error while reading resr from config");
+    } catch (UnknownConfigFieldException e) {
+      assertEquals(e.getMessage(), "Error while reading field 'resr' from the configuration file.");
     }
   }
 
@@ -117,10 +117,10 @@ public class ConfigTests {
    * This tests tries to read from a file that doesn't exist (Userstory 017 - Unusual behavior)
    * 
    * @throws IOException
-   * @throws ConfigReadException
+   * @throws UnknownConfigFieldException
    */
   @Test
-  public void wrongConfigPath() throws IOException, ConfigReadException {
+  public void wrongConfigPath() throws IOException, UnknownConfigFieldException {
 
     File path = new File("resources/");
     try {
@@ -128,7 +128,7 @@ public class ConfigTests {
       ConfigHandler.readConfig();
     } catch (ConfigNotFoundException e) {
       assertEquals(e.getMessage(),
-          "Config at path: " + path.getAbsolutePath() + " could not be found");
+          "Configuration file could not be found at path " + path.getAbsolutePath() + ".");
     }
   }
 
@@ -136,12 +136,12 @@ public class ConfigTests {
    * Test reading multiple researchers from a sample config file (Userstory xxx - Expected behavior)
    * 
    * @throws IOException
-   * @throws ConfigReadException
+   * @throws UnknownConfigFieldException
    * @throws ConfigNotFoundException
    */
   @Test
   public void testMultipleUsersConfigRead()
-      throws IOException, ConfigReadException, ConfigNotFoundException {
+      throws IOException, UnknownConfigFieldException, ConfigNotFoundException {
     ConfigHandler.setResearcher(null);
     ConfigHandler.setResearcherList(null);
     File path = new File("resources/lh_config/config.txt");
@@ -155,7 +155,7 @@ public class ConfigTests {
   }
 
   @Test
-  public void testConfigWriting() throws ConfigReadException, ConfigNotFoundException, IOException {
+  public void testConfigWriting() throws UnknownConfigFieldException, ConfigNotFoundException, IOException {
     ConfigHandler.setResearcher(null);
     ConfigHandler.setResearcherList(null);
 
@@ -195,7 +195,7 @@ public class ConfigTests {
 
   @Test
   public void testQualityParameter()
-      throws ConfigReadException, ConfigNotFoundException, IOException {
+      throws UnknownConfigFieldException, ConfigNotFoundException, IOException {
     // read config
     File path = new File("resources/lh_config/config.txt");
     ConfigHandler.setPath(path.getAbsolutePath());

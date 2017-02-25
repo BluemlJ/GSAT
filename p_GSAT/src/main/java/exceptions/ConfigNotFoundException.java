@@ -1,20 +1,28 @@
 package exceptions;
 
 /**
- * This exception is thrown when the config file could not be found.
+ * This exception is thrown in case the configuration file could not be found.
  * 
  * @author lovisheindrich
- *
  */
 public class ConfigNotFoundException extends Exception {
+
   /**
-   * 
+   * The path where the configuration file could not be found.
    */
-  private static final long serialVersionUID = -4800961894140016693L;
   public String path;
 
+  /**
+   * The constructor sets the path internally and constructs an error message.
+   * 
+   * @param path A String object specifying the path where the configuration file vould not be found.
+   * 
+   * @author lovisheindrich
+   * @author Ben Kohr
+   */
   public ConfigNotFoundException(String path) {
-    super("Config at path: " + path + " could not be found");
+    super("Configuration file could not be found at path " + path + ".");
+    
     this.path = path;
   }
 }

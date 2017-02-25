@@ -69,6 +69,9 @@ public class SettingsWindow extends Application implements javafx.fxml.Initializ
     geneList.setStyle("-fx-font-style: italic;");
 
     GUIUtils.setColorOnNode(closeButton, ButtonColor.BLUE);
+    GUIUtils.setColorOnNode(databaseButton, ButtonColor.BLUE);
+    GUIUtils.setColorOnNode(parameterButton, ButtonColor.BLUE);
+    GUIUtils.setColorOnNode(deleteResearcherButton, ButtonColor.RED);
     GUIUtils.setColorOnNode(addGeneButton, ButtonColor.GREEN);
     GUIUtils.setColorOnNode(addResearcherButton, ButtonColor.GREEN);
     GUIUtils.setColorOnNode(deleteGeneButton, ButtonColor.RED);

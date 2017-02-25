@@ -10,7 +10,7 @@ import java.io.IOException;
 import java.util.Arrays;
 
 import exceptions.ConfigNotFoundException;
-import exceptions.ConfigReadException;
+import exceptions.UnknownConfigFieldException;
 
 /**
  * This class is responsible for reading the configuration file and storing its values
@@ -47,10 +47,10 @@ public class ConfigHandler {
    * read the content of the configuration file and store its values locally
    * 
    * @throws IOException
-   * @throws ConfigReadException
+   * @throws UnknownConfigFieldException
    * @throws ConfigNotFoundException
    */
-  public static void readConfig() throws ConfigReadException, ConfigNotFoundException, IOException {
+  public static void readConfig() throws UnknownConfigFieldException, ConfigNotFoundException, IOException {
     initConfig();
     BufferedReader configReader;
     try {
@@ -107,7 +107,7 @@ public class ConfigHandler {
           ConfigHandler.setStartcounter(Integer.parseInt(value));
           break;
         default:
-          throw new ConfigReadException(key);
+          throw new UnknownConfigFieldException(key);
 
       }
     }
@@ -122,11 +122,11 @@ public class ConfigHandler {
    * 
    * @param path the folder in which the config.ini is
    * @throws IOException
-   * @throws ConfigReadException
+   * @throws UnknownConfigFieldException
    * @throws ConfigNotFoundException
    */
   public static void readConfig(String path)
-      throws ConfigReadException, ConfigNotFoundException, IOException {
+      throws UnknownConfigFieldException, ConfigNotFoundException, IOException {
     setPath(path);
     readConfig();
   }
