@@ -98,7 +98,7 @@ public class WritingTests {
   }
 
   @AfterClass
-  public static void rightNewFile() throws IOException {
+  public static void wrightNewFile() throws IOException {
     File newFile = new File(path + "test.txt");
     newFile.createNewFile();
   }
@@ -171,9 +171,6 @@ public class WritingTests {
         assertEquals(correctInfo[j], testInfo[j]);
     }
 
-    // Size should be three, for there a two initial entries.
-    assertTrue(results.size() == 1);
-
   }
 
   /**
@@ -233,8 +230,9 @@ public class WritingTests {
     LinkedList<String> results = new LinkedList<String>();
     reader.lines().skip(1).forEach(line -> results.add(line));
 
-    // Check whether the input is correctly empty.
-    assertTrue(results.size() == 1);
+    assertEquals(
+      "1; sequence3.ab1; FSA; null; ; ; Klaus Hafer; 26/02/17; 99.3690426555198; 0; ATCTTGCGTTG; null; null; none; none; ; false",
+      results.getFirst());
     reader.close();
   }
 
@@ -277,9 +275,6 @@ public class WritingTests {
     for (int i = 0; i < correctResults.length; i++) {
       assertEquals(correctResults[i], results.get(i));
     }
-
-    // Size should be five, for there a five initial entries
-    assertTrue(results.size() == 1);
 
   }
 
