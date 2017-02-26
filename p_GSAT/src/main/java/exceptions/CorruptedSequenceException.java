@@ -7,22 +7,16 @@ import analysis.AnalysedSequence;
  * detected in a sequence.
  * 
  * @author Ben Kohr
- *
  */
 public class CorruptedSequenceException extends Exception {
 
   /**
-   * 
-   */
-  private static final long serialVersionUID = 7566055268314321589L;
-
-  /**
-   * The index of the observed wrong character
+   * The index of the observed wrong character (starting with 0).
    */
   public int index;
 
   /**
-   * The nucleotide list.
+   * The nucleotide list in which the problem was detected.
    */
   public String nucleotides;
 
@@ -39,7 +33,7 @@ public class CorruptedSequenceException extends Exception {
 
   /**
    * Constructor specifies the position, the type of wrong character in an observed sequence and the
-   * nucleotide String.
+   * nucleotide String. It also specifies an error message.
    * 
    * @param i The index of the wrong character
    * @param problem The wrong character

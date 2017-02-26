@@ -71,7 +71,8 @@ public class QualityAnalysis {
       throws CorruptedSequenceException {
     for (char c : toAnalyse.getSequence().toCharArray()) {
       if (c == 'X') {
-        throw new CorruptedSequenceException(toAnalyse.getSequence().indexOf('X'), c, toAnalyse.getSequence());
+        throw new CorruptedSequenceException(
+          toAnalyse.getSequence().indexOf('X'), c, toAnalyse.getSequence());
       }
     }
   }

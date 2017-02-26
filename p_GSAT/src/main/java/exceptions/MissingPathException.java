@@ -4,19 +4,21 @@ package exceptions;
  * This exception is thrown if a path is needed but not set.
  * 
  * @author Ben Kohr
- *
  */
 public class MissingPathException extends Exception {
 
-  /**
-   * 
-   */
-  private static final long serialVersionUID = -6175068560785854772L;
 
+  /**
+   * This field indicates whether the path is used for reading or writing.
+   */
   public PathUsage usage;
 
+  
   /**
-   * Constructor calling the super constructor. It also specifies the type of path missing.
+   * Constructor calling the super constructor. 
+   * It also specifies the error message.
+   * 
+   * @param usage The usage of the path which is not set (reading or writing).
    * 
    * @author Ben Kohr
    */

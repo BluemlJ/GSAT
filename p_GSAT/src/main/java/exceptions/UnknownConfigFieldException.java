@@ -4,6 +4,7 @@ package exceptions;
  * This exception is thrown if a field in the configuration file is unknown.
  * 
  * @author lovisheindrich
+ * @author Ben Kohr
  *
  */
 public class UnknownConfigFieldException extends Exception {

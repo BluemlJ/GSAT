@@ -132,7 +132,7 @@ public class GeneReadingTest {
       GeneHandler.addGene(writePath, "testGene", "aaatttaaaggg");
       GeneHandler.addGene(writePath, "testGene", "aaatttaaaggg");
     } catch (DuplicateGeneException e) {
-      assertEquals(e.getMessage(), "Gene testGene already exists");
+      assertEquals(e.getMessage(), "Gene testGene already exists.");
     }
   }
 

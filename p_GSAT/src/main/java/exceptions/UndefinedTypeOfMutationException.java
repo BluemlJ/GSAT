@@ -9,19 +9,15 @@ package exceptions;
 public class UndefinedTypeOfMutationException extends Exception {
 
   /**
-   * 
-   */
-  private static final long serialVersionUID = 2698862415229527087L;
-
-  /**
    * The problematic mutation String is stored.
    */
   public String mutationString;
 
+  
   /**
    * Constructor specifies the String that was used to encode a mutation but is not valid.
    * 
-   * @param mutationString The wrong String
+   * @param mutationString The invalid String
    * 
    * @author Ben Kohr
    */

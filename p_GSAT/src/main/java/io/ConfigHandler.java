@@ -50,7 +50,8 @@ public class ConfigHandler {
    * @throws UnknownConfigFieldException
    * @throws ConfigNotFoundException
    */
-  public static void readConfig() throws UnknownConfigFieldException, ConfigNotFoundException, IOException {
+  public static void readConfig() throws UnknownConfigFieldException, 
+  ConfigNotFoundException, IOException {
     initConfig();
     BufferedReader configReader;
     try {

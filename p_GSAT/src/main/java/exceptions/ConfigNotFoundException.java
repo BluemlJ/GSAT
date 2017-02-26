@@ -4,6 +4,7 @@ package exceptions;
  * This exception is thrown in case the configuration file could not be found.
  * 
  * @author lovisheindrich
+ * @author Ben Kohr
  */
 public class ConfigNotFoundException extends Exception {
 
@@ -13,9 +14,9 @@ public class ConfigNotFoundException extends Exception {
   public String path;
 
   /**
-   * The constructor sets the path internally and constructs an error message.
+   * The constructor sets the path internally and specifies an error message.
    * 
-   * @param path A String object specifying the path where the configuration file vould not be found.
+   * @param path A String specifying the path where the configuration file could not be found.
    * 
    * @author lovisheindrich
    * @author Ben Kohr

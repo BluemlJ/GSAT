@@ -189,18 +189,6 @@ public class ExceptionTests {
 
     }
 
-    // Same check for the database path.
-    try {
-      throw new MissingPathException(PathUsage.DATABASE);
-    } catch (MissingPathException e) {
-
-      // Check if the error message is correctly produced
-      assertEquals("Missing path detected (Usage: DATABASE).", e.getMessage());
-
-      // Check if the usage's name is also stored in the exception object
-      assertEquals(PathUsage.DATABASE, e.usage);
-
-    }
 
     // Same check for the reading path.
     try {

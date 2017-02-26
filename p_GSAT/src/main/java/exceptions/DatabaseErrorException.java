@@ -2,20 +2,16 @@ package exceptions;
 
 /**
  * An instance of this class is thrown if an error occurred during processing data within the
- * database.
+ * database (after a connection could be established).
  * 
  * @author Ben Kohr
- *
  */
 public class DatabaseErrorException extends Exception {
 
-  /**
-   * 
-   */
-  private static final long serialVersionUID = -8460699872735061686L;
 
   /**
-   * Constructor calling the super constructor.
+   * Constructor calling the super constructor and specifying an
+   * error message.
    * 
    * @author Ben Kohr
    */
