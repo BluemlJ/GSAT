@@ -221,8 +221,8 @@ public class SettingsWindow extends Application implements javafx.fxml.Initializ
 
         ButtonBar buttonBar = (ButtonBar) dialog.getDialogPane().lookup(".button-bar");
         ObservableList<Node> nodes = buttonBar.getButtons();
-        GUIUtils.setColorOnButton(nodes.get(0), ButtonColor.GREEN);
-        GUIUtils.setColorOnButton(nodes.get(1), ButtonColor.RED);
+        GUIUtils.setColorOnButton((Button)nodes.get(0), ButtonColor.GREEN);
+        GUIUtils.setColorOnButton((Button)nodes.get(1), ButtonColor.RED);
 
         // Traditional way to get the response value.
         Optional<String> result = dialog.showAndWait();
