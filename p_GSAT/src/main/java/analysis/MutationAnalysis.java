@@ -270,10 +270,11 @@ public class MutationAnalysis {
    * @author Kevin Otto
    */
   public static LinkedList<String> reportDifferences(String gene, String sequence) {
-    
-    // get Levenshtein Result
+
+    // get Levenshtein Matrix
     int[][] lev = StringAnalysis.calculateLevenshteinMatrix(gene, sequence);
 
+    // get matrix dimmensions
     int matrixHeight = lev.length;
     int matrixWidth = lev[0].length;
 
@@ -281,8 +282,11 @@ public class MutationAnalysis {
     int row = matrixHeight - 1;
     int column = matrixWidth - 1;
 
+
+    // add linked list to save diference strings
     LinkedList<String> result = new LinkedList<String>();
 
+    // iterate over levenstein matrix by folowing best path
     while (row > 0 && column > 0) {
       // if previous diagonal cell is best (smallest neighbor cell and
       // equal or exactly one smaller)
@@ -376,13 +380,16 @@ public class MutationAnalysis {
       throws CorruptedSequenceException {
     String first;
     String second;
-    // if (type) {
+    
+    //convert offset and end to Aminoacids
     int begin = seq.getOffset() * 3;
     int end = seq.getOffset() * 3 + seq.length();
 
+    //convert sequences to Aminoacids
     first = StringAnalysis.codonsToAminoAcids(seq.getReferencedGene().sequence.substring(begin,
         Math.min(end, seq.getReferencedGene().getSequence().length())));
     second = StringAnalysis.codonsToAminoAcids(seq.sequence);
+    //calculate difrences and return
     return reportDifferences(first.split("#")[0], second.split("#")[0]);
   }
 }
