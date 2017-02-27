@@ -111,6 +111,9 @@ public class AddGeneWindow extends Application implements javafx.fxml.Initializa
       public void handle(ActionEvent arg0) {
         if (!nameField.getText().isEmpty() && !geneArea.getText().isEmpty()) {
           try {
+            if (organismField.getText().equals("")) {
+              organismField.setText("none");
+            }
             if (GeneHandler.addGene(nameField.getText(), geneArea.getText(),
                 organismField.getText(), commentArea.getText()) == true) {
 
@@ -129,6 +132,7 @@ public class AddGeneWindow extends Application implements javafx.fxml.Initializa
               alert.showAndWait();
 
             }
+            
           } catch (DuplicateGeneException | IOException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();

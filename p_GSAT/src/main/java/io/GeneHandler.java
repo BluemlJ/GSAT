@@ -70,7 +70,7 @@ public class GeneHandler {
 
     readGenes();
 
-    if (getGene(geneName, organism) != null) {
+    if (checkGene(geneName, organism) != null) {
       return false;
     }
 
@@ -179,6 +179,7 @@ public class GeneHandler {
   public static Gene getGene(String geneName) {
     for (int i = 0; i < geneList.size(); i++) {
       if (geneList.get(i).getName().equals(geneName)) {
+        System.out.println("found");
         return geneList.get(i);
       }
     }
@@ -190,18 +191,22 @@ public class GeneHandler {
    * @param geneName
    * @return
    */
-  public static Gene getGene(String geneName, String organism) {
-    if (organism != null && organism != "none" && organism != "") {
+  public static Gene checkGene(String geneName, String organism) {
+    if (organism != null && organism != "") {
       for (int i = 0; i < geneList.size(); i++) {
         if (geneList.get(i).getName().equals(geneName)) {
-          if (geneList.get(i).getOrganism().equals(organism)) {
+          String tmp =
+              geneList.get(i).getOrganism() == null ? "none" : geneList.get(i).getOrganism();
+          if (tmp.equals(organism)) {
             return geneList.get(i);
           }
         }
       }
     } else {
-      getGene(geneName);
+      System.out.println("noorga");
+     return getGene(geneName);
     }
+    System.out.println("nofound");
     return null;
   }
 
@@ -275,15 +280,11 @@ public class GeneHandler {
       String gene = sepLine[1];
       String organism = sepLine[2];
       String comment = sepLine[3];
-      if (getGene(name, organism) == null) {
-        if (organism.equals("none") || organism.equals("")) {
-          organism = null;
-        }
-        if (comment.equals("none") || comment.equals("")) {
-          comment = null;
-        }
 
+      if (organism.equals("none")) {
+        organism = null;
       }
+
       geneList.add(new Gene(gene, id, name, ConfigHandler.getResearcher(), organism, comment));
       id++;
     }
@@ -325,10 +326,9 @@ public class GeneHandler {
           + "TAATCGTATTGATGCTCAGGGCGGTAGCGGCATTCAGACTGTGACCGACTTACACCAGTTATTGAAAATGCATGCGCCG"
           + "CAGGCGAAAGTGCTGGCAGCGAGTTTCAAAACCCCGCGTCAGGCGCTGGACTGCTTACTGGCAGGATGTGAATCAATTA"
           + "CTCTGCCACTGGATGTGGCACAACAGATGATTAGCTATCCGGCGGTTGATGCCGCTGTGGCGAAGTTTGAGCAGGACTG"
-          + "GCAGGGAGCGTTTGGCAGAACGTCGATTTAA"
-          + SEPARATOR + "none" + SEPARATOR + "none");
+          + "GCAGGGAGCGTTTGGCAGAACGTCGATTTAA" + SEPARATOR + "none" + SEPARATOR + "none");
       geneWriter.close();
-      
+
     }
   }
 
