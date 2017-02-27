@@ -41,7 +41,7 @@ public class ExceptionTests {
    * @author Ben Kohr
    */
   @Test
-  public void testCorruptedSequenceExceptionWithNucleotideString() {
+  public void testCorruptedSequenceException() {
 
     try {
       throw new CorruptedSequenceException(7, 'L', "ATUCGGCL");
@@ -57,9 +57,6 @@ public class ExceptionTests {
       assertEquals(7, e.index);
       assertEquals('L', e.problem);
 
-      // Only a String is given. Therefore, no Sequence should be found in
-      // the exception
-      assertNull(e.sequence);
       assertEquals("ATUCGGCL", e.nucleotides);
 
     }

@@ -230,8 +230,11 @@ public class WritingTests {
     LinkedList<String> results = new LinkedList<String>();
     reader.lines().skip(1).forEach(line -> results.add(line));
 
+    DateFormat df = new SimpleDateFormat("dd/MM/yy");
+    String addingDate = df.format(new Date());
+    
     assertEquals(
-      "1; sequence3.ab1; FSA; null; ; ; Klaus Hafer; 26/02/17; 99.3690426555198; 0; ATCTTGCGTTG; null; null; none; none; ; false",
+      "1; sequence3.ab1; FSA; null; ; ; Klaus Hafer; " + addingDate + "; 99.3690426555198; 0; ATCTTGCGTTG; null; null; none; none; ; false",
       results.getFirst());
     reader.close();
   }

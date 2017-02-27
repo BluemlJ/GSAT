@@ -25,11 +25,6 @@ public class CorruptedSequenceException extends Exception {
    */
   public char problem;
 
-  /**
-   * If available, the corrupt sequence is referenced. If only a nucleotide String is given, this
-   * will be a null reference.
-   */
-  public AnalysedSequence sequence;
 
   /**
    * Constructor specifies the position, the type of wrong character in an observed sequence and the

@@ -171,9 +171,15 @@ public class StringAnalysis {
    * @param length
    * @return
    */
-  public static String appentStringToLength(String input, int length) {
-    if (length - input.length() > 0) {
-      String expand = new String(new char[length - input.length()]).replace('\0', ' ');
+  public static String appendStringToLength(String input, int length) {
+    int difference = length - input.length();
+    if (difference > 0) {
+      StringBuilder builder = new StringBuilder();
+      while (difference > 0) {
+        builder.append(' '); 
+        difference--;
+      }
+      String expand = builder.toString();
       input = input + expand;
     }
     return input;
@@ -379,7 +385,7 @@ public class StringAnalysis {
 
         // get supString
         String canditate = toAlign.substring(begin, end);
-        canditate = appentStringToLength(canditate, template.length());
+        canditate = appendStringToLength(canditate, template.length());
 
         // calculate similarity
         Double rating = checkSimilarity(canditate, template);
