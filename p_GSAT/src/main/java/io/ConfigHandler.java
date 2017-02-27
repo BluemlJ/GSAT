@@ -177,6 +177,9 @@ public class ConfigHandler {
     configWriter.write(System.getProperty("line.separator"));
 
     // write srcPath
+    if (srcPath.isEmpty()) {
+      srcPath = " ";
+    }
     configWriter.write("srcPath" + SEPARATOR_CHAR + srcPath);
     configWriter.write(System.getProperty("line.separator"));
     
