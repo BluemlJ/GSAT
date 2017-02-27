@@ -195,15 +195,15 @@ public class ConfigTests {
     int startcounterOld = ConfigHandler.getStartcounter();
 
 
-    ConfigHandler.setAvgApproximationStart(50);
-    ConfigHandler.setAvgApproximationEnd(49);
-    ConfigHandler.setBreakcounter(30);
-    ConfigHandler.setDbPass("a");
-    ConfigHandler.setDbPort(3);
-    ConfigHandler.setDbUrl("test");
-    ConfigHandler.setDbUser("user");
-    ConfigHandler.setNumAverageNucleotides(3);
-    ConfigHandler.setStartcounter(2);
+    ConfigHandler.setAvgApproximationStart(51);
+    ConfigHandler.setAvgApproximationEnd(50);
+    ConfigHandler.setBreakcounter(31);
+    ConfigHandler.setDbPass("b");
+    ConfigHandler.setDbPort(4);
+    ConfigHandler.setDbUrl("testx");
+    ConfigHandler.setDbUser("userx");
+    ConfigHandler.setNumAverageNucleotides(2);
+    ConfigHandler.setStartcounter(3);
 
     ConfigHandler.writeConfig();
 
@@ -218,15 +218,15 @@ public class ConfigTests {
     ConfigHandler.setStartcounter(0);
 
     ConfigHandler.readConfig();
-    assertEquals(50, ConfigHandler.getAvgApproximationStart());
-    assertEquals(49, ConfigHandler.getAvgApproximationEnd());
-    assertEquals(30, ConfigHandler.getBreakcounter());
-    assertEquals("a", ConfigHandler.getDbPass());
-    assertEquals(3, ConfigHandler.getDbPort());
-    assertEquals("test", ConfigHandler.getDbUrl());
-    assertEquals("user", ConfigHandler.getDbUser());
-    assertEquals(3, ConfigHandler.getNumAverageNucleotides());
-    assertEquals(2, ConfigHandler.getStartcounter());
+    assertEquals(51, ConfigHandler.getAvgApproximationStart());
+    assertEquals(50, ConfigHandler.getAvgApproximationEnd());
+    assertEquals(31, ConfigHandler.getBreakcounter());
+    assertEquals("b", ConfigHandler.getDbPass());
+    assertEquals(4, ConfigHandler.getDbPort());
+    assertEquals("testx", ConfigHandler.getDbUrl());
+    assertEquals("userx", ConfigHandler.getDbUser());
+    assertEquals(2, ConfigHandler.getNumAverageNucleotides());
+    assertEquals(3, ConfigHandler.getStartcounter());
 
     ConfigHandler.setAvgApproximationStart(avgApproximationStartOld);
     ConfigHandler.setAvgApproximationEnd(avgApproximationEndOld);
