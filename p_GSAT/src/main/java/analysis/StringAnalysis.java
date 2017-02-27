@@ -167,16 +167,24 @@ public class StringAnalysis {
   }
 
   /**
+   * Appents a string to the given lenght by adding space characters at the end
+   * if the String is already long e or longe nothing is done.
    * 
+   * the String to append:
    * @param input
+   * 
+   * the length it should be appended to
    * @param length
    * @return
    */
   public static String appendStringToLength(String input, int length) {
+    //calculate number of characters needed to reach required length
     int difference = length - input.length();
+    
+    //if string has to be appendet:
     if (difference > 0) {
       StringBuilder builder = new StringBuilder();
-      while (difference > 0) {
+      while (difference > 0) {//append String with given number of spaces
         builder.append(' ');
         difference--;
       }

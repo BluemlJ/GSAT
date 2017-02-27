@@ -1,7 +1,7 @@
 package analysis;
 
 /**
- * Helper class to store Pairs
+ * Helper class to store Pairs of Varyables
  * 
  * @author Kevin
  *
