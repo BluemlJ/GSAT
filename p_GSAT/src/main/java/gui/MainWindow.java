@@ -3,6 +3,8 @@ package gui;
 
 
 import analysis.Pair;
+import exceptions.ConfigNotFoundException;
+import exceptions.UnknownConfigFieldException;
 import io.ConfigHandler;
 import io.FileSaver;
 
@@ -113,6 +115,13 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
     GUIUtils.setColorOnButton(manualButton, ButtonColor.BLUE);
     GUIUtils.setColorOnButton(aboutButton, ButtonColor.BLUE);
 
+    try {
+      ConfigHandler.readConfig();
+    } catch (UnknownConfigFieldException | ConfigNotFoundException | IOException e1) {
+      // TODO Auto-generated catch block
+      e1.printStackTrace();
+    }
+
     infoArea.getChildren().addListener((ListChangeListener<Node>) ((change) -> {
       infoArea.layout();
       textScroll.layout();
@@ -133,6 +142,7 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
       }
     });
 
+    srcField.setText(ConfigHandler.getSrcPath());
     srcField.textProperty().addListener(new ChangeListener<String>() {
       @Override
       public void changed(ObservableValue<? extends String> observable, String oldValue,

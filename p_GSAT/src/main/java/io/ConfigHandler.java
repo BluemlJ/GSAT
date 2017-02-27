@@ -24,6 +24,7 @@ public class ConfigHandler {
       System.getProperty("user.home") + File.separator + "gsat" + File.separator + "config.txt";
   private static String researcher = "-";
   private static String[] researcherList = {"-"};
+  private static String srcPath = "";
 
   // DB connection values
   private static String dbUrl = "130.83.37.145";
@@ -77,7 +78,11 @@ public class ConfigHandler {
             ConfigHandler.researcherList[i] = ConfigHandler.researcherList[i].trim();
           }
           break;
-
+        case "srcPath":
+            ConfigHandler.srcPath = elements[1].trim();
+            break;
+            
+            
         // DB Login
         case "dbUser":
           ConfigHandler.setDbUser(value);
@@ -171,6 +176,10 @@ public class ConfigHandler {
     configWriter.write("researcher" + SEPARATOR_CHAR + researcher);
     configWriter.write(System.getProperty("line.separator"));
 
+    // write srcPath
+    configWriter.write("srcPath" + SEPARATOR_CHAR + srcPath);
+    configWriter.write(System.getProperty("line.separator"));
+    
     // write researchers
     configWriter.write("researchers");
     for (String res : researcherList) {
@@ -206,7 +215,15 @@ public class ConfigHandler {
     configWriter.close();
   }
 
-  public static String[] getSortedResearcherList() {
+  public static String getSrcPath() {
+    return srcPath;
+}
+
+public static void setSrcPath(String srcPath) {
+    ConfigHandler.srcPath = srcPath;
+}
+
+public static String[] getSortedResearcherList() {
     Arrays.sort(researcherList);
     return researcherList;
   }
