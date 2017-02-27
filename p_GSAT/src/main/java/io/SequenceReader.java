@@ -8,8 +8,12 @@ import java.io.File;
 import java.io.IOException;
 import java.util.LinkedList;
 
+import org.jcvi.jillion.core.qual.PhredQuality;
+import org.jcvi.jillion.trace.chromat.ChannelGroup;
 import org.jcvi.jillion.trace.chromat.Chromatogram;
 import org.jcvi.jillion.trace.chromat.ChromatogramFactory;
+import org.jcvi.jillion.trace.chromat.abi.AbiChromatogram;
+import org.jcvi.jillion.trace.chromat.abi.AbiChromatogramBuilder;
 
 
 
@@ -71,12 +75,13 @@ public class SequenceReader {
       throws FileReadingException, IOException {
 
     File referencedFile = file;
+           
 
-    Chromatogram abifile = ChromatogramFactory.create(referencedFile);
+    AbiChromatogram abifile = (AbiChromatogram) ChromatogramFactory.create(referencedFile);
     String sequence = abifile.getNucleotideSequence().toString();
     byte[] qualities = abifile.getQualitySequence().toArray();
 
-    // TODO Add Primer
+     // TODO Add Primer
 
     // convert qualities from byte[] to int[]
     int[] qualitiesInt = new int[qualities.length];
@@ -86,6 +91,7 @@ public class SequenceReader {
 
     AnalysedSequence parsedSequence = new AnalysedSequence(sequence, ConfigHandler.getResearcher(),
         referencedFile.getName(), qualitiesInt);
+    parsedSequence.setAbiFile(abifile);
     return parsedSequence;
   }
 
@@ -149,6 +155,8 @@ public class SequenceReader {
     }
     return new Pair<LinkedList<File>, LinkedList<File>>(ab1Files, oddFiles);
   }
+  
+ 
 
   /**
    * Discards the current path and files.

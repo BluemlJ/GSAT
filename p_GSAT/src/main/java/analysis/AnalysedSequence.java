@@ -1,6 +1,10 @@
 package analysis;
 
+import java.nio.channels.Channel;
 import java.util.LinkedList;
+
+import org.jcvi.jillion.trace.chromat.ChannelGroup;
+import org.jcvi.jillion.trace.chromat.abi.AbiChromatogram;
 
 /**
  * Models a sequence under analysis (i.e. obtained from an AB1 file), which may have mutations. The
@@ -18,6 +22,10 @@ public class AnalysedSequence extends Sequence {
    */
   private String comments = "";
 
+  /**
+   * Informations getting from the abiFile in form of an AbiChromatogram
+   */
+  private AbiChromatogram abiFile;
   /**
    * The name of the file this sequence was obtained from. This is used to create the name of the
    * output file.
@@ -202,12 +210,20 @@ public class AnalysedSequence extends Sequence {
   }
 
 
-  public String getFileName() {
+  public AbiChromatogram getAbiFile() {
+    return abiFile;
+}
+
+public void setAbiFile(AbiChromatogram abiFile) {
+    this.abiFile = abiFile;
+}
+
+public String getFileName() {
     return fileName;
   }
 
 
-  public void setFileName(String fileName) {
+public void setFileName(String fileName) {
     this.fileName = fileName;
   }
 
@@ -311,4 +327,7 @@ public class AnalysedSequence extends Sequence {
     this.hisTagPosition = hisTagPosition;
   }
 
+  public ChannelGroup getChannels(){
+     return abiFile.getChannelGroup();
+  }
 }
