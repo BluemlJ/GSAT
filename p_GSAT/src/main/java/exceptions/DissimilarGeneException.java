@@ -5,8 +5,8 @@ import analysis.Gene;
 
 
 /**
- * An instance of this class indicates that the similarity of the gene that fits best to a 
- * given sequence is very low.
+ * An instance of this class indicates that the similarity of the gene that fits best to a given
+ * sequence is very low.
  * 
  * @author Ben Kohr
  */
@@ -28,7 +28,7 @@ public class DissimilarGeneException extends Exception {
    */
   public AnalysedSequence toAnalyse;
 
-  
+
   /**
    * Constructor sets the internal fields and specifies the error message.
    * 

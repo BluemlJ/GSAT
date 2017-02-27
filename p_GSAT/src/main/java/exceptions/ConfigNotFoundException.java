@@ -23,7 +23,7 @@ public class ConfigNotFoundException extends Exception {
    */
   public ConfigNotFoundException(String path) {
     super("Configuration file could not be found at path " + path + ".");
-    
+
     this.path = path;
   }
 }

@@ -1,8 +1,8 @@
 package exceptions;
 
 /**
- * This exception is thrown when the user tries to add a gene whose name
- * already exists in the gene file.
+ * This exception is thrown when the user tries to add a gene whose name already exists in the gene
+ * file.
  * 
  * @author lovisheindrich
  */

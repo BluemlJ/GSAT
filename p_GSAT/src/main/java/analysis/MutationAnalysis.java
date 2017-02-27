@@ -1,9 +1,9 @@
 package analysis;
 
-import java.util.LinkedList;
-
 import exceptions.CorruptedSequenceException;
 import exceptions.UndefinedTypeOfMutationException;
+
+import java.util.LinkedList;
 
 /**
  * This class contains the logic of analyzing mutations in sequences. Thus, it is one of the main
@@ -244,18 +244,22 @@ public class MutationAnalysis {
   /**
    * Compares to sequences and returns the differences as a list (represented by the positions). The
    * order of the input sequences is irrelevant.
-   * 
+   * <p>
    * the returned list contains String of the following syntax:
-   * 
+   * </p>
+   * <p>
    * x|y|n|m
-   * 
+   * </p>
+   * <p>
    * where: x is element of {s,i,d,e,n} where s stands for substitution, i for insertion, d for
    * deletion, n for no Operation, e for ERROR
-   * 
+   * </p>
+   * <p>
    * y is the index of the char in sOne
-   *
+   * </p>
+   * <p>
    * n is the old amino acid placed in the gene
-   *
+   * </p>
    * m is the new amino acid placed in the mutated sequence * insertions take place between the
    * given index and the next index
    * 
@@ -360,18 +364,22 @@ public class MutationAnalysis {
   /**
    * Compares to sequences and returns the differences as a list (represented by the positions). The
    * order of the input sequences is irrelevant.
-   * 
+   * <p>
    * the returned list contains String of the following syntax:
-   * 
+   * </p>
+   * <p>
    * x|y|n|m
-   * 
+   * </p>
+   * <p>
    * where: x is element of {s,i,d,e,n} where s stands for substitution i for insertion and d for
    * deletion
-   * 
+   * </p>
+   * <p>
    * y is the index of the char in sOne
-   *
+   * </p>
+   * <p>
    * n is the old amino acid placed in the gene
-   *
+   * </p>
    * m is the new amino acid placed in the mutated sequence insertions take place between the given
    * index and the next index
    * 

@@ -9,8 +9,8 @@ public class DatabaseConnectionException extends Exception {
 
 
   /**
-   * Constructor calling the super constructor. The message indicating a
-   * database connection failure is specified here.
+   * Constructor calling the super constructor. The message indicating a database connection failure
+   * is specified here.
    * 
    * @author Ben Kohr
    */

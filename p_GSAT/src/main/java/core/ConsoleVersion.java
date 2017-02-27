@@ -1,10 +1,5 @@
 package core;
 
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.util.LinkedList;
-
 import analysis.AnalysedSequence;
 import analysis.Gene;
 import analysis.MutationAnalysis;
@@ -12,17 +7,23 @@ import analysis.Pair;
 import analysis.QualityAnalysis;
 import analysis.StringAnalysis;
 import exceptions.ConfigNotFoundException;
-import exceptions.UnknownConfigFieldException;
 import exceptions.CorruptedSequenceException;
 import exceptions.DuplicateGeneException;
 import exceptions.FileReadingException;
 import exceptions.MissingPathException;
 import exceptions.UndefinedTypeOfMutationException;
+import exceptions.UnknownConfigFieldException;
 import io.ConfigHandler;
 import io.ConsoleIO;
 import io.FileSaver;
 import io.GeneHandler;
 import io.SequenceReader;
+
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.LinkedList;
+
 
 public class ConsoleVersion {
 

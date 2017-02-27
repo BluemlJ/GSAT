@@ -1,12 +1,14 @@
 package gui;
 
-import java.io.IOException;
-import java.net.URL;
-import java.util.ResourceBundle;
 
 import exceptions.DuplicateGeneException;
 import io.ConfigHandler;
 import io.GeneHandler;
+
+import java.io.IOException;
+import java.net.URL;
+import java.util.ResourceBundle;
+
 import javafx.application.Application;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -54,8 +56,8 @@ public class AddGeneWindow extends Application implements javafx.fxml.Initializa
     geneArea.setWrapText(true);
     commentArea.setWrapText(true);
 
-    GUIUtils.setColorOnNode(confirmButton, ButtonColor.GREEN);
-    GUIUtils.setColorOnNode(cancelButton, ButtonColor.RED);
+    GUIUtils.setColorOnButton(confirmButton, ButtonColor.GREEN);
+    GUIUtils.setColorOnButton(cancelButton, ButtonColor.RED);
 
     nameField.textProperty().addListener(new ChangeListener<String>() {
       @Override

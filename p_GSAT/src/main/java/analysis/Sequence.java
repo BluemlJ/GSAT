@@ -1,10 +1,10 @@
 package analysis;
 
+import exceptions.CorruptedSequenceException;
+
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-
-import exceptions.CorruptedSequenceException;
 
 /**
  * This class models an abstract DNA sequence which could be a reference gene or a given mutated
@@ -33,10 +33,8 @@ public abstract class Sequence {
 
   /**
    * Creates a new Sequence object. As an abstract class, only inheriting classes can be created via
-   * this constructor.
-   * 
-   * It sets the nucleotide sequence and the researcher's name as passed via the parameters.
-   * Furthermore, it determines the current date and stores internally.
+   * this constructor. It sets the nucleotide sequence and the researcher's name as passed via the
+   * parameters. Furthermore, it determines the current date and stores internally.
    * 
    * @param sequence the sequence of nucleotides
    * @param researcher the name of the analyzing researcher

@@ -1,12 +1,13 @@
 package analysis;
 
+import exceptions.CorruptedSequenceException;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Hashtable;
 import java.util.Map;
 import java.util.TreeMap;
 
-import exceptions.CorruptedSequenceException;
 
 
 /**
@@ -176,7 +177,7 @@ public class StringAnalysis {
     if (difference > 0) {
       StringBuilder builder = new StringBuilder();
       while (difference > 0) {
-        builder.append(' '); 
+        builder.append(' ');
         difference--;
       }
       String expand = builder.toString();
@@ -188,8 +189,6 @@ public class StringAnalysis {
   /**
    * Calculates the Levensthein Matrix of two Strings. The Matrix gives information about the
    * differences of the two Strings and the best way to transform them into another.
-   * 
-   * for more information: https://en.wikipedia.org/wiki/Levenshtein_distance
    * 
    * @param horizontal The first String
    * @param vertical The second String
@@ -472,6 +471,11 @@ public class StringAnalysis {
 
   }
 
+  /**
+   * 
+   * @param toAnalyze
+   * @return
+   */
   public static int findStopcodonPosition(AnalysedSequence toAnalyze) {
     for (int i = 0; i < toAnalyze.getSequence().length() - 3; i = i + 3) {
       String aminoAcid = toAnalyze.getSequence().substring(i, i + 3);
@@ -686,7 +690,6 @@ public class StringAnalysis {
 
   /**
    * calculates the offset and writes it into the sequence WARNING: does change Offset value!
-   * 
    * returns false if begin of sequence was not found Returning false may be an indicator for bad
    * sequence, but may also be perfectly fine
    * 

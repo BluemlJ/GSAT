@@ -1,5 +1,11 @@
 package gui;
 
+
+
+import analysis.Pair;
+import io.ConfigHandler;
+import io.FileSaver;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
@@ -8,9 +14,6 @@ import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.Scanner;
 
-import analysis.Pair;
-import io.ConfigHandler;
-import io.FileSaver;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
@@ -105,10 +108,10 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
     bar.setProgress(0);
     bar.setStyle("-fx-accent: rgb(130, 177, 255);");
     FileSaver.setSeparateFiles(false);
-    GUIUtils.setColorOnNode(startButton, ButtonColor.BLUE);
-    GUIUtils.setColorOnNode(settingsButton, ButtonColor.BLUE);
-    GUIUtils.setColorOnNode(manualButton, ButtonColor.BLUE);
-    GUIUtils.setColorOnNode(aboutButton, ButtonColor.BLUE);
+    GUIUtils.setColorOnButton(startButton, ButtonColor.BLUE);
+    GUIUtils.setColorOnButton(settingsButton, ButtonColor.BLUE);
+    GUIUtils.setColorOnButton(manualButton, ButtonColor.BLUE);
+    GUIUtils.setColorOnButton(aboutButton, ButtonColor.BLUE);
 
     infoArea.getChildren().addListener((ListChangeListener<Node>) ((change) -> {
       infoArea.layout();

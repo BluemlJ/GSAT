@@ -114,6 +114,11 @@ public class AnalysedSequence extends Sequence {
    * @author bluemlj
    */
   public double getAvgQuality() {
+
+    if (qualities.length == 0) {
+      return 0;
+    }
+
     int sum = 0;
     for (int i : qualities) {
       sum += i;
@@ -184,170 +189,124 @@ public class AnalysedSequence extends Sequence {
     this.sequence = trimmed;
   }
 
-  /**
-   * @return the comments
-   */
+
+  // GETTERs and SETTERs:
+
   public String getComments() {
     return comments;
   }
 
-  /**
-   * @param comments the comments to set
-   */
+
   public void setComments(String comments) {
     this.comments = comments;
   }
 
-  /**
-   * @return the fileName
-   */
+
   public String getFileName() {
     return fileName;
   }
 
-  /**
-   * @param fileName the fileName to set
-   */
+
   public void setFileName(String fileName) {
     this.fileName = fileName;
   }
 
-  /**
-   * @return the leftVector
-   */
+
   public String getLeftVector() {
     return leftVector;
   }
 
-  /**
-   * @param leftVector the leftVector to set
-   */
+
   public void setLeftVector(String leftVector) {
     this.leftVector = leftVector;
   }
 
-  /**
-   * @return the manuallyChecked
-   */
+
   public boolean isManuallyChecked() {
     return manuallyChecked;
   }
 
-  /**
-   * @param manuallyChecked the manuallyChecked to set
-   */
+
   public void setManuallyChecked(boolean manuallyChecked) {
     this.manuallyChecked = manuallyChecked;
   }
 
-  /**
-   * @return the mutations
-   */
+
   public LinkedList<String> getMutations() {
     return mutations;
   }
 
-  /**
-   * @param mutations the mutations to set
-   */
+
   public void setMutations(LinkedList<String> mutations) {
     this.mutations = mutations;
   }
 
-  /**
-   * @return the offset
-   */
+
   public int getOffset() {
     return offset;
   }
 
-  /**
-   * @param offset the offset to set
-   */
+
   public void setOffset(int offset) {
     this.offset = offset;
   }
 
-  /**
-   * @return the primer
-   */
+
   public int getPrimerId() {
     return primerId;
   }
 
-  /**
-   * @param primerId the primerId to set
-   */
+
   public void setPrimerId(int primerId) {
     this.primerId = primerId;
   }
 
-  /**
-   * @return the qualities
-   */
+
   public int[] getQuality() {
     return qualities;
   }
 
-  /**
-   * @param qualities the qualities to set
-   */
+
   public void setQuality(int[] qualities) {
     this.qualities = qualities;
   }
 
-  /**
-   * @return the referencedGene
-   */
+
   public Gene getReferencedGene() {
     return referencedGene;
   }
 
-  /**
-   * @param referencedGene the referencedGene to set
-   */
+
   public void setReferencedGene(Gene referencedGene) {
     this.referencedGene = referencedGene;
   }
 
-  /**
-   * @return the rightVector
-   */
+
   public String getRightVector() {
     return rightVector;
   }
 
-  /**
-   * @param rightVector the rightVector to set
-   */
+
   public void setRightVector(String rightVector) {
     this.rightVector = rightVector;
   }
 
-  /**
-   * @return the trimPercentage
-   */
+
   public double getTrimPercentage() {
     return trimPercentage;
   }
 
-  /**
-   * @param trimPercentage the trimPercentage to set
-   */
+
   public void setTrimPercentage(double trimPercentage) {
     this.trimPercentage = trimPercentage;
   }
 
-  /**
-   * @return the hisTagPosition
-   */
+
   public int getHisTagPosition() {
     return hisTagPosition;
   }
 
-  /**
-   * @param hisTagPosition the hisTagPosition to set
-   */
+
   public void setHisTagPosition(int hisTagPosition) {
     this.hisTagPosition = hisTagPosition;
   }

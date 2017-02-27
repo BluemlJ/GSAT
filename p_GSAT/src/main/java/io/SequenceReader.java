@@ -1,5 +1,9 @@
 package io;
 
+import analysis.AnalysedSequence;
+import analysis.Pair;
+import exceptions.FileReadingException;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.LinkedList;
@@ -7,12 +11,9 @@ import java.util.LinkedList;
 import org.jcvi.jillion.trace.chromat.Chromatogram;
 import org.jcvi.jillion.trace.chromat.ChromatogramFactory;
 
-import analysis.AnalysedSequence;
-import analysis.Pair;
-import exceptions.FileReadingException;
+
 
 /**
- * 
  * This class reads files of the AB1 format and extracts the information into a sequence.
  * 
  * @author Ben Kohr, bluemlj, Lovis Heindrich

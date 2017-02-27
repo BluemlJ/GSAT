@@ -303,8 +303,8 @@ public class AnalysisTests {
    */
   @Test
   public void robustGeneTest2() {
-    Gene gene =
-        new Gene("A TGCGC " + "\t" + " TCGC " + System.lineSeparator() + "A            A", 0, null, null);
+    Gene gene = new Gene("A TGCGC " + "\t" + " TCGC " + System.lineSeparator() + "A            A",
+        0, null, null);
     assertEquals("ATGCGCTCGCAA", gene.getSequence());
   }
 
@@ -329,7 +329,8 @@ public class AnalysisTests {
   public void stringAppendTest() {
     assertTrue(StringAnalysis.appendStringToLength("hallo", 10).equals("hallo     "));
     assertTrue(StringAnalysis.appendStringToLength("a", 10).equals("a         "));
-    assertTrue(StringAnalysis.appendStringToLength("hallohallohallo", 10).equals("hallohallohallo"));
+    assertTrue(
+        StringAnalysis.appendStringToLength("hallohallohallo", 10).equals("hallohallohallo"));
   }
 
   /**
