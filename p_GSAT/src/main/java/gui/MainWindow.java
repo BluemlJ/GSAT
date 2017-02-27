@@ -9,6 +9,8 @@ import java.util.ResourceBundle;
 import java.util.Scanner;
 
 import analysis.Pair;
+import exceptions.ConfigNotFoundException;
+import exceptions.UnknownConfigFieldException;
 import io.ConfigHandler;
 import io.FileSaver;
 import javafx.application.Application;
@@ -110,6 +112,13 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
     GUIUtils.setColorOnNode(manualButton, ButtonColor.BLUE);
     GUIUtils.setColorOnNode(aboutButton, ButtonColor.BLUE);
 
+    try {
+      ConfigHandler.readConfig();
+    } catch (UnknownConfigFieldException | ConfigNotFoundException | IOException e1) {
+      // TODO Auto-generated catch block
+      e1.printStackTrace();
+    }
+
     infoArea.getChildren().addListener((ListChangeListener<Node>) ((change) -> {
       infoArea.layout();
       textScroll.layout();
@@ -130,6 +139,7 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
       }
     });
 
+    srcField.setText(ConfigHandler.getSrcPath());
     srcField.textProperty().addListener(new ChangeListener<String>() {
       @Override
       public void changed(ObservableValue<? extends String> observable, String oldValue,
