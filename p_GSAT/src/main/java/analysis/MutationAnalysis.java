@@ -270,29 +270,7 @@ public class MutationAnalysis {
    * @author Kevin Otto
    */
   public static LinkedList<String> reportDifferences(String gene, String sequence) {
-    try {
-      Thread.sleep(5);
-    } catch (InterruptedException e) {
-      // TODO Auto-generated catch block
-      e.printStackTrace();
-    }
-    System.out.println("");
-    System.out.println(
-        "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-    System.out.println("");
-    System.err.println(sequence);
-    try {
-      Thread.sleep(5);
-    } catch (InterruptedException e) {
-      // TODO Auto-generated catch block
-      e.printStackTrace();
-    }
-    System.out.println(gene);
-    System.out.println("");
-    System.out.println(
-        "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-    System.out.println("");
-
+    
     // get Levenshtein Result
     int[][] lev = StringAnalysis.calculateLevenshteinMatrix(gene, sequence);
 
