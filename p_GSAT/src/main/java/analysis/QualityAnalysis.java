@@ -71,8 +71,8 @@ public class QualityAnalysis {
       throws CorruptedSequenceException {
     for (char c : toAnalyse.getSequence().toCharArray()) {
       if (c == 'X') {
-        throw new CorruptedSequenceException(
-          toAnalyse.getSequence().indexOf('X'), c, toAnalyse.getSequence());
+        throw new CorruptedSequenceException(toAnalyse.getSequence().indexOf('X'), c,
+            toAnalyse.getSequence());
       }
     }
   }
@@ -248,72 +248,46 @@ public class QualityAnalysis {
     toAnalyse.trimSequence(trimmingpositions[0], trimmingpositions[1] - 1);
   }
 
-  /**
-   * @return the avgApproximationStart
-   */
+
+
+  // GETTERs and SETTERs:
+
+
   public static int getAvgApproximationStart() {
     return avgApproximationStart;
   }
 
-  /**
-   * @param avgApproximationStart the avgApproximationStart to set
-   */
+
   public static void setAvgApproximationStart(int avgApproximationStart) {
     QualityAnalysis.avgApproximationStart = avgApproximationStart;
   }
 
-  /**
-   * @return the avgApproximationEnd
-   */
+
   public static int getAvgApproximationEnd() {
     return avgApproximationEnd;
   }
 
-  /**
-   * @param avgApproximationEnd the avgApproximationEnd to set
-   */
+
   public static void setAvgApproximationEnd(int avgApproximationEnd) {
     QualityAnalysis.avgApproximationEnd = avgApproximationEnd;
   }
 
-  /**
-   * @return the avgQualityEdge
-   */
-  public static int getAvgQualityEdge() {
-    return avgQualityEdge;
-  }
 
-  /**
-   * @param avgQualityEdge the avgQualityEdge to set
-   */
-  public static void setAvgQualityEdge(int avgQualityEdge) {
-    QualityAnalysis.avgQualityEdge = avgQualityEdge;
-  }
-
-  /**
-   * @return the numAverageNucleotides
-   */
   public static int getNumAverageNucleotides() {
     return numAverageNucleotides;
   }
 
-  /**
-   * @param numAverageNucleotides the numAverageNucleotides to set
-   */
+
   public static void setNumAverageNucleotides(int numAverageNucleotides) {
     QualityAnalysis.numAverageNucleotides = numAverageNucleotides;
   }
 
-  /**
-   * @return the startcounter
-   */
+
   public static int getStartcounter() {
     return startcounter;
   }
 
-  /**
-   * @param startcounter the startcounter to set
-   */
+
   public static void setStartcounter(int startcounter) {
     QualityAnalysis.startcounter = startcounter;
   }

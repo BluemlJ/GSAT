@@ -232,10 +232,11 @@ public class WritingTests {
 
     DateFormat df = new SimpleDateFormat("dd/MM/yy");
     String addingDate = df.format(new Date());
-    
+
     assertEquals(
-      "1; sequence3.ab1; FSA; null; ; ; Klaus Hafer; " + addingDate + "; 99.3690426555198; 0; ATCTTGCGTTG; null; null; none; none; ; false",
-      results.getFirst());
+        "1; sequence3.ab1; FSA; null; ; ; Klaus Hafer; " + addingDate
+            + "; 99.3690426555198; 0; ATCTTGCGTTG; null; null; none; none; ; false",
+        results.getFirst());
     reader.close();
   }
 

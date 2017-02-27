@@ -12,12 +12,9 @@ import java.io.InputStreamReader;
  */
 public class ConsoleIO {
 
-  /*
+  /**
    * WARNING: Highly experimental and still untested Needs To be testet in builded Verion (as JAR)
-   * 
-   * WARNING: Black Magic incoming
-   * 
-   * Should clear Console OS independently
+   * WARNING: Black Magic incoming Should clear Console OS independently
    */
   public static void clearConsole() {
     try {

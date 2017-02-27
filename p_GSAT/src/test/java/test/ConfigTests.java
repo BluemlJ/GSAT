@@ -34,7 +34,6 @@ public class ConfigTests {
     assertTrue(ConfigHandler.exists());
   }
 
- 
 
 
   /**
@@ -65,7 +64,8 @@ public class ConfigTests {
    * @throws ConfigNotFoundException
    */
   @Test
-  public void testConfigRead() throws IOException, UnknownConfigFieldException, ConfigNotFoundException {
+  public void testConfigRead()
+      throws IOException, UnknownConfigFieldException, ConfigNotFoundException {
     // Config.setPath(getClass().getResource("/lh_config").getFile());
     ConfigHandler.setResearcher(null);
     File path = new File("resources/t_config/config.ini");
@@ -91,7 +91,7 @@ public class ConfigTests {
     } catch (UnknownConfigFieldException e) {
       assertEquals(e.getMessage(), "Error while reading field 'resr' from the configuration file.");
     }
-    
+
   }
 
   /**
@@ -137,7 +137,8 @@ public class ConfigTests {
   }
 
   @Test
-  public void testConfigWriting() throws UnknownConfigFieldException, ConfigNotFoundException, IOException {
+  public void testConfigWriting()
+      throws UnknownConfigFieldException, ConfigNotFoundException, IOException {
     ConfigHandler.setResearcher(null);
     ConfigHandler.setResearcherList(null);
 
@@ -192,20 +193,20 @@ public class ConfigTests {
     String dbUserOld = ConfigHandler.getDbUser();
     int avgNucOld = ConfigHandler.getNumAverageNucleotides();
     int startcounterOld = ConfigHandler.getStartcounter();
-    
-    
-    ConfigHandler.setAvgApproximationStart(50);
-    ConfigHandler.setAvgApproximationEnd(49);
-    ConfigHandler.setBreakcounter(30);
-    ConfigHandler.setDbPass("a");
-    ConfigHandler.setDbPort(3);
-    ConfigHandler.setDbUrl("test");
-    ConfigHandler.setDbUser("user");
-    ConfigHandler.setNumAverageNucleotides(3);
-    ConfigHandler.setStartcounter(2);
-    
+
+
+    ConfigHandler.setAvgApproximationStart(51);
+    ConfigHandler.setAvgApproximationEnd(50);
+    ConfigHandler.setBreakcounter(31);
+    ConfigHandler.setDbPass("b");
+    ConfigHandler.setDbPort(4);
+    ConfigHandler.setDbUrl("testx");
+    ConfigHandler.setDbUser("userx");
+    ConfigHandler.setNumAverageNucleotides(2);
+    ConfigHandler.setStartcounter(3);
+
     ConfigHandler.writeConfig();
-    
+
     ConfigHandler.setAvgApproximationStart(0);
     ConfigHandler.setAvgApproximationEnd(0);
     ConfigHandler.setBreakcounter(0);
@@ -215,17 +216,17 @@ public class ConfigTests {
     ConfigHandler.setDbUser(null);
     ConfigHandler.setNumAverageNucleotides(0);
     ConfigHandler.setStartcounter(0);
-    
+
     ConfigHandler.readConfig();
-    assertEquals(50, ConfigHandler.getAvgApproximationStart());
-    assertEquals(49, ConfigHandler.getAvgApproximationEnd());
-    assertEquals(30, ConfigHandler.getBreakcounter());
-    assertEquals("a", ConfigHandler.getDbPass());
-    assertEquals(3, ConfigHandler.getDbPort());
-    assertEquals("test", ConfigHandler.getDbUrl());
-    assertEquals("user", ConfigHandler.getDbUser());
-    assertEquals(3, ConfigHandler.getNumAverageNucleotides());
-    assertEquals(2, ConfigHandler.getStartcounter());
+    assertEquals(51, ConfigHandler.getAvgApproximationStart());
+    assertEquals(50, ConfigHandler.getAvgApproximationEnd());
+    assertEquals(31, ConfigHandler.getBreakcounter());
+    assertEquals("b", ConfigHandler.getDbPass());
+    assertEquals(4, ConfigHandler.getDbPort());
+    assertEquals("testx", ConfigHandler.getDbUrl());
+    assertEquals("userx", ConfigHandler.getDbUser());
+    assertEquals(2, ConfigHandler.getNumAverageNucleotides());
+    assertEquals(3, ConfigHandler.getStartcounter());
 
     ConfigHandler.setAvgApproximationStart(avgApproximationStartOld);
     ConfigHandler.setAvgApproximationEnd(avgApproximationEndOld);
@@ -236,9 +237,9 @@ public class ConfigTests {
     ConfigHandler.setDbUser(dbUserOld);
     ConfigHandler.setNumAverageNucleotides(avgNucOld);
     ConfigHandler.setStartcounter(startcounterOld);
-    
+
     ConfigHandler.writeConfig();
-    
+
     ConfigHandler.setAvgApproximationStart(0);
     ConfigHandler.setAvgApproximationEnd(0);
     ConfigHandler.setBreakcounter(0);
@@ -248,7 +249,7 @@ public class ConfigTests {
     ConfigHandler.setDbUser(null);
     ConfigHandler.setNumAverageNucleotides(0);
     ConfigHandler.setStartcounter(0);
-    
+
     ConfigHandler.readConfig();
     assertEquals(avgApproximationStartOld, ConfigHandler.getAvgApproximationStart());
     assertEquals(avgApproximationEndOld, ConfigHandler.getAvgApproximationEnd());

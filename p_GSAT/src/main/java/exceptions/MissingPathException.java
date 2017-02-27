@@ -13,10 +13,9 @@ public class MissingPathException extends Exception {
    */
   public PathUsage usage;
 
-  
+
   /**
-   * Constructor calling the super constructor. 
-   * It also specifies the error message.
+   * Constructor calling the super constructor. It also specifies the error message.
    * 
    * @param usage The usage of the path which is not set (reading or writing).
    * 

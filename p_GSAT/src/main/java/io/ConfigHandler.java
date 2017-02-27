@@ -1,5 +1,8 @@
 package io;
 
+import exceptions.ConfigNotFoundException;
+import exceptions.UnknownConfigFieldException;
+
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -9,8 +12,6 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Arrays;
 
-import exceptions.ConfigNotFoundException;
-import exceptions.UnknownConfigFieldException;
 
 /**
  * This class is responsible for reading the configuration file and storing its values
@@ -51,8 +52,8 @@ public class ConfigHandler {
    * @throws UnknownConfigFieldException
    * @throws ConfigNotFoundException
    */
-  public static void readConfig() throws UnknownConfigFieldException, 
-  ConfigNotFoundException, IOException {
+  public static void readConfig()
+      throws UnknownConfigFieldException, ConfigNotFoundException, IOException {
     initConfig();
     BufferedReader configReader;
     try {
@@ -161,18 +162,7 @@ public class ConfigHandler {
     }
   }
 
-  /**
-   * sets the path of the configuration file
-   * 
-   * @param path
-   */
-  public static void setPath(String path) {
-    ConfigHandler.path = path;
-  }
 
-  public static String getPath() {
-    return path;
-  }
 
   /**
    * writes all parameters in the configuration file
@@ -187,6 +177,9 @@ public class ConfigHandler {
     configWriter.write(System.getProperty("line.separator"));
 
     // write srcPath
+    if (srcPath.isEmpty()) {
+      srcPath = " ";
+    }
     configWriter.write("srcPath" + SEPARATOR_CHAR + srcPath);
     configWriter.write(System.getProperty("line.separator"));
     
@@ -238,24 +231,9 @@ public static String[] getSortedResearcherList() {
     return researcherList;
   }
 
-  public static String[] getResearcherList() {
-    return researcherList;
-  }
-
-  public static void setResearcherList(String[] researchers) {
-    ConfigHandler.researcherList = researchers;
-  }
 
   public static void setResearcherInResearcherList(String researcher, int i) {
     ConfigHandler.researcherList[i] = researcher;
-  }
-
-  public static String getResearcher() {
-    return researcher;
-  }
-
-  public static void setResearcher(String researcher) {
-    ConfigHandler.researcher = researcher;
   }
 
   /**
@@ -297,6 +275,38 @@ public static String[] getSortedResearcherList() {
   public static String[] getParameters() {
     return null;
   }
+
+
+
+  // GETTERs and SETTERs:
+
+  public static String getPath() {
+    return path;
+  }
+
+
+  public static void setPath(String path) {
+    ConfigHandler.path = path;
+  }
+
+
+  public static String[] getResearcherList() {
+    return researcherList;
+  }
+
+  public static void setResearcherList(String[] researchers) {
+    ConfigHandler.researcherList = researchers;
+  }
+
+
+  public static String getResearcher() {
+    return researcher;
+  }
+
+  public static void setResearcher(String researcher) {
+    ConfigHandler.researcher = researcher;
+  }
+
 
   public static String getDbUrl() {
     return dbUrl;

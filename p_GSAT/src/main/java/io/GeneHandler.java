@@ -1,5 +1,8 @@
 package io;
 
+import analysis.Gene;
+import exceptions.DuplicateGeneException;
+
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -9,8 +12,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import analysis.Gene;
-import exceptions.DuplicateGeneException;
 
 /**
  * This class reads reference genes from a txt and stores them
@@ -81,6 +82,12 @@ public class GeneHandler {
     return true;
   }
 
+  /**
+   * 
+   * @param newpath
+   * @param geneName
+   * @throws IOException
+   */
   public static void deleteGene(String newpath, String geneName) throws IOException {
 
     for (int i = 0; i < geneList.size(); i++) {
@@ -91,6 +98,11 @@ public class GeneHandler {
     writeGenes(newpath);
   }
 
+  /**
+   * 
+   * @param string
+   * @throws IOException
+   */
   public static void deleteGene(String string) throws IOException {
     deleteGene(path, string.split(" ")[0]);
 
@@ -218,6 +230,10 @@ public class GeneHandler {
     return geneList;
   }
 
+  /**
+   * 
+   * @return
+   */
   public static String[] getGeneNames() {
     String[] names = new String[geneList.size()];
     for (int i = 0; i < geneList.size(); i++) {
@@ -228,6 +244,10 @@ public class GeneHandler {
     return names;
   }
 
+  /**
+   * 
+   * @return
+   */
   public static String[] getGeneNamesAndOrganisms() {
     String[] names = new String[geneList.size()];
     for (int i = 0; i < geneList.size(); i++) {
@@ -332,11 +352,11 @@ public class GeneHandler {
     }
   }
 
-  /**
-   * set the path of the gene.txt file
-   * 
-   * @param path
-   */
+
+
+  // GETTERs and SETTERs:
+
+
   public static void setPath(String path) {
     GeneHandler.path = path;
   }

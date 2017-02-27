@@ -1,10 +1,5 @@
 package gui;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.LinkedList;
-import java.util.Optional;
-
 import analysis.AnalysedSequence;
 import analysis.Gene;
 import analysis.MutationAnalysis;
@@ -12,21 +7,28 @@ import analysis.Pair;
 import analysis.QualityAnalysis;
 import analysis.StringAnalysis;
 import exceptions.ConfigNotFoundException;
-import exceptions.UnknownConfigFieldException;
 import exceptions.CorruptedSequenceException;
 import exceptions.DissimilarGeneException;
 import exceptions.FileReadingException;
 import exceptions.MissingPathException;
 import exceptions.UndefinedTypeOfMutationException;
+import exceptions.UnknownConfigFieldException;
 import io.ConfigHandler;
 import io.FileSaver;
 import io.GeneHandler;
 import io.SequenceReader;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.LinkedList;
+import java.util.Optional;
+
 import javafx.collections.FXCollections;
 import javafx.event.EventHandler;
 import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.Button;
 import javafx.scene.control.ButtonBar.ButtonData;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.ChoiceBox;
@@ -64,6 +66,11 @@ public class GUIUtils {
     return new Pair<Boolean, Text>(true, new Text("Reading Gene.txt was successful\n"));
   }
 
+  /**
+   * 
+   * @param genes
+   * @return
+   */
   public static Pair<Boolean, Text> initializeGeneBox(ListView<String> genes) {
     try {
       GeneHandler.readGenes();
@@ -75,6 +82,11 @@ public class GUIUtils {
     return new Pair<Boolean, Text>(true, new Text("Reading Gene.txt was successful"));
   }
 
+  /**
+   * 
+   * @param dropdown
+   * @return
+   */
   public static Pair<Boolean, Text> initializeResearchers(ChoiceBox<String> dropdown) {
     try {
       ConfigHandler.readConfig();
@@ -112,7 +124,7 @@ public class GUIUtils {
         return new Pair<Boolean, LinkedList<Text>>(success,
             wrap(
                 "Reading Sequences unsuccessful: "
-                + "please make sure the given path is correct or the file is valid\n",
+                    + "please make sure the given path is correct or the file is valid\n",
                 resultingLines, true));
       } else {
         return new Pair<Boolean, LinkedList<Text>>(success,
@@ -395,7 +407,15 @@ public class GUIUtils {
     return new Pair<AnalysedSequence, Pair<Boolean, Text>>(null, ret);
   }
 
-  public static void setColorOnNode(Node node, ButtonColor color) {
+  /**
+   * This methods sets a color on a given node object and also provides EventHandlers to change the
+   * color slighly when the mouse is above, clicks or leaves the node. The available colors can be
+   * found in {@link ButtonColor}.
+   * 
+   * @param button The button to be colored
+   * @param color A ButtonColor element to specify the desired color scheme.
+   */
+  public static void setColorOnButton(Button button, ButtonColor color) {
 
     String normalColor = "";
     String hoverColor = "";
@@ -426,30 +446,30 @@ public class GUIUtils {
     String pressedStyle = "-fx-background-color: " + pressedColor
         + "; -fx-border-color: gray; -fx-border-radius: 3px;";
 
-    node.setStyle(normalStyle);
-    node.setOnMouseEntered(new EventHandler<MouseEvent>() {
+    button.setStyle(normalStyle);
+    button.setOnMouseEntered(new EventHandler<MouseEvent>() {
       @Override
       public void handle(MouseEvent t) {
-        node.setStyle(hoverStyle);
+        button.setStyle(hoverStyle);
       }
     });
 
-    node.setOnMouseExited(new EventHandler<MouseEvent>() {
+    button.setOnMouseExited(new EventHandler<MouseEvent>() {
       @Override
       public void handle(MouseEvent t) {
-        node.setStyle(normalStyle);
+        button.setStyle(normalStyle);
       }
     });
-    node.setOnMousePressed(new EventHandler<MouseEvent>() {
+    button.setOnMousePressed(new EventHandler<MouseEvent>() {
       @Override
       public void handle(MouseEvent t) {
-        node.setStyle(pressedStyle);
+        button.setStyle(pressedStyle);
       }
     });
-    node.setOnMouseReleased(new EventHandler<MouseEvent>() {
+    button.setOnMouseReleased(new EventHandler<MouseEvent>() {
       @Override
       public void handle(MouseEvent t) {
-        node.setStyle(hoverStyle);
+        button.setStyle(hoverStyle);
       }
     });
 

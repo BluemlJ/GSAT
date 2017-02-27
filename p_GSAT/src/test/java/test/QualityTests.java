@@ -53,14 +53,12 @@ public class QualityTests {
 
     avgApproximationStart = QualityAnalysis.getAvgApproximationStart();
     avgApproximationEnd = QualityAnalysis.getAvgApproximationEnd();
-    avgQualityEdge = QualityAnalysis.getAvgQualityEdge();
     breakcounter = QualityAnalysis.getBreakcounter();
     numAverageNucleotides = QualityAnalysis.getNumAverageNucleotides();
     startcounter = QualityAnalysis.getStartcounter();
 
     QualityAnalysis.setAvgApproximationStart(avgApproximationStartTest);
     QualityAnalysis.setAvgApproximationEnd(avgApproximationEndTest);
-    QualityAnalysis.setAvgQualityEdge(avgQualityEdgeTest);
     QualityAnalysis.setBreakcounter(breakcounterTest);
     QualityAnalysis.setNumAverageNucleotides(numAverageNucleotidesTest);
     QualityAnalysis.setStartcounter(startcounterTest);
@@ -70,7 +68,6 @@ public class QualityTests {
   public void resetQualityParameters() {
     QualityAnalysis.setAvgApproximationStart(avgApproximationStart);
     QualityAnalysis.setAvgApproximationEnd(avgApproximationEnd);
-    QualityAnalysis.setAvgQualityEdge(avgQualityEdge);
     QualityAnalysis.setBreakcounter(breakcounter);
     QualityAnalysis.setNumAverageNucleotides(numAverageNucleotides);
     QualityAnalysis.setStartcounter(startcounter);
@@ -82,23 +79,23 @@ public class QualityTests {
         0, 0, 0, 30, 0, 0, 0, 30, 0, 0, 0, 30, 0, 0, 0, 40, 0, 0};
     AnalysedSequence testSequence =
         new AnalysedSequence("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", "", "", qualities);
-    double avg = QualityAnalysis.getQualityPercentage(testSequence);
-    assertTrue(Math.abs(avg - 36) < 0.05);
+    double avg = testSequence.getAvgQuality();
+    assertTrue(Math.abs(avg - 99.99979) < 0.00005);
   }
 
   @Test
   public void percentageGoodQualityTest2() {
     int[] qualities = {30, 31, 40, 57, 57, 57, 6, 7, 8, 4, 3, 12};
     AnalysedSequence testSequence = new AnalysedSequence("aaaaaaaaaaaa", "", "", qualities);
-    double avg = QualityAnalysis.getQualityPercentage(testSequence);
-    assertTrue(Math.abs(avg - 41) < 0.05);
+    double avg = testSequence.getAvgQuality();
+    assertTrue(Math.abs(avg - 99.9974881135685) < 0.00005);
   }
 
   @Test
   public void percentageGoodQualityTestUnusual() {
     int[] qualities = {};
     AnalysedSequence testSequence = new AnalysedSequence("", "", "", qualities);
-    double avg = QualityAnalysis.getQualityPercentage(testSequence);
+    double avg = testSequence.getAvgQuality();
     assertTrue(avg == 0);
   }
 

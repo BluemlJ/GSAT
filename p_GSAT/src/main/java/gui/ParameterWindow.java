@@ -1,12 +1,13 @@
 package gui;
 
+import exceptions.ConfigNotFoundException;
+import exceptions.UnknownConfigFieldException;
+import io.ConfigHandler;
+
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-import exceptions.ConfigNotFoundException;
-import exceptions.UnknownConfigFieldException;
-import io.ConfigHandler;
 import javafx.application.Application;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -20,6 +21,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
+
 
 public class ParameterWindow extends Application implements javafx.fxml.Initializable {
 
@@ -50,9 +52,9 @@ public class ParameterWindow extends Application implements javafx.fxml.Initiali
   @Override
   public void initialize(URL arg0, ResourceBundle arg1) {
 
-    GUIUtils.setColorOnNode(defaultButton, ButtonColor.BLUE);
-    GUIUtils.setColorOnNode(saveButton, ButtonColor.GREEN);
-    GUIUtils.setColorOnNode(cancelButton, ButtonColor.RED);
+    GUIUtils.setColorOnButton(defaultButton, ButtonColor.BLUE);
+    GUIUtils.setColorOnButton(saveButton, ButtonColor.GREEN);
+    GUIUtils.setColorOnButton(cancelButton, ButtonColor.RED);
 
     try {
       ConfigHandler.readConfig();

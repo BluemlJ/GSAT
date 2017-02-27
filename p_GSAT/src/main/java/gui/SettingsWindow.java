@@ -1,5 +1,8 @@
 package gui;
 
+import io.ConfigHandler;
+import io.GeneHandler;
+
 import java.io.IOException;
 import java.net.URL;
 import java.util.Optional;
@@ -28,7 +31,9 @@ import javafx.scene.control.TextInputDialog;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
+
 public class SettingsWindow extends Application implements javafx.fxml.Initializable {
+
 
   public static boolean addParametersOpen = false;
   private boolean addResearcher = false;
@@ -80,14 +85,14 @@ public class SettingsWindow extends Application implements javafx.fxml.Initializ
     GUIUtils.initializeGeneBox(geneList);
     geneList.setStyle("-fx-font-style: italic;");
 
-    GUIUtils.setColorOnNode(closeButton, ButtonColor.BLUE);
-    GUIUtils.setColorOnNode(databaseButton, ButtonColor.BLUE);
-    GUIUtils.setColorOnNode(parameterButton, ButtonColor.BLUE);
-    GUIUtils.setColorOnNode(deleteResearcherButton, ButtonColor.RED);
-    GUIUtils.setColorOnNode(addGeneButton, ButtonColor.GREEN);
-    GUIUtils.setColorOnNode(addResearcherButton, ButtonColor.GREEN);
-    GUIUtils.setColorOnNode(deleteGeneButton, ButtonColor.RED);
-    GUIUtils.setColorOnNode(deleteResearcherButton, ButtonColor.RED);
+    GUIUtils.setColorOnButton(closeButton, ButtonColor.BLUE);
+    GUIUtils.setColorOnButton(databaseButton, ButtonColor.BLUE);
+    GUIUtils.setColorOnButton(parameterButton, ButtonColor.BLUE);
+    GUIUtils.setColorOnButton(deleteResearcherButton, ButtonColor.RED);
+    GUIUtils.setColorOnButton(addGeneButton, ButtonColor.GREEN);
+    GUIUtils.setColorOnButton(addResearcherButton, ButtonColor.GREEN);
+    GUIUtils.setColorOnButton(deleteGeneButton, ButtonColor.RED);
+    GUIUtils.setColorOnButton(deleteResearcherButton, ButtonColor.RED);
 
     srcPathField.setText(ConfigHandler.getSrcPath());
 
@@ -216,8 +221,8 @@ public class SettingsWindow extends Application implements javafx.fxml.Initializ
 
         ButtonBar buttonBar = (ButtonBar) dialog.getDialogPane().lookup(".button-bar");
         ObservableList<Node> nodes = buttonBar.getButtons();
-        GUIUtils.setColorOnNode(nodes.get(0), ButtonColor.GREEN);
-        GUIUtils.setColorOnNode(nodes.get(1), ButtonColor.RED);
+        GUIUtils.setColorOnButton(nodes.get(0), ButtonColor.GREEN);
+        GUIUtils.setColorOnButton(nodes.get(1), ButtonColor.RED);
 
         // Traditional way to get the response value.
         Optional<String> result = dialog.showAndWait();

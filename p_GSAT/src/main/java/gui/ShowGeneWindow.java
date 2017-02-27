@@ -43,7 +43,7 @@ public class ShowGeneWindow extends Application implements javafx.fxml.Initializ
   public void initialize(URL location, ResourceBundle resources) {
     geneArea.setWrapText(true);
     commentArea.setWrapText(true);
-    GUIUtils.setColorOnNode(okButton, ButtonColor.BLUE);
+    GUIUtils.setColorOnButton(okButton, ButtonColor.BLUE);
 
   
     Gene sGene = SettingsWindow.selectedGene;
@@ -90,7 +90,5 @@ public class ShowGeneWindow extends Application implements javafx.fxml.Initializ
     primaryStage.setScene(scene);
     primaryStage.sizeToScene();
     primaryStage.show();
-
-   
   }
 }

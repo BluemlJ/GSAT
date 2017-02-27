@@ -10,8 +10,7 @@ public class DatabaseErrorException extends Exception {
 
 
   /**
-   * Constructor calling the super constructor and specifying an
-   * error message.
+   * Constructor calling the super constructor and specifying an error message.
    * 
    * @author Ben Kohr
    */
