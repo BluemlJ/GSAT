@@ -1,6 +1,7 @@
 package analysis;
 
 import exceptions.CorruptedSequenceException;
+import io.ConfigHandler;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -46,7 +47,7 @@ public abstract class Sequence {
 
     this.researcher = researcher;
 
-    DateFormat df = new SimpleDateFormat("dd/MM/yy");
+    DateFormat df = ConfigHandler.getDateFormat();
     Date dateobj = new Date();
     addingDate = df.format(dateobj);
   }
