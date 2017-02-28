@@ -1,10 +1,13 @@
 package io;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.DateFormat;
+import java.text.ParseException;
 import java.util.LinkedList;
 
 import com.mysql.cj.jdbc.MysqlDataSource;
@@ -202,12 +205,7 @@ public class DatabaseConnection {
 			// conn = DriverManager.getConnection(CONNECTION_STRING, "testname",
 			// "password");
 			conn = dataSource.getConnection();
-			
-			// set gsat as used database
-			
-			Statement stmt = conn.createStatement();
-			stmt.execute("USE gsat");
-			stmt.close();
+
 		} catch (SQLException e) {
 			throw new DatabaseConnectionException();
 		}
@@ -259,7 +257,7 @@ public class DatabaseConnection {
 			stmt.execute("USE gsat");
 			stmt.executeUpdate("CREATE TABLE genes (id INTEGER unsigned NOT NULL AUTO_INCREMENT, "
 					+ "name VARCHAR(100) NOT NULL, sequence MEDIUMTEXT NOT NULL, date DATE, "
-					+ "researcher INTEGER unsigned, comment VARCHAR(1000),  PRIMARY KEY(id))");
+					+ "researcher INTEGER unsigned, comment VARCHAR(1000), organism VARCHAR(1000), PRIMARY KEY(id))");
 			stmt.executeUpdate("CREATE TABLE sequences (id INTEGER unsigned NOT NULL AUTO_INCREMENT, "
 					+ "name VARCHAR(100) NOT NULL, sequence MEDIUMTEXT NOT NULL, date DATE, "
 					+ "researcher INTEGER unsigned, comment VARCHAR(1000), manualcheck CHAR(1), "
@@ -292,6 +290,7 @@ public class DatabaseConnection {
 		try {
 			conn = establishConnection();
 			Statement stmt = conn.createStatement();
+			
 
 			// check if table 'genes' exists
 			ResultSet rs = stmt.executeQuery("SELECT * FROM information_schema.tables "
@@ -339,8 +338,10 @@ public class DatabaseConnection {
 	 *            mysql server address
 	 * @return
 	 * @author Lovis Heindrich
+	 * @throws DatabaseConnectionException 
+	 * @throws SQLException 
 	 */
-	public static void setDatabaseConnection(String user, String pass, int port, String server) {
+	public static void setDatabaseConnection(String user, String pass, int port, String server) throws DatabaseConnectionException, SQLException {
 		DatabaseConnection.user = user;
 		DatabaseConnection.pass = pass;
 		DatabaseConnection.port = port;
@@ -351,6 +352,13 @@ public class DatabaseConnection {
 		if (!gsatExists()) {
 			createDatabase();
 		}
+		
+		conn = establishConnection();
+		Statement stmt = conn.createStatement();
+		stmt.execute("USE gsat");
+		stmt.close();
+		conn.close();
+		
 	}
 
 	// public static void resetDatabaseConnection() {
@@ -369,7 +377,11 @@ public class DatabaseConnection {
 
 		// get a connection
 		conn = establishConnection();
-
+		
+		Statement stmt = conn.createStatement();
+		stmt.execute("USE gsat");
+		stmt.close();
+		
 		// get data
 		String researcher = ConfigHandler.getResearcher();
 
@@ -445,12 +457,60 @@ public class DatabaseConnection {
 	 * @param researcherId
 	 * @return
 	 * @author Lovis Heindrich
+	 * @throws SQLException
 	 */
-	public static int pushGene(Connection conn2, Gene referencedGene, int researcherId) {
+	public static int pushGene(Connection conn2, Gene gene, int researcherId) throws SQLException {
+
+		String name = gene.getName();
+		String sequence = gene.getSequence();
+		String organism = gene.getOrganism();
+		DateFormat df = ConfigHandler.getDateFormat();
+		java.util.Date localDate;
+		java.sql.Date sqlDate;
+		try {
+			localDate = df.parse(gene.getAddingDate());
+			sqlDate = new Date(localDate.getTime());
+		} catch (ParseException e) {
+			sqlDate = new Date(0);
+		}
+
+		String comment = gene.getComment();
+
 		// check if gene exists
+		PreparedStatement pstmt = conn2
+				.prepareStatement("SELECT id, name, sequence FROM researchers WHERE name = ? AND sequence = ? AND organism = ?");
+		pstmt.setString(1, name);
+		pstmt.setString(2, sequence);
+		pstmt.setString(3, organism);
+
+		ResultSet res = pstmt.executeQuery();
+		if (res.next()) {
+			return res.getInt(1);
+		}
 
 		// push otherwise
-		return 0;
+		pstmt = conn2.prepareStatement(
+				"INSERT INTO researchers (name, sequence, date, researcher, comment, organism) VALUES (?, ?, ?, ?, ?, ?)");
+		pstmt.setString(1, name);
+		pstmt.setString(2, sequence);
+		pstmt.setDate(3, sqlDate);
+		pstmt.setInt(4, researcherId);
+		pstmt.setString(5, comment);
+		pstmt.setString(6, organism);
+		pstmt.executeUpdate();
+
+		// get index of new gene
+		pstmt = conn2.prepareStatement("SELECT id, name, sequence FROM researchers WHERE name = ? AND sequence = ? AND organism = ?");
+		pstmt.setString(1, name);
+		pstmt.setString(2, sequence);
+		pstmt.setString(3, organism);
+		res = pstmt.executeQuery();
+		if (res.next()) {
+			return res.getInt(1);
+		} else {
+			// should never be called
+			return -1;
+		}
 	}
 
 	/**
@@ -472,6 +532,7 @@ public class DatabaseConnection {
 		if (res.next()) {
 			return res.getInt(1);
 		}
+
 		// push otherwise
 		pstmt = conn2.prepareStatement("INSERT INTO researchers (name) VALUES (?)");
 		pstmt.setString(1, researcher);
@@ -484,7 +545,7 @@ public class DatabaseConnection {
 		if (res.next()) {
 			return res.getInt(1);
 		} else {
-			//should never be called
+			// should never be called
 			return -1;
 		}
 	}

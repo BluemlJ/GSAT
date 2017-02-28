@@ -10,6 +10,8 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
 
 
@@ -39,6 +41,9 @@ public class ConfigHandler {
   private static int breakcounter = defaultValues[2];
   private static int numAverageNucleotides = defaultValues[3];
   private static int startcounter = defaultValues[4];
+  
+  // date format 
+  private static DateFormat dateFormat = new SimpleDateFormat("dd/MM/yy");
 
   /**
    * char used for separating values in the configuration file
@@ -393,5 +398,13 @@ public static String[] getSortedResearcherList() {
   public static void setDefaultValues(int[] defaultValues) {
     ConfigHandler.defaultValues = defaultValues;
   }
+
+public static DateFormat getDateFormat() {
+	return dateFormat;
+}
+
+public static void setDateFormat(DateFormat dateFormat) {
+	ConfigHandler.dateFormat = dateFormat;
+}
 
 }

@@ -1,18 +1,18 @@
 package test;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-
-import java.sql.Statement;
 
 import org.junit.Ignore;
 import org.junit.Test;
 
 import com.mysql.cj.jdbc.MysqlDataSource;
 
+import analysis.Gene;
 import exceptions.DatabaseConnectionException;
 import io.DatabaseConnection;
 
@@ -39,14 +39,14 @@ public class LocalDBTest {
 	Connection conn = null;
 	java.sql.Statement stmt = null;
 	ResultSet rs = null;
-	
+
 	@Ignore
 	@Test
-	public void testDatabaseConnectionConnect(){
+	public void testDatabaseConnectionConnect() throws DatabaseConnectionException, SQLException {
 		DatabaseConnection.setDatabaseConnection(user, pass, port, server);
 		assertTrue(DatabaseConnection.gsatExists());
 	}
-	
+
 	@Ignore
 	@Test
 	public void testPushResearcher() throws SQLException, DatabaseConnectionException {
@@ -55,17 +55,29 @@ public class LocalDBTest {
 		int lh1 = DatabaseConnection.pushReasearcher(conn, "Lovis Heindrich");
 		int ko1 = DatabaseConnection.pushReasearcher(conn, "Kevin Otto");
 		int lh2 = DatabaseConnection.pushReasearcher(conn, "Lovis Heindrich");
-		int ko2 = DatabaseConnection.pushReasearcher(conn, "Kevin Otto");		
+		int ko2 = DatabaseConnection.pushReasearcher(conn, "Kevin Otto");
 		assertEquals(lh1, lh2);
 		assertEquals(ko1, ko2);
-		
-	}
-
-	public void testPushGene() {
 
 	}
 
-	public void testOnlineConUsingDBConnection() {
+	@Ignore
+	@Test
+	public void testPushGene() throws DatabaseConnectionException, SQLException {
+		DatabaseConnection.setDatabaseConnection(user, pass, port, server);
+		Connection conn = DatabaseConnection.establishConnection();
+		Gene gene1 = new Gene("aaatttggg", 0, "fsa1", "Lovis Heindrich", "fsa", "comment1");
+		Gene gene2 = new Gene("gggtttaaa", 0, "fsa2", "Lovis Heindrich", "fsa", "comment2");
+		int g11 = DatabaseConnection.pushGene(conn, gene1, 0);
+		int g21 = DatabaseConnection.pushGene(conn, gene2, 0);
+		int g12 = DatabaseConnection.pushGene(conn, gene1, 0);
+		int g22 = DatabaseConnection.pushGene(conn, gene2, 0);
+		assertEquals(g11, g12);
+		assertEquals(g21, g22);
+		System.out.println(g11 + " " +  g12 + " " + g21 + " " + g22);
+	}
+
+	public void testOnlineConUsingDBConnection() throws DatabaseConnectionException, SQLException {
 		DatabaseConnection.setDatabaseConnection(userOnline, passOnline, portOnline, serverOnline);
 		// DatabaseConnection.createDatabase();
 		System.out.println(DatabaseConnection.gsatExists());
@@ -111,7 +123,7 @@ public class LocalDBTest {
 
 	}
 
-	public void DBConnectionTest() {
+	public void DBConnectionTest() throws DatabaseConnectionException, SQLException {
 		DatabaseConnection.setDatabaseConnection(user, pass, port, server);
 		System.out.println(DatabaseConnection.gsatExists());
 		DatabaseConnection.createDatabase();
