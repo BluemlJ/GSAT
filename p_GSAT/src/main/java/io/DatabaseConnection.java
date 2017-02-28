@@ -202,6 +202,12 @@ public class DatabaseConnection {
 			// conn = DriverManager.getConnection(CONNECTION_STRING, "testname",
 			// "password");
 			conn = dataSource.getConnection();
+			
+			// set gsat as used database
+			
+			Statement stmt = conn.createStatement();
+			stmt.execute("USE gsat");
+			stmt.close();
 		} catch (SQLException e) {
 			throw new DatabaseConnectionException();
 		}
@@ -242,7 +248,7 @@ public class DatabaseConnection {
 			conn = establishConnection();
 			Statement stmt = conn.createStatement();
 
-			//check if old gsat database exists and drop it
+			// check if old gsat database exists and drop it
 			ResultSet rs = stmt
 					.executeQuery("SELECT * FROM information_schema.tables " + "WHERE table_schema = 'gsat' LIMIT 1");
 			if (rs.next()) {
@@ -456,14 +462,31 @@ public class DatabaseConnection {
 	 *            name of the researcher
 	 * @return database index of the researcher
 	 * @author Lovis Heindrich
+	 * @throws SQLException
 	 */
-	public static int pushReasearcher(Connection conn2, String researcher) {
+	public static int pushReasearcher(Connection conn2, String researcher) throws SQLException {
 		// check if researcher exists
-
+		PreparedStatement pstmt = conn2.prepareStatement("SELECT id, name FROM researchers WHERE name = ?");
+		pstmt.setString(1, researcher);
+		ResultSet res = pstmt.executeQuery();
+		if (res.next()) {
+			return res.getInt(1);
+		}
 		// push otherwise
-		
-		//conn2.executeUpdate("INSERT INTO researcher VALUES ('none', 'aaaaaaaaaaaaaa')");
-		return 0;
+		pstmt = conn2.prepareStatement("INSERT INTO researchers (name) VALUES (?)");
+		pstmt.setString(1, researcher);
+		pstmt.executeUpdate();
+
+		// get index of new researcher
+		pstmt = conn2.prepareStatement("SELECT id, name FROM researchers WHERE name = ?");
+		pstmt.setString(1, researcher);
+		res = pstmt.executeQuery();
+		if (res.next()) {
+			return res.getInt(1);
+		} else {
+			//should never be called
+			return -1;
+		}
 	}
 
 }

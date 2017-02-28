@@ -1,6 +1,6 @@
 package test;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -8,6 +8,7 @@ import java.sql.SQLException;
 
 import java.sql.Statement;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.mysql.cj.jdbc.MysqlDataSource;
@@ -39,19 +40,24 @@ public class LocalDBTest {
 	java.sql.Statement stmt = null;
 	ResultSet rs = null;
 	
+	@Ignore
 	@Test
 	public void testDatabaseConnectionConnect(){
 		DatabaseConnection.setDatabaseConnection(user, pass, port, server);
 		assertTrue(DatabaseConnection.gsatExists());
 	}
 	
-	
+	@Ignore
+	@Test
 	public void testPushResearcher() throws SQLException, DatabaseConnectionException {
 		DatabaseConnection.setDatabaseConnection(user, pass, port, server);
 		Connection conn = DatabaseConnection.establishConnection();
-		Statement stmt = conn.createStatement();
-		//DatabaseConnection.pushReasearcher(stmt, "Lovis Heindrich");
-		
+		int lh1 = DatabaseConnection.pushReasearcher(conn, "Lovis Heindrich");
+		int ko1 = DatabaseConnection.pushReasearcher(conn, "Kevin Otto");
+		int lh2 = DatabaseConnection.pushReasearcher(conn, "Lovis Heindrich");
+		int ko2 = DatabaseConnection.pushReasearcher(conn, "Kevin Otto");		
+		assertEquals(lh1, lh2);
+		assertEquals(ko1, ko2);
 		
 	}
 
