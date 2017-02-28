@@ -114,7 +114,8 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
     GUIUtils.setColorOnButton(settingsButton, ButtonColor.BLUE);
     GUIUtils.setColorOnButton(manualButton, ButtonColor.BLUE);
     GUIUtils.setColorOnButton(aboutButton, ButtonColor.BLUE);
-
+  
+    
     try {
       ConfigHandler.readConfig();
     } catch (UnknownConfigFieldException | ConfigNotFoundException | IOException e1) {
