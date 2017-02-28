@@ -65,6 +65,8 @@ public class SettingsWindow extends Application implements javafx.fxml.Initializ
   private Button deleteGeneButton;
   @FXML
   private Button deleteResearcherButton;
+  @FXML
+  private Button showGeneButton;
 
   private Scene scene;
 

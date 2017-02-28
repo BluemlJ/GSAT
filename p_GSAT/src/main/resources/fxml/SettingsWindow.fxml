@@ -15,7 +15,7 @@
     <AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="-1.0" prefWidth="-1.0" VBox.vgrow="ALWAYS">
       <children>
             <Button fx:id="parameterButton" layoutX="14.0" layoutY="362.0" mnemonicParsing="false" text="Edit parameters" />
-            <Button fx:id="closeButton" layoutX="574.0" layoutY="362.0" mnemonicParsing="false" text="Ok" />
+            <Button fx:id="closeButton" layoutX="583.0" layoutY="362.0" mnemonicParsing="false" text="Ok" />
             <Text layoutX="19.0" layoutY="46.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Researcher:">
                <font>
                   <Font size="14.0" />
@@ -38,11 +38,12 @@
                   <Font size="14.0" />
                </font>
             </Text>
-            <Button fx:id="addGeneButton" layoutX="469.0" layoutY="271.0" mnemonicParsing="false" text="add" />
-            <Button fx:id="deleteGeneButton" layoutX="550.0" layoutY="271.0" mnemonicParsing="false" text="delete" />
+            <Button fx:id="addGeneButton" layoutX="451.0" layoutY="271.0" mnemonicParsing="false" text="Add" />
+            <Button fx:id="deleteGeneButton" layoutX="500.0" layoutY="271.0" mnemonicParsing="false" text="Delete" />
             <Button fx:id="databaseButton" layoutX="148.0" layoutY="362.0" mnemonicParsing="false" text="Configure database" />
             <TextField fx:id="srcPathField" layoutX="155.0" layoutY="312.0" prefHeight="25.0" prefWidth="281.0" />
-            <Text layoutX="38.0" layoutY="329.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Default source path" />
+            <Text layoutX="19.0" layoutY="329.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Default source path" />
+            <Button fx:id="showGeneButton" layoutX="565.0" layoutY="271.0" mnemonicParsing="false" text="Show" />
       </children>
     </AnchorPane>
   </children>

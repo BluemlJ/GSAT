@@ -10,6 +10,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
@@ -17,6 +18,11 @@ import javafx.stage.WindowEvent;
 
 public class DatabaseSettingsWindow extends Application implements javafx.fxml.Initializable {
 
+  @FXML
+  private Button connectButton;
+  @FXML
+  private Button closeButton;
+  
   @FXML
   private TextField adressField;
 
