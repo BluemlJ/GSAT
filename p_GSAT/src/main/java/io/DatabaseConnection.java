@@ -378,6 +378,7 @@ public class DatabaseConnection {
 		// get a connection
 		conn = establishConnection();
 		
+		// TODO why doesn´t it work with USE gsat only here?
 		Statement stmt = conn.createStatement();
 		stmt.execute("USE gsat");
 		stmt.close();
@@ -460,7 +461,10 @@ public class DatabaseConnection {
 	 * @throws SQLException
 	 */
 	public static int pushGene(Connection conn2, Gene gene, int researcherId) throws SQLException {
-
+		Statement stmt = conn2.createStatement();
+		stmt.execute("USE gsat");
+		stmt.close();
+		
 		String name = gene.getName();
 		String sequence = gene.getSequence();
 		String organism = gene.getOrganism();
@@ -478,7 +482,7 @@ public class DatabaseConnection {
 
 		// check if gene exists
 		PreparedStatement pstmt = conn2
-				.prepareStatement("SELECT id, name, sequence FROM researchers WHERE name = ? AND sequence = ? AND organism = ?");
+				.prepareStatement("SELECT id, name, sequence, organism FROM genes WHERE name = ? AND sequence = ? AND organism = ?");
 		pstmt.setString(1, name);
 		pstmt.setString(2, sequence);
 		pstmt.setString(3, organism);
@@ -490,7 +494,7 @@ public class DatabaseConnection {
 
 		// push otherwise
 		pstmt = conn2.prepareStatement(
-				"INSERT INTO researchers (name, sequence, date, researcher, comment, organism) VALUES (?, ?, ?, ?, ?, ?)");
+				"INSERT INTO genes (name, sequence, date, researcher, comment, organism) VALUES (?, ?, ?, ?, ?, ?)");
 		pstmt.setString(1, name);
 		pstmt.setString(2, sequence);
 		pstmt.setDate(3, sqlDate);
@@ -500,7 +504,7 @@ public class DatabaseConnection {
 		pstmt.executeUpdate();
 
 		// get index of new gene
-		pstmt = conn2.prepareStatement("SELECT id, name, sequence FROM researchers WHERE name = ? AND sequence = ? AND organism = ?");
+		pstmt = conn2.prepareStatement("SELECT id, name, sequence, organism FROM genes WHERE name = ? AND sequence = ? AND organism = ?");
 		pstmt.setString(1, name);
 		pstmt.setString(2, sequence);
 		pstmt.setString(3, organism);
@@ -525,6 +529,11 @@ public class DatabaseConnection {
 	 * @throws SQLException
 	 */
 	public static int pushReasearcher(Connection conn2, String researcher) throws SQLException {
+		// TODO figure out how to do this one time only
+		Statement stmt = conn2.createStatement();
+		stmt.execute("USE gsat");
+		stmt.close();
+		
 		// check if researcher exists
 		PreparedStatement pstmt = conn2.prepareStatement("SELECT id, name FROM researchers WHERE name = ?");
 		pstmt.setString(1, researcher);
