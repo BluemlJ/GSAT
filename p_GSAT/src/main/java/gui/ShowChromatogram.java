@@ -2,8 +2,11 @@ package gui;
 
 import java.awt.Scrollbar;
 import java.net.URL;
+import java.util.LinkedList;
 import java.util.ResourceBundle;
 
+import analysis.AnalysedSequence;
+import analysis.Sequence;
 import javafx.application.Application;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -148,8 +151,12 @@ public class ShowChromatogram extends Application implements javafx.fxml.Initial
     launch(args);
   }
   
-  public static void setSequence(){
-    
+  public void setSequence(AnalysedSequence sequence){
+    //TODO impement
+  }
+  
+  public void setSequence(LinkedList<AnalysedSequence> sequences){
+    //TODO impement    
   }
 
 }
