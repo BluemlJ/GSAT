@@ -93,7 +93,7 @@ public class ShowChromatogram extends Application implements javafx.fxml.Initial
     ScrollBar bar = new ScrollBar();
     bar.setMin(0);
     bar.setMax(100);
-    bar.setValue(50);
+    bar.setValue(0);
     bar.valueProperty().addListener(new ChangeListener<Number>() {
       public void changed(ObservableValue<? extends Number> ov,
           Number old_val, Number new_val) {
