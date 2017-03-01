@@ -12,6 +12,7 @@ import javafx.application.Application;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -49,8 +50,13 @@ public class ParameterWindow extends Application implements javafx.fxml.Initiali
   @FXML
   private Button cancelButton;
 
+  @FXML
+  private Button helpButton;
+
   @Override
   public void initialize(URL arg0, ResourceBundle arg1) {
+
+
 
     GUIUtils.setColorOnButton(defaultButton, ButtonColor.BLUE);
     GUIUtils.setColorOnButton(saveButton, ButtonColor.GREEN);
@@ -182,6 +188,14 @@ public class ParameterWindow extends Application implements javafx.fxml.Initiali
         SettingsWindow.addParametersOpen = false;
         Stage stage = (Stage) cancelButton.getScene().getWindow();
         stage.close();
+
+      }
+    });
+
+    helpButton.setOnAction(new EventHandler<ActionEvent>() {
+      @Override
+      public void handle(ActionEvent arg0) {
+        // TODO Implement @BEN
 
       }
     });

@@ -35,6 +35,7 @@
                <children>
                   <TextField fx:id="breakcounter" layoutX="177.0" layoutY="21.0" prefHeight="25.0" prefWidth="82.0" promptText="9" />
                   <Text layoutX="14.0" layoutY="38.0" strokeType="OUTSIDE" strokeWidth="0.0" text="bad Quality margin" wrappingWidth="161.984375" />
+                  <Button fx:id="helpButton" layoutX="268.0" layoutY="20.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="122.0" text="Help" AnchorPane.rightAnchor="5.0" />
                </children>
             </AnchorPane>
          </children>
