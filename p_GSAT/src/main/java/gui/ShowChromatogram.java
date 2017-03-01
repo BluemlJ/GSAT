@@ -147,5 +147,9 @@ public class ShowChromatogram extends Application implements javafx.fxml.Initial
   public static void main(String[] args) {
     launch(args);
   }
+  
+  public static void setSequence(){
+    
+  }
 
 }

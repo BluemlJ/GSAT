@@ -46,6 +46,7 @@ public class DatabaseSettingsWindow extends Application implements javafx.fxml.I
 
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
+	  System.out.println("TEST");
 		GUIUtils.setColorOnButton(connectButton, ButtonColor.GREEN);
 		GUIUtils.setColorOnButton(closeButton, ButtonColor.RED);
 
@@ -117,7 +118,7 @@ public class DatabaseSettingsWindow extends Application implements javafx.fxml.I
 			public void handle(ActionEvent arg0) {
 				Stage stage = (Stage) closeButton.getScene().getWindow();
 				stage.close();
-
+				SettingsWindow.addParametersOpen = false;
 			}
 		});
 	}
