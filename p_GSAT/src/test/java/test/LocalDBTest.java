@@ -6,12 +6,15 @@ import static org.junit.Assert.assertTrue;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Arrays;
+import java.util.LinkedList;
 
 import org.junit.Ignore;
 import org.junit.Test;
 
 import com.mysql.cj.jdbc.MysqlDataSource;
 
+import analysis.AnalysedSequence;
 import analysis.Gene;
 import exceptions.DatabaseConnectionException;
 import io.DatabaseConnection;
@@ -42,6 +45,31 @@ public class LocalDBTest {
 
 	@Ignore
 	@Test
+	public void testDatabasePushPipeline() throws SQLException, DatabaseConnectionException{
+		DatabaseConnection.setDatabaseConnection(user, pass, port, server);
+		Connection conn = DatabaseConnection.establishConnection();
+		DatabaseConnection.createDatabase();
+		LinkedList<String> mutations1 = new LinkedList<String>(Arrays.asList("t5a", "t6a"));
+		LinkedList<String> mutations2 = new LinkedList<String>(Arrays.asList("t1a", "t2a"));
+		AnalysedSequence sequence1 = new AnalysedSequence("aataataat", "Lovis Heindrich", "Sequence1", null);
+		sequence1.setMutations(mutations1);
+		AnalysedSequence sequence2 = new AnalysedSequence("ttattatta", "Kevin Otto", "Sequence2", null);
+		sequence2.setMutations(mutations2);
+		Gene gene1 = new Gene("aaatttggg", 0, "fsa1", "Lovis Heindrich", "fsa", "comment1");
+		Gene gene2 = new Gene("gggtttaaa", 0, "fsa2", "Lovis Heindrich", "fsa", "comment2");
+		sequence1.setReferencedGene(gene1);
+		sequence2.setReferencedGene(gene2);
+		LinkedList<AnalysedSequence> sequences = new LinkedList<AnalysedSequence>();
+		sequences.add(sequence1);
+		sequences.add(sequence2);
+		sequences.add(sequence1);
+		
+		DatabaseConnection.pushAllData(sequences);
+	}
+	
+	
+	@Ignore
+	@Test
 	public void testDatabaseConnectionConnect() throws DatabaseConnectionException, SQLException {
 		DatabaseConnection.setDatabaseConnection(user, pass, port, server);
 		assertTrue(DatabaseConnection.gsatExists());
@@ -49,13 +77,43 @@ public class LocalDBTest {
 
 	@Ignore
 	@Test
-	public void testPushResearcher() throws SQLException, DatabaseConnectionException {
+	public void testPushMutation() throws DatabaseConnectionException, SQLException{
 		DatabaseConnection.setDatabaseConnection(user, pass, port, server);
 		Connection conn = DatabaseConnection.establishConnection();
-		int lh1 = DatabaseConnection.pushReasearcher(conn, "Lovis Heindrich");
-		int ko1 = DatabaseConnection.pushReasearcher(conn, "Kevin Otto");
-		int lh2 = DatabaseConnection.pushReasearcher(conn, "Lovis Heindrich");
-		int ko2 = DatabaseConnection.pushReasearcher(conn, "Kevin Otto");
+		
+		LinkedList<String> mutations1 = new LinkedList<String>(Arrays.asList("t5a", "t6a"));
+		LinkedList<String> mutations2 = new LinkedList<String>(Arrays.asList("t1a", "t2a"));
+		DatabaseConnection.pushMutations(conn, mutations1, 0);
+		DatabaseConnection.pushMutations(conn, mutations1, 0);
+		DatabaseConnection.pushMutations(conn, mutations2, 0);
+		DatabaseConnection.pushMutations(conn, mutations1, 1);
+	}
+	
+	@Ignore
+	@Test
+	public void testPushSequence() throws DatabaseConnectionException, SQLException{
+		DatabaseConnection.setDatabaseConnection(user, pass, port, server);
+		Connection conn = DatabaseConnection.establishConnection();	
+		AnalysedSequence sequence1 = new AnalysedSequence("aataat", "Lovis", "Sequence1", null);
+		AnalysedSequence sequence2 = new AnalysedSequence("ttatta", "Kevin", "Sequence2", null);
+		int seq1 = DatabaseConnection.pushSequence(conn, sequence1, 0, 0);
+		int seq2 = DatabaseConnection.pushSequence(conn, sequence2, 0, 0);
+		int seq3 = DatabaseConnection.pushSequence(conn, sequence1, 0, 0);
+		int seq4 = DatabaseConnection.pushSequence(conn, sequence2, 0, 0);
+		
+		assertEquals(seq1, seq3);
+		assertEquals(seq2, seq4);
+	}
+	
+	@Ignore
+	@Test
+	public void testPushResearcher() throws SQLException, DatabaseConnectionException {
+		DatabaseConnection.setDatabaseConnection(user, pass, port, server);
+		Connection conn = DatabaseConnection.establishConnection();	
+		int lh1 = DatabaseConnection.pushResearcher(conn, "Lovis Heindrich");
+		int ko1 = DatabaseConnection.pushResearcher(conn, "Kevin Otto");
+		int lh2 = DatabaseConnection.pushResearcher(conn, "Lovis Heindrich");
+		int ko2 = DatabaseConnection.pushResearcher(conn, "Kevin Otto");
 		assertEquals(lh1, lh2);
 		assertEquals(ko1, ko2);
 
