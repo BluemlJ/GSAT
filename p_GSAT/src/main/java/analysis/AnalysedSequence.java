@@ -55,12 +55,6 @@ public class AnalysedSequence extends Sequence {
   private int offset = 0;
 
   /**
-   * The id of the primer which generated the sequence. May be added by the user. The value -1
-   * indicates that there is no primer to be associated with the sequence.
-   */
-  private int primerId = -1;
-
-  /**
    * Array containing the quality information for the sequence (i.e. for each nucleotide position).
    */
   private int[] qualities;
@@ -81,6 +75,11 @@ public class AnalysedSequence extends Sequence {
    */
   private double trimPercentage;
 
+  private String primer;
+  
+  private double avgQuality;
+  
+  
   /**
    * Specifies the position (starting with 0) where a HIS tag is found in the analysed sequence.
    * It's -1 if there is no such tag found.
@@ -103,6 +102,12 @@ public class AnalysedSequence extends Sequence {
     this.qualities = qualities;
   }
 
+  
+  public AnalysedSequence() {
+    super("", null);
+  }
+  
+  
   /**
    * Add a discovered, String-encoded mutation to the list of already discovered mutations.
    * 
@@ -268,15 +273,6 @@ public void setFileName(String fileName) {
   }
 
 
-  public int getPrimerId() {
-    return primerId;
-  }
-
-
-  public void setPrimerId(int primerId) {
-    this.primerId = primerId;
-  }
-
 
   public int[] getQuality() {
     return qualities;
@@ -287,6 +283,23 @@ public void setFileName(String fileName) {
     this.qualities = qualities;
   }
 
+  public double returnAvgQuality() {
+    return avgQuality;
+  }
+  
+  public void setAvgQuality(double avgQuality) {
+    this.avgQuality = avgQuality;
+  }
+  
+  
+  public void setPrimer(String primer) {
+    this.primer = primer;
+  }
+  
+  public String getPrimer() {
+    return primer;
+  }
+  
 
   public Gene getReferencedGene() {
     return referencedGene;
@@ -307,6 +320,8 @@ public void setFileName(String fileName) {
     this.rightVector = rightVector;
   }
 
+
+  
 
   public double getTrimPercentage() {
     return trimPercentage;

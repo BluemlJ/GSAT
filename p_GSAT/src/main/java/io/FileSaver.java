@@ -212,13 +212,8 @@ public class FileSaver {
     String rightVector = sequence.getRightVector();
     builder.append(rightVector).append(SEPARATOR_CHAR + " ");
 
-    // primer
-    int primerId = sequence.getPrimerId();
-    if (primerId == -1) {
-      builder.append("none" + SEPARATOR_CHAR + " ");
-    } else {
-      builder.append(primerId).append(SEPARATOR_CHAR + " ");
-    }
+    // primer (may be changed by user manually)
+    builder.append("none" + SEPARATOR_CHAR + " ");
 
     // his tag
     // The his tag position starts with 1 in the stored result.

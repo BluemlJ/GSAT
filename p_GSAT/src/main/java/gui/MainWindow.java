@@ -229,6 +229,7 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
                 + "\nStarting analysis\n"
                 + "---------------------------------------------------------------------------\n"));
 
+        FileSaver.resetAll();
         infoArea.getChildren()
             .add(new Text("Source folder or file:  " + srcField.getText() + "\n"));
 
@@ -358,7 +359,7 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
 
           TextWindow texWin = loader.<TextWindow>getController();
           String content =
-              convertStreamToString(ClassLoader.getSystemResourceAsStream("manual/About.txt"));
+              GUIUtils.convertStreamToString(ClassLoader.getSystemResourceAsStream("manual/About.txt"));
           texWin.setText(content);
 
           Scene scene = new Scene(root);
@@ -387,7 +388,7 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
           final Parent root = loader.load();
 
           TextWindow texWin = loader.<TextWindow>getController();
-          String content = convertStreamToString(
+          String content = GUIUtils.convertStreamToString(
               ClassLoader.getSystemResourceAsStream("manual/WelcomeToGSAT.txt"));
           texWin.setText(content);
           Scene scene = new Scene(root);
@@ -438,17 +439,6 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
     primaryStage.show();
   }
 
-  private static String convertStreamToString(InputStream is) {
-    Scanner s = new Scanner(is);
-    String ret;
-    StringBuilder builder = new StringBuilder();
-    while (s.hasNextLine()) {
-      builder.append(s.nextLine()).append("\n");
-    }
-    ret = builder.toString();
-    System.out.println(ret);
-    s.close();
-    return ret;
-  }
+  
 
 }
