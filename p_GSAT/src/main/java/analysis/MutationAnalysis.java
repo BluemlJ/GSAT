@@ -243,7 +243,13 @@ public class MutationAnalysis {
     return true;
   }
 
-  public static void findMixes(AnalysedSequence toAnalyze) {
+  /**
+   * This method saves all plasmid mixtures in the sequence in form like H25P/G/D
+   * 
+   * @param toAnalyze the seqeunce we save the mixtures in
+   * @author Jannis
+   */
+  public static void savePlasmidMixes(AnalysedSequence toAnalyze) {
 
     // return list of all mixes
     LinkedList<String> ret = new LinkedList<>();
@@ -256,7 +262,7 @@ public class MutationAnalysis {
     String originalSequence = reference.getSequence();
 
     // list of all candidates in form of p|12|AG, p|3|GCA...
-    LinkedList<String> candidates = findPlacmidMixCanditates(toAnalyze);
+    LinkedList<String> candidates = findPlasmidMixCanditates(toAnalyze);
 
     // check every candidate and add it to the return list
     for (String string : candidates) {
@@ -286,11 +292,21 @@ public class MutationAnalysis {
       retString.subSequence(0, retString.length() - 1);
       ret.add(retString.toString());
     }
-    //add them to sequence
+    // add them to sequence
     toAnalyze.setPlasmidmixes(ret);
   }
 
-  public static LinkedList<String> findPlacmidMixCanditates(AnalysedSequence sequence) {
+  /**
+   * This method searches for plasmidmixes by checking every position in the mutatedseqeunce. For
+   * this there are two constraints i check, first two or more traces have same quality values at
+   * the same position and this is the maximum value. Second the quality at this position is lower
+   * then his neighbors (checking only left side).
+   * 
+   * @param sequence the mutated seqeunce we will search in
+   * @return a list of all plasmidmixes we could found
+   * @author Jannis
+   */
+  public static LinkedList<String> findPlasmidMixCanditates(AnalysedSequence sequence) {
 
     // List of candidates
     LinkedList<String> ret = new LinkedList<>();
@@ -352,7 +368,8 @@ public class MutationAnalysis {
       }
       candidate.append(tmp[0]);
 
-      // if you find a canditate with more then one One codon and the quality is broken, we got a mix
+      // if you find a canditate with more then one One codon and the
+      // quality is broken, we got a mix
       if (candidate.length() != 1
           && sequence.getQuality()[i] < (sequence.getQuality()[i - 1] / 2)) {
         ret.add("p|" + i + "|" + candidate);
