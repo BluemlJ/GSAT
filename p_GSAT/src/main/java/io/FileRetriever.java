@@ -47,6 +47,10 @@ public class FileRetriever {
     File[] files = pathAsFile.listFiles();
     LinkedList<File> fileList = new LinkedList<File>();
     
+    if (files == null) {
+      files = new File[0];
+    }
+    
     for (int i = 0; i < files.length;  i++) {
       if(files[i].getName().endsWith(".csv")) {
         fileList.add(files[i]);
