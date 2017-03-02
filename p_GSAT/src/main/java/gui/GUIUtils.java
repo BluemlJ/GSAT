@@ -20,8 +20,10 @@ import io.SequenceReader;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.LinkedList;
 import java.util.Optional;
+import java.util.Scanner;
 
 import javafx.collections.FXCollections;
 import javafx.event.EventHandler;
@@ -485,4 +487,19 @@ public class GUIUtils {
     return text;
   }
 
+  
+  public static String convertStreamToString(InputStream is) {
+    Scanner s = new Scanner(is);
+    String ret;
+    StringBuilder builder = new StringBuilder();
+    while (s.hasNextLine()) {
+      builder.append(s.nextLine()).append("\n");
+    }
+    ret = builder.toString();
+    System.out.println(ret);
+    s.close();
+    return ret;
+  }
+  
+  
 }

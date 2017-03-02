@@ -37,8 +37,6 @@ public class ShowGeneWindow extends Application implements javafx.fxml.Initializ
   private Button okButton;
 
 
-  Scene scene;
-
   @Override
   public void initialize(URL location, ResourceBundle resources) {
     geneArea.setWrapText(true);

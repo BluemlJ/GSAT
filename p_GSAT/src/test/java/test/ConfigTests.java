@@ -22,11 +22,6 @@ import io.ConfigHandler;
  */
 public class ConfigTests {
 
-  /**
-   * OS independent path for the configuration file
-   */
-  private String path =
-      System.getProperty("user.home") + File.separator + "gsat" + File.separator + "config.txt";
 
   @Test
   public void configInitTest() throws IOException {

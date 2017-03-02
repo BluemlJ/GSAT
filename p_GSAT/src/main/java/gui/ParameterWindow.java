@@ -196,8 +196,28 @@ public class ParameterWindow extends Application implements javafx.fxml.Initiali
     helpButton.setOnAction(new EventHandler<ActionEvent>() {
       @Override
       public void handle(ActionEvent arg0) {
-        // TODO Implement @BEN
+        try {
+          final FXMLLoader loader =
+              new FXMLLoader(TextWindow.class.getResource("/fxml/TextWindow.fxml"));
 
+          final Parent root = loader.load();
+
+          TextWindow texWin = loader.<TextWindow>getController();
+          String content =
+              GUIUtils.convertStreamToString(ClassLoader.getSystemResourceAsStream("manual/Parameters.txt"));
+          texWin.setText(content);
+
+          Scene scene = new Scene(root);
+          Stage s = new Stage();
+          s.setScene(scene);
+          s.sizeToScene();
+          s.setTitle("GSAT - Parameter explanation");
+          s.show();
+
+        } catch (IOException e) {
+          e.printStackTrace();
+          return;
+        }
       }
     });
   }

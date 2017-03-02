@@ -18,10 +18,10 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
-import javafx.scene.control.Alert.AlertType;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
@@ -46,9 +46,13 @@ public class DatabaseSettingsWindow extends Application implements javafx.fxml.I
 
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
-	  System.out.println("TEST");
 		GUIUtils.setColorOnButton(connectButton, ButtonColor.GREEN);
 		GUIUtils.setColorOnButton(closeButton, ButtonColor.RED);
+
+		adressField.setText(ConfigHandler.getDbUrl());
+		portField.setText(ConfigHandler.getDbPort() + "");
+		userNameField.setText(ConfigHandler.getDbUser());
+		passwordField.setText(ConfigHandler.getDbPass());
 
 		userNameField.textProperty().addListener(new ChangeListener<String>() {
 			@Override
@@ -64,7 +68,7 @@ public class DatabaseSettingsWindow extends Application implements javafx.fxml.I
 		portField.textProperty().addListener(new ChangeListener<String>() {
 			@Override
 			public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-				if (!newValue.matches("[0-9]+")) {
+				if (!newValue.matches("[0-9]*")) {
 					portField.setText(oldValue);
 				} else {
 					portField.setText(newValue);
@@ -84,30 +88,64 @@ public class DatabaseSettingsWindow extends Application implements javafx.fxml.I
 		});
 
 		connectButton.setOnAction(new EventHandler<ActionEvent>() {
-
 			@Override
 			public void handle(ActionEvent arg0) {
+
+				// save new values in config
+				if (!adressField.getText().isEmpty()) {
+					ConfigHandler.setDbUrl(adressField.getText());
+				}
+				if (!portField.getText().isEmpty()) {
+					ConfigHandler.setDbPort(Integer.parseInt(portField.getText()));
+				}
+				if (!userNameField.getText().isEmpty()) {
+					ConfigHandler.setDbUser(userNameField.getText());
+				}
+				if (!passwordField.getText().isEmpty()) {
+					ConfigHandler.setDbPass(passwordField.getText());
+				}
+				
+				try {
+					ConfigHandler.writeConfig();
+					System.out.println("config write successful");
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				
+				// try to connect
 				if (!adressField.getText().isEmpty() && !portField.getText().isEmpty()
 						&& !userNameField.getText().isEmpty() && !passwordField.getText().isEmpty()) {
+					System.out.println("trying to connect");
 					String adress = adressField.getText();
 					int port = Integer.parseInt(portField.getText());
 					String username = userNameField.getText();
 					String password = passwordField.getText();
-					
+
 					try {
+						// Try to connect
 						DatabaseConnection.setDatabaseConnection(username, password, port, adress);
-						
+						System.out.println("connection successful");
+						// show success alert window
 						Alert alert = new Alert(AlertType.INFORMATION);
-			              alert.setTitle("Database Connection");
-			              alert.setHeaderText("Connection to database succeeded");
-			              alert.showAndWait();
+						alert.setTitle("Database Connection");
+						alert.setHeaderText("Connection to database succeeded");
+						alert.showAndWait();
 					} catch (DatabaseConnectionException | SQLException e) {
+						System.out.println("Connection failed");
+						// Connection did not work
 						Alert alert = new Alert(AlertType.INFORMATION);
-			              alert.setTitle("Database Connection");
-			              alert.setHeaderText("Connection to database failed");
-			              alert.showAndWait();
+						alert.setTitle("Database Connection");
+						alert.setHeaderText("Connection to database failed");
+						alert.showAndWait();
 						e.printStackTrace();
 					}
+				} else {
+					// values are missing
+					Alert alert = new Alert(AlertType.INFORMATION);
+					alert.setTitle("Database Connection");
+					alert.setHeaderText("Please enter values for all parameters.");
+					alert.showAndWait();
 				}
 			}
 		});
