@@ -14,6 +14,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.DatePicker;
+import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.control.ToggleGroup;
 import javafx.stage.Stage;
@@ -32,6 +33,16 @@ public class DatabaseWindow extends Application implements javafx.fxml.Initializ
   private ToggleButton downloadToggle;
 
   @FXML
+  private ToggleButton resultToggle;
+  @FXML
+  private ToggleButton geneToggle;
+  @FXML
+  private ToggleButton primerToggle;
+  @FXML
+  private ToggleButton allToggle;
+
+
+  @FXML
   private javafx.scene.control.TextField destField;
 
   @FXML
@@ -41,9 +52,9 @@ public class DatabaseWindow extends Application implements javafx.fxml.Initializ
 
 
   @FXML
-  private ChoiceBox<String> researcherBox;
+  private TextField researcherField;
   @FXML
-  private ChoiceBox<String> geneBox;
+  private TextField geneField;
 
   @FXML
   private DatePicker startDate;
@@ -55,11 +66,16 @@ public class DatabaseWindow extends Application implements javafx.fxml.Initializ
   @Override
   public void initialize(URL arg0, ResourceBundle arg1) {
 
-    ToggleGroup group = new ToggleGroup();
-    
-    uploadToggle.setToggleGroup(group);
-    downloadToggle.setToggleGroup(group);
-    
+    ToggleGroup typeGroupe = new ToggleGroup();
+    resultToggle.setToggleGroup(typeGroupe);
+    geneToggle.setToggleGroup(typeGroupe);
+    primerToggle.setToggleGroup(typeGroupe);
+    allToggle.setToggleGroup(typeGroupe);
+
+    ToggleGroup usageGroupe = new ToggleGroup();
+    uploadToggle.setToggleGroup(usageGroupe);
+    downloadToggle.setToggleGroup(usageGroupe);
+
     uploadToggle.setOnAction(new EventHandler<ActionEvent>() {
 
       @Override
@@ -67,8 +83,8 @@ public class DatabaseWindow extends Application implements javafx.fxml.Initializ
         if (!upload) {
           upload = true;
 
-          researcherBox.setDisable(true);
-          geneBox.setDisable(true);
+          researcherField.setDisable(true);
+          geneField.setDisable(true);
           startDate.setDisable(true);
           endDate.setDisable(true);
         }
@@ -83,8 +99,8 @@ public class DatabaseWindow extends Application implements javafx.fxml.Initializ
         if (upload) {
           upload = false;
 
-          researcherBox.setDisable(false);
-          geneBox.setDisable(false);
+          researcherField.setDisable(false);
+          geneField.setDisable(false);
           startDate.setDisable(false);
           endDate.setDisable(false);
         }
