@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.ToggleButton?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -8,19 +10,44 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<VBox prefHeight="400.0" prefWidth="640.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.MainWindow">
+<VBox prefHeight="269.0" prefWidth="602.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.DatabaseWindow">
   <children>
-    <AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="376.0" prefWidth="640.0">
+    <AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="269.0" prefWidth="615.0">
       <children>
-            <Text layoutX="47.0" layoutY="75.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Folder:">
+            <Text layoutX="79.0" layoutY="76.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Folder:">
                <font>
                   <Font size="14.0" />
                </font>
             </Text>
-            <TextField fx:id="destField" layoutX="105.0" layoutY="58.0" prefHeight="25.0" prefWidth="412.0" />
-            <Button fx:id="destButton" layoutX="531.0" layoutY="58.0" mnemonicParsing="false" text="..." />
-            <ToggleButton layoutX="105.0" layoutY="26.0" mnemonicParsing="false" text="Upload" />
-            <ToggleButton layoutX="211.0" layoutY="26.0" mnemonicParsing="false" text="Download" />
+            <TextField fx:id="destField" layoutX="137.0" layoutY="59.0" prefHeight="26.0" prefWidth="383.0" />
+            <Button fx:id="destButton" layoutX="532.0" layoutY="59.0" mnemonicParsing="false" text="..." />
+            <ToggleButton fx:id="uploadToggle" layoutX="137.0" layoutY="27.0" mnemonicParsing="false" prefWidth="90.0" selected="true" text="Upload" />
+            <ToggleButton fx:id="downloadToggle" layoutX="227.0" layoutY="27.0" mnemonicParsing="false" prefWidth="90.0" text="Download" />
+            <ChoiceBox fx:id="researcherBox" disable="true" layoutX="137.0" layoutY="104.0" prefWidth="150.0" />
+            <Text layoutX="46.0" layoutY="121.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Researcher:">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Text>
+            <DatePicker fx:id="startDate" disable="true" layoutX="137.0" layoutY="176.0" />
+            <Text layoutX="28.0" layoutY="192.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Starting Date:">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Text>
+            <DatePicker fx:id="endDate" disable="true" layoutX="137.0" layoutY="220.0" />
+            <Text layoutX="60.0" layoutY="237.0" strokeType="OUTSIDE" strokeWidth="0.0" text="End Date:">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Text>
+            <ChoiceBox fx:id="geneBox" disable="true" layoutX="413.0" layoutY="103.0" prefWidth="150.0" />
+            <Text layoutX="365.0" layoutY="121.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Gene:">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Text>
+            <Button fx:id="settingsButton" layoutX="425.0" layoutY="219.0" mnemonicParsing="false" text="Database Settings" />
       </children>
     </AnchorPane>
   </children>

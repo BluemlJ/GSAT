@@ -404,6 +404,23 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
         }
       }
     });
+    
+ // set Database button to open Database window
+    databaseButton.setOnAction(new EventHandler<ActionEvent>() {
+      @Override
+      public void handle(ActionEvent arg0) {
+        // only open window if no Settings Window is open
+        if (!settingsOpen) {
+          settingsOpen = true;
+          DatabaseWindow base = new DatabaseWindow();
+          try {
+            base.start(new Stage());
+          } catch (Exception e) {
+            // TODO Auto-generated catch block
+          }
+        }
+      }
+    });
   }
 
   @Override
