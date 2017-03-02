@@ -3,6 +3,7 @@ package test;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -42,6 +43,14 @@ public class LocalDBTest {
 	Connection conn = null;
 	java.sql.Statement stmt = null;
 	ResultSet rs = null;
+	
+	@Ignore
+	@Test
+	public void testPushAllGenes() throws DatabaseConnectionException, SQLException, IOException{
+		DatabaseConnection.setDatabaseConnection(user, pass, port, server);
+		Connection conn = DatabaseConnection.establishConnection();
+		DatabaseConnection.pushAllGenes();
+	}
 
 	@Ignore
 	@Test
