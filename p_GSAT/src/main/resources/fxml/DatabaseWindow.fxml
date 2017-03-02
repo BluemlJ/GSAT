@@ -21,7 +21,7 @@
             </Text>
             <TextField fx:id="destField" layoutX="137.0" layoutY="59.0" prefHeight="26.0" prefWidth="383.0" />
             <Button fx:id="destButton" layoutX="532.0" layoutY="59.0" mnemonicParsing="false" text="..." />
-            <ToggleButton fx:id="uploadToggle" disable="true" layoutX="137.0" layoutY="27.0" mnemonicParsing="false" prefWidth="90.0" selected="true" text="Upload" />
+            <ToggleButton fx:id="uploadToggle" layoutX="137.0" layoutY="27.0" mnemonicParsing="false" prefWidth="90.0" selected="true" text="Upload" />
             <ToggleButton fx:id="downloadToggle" layoutX="227.0" layoutY="27.0" mnemonicParsing="false" prefWidth="90.0" text="Download" />
             <ChoiceBox fx:id="researcherBox" disable="true" layoutX="137.0" layoutY="104.0" prefWidth="150.0" />
             <Text layoutX="46.0" layoutY="121.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Researcher:">
