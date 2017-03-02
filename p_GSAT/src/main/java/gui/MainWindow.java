@@ -55,6 +55,8 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
 
   // BUTTONS
   @FXML
+  private Button databaseButton;
+  @FXML
   private Button destButton;
   @FXML
   private Button startButton;
@@ -114,6 +116,7 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
     GUIUtils.setColorOnButton(settingsButton, ButtonColor.GRAY);
     GUIUtils.setColorOnButton(manualButton, ButtonColor.GRAY);
     GUIUtils.setColorOnButton(aboutButton, ButtonColor.GRAY);
+    GUIUtils.setColorOnButton(databaseButton, ButtonColor.GRAY);
   
     
     try {

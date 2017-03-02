@@ -423,8 +423,8 @@ public class GUIUtils {
 
     switch (color) {
       case GREEN:
-        normalColor = "rgb(185, 246, 202)";
-        hoverColor = "rgb(165, 226, 182)";
+        normalColor = "rgb(180, 241, 207)";
+        hoverColor = "rgb(170, 221, 177)";
         pressedColor = "rgb(145, 206, 162)";
         break;
       case RED:
@@ -438,8 +438,8 @@ public class GUIUtils {
         pressedColor = "rgb(100, 137, 215)";
         break;
       case GRAY:
-        normalColor = "rgb(200, 200, 200)";
-        hoverColor = "rgb(220, 220, 220)";
+        normalColor = "rgb(220, 220, 220)";
+        hoverColor = "rgb(200, 200, 200)";
         pressedColor = "rgb(180, 180, 180)";
     }
 

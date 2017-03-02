@@ -61,6 +61,7 @@ public class ParameterWindow extends Application implements javafx.fxml.Initiali
     GUIUtils.setColorOnButton(defaultButton, ButtonColor.GRAY);
     GUIUtils.setColorOnButton(saveButton, ButtonColor.GREEN);
     GUIUtils.setColorOnButton(cancelButton, ButtonColor.RED);
+    GUIUtils.setColorOnButton(helpButton, ButtonColor.GRAY);
 
     try {
       ConfigHandler.readConfig();
