@@ -229,6 +229,7 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
                 + "\nStarting analysis\n"
                 + "---------------------------------------------------------------------------\n"));
 
+        FileSaver.resetAll();
         infoArea.getChildren()
             .add(new Text("Source folder or file:  " + srcField.getText() + "\n"));
 

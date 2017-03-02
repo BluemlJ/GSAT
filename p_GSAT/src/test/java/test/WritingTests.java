@@ -35,7 +35,7 @@ public class WritingTests {
   /**
    * The relative path used for this testing scenario.
    */
-  private static String path = "resources" + File.separator + "writingtests/";
+  private static String path = "resources" + File.separator + "writingtests" + File.separator;
 
   /**
    * The second sequence for testing the conversion method.

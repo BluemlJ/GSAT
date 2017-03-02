@@ -32,13 +32,4 @@ public class Main {
 
   }
 
-  /**
-   * Resets the analysis pipeline to be able to start with a completely new analyzing process.
-   * 
-   * @author Ben Kohr
-   */
-  static void resetPipeline() {
-    FileSaver.resetAll();
-  }
-
 }
