@@ -1,0 +1,11 @@
+These are the parameters you can change:
+
+Minimal Start Quality: The minimal PHRED score a nucleotide is allowed to have to not get trimmed away at the BEGINNING of the sequence.
+
+Minimal End Quality: The minimal PHRED score a nucleotide is allowed to have to not get trimmed away at the END of the sequence.
+
+Bad Quality Margin: The maximum number of nucleotides in a row with bad quality (less than "Minimal End Quality") that are allowed before the sequence gets cut off AT THE END.
+
+Good Quality Margin: The minimum number of nucleotides with good quality (better than "Minimal End Quality") that must appear in a row to not get cut away AT THE BEGINNING of a sequence.
+
+Search Radius: The number of nucleotides with bad quality (less than "Minimal End Quality") that must appear in a row to cut off the sequence AT THE END.

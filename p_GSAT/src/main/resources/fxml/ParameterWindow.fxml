@@ -14,7 +14,7 @@
             <AnchorPane prefHeight="0.0" prefWidth="453.0">
                <children>
                   <TextField fx:id="avgApproximationEnd" layoutX="177.0" layoutY="21.0" prefHeight="25.0" prefWidth="82.0" promptText="25" />
-                  <Text layoutX="14.0" layoutY="38.0" strokeType="OUTSIDE" strokeWidth="0.0" text="minimal start quality" wrappingWidth="161.984375" />
+                  <Text layoutX="14.0" layoutY="38.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Minimal Start Quality" wrappingWidth="161.984375" />
                </children>
             </AnchorPane>
          </children>
@@ -24,7 +24,7 @@
             <AnchorPane prefHeight="0.0" prefWidth="453.0">
                <children>
                   <TextField fx:id="avgApproximationStart" layoutX="177.0" layoutY="21.0" prefHeight="25.0" prefWidth="82.0" promptText="30" />
-                  <Text layoutX="14.0" layoutY="38.0" strokeType="OUTSIDE" strokeWidth="0.0" text="minimal end quality" wrappingWidth="161.984375" />
+                  <Text layoutX="14.0" layoutY="38.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Minimal End Quality" wrappingWidth="161.984375" />
                </children>
             </AnchorPane>
          </children>
@@ -34,7 +34,7 @@
             <AnchorPane prefHeight="0.0" prefWidth="453.0">
                <children>
                   <TextField fx:id="breakcounter" layoutX="177.0" layoutY="21.0" prefHeight="25.0" prefWidth="82.0" promptText="9" />
-                  <Text layoutX="14.0" layoutY="38.0" strokeType="OUTSIDE" strokeWidth="0.0" text="bad quality margin" wrappingWidth="161.984375" />
+                  <Text layoutX="14.0" layoutY="38.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Bad Quality Margin" wrappingWidth="161.984375" />
                   <Button fx:id="helpButton" layoutX="268.0" layoutY="20.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="122.0" text="Help" AnchorPane.rightAnchor="5.0" />
                </children>
             </AnchorPane>
@@ -45,7 +45,7 @@
             <AnchorPane prefHeight="0.0" prefWidth="453.0">
                <children>
                   <TextField fx:id="startcounter" layoutX="177.0" layoutY="21.0" prefHeight="25.0" prefWidth="82.0" promptText="3" />
-                  <Text layoutX="14.0" layoutY="38.0" strokeType="OUTSIDE" strokeWidth="0.0" text="good quality margin" wrappingWidth="161.984375" />
+                  <Text layoutX="14.0" layoutY="38.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Good Quality Margin" wrappingWidth="161.984375" />
                   <Button fx:id="defaultButton" layoutX="269.0" layoutY="21.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="122.0" text="Reset" AnchorPane.rightAnchor="5.0" />
                </children>
             </AnchorPane>
@@ -56,7 +56,7 @@
             <AnchorPane prefHeight="0.0" prefWidth="453.0">
                <children>
                   <TextField fx:id="numAverageNucleotides" layoutX="177.0" layoutY="21.0" prefHeight="25.0" prefWidth="82.0" promptText="20" />
-                  <Text layoutX="14.0" layoutY="38.0" strokeType="OUTSIDE" strokeWidth="0.0" text="search radius" wrappingWidth="161.984375" />
+                  <Text layoutX="14.0" layoutY="38.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Search Radius" wrappingWidth="161.984375" />
                   <Button fx:id="cancelButton" layoutX="329.0" layoutY="21.0" mnemonicParsing="false" text="Cancel" AnchorPane.rightAnchor="5.0" />
                   <Button fx:id="saveButton" layoutX="269.0" layoutY="21.0" mnemonicParsing="false" text="Save" AnchorPane.leftAnchor="269.0" />
                </children>
