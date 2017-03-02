@@ -3,6 +3,9 @@ package analysis;
 import exceptions.CorruptedSequenceException;
 import exceptions.UndefinedTypeOfMutationException;
 
+import java.nio.channels.Channel;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.LinkedList;
 
 /**
@@ -48,7 +51,6 @@ public class MutationAnalysis {
     String mutatedSequence = toAnalyze.getSequence();
     // the gene sequence
     String originalSequence = reference.getSequence();
-    // list of differences in form like "s|12|G|H"
 
     warningReadingFrameError = mutatedSequence.length() / 8;
     // because we work on amino acids
@@ -241,6 +243,125 @@ public class MutationAnalysis {
     return true;
   }
 
+  public static void findMixes(AnalysedSequence toAnalyze) {
+
+    // return list of all mixes
+    LinkedList<String> ret = new LinkedList<>();
+    // the gene references by the mutated Sequence
+    Gene reference = toAnalyze.getReferencedGene();
+    // the sequence to analyze
+    StringBuilder mutatedSequence = new StringBuilder();
+    mutatedSequence.append(toAnalyze.getSequence());
+    // the gene sequence
+    String originalSequence = reference.getSequence();
+
+    // list of all candidates in form of p|12|AG, p|3|GCA...
+    LinkedList<String> candidates = findPlacmidMixCanditates(toAnalyze);
+
+    // check every candidate and add it to the return list
+    for (String string : candidates) {
+      // all parameters of the candidate
+      String[] params = string.split("\\|");
+      // first nucleotide of AminoAcid
+      int position = Integer.parseInt(params[1]) - (Integer.parseInt(params[1]) % 3);
+
+      // AminoAcid in Gene
+      String oldAcid =
+          StringAnalysis.AMINO_ACID_SHORTS.get(originalSequence.substring(position, position + 3));
+
+      // the possible nucleotides
+      char[] theOther = params[2].toCharArray();
+
+      // start a Mix with H25, P84, ...
+      StringBuilder retString = new StringBuilder();
+      retString.append(oldAcid + params[1]);
+
+      // Add all possible Mixes
+      for (int i = 0; i < theOther.length; i++) {
+        mutatedSequence.setCharAt(Integer.parseInt(params[1]), theOther[i]);
+        retString.append(
+            StringAnalysis.AMINO_ACID_SHORTS.get(mutatedSequence.substring(position, position + 3))
+                + "/");
+      }
+      retString.subSequence(0, retString.length() - 1);
+      ret.add(retString.toString());
+    }
+    //add them to sequence
+    toAnalyze.setPlasmidmixes(ret);
+  }
+
+  public static LinkedList<String> findPlacmidMixCanditates(AnalysedSequence sequence) {
+
+    // List of candidates
+    LinkedList<String> ret = new LinkedList<>();
+
+    // Channels
+    org.jcvi.jillion.trace.chromat.Channel cA = sequence.getChannels().getAChannel();
+    org.jcvi.jillion.trace.chromat.Channel cG = sequence.getChannels().getGChannel();
+    org.jcvi.jillion.trace.chromat.Channel cC = sequence.getChannels().getCChannel();
+    org.jcvi.jillion.trace.chromat.Channel cT = sequence.getChannels().getTChannel();
+
+    // Qualities
+    byte[] qATemp = cA.getQualitySequence().toArray();
+    byte[] qGTemp = cG.getQualitySequence().toArray();
+    byte[] qCTemp = cC.getQualitySequence().toArray();
+    byte[] qTTemp = cT.getQualitySequence().toArray();
+
+    int[] qAi = new int[qATemp.length];
+    int[] qGi = new int[qGTemp.length];
+    int[] qCi = new int[qCTemp.length];
+    int[] qTi = new int[qTTemp.length];
+
+    // byte[] to int[]
+    for (int i = 0; i < qATemp.length; i++) {
+      qAi[i] = qATemp[i];
+      qGi[i] = qGTemp[i];
+      qCi[i] = qCTemp[i];
+      qTi[i] = qTTemp[i];
+    }
+
+    for (int i = 0; i < sequence.length(); i++) {
+      // Array of four qualities from four traces
+      int[] tmp = {qAi[i], qGi[i], qCi[i], qTi[i]};
+      // Counter to count maximum mix (all four possibilities
+      int cnt = 0;
+      // the candidate (a String in form of ACG,AT,...)
+      StringBuilder candidate = new StringBuilder();
+      Arrays.sort(tmp);
+      // find equal qualities
+      while (tmp[0] - 10 < tmp[1] && cnt < 4) {
+        Arrays.sort(tmp);
+        if (tmp[0] == qAi[i]) {
+          candidate.append("A");
+          tmp[0] = -11;
+          cnt++;
+        } else if (tmp[0] == qGi[i]) {
+          candidate.append("G");
+          tmp[0] = -11;
+          cnt++;
+        } else if (tmp[0] == qCi[i]) {
+          candidate.append("C");
+          tmp[0] = -11;
+          cnt++;
+        } else if (tmp[0] == qTi[i]) {
+          candidate.append("T");
+          tmp[0] = -11;
+          cnt++;
+
+        }
+      }
+      candidate.append(tmp[0]);
+
+      // if you find a canditate with more then one One codon and the quality is broken, we got a mix
+      if (candidate.length() != 1
+          && sequence.getQuality()[i] < (sequence.getQuality()[i - 1] / 2)) {
+        ret.add("p|" + i + "|" + candidate);
+      }
+      candidate = new StringBuilder();
+    }
+    return ret;
+  }
+
   /**
    * Compares to sequences and returns the differences as a list (represented by the positions). The
    * order of the input sequences is irrelevant.
@@ -281,7 +402,6 @@ public class MutationAnalysis {
     // counter variables for actual matrix position
     int row = matrixHeight - 1;
     int column = matrixWidth - 1;
-
 
     // add linked list to save diference strings
     LinkedList<String> result = new LinkedList<String>();
@@ -380,16 +500,27 @@ public class MutationAnalysis {
       throws CorruptedSequenceException {
     String first;
     String second;
-    
-    //convert offset and end to Aminoacids
+
+    // convert offset and end to Aminoacids
     int begin = seq.getOffset() * 3;
     int end = seq.getOffset() * 3 + seq.length();
 
-    //convert sequences to Aminoacids
+    // convert sequences to Aminoacids
     first = StringAnalysis.codonsToAminoAcids(seq.getReferencedGene().sequence.substring(begin,
         Math.min(end, seq.getReferencedGene().getSequence().length())));
     second = StringAnalysis.codonsToAminoAcids(seq.sequence);
-    //calculate difrences and return
+    // calculate difrences and return
     return reportDifferences(first.split("#")[0], second.split("#")[0]);
   }
+
+  public static int IntegerMax(int... n) {
+    int i = 0;
+    int max = n[i];
+
+    while (++i < n.length)
+      if (n[i] > max) max = n[i];
+
+    return max;
+  }
+
 }

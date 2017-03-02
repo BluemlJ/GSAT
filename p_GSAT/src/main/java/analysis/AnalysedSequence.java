@@ -30,6 +30,9 @@ public class AnalysedSequence extends Sequence {
    * The name of the file this sequence was obtained from. This is used to create the name of the
    * output file.
    */
+
+  private LinkedList<String> plasmidmixes = new LinkedList<>();
+
   private String fileName;
 
   /**
@@ -212,18 +215,18 @@ public class AnalysedSequence extends Sequence {
 
   public AbiChromatogram getAbiFile() {
     return abiFile;
-}
+  }
 
-public void setAbiFile(AbiChromatogram abiFile) {
+  public void setAbiFile(AbiChromatogram abiFile) {
     this.abiFile = abiFile;
-}
+  }
 
-public String getFileName() {
+  public String getFileName() {
     return fileName;
   }
 
 
-public void setFileName(String fileName) {
+  public void setFileName(String fileName) {
     this.fileName = fileName;
   }
 
@@ -327,7 +330,15 @@ public void setFileName(String fileName) {
     this.hisTagPosition = hisTagPosition;
   }
 
-  public ChannelGroup getChannels(){
-     return abiFile.getChannelGroup();
+  public ChannelGroup getChannels() {
+    return abiFile.getChannelGroup();
+  }
+
+  public LinkedList<String> getPlasmidmixes() {
+    return plasmidmixes;
+  }
+
+  public void setPlasmidmixes(LinkedList<String> plasmidmixxes) {
+    this.plasmidmixes = plasmidmixxes;
   }
 }
