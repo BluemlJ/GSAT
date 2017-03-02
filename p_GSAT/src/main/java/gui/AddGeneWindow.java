@@ -48,8 +48,6 @@ public class AddGeneWindow extends Application implements javafx.fxml.Initializa
   @FXML
   private Button cancelButton;
 
-  Scene scene;
-
   @Override
   public void initialize(URL location, ResourceBundle resources) {
 

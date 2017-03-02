@@ -47,7 +47,7 @@ public class LocalDBTest {
 	@Test
 	public void testDatabasePushPipeline() throws SQLException, DatabaseConnectionException{
 		DatabaseConnection.setDatabaseConnection(user, pass, port, server);
-		Connection conn = DatabaseConnection.establishConnection();
+		conn = DatabaseConnection.establishConnection();
 		DatabaseConnection.createDatabase();
 		LinkedList<String> mutations1 = new LinkedList<String>(Arrays.asList("t5a", "t6a"));
 		LinkedList<String> mutations2 = new LinkedList<String>(Arrays.asList("t1a", "t2a"));
