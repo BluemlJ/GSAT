@@ -430,13 +430,17 @@ public class GUIUtils {
       case RED:
         normalColor = "rgb(255, 158, 128)";
         hoverColor = "rgb(235,138,108)";
-        pressedColor = "rgb(215,118,88)";
+        pressedColor = "rgb(215, 118, 88)";
         break;
       case BLUE:
         normalColor = "rgb(130, 177, 255)";
         hoverColor = "rgb(120, 157, 235)";
-        pressedColor = "rgb(100,137,215)";
+        pressedColor = "rgb(100, 137, 215)";
         break;
+      case GRAY:
+        normalColor = "rgb(200, 200, 200)";
+        hoverColor = "rgb(220, 220, 220)";
+        pressedColor = "rgb(180, 180, 180)";
     }
 
     String normalStyle = "-fx-background-color: " + normalColor
