@@ -1,5 +1,6 @@
 package io;
 
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
@@ -8,6 +9,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.text.DateFormat;
 import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedList;
 
@@ -658,6 +660,39 @@ public class DatabaseConnection {
 			System.out.println("adding researcher " + researcher + "failed");
 			return -1;
 		}
+	}
+	
+	/**
+	 * pushes all genes saved in genes.txt
+	 * @throws SQLException
+	 * @throws DatabaseConnectionException
+	 * @throws IOException gene reading error
+	 * @author Lovis Heindrich
+	 */
+	public static void pushAllGenes() throws SQLException, DatabaseConnectionException, IOException{
+		
+		// get Genes
+		GeneHandler.readGenes();
+		ArrayList<Gene> genes = GeneHandler.getGeneList();
+		
+		// get a connection
+		conn = establishConnection();
+		
+		// select gsat database
+		Statement stmt = conn.createStatement();
+		stmt.execute("USE gsat");
+		stmt.close();
+				
+		for(Gene gene : genes){
+			// search for researcher
+			int researcherId = pushResearcher(conn, gene.getResearcher());
+			
+			// push the gene
+			pushGene(conn, gene, researcherId);
+			
+		}
+		
+		conn.close();
 	}
 
 }
