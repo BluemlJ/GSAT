@@ -534,9 +534,11 @@ public class MutationAnalysis {
     int i = 0;
     int max = n[i];
 
-    while (++i < n.length)
-      if (n[i] > max) max = n[i];
-
+    while (++i < n.length) {
+      if (n[i] > max) {
+        max = n[i];
+      }
+    }
     return max;
   }
 

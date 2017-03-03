@@ -43,7 +43,7 @@ public class ShowGeneWindow extends Application implements javafx.fxml.Initializ
     commentArea.setWrapText(true);
     GUIUtils.setColorOnButton(okButton, ButtonColor.BLUE);
 
-  
+
     Gene sGene = SettingsWindow.selectedGene;
     String tmp;
     nameField.setText(sGene.getName());
@@ -67,7 +67,7 @@ public class ShowGeneWindow extends Application implements javafx.fxml.Initializ
         stage.close();
       }
     });
- }
+  }
 
   @Override
   public void stop() throws Exception {

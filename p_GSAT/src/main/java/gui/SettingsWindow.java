@@ -84,7 +84,7 @@ public class SettingsWindow extends Application implements javafx.fxml.Initializ
   public void initialize(URL location, ResourceBundle resources) {
 
     showGeneButton.setDisable(true);
-    
+
     GUIUtils.initializeResearchers(researcherDrobdown);
     GUIUtils.initializeGeneBox(geneList);
     geneList.setStyle("-fx-font-style: italic;");

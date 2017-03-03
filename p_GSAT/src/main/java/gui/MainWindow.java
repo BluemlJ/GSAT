@@ -117,8 +117,8 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
     GUIUtils.setColorOnButton(manualButton, ButtonColor.GRAY);
     GUIUtils.setColorOnButton(aboutButton, ButtonColor.GRAY);
     GUIUtils.setColorOnButton(databaseButton, ButtonColor.GRAY);
-  
-    
+
+
     try {
       ConfigHandler.readConfig();
     } catch (UnknownConfigFieldException | ConfigNotFoundException | IOException e1) {
@@ -358,8 +358,8 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
           final Parent root = loader.load();
 
           TextWindow texWin = loader.<TextWindow>getController();
-          String content =
-              GUIUtils.convertStreamToString(ClassLoader.getSystemResourceAsStream("manual/About.txt"));
+          String content = GUIUtils
+              .convertStreamToString(ClassLoader.getSystemResourceAsStream("manual/About.txt"));
           texWin.setText(content);
 
           Scene scene = new Scene(root);
@@ -404,8 +404,8 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
         }
       }
     });
-    
- // set Database button to open Database window
+
+    // set Database button to open Database window
     databaseButton.setOnAction(new EventHandler<ActionEvent>() {
       @Override
       public void handle(ActionEvent arg0) {
@@ -439,6 +439,6 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
     primaryStage.show();
   }
 
-  
+
 
 }

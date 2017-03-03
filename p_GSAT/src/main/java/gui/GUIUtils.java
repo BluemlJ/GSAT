@@ -441,9 +441,9 @@ public class GUIUtils {
         break;
       case GRAY:
         int normal = 200;
-        normalColor = "rgb(" + normal + ", "  + normal + ", "  + normal + ")";
-        hoverColor = "rgb(" + (normal - 20) + ", "  + (normal - 20) + ", "  + (normal - 20) + ")";
-        pressedColor = "rgb(" + (normal - 40) + ", "  + (normal - 40) + ", "  + (normal - 40) + ")";
+        normalColor = "rgb(" + normal + ", " + normal + ", " + normal + ")";
+        hoverColor = "rgb(" + (normal - 20) + ", " + (normal - 20) + ", " + (normal - 20) + ")";
+        pressedColor = "rgb(" + (normal - 40) + ", " + (normal - 40) + ", " + (normal - 40) + ")";
     }
 
     String normalStyle = "-fx-background-color: " + normalColor
@@ -488,7 +488,7 @@ public class GUIUtils {
     return text;
   }
 
-  
+
   public static String convertStreamToString(InputStream is) {
     Scanner s = new Scanner(is);
     String ret;
@@ -501,6 +501,6 @@ public class GUIUtils {
     s.close();
     return ret;
   }
-  
-  
+
+
 }

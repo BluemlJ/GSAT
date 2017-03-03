@@ -132,7 +132,7 @@ public class AddGeneWindow extends Application implements javafx.fxml.Initializa
               alert.showAndWait();
 
             }
-            
+
           } catch (DuplicateGeneException | IOException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();

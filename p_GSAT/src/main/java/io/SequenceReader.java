@@ -75,13 +75,13 @@ public class SequenceReader {
       throws FileReadingException, IOException {
 
     File referencedFile = file;
-           
+
 
     AbiChromatogram abifile = (AbiChromatogram) ChromatogramFactory.create(referencedFile);
     String sequence = abifile.getNucleotideSequence().toString();
     byte[] qualities = abifile.getQualitySequence().toArray();
 
-     // TODO Add Primer
+    // TODO Add Primer
 
     // convert qualities from byte[] to int[]
     int[] qualitiesInt = new int[qualities.length];
@@ -155,8 +155,8 @@ public class SequenceReader {
     }
     return new Pair<LinkedList<File>, LinkedList<File>>(ab1Files, oddFiles);
   }
-  
- 
+
+
 
   /**
    * Discards the current path and files.

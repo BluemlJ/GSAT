@@ -203,8 +203,8 @@ public class ParameterWindow extends Application implements javafx.fxml.Initiali
           final Parent root = loader.load();
 
           TextWindow texWin = loader.<TextWindow>getController();
-          String content =
-              GUIUtils.convertStreamToString(ClassLoader.getSystemResourceAsStream("manual/Parameters.txt"));
+          String content = GUIUtils.convertStreamToString(
+              ClassLoader.getSystemResourceAsStream("manual/Parameters.txt"));
           texWin.setText(content);
 
           Scene scene = new Scene(root);

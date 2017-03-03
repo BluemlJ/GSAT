@@ -41,8 +41,8 @@ public class ConfigHandler {
   private static int breakcounter = defaultValues[2];
   private static int numAverageNucleotides = defaultValues[3];
   private static int startcounter = defaultValues[4];
-  
-  // date format 
+
+  // date format
   private static DateFormat dateFormat = new SimpleDateFormat("dd/MM/yy");
 
   /**
@@ -84,10 +84,10 @@ public class ConfigHandler {
           }
           break;
         case "srcPath":
-            ConfigHandler.srcPath = elements[1].trim();
-            break;
-            
-            
+          ConfigHandler.srcPath = elements[1].trim();
+          break;
+
+
         // DB Login
         case "dbUser":
           ConfigHandler.setDbUser(value);
@@ -187,7 +187,7 @@ public class ConfigHandler {
     }
     configWriter.write("srcPath" + SEPARATOR_CHAR + srcPath);
     configWriter.write(System.getProperty("line.separator"));
-    
+
     // write researchers
     configWriter.write("researchers");
     for (String res : researcherList) {
@@ -225,13 +225,13 @@ public class ConfigHandler {
 
   public static String getSrcPath() {
     return srcPath;
-}
+  }
 
-public static void setSrcPath(String srcPath) {
+  public static void setSrcPath(String srcPath) {
     ConfigHandler.srcPath = srcPath;
-}
+  }
 
-public static String[] getSortedResearcherList() {
+  public static String[] getSortedResearcherList() {
     Arrays.sort(researcherList);
     return researcherList;
   }
@@ -399,12 +399,12 @@ public static String[] getSortedResearcherList() {
     ConfigHandler.defaultValues = defaultValues;
   }
 
-public static DateFormat getDateFormat() {
-	return dateFormat;
-}
+  public static DateFormat getDateFormat() {
+    return dateFormat;
+  }
 
-public static void setDateFormat(DateFormat dateFormat) {
-	ConfigHandler.dateFormat = dateFormat;
-}
+  public static void setDateFormat(DateFormat dateFormat) {
+    ConfigHandler.dateFormat = dateFormat;
+  }
 
 }

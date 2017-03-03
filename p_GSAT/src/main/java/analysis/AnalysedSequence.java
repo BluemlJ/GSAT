@@ -79,10 +79,10 @@ public class AnalysedSequence extends Sequence {
   private double trimPercentage;
 
   private String primer;
-  
+
   private double avgQuality;
-  
-  
+
+
   /**
    * Specifies the position (starting with 0) where a HIS tag is found in the analysed sequence.
    * It's -1 if there is no such tag found.
@@ -105,12 +105,12 @@ public class AnalysedSequence extends Sequence {
     this.qualities = qualities;
   }
 
-  
+
   public AnalysedSequence() {
     super("", null);
   }
-  
-  
+
+
   /**
    * Add a discovered, String-encoded mutation to the list of already discovered mutations.
    * 
@@ -289,20 +289,20 @@ public class AnalysedSequence extends Sequence {
   public double returnAvgQuality() {
     return avgQuality;
   }
-  
+
   public void setAvgQuality(double avgQuality) {
     this.avgQuality = avgQuality;
   }
-  
-  
+
+
   public void setPrimer(String primer) {
     this.primer = primer;
   }
-  
+
   public String getPrimer() {
     return primer;
   }
-  
+
 
   public Gene getReferencedGene() {
     return referencedGene;
@@ -324,7 +324,6 @@ public class AnalysedSequence extends Sequence {
   }
 
 
-  
 
   public double getTrimPercentage() {
     return trimPercentage;
