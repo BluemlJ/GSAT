@@ -34,7 +34,7 @@ public class SettingsWindow extends Application implements javafx.fxml.Initializ
 
   public static boolean addParametersOpen = false;
   private boolean addResearcher = false;
-  public static Gene selectedGene;
+  private static Gene selectedGene;
 
   @FXML
   private ListView<String> geneList;
@@ -42,7 +42,7 @@ public class SettingsWindow extends Application implements javafx.fxml.Initializ
   @FXML
   private TextField parameter1Field;
   @FXML
-  private ChoiceBox<String> researcherDrobdown;
+  private ChoiceBox<String> researcherDropdown;
 
   @FXML
   private TextField srcPathField;
@@ -72,17 +72,15 @@ public class SettingsWindow extends Application implements javafx.fxml.Initializ
   public static Gene getSelectedGene() {
     return selectedGene;
   }
-
-  public static void setSelectedGene(Gene selectedGene) {
-    SettingsWindow.selectedGene = selectedGene;
-  }
+  
+  
 
   @Override
   public void initialize(URL location, ResourceBundle resources) {
 
     showGeneButton.setDisable(true);
 
-    GUIUtils.initializeResearchers(researcherDrobdown);
+    GUIUtils.initializeResearchers(researcherDropdown);
     GUIUtils.initializeGeneBox(geneList);
     geneList.setStyle("-fx-font-style: italic;");
 
@@ -141,7 +139,7 @@ public class SettingsWindow extends Application implements javafx.fxml.Initializ
     });
 
 
-    researcherDrobdown.getSelectionModel().selectedItemProperty()
+    researcherDropdown.getSelectionModel().selectedItemProperty()
         .addListener((obeservable, value, newValue) -> {
           ConfigHandler.setResearcher(newValue);
           try {
@@ -225,7 +223,7 @@ public class SettingsWindow extends Application implements javafx.fxml.Initializ
         TextInputDialog dialog = new TextInputDialog("your name");
         dialog.setTitle("Add a new researcher");
         dialog.setHeaderText("Please enter the name of the new researcher.");
-        dialog.setContentText("The name should have a form like Max M.");
+        dialog.setContentText("The name should have a form like 'Max M'.");
         dialog.setContentText("Name:");
 
         ButtonBar buttonBar = (ButtonBar) dialog.getDialogPane().lookup(".button-bar");
@@ -246,8 +244,8 @@ public class SettingsWindow extends Application implements javafx.fxml.Initializ
         if (addResearcher) {
           try {
             ConfigHandler.writeConfig();
-            GUIUtils.initializeResearchers(researcherDrobdown);
-            researcherDrobdown.getSelectionModel()
+            GUIUtils.initializeResearchers(researcherDropdown);
+            researcherDropdown.getSelectionModel()
                 .select(result.get().replaceAll(ConfigHandler.SEPARATOR_CHAR + "", ""));
             addResearcher = false;
           } catch (IOException e) {
@@ -279,9 +277,9 @@ public class SettingsWindow extends Application implements javafx.fxml.Initializ
     deleteResearcherButton.setOnAction(new EventHandler<ActionEvent>() {
       @Override
       public void handle(ActionEvent arg0) {
-        ConfigHandler.deleteResearcher(researcherDrobdown.getSelectionModel().getSelectedItem());
-        researcherDrobdown.getSelectionModel().clearSelection();
-        GUIUtils.initializeResearchers(researcherDrobdown);
+        ConfigHandler.deleteResearcher(researcherDropdown.getSelectionModel().getSelectedItem());
+        researcherDropdown.getSelectionModel().clearSelection();
+        GUIUtils.initializeResearchers(researcherDropdown);
       }
     });
 
@@ -337,12 +335,12 @@ public class SettingsWindow extends Application implements javafx.fxml.Initializ
      */
   }
 
+  
   public void updateGenes() {
-    geneList.getSelectionModel().clearSelection();
-    showGeneButton.setDisable(false);
     GUIUtils.initializeGeneBox(geneList);
   }
 
+  
   public void decNumGenWindows() {
     numGeneWindows--;
 

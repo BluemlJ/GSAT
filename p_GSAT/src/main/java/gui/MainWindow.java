@@ -171,10 +171,10 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
     infoArea.getChildren().add(new Text("Welcome to GSAT! \n"));
     // read Genes and show them in the choicebox
 
-    Pair<Boolean, Text> output = GUIUtils.initializeGeneBox(geneBox);
+    Text output = GUIUtils.initializeGeneBox(geneBox);
     geneBox.setStyle("-fx-font-style: italic;");
 
-    infoArea.getChildren().add(output.second);
+    infoArea.getChildren().add(output);
 
     geneBox.setOnMouseClicked(arg01 -> GUIUtils.initializeGeneBox(geneBox));
 
@@ -182,7 +182,7 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
     geneBox.getSelectionModel().selectedItemProperty()
         .addListener((obeservable, value, newValue) -> {
           if (newValue != null) {
-            infoArea.getChildren().add(new Text("New Gene selected: " + newValue + "\n"));
+            infoArea.getChildren().add(new Text("New gene selected: " + newValue + "\n"));
           }
         });
 
@@ -285,7 +285,7 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
             }
 
             LinkedList<Text> resultingLines =
-                GUIUtils.runAnalysis(srcFieldTest, geneBoxItem, destfileNameText, bar).second;
+                GUIUtils.runAnalysis(srcFieldTest, geneBoxItem, destfileNameText, bar);
             Platform.runLater(new Runnable() {
 
               @Override

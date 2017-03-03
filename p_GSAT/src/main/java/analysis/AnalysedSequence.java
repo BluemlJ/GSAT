@@ -1,5 +1,6 @@
 package analysis;
 
+import java.util.Arrays;
 import java.util.LinkedList;
 
 import org.jcvi.jillion.trace.chromat.ChannelGroup;
@@ -29,8 +30,6 @@ public class AnalysedSequence extends Sequence {
    * The name of the file this sequence was obtained from. This is used to create the name of the
    * output file.
    */
-
-  private LinkedList<String> plasmidmixes = new LinkedList<>();
 
   private String fileName;
 
@@ -121,6 +120,54 @@ public class AnalysedSequence extends Sequence {
     mutations.add(mutation);
   }
 
+  
+  
+  public void sortInPlasmidmixes(LinkedList<String> plasmidmixes) {
+    
+    for (String mix : plasmidmixes) {
+      for (int i = 0; i < mutations.size(); i++) {
+        String normalMutation = mutations.get(i);
+        if (numberOfMutation(normalMutation) == numberOfMutation(mix)) {
+          mutations.remove(i);
+          mutations.add(i, mix);
+          break;
+        } else if (numberOfMutation(normalMutation) > numberOfMutation(mix)) {
+          mutations.add(i, mix);
+          break;
+        }
+      }
+      mutations.addLast(mix);
+    }
+    
+  }
+  
+  
+  
+  private int numberOfMutation(String mutationString) {
+    
+    char[] chars = mutationString.toCharArray();
+    
+    int end = chars.length - 1;
+    int start = chars.length - 1;
+    while(!String.valueOf(chars[end]).matches("[0-9]")) {
+      end--;
+    }
+    start = end;
+    while(String.valueOf(chars[start]).matches("[0-9]")) {
+      start--;
+    }
+    
+    char[] numberChars = Arrays.copyOfRange(chars, start, end + 1);
+    String numberString = new String(numberChars);
+    
+    int number = Integer.parseInt(numberString);
+    
+    return number;
+   
+  }
+  
+  
+  
 
 
   /**
@@ -328,11 +375,5 @@ public class AnalysedSequence extends Sequence {
     return abiFile.getChannelGroup();
   }
 
-  public LinkedList<String> getPlasmidmixes() {
-    return plasmidmixes;
-  }
-
-  public void setPlasmidmixes(LinkedList<String> plasmidmixxes) {
-    this.plasmidmixes = plasmidmixxes;
-  }
+  
 }

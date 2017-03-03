@@ -55,15 +55,15 @@ public class GUIUtils {
    * @param genes the choiceBox to initialize
    * @return reportpair, with indicator Boolean and reportString
    */
-  public static Pair<Boolean, Text> initializeGeneBox(ChoiceBox<String> genes) {
+  public static Text initializeGeneBox(ChoiceBox<String> genes) {
     try {
       GeneHandler.readGenes();
     } catch (IOException e) {
-      return new Pair<Boolean, Text>(false, getRedText("Reading Gene.txt was unsuccessful\n"));
+      return getRedText("Reading Gene.txt was unsuccessful\n");
     }
 
     genes.setItems(FXCollections.observableArrayList(GeneHandler.getGeneNamesAndOrganisms()));
-    return new Pair<Boolean, Text>(true, new Text("Reading Gene.txt was successful\n"));
+    return new Text("Reading Gene.txt was successful\n");
   }
 
   /**
@@ -71,15 +71,15 @@ public class GUIUtils {
    * @param genes
    * @return
    */
-  public static Pair<Boolean, Text> initializeGeneBox(ListView<String> genes) {
+  public static Text initializeGeneBox(ListView<String> genes) {
     try {
       GeneHandler.readGenes();
     } catch (IOException e) {
-      return new Pair<Boolean, Text>(false, getRedText("Reading Gene.txt was unsuccessful\n"));
+      return getRedText("Reading Gene.txt was unsuccessful\n");
     }
 
     genes.setItems(FXCollections.observableArrayList(GeneHandler.getGeneNamesAndOrganisms()));
-    return new Pair<Boolean, Text>(true, new Text("Reading Gene.txt was successful"));
+    return new Text("Reading Gene.txt was successful");
   }
 
   /**
@@ -87,17 +87,15 @@ public class GUIUtils {
    * @param dropdown
    * @return
    */
-  public static Pair<Boolean, Text> initializeResearchers(ChoiceBox<String> dropdown) {
+  public static Text initializeResearchers(ChoiceBox<String> dropdown) {
     try {
       ConfigHandler.readConfig();
     } catch (IOException | UnknownConfigFieldException | ConfigNotFoundException e) {
-      return new Pair<Boolean, Text>(false,
-          getRedText("Reading researchers from config.txt was unsuccessful\n"));
+      return getRedText("Reading researchers from config.txt was unsuccessful\n");
     }
     dropdown.setItems(FXCollections.observableArrayList(ConfigHandler.getSortedResearcherList()));
     dropdown.getSelectionModel().select(ConfigHandler.getResearcher());
-    return new Pair<Boolean, Text>(true,
-        new Text("Reading researchers from config.txt was successful"));
+    return new Text("Reading researchers from config.txt was successful");
 
   }
 
@@ -110,7 +108,7 @@ public class GUIUtils {
    *         printed in the infoarea.
    * @throws DissimilarGeneException
    */
-  public static Pair<Boolean, LinkedList<Text>> runAnalysis(String sourcepath, String geneId,
+  public static LinkedList<Text> runAnalysis(String sourcepath, String geneId,
       String resultname, ProgressBar bar) throws DissimilarGeneException {
 
     LinkedList<Text> resultingLines = new LinkedList<Text>();
@@ -121,15 +119,13 @@ public class GUIUtils {
 
     if (sequences.first == null) {
       if (sequences.second == null) {
-        return new Pair<Boolean, LinkedList<Text>>(success,
-            wrap(
+        return wrap(
                 "Reading Sequences unsuccessful: "
                     + "please make sure the given path is correct or the file is valid\n",
-                resultingLines, true));
+                resultingLines, true);
       } else {
-        return new Pair<Boolean, LinkedList<Text>>(success,
-            wrap("No AB1 files were found at the given path or the file is invalid.\n",
-                resultingLines, true));
+        return wrap("No AB1 files were found at the given path or the file is invalid.\n",
+                resultingLines, true);
       }
     } else {
       wrap("Reading .ab1 file(s) was successful\n", resultingLines, false);
@@ -157,9 +153,8 @@ public class GUIUtils {
       try {
         StringAnalysis.checkComplementAndReverse(toAnalyse);
       } catch (CorruptedSequenceException e) {
-        return new Pair<Boolean, LinkedList<Text>>(success,
-            wrap("Calculation of complementary sequence unsuccessful, analysing stops\n",
-                resultingLines, true));
+        return wrap("Calculation of complementary sequence unsuccessful, analysing stops\n",
+                resultingLines, true);
       }
 
       // cut out vector
@@ -182,9 +177,8 @@ public class GUIUtils {
       try {
         MutationAnalysis.findMutations(toAnalyse);
       } catch (UndefinedTypeOfMutationException | CorruptedSequenceException e) {
-        return new Pair<Boolean, LinkedList<Text>>(success,
-            wrap("Mutation analysis was unsuccessful because of error in " + file.getName() + "\n",
-                resultingLines, true));
+        return  wrap("Mutation analysis was unsuccessful because of error in " + file.getName() + "\n",
+                resultingLines, true);
       }
 
       // add entry to database
@@ -194,11 +188,9 @@ public class GUIUtils {
 
       } catch (MissingPathException e2) {
         FileSaver.setLocalPath("");
-        return new Pair<Boolean, LinkedList<Text>>(success,
-            wrap("Missing path to destination, aborting analysis.\n", resultingLines, true));
+        return wrap("Missing path to destination, aborting analysis.\n", resultingLines, true);
       } catch (IOException e2) {
-        return new Pair<Boolean, LinkedList<Text>>(success,
-            wrap("Error while storing data, aborting analysis.\n", resultingLines, true));
+        return wrap("Error while storing data, aborting analysis.\n", resultingLines, true);
       }
 
       counter++;
@@ -208,7 +200,7 @@ public class GUIUtils {
     // set output parameter and return Pair.
     wrap("Analysis was successful\n", resultingLines, false);
     success = true;
-    return new Pair<Boolean, LinkedList<Text>>(success, resultingLines);
+    return resultingLines;
   }
 
   private static LinkedList<Text> wrap(String line, LinkedList<Text> list, boolean red) {

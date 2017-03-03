@@ -21,7 +21,7 @@
       <ToolBar prefHeight="40.0" prefWidth="200.0">
         <items>
             <Button fx:id="databaseButton" mnemonicParsing="false" text="Database" />
-          <Button fx:id="settingsButton" mnemonicParsing="false" text="Settings" />
+            <Button fx:id="settingsButton" mnemonicParsing="false" text="Settings" />
             <Button fx:id="manualButton" mnemonicParsing="false" text="Help" />
             <Button fx:id="aboutButton" mnemonicParsing="false" text="About" />
         </items>

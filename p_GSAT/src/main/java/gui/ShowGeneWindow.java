@@ -44,7 +44,7 @@ public class ShowGeneWindow extends Application implements javafx.fxml.Initializ
     GUIUtils.setColorOnButton(okButton, ButtonColor.BLUE);
 
 
-    Gene sGene = SettingsWindow.selectedGene;
+    Gene sGene = SettingsWindow.getSelectedGene();
     String tmp;
     nameField.setText(sGene.getName());
 
