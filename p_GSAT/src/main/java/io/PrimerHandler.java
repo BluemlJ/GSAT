@@ -49,7 +49,7 @@ public class PrimerHandler {
   }
 
 
-  private static void initPrimer() throws IOException {
+  public static void initPrimer() throws IOException {
     if (!exists()) {
       File primerFile = new File(path);
       primerFile.getParentFile().mkdirs();
@@ -63,10 +63,14 @@ public class PrimerHandler {
     }
   }
 
-  // TODO
-  public static void writeGenes(String genePath) throws IOException {
+  /**
+   * 
+   * @param genePath
+   * @throws IOException
+   */
+  public static void writePrimer(String primerPath) throws IOException {
     // clears all primers from file
-    BufferedWriter primerWriter = new BufferedWriter(new FileWriter(genePath));
+    BufferedWriter primerWriter = new BufferedWriter(new FileWriter(primerPath));
     // write all previously known primers
     for (Primer primer : primerList) {
       // Format: name;sequence;researcher;meltingpoint;id
@@ -95,6 +99,8 @@ public class PrimerHandler {
       primerString.append(System.getProperty("line.separator"));
       primerWriter.write(primerString.toString());
     }
+    
+    primerWriter.close();
   }
 
   private static boolean exists() {
@@ -117,5 +123,10 @@ public class PrimerHandler {
   public static void setPath(String path) {
     PrimerHandler.path = path;
   }
+
+
+public static void writePrimer() throws IOException {
+	writePrimer(path);
+}
 
 }
