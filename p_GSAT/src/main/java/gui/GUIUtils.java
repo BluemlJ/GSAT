@@ -440,9 +440,10 @@ public class GUIUtils {
         pressedColor = "rgb(100, 137, 215)";
         break;
       case GRAY:
-        normalColor = "rgb(220, 220, 220)";
-        hoverColor = "rgb(200, 200, 200)";
-        pressedColor = "rgb(180, 180, 180)";
+        int normal = 200;
+        normalColor = "rgb(" + normal + ", "  + normal + ", "  + normal + ")";
+        hoverColor = "rgb(" + (normal - 20) + ", "  + (normal - 20) + ", "  + (normal - 20) + ")";
+        pressedColor = "rgb(" + (normal - 40) + ", "  + (normal - 40) + ", "  + (normal - 40) + ")";
     }
 
     String normalStyle = "-fx-background-color: " + normalColor
