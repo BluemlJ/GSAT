@@ -51,4 +51,3 @@ test:
   stage: test
   script:
   - $GRADLE_COMMAND check
-
