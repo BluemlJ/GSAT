@@ -433,7 +433,7 @@ public class StringAnalysis {
     }
     // if counter greater 5 we got a HISTag.
     if (counter > 5) {
-      result = toAnalyze.getSequence().length() + toAnalyze.getLeftVector().length() - counter * 3;
+      result = toAnalyze.getSequence().length() - counter * 3;
     }
     return result;
   }
