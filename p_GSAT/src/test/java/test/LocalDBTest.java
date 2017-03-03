@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedList;
 
@@ -17,8 +18,10 @@ import com.mysql.cj.jdbc.MysqlDataSource;
 
 import analysis.AnalysedSequence;
 import analysis.Gene;
+import analysis.Primer;
 import exceptions.DatabaseConnectionException;
 import io.DatabaseConnection;
+import io.PrimerHandler;
 
 // import com.mysql.cj.jdbc.MysqlDataSource;
 
@@ -43,6 +46,36 @@ public class LocalDBTest {
 	Connection conn = null;
 	java.sql.Statement stmt = null;
 	ResultSet rs = null;
+	
+	//TODO
+	@Ignore
+	@Test
+	public void testPushAllPrimer() throws DatabaseConnectionException, SQLException{
+		DatabaseConnection.setDatabaseConnection(user, pass, port, server);
+		DatabaseConnection.createDatabase();
+		Primer p1 = new Primer("AATAATAAT", "Lovis Heindrich", 50, "A01", "primer1");
+		Primer p2 = new Primer("TTATTATTA", "Kevin Otto", 100, "B01", "primer2");
+		ArrayList<Primer> primerList = new ArrayList<Primer>();
+		primerList.add(p1);
+		primerList.add(p2);
+		PrimerHandler.setPrimerList(primerList);
+		DatabaseConnection.pushAllPrimer();
+	}
+	
+	//TODO
+	@Ignore
+	@Test
+	public void testPushPrimer() throws DatabaseConnectionException, SQLException{
+		DatabaseConnection.setDatabaseConnection(user, pass, port, server);
+		Connection conn = DatabaseConnection.establishConnection();
+		DatabaseConnection.createDatabase();
+		Primer p1 = new Primer("AATAATAAT", "Lovis Heindrich", 50, "A01", "primer1");
+		Primer p2 = new Primer("TTATTATTA", "Kevin Otto", 100, "B01", "primer2");
+		DatabaseConnection.pushPrimer(conn, p1, 0);
+		DatabaseConnection.pushPrimer(conn, p2, 0);
+		DatabaseConnection.pushPrimer(conn, p1, 0);
+		DatabaseConnection.pushPrimer(conn, p2, 0);
+	}
 	
 	@Ignore
 	@Test

@@ -23,7 +23,7 @@ public class GeneHandler {
   private static ArrayList<Gene> geneList;
   private static String path =
       System.getProperty("user.home") + File.separator + "gsat" + File.separator + "genes.txt";
-  private static final String SEPARATOR = ";";
+  private static final String SEPARATOR = ConfigHandler.SEPARATOR_CHAR + "";
 
   public static void addGene(String geneName, String geneSequence)
       throws DuplicateGeneException, IOException {
