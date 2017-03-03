@@ -1,0 +1,17 @@
+The following files have been detected as valid AB1/ABI files:
+>>> seq1.ab1
+>>> seq2.abi
+>>> seq3.ab1
+>>> seq4.AB1
+
+Number of valid files: 4
+
+The following files were invalid:
+>>> text.txt
+>>> story.pdf
+>>> story2.pdf
+
+Number of invalid files: 3
+
+Config file: No configuration file found
+

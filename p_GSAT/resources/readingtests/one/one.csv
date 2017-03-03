@@ -1,0 +1,3 @@
+id; file name; gene; gene organism; mutations (with codons); comments; researcher; date; average quality (percent); percentage of quality trim; nucleotide sequence; left vector; right vector; primer; HIS tag; mutations (without codons); manually checked
+1; test1.ab1; FSA1; e; K9L (CAA), D9L (CAA), W9L (CAA); l; test; 06/03/17; 44.4; 3; AAAAAAAAAAAAAAAAA; CCC; null; none; 4; K9L; y
+2; test2.ab1; FSA1; e; K9J (CCA), G5H (AGG); d; test2; 06/03/17; 32.3; 4; TTCCTTCTCCTCC; TTCA; AA; none; none; K9J; yes

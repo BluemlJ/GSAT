@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Text?>
+
+<VBox prefHeight="91.0" prefWidth="397.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.ParameterWindow">
+  <children>
+      <VBox prefHeight="331.0" prefWidth="453.0">
+         <children>
+            <AnchorPane prefHeight="0.0" prefWidth="453.0">
+               <children>
+                  <TextField fx:id="avgApproximationEnd" layoutX="177.0" layoutY="21.0" prefHeight="25.0" prefWidth="82.0" promptText="25" />
+                  <Text layoutX="14.0" layoutY="38.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Minimal Start Quality" wrappingWidth="161.984375" />
+               </children>
+            </AnchorPane>
+         </children>
+      </VBox>
+      <VBox prefHeight="331.0" prefWidth="453.0">
+         <children>
+            <AnchorPane prefHeight="0.0" prefWidth="453.0">
+               <children>
+                  <TextField fx:id="avgApproximationStart" layoutX="177.0" layoutY="21.0" prefHeight="25.0" prefWidth="82.0" promptText="30" />
+                  <Text layoutX="14.0" layoutY="38.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Minimal End Quality" wrappingWidth="161.984375" />
+               </children>
+            </AnchorPane>
+         </children>
+      </VBox>
+      <VBox prefHeight="331.0" prefWidth="453.0">
+         <children>
+            <AnchorPane prefHeight="0.0" prefWidth="453.0">
+               <children>
+                  <TextField fx:id="breakcounter" layoutX="177.0" layoutY="21.0" prefHeight="25.0" prefWidth="82.0" promptText="9" />
+                  <Text layoutX="14.0" layoutY="38.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Bad Quality Margin" wrappingWidth="161.984375" />
+                  <Button fx:id="helpButton" layoutX="268.0" layoutY="20.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="122.0" text="Help" AnchorPane.rightAnchor="5.0" />
+               </children>
+            </AnchorPane>
+         </children>
+      </VBox>
+      <VBox prefHeight="331.0" prefWidth="453.0">
+         <children>
+            <AnchorPane prefHeight="0.0" prefWidth="453.0">
+               <children>
+                  <TextField fx:id="startcounter" layoutX="177.0" layoutY="21.0" prefHeight="25.0" prefWidth="82.0" promptText="3" />
+                  <Text layoutX="14.0" layoutY="38.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Good Quality Margin" wrappingWidth="161.984375" />
+                  <Button fx:id="defaultButton" layoutX="269.0" layoutY="21.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="122.0" text="Reset" AnchorPane.rightAnchor="5.0" />
+               </children>
+            </AnchorPane>
+         </children>
+      </VBox>
+      <VBox prefHeight="331.0" prefWidth="453.0">
+         <children>
+            <AnchorPane prefHeight="0.0" prefWidth="453.0">
+               <children>
+                  <TextField fx:id="numAverageNucleotides" layoutX="177.0" layoutY="21.0" prefHeight="25.0" prefWidth="82.0" promptText="20" />
+                  <Text layoutX="14.0" layoutY="38.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Search Radius" wrappingWidth="161.984375" />
+                  <Button fx:id="cancelButton" layoutX="329.0" layoutY="21.0" mnemonicParsing="false" text="Cancel" AnchorPane.rightAnchor="5.0" />
+                  <Button fx:id="saveButton" layoutX="269.0" layoutY="21.0" mnemonicParsing="false" text="Save" AnchorPane.leftAnchor="269.0" />
+               </children>
+            </AnchorPane>
+         </children>
+      </VBox>
+      <VBox prefHeight="331.0" prefWidth="453.0">
+         <children>
+            <AnchorPane prefHeight="36.0" prefWidth="397.0">
+               <children>
+                  <Pane prefHeight="16.0" prefWidth="200.0" />
+               </children>
+            </AnchorPane>
+         </children>
+      </VBox>
+      <Pane prefHeight="200.0" prefWidth="200.0" />
+  </children>
+</VBox>

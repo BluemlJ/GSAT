@@ -1,0 +1,3 @@
+id; file name; gene; gene organism; mutations (with codons); comments; researcher; date; average quality (percent); percentage of quality trim; nucleotide sequence; left vector; right vector; primer; HIS tag; mutations (without codons); manually checked
+1; y.ab1; FSA1; ecoli; R6F (AAA); comment; -; 02/03/17; 99.9997646690603; 55; ATC; CCC; null; none; 3; R6F; no
+2; z.ab1; FSA1; ecoli; F6R (ACT); c; -; 02/03/17; 99.99988905066168; 49; AATATC; TTC; A; none; none; F6R; true

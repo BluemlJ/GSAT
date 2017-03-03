@@ -1,0 +1,12 @@
+researcher;lovis heindrich
+srcPath; 
+researchers;lovis heindrich;jannis blueml;kevin otto;ben Kohr
+dbUrl;test
+dbUser;user
+dbPass;a
+dbPort;3
+avgApproximationStart;50
+avgApproximationEnd;49
+breakcounter;30
+numAverageNucleotides;3
+startcounter;2
