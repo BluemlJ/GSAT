@@ -264,7 +264,7 @@ public class DatabaseConnection {
 					+ "researcher INTEGER unsigned, comment VARCHAR(1000), organism VARCHAR(1000), PRIMARY KEY(id))");
 			stmt.executeUpdate("CREATE TABLE primer (id INTEGER unsigned NOT NULL AUTO_INCREMENT, "
 					+ "name VARCHAR(100) NOT NULL, primerid VARCHAR(100) NOT NULL, "
-					+ "sequence MEDIUMTEXT NOT NULL, date DATE, researcher INTEGER unsigned, meltingpoint INTEGER");
+					+ "sequence MEDIUMTEXT NOT NULL, date DATE, researcher INTEGER unsigned, meltingpoint INTEGER, PRIMARY KEY(id))");
 			stmt.executeUpdate("CREATE TABLE sequences (id INTEGER unsigned NOT NULL AUTO_INCREMENT, "
 					+ "name VARCHAR(100) NOT NULL, sequence MEDIUMTEXT NOT NULL, date DATE, "
 					+ "researcher INTEGER unsigned, comment VARCHAR(1000), manualcheck CHAR(1), "
@@ -728,11 +728,7 @@ public class DatabaseConnection {
 		Statement stmt = conn2.createStatement();
 		stmt.execute("USE gsat");
 		stmt.close();
-
-		stmt.executeUpdate("CREATE TABLE primer (id INTEGER unsigned NOT NULL AUTO_INCREMENT, "
-				+ "name VARCHAR(100) NOT NULL, primerid VARCHAR(100) NOT NULL, "
-				+ "sequence MEDIUMTEXT NOT NULL, date DATE, researcher INTEGER unsigned, meltingpoint INTEGER");
-
+		
 		String name = primer.getName();
 		String primerid = primer.getId();
 		String sequence = primer.getSequence();

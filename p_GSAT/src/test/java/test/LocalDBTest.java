@@ -47,7 +47,6 @@ public class LocalDBTest {
 	java.sql.Statement stmt = null;
 	ResultSet rs = null;
 	
-	//TODO
 	@Ignore
 	@Test
 	public void testPushAllPrimer() throws DatabaseConnectionException, SQLException{
@@ -62,7 +61,7 @@ public class LocalDBTest {
 		DatabaseConnection.pushAllPrimer();
 	}
 	
-	//TODO
+	
 	@Ignore
 	@Test
 	public void testPushPrimer() throws DatabaseConnectionException, SQLException{
