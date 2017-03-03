@@ -141,7 +141,6 @@ public class DatabaseSettingsWindow extends Application implements javafx.fxml.I
             alert.setTitle("Database Connection");
             alert.setHeaderText("Connection to database failed");
             alert.showAndWait();
-            e.printStackTrace();
           }
         } else {
           // values are missing
