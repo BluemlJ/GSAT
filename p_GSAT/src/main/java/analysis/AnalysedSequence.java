@@ -76,7 +76,7 @@ public class AnalysedSequence extends Sequence {
    */
   private double trimPercentage;
 
-  private String primer;
+  private String primer = "";
 
   private double avgQuality;
 
