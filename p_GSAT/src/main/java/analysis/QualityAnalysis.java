@@ -255,7 +255,7 @@ public class QualityAnalysis {
    * @return the average quality between 0 and 100.
    * @author bluemlj
    */
-  public double getAvgQuality(AnalysedSequence toAnalysedSequence) {
+  public static double getAvgQuality(AnalysedSequence toAnalysedSequence) {
 
     if (toAnalysedSequence.getQuality().length == 0) {
       return 0;

@@ -162,7 +162,7 @@ public class WritingTests {
     String[] correctResults = new String[] {
         "1; sequence3.ab1; FSA; null; AAA7CAA, -1H5 (TCT); Nothing to say; Kurt Bohne; "
             + addingDate
-            + "; 99.3690426555198; 0; ATC; null; null; none; none; AAA7CAA, -1H5; false"};
+            + "; 0.0; 0; ATC; null; null; none; none; AAA7CAA, -1H5; false"};
 
     for (int i = 0; i < correctResults.length; i++) {
       String[] correctInfo = correctResults[i].split(";");
@@ -235,7 +235,7 @@ public class WritingTests {
 
     assertEquals(
         "1; sequence3.ab1; FSA; null; ; ; Klaus Hafer; " + addingDate
-            + "; 99.3690426555198; 0; ATCTTGCGTTG; null; null; none; none; ; false",
+            + "; 0.0; 0; ATCTTGCGTTG; null; null; none; none; ; false",
         results.getFirst());
     reader.close();
   }
@@ -275,7 +275,7 @@ public class WritingTests {
     String[] correctResults = new String[] {
         "1; sequence1.ab1; FSA; bacteria; A131E (ACC), G7K (ATC), +2H5 (AAC); No comments; Klaus Bohne; "
             + addingDate
-            + "; 99.3690426555198; 0; ATCG; A; B; none; none; A131E, G7K, +2H5; false"};
+            + "; 0.0; 0; ATCG; A; B; none; none; A131E, G7K, +2H5; false"};
     for (int i = 0; i < correctResults.length; i++) {
       assertEquals(correctResults[i], results.get(i));
     }
@@ -307,9 +307,9 @@ public class WritingTests {
 
     String[] correctResults = new String[] {
         "1; sequence2.ab1; FSA; null; reading frame error; No comments; Klaus Bohne; " + addingDate
-            + "; 99.3690426555198; 0; ATCTTTG; null; null; none; none; reading frame error; false",
+            + "; 0.0; 0; ATCTTTG; null; null; none; none; reading frame error; false",
         "2; sequence3.ab1; FSA; null; ; ; Klaus Hafer; " + addingDate
-            + "; 99.3690426555198; 0; ATCTTGCGTTG; null; null; none; none; ; false"};
+            + "; 0.0; 0; ATCTTGCGTTG; null; null; none; none; ; false"};
 
     for (int i = 0; i < correctResults.length; i++) {
       assertEquals(correctResults[i], results.get(i));
@@ -345,9 +345,9 @@ public class WritingTests {
 
     String[] correctResults = new String[] {
         "1; sequence1.ab1; FSA; bacteria; A131E (ACC), G7K (ATC), +2H5 (AAC); No comments; Klaus Bohne; "
-            + addingDate + "; 99.3690426555198; 0; ATCG; A; B; none; none; A131E, G7K, +2H5; false",
+            + addingDate + "; 0.0; 0; ATCG; A; B; none; none; A131E, G7K, +2H5; false",
         "2; sequence2.ab1; FSA; null; reading frame error; No comments; Klaus Bohne; " + addingDate
-            + "; 99.3690426555198; 0; ATCTTTG; null; null; none; none; reading frame error; false"};
+            + "; 0.0; 0; ATCTTTG; null; null; none; none; reading frame error; false"};
 
     for (int i = 0; i < correctResults.length; i++) {
       assertEquals(correctResults[i], results.get(i));
@@ -404,7 +404,7 @@ public class WritingTests {
 
     String[] correctResults = new String[] {
         "1; sequence2.ab1; FSA; null; reading frame error; No comments; Klaus Bohne; " + addingDate
-            + "; 99.3690426555198; 0; ATCTTTG; null; null; none; none; reading frame error; false"};
+            + "; 0.0; 0; ATCTTTG; null; null; none; none; reading frame error; false"};
 
     for (int i = 0; i < correctResults.length; i++) {
       assertEquals(correctResults[i], results.get(i));
@@ -421,7 +421,7 @@ public class WritingTests {
     reader.close();
 
     correctResults = new String[] {"1; sequence3.ab1; FSA; null; ; ; Klaus Hafer; " + addingDate
-        + "; 99.3690426555198; 0; ATCTTGCGTTG; null; null; none; none; ; false"};
+        + "; 0.0; 0; ATCTTGCGTTG; null; null; none; none; ; false"};
     for (int i = 0; i < correctResults.length; i++) {
       assertEquals(correctResults[i], results2.get(i));
     }
@@ -455,7 +455,7 @@ public class WritingTests {
     String[] correctResults = new String[] {
         "1; sequence1.ab1; FSA; bacteria; A131E (ACC), G7K (ATC), +2H5 (AAC); No comments; Klaus Bohne; "
             + addingDate
-            + "; 99.3690426555198; 0; ATCG; A; B; none; none; A131E, G7K, +2H5; false"};
+            + "; 0.0; 0; ATCG; A; B; none; none; A131E, G7K, +2H5; false"};
 
     for (int i = 0; i < correctResults.length; i++) {
       assertEquals(correctResults[i], results.get(i));
@@ -498,7 +498,7 @@ public class WritingTests {
     String[] correctResults = new String[] {
         "1; sequence1.ab1; FSA; bacteria; A131E (ACC), G7K (ATC), +2H5 (AAC); No comments; Klaus Bohne; "
             + addingDate
-            + "; 99.3690426555198; 0; ATCG; A; B; none; none; A131E, G7K, +2H5; false"};
+            + "; 0.0; 0; ATCG; A; B; none; none; A131E, G7K, +2H5; false"};
 
     for (int i = 0; i < correctResults.length; i++) {
       assertEquals(correctResults[i], results1.get(i));

@@ -79,7 +79,7 @@ public class QualityTests {
         0, 0, 0, 30, 0, 0, 0, 30, 0, 0, 0, 30, 0, 0, 0, 40, 0, 0};
     AnalysedSequence testSequence =
         new AnalysedSequence("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", "", "", qualities);
-    double avg = testSequence.getAvgQuality();
+    double avg = QualityAnalysis.getAvgQuality(testSequence);
     assertTrue(Math.abs(avg - 99.99979) < 0.00005);
   }
 
@@ -87,7 +87,7 @@ public class QualityTests {
   public void percentageGoodQualityTest2() {
     int[] qualities = {30, 31, 40, 57, 57, 57, 6, 7, 8, 4, 3, 12};
     AnalysedSequence testSequence = new AnalysedSequence("aaaaaaaaaaaa", "", "", qualities);
-    double avg = testSequence.getAvgQuality();
+    double avg = QualityAnalysis.getAvgQuality(testSequence);
     assertTrue(Math.abs(avg - 99.9974881135685) < 0.00005);
   }
 
@@ -263,7 +263,7 @@ public class QualityTests {
   @Test
   public void testQualityAccessibility() {
     // test if average quality information is accessible
-    assertEquals((int) (testSequence.getAvgQuality() * 1000), 99999);
+    assertEquals((int) (QualityAnalysis.getAvgQuality(testSequence) * 1000), 99999);
     // test if the quality array is accessible
     assertEquals(testSequence.getQuality()[0], 16);
 
