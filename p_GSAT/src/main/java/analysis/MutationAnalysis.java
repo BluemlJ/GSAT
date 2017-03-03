@@ -1,12 +1,10 @@
 package analysis;
 
-import exceptions.CorruptedSequenceException;
-import exceptions.UndefinedTypeOfMutationException;
-
-import java.nio.channels.Channel;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedList;
+
+import exceptions.CorruptedSequenceException;
+import exceptions.UndefinedTypeOfMutationException;
 
 /**
  * This class contains the logic of analyzing mutations in sequences. Thus, it is one of the main

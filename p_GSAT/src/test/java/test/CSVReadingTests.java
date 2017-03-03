@@ -8,8 +8,6 @@ import java.io.IOException;
 import java.util.LinkedList;
 
 import org.junit.After;
-import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import analysis.AnalysedSequence;

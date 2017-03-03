@@ -1,7 +1,6 @@
 package core;
 
 import gui.MainWindow;
-import io.FileSaver;
 
 /**
  * This class coordinates the overall behavior of the program. It moderates the analyzing pipeline.

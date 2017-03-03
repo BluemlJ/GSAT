@@ -1,8 +1,5 @@
 package gui;
 
-import io.ConfigHandler;
-import io.GeneHandler;
-
 import java.io.IOException;
 import java.net.URL;
 import java.util.Optional;
@@ -103,6 +100,7 @@ public class SettingsWindow extends Application implements javafx.fxml.Initializ
 
     srcPathField.textProperty().addListener(new ChangeListener<String>() {
 
+      @Override
       public void changed(ObservableValue<? extends String> observable, String oldValue,
           String newValue) {
         if (newValue.matches(ConfigHandler.SEPARATOR_CHAR + "")) {

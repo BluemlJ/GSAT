@@ -1,19 +1,15 @@
 package io;
 
-import analysis.AnalysedSequence;
-import analysis.Pair;
-import exceptions.FileReadingException;
-
 import java.io.File;
 import java.io.IOException;
 import java.util.LinkedList;
 
-import org.jcvi.jillion.core.qual.PhredQuality;
-import org.jcvi.jillion.trace.chromat.ChannelGroup;
-import org.jcvi.jillion.trace.chromat.Chromatogram;
 import org.jcvi.jillion.trace.chromat.ChromatogramFactory;
 import org.jcvi.jillion.trace.chromat.abi.AbiChromatogram;
-import org.jcvi.jillion.trace.chromat.abi.AbiChromatogramBuilder;
+
+import analysis.AnalysedSequence;
+import analysis.Pair;
+import exceptions.FileReadingException;
 
 
 

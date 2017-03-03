@@ -1,6 +1,5 @@
 package analysis;
 
-import java.nio.channels.Channel;
 import java.util.LinkedList;
 
 import org.jcvi.jillion.trace.chromat.ChannelGroup;
@@ -122,7 +121,7 @@ public class AnalysedSequence extends Sequence {
     mutations.add(mutation);
   }
 
-  
+
 
   /**
    * Returns the length of the sequence (the number of nucleotides in it).

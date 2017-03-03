@@ -1,7 +1,5 @@
 package exceptions;
 
-import analysis.AnalysedSequence;
-
 /**
  * An instance of this class is thrown if a char, which is not one of 'A', 'T', 'C' or 'G', is
  * detected in a sequence.

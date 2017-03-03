@@ -99,7 +99,7 @@ public class PrimerHandler {
       primerString.append(System.getProperty("line.separator"));
       primerWriter.write(primerString.toString());
     }
-    
+
     primerWriter.close();
   }
 
@@ -125,8 +125,8 @@ public class PrimerHandler {
   }
 
 
-public static void writePrimer() throws IOException {
-	writePrimer(path);
-}
+  public static void writePrimer() throws IOException {
+    writePrimer(path);
+  }
 
 }

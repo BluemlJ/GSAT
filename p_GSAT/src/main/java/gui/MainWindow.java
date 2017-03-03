@@ -2,20 +2,17 @@ package gui;
 
 
 
+import java.io.IOException;
+import java.net.URL;
+import java.util.LinkedList;
+import java.util.Optional;
+import java.util.ResourceBundle;
+
 import analysis.Pair;
 import exceptions.ConfigNotFoundException;
 import exceptions.UnknownConfigFieldException;
 import io.ConfigHandler;
 import io.FileSaver;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.URL;
-import java.util.LinkedList;
-import java.util.Optional;
-import java.util.ResourceBundle;
-import java.util.Scanner;
-
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;

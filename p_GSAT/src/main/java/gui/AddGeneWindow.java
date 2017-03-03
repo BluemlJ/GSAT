@@ -1,14 +1,13 @@
 package gui;
 
 
-import exceptions.DuplicateGeneException;
-import io.ConfigHandler;
-import io.GeneHandler;
-
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import exceptions.DuplicateGeneException;
+import io.ConfigHandler;
+import io.GeneHandler;
 import javafx.application.Application;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;

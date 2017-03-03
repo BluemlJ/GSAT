@@ -1,11 +1,10 @@
 package analysis;
 
+import java.text.DateFormat;
+import java.util.Date;
+
 import exceptions.CorruptedSequenceException;
 import io.ConfigHandler;
-
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 /**
  * This class models an abstract DNA sequence which could be a reference gene or a given mutated

@@ -1,13 +1,13 @@
 package io;
 
-import analysis.AnalysedSequence;
-import exceptions.MissingPathException;
-import exceptions.PathUsage;
-
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.LinkedList;
+
+import analysis.AnalysedSequence;
+import exceptions.MissingPathException;
+import exceptions.PathUsage;
 
 /**
  * This class is used to store the analysis results in local files. It produces comma separated

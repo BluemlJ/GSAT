@@ -1,24 +1,19 @@
 package gui;
 
-import java.awt.Scrollbar;
 import java.net.URL;
 import java.util.LinkedList;
 import java.util.ResourceBundle;
 
-import org.jcvi.jillion.core.qual.PhredQuality;
 import org.jcvi.jillion.core.qual.QualitySequence;
 
 import analysis.AnalysedSequence;
-import analysis.Sequence;
 import javafx.application.Application;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
-import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
-
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
@@ -123,6 +118,7 @@ public class ShowChromatogram extends Application implements javafx.fxml.Initial
     bar.setMax(100);
     bar.setValue(0);
     bar.valueProperty().addListener(new ChangeListener<Number>() {
+      @Override
       public void changed(ObservableValue<? extends Number> ov, Number old_val, Number new_val) {
         xAxis.setUpperBound((int) (maxScroll * new_val.doubleValue() + numberRange));
         xAxis.setLowerBound((int) (maxScroll * new_val.doubleValue()));

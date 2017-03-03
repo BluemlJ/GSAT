@@ -1,5 +1,12 @@
 package gui;
 
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.LinkedList;
+import java.util.Optional;
+import java.util.Scanner;
+
 import analysis.AnalysedSequence;
 import analysis.Gene;
 import analysis.MutationAnalysis;
@@ -17,17 +24,8 @@ import io.ConfigHandler;
 import io.FileSaver;
 import io.GeneHandler;
 import io.SequenceReader;
-
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.LinkedList;
-import java.util.Optional;
-import java.util.Scanner;
-
 import javafx.collections.FXCollections;
 import javafx.event.EventHandler;
-import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
