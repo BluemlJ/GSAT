@@ -122,26 +122,7 @@ public class AnalysedSequence extends Sequence {
     mutations.add(mutation);
   }
 
-  /**
-   * get average Quality in a score between 0 and 100 by getting all phread scores and setting them
-   * in the phread function.
-   * 
-   * @return the average quality between 0 and 100.
-   * @author bluemlj
-   */
-  public double getAvgQuality() {
-
-    if (qualities.length == 0) {
-      return 0;
-    }
-
-    int sum = 0;
-    for (int i : qualities) {
-      sum += i;
-    }
-    double tmp = sum / (1.0 * qualities.length);
-    return 100 - Math.pow(10, -tmp / 10);
-  }
+  
 
   /**
    * Returns the length of the sequence (the number of nucleotides in it).
@@ -286,7 +267,7 @@ public class AnalysedSequence extends Sequence {
     this.qualities = qualities;
   }
 
-  public double returnAvgQuality() {
+  public double getAvgQuality() {
     return avgQuality;
   }
 

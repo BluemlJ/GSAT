@@ -248,6 +248,26 @@ public class QualityAnalysis {
     toAnalyse.trimSequence(trimmingpositions[0], trimmingpositions[1] - 1);
   }
 
+  /**
+   * get average Quality in a score between 0 and 100 by getting all phread scores and setting them
+   * in the phread function.
+   * 
+   * @return the average quality between 0 and 100.
+   * @author bluemlj
+   */
+  public double getAvgQuality(AnalysedSequence toAnalysedSequence) {
+
+    if (toAnalysedSequence.getQuality().length == 0) {
+      return 0;
+    }
+
+    int sum = 0;
+    for (int i : toAnalysedSequence.getQuality()) {
+      sum += i;
+    }
+    double tmp = sum / (1.0 * toAnalysedSequence.getQuality().length);
+    return 100 - Math.pow(10, -tmp / 10);
+  }
 
 
   // GETTERs and SETTERs:

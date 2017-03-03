@@ -54,7 +54,7 @@ public class CSVReadingTests {
     assertEquals("", test.getComments());
     assertEquals("testresearcher", test.getResearcher());
     assertEquals("04/03/17", test.getAddingDate());
-    assertEquals("3.555", test.returnAvgQuality() + "");
+    assertEquals("3.555", test.getAvgQuality() + "");
     assertEquals(22, (int) test.getTrimPercentage());
     assertEquals("ATC", test.getSequence());
     assertEquals("AAA", test.getLeftVector());
@@ -77,7 +77,7 @@ public class CSVReadingTests {
     assertEquals("comment", test.getComments());
     assertEquals("-", test.getResearcher());
     assertEquals("02/03/17", test.getAddingDate());
-    assertEquals("99.9997646690603", test.returnAvgQuality() + "");
+    assertEquals("99.9997646690603", test.getAvgQuality() + "");
     assertEquals(55, (int) test.getTrimPercentage());
     assertEquals("ATC", test.getSequence());
     assertEquals("CCC", test.getLeftVector());
@@ -99,7 +99,7 @@ public class CSVReadingTests {
     assertEquals("c", test.getComments());
     assertEquals("-", test.getResearcher());
     assertEquals("02/03/17", test.getAddingDate());
-    assertEquals("99.99988905066168", test.returnAvgQuality() + "");
+    assertEquals("99.99988905066168", test.getAvgQuality() + "");
     assertEquals(49, (int) test.getTrimPercentage());
     assertEquals("AATATC", test.getSequence());
     assertEquals("TTC", test.getLeftVector());
@@ -139,7 +139,7 @@ public class CSVReadingTests {
     assertEquals("l", test.getComments());
     assertEquals("test", test.getResearcher());
     assertEquals("06/03/17", test.getAddingDate());
-    assertEquals("44.4", test.returnAvgQuality() + "");
+    assertEquals("44.4", test.getAvgQuality() + "");
     assertEquals(3, (int) test.getTrimPercentage());
     assertEquals("AAAAAAAAAAAAAAAAA", test.getSequence());
     assertEquals("CCC", test.getLeftVector());
@@ -162,7 +162,7 @@ public class CSVReadingTests {
     assertEquals("d", test.getComments());
     assertEquals("test2", test.getResearcher());
     assertEquals("06/03/17", test.getAddingDate());
-    assertEquals("32.3", test.returnAvgQuality() + "");
+    assertEquals("32.3", test.getAvgQuality() + "");
     assertEquals(4, (int) test.getTrimPercentage());
     assertEquals("TTCCTTCTCCTCC", test.getSequence());
     assertEquals("TTCA", test.getLeftVector());
