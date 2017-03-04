@@ -249,53 +249,37 @@ public class MutationAnalysis {
    * @param toAnalyze the seqeunce we save the mixtures in
    * @author Jannis
    */
-  public static void savePlasmidMixes(AnalysedSequence toAnalyze) {
+  @Deprecated
+  public static void savePlasmidMixes(AnalysedSequence toAnalyze) {}
 
-    // return list of all mixes
-    LinkedList<String> ret = new LinkedList<>();
-    // the gene references by the mutated Sequence
-    Gene reference = toAnalyze.getReferencedGene();
-    // the sequence to analyze
-    StringBuilder mutatedSequence = new StringBuilder();
-    mutatedSequence.append(toAnalyze.getSequence());
-    // the gene sequence
-    String originalSequence = reference.getSequence();
-
-    // list of all candidates in form of p|12|AG, p|3|GCA...
-    LinkedList<String> candidates = findPlasmidMixCanditates(toAnalyze);
-
-    // check every candidate and add it to the return list
-    for (String string : candidates) {
-      // all parameters of the candidate
-      String[] params = string.split("\\|");
-      // first nucleotide of AminoAcid
-      int position = Integer.parseInt(params[1]) - (Integer.parseInt(params[1]) % 3);
-
-      // AminoAcid in Gene
-      String oldAcid =
-          StringAnalysis.AMINO_ACID_SHORTS.get(originalSequence.substring(position, position + 3));
-
-      // the possible nucleotides
-      char[] theOther = params[2].toCharArray();
-
-      // start a Mix with H25, P84, ...
-      StringBuilder retString = new StringBuilder();
-      retString.append(oldAcid + params[1]);
-
-      // Add all possible Mixes
-      for (int i = 0; i < theOther.length; i++) {
-        mutatedSequence.setCharAt(Integer.parseInt(params[1]), theOther[i]);
-        retString.append(
-            StringAnalysis.AMINO_ACID_SHORTS.get(mutatedSequence.substring(position, position + 3))
-                + "/");
-      }
-      retString.subSequence(0, retString.length() - 1);
-      ret.add(retString.toString());
-    }
-    // add them to sequence
-    toAnalyze.sortInPlasmidmixes(ret);
-  }
-
+  /*
+   * // return list of all mixes LinkedList<String> ret = new LinkedList<>(); // the gene references
+   * by the mutated Sequence Gene reference = toAnalyze.getReferencedGene(); // the sequence to
+   * analyze StringBuilder mutatedSequence = new StringBuilder();
+   * mutatedSequence.append(toAnalyze.getSequence()); // the gene sequence String originalSequence =
+   * reference.getSequence();
+   * 
+   * // list of all candidates in form of p|12|AG, p|3|GCA... LinkedList<String> candidates =
+   * findPlasmidMixCanditates(toAnalyze);
+   * 
+   * // check every candidate and add it to the return list for (String string : candidates) { //
+   * all parameters of the candidate String[] params = string.split("\\|"); // first nucleotide of
+   * AminoAcid int position = Integer.parseInt(params[1]) - (Integer.parseInt(params[1]) % 3);
+   * 
+   * // AminoAcid in Gene String oldAcid =
+   * StringAnalysis.AMINO_ACID_SHORTS.get(originalSequence.substring(position, position + 3));
+   * 
+   * // the possible nucleotides char[] theOther = params[2].toCharArray();
+   * 
+   * // start a Mix with H25, P84, ... StringBuilder retString = new StringBuilder();
+   * retString.append(oldAcid + params[1]);
+   * 
+   * // Add all possible Mixes for (int i = 0; i < theOther.length; i++) {
+   * mutatedSequence.setCharAt(Integer.parseInt(params[1]), theOther[i]);
+   * System.out.println(theOther[i]); retString.append(
+   * StringAnalysis.AMINO_ACID_SHORTS.get(mutatedSequence.substring(position, position + 3)) + "/");
+   * } ret.add(retString.toString()); } // add them to sequence toAnalyze.sortInPlasmidmixes(ret); }
+   */
   /**
    * This method searches for plasmidmixes by checking every position in the mutatedseqeunce. For
    * this there are two constraints i check, first two or more traces have same quality values at
@@ -306,10 +290,10 @@ public class MutationAnalysis {
    * @return a list of all plasmidmixes we could found
    * @author Jannis
    */
-  public static LinkedList<String> findPlasmidMixCanditates(AnalysedSequence sequence) {
+  public static void findPlasmidMix(AnalysedSequence sequence) {
 
     // List of candidates
-    LinkedList<String> ret = new LinkedList<>();
+    LinkedList<String> mixPositions = new LinkedList<>();
 
     // Channels
     Channel channelA = sequence.getChannels().getAChannel();
@@ -336,38 +320,43 @@ public class MutationAnalysis {
       qualityT[i] = qtTemp[i];
     }
 
+    int counter = 0;
+    boolean found = false;
+
     for (int i = 0; i < sequence.length(); i++) {
       // Array of four qualities from four traces
       int[] tmp = {qualityA[i], qualityG[i], qualityC[i], qualityT[i]};
-      // the candidate (a String in form of ACG,AT,...)
-      StringBuilder candidate = new StringBuilder();
-      candidate.append(sequence.getSequence().charAt(i));
       Arrays.sort(tmp);
 
       // find equal qualities
-      for (int j = 2; j >= 0; j--) {
-        if (tmp[3] == tmp[j]) {
-
-          if (tmp[j] == qualityA[i]) {
-            candidate.append("A");
-          } else if (tmp[j] == qualityG[i]) {
-            candidate.append("G");
-          } else if (tmp[j] == qualityC[i]) {
-            candidate.append("C");
-          } else if (tmp[j] == qualityT[i]) {
-            candidate.append("T");
-          }
+      if (sequence.getQuality()[i] < 15) {
+        found = true;
+      } else {
+        found = false;
+      }
+      // if found and quality is broken, we got a mix
+      if (found && tmp[3] < 40) {
+        System.out.println(i);
+        counter++;
+        if (counter == 3) {
+          int pos = i / 3 + 1;
+          mixPositions.add("" + pos);
+          counter = 0;
         }
-
+      } else {
+        counter = 0;
       }
 
-      // if you find a canditate with more then one One codon and the
-      // quality is broken, we got a mix
-      if (candidate.length() > 1 && sequence.getQuality()[i] < (sequence.getQuality()[i - 1] / 2)) {
-        ret.add("p|" + i + "|" + candidate);
-      }
     }
-    return ret;
+    if (!mixPositions.isEmpty()) {
+      sequence.setComments(
+          sequence.getComments() + "\nEs wurden folgende mögliche Plasmidmixe gefunden: ");
+      for (String string : mixPositions) {
+        sequence.setComments(sequence.getComments() + string + ", ");
+      }
+      sequence
+          .setComments(sequence.getComments().substring(0, sequence.getComments().length() - 2));
+    }
   }
 
   /**
@@ -520,17 +509,4 @@ public class MutationAnalysis {
     // calculate difrences and return
     return reportDifferences(first.split("#")[0], second.split("#")[0]);
   }
-
-  public static int integerMax(int... n) {
-    int i = 0;
-    int max = n[i];
-
-    while (++i < n.length) {
-      if (n[i] > max) {
-        max = n[i];
-      }
-    }
-    return max;
-  }
-
 }

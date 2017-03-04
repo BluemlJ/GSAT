@@ -3,6 +3,7 @@ package test;
 import java.io.IOException;
 
 import org.junit.BeforeClass;
+import org.junit.Test;
 
 import analysis.AnalysedSequence;
 import analysis.Gene;
@@ -52,7 +53,7 @@ public class PrivateTest {
   }
 
   // Name of the file
-  private String fileName = "93GH02_A01.ab1";
+  private String fileName = "93GH02_A06.ab1";
 
   // _____________________________________________________________________
 
@@ -103,6 +104,7 @@ public class PrivateTest {
    * @throws UndefinedTypeOfMutationException
    * @throws CorruptedSequenceException
    */
+  @Test
   public void testLocalFile() throws FileReadingException, IOException,
       UndefinedTypeOfMutationException, CorruptedSequenceException {
     SequenceReader.configurePath(pathToUse + fileName);
@@ -153,9 +155,11 @@ public class PrivateTest {
     System.out.println("_________________________________________________________");
 
     MutationAnalysis.findMutations(testSeq);
+    MutationAnalysis.findPlasmidMix(testSeq);
     for (String s : testSeq.getMutations()) {
       System.out.println(s);
     }
 
+    System.out.println("-------\n" + testSeq.getComments());
   }
 }

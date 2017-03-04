@@ -122,7 +122,7 @@ public class AnalysedSequence extends Sequence {
   }
 
 
-
+ @Deprecated
   public void sortInPlasmidmixes(LinkedList<String> plasmidmixes) {
 
     Comparator<String> comp = (s1, s2) -> {
