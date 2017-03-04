@@ -35,7 +35,6 @@ public class ShowGeneWindow extends Application implements javafx.fxml.Initializ
 
   @FXML
   private Button okButton;
-  
 
 
 

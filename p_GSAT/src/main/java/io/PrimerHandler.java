@@ -103,12 +103,12 @@ public class PrimerHandler {
     primerWriter.close();
   }
 
-  
+
   public static void writePrimer() throws IOException {
     writePrimer(path);
   }
-  
-  
+
+
   private static boolean exists() {
     File config = new File(path);
     return config.exists();
