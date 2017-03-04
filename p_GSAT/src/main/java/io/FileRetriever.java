@@ -9,9 +9,33 @@ import java.util.List;
 
 import analysis.AnalysedSequence;
 
+/**
+ * This class is used to read in stored CSV result files and converts them into AnalysedSequences.
+ * This is necessary to be able to store the information in the database, 
+ * after a user may have manually changed some of the values in the file.
+ * 
+ * @author Ben Kohr
+ *
+ */
 public class FileRetriever {
 
 
+  /**
+   * This methods extracts all the stored information of all CSV files in
+   * the folder indicated by the given path and stores them inside 
+   * an AnalysedSequence object.
+   * 
+   * @param path The path of the folder where the CSV files are located
+   * 
+   * @return a list of AnalysedSequence objects, each representing an analysis result
+   * 
+   * @see #getFiles(String)
+   * @see #convertLineToSequence(String)
+   * 
+   * @throws IOException if problems during file access occur
+   * 
+   * @author Ben Kohr
+   */
   public static LinkedList<AnalysedSequence> convertFilesToSequences(String path)
       throws IOException {
 
@@ -40,6 +64,16 @@ public class FileRetriever {
 
 
 
+  /**
+   * This method creates File objects for each CSV file in a given folder and
+   * returns them as a list.
+   * 
+   * @param path The path where the files are located
+   * 
+   * @return A list of file objects (one object for each CSV file)
+   * 
+   * @author Ben Kohr
+   */
   private static List<File> getFiles(String path) {
 
     File pathAsFile = new File(path);
@@ -61,6 +95,16 @@ public class FileRetriever {
   }
 
 
+  /**
+   * Converts a CSV result file line into an AnalysedSequence object by placing the information
+   * into the corresponding fields.
+   * 
+   * @param line One line containing analysis information from a CSV file
+   * 
+   * @return An AnaylsedSequence object containing the information of the given line
+   * 
+   * @author Ben Kohr
+   */
   private static AnalysedSequence convertLineToSequence(String line) {
 
     String[] data = line.split(ConfigHandler.SEPARATOR_CHAR + "");

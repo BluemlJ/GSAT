@@ -24,14 +24,15 @@ public class AnalysedSequence extends Sequence {
   private String comments = "";
 
   /**
-   * Informations getting from the abiFile in form of an AbiChromatogram
+   * Information from the abiFile in form of an AbiChromatogram.
    */
   private AbiChromatogram abiFile;
+  
+  
   /**
    * The name of the file this sequence was obtained from. This is used to create the name of the
    * output file.
    */
-
   private String fileName;
 
   /**
@@ -122,17 +123,29 @@ public class AnalysedSequence extends Sequence {
   }
 
 
- @Deprecated
-  public void sortInPlasmidmixes(LinkedList<String> plasmidmixes) {
+  /**
+   * This methods sorts the detected plasmid mixes into the list of already found mutations. In case
+   * a plasmid mix has the same position as a normal mutation, the normal mutation is replaced by
+   * the mix. Afterwards, the complete list is stored in the mutation list field. The list is sorted
+   * by increasing mutation positions.
+   * 
+   * @param plasmidMixes A list of Strings (each String describes a plasmid mix)
+   * 
+   * @see #numberOfMutation(String)
+   * 
+   * @author Ben Kohr
+   */
+  @Deprecated
+  public void sortInPlasmidmixes(LinkedList<String> plasmidMixes) {
 
     Comparator<String> comp = (s1, s2) -> {
       return numberOfMutation(s1) - numberOfMutation(s2);
     };
 
-    plasmidmixes.sort(comp);
+    plasmidMixes.sort(comp);
     mutations.sort(comp);
 
-    for (String mix : plasmidmixes) {
+    for (String mix : plasmidMixes) {
       for (int i = 0; i < mutations.size(); i++) {
         String normalMutation = mutations.get(i);
         if (numberOfMutation(normalMutation) == numberOfMutation(mix)) {
@@ -153,6 +166,15 @@ public class AnalysedSequence extends Sequence {
 
 
 
+  /**
+   * This method extracts the position of a mutation from the mutation String.
+   * 
+   * @param mutationString the String which describes a mutation
+   * 
+   * @return the position of this mutation as an int value
+   * 
+   * @author Ben Kohr
+   */
   private int numberOfMutation(String mutationString) {
 
     char[] chars = mutationString.toCharArray();
