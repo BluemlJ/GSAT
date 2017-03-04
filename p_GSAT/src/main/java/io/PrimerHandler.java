@@ -118,6 +118,16 @@ public class PrimerHandler {
     return primerList;
   }
 
+  public static String[] getPrimerListAsString() {
+    String[] ret = new String[primerList.size()];
+    for (int i = 0; i < primerList.size(); i++) {
+      ret[i] = primerList.get(i).getName();
+    }
+
+
+    return ret;
+  }
+
   public static void setPrimerList(ArrayList<Primer> primerList) {
     PrimerHandler.primerList = primerList;
   }

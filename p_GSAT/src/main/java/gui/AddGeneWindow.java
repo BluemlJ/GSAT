@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import core.Main;
 import exceptions.DuplicateGeneException;
 import io.ConfigHandler;
 import io.GeneHandler;
@@ -120,6 +121,7 @@ public class AddGeneWindow extends Application implements javafx.fxml.Initializa
               alert.setTitle("Adding gene");
               alert.setHeaderText("Gene added successfully.");
               alert.showAndWait();
+              MainWindow.changesOnGenes = true;
               parent.updateGenes();
               Stage stage = (Stage) cancelButton.getScene().getWindow();
               stage.close();

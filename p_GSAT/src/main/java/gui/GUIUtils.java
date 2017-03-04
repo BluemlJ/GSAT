@@ -23,6 +23,7 @@ import exceptions.UnknownConfigFieldException;
 import io.ConfigHandler;
 import io.FileSaver;
 import io.GeneHandler;
+import io.PrimerHandler;
 import io.SequenceReader;
 import javafx.collections.FXCollections;
 import javafx.event.EventHandler;
@@ -81,6 +82,21 @@ public class GUIUtils {
     genes.setItems(FXCollections.observableArrayList(GeneHandler.getGeneNamesAndOrganisms()));
     return new Text("Reading Gene.txt was successful");
   }
+  
+  /**
+   * @param geneList
+   */
+  public static Text initializePrimerBox(ListView<String> geneList) {
+    try {
+      PrimerHandler.readPrimer();
+    } catch (IOException e) {
+      return getRedText("Reading Primer.txt was unsuccessful\n");
+    }
+
+    geneList.setItems(FXCollections.observableArrayList(PrimerHandler.getPrimerListAsString()));
+    return new Text("Reading Primer.txt was successful");
+  }
+
 
   /**
    * 
@@ -497,5 +513,6 @@ public class GUIUtils {
     return ret;
   }
 
+ 
 
 }

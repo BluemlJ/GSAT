@@ -18,7 +18,7 @@ import exceptions.UnknownConfigFieldException;
 /**
  * This class is responsible for reading the configuration file and storing its values
  * 
- * @author lovisheindrich
+ * @author lovisheindrich, jannis blueml
  *
  */
 public class ConfigHandler {

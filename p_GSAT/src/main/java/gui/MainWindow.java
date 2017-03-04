@@ -43,6 +43,11 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
 
   public static boolean settingsOpen = false;
   public static boolean autoGeneSearch = false;
+  
+  //Warnings by closing without saving
+  public static boolean changesOnGenes = false;
+  public static boolean changesOnPrimers = false;
+  public static boolean changesOnResults = false;
 
   // WARNING: Do not change variable name under all circumstances!
 
@@ -316,6 +321,7 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
           @Override
           public void handle(WorkerStateEvent t) {
             bar.setProgress(0);
+            changesOnResults = true;
           }
         });
         new Thread(mainTask).start();
