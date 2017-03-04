@@ -181,6 +181,9 @@ public class GUIUtils {
                 resultingLines, true);
       }
 
+      // add average quality
+      toAnalyse.setAvgQuality(QualityAnalysis.getAvgQuality(toAnalyse));
+      
       // add entry to database
       try {
         FileSaver.setDestFileName(resultname);
