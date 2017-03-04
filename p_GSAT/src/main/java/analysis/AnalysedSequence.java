@@ -1,6 +1,7 @@
 package analysis;
 
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.LinkedList;
 
 import org.jcvi.jillion.trace.chromat.ChannelGroup;
@@ -124,6 +125,11 @@ public class AnalysedSequence extends Sequence {
   
   public void sortInPlasmidmixes(LinkedList<String> plasmidmixes) {
     
+    Comparator<String> comp = (s1, s2) -> {return (numberOfMutation(s1) - numberOfMutation(s2)); };
+    
+    plasmidmixes.sort(comp);
+    mutations.sort(comp);
+    
     for (String mix : plasmidmixes) {
       for (int i = 0; i < mutations.size(); i++) {
         String normalMutation = mutations.get(i);
@@ -136,7 +142,9 @@ public class AnalysedSequence extends Sequence {
           break;
         }
       }
-      mutations.addLast(mix);
+      if (!mutations.contains(mix)) {
+        mutations.addLast(mix);
+      }
     }
     
   }
@@ -153,11 +161,11 @@ public class AnalysedSequence extends Sequence {
       end--;
     }
     start = end;
-    while(String.valueOf(chars[start]).matches("[0-9]")) {
+    while(start >= 0 && String.valueOf(chars[start]).matches("[0-9]")) {
       start--;
     }
     
-    char[] numberChars = Arrays.copyOfRange(chars, start, end + 1);
+    char[] numberChars = Arrays.copyOfRange(chars, start + 1, end + 1);
     String numberString = new String(numberChars);
     
     int number = Integer.parseInt(numberString);
