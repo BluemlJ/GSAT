@@ -76,7 +76,7 @@ public class SequenceReader {
     AbiChromatogram abifile = (AbiChromatogram) ChromatogramFactory.create(referencedFile);
     String sequence = abifile.getNucleotideSequence().toString();
     byte[] qualities = abifile.getQualitySequence().toArray();
-
+    
     // TODO Add Primer
 
     // convert qualities from byte[] to int[]

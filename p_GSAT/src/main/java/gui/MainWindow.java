@@ -256,6 +256,14 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
           infoArea.getChildren().add(
               new Text("Selected gene:  " + geneBox.getSelectionModel().getSelectedItem() + "\n"));
         }
+        
+        if(outputCheckbox.selectedProperty().get() == true) {
+          FileSaver.setSeparateFiles(true);
+        }else  {
+          FileSaver.setSeparateFiles(false);
+        }
+         
+        
 
         if (geneBox.getSelectionModel().getSelectedIndex() == -1) {
           if (!autoGeneSearch) {
@@ -427,7 +435,7 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
       @Override
       public void handle(ActionEvent arg0) {
         // TODO @Jannis
-        // Bitte dafür sorgen den button zu enable wenn er benutzt werden darf!
+        // Bitte dafï¿½r sorgen den button zu enable wenn er benutzt werden darf!
         // (vieleicht bei dem text field oder so)
       }
     });

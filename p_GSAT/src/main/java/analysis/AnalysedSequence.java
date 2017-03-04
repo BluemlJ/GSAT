@@ -135,7 +135,7 @@ public class AnalysedSequence extends Sequence {
    * 
    * @author Ben Kohr
    */
-  @Deprecated
+  @Deprecated // wird nie verwendet und nicht mehr benötigt
   public void sortInPlasmidmixes(LinkedList<String> plasmidMixes) {
 
     Comparator<String> comp = (s1, s2) -> {

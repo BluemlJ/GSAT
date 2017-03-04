@@ -315,9 +315,9 @@ public class MutationAnalysis {
     // byte[] to int[]
     for (int i = 0; i < qaTemp.length; i++) {
       qualityA[i] = qaTemp[i];
-      qualityG[i] = qgTemp[i];
-      qualityC[i] = qcTemp[i];
-      qualityT[i] = qtTemp[i];
+    //  qualityG[i] = qgTemp[i];
+    //  qualityC[i] = qcTemp[i];
+    //  qualityT[i] = qtTemp[i];
     }
 
     int counter = 0;
@@ -334,9 +334,9 @@ public class MutationAnalysis {
       } else {
         found = false;
       }
+      
       // if found and quality is broken, we got a mix
       if (found && tmp[3] < 40) {
-        System.out.println(i);
         counter++;
         if (counter == 3) {
           int pos = i / 3 + 1;
