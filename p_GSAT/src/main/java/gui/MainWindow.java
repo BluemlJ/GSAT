@@ -8,7 +8,6 @@ import java.util.LinkedList;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
-import analysis.Pair;
 import exceptions.ConfigNotFoundException;
 import exceptions.UnknownConfigFieldException;
 import io.ConfigHandler;
@@ -255,7 +254,7 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
         }
 
         if (geneBox.getSelectionModel().getSelectedIndex() == -1) {
-          if (autoGeneSearch == false) {
+          if (!autoGeneSearch) {
             Alert alert = new Alert(AlertType.CONFIRMATION);
             alert.setTitle("Confirmation Dialog");
             alert.setHeaderText("No gene was selected!");

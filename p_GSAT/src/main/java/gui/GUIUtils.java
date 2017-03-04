@@ -437,6 +437,8 @@ public class GUIUtils {
         normalColor = "rgb(" + normal + ", " + normal + ", " + normal + ")";
         hoverColor = "rgb(" + (normal - 20) + ", " + (normal - 20) + ", " + (normal - 20) + ")";
         pressedColor = "rgb(" + (normal - 40) + ", " + (normal - 40) + ", " + (normal - 40) + ")";
+      default: 
+        return;
     }
 
     String normalStyle = "-fx-background-color: " + normalColor

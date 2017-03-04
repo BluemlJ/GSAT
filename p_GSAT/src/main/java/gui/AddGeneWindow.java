@@ -114,7 +114,7 @@ public class AddGeneWindow extends Application implements javafx.fxml.Initializa
               organismField.setText("none");
             }
             if (GeneHandler.addGene(nameField.getText(), geneArea.getText(),
-                organismField.getText(), commentArea.getText()) == true) {
+                organismField.getText(), commentArea.getText())) {
 
               Alert alert = new Alert(AlertType.INFORMATION);
               alert.setTitle("Adding gene");

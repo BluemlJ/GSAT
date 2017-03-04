@@ -183,7 +183,8 @@ public class StringAnalysis {
     // if string has to be appendet:
     if (difference > 0) {
       StringBuilder builder = new StringBuilder();
-      while (difference > 0) { // append String with given number of spaces
+   // append String with given number of spaces
+      while (difference > 0) { 
         builder.append(' ');
         difference--;
       }

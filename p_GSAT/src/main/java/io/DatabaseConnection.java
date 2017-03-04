@@ -437,7 +437,9 @@ public class DatabaseConnection {
     stmt.close();
 
     for (String mutation : mutations) {
-      String type = ""; // TODO delete type
+      
+      // TODO delete type
+      String type = ""; 
 
       // check if mutation exists
       PreparedStatement pstmt = conn2.prepareStatement(
@@ -491,13 +493,23 @@ public class DatabaseConnection {
       sqlDate = new Date(0);
     }
     String comment = sequence.getComments();
-    String checked = sequence.isManuallyChecked() ? "y" : "n";
+    String checked;
+    if (sequence.isManuallyChecked()) {
+      checked = "y";
+    } else {
+      checked = "n";
+    }
     String promoter = sequence.getPrimer();
     String vecLeft = sequence.getLeftVector();
     String vecRight = sequence.getRightVector();
     String qualities = Arrays.toString(sequence.getQuality());
-    int trimLeft = 0; // TODO delete
-    int trimRight = 0; // TODO delete
+    
+    // TODO delete
+    int trimLeft = 0; 
+    
+    // TODO delete
+    int trimRight = 0;
+    
     int trimPercent = (int) sequence.getTrimPercentage();
     int hisFlag = sequence.getHisTagPosition();
 

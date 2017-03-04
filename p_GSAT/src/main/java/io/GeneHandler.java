@@ -204,11 +204,17 @@ public class GeneHandler {
    * @return
    */
   public static Gene checkGene(String geneName, String organism) {
-    if (organism != null && organism != "") {
+    if (organism != null && !organism.isEmpty()) {
       for (int i = 0; i < geneList.size(); i++) {
         if (geneList.get(i).getName().equals(geneName)) {
-          String tmp =
-              geneList.get(i).getOrganism() == null ? "none" : geneList.get(i).getOrganism();
+          
+          String tmp;
+          if (geneList.get(i).getOrganism() == null) {
+            tmp = "none";
+          } else {
+            tmp = geneList.get(i).getOrganism();
+          }
+          
           if (tmp.equals(organism)) {
             return geneList.get(i);
           }
@@ -252,7 +258,7 @@ public class GeneHandler {
     String[] names = new String[geneList.size()];
     for (int i = 0; i < geneList.size(); i++) {
       names[i] = geneList.get(i).getName();
-      if (geneList.get(i).getOrganism() != null && geneList.get(i).getOrganism() != "none") {
+      if (geneList.get(i).getOrganism() != null && !geneList.get(i).getOrganism().equals("none")) {
         names[i] = names[i] + " (" + geneList.get(i).getOrganism() + ")";
       }
     }

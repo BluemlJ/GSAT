@@ -125,7 +125,7 @@ public class AnalysedSequence extends Sequence {
   
   public void sortInPlasmidmixes(LinkedList<String> plasmidmixes) {
     
-    Comparator<String> comp = (s1, s2) -> {return (numberOfMutation(s1) - numberOfMutation(s2)); };
+    Comparator<String> comp = (s1, s2) -> {return numberOfMutation(s1) - numberOfMutation(s2); };
     
     plasmidmixes.sort(comp);
     mutations.sort(comp);
