@@ -29,6 +29,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonBar.ButtonData;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ChoiceBox;
@@ -38,13 +39,14 @@ import javafx.scene.control.TextField;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 
 public class MainWindow extends Application implements javafx.fxml.Initializable {
 
   public static boolean settingsOpen = false;
   public static boolean autoGeneSearch = false;
-  
-  //Warnings by closing without saving
+
+  // Warnings by closing without saving
   public static boolean changesOnGenes = false;
   public static boolean changesOnPrimers = false;
   public static boolean changesOnResults = false;
@@ -261,14 +263,14 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
           infoArea.getChildren().add(
               new Text("Selected gene:  " + geneBox.getSelectionModel().getSelectedItem() + "\n"));
         }
-        
-        if(outputCheckbox.selectedProperty().get() == true) {
+
+        if (outputCheckbox.selectedProperty().get() == true) {
           FileSaver.setSeparateFiles(true);
-        }else  {
+        } else {
           FileSaver.setSeparateFiles(false);
         }
-         
-        
+
+
 
         if (geneBox.getSelectionModel().getSelectedIndex() == -1) {
           if (!autoGeneSearch) {
@@ -445,7 +447,10 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
         // (vieleicht bei dem text field oder so)
       }
     });
+
   }
+
+
 
   @Override
   public void start(Stage primaryStage) throws Exception {
@@ -461,6 +466,45 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
     primaryStage.setScene(scene);
     primaryStage.sizeToScene();
     primaryStage.show();
+
+    primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+      @Override
+      public void handle(WindowEvent event) {
+        if (true || changesOnGenes || changesOnPrimers || changesOnResults) {
+          Alert alert = new Alert(AlertType.CONFIRMATION);
+          alert.setTitle("There are unsaved changes with:");
+          if (changesOnGenes) alert.setTitle(alert.getTitle() + " genes,");
+          if (changesOnPrimers) alert.setTitle(alert.getTitle() + " primers,");
+          if (changesOnResults) alert.setTitle(alert.getTitle() + " results,");
+          alert.setTitle(alert.getTitle().substring(0, alert.getTitle().length() - 1));
+
+          alert.setHeaderText("Look, a Confirmation Dialog with Custom Actions");
+          alert.setContentText("Choose your option.");
+
+          ButtonType save = new ButtonType("Save");
+          ButtonType dontSave = new ButtonType("Dont save");
+          ButtonType buttonTypeCancel = new ButtonType("Cancel", ButtonData.CANCEL_CLOSE);
+
+          alert.getButtonTypes().setAll(save, dontSave, buttonTypeCancel);
+
+          Optional<ButtonType> result = alert.showAndWait();
+          if (result.get() == save) {
+            DatabaseWindow base = new DatabaseWindow();
+            event.consume();
+            try {
+              base.start(new Stage());
+            } catch (Exception e) {
+              // TODO Auto-generated catch block
+            }
+          } else if (result.get() == dontSave) {
+
+          } else {
+            event.consume();
+          }
+        }
+      }
+    });
+
   }
 
 
