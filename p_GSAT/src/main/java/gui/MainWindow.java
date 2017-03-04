@@ -64,6 +64,10 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
   private Button aboutButton;
   @FXML
   private Button manualButton;
+  @FXML
+  private Button chromatogramButton;
+  
+ 
 
   // Textfields
   @FXML
@@ -415,6 +419,16 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
             // TODO Auto-generated catch block
           }
         }
+      }
+    });
+    
+    // set Database button to open Database window
+    chromatogramButton.setOnAction(new EventHandler<ActionEvent>() {
+      @Override
+      public void handle(ActionEvent arg0) {
+        //TODO @Jannis
+    	//Bitte dafür sorgen den button zu enable wenn er benutzt werden darf!
+    	  //(vieleicht bei dem text field oder so)
       }
     });
   }
