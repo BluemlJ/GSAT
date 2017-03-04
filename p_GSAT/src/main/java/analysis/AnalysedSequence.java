@@ -121,15 +121,17 @@ public class AnalysedSequence extends Sequence {
     mutations.add(mutation);
   }
 
-  
-  
+
+
   public void sortInPlasmidmixes(LinkedList<String> plasmidmixes) {
-    
-    Comparator<String> comp = (s1, s2) -> {return numberOfMutation(s1) - numberOfMutation(s2); };
-    
+
+    Comparator<String> comp = (s1, s2) -> {
+      return numberOfMutation(s1) - numberOfMutation(s2);
+    };
+
     plasmidmixes.sort(comp);
     mutations.sort(comp);
-    
+
     for (String mix : plasmidmixes) {
       for (int i = 0; i < mutations.size(); i++) {
         String normalMutation = mutations.get(i);
@@ -146,36 +148,34 @@ public class AnalysedSequence extends Sequence {
         mutations.addLast(mix);
       }
     }
-    
+
   }
-  
-  
-  
+
+
+
   private int numberOfMutation(String mutationString) {
-    
+
     char[] chars = mutationString.toCharArray();
-    
+
     int end = chars.length - 1;
     int start = chars.length - 1;
-    while(!String.valueOf(chars[end]).matches("[0-9]")) {
+    while (!String.valueOf(chars[end]).matches("[0-9]")) {
       end--;
     }
     start = end;
-    while(start >= 0 && String.valueOf(chars[start]).matches("[0-9]")) {
+    while (start >= 0 && String.valueOf(chars[start]).matches("[0-9]")) {
       start--;
     }
-    
+
     char[] numberChars = Arrays.copyOfRange(chars, start + 1, end + 1);
     String numberString = new String(numberChars);
-    
+
     int number = Integer.parseInt(numberString);
-    
+
     return number;
-   
+
   }
-  
-  
-  
+
 
 
   /**
@@ -383,5 +383,5 @@ public class AnalysedSequence extends Sequence {
     return abiFile.getChannelGroup();
   }
 
-  
+
 }

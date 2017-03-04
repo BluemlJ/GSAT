@@ -108,11 +108,10 @@ public class GUIUtils {
    *         printed in the infoarea.
    * @throws DissimilarGeneException
    */
-  public static LinkedList<Text> runAnalysis(String sourcepath, String geneId,
-      String resultname, ProgressBar bar) throws DissimilarGeneException {
+  public static LinkedList<Text> runAnalysis(String sourcepath, String geneId, String resultname,
+      ProgressBar bar) throws DissimilarGeneException {
 
     LinkedList<Text> resultingLines = new LinkedList<Text>();
-    boolean success = false;
 
     // get all ab1 files
     Pair<LinkedList<File>, LinkedList<File>> sequences = getSequencesFromSourceFolder(sourcepath);
@@ -120,12 +119,12 @@ public class GUIUtils {
     if (sequences.first == null) {
       if (sequences.second == null) {
         return wrap(
-                "Reading Sequences unsuccessful: "
-                    + "please make sure the given path is correct or the file is valid\n",
-                resultingLines, true);
+            "Reading Sequences unsuccessful: "
+                + "please make sure the given path is correct or the file is valid\n",
+            resultingLines, true);
       } else {
         return wrap("No AB1 files were found at the given path or the file is invalid.\n",
-                resultingLines, true);
+            resultingLines, true);
       }
     } else {
       wrap("Reading .ab1 file(s) was successful\n", resultingLines, false);
@@ -154,7 +153,7 @@ public class GUIUtils {
         StringAnalysis.checkComplementAndReverse(toAnalyse);
       } catch (CorruptedSequenceException e) {
         return wrap("Calculation of complementary sequence unsuccessful, analysing stops\n",
-                resultingLines, true);
+            resultingLines, true);
       }
 
       // cut out vector
@@ -177,13 +176,14 @@ public class GUIUtils {
       try {
         MutationAnalysis.findMutations(toAnalyse);
       } catch (UndefinedTypeOfMutationException | CorruptedSequenceException e) {
-        return  wrap("Mutation analysis was unsuccessful because of error in " + file.getName() + "\n",
-                resultingLines, true);
+        return wrap(
+            "Mutation analysis was unsuccessful because of error in " + file.getName() + "\n",
+            resultingLines, true);
       }
 
       // add average quality
       toAnalyse.setAvgQuality(QualityAnalysis.getAvgQuality(toAnalyse));
-      
+
       // add entry to database
       try {
         FileSaver.setDestFileName(resultname);
@@ -202,7 +202,6 @@ public class GUIUtils {
     }
     // set output parameter and return Pair.
     wrap("Analysis was successful\n", resultingLines, false);
-    success = true;
     return resultingLines;
   }
 
@@ -437,7 +436,8 @@ public class GUIUtils {
         normalColor = "rgb(" + normal + ", " + normal + ", " + normal + ")";
         hoverColor = "rgb(" + (normal - 20) + ", " + (normal - 20) + ", " + (normal - 20) + ")";
         pressedColor = "rgb(" + (normal - 40) + ", " + (normal - 40) + ", " + (normal - 40) + ")";
-      default: 
+        break;
+      default:
         return;
     }
 

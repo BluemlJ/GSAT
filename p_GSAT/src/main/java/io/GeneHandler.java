@@ -207,14 +207,14 @@ public class GeneHandler {
     if (organism != null && !organism.isEmpty()) {
       for (int i = 0; i < geneList.size(); i++) {
         if (geneList.get(i).getName().equals(geneName)) {
-          
+
           String tmp;
           if (geneList.get(i).getOrganism() == null) {
             tmp = "none";
           } else {
             tmp = geneList.get(i).getOrganism();
           }
-          
+
           if (tmp.equals(organism)) {
             return geneList.get(i);
           }

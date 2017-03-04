@@ -119,9 +119,9 @@ public class ShowChromatogram extends Application implements javafx.fxml.Initial
     bar.setValue(0);
     bar.valueProperty().addListener(new ChangeListener<Number>() {
       @Override
-      public void changed(ObservableValue<? extends Number> ov, Number old_val, Number new_val) {
-        xAxis.setUpperBound((int) (maxScroll * new_val.doubleValue() + numberRange));
-        xAxis.setLowerBound((int) (maxScroll * new_val.doubleValue()));
+      public void changed(ObservableValue<? extends Number> ov, Number oldVal, Number newVal) {
+        xAxis.setUpperBound((int) (maxScroll * newVal.doubleValue() + numberRange));
+        xAxis.setLowerBound((int) (maxScroll * newVal.doubleValue()));
       }
     });
 
@@ -221,26 +221,26 @@ public class ShowChromatogram extends Application implements javafx.fxml.Initial
     AnalysedSequence startSequence = this.sequences.get(id);
 
 
-    QualitySequence aChannel = startSequence.getChannels().getAChannel().getQualitySequence();
-    QualitySequence cChannel = startSequence.getChannels().getCChannel().getQualitySequence();
-    QualitySequence tChannel = startSequence.getChannels().getTChannel().getQualitySequence();
-    QualitySequence gChannel = startSequence.getChannels().getGChannel().getQualitySequence();
+    QualitySequence channelA = startSequence.getChannels().getAChannel().getQualitySequence();
+    QualitySequence channelC = startSequence.getChannels().getCChannel().getQualitySequence();
+    QualitySequence channelT = startSequence.getChannels().getTChannel().getQualitySequence();
+    QualitySequence channelG = startSequence.getChannels().getGChannel().getQualitySequence();
 
-    int last = (int) aChannel.getLength();
-    last = (int) Math.min(last, cChannel.getLength());
-    last = (int) Math.min(last, tChannel.getLength());
-    last = (int) Math.min(last, gChannel.getLength());
+    int last = (int) channelA.getLength();
+    last = (int) Math.min(last, channelC.getLength());
+    last = (int) Math.min(last, channelT.getLength());
+    last = (int) Math.min(last, channelG.getLength());
 
     for (int i = 0; i < last; i++) {
 
       seriesA.getData().set(i,
-          new XYChart.Data<Number, String>(aChannel.get(i).getQualityScore(), i + "F"));
+          new XYChart.Data<Number, String>(channelA.get(i).getQualityScore(), i + "F"));
       seriesC.getData().set(i,
-          new XYChart.Data<Number, String>(cChannel.get(i).getQualityScore(), i + "F"));
+          new XYChart.Data<Number, String>(channelC.get(i).getQualityScore(), i + "F"));
       seriesT.getData().set(i,
-          new XYChart.Data<Number, String>(tChannel.get(i).getQualityScore(), i + "F"));
+          new XYChart.Data<Number, String>(channelT.get(i).getQualityScore(), i + "F"));
       seriesG.getData().set(i,
-          new XYChart.Data<Number, String>(gChannel.get(i).getQualityScore(), i + "F"));
+          new XYChart.Data<Number, String>(channelG.get(i).getQualityScore(), i + "F"));
 
     }
 

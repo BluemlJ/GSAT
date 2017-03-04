@@ -1,12 +1,12 @@
 package analysis;
 
+import exceptions.CorruptedSequenceException;
+import exceptions.UndefinedTypeOfMutationException;
+
 import java.util.Arrays;
 import java.util.LinkedList;
 
-import org.jcvi.jillion.trace.chromat.*;
-
-import exceptions.CorruptedSequenceException;
-import exceptions.UndefinedTypeOfMutationException;
+import org.jcvi.jillion.trace.chromat.Channel;
 
 /**
  * This class contains the logic of analyzing mutations in sequences. Thus, it is one of the main
@@ -318,22 +318,22 @@ public class MutationAnalysis {
     Channel channelT = sequence.getChannels().getTChannel();
 
     // Qualities
-    byte[] qATemp = channelA.getQualitySequence().toArray();
-    byte[] qCTemp = channelC.getQualitySequence().toArray();
-    byte[] qGTemp = channelG.getQualitySequence().toArray();
-    byte[] qTTemp = channelT.getQualitySequence().toArray();
+    byte[] qaTemp = channelA.getQualitySequence().toArray();
+    byte[] qcTemp = channelC.getQualitySequence().toArray();
+    byte[] qgTemp = channelG.getQualitySequence().toArray();
+    byte[] qtTemp = channelT.getQualitySequence().toArray();
 
-    int[] qualityA = new int[qATemp.length];
-    int[] qualityC = new int[qCTemp.length];
-    int[] qualityG = new int[qGTemp.length];
-    int[] qualityT = new int[qTTemp.length];
+    int[] qualityA = new int[qaTemp.length];
+    int[] qualityC = new int[qcTemp.length];
+    int[] qualityG = new int[qgTemp.length];
+    int[] qualityT = new int[qtTemp.length];
 
     // byte[] to int[]
-    for (int i = 0; i < qATemp.length; i++) {
-      qualityA[i] = qATemp[i];
-      qualityG[i] = qGTemp[i];
-      qualityC[i] = qCTemp[i];
-      qualityT[i] = qTTemp[i];
+    for (int i = 0; i < qaTemp.length; i++) {
+      qualityA[i] = qaTemp[i];
+      qualityG[i] = qgTemp[i];
+      qualityC[i] = qcTemp[i];
+      qualityT[i] = qtTemp[i];
     }
 
     for (int i = 0; i < sequence.length(); i++) {
@@ -343,11 +343,11 @@ public class MutationAnalysis {
       StringBuilder candidate = new StringBuilder();
       candidate.append(sequence.getSequence().charAt(i));
       Arrays.sort(tmp);
-      
+
       // find equal qualities
       for (int j = 2; j >= 0; j--) {
         if (tmp[3] == tmp[j]) {
-          
+
           if (tmp[j] == qualityA[i]) {
             candidate.append("A");
           } else if (tmp[j] == qualityG[i]) {
@@ -358,13 +358,12 @@ public class MutationAnalysis {
             candidate.append("T");
           }
         }
-  
+
       }
 
       // if you find a canditate with more then one One codon and the
       // quality is broken, we got a mix
-      if (candidate.length() > 1
-          && sequence.getQuality()[i] < (sequence.getQuality()[i - 1] / 2)) {
+      if (candidate.length() > 1 && sequence.getQuality()[i] < (sequence.getQuality()[i - 1] / 2)) {
         ret.add("p|" + i + "|" + candidate);
       }
     }
@@ -522,7 +521,7 @@ public class MutationAnalysis {
     return reportDifferences(first.split("#")[0], second.split("#")[0]);
   }
 
-  public static int IntegerMax(int... n) {
+  public static int integerMax(int... n) {
     int i = 0;
     int max = n[i];
 

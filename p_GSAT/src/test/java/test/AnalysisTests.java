@@ -836,104 +836,107 @@ public class AnalysisTests {
     }
   }
 
-  
-  
+
+
   @Test
   public void testSortInPlasmidmixesNormal() {
     AnalysedSequence seq = new AnalysedSequence();
-    
-    String[] mutations = new String[]{"R56T (AAC)", "G7R (ACC)", "+2H77 (AAC)", "AAA6CAA", "-1H4 (TCT)"};
-    String[] plasmidmixes = new String[]{"H25TDG", "H2TDG", "H77TAG", "H90TDG"};
-    
+
+    String[] mutations =
+        new String[] {"R56T (AAC)", "G7R (ACC)", "+2H77 (AAC)", "AAA6CAA", "-1H4 (TCT)"};
+    String[] plasmidmixes = new String[] {"H25TDG", "H2TDG", "H77TAG", "H90TDG"};
+
     LinkedList<String> mixes = new LinkedList<String>();
     for (String mix : plasmidmixes) {
       mixes.add(mix);
     }
-    
+
     for (String mutation : mutations) {
       seq.addMutation(mutation);
     }
-    
+
     seq.sortInPlasmidmixes(mixes);
-    
-    String[] expected = new String[]{"H2TDG", "-1H4 (TCT)", "AAA6CAA", "G7R (ACC)", "H25TDG", "R56T (AAC)", "H77TAG", "H90TDG"};
-    
-    for(int i = 0; i < expected.length; i++) {
+
+    String[] expected = new String[] {"H2TDG", "-1H4 (TCT)", "AAA6CAA", "G7R (ACC)", "H25TDG",
+        "R56T (AAC)", "H77TAG", "H90TDG"};
+
+    for (int i = 0; i < expected.length; i++) {
       assertEquals(expected[i], seq.getMutations().get(i));
     }
   }
-  
-  
-  
+
+
+
   @Test
   public void testSortInPlasmidmixesNormal2() {
-   AnalysedSequence seq = new AnalysedSequence();
-    
-    String[] mutations = new String[]{"+1T20 (GCT)", "+1T56 (GCT)", "-2H12 (ADC)", "ACA63CFA", "-1H21 (ACT)"};
-    String[] plasmidmixes = new String[]{"F314GCX", "A12JZD", "H12TDG", "A20JZD", "H56TDG"};
-    
+    AnalysedSequence seq = new AnalysedSequence();
+
+    String[] mutations =
+        new String[] {"+1T20 (GCT)", "+1T56 (GCT)", "-2H12 (ADC)", "ACA63CFA", "-1H21 (ACT)"};
+    String[] plasmidmixes = new String[] {"F314GCX", "A12JZD", "H12TDG", "A20JZD", "H56TDG"};
+
     LinkedList<String> mixes = new LinkedList<String>();
     for (String mix : plasmidmixes) {
       mixes.add(mix);
     }
-    
+
     for (String mutation : mutations) {
       seq.addMutation(mutation);
     }
-    
+
     seq.sortInPlasmidmixes(mixes);
-    
-    String[] expected = new String[]{"H12TDG", "A20JZD", "-1H21 (ACT)", "H56TDG", "ACA63CFA", "F314GCX"};
-    
-    for(int i = 0; i < expected.length; i++) {
+
+    String[] expected =
+        new String[] {"H12TDG", "A20JZD", "-1H21 (ACT)", "H56TDG", "ACA63CFA", "F314GCX"};
+
+    for (int i = 0; i < expected.length; i++) {
       assertEquals(expected[i], seq.getMutations().get(i));
     }
   }
-  
-  
-  
+
+
+
   @Test
   public void testSortInPlasmidmixesEmptyLists() {
     AnalysedSequence seq = new AnalysedSequence();
-    
+
     // empty mutation list
-    
-    String[] plasmidmixes = new String[]{"G132AGD", "A11JZA", "H19QG"};
-    
+
+    String[] plasmidmixes = new String[] {"G132AGD", "A11JZA", "H19QG"};
+
     LinkedList<String> mixes = new LinkedList<String>();
     for (String mix : plasmidmixes) {
       mixes.add(mix);
     }
-    
+
     seq.sortInPlasmidmixes(mixes);
-    
-    String[] expected = new String[]{"A11JZA", "H19QG", "G132AGD"};
-    
-    for(int i = 0; i < expected.length; i++) {
+
+    String[] expected = new String[] {"A11JZA", "H19QG", "G132AGD"};
+
+    for (int i = 0; i < expected.length; i++) {
       assertEquals(expected[i], seq.getMutations().get(i));
     }
-    
+
     // empty mix list
-    
+
     LinkedList<String> mutations = new LinkedList<String>();
-    
+
     mutations.add("+1E533 (ATC)");
     mutations.add("-1E5 (CTC)");
     mutations.add("E2A (TGC)");
-    
+
     seq.setMutations(mutations);
-    
+
     seq.sortInPlasmidmixes(new LinkedList<String>());
-    
-    expected = new String[]{"E2A (TGC)", "-1E5 (CTC)", "+1E533 (ATC)"};
-    
-    for(int i = 0; i < seq.getMutations().size(); i++) {
+
+    expected = new String[] {"E2A (TGC)", "-1E5 (CTC)", "+1E533 (ATC)"};
+
+    for (int i = 0; i < seq.getMutations().size(); i++) {
       assertEquals(expected[i], seq.getMutations().get(i));
     }
-    
-    
-    
-    
+
+
+
   }
-  
+
 }

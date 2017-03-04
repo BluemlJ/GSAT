@@ -44,18 +44,18 @@ public class ShowGeneWindow extends Application implements javafx.fxml.Initializ
     GUIUtils.setColorOnButton(okButton, ButtonColor.BLUE);
 
 
-    Gene sGene = SettingsWindow.getSelectedGene();
+    Gene selectedGene = SettingsWindow.getSelectedGene();
     String tmp;
-    nameField.setText(sGene.getName());
+    nameField.setText(selectedGene.getName());
 
-    tmp = sGene.getOrganism();
+    tmp = selectedGene.getOrganism();
     if (tmp != null) {
-      organismField.setText(sGene.getOrganism());
+      organismField.setText(selectedGene.getOrganism());
     }
 
-    geneArea.setText(sGene.getSequence());
+    geneArea.setText(selectedGene.getSequence());
 
-    tmp = sGene.getComment();
+    tmp = selectedGene.getComment();
     if (tmp != null) {
       commentArea.setText(tmp);
     }

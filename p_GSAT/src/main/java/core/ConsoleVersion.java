@@ -1,10 +1,5 @@
 package core;
 
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.util.LinkedList;
-
 import analysis.AnalysedSequence;
 import analysis.Gene;
 import analysis.MutationAnalysis;
@@ -24,6 +19,11 @@ import io.FileSaver;
 import io.GeneHandler;
 import io.SequenceReader;
 
+
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.LinkedList;
 
 public class ConsoleVersion {
 

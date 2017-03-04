@@ -72,8 +72,8 @@ public class SettingsWindow extends Application implements javafx.fxml.Initializ
   public static Gene getSelectedGene() {
     return selectedGene;
   }
-  
-  
+
+
 
   @Override
   public void initialize(URL location, ResourceBundle resources) {
@@ -335,12 +335,12 @@ public class SettingsWindow extends Application implements javafx.fxml.Initializ
      */
   }
 
-  
+
   public void updateGenes() {
     GUIUtils.initializeGeneBox(geneList);
   }
 
-  
+
   public void decNumGenWindows() {
     numGeneWindows--;
 

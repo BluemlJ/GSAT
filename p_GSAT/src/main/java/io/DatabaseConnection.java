@@ -266,7 +266,7 @@ public class DatabaseConnection {
           + "name VARCHAR(100) NOT NULL, primerid VARCHAR(100) NOT NULL, "
           + "sequence MEDIUMTEXT NOT NULL, date DATE, researcher INTEGER unsigned, "
           + "meltingpoint INTEGER, PRIMARY KEY(id))");
-      //TODO Primer comment
+      // TODO Primer comment
       stmt.executeUpdate("CREATE TABLE sequences (id INTEGER unsigned NOT NULL AUTO_INCREMENT, "
           + "name VARCHAR(100) NOT NULL, sequence MEDIUMTEXT NOT NULL, date DATE, "
           + "researcher INTEGER unsigned, comment VARCHAR(1000), manualcheck CHAR(1), "
@@ -274,10 +274,10 @@ public class DatabaseConnection {
           + "vectorright MEDIUMTEXT, quality MEDIUMTEXT, trimleft INTEGER unsigned, "
           + "trimright INTEGER unsigned, trimpercent INTEGER unsigned, hisflag INTEGER, "
           + "PRIMARY KEY(id))");
-      //TODO add avg quality
-      //TODO delete quality
-      //TODO promoter -> primer
-      //TODO hisflag -> histag
+      // TODO add avg quality
+      // TODO delete quality
+      // TODO promoter -> primer
+      // TODO hisflag -> histag
       stmt.executeUpdate("CREATE TABLE mutations (id INTEGER unsigned NOT NULL AUTO_INCREMENT, "
           + "mutation VARCHAR(100) NOT NULL, sequence INTEGER unsigned NOT NULL, "
           + "type VARCHAR(100), " + "PRIMARY KEY(id))");
@@ -437,9 +437,9 @@ public class DatabaseConnection {
     stmt.close();
 
     for (String mutation : mutations) {
-      
+
       // TODO delete type
-      String type = ""; 
+      String type = "";
 
       // check if mutation exists
       PreparedStatement pstmt = conn2.prepareStatement(
@@ -503,13 +503,13 @@ public class DatabaseConnection {
     String vecLeft = sequence.getLeftVector();
     String vecRight = sequence.getRightVector();
     String qualities = Arrays.toString(sequence.getQuality());
-    
+
     // TODO delete
-    int trimLeft = 0; 
-    
+    int trimLeft = 0;
+
     // TODO delete
     int trimRight = 0;
-    
+
     int trimPercent = (int) sequence.getTrimPercentage();
     int hisFlag = sequence.getHisTagPosition();
 
