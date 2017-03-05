@@ -35,8 +35,9 @@ public class PrimerHandler {
       String researcher = sepLine[2];
       int meltingPoint = Integer.parseInt(sepLine[3]);
       String id = sepLine[4];
+      String comment = sepLine[5];
 
-      primerList.add(new Primer(sequence, researcher, meltingPoint, id, name));
+      primerList.add(new Primer(sequence, researcher, meltingPoint, id, name, comment));
     }
 
     primerReader.close();
@@ -95,6 +96,12 @@ public class PrimerHandler {
         primerString.append("none");
       } else {
         primerString.append(primer.getId());
+      }
+      primerString.append(SEPARATOR);
+      if (primer.getComment() == null || primer.getComment().equals("")) {
+        primerString.append("none");
+      } else {
+        primerString.append(primer.getComment());
       }
       primerString.append(System.getProperty("line.separator"));
       primerWriter.write(primerString.toString());

@@ -52,8 +52,8 @@ public class LocalDBTest {
       throws DatabaseConnectionException, SQLException, NumberFormatException, IOException {
     DatabaseConnection.setDatabaseConnection(user, pass, port, server);
     DatabaseConnection.createDatabase();
-    Primer p1 = new Primer("AATAATAAT", "Lovis Heindrich", 50, "A01", "primer1");
-    Primer p2 = new Primer("TTATTATTA", "Kevin Otto", 100, "B01", "primer2");
+    Primer p1 = new Primer("AATAATAAT", "Lovis Heindrich", 50, "A01", "primer1", "comment1");
+    Primer p2 = new Primer("TTATTATTA", "Kevin Otto", 100, "B01", "primer2", "comment2");
     ArrayList<Primer> primerList = new ArrayList<Primer>();
     primerList.add(p1);
     primerList.add(p2);
@@ -68,8 +68,8 @@ public class LocalDBTest {
     DatabaseConnection.setDatabaseConnection(user, pass, port, server);
     Connection conn = DatabaseConnection.establishConnection();
     DatabaseConnection.createDatabase();
-    Primer p1 = new Primer("AATAATAAT", "Lovis Heindrich", 50, "A01", "primer1");
-    Primer p2 = new Primer("TTATTATTA", "Kevin Otto", 100, "B01", "primer2");
+    Primer p1 = new Primer("AATAATAAT", "Lovis Heindrich", 50, "A01", "primer1", "comment1");
+    Primer p2 = new Primer("TTATTATTA", "Kevin Otto", 100, "B01", "primer2", "comment2");
     DatabaseConnection.pushPrimer(conn, p1, 0);
     DatabaseConnection.pushPrimer(conn, p2, 0);
     DatabaseConnection.pushPrimer(conn, p1, 0);
@@ -186,6 +186,8 @@ public class LocalDBTest {
   /**
    * Working connection setup to online database
    */
+  @Ignore
+  @Test
   public void testOnlineDBConnection() {
     MysqlDataSource dataSource = new MysqlDataSource();
     dataSource.setUser(userOnline);
@@ -223,6 +225,8 @@ public class LocalDBTest {
 
   }
 
+  @Ignore
+  @Test
   public void DBConnectionTest() throws DatabaseConnectionException, SQLException {
     DatabaseConnection.setDatabaseConnection(user, pass, port, server);
     System.out.println(DatabaseConnection.gsatExists());
@@ -231,6 +235,8 @@ public class LocalDBTest {
 
   }
 
+  @Ignore
+  @Test
   public void checkDBExists() {
     MysqlDataSource dataSource = new MysqlDataSource();
     dataSource.setUser(user);
@@ -257,6 +263,8 @@ public class LocalDBTest {
 
   }
 
+  @Ignore
+  @Test
   public void testDBConnection() {
 
     MysqlDataSource dataSource = new MysqlDataSource();
