@@ -448,9 +448,12 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
     chromatogramButton.setOnAction(new EventHandler<ActionEvent>() {
       @Override
       public void handle(ActionEvent arg0) {
-        // TODO @Jannis
-        // Bitte daf�r sorgen den button zu enable wenn er benutzt werden darf!
-        // (vieleicht bei dem text field oder so)
+        ShowChromatogram chromaWindow = new ShowChromatogram();
+            try {
+              chromaWindow.start(new Stage());
+            } catch (Exception e) {
+              // TODO: handle exception
+            }
       }
     });
 
