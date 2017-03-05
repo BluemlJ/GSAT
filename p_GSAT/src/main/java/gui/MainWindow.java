@@ -153,7 +153,10 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
       }
     });
 
-    srcField.setText(ConfigHandler.getSrcPath());
+    if(!ConfigHandler.getSrcPath().isEmpty()){
+      srcField.setText(ConfigHandler.getSrcPath());
+      chromatogramButton.setDisable(false);
+    }
     srcField.textProperty().addListener(new ChangeListener<String>() {
       @Override
       public void changed(ObservableValue<? extends String> observable, String oldValue,
@@ -162,6 +165,11 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
           srcField.setText(oldValue);
         } else {
           srcField.setText(newValue);
+          if(newValue.isEmpty()){
+            chromatogramButton.setDisable(true);
+          }else {
+            chromatogramButton.setDisable(false);
+          }
         }
       }
     });
@@ -391,8 +399,6 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
         }
       }
     });
-
-    // ...
 
     manualButton.setOnAction(new EventHandler<ActionEvent>() {
       @Override
