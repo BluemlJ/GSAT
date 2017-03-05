@@ -153,7 +153,7 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
       }
     });
 
-    if(!ConfigHandler.getSrcPath().isEmpty()){
+    if (!ConfigHandler.getSrcPath().isEmpty()) {
       srcField.setText(ConfigHandler.getSrcPath());
       chromatogramButton.setDisable(false);
     }
@@ -165,9 +165,9 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
           srcField.setText(oldValue);
         } else {
           srcField.setText(newValue);
-          if(newValue.isEmpty()){
+          if (newValue.isEmpty()) {
             chromatogramButton.setDisable(true);
-          }else {
+          } else {
             chromatogramButton.setDisable(false);
           }
         }
@@ -449,11 +449,11 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
       @Override
       public void handle(ActionEvent arg0) {
         ShowChromatogram chromaWindow = new ShowChromatogram();
-            try {
-              chromaWindow.start(new Stage());
-            } catch (Exception e) {
-              // TODO: handle exception
-            }
+        try {
+          chromaWindow.start(new Stage());
+        } catch (Exception e) {
+          // TODO: handle exception
+        }
       }
     });
 

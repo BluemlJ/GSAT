@@ -11,8 +11,8 @@ import analysis.AnalysedSequence;
 
 /**
  * This class is used to read in stored CSV result files and converts them into AnalysedSequences.
- * This is necessary to be able to store the information in the database, 
- * after a user may have manually changed some of the values in the file.
+ * This is necessary to be able to store the information in the database, after a user may have
+ * manually changed some of the values in the file.
  * 
  * @author Ben Kohr
  *
@@ -21,9 +21,8 @@ public class FileRetriever {
 
 
   /**
-   * This methods extracts all the stored information of all CSV files in
-   * the folder indicated by the given path and stores them inside 
-   * an AnalysedSequence object.
+   * This methods extracts all the stored information of all CSV files in the folder indicated by
+   * the given path and stores them inside an AnalysedSequence object.
    * 
    * @param path The path of the folder where the CSV files are located
    * 
@@ -65,8 +64,8 @@ public class FileRetriever {
 
 
   /**
-   * This method creates File objects for each CSV file in a given folder and
-   * returns them as a list.
+   * This method creates File objects for each CSV file in a given folder and returns them as a
+   * list.
    * 
    * @param path The path where the files are located
    * 
@@ -96,8 +95,8 @@ public class FileRetriever {
 
 
   /**
-   * Converts a CSV result file line into an AnalysedSequence object by placing the information
-   * into the corresponding fields.
+   * Converts a CSV result file line into an AnalysedSequence object by placing the information into
+   * the corresponding fields.
    * 
    * @param line One line containing analysis information from a CSV file
    * 

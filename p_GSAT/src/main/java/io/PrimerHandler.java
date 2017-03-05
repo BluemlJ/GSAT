@@ -148,7 +148,7 @@ public class PrimerHandler {
       primerList.remove(pos);
     }
   }
-  
+
   /**
    * deletes a primer from the primerList
    * 
@@ -168,7 +168,7 @@ public class PrimerHandler {
       primerList.remove(pos);
     }
   }
-  
+
 
   /**
    * Returns a primer identified by name and id from the primerList

@@ -4,12 +4,9 @@ import java.io.File;
 import java.io.IOException;
 import java.util.LinkedList;
 
-import org.biojava.bio.chromatogram.Chromatogram;
-import org.biojava.bio.chromatogram.UnsupportedChromatogramFormatException;
 import org.biojava.bio.program.abi.ABITrace;
 import org.biojava.bio.seq.DNATools;
 import org.biojava.bio.symbol.IllegalSymbolException;
-import org.jcvi.jillion.trace.chromat.Channel;
 import org.jcvi.jillion.trace.chromat.ChromatogramFactory;
 import org.jcvi.jillion.trace.chromat.abi.AbiChromatogram;
 

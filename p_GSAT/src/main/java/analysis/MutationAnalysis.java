@@ -1,12 +1,10 @@
 package analysis;
 
-import exceptions.CorruptedSequenceException;
-import exceptions.UndefinedTypeOfMutationException;
-
 import java.util.Arrays;
 import java.util.LinkedList;
 
-import org.jcvi.jillion.trace.chromat.Channel;
+import exceptions.CorruptedSequenceException;
+import exceptions.UndefinedTypeOfMutationException;
 
 /**
  * This class contains the logic of analyzing mutations in sequences. Thus, it is one of the main
