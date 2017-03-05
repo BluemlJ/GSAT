@@ -104,7 +104,7 @@ public class PrivateTest {
    * @throws UndefinedTypeOfMutationException
    * @throws CorruptedSequenceException
    */
-  @Test
+
   public void testLocalFile() throws FileReadingException, IOException,
       UndefinedTypeOfMutationException, CorruptedSequenceException {
     SequenceReader.configurePath(pathToUse + fileName);
