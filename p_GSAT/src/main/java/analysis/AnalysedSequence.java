@@ -112,6 +112,42 @@ public class AnalysedSequence extends Sequence {
 
 
   /**
+   * constructor which sets all values
+   * @param gene
+   * @param name
+   * @param sequence
+   * @param date
+   * @param researcher
+   * @param comment
+   * @param manualcheck
+   * @param primer2
+   * @param vecLeft
+   * @param vecRight
+   * @param trimpercent
+   * @param histag
+   * @param avgquality2
+   * 
+   * @author Lovis Heindrich
+   */
+  public AnalysedSequence(Gene gene, LinkedList<String> mutations, String name, String sequence, java.util.Date date, String researcher, String comment,
+		char manualcheck, String primer2, String vecLeft, String vecRight, int trimpercent, int histag,
+		int avgquality2) {
+	  super(sequence, researcher, date);
+	this.referencedGene = gene;
+	this.mutations = mutations;
+	this.fileName = name;
+	this.comments = comment;
+	this.manuallyChecked = manualcheck == 'y' ? true : false;
+	this.primer = primer2;
+	this.leftVector = vecLeft;
+	this.rightVector = vecRight;
+	this.trimPercentage = trimpercent;
+	this.hisTagPosition = histag;
+	this.avgQuality = avgquality2;
+}
+
+
+/**
    * Add a discovered, String-encoded mutation to the list of already discovered mutations.
    * 
    * @param mutation A discovered mutation

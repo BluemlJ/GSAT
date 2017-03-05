@@ -49,6 +49,8 @@ public class ConfigHandler {
    * char used for separating values in the configuration file
    */
   public static final char SEPARATOR_CHAR = ';';
+  public static final char MANUAL_CHECKED_YES = 'y';
+  public static final char MANUALCHECKED_NO = 'n';
 
   /**
    * read the content of the configuration file and store its values locally

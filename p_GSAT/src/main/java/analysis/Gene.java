@@ -1,5 +1,7 @@
 package analysis;
 
+import java.util.Date;
+
 /**
  * This class models a gene, which can be compared with obtained DNA sequences. Genes can be seen as
  * original templates for mutated sequences.
@@ -59,6 +61,15 @@ public class Gene extends Sequence {
     this.organism = organism;
     this.comment = comment;
   }
+  
+  public Gene(String sequence, int id, String name, String researcher, String organism,
+	      String comment, Date date) {
+	    super(sequence, researcher, date);
+	    this.name = name;
+	    this.id = id;
+	    this.organism = organism;
+	    this.comment = comment;
+	  }
 
 
   // GETTERs and SETTERs:

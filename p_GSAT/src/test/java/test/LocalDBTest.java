@@ -9,6 +9,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.LinkedList;
 
 import org.junit.Ignore;
@@ -19,7 +20,10 @@ import com.mysql.cj.jdbc.MysqlDataSource;
 import analysis.AnalysedSequence;
 import analysis.Gene;
 import analysis.Primer;
+import exceptions.ConfigNotFoundException;
 import exceptions.DatabaseConnectionException;
+import exceptions.UnknownConfigFieldException;
+import io.ConfigHandler;
 import io.DatabaseConnection;
 import io.PrimerHandler;
 
@@ -46,6 +50,112 @@ public class LocalDBTest {
 	Connection conn = null;
 	java.sql.Statement stmt = null;
 	ResultSet rs = null;
+	
+	@Ignore
+	@Test
+	public void testPullSequences() throws SQLException, DatabaseConnectionException, UnknownConfigFieldException, ConfigNotFoundException, IOException{
+		DatabaseConnection.setDatabaseConnection(user, pass, port, server);
+		
+		//for running the test online - this will delete all online data!
+		//ConfigHandler.readConfig();
+		//DatabaseConnection.setDatabaseConnection(ConfigHandler.getDbUser(), ConfigHandler.getDbPass(), ConfigHandler.getDbPort(), ConfigHandler.getDbUrl());
+		
+		
+		conn = DatabaseConnection.establishConnection();
+		DatabaseConnection.createDatabase();
+		
+		//push test sequence
+		LinkedList<String> mutations1 = new LinkedList<String>(Arrays.asList("t5a", "t6a"));
+		AnalysedSequence sequence1 = new AnalysedSequence("AATAATAAT", "Lovis Heindrich", "Sequence1", null);
+		sequence1.setMutations(mutations1);
+		Gene gene1 = new Gene("aaatttggg", 0, "fsa1", "Lovis Heindrich", "fsa", "comment1");
+		sequence1.setReferencedGene(gene1);
+		LinkedList<AnalysedSequence> sequences = new LinkedList<AnalysedSequence>();
+		sequences.add(sequence1);
+
+		DatabaseConnection.pushAllData(sequences);
+		
+		ArrayList<AnalysedSequence> sequenceList = DatabaseConnection.pullAllSequences();
+		
+		assertEquals(sequenceList.size(), 1);
+		AnalysedSequence sequence = sequenceList.get(0);
+		
+		//check sequence data
+		assertEquals(sequence.getSequence(), "AATAATAAT");
+		assertEquals(sequence.getFileName(), "Sequence1");
+		
+		//check researcher
+		assertEquals(sequence.getResearcher(), "Lovis Heindrich");
+		
+		//check mutations data
+		assertEquals(sequence.getMutations().size(), 2);
+		assertEquals(sequence.getMutations().get(0), "t5a");
+		
+		//check gene data
+		assertEquals(sequence.getReferencedGene().getName(), "fsa1");
+		
+		//reset db
+		DatabaseConnection.createDatabase();
+	}
+	
+	@Ignore
+	@Test
+	public void testPullGenes() throws DatabaseConnectionException, SQLException {
+		DatabaseConnection.setDatabaseConnection(user, pass, port, server);
+		Connection conn = DatabaseConnection.establishConnection();
+		DatabaseConnection.createDatabase();
+
+		Gene gene1 = new Gene("aaatttggg", 0, "fsa1", "Lovis Heindrich", "fsa", "comment1", new Date(10));
+		Gene gene2 = new Gene("gggtttaaa", 0, "fsa2", "Lovis Heindrich", "fsa", "comment2", new Date(100));
+
+		DatabaseConnection.pushGene(conn, gene1, 0);
+		DatabaseConnection.pushGene(conn, gene2, 0);
+
+		ArrayList<Gene> genes = DatabaseConnection.pullAllGenes();
+
+		assertEquals(genes.size(), 2);
+		assertTrue(genes.get(0).getName().equals("fsa1") || genes.get(0).getName().equals("fsa2"));
+		assertTrue(genes.get(1).getName().equals("fsa1") || genes.get(1).getName().equals("fsa2"));
+
+		assertTrue(genes.get(0).getAddingDate().equals(ConfigHandler.getDateFormat().format(new Date(10)))
+				|| genes.get(0).getAddingDate().equals(ConfigHandler.getDateFormat().format(new Date(100))));
+	}
+
+	@Ignore
+	@Test
+	public void testPullResearcher() throws SQLException, DatabaseConnectionException {
+		DatabaseConnection.setDatabaseConnection(user, pass, port, server);
+		Connection conn = DatabaseConnection.establishConnection();
+		DatabaseConnection.createDatabase();
+
+		DatabaseConnection.pushResearcher(conn, "Lovis Heindrich");
+		DatabaseConnection.pushResearcher(conn, "Kevin Otto");
+
+		ArrayList<String> researchers = DatabaseConnection.pullResearcher();
+
+		assertEquals(researchers.size(), 2);
+		assertTrue(researchers.contains("Lovis Heindrich"));
+		assertTrue(researchers.contains("Kevin Otto"));
+	}
+
+	@Ignore
+	@Test
+	public void testPullMutations() throws DatabaseConnectionException, SQLException {
+		DatabaseConnection.setDatabaseConnection(user, pass, port, server);
+		Connection conn = DatabaseConnection.establishConnection();
+		DatabaseConnection.createDatabase();
+
+		LinkedList<String> mutations1 = new LinkedList<String>(Arrays.asList("t5a", "t6a"));
+		LinkedList<String> mutations2 = new LinkedList<String>(Arrays.asList("t1a", "t2a"));
+		DatabaseConnection.pushMutations(conn, mutations1, 0);
+		DatabaseConnection.pushMutations(conn, mutations2, 1);
+
+		LinkedList<String> mutations = DatabaseConnection.pullMutationsPerSequence(0);
+
+		assertEquals(mutations.size(), 2);
+		assertTrue(mutations.get(0).equals("t5a") || mutations.get(0).equals("t6a"));
+		assertTrue(mutations.get(1).equals("t5a") || mutations.get(1).equals("t6a"));
+	}
 
 	@Ignore
 	@Test
