@@ -98,7 +98,7 @@ public class WritingTests {
   }
 
   @AfterClass
-  public static void wrightNewFile() throws IOException {
+  public static void writeNewFile() throws IOException {
     File newFile = new File(path + "test.txt");
     newFile.createNewFile();
   }
@@ -359,8 +359,11 @@ public class WritingTests {
     FileSaver.setSeparateFiles(false);
     FileSaver.setLocalPath(path);
 
+    AnalysedSequence seq = new AnalysedSequence();
+    seq.setReferencedGene(new Gene("A", 0, "A", null));
+    
     // Nothing added (no mutations) - does it still work?
-    FileSaver.storeResultsLocally("", seq3);
+    FileSaver.storeResultsLocally("", seq);
 
     // Code for reading the file in again
     BufferedReader reader =

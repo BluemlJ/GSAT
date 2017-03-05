@@ -100,24 +100,6 @@ public class VectorTrimTests {
    * 
    * @author Kevin Otto
    */
-  @SuppressWarnings("deprecation")
-  @Test
-  public void trimLevenTest() {
-    String a = "ATGABCDEFGSTOP";
-    String b = "ATFABCDEFGSTOP";
-    int[] q = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14};
-    AnalysedSequence seq = new AnalysedSequence(b, "", "", q);
-    seq.setReferencedGene(new Gene(a, 0, "", ""));
-
-    String tmp = StringAnalysis.trimbyLevevenstein(seq, false);
-    System.out.println(tmp);
-  }
-
-  /**
-   * 
-   * 
-   * @author Kevin Otto
-   */
   @Test
   public void trimVectorBasicTest() {
     String seq = "XXhallo3wieGehts3dirheute3";
