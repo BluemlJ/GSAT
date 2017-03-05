@@ -12,7 +12,7 @@ import org.jcvi.jillion.trace.chromat.Channel;
  * This class contains the logic of analyzing mutations in sequences. Thus, it is one of the main
  * parts of the analyzing pipeline.
  * 
- * @author jannis blueml
+ * @author jannis blueml, kevin otto
  * @category DNA.Utils
  * @since 11.2.17
  */
@@ -243,82 +243,17 @@ public class MutationAnalysis {
     return true;
   }
 
-  /**
-   * This method saves all plasmid mixtures in the sequence in form like H25P/G/D
-   * 
-   * @param toAnalyze the seqeunce we save the mixtures in
-   * @author Jannis
-   */
-  @Deprecated
-  public static void savePlasmidMixes(AnalysedSequence toAnalyze) {}
-
-  /*
-   * // return list of all mixes LinkedList<String> ret = new LinkedList<>(); // the gene references
-   * by the mutated Sequence Gene reference = toAnalyze.getReferencedGene(); // the sequence to
-   * analyze StringBuilder mutatedSequence = new StringBuilder();
-   * mutatedSequence.append(toAnalyze.getSequence()); // the gene sequence String originalSequence =
-   * reference.getSequence();
-   * 
-   * // list of all candidates in form of p|12|AG, p|3|GCA... LinkedList<String> candidates =
-   * findPlasmidMixCanditates(toAnalyze);
-   * 
-   * // check every candidate and add it to the return list for (String string : candidates) { //
-   * all parameters of the candidate String[] params = string.split("\\|"); // first nucleotide of
-   * AminoAcid int position = Integer.parseInt(params[1]) - (Integer.parseInt(params[1]) % 3);
-   * 
-   * // AminoAcid in Gene String oldAcid =
-   * StringAnalysis.AMINO_ACID_SHORTS.get(originalSequence.substring(position, position + 3));
-   * 
-   * // the possible nucleotides char[] theOther = params[2].toCharArray();
-   * 
-   * // start a Mix with H25, P84, ... StringBuilder retString = new StringBuilder();
-   * retString.append(oldAcid + params[1]);
-   * 
-   * // Add all possible Mixes for (int i = 0; i < theOther.length; i++) {
-   * mutatedSequence.setCharAt(Integer.parseInt(params[1]), theOther[i]);
-   * System.out.println(theOther[i]); retString.append(
-   * StringAnalysis.AMINO_ACID_SHORTS.get(mutatedSequence.substring(position, position + 3)) + "/");
-   * } ret.add(retString.toString()); } // add them to sequence toAnalyze.sortInPlasmidmixes(ret); }
-   */
-  /**
-   * This method searches for plasmidmixes by checking every position in the mutatedseqeunce. For
-   * this there are two constraints i check, first two or more traces have same quality values at
-   * the same position and this is the maximum value. Second the quality at this position is lower
-   * then his neighbors (checking only left side).
-   * 
-   * @param sequence the mutated seqeunce we will search in
-   * @return a list of all plasmidmixes we could found
-   * @author Jannis
-   */
   public static void findPlasmidMix(AnalysedSequence sequence) {
 
     // List of candidates
     LinkedList<String> mixPositions = new LinkedList<>();
 
-    // Channels
-    Channel channelA = sequence.getChannels().getAChannel();
-    Channel channelC = sequence.getChannels().getCChannel();
-    Channel channelG = sequence.getChannels().getGChannel();
-    Channel channelT = sequence.getChannels().getTChannel();
+    // Quality arrays
+    int[] qualityA = sequence.getChannelA();
+    int[] qualityC = sequence.getChannelC();
+    int[] qualityG = sequence.getChannelG();
+    int[] qualityT = sequence.getChannelT();
 
-    // Qualities
-    byte[] qaTemp = channelA.getQualitySequence().toArray();
-    byte[] qcTemp = channelC.getQualitySequence().toArray();
-    byte[] qgTemp = channelG.getQualitySequence().toArray();
-    byte[] qtTemp = channelT.getQualitySequence().toArray();
-
-    int[] qualityA = new int[qaTemp.length];
-    int[] qualityC = new int[qcTemp.length];
-    int[] qualityG = new int[qgTemp.length];
-    int[] qualityT = new int[qtTemp.length];
-
-    // byte[] to int[]
-    for (int i = 0; i < qaTemp.length; i++) {
-      qualityA[i] = qaTemp[i];
-    //  qualityG[i] = qgTemp[i];
-    //  qualityC[i] = qcTemp[i];
-    //  qualityT[i] = qtTemp[i];
-    }
 
     int counter = 0;
     boolean found = false;
@@ -334,7 +269,7 @@ public class MutationAnalysis {
       } else {
         found = false;
       }
-      
+
       // if found and quality is broken, we got a mix
       if (found && tmp[3] < 40) {
         counter++;

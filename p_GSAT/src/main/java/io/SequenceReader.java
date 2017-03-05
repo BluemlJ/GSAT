@@ -4,6 +4,12 @@ import java.io.File;
 import java.io.IOException;
 import java.util.LinkedList;
 
+import org.biojava.bio.chromatogram.Chromatogram;
+import org.biojava.bio.chromatogram.UnsupportedChromatogramFormatException;
+import org.biojava.bio.program.abi.ABITrace;
+import org.biojava.bio.seq.DNATools;
+import org.biojava.bio.symbol.IllegalSymbolException;
+import org.jcvi.jillion.trace.chromat.Channel;
 import org.jcvi.jillion.trace.chromat.ChromatogramFactory;
 import org.jcvi.jillion.trace.chromat.abi.AbiChromatogram;
 
@@ -74,9 +80,10 @@ public class SequenceReader {
 
 
     AbiChromatogram abifile = (AbiChromatogram) ChromatogramFactory.create(referencedFile);
+
     String sequence = abifile.getNucleotideSequence().toString();
     byte[] qualities = abifile.getQualitySequence().toArray();
-    
+
     // TODO Add Primer
 
     // convert qualities from byte[] to int[]
@@ -87,7 +94,18 @@ public class SequenceReader {
 
     AnalysedSequence parsedSequence = new AnalysedSequence(sequence, ConfigHandler.getResearcher(),
         referencedFile.getName(), qualitiesInt);
-    parsedSequence.setAbiFile(abifile);
+
+    ABITrace myTrace = new ABITrace(referencedFile);
+    try {
+      parsedSequence.setChannelA(myTrace.getTrace(DNATools.a()));
+      parsedSequence.setChannelC(myTrace.getTrace(DNATools.c()));
+      parsedSequence.setChannelG(myTrace.getTrace(DNATools.g()));
+      parsedSequence.setChannelT(myTrace.getTrace(DNATools.t()));
+    } catch (IllegalSymbolException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    }
+
     return parsedSequence;
   }
 

@@ -470,7 +470,7 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
     primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
       @Override
       public void handle(WindowEvent event) {
-        if (true || changesOnGenes || changesOnPrimers || changesOnResults) {
+        if (changesOnGenes || changesOnPrimers || changesOnResults) {
           Alert alert = new Alert(AlertType.CONFIRMATION);
           alert.setTitle("There are unsaved changes with:");
           if (changesOnGenes) alert.setTitle(alert.getTitle() + " genes,");
