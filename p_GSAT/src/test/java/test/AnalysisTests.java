@@ -527,21 +527,15 @@ public class AnalysisTests {
    * @JANNIS TODO beschreibung
    * @throws CorruptedSequenceException
    */
-  public void testFindingMultipleMutations() throws CorruptedSequenceException {
+  public void testFindingMultipleMutations() throws CorruptedSequenceException, UndefinedTypeOfMutationException {
     Gene gena = new Gene("ATGUUUCCCCAACCCCCA", 0, "testGen1", "Jannis");
     AnalysedSequence testSeq = new AnalysedSequence("ATGUUAUUUCCC", "Jannis", "toAnalyse", null);
     testSeq.setReferencedGene(gena);
 
-    try {
       MutationAnalysis.findMutations(testSeq);
-
-      // System.out.println(testSeq.getMutations().get(1));
+      assertTrue(testSeq.getMutations().size() == 2);
       assertTrue(testSeq.getMutations().getFirst().equals("+1L1 (ATG)"));
       assertTrue(testSeq.getMutations().get(1).equals("-1Q4"));
-    } catch (UndefinedTypeOfMutationException e) {
-      // TODO Auto-generated catch block
-      e.printStackTrace();
-    }
   }
 
   @Test
@@ -549,20 +543,16 @@ public class AnalysisTests {
    * @JANNIS TODO beschreibung
    * @throws CorruptedSequenceException
    */
-  public void testFindingMultipleMutations2() throws CorruptedSequenceException {
+  public void testFindingMultipleMutations2() throws CorruptedSequenceException, UndefinedTypeOfMutationException {
     Gene gena = new Gene("ATGUUUCCCCAA", 0, "testGen1", "Jannis");
     AnalysedSequence testSeq = new AnalysedSequence("ATGUUACCA", "Jannis", "toAnalyse", null);
     testSeq.setReferencedGene(gena);
 
-    try {
       MutationAnalysis.findMutations(testSeq);
-
+      assertTrue(testSeq.getMutations().size() == 2);
       assertTrue(testSeq.getMutations().getFirst().equals("F2L (UUA)"));
       assertTrue(testSeq.getMutations().get(1).equals("CCC3CCA"));
-    } catch (UndefinedTypeOfMutationException e) {
-      // TODO Auto-generated catch block
-      e.printStackTrace();
-    }
+
   }
 
   @Test
@@ -571,20 +561,16 @@ public class AnalysisTests {
    * 
    * @throws CorruptedSequenceException
    */
-  public void testFindingMutationOnEmptySequence() throws CorruptedSequenceException {
+  public void testFindingMutationOnEmptySequence() throws CorruptedSequenceException, UndefinedTypeOfMutationException {
     Gene gena = new Gene("GGGGGGGGGGGGGGGGGATGGGGGGGGGGG", 0, "testGen1", "Jannis");
     AnalysedSequence testSeq = new AnalysedSequence("", "Jannis", "toAnalyse", null);
     testSeq.setReferencedGene(gena);
 
-    try {
       MutationAnalysis.findMutations(testSeq);
       assertTrue(testSeq.getMutations().isEmpty());
-    } catch (UndefinedTypeOfMutationException e) {
-      // TODO Auto-generated catch block
-      e.printStackTrace();
-    }
   }
 
+  
   @Test
   public void testFindingRightGeneOnCorrectUse() throws DissimilarGeneException {
     AnalysedSequence testA = new AnalysedSequence("AGGGT", "Jannis", "testA", null);
