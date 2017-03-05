@@ -56,7 +56,7 @@ public class PrimerHandler {
 
       BufferedWriter geneWriter = new BufferedWriter(new FileWriter(path));
       geneWriter.write("DummyPrimer" + SEPARATOR + "ATG" + SEPARATOR + "none" + SEPARATOR + "0"
-          + SEPARATOR + "none");
+          + SEPARATOR + "none" + SEPARATOR + "none");
       geneWriter.close();
 
     }
