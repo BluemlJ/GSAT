@@ -967,8 +967,69 @@ public class DatabaseConnection {
 					manualcheck, primer, vecLeft, vecRight, trimpercent, histag, avgquality);
 			sequences.add(seq);
 		}
-
+		stmt.close();
 		return sequences;
 	}
 
+	public static ArrayList<AnalysedSequence> pullAllSequencesPerResearcher(String researcherName)
+			throws DatabaseConnectionException, SQLException {
+		ArrayList<AnalysedSequence> sequences = new ArrayList<AnalysedSequence>();
+
+		conn = establishConnection();
+
+		Statement stmt = conn.createStatement();
+		stmt.execute("USE gsat");
+		
+		int researcherId = getResearcherId(conn, researcherName);
+		
+		// get the sequences
+		PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM sequences WHERE researcher = ?");
+		pstmt.setInt(1, researcherId);
+
+		ResultSet rs = pstmt.executeQuery();
+
+		while (rs.next()) {
+			int id = rs.getInt("id");
+			String name = rs.getString("name");
+			String sequence = rs.getString("sequence");
+			java.util.Date date = new Date(rs.getTimestamp("date").getTime());
+			int researcherid = rs.getInt("researcher");
+			String comment = rs.getString("comment");
+			char manualcheck = rs.getString("manualcheck").charAt(0);
+			int geneIndex = rs.getInt("gene");
+			String primer = rs.getString("Primer");
+			String vecLeft = rs.getString("vectorleft");
+			String vecRight = rs.getString("vectorright");
+			int trimpercent = rs.getInt("trimpercent");
+			int histag = rs.getInt("histag");
+			int avgquality = rs.getInt("avgquality");
+
+			String researcher = pullResearcherPerIndex(researcherid);
+			Gene gene = pullGenePerIndex(geneIndex);
+			LinkedList<String> mutations = pullMutationsPerSequence(id);
+
+			AnalysedSequence seq = new AnalysedSequence(gene, mutations, name, sequence, date, researcher, comment,
+					manualcheck, primer, vecLeft, vecRight, trimpercent, histag, avgquality);
+			sequences.add(seq);
+			
+		}
+		stmt.close();
+		return sequences;
+	}
+
+	private static int getResearcherId(Connection conn2, String researcher) throws SQLException {
+		Statement stmt = conn2.createStatement();
+		stmt.execute("USE gsat");
+		stmt.close();
+
+		// check if researcher exists
+		PreparedStatement pstmt = conn2.prepareStatement("SELECT id, name FROM researchers WHERE name = ?");
+		pstmt.setString(1, researcher);
+		ResultSet res = pstmt.executeQuery();
+		if (res.next()) {
+			return res.getInt(1);
+		} else {
+			return -1;
+		}
+	}
 }

@@ -53,6 +53,46 @@ public class LocalDBTest {
 	
 	@Ignore
 	@Test
+	public void testPullSequencesPerResearcher() throws SQLException, DatabaseConnectionException{
+		DatabaseConnection.setDatabaseConnection(user, pass, port, server);
+		conn = DatabaseConnection.establishConnection();
+		DatabaseConnection.createDatabase();
+		LinkedList<String> mutations1 = new LinkedList<String>(Arrays.asList("t5a", "t6a"));
+		LinkedList<String> mutations2 = new LinkedList<String>(Arrays.asList("t1a", "t2a"));
+		AnalysedSequence sequence1 = new AnalysedSequence("aataataat", "Lovis Heindrich", "Sequence1", null);
+		sequence1.setMutations(mutations1);
+		AnalysedSequence sequence3 = new AnalysedSequence("gataataat", "Lovis Heindrich", "Sequence3", null);
+		sequence1.setMutations(mutations1);
+		AnalysedSequence sequence4 = new AnalysedSequence("tataataat", "Lovis Heindrich", "Sequence3", null);
+		sequence1.setMutations(mutations1);
+		sequence4.setMutations(mutations1);
+		sequence3.setMutations(mutations1);
+		AnalysedSequence sequence2 = new AnalysedSequence("ttattatta", "Kevin Otto", "Sequence2", null);
+		sequence2.setMutations(mutations2);
+		Gene gene1 = new Gene("aaatttggg", 0, "fsa1", "Lovis Heindrich", "fsa", "comment1");
+		Gene gene2 = new Gene("gggtttaaa", 0, "fsa2", "Lovis Heindrich", "fsa", "comment2");
+		sequence1.setReferencedGene(gene1);
+		sequence3.setReferencedGene(gene1);
+		sequence4.setReferencedGene(gene1);
+		sequence2.setReferencedGene(gene2);
+		LinkedList<AnalysedSequence> sequences = new LinkedList<AnalysedSequence>();
+		sequences.add(sequence1);
+		sequences.add(sequence2);
+		sequences.add(sequence3);
+		sequences.add(sequence4);
+
+		DatabaseConnection.pushAllData(sequences);
+		
+		ArrayList<AnalysedSequence> lovisSequences = DatabaseConnection.pullAllSequencesPerResearcher("Lovis Heindrich");
+		ArrayList<AnalysedSequence> kevinSequences = DatabaseConnection.pullAllSequencesPerResearcher("Kevin Otto");
+		
+		assertEquals(lovisSequences.size(), 3);
+		assertEquals(kevinSequences.size(), 1);
+	}
+	
+	
+	@Ignore
+	@Test
 	public void testPullSequences() throws SQLException, DatabaseConnectionException, UnknownConfigFieldException, ConfigNotFoundException, IOException{
 		DatabaseConnection.setDatabaseConnection(user, pass, port, server);
 		
