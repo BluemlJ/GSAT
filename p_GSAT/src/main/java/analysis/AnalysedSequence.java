@@ -1,11 +1,6 @@
 package analysis;
 
-import java.util.Arrays;
-import java.util.Comparator;
 import java.util.LinkedList;
-
-import org.jcvi.jillion.trace.chromat.ChannelGroup;
-import org.jcvi.jillion.trace.chromat.abi.AbiChromatogram;
 
 /**
  * Models a sequence under analysis (i.e. obtained from an AB1 file), which may have mutations. The
@@ -24,6 +19,11 @@ public class AnalysedSequence extends Sequence {
   private String comments = "";
 
 
+  /**
+   * Channels with informations about the positions of the four single Traces. Dont mess this up
+   * with the quality values. Quality is in "phread scala", this channel in "pixel" or something
+   * else.
+   */
   private int[] ChannelA;
   private int[] ChannelC;
   private int[] ChannelG;
