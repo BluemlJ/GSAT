@@ -66,16 +66,9 @@ dependencies {
 // In this section we declare the jacocoTestReport structure
 
 test {
-     exclude '**/userDrivenTests/**' }
-
-
-jacocoTestReport {
-    reports {
-        xml.enabled false
-        csv.enabled false
-        html.destination "${buildDir}/reports/jacocoHtml"
-    }
+     exclude '**/userDrivenTests/', '**/src/main/java/org/'
 }
+
 
 jfx {
     verbose = true
