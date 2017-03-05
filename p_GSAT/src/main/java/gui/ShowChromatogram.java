@@ -4,8 +4,6 @@ import java.net.URL;
 import java.util.LinkedList;
 import java.util.ResourceBundle;
 
-import org.jcvi.jillion.core.qual.QualitySequence;
-
 import analysis.AnalysedSequence;
 import javafx.application.Application;
 import javafx.beans.value.ChangeListener;
@@ -220,44 +218,38 @@ public class ShowChromatogram extends Application implements javafx.fxml.Initial
 
     AnalysedSequence startSequence = this.sequences.get(id);
 
-/* TODO channelA ist nun nur noch als int[] zu haben....
- * 
-    QualitySequence channelA = startSequence.getChannels().getAChannel().getQualitySequence();
-    QualitySequence channelC = startSequence.getChannels().getCChannel().getQualitySequence();
-    QualitySequence channelT = startSequence.getChannels().getTChannel().getQualitySequence();
-    QualitySequence channelG = startSequence.getChannels().getGChannel().getQualitySequence();
-
-    int last = (int) channelA.getLength();
-    last = (int) Math.min(last, channelC.getLength());
-    last = (int) Math.min(last, channelT.getLength());
-    last = (int) Math.min(last, channelG.getLength());
-
-    for (int i = 0; i < last; i++) {
-
-      seriesA.getData().set(i,
-          new XYChart.Data<Number, String>(channelA.get(i).getQualityScore(), i + "F"));
-      seriesC.getData().set(i,
-          new XYChart.Data<Number, String>(channelC.get(i).getQualityScore(), i + "F"));
-      seriesT.getData().set(i,
-          new XYChart.Data<Number, String>(channelT.get(i).getQualityScore(), i + "F"));
-      seriesG.getData().set(i,
-          new XYChart.Data<Number, String>(channelG.get(i).getQualityScore(), i + "F"));
-
-    }
-
-
-
-    seriesA.getData().remove(last, seriesA.getData().size());
-    seriesC.getData().remove(last, seriesC.getData().size());
-    seriesT.getData().remove(last, seriesT.getData().size());
-    seriesG.getData().remove(last, seriesG.getData().size());
-
-
-    bar.setMin(0);
-    bar.setMax(100);
-    bar.setValue(0);
-    maxScroll = last;
-*/
+    /*
+     * TODO channelA ist nun nur noch als int[] zu haben....
+     * 
+     * QualitySequence channelA = startSequence.getChannels().getAChannel().getQualitySequence();
+     * QualitySequence channelC = startSequence.getChannels().getCChannel().getQualitySequence();
+     * QualitySequence channelT = startSequence.getChannels().getTChannel().getQualitySequence();
+     * QualitySequence channelG = startSequence.getChannels().getGChannel().getQualitySequence();
+     * 
+     * int last = (int) channelA.getLength(); last = (int) Math.min(last, channelC.getLength());
+     * last = (int) Math.min(last, channelT.getLength()); last = (int) Math.min(last,
+     * channelG.getLength());
+     * 
+     * for (int i = 0; i < last; i++) {
+     * 
+     * seriesA.getData().set(i, new XYChart.Data<Number, String>(channelA.get(i).getQualityScore(),
+     * i + "F")); seriesC.getData().set(i, new XYChart.Data<Number,
+     * String>(channelC.get(i).getQualityScore(), i + "F")); seriesT.getData().set(i, new
+     * XYChart.Data<Number, String>(channelT.get(i).getQualityScore(), i + "F"));
+     * seriesG.getData().set(i, new XYChart.Data<Number, String>(channelG.get(i).getQualityScore(),
+     * i + "F"));
+     * 
+     * }
+     * 
+     * 
+     * 
+     * seriesA.getData().remove(last, seriesA.getData().size()); seriesC.getData().remove(last,
+     * seriesC.getData().size()); seriesT.getData().remove(last, seriesT.getData().size());
+     * seriesG.getData().remove(last, seriesG.getData().size());
+     * 
+     * 
+     * bar.setMin(0); bar.setMax(100); bar.setValue(0); maxScroll = last;
+     */
   }
 
   public void setSequence(AnalysedSequence sequence) {

@@ -82,7 +82,7 @@ public class GUIUtils {
     genes.setItems(FXCollections.observableArrayList(GeneHandler.getGeneNamesAndOrganisms()));
     return new Text("Reading Gene.txt was successful");
   }
-  
+
   /**
    * @param geneList
    */
@@ -513,6 +513,6 @@ public class GUIUtils {
     return ret;
   }
 
- 
+
 
 }

@@ -5,7 +5,6 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-import core.Main;
 import exceptions.DuplicateGeneException;
 import io.ConfigHandler;
 import io.GeneHandler;

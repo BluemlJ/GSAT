@@ -1,8 +1,8 @@
 package analysis;
 
 /**
- * This is a helper class to store pairs. In some cases, it's useful to connect
- * two values by constructing such a Pair.
+ * This is a helper class to store pairs. In some cases, it's useful to connect two values by
+ * constructing such a Pair.
  * 
  * @author Kevin Otto
  *
@@ -11,21 +11,21 @@ package analysis;
  */
 public class Pair<A, B> {
 
-  
+
   /**
    * The first element.
    */
   public A first;
-  
-  
-  
+
+
+
   /**
    * The second element.
    */
   public B second;
 
-  
-  
+
+
   /**
    * The constructor sets the two fields first and second.
    * 

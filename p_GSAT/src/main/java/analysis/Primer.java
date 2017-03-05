@@ -13,7 +13,8 @@ public class Primer extends Sequence {
   private String name;
   private String comment;
 
-  public Primer(String sequence, String researcher, int meltingPoint, String id, String name, String comment) {
+  public Primer(String sequence, String researcher, int meltingPoint, String id, String name,
+      String comment) {
     super(sequence, researcher);
 
     this.meltingPoint = meltingPoint;
@@ -47,12 +48,12 @@ public class Primer extends Sequence {
     this.name = name;
   }
 
-public String getComment() {
-	return comment;
-}
+  public String getComment() {
+    return comment;
+  }
 
-public void setComment(String comment) {
-	this.comment = comment;
-}
+  public void setComment(String comment) {
+    this.comment = comment;
+  }
 
 }
