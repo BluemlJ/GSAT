@@ -763,4 +763,33 @@ public class DatabaseConnection {
 		}
 	}
 
+	public static ArrayList<Primer> pullAllPrimer() throws DatabaseConnectionException, SQLException {
+		ArrayList<Primer> primerList = new ArrayList<Primer>();
+
+		// get a connection
+		conn = establishConnection();
+
+		Statement stmt = conn.createStatement();
+		stmt.execute("USE gsat");
+		
+		//primer db layout (name, sequence, date, researcher, primerid, meltingpoint, comment)
+		ResultSet rs = stmt.executeQuery("SELECT * FROM primer");
+		
+		//iterate over results
+		while (rs.next()) {
+			String name = rs.getString("name");
+			String sequence = rs.getString("sequence");
+			java.sql.Date date = new Date(rs.getTimestamp("date").getTime());
+			String researcher = rs.getString("researcher");
+			String primerId = rs.getString("primerid");
+			int meltingPoint = rs.getInt("meltingpoint");
+			String comment = rs.getString("comment");
+
+			Primer primer = new Primer(sequence, researcher, meltingPoint, primerId, name, comment);
+			primerList.add(primer);
+		}
+		stmt.close();
+
+		return primerList;
+	}
 }
