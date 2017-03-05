@@ -67,7 +67,7 @@ dependencies {
 
 test {
      exclude '**/userDrivenTests/',
-     exclude '*/org/'
+     exclude '**/src/main/java/org/'
 }
 
 
