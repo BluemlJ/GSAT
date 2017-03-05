@@ -153,7 +153,10 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
       }
     });
 
-    srcField.setText(ConfigHandler.getSrcPath());
+    if(!ConfigHandler.getSrcPath().isEmpty()){
+      srcField.setText(ConfigHandler.getSrcPath());
+      chromatogramButton.setDisable(false);
+    }
     srcField.textProperty().addListener(new ChangeListener<String>() {
       @Override
       public void changed(ObservableValue<? extends String> observable, String oldValue,
@@ -162,6 +165,11 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
           srcField.setText(oldValue);
         } else {
           srcField.setText(newValue);
+          if(newValue.isEmpty()){
+            chromatogramButton.setDisable(true);
+          }else {
+            chromatogramButton.setDisable(false);
+          }
         }
       }
     });
@@ -392,8 +400,6 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
       }
     });
 
-    // ...
-
     manualButton.setOnAction(new EventHandler<ActionEvent>() {
       @Override
       public void handle(ActionEvent arg0) {
@@ -442,9 +448,12 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
     chromatogramButton.setOnAction(new EventHandler<ActionEvent>() {
       @Override
       public void handle(ActionEvent arg0) {
-        // TODO @Jannis
-        // Bitte daf�r sorgen den button zu enable wenn er benutzt werden darf!
-        // (vieleicht bei dem text field oder so)
+        ShowChromatogram chromaWindow = new ShowChromatogram();
+            try {
+              chromaWindow.start(new Stage());
+            } catch (Exception e) {
+              // TODO: handle exception
+            }
       }
     });
 
@@ -470,7 +479,7 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
     primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
       @Override
       public void handle(WindowEvent event) {
-        if (true || changesOnGenes || changesOnPrimers || changesOnResults) {
+        if (changesOnGenes || changesOnPrimers || changesOnResults) {
           Alert alert = new Alert(AlertType.CONFIRMATION);
           alert.setTitle("There are unsaved changes with:");
           if (changesOnGenes) alert.setTitle(alert.getTitle() + " genes,");

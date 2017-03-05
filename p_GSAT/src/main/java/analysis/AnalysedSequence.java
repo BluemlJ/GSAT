@@ -23,12 +23,12 @@ public class AnalysedSequence extends Sequence {
    */
   private String comments = "";
 
-  /**
-   * Information from the abiFile in form of an AbiChromatogram.
-   */
-  private AbiChromatogram abiFile;
-  
-  
+
+  private int[] ChannelA;
+  private int[] ChannelC;
+  private int[] ChannelG;
+  private int[] ChannelT;
+
   /**
    * The name of the file this sequence was obtained from. This is used to create the name of the
    * output file.
@@ -198,15 +198,6 @@ public class AnalysedSequence extends Sequence {
     this.comments = comments;
   }
 
-
-  public AbiChromatogram getAbiFile() {
-    return abiFile;
-  }
-
-  public void setAbiFile(AbiChromatogram abiFile) {
-    this.abiFile = abiFile;
-  }
-
   public String getFileName() {
     return fileName;
   }
@@ -325,8 +316,68 @@ public class AnalysedSequence extends Sequence {
     this.hisTagPosition = hisTagPosition;
   }
 
-  public ChannelGroup getChannels() {
-    return abiFile.getChannelGroup();
+
+  /**
+   * @return the channelA
+   */
+  public int[] getChannelA() {
+    return ChannelA;
+  }
+
+
+  /**
+   * @param channelA the channelA to set
+   */
+  public void setChannelA(int[] channelA) {
+    ChannelA = channelA;
+  }
+
+
+  /**
+   * @return the channelC
+   */
+  public int[] getChannelC() {
+    return ChannelC;
+  }
+
+
+  /**
+   * @param channelC the channelC to set
+   */
+  public void setChannelC(int[] channelC) {
+    ChannelC = channelC;
+  }
+
+
+  /**
+   * @return the channelG
+   */
+  public int[] getChannelG() {
+    return ChannelG;
+  }
+
+
+  /**
+   * @param channelG the channelG to set
+   */
+  public void setChannelG(int[] channelG) {
+    ChannelG = channelG;
+  }
+
+
+  /**
+   * @return the channelT
+   */
+  public int[] getChannelT() {
+    return ChannelT;
+  }
+
+
+  /**
+   * @param channelT the channelT to set
+   */
+  public void setChannelT(int[] channelT) {
+    ChannelT = channelT;
   }
 
 

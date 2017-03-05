@@ -220,7 +220,8 @@ public class ShowChromatogram extends Application implements javafx.fxml.Initial
 
     AnalysedSequence startSequence = this.sequences.get(id);
 
-
+/* TODO channelA ist nun nur noch als int[] zu haben....
+ * 
     QualitySequence channelA = startSequence.getChannels().getAChannel().getQualitySequence();
     QualitySequence channelC = startSequence.getChannels().getCChannel().getQualitySequence();
     QualitySequence channelT = startSequence.getChannels().getTChannel().getQualitySequence();
@@ -256,7 +257,7 @@ public class ShowChromatogram extends Application implements javafx.fxml.Initial
     bar.setMax(100);
     bar.setValue(0);
     maxScroll = last;
-
+*/
   }
 
   public void setSequence(AnalysedSequence sequence) {
