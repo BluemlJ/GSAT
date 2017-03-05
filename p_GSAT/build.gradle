@@ -66,8 +66,7 @@ dependencies {
 // In this section we declare the jacocoTestReport structure
 
 test {
-     exclude '**/userDrivenTests/',
-     exclude '**/src/main/java/org/'
+     exclude '**/userDrivenTests/', '**/src/main/java/org/'
 }
 
 
