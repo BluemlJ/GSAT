@@ -5,6 +5,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 import analysis.Gene;
+import analysis.Primer;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -44,13 +45,13 @@ public class ShowPrimerWindow extends Application implements javafx.fxml.Initial
     GUIUtils.setColorOnButton(okButton, ButtonColor.BLUE);
 
 
-    Gene selectedGene = SettingsWindow.getSelectedGene();
+    Primer selectedPrimer = SettingsWindow.getSelectedPrimer();
     String tmp;
-    nameField.setText(selectedGene.getName());
+    nameField.setText(selectedPrimer.getName());
 
 
 
-    geneArea.setText(selectedGene.getSequence());
+    geneArea.setText(selectedPrimer.getSequence());
 
 
 
@@ -72,7 +73,7 @@ public class ShowPrimerWindow extends Application implements javafx.fxml.Initial
   public void start(Stage primaryStage) throws Exception {
     Parent root;
     try {
-      root = FXMLLoader.load(getClass().getResource("/fxml/ShowGeneWindow.fxml"));
+      root = FXMLLoader.load(getClass().getResource("/fxml/ShowPrimerWindow.fxml"));
     } catch (IOException e) {
       e.printStackTrace();
       return;

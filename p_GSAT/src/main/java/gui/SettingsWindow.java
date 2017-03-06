@@ -165,10 +165,13 @@ public class SettingsWindow extends Application implements javafx.fxml.Initializ
       @Override
       public void handle(ActionEvent arg0) {
         if (isPrimerOn) {
-          /*
-           * TODO ShowPrimerWindow primerWindow = new ShowPrimerWindow(); try {
-           * primerWindow.start(new Stage()); } catch (Exception e) { e.printStackTrace(); }
-           */
+          ShowPrimerWindow primerWindow = new ShowPrimerWindow();
+          try {
+            primerWindow.start(new Stage());
+          } catch (Exception e) {
+            e.printStackTrace();
+          }
+
         } else {
           ShowGeneWindow geneWindow = new ShowGeneWindow();
           try {
@@ -381,6 +384,20 @@ public class SettingsWindow extends Application implements javafx.fxml.Initializ
 
   public void updatePrimers() {
     GUIUtils.initializePrimerBox(geneList);
+  }
+
+  /**
+   * @return the selectedPrimer
+   */
+  public static Primer getSelectedPrimer() {
+    return selectedPrimer;
+  }
+
+  /**
+   * @param selectedPrimer the selectedPrimer to set
+   */
+  public static void setSelectedPrimer(Primer selectedPrimer) {
+    SettingsWindow.selectedPrimer = selectedPrimer;
   }
 
   public void decNumGenWindows() {
