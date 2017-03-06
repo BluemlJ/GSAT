@@ -61,7 +61,7 @@ public class BioJavaTest {
   /**
    * This test checks, if the nucleotidestring from BioJava and Jillion are identical
    * 
-   * @throws IOExceptionif the file is not fount
+   * @throws IOException if the file is not fount
    * 
    * @author bluemlj
    */
