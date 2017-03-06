@@ -17,8 +17,10 @@ import com.mysql.cj.jdbc.MysqlDataSource;
 import analysis.AnalysedSequence;
 import analysis.Gene;
 import analysis.Primer;
+import exceptions.ConfigNotFoundException;
 import exceptions.DatabaseConnectionException;
 import exceptions.DatabaseErrorException;
+import exceptions.UnknownConfigFieldException;
 
 /**
  * Class to communicate with the database.
@@ -1076,5 +1078,24 @@ public class DatabaseConnection {
 			  //gene handler already writes and reads config when a gene is added
 			  GeneHandler.addGene(gene);
 		  }
+	  }
+	  
+	  /**
+	   * Pulls all researchers from database and adds them to the config.txt
+	   * @throws DatabaseConnectionException
+	   * @throws SQLException
+	   * @throws UnknownConfigFieldException error reading config.txt
+	   * @throws ConfigNotFoundException
+	   * @throws IOException
+	   */
+	  public static void pullAndSaveResearcher() throws DatabaseConnectionException, SQLException, UnknownConfigFieldException, ConfigNotFoundException, IOException{
+		  ArrayList<String> researcher = pullResearcher();
+		  ConfigHandler.readConfig();
+		  for(String res : researcher){
+			  if(!ConfigHandler.containsResearcher(res)){
+				  ConfigHandler.addResearcher(res);
+			  }
+		  }
+		  ConfigHandler.writeConfig();
 	  }
 }
