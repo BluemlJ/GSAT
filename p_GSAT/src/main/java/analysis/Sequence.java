@@ -50,23 +50,24 @@ public abstract class Sequence {
     Date dateobj = new Date();
     addingDate = df.format(dateobj);
   }
-  
+
   /**
    * Constructor that also sets the Date
+   * 
    * @param sequence
    * @param researcher
    * @param date
    * 
    * @author Lovis Heindrich
    */
-  public Sequence(String sequence, String researcher, Date date){
-	  setSequence(sequence);
+  public Sequence(String sequence, String researcher, Date date) {
+    setSequence(sequence);
 
-	    this.researcher = researcher;
-	   
-	    DateFormat df = ConfigHandler.getDateFormat();
+    this.researcher = researcher;
 
-	    this.addingDate = df.format(date);
+    DateFormat df = ConfigHandler.getDateFormat();
+
+    this.addingDate = df.format(date);
   }
 
   public String getAddingDate() {

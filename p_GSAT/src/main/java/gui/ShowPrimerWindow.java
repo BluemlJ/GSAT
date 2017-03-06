@@ -29,7 +29,7 @@ public class ShowPrimerWindow extends Application implements javafx.fxml.Initial
 
   @FXML
   private TextField meltingTempField;
-  
+
   @FXML
   private javafx.scene.control.TextArea geneArea;
 

@@ -12,29 +12,30 @@ import analysis.Primer;
 import io.PrimerHandler;
 
 public class PrimerTests {
-	
-	@Test
-	public void testAddDeletePrimer(){
-		 Primer p1 = new Primer("AATAATAAT", "Lovis Heindrich", 50, "A01", "primer1", "comment1");
-		 Primer p2 = new Primer("TTATTATTA", "Kevin Otto", 100, "B01", "primer2", "comment1");
-		 //test duplicate check
-		 PrimerHandler.setPrimerList(new ArrayList<Primer>());
-		 PrimerHandler.addPrimer(p1);
-		 assertEquals(PrimerHandler.getPrimerList().size(), 1);
-		 PrimerHandler.addPrimer(p1);
-		 PrimerHandler.addPrimer(p2);
-		 assertEquals(PrimerHandler.getPrimerList().size(), 2);
-		 //test get
-		 Primer p3 = PrimerHandler.getPrimer("primer1", "A01");
-		 Primer p4 = PrimerHandler.getPrimer("primer2", "B01");
-		 assertEquals(p1.getSequence(), p3.getSequence());
-		 assertEquals(p2.getSequence(), p4.getSequence());
-		//test delete
-		 PrimerHandler.deletePrimer("primer1", "A01");
-		 p3 = PrimerHandler.getPrimer("primer1", "A01");
-		 assertEquals(p3, null);
-		 
-	}
+
+  @Test
+  public void testAddDeletePrimer() {
+    Primer p1 = new Primer("AATAATAAT", "Lovis Heindrich", 50, "A01", "primer1", "comment1");
+    Primer p2 = new Primer("TTATTATTA", "Kevin Otto", 100, "B01", "primer2", "comment1");
+    // test duplicate check
+    PrimerHandler.setPrimerList(new ArrayList<Primer>());
+    PrimerHandler.addPrimer(p1);
+    assertEquals(PrimerHandler.getPrimerList().size(), 1);
+    PrimerHandler.addPrimer(p1);
+    PrimerHandler.addPrimer(p2);
+    assertEquals(PrimerHandler.getPrimerList().size(), 2);
+    // test get
+    Primer p3 = PrimerHandler.getPrimer("primer1", "A01");
+    Primer p4 = PrimerHandler.getPrimer("primer2", "B01");
+    assertEquals(p1.getSequence(), p3.getSequence());
+    assertEquals(p2.getSequence(), p4.getSequence());
+    // test delete
+    PrimerHandler.deletePrimer("primer1", "A01");
+    p3 = PrimerHandler.getPrimer("primer1", "A01");
+    assertEquals(p3, null);
+
+  }
+
   @Ignore
   @Test
   public void testPrimerRead() throws IOException {
@@ -53,7 +54,7 @@ public class PrimerTests {
     primerList.add(p2);
     PrimerHandler.setPrimerList(primerList);
     PrimerHandler.writePrimer();
-    
+
     PrimerHandler.setPrimerList(null);
     PrimerHandler.readPrimer();
     assertEquals(PrimerHandler.getPrimerList().get(0).getName(), "primer1");

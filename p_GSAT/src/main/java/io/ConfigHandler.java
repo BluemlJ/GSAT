@@ -168,19 +168,20 @@ public class ConfigHandler {
       configFile.createNewFile();
     }
   }
-  
+
   /**
    * checks if a researcher is in the researcher list
+   * 
    * @param researcher
    * @return true if researcher is already known
    */
-  public static boolean containsResearcher(String researcher){
-	  for(String res : researcherList){
-		  if(researcher.equals(res)){
-			  return true;
-		  }
-	  }
-	  return false;
+  public static boolean containsResearcher(String researcher) {
+    for (String res : researcherList) {
+      if (researcher.equals(res)) {
+        return true;
+      }
+    }
+    return false;
   }
 
 

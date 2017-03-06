@@ -15,18 +15,18 @@ public class Primer extends Sequence {
   private String name;
   private String comment;
 
-  
+
   public Primer(String sequence, String researcher, int meltingPoint, String id, String name,
-	      String comment) {
-	    super(sequence, researcher);
+      String comment) {
+    super(sequence, researcher);
 
-	    this.meltingPoint = meltingPoint;
-	    this.id = id;
-	    this.name = name;
-	    this.comment = comment;
+    this.meltingPoint = meltingPoint;
+    this.id = id;
+    this.name = name;
+    this.comment = comment;
 
-	  }
-  
+  }
+
   public Primer(String sequence, String researcher, int meltingPoint, String id, String name,
       String comment, Date date) {
     super(sequence, researcher, date);

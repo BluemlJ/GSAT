@@ -16,68 +16,65 @@ import org.junit.Before;
 import org.junit.Test;
 
 /**
- * Tests to check the correct integration of the BioJava framework in our
- * project.
+ * Tests to check the correct integration of the BioJava framework in our project.
  * 
  * @author Lovis Heindrich
  *
  */
 public class BioJavaTest {
-	private File myFile;
-	private ABITrace myTrace;
-	private Chromatogram croma;
+  private File myFile;
+  private ABITrace myTrace;
+  private Chromatogram croma;
 
-	@Before
-	public void initializeABIData() throws IOException {
-		myFile = new File("resources/ab1/Tk_Gs40Hits/Forward/95EI60.ab1");
-		myTrace = new ABITrace(myFile);
-		croma = ChromatogramFactory.create(myFile);
-	}
+  @Before
+  public void initializeABIData() throws IOException {
+    myFile = new File("resources/ab1/Tk_Gs40Hits/Forward/95EI60.ab1");
+    myTrace = new ABITrace(myFile);
+    croma = ChromatogramFactory.create(myFile);
+  }
 
-	/**
-	 * This Test checks whether the BioJava Legacy Framework is usable
-	 * 
-	 * @throws IOException
-	 * 
-	 * @author Lovis Heindrich
-	 * @throws IllegalSymbolException
-	 * @throws BioError
-	 * @throws IllegalAlphabetException
-	 */
-	@Test
-	public void testABIRead() throws IOException, IllegalSymbolException, IllegalAlphabetException, BioError {
-		// scale has to be 2
-		/*
-		 * BufferedImage chromaImg = myTrace.getImage(1000, 2); File outputfile
-		 * = new File("/home/bluemlj/Desktop/chroma.png");
-		 * ImageIO.write(chromaImg, "png", outputfile);
-		 */
-		int[] aTrace = myTrace.getTrace(DNATools.a());
-		int[] cTrace = myTrace.getTrace(DNATools.c());
-		int[] gTrace = myTrace.getTrace(DNATools.g());
-		int[] tTrace = myTrace.getTrace(DNATools.t());
-		int[] basecalls = myTrace.getBasecalls();
-	}
+  /**
+   * This Test checks whether the BioJava Legacy Framework is usable
+   * 
+   * @throws IOException
+   * 
+   * @author Lovis Heindrich
+   * @throws IllegalSymbolException
+   * @throws BioError
+   * @throws IllegalAlphabetException
+   */
+  @Test
+  public void testABIRead()
+      throws IOException, IllegalSymbolException, IllegalAlphabetException, BioError {
+    // scale has to be 2
+    /*
+     * BufferedImage chromaImg = myTrace.getImage(1000, 2); File outputfile = new
+     * File("/home/bluemlj/Desktop/chroma.png"); ImageIO.write(chromaImg, "png", outputfile);
+     */
+    int[] aTrace = myTrace.getTrace(DNATools.a());
+    int[] cTrace = myTrace.getTrace(DNATools.c());
+    int[] gTrace = myTrace.getTrace(DNATools.g());
+    int[] tTrace = myTrace.getTrace(DNATools.t());
+    int[] basecalls = myTrace.getBasecalls();
+  }
 
-	/**
-	 * This test checks, if the nucleotidestring from BioJava and Jillion are
-	 * identical
-	 * 
-	 * @throws IOExceptionif
-	 *             the file is not fount
-	 * 
-	 * @author bluemlj
-	 */
-	@Test
-	public void testABIReadJillionBioJava() throws IOException {
+  /**
+   * This test checks, if the nucleotidestring from BioJava and Jillion are identical
+   * 
+   * @throws IOExceptionif the file is not fount
+   * 
+   * @author bluemlj
+   */
+  @Test
+  public void testABIReadJillionBioJava() throws IOException {
 
-		String testString1 = myTrace.getSequence().seqString();
-		String testString2 = croma.getNucleotideSequence().toString();
+    String testString1 = myTrace.getSequence().seqString();
+    String testString2 = croma.getNucleotideSequence().toString();
 
-		testString1 = testString1.toLowerCase();
-		testString2 = testString2.toLowerCase();
+    testString1 = testString1.toLowerCase();
+    testString2 = testString2.toLowerCase();
 
-		assertTrue(testString1.equals(testString2));
-	}
+    assertTrue(testString1.equals(testString2));
+  }
 
 }

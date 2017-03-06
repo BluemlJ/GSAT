@@ -81,24 +81,25 @@ public class GeneHandler {
     writeGenes();
     return true;
   }
-  
+
   /**
    * adds gene to the list if the gene is not known yet. Also writes the updated List to genes.txt
+   * 
    * @param gene
    * @return
    * @throws IOException
    */
-  public static boolean addGene(Gene gene) throws IOException{
-	  readGenes();
-	  
-	  if(checkGene(gene.getName(), gene.getOrganism()) != null){
-		  return false;
-	  }
-	  
-	  geneList.add(gene);
-	  
-	  writeGenes();
-	  return true;
+  public static boolean addGene(Gene gene) throws IOException {
+    readGenes();
+
+    if (checkGene(gene.getName(), gene.getOrganism()) != null) {
+      return false;
+    }
+
+    geneList.add(gene);
+
+    writeGenes();
+    return true;
   }
 
   /**

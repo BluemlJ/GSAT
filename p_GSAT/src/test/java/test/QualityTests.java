@@ -257,35 +257,5 @@ public class QualityTests {
     assertTrue(QualityAnalysis.percentageOfTrimQuality(tmp, toAnalyze) == 100);
   }
 
-  /**
-   * Tests if the quality information is accessible (Userstory 008 - Expected behavior)
-   */
-  @Test
-  public void testQualityAccessibility() {
-    // test if average quality information is accessible
-    assertEquals((int) (QualityAnalysis.getAvgQuality(testSequence) * 1000), 99999);
-    // test if the quality array is accessible
-    assertEquals(testSequence.getQuality()[0], 16);
-
-  }
-
-  /**
-   * Tests if the quality trim function is usable
-   * 
-   * @throws IOException
-   * @throws FileReadingException
-   */
-  @Test
-  public void testQualityTrim() throws IOException, FileReadingException {
-    // Debug code for adjusting QualityAnalysis.BREAKCOUNTER
-    /*
-     * testSequence = SequenceReader.convertFileIntoSequence(new File(
-     * "D:/Dokumente/Dropbox/BP_GSAT/Materialien/Dateien/Bsp/AB/93GH02_G05.ab1" ));
-     * System.out.println("Gesamtlaenge der Sequenz: " + testSequence.length()); System.out
-     * .println("Anfang der hohen Qualitaet: " + QualityAnalysis.findLowQuality(testSequence)[0]);
-     * System.out .println("Ende der hohen Qualitaet " +
-     * QualityAnalysis.findLowQuality(testSequence)[1]);
-     */
-  }
 
 }

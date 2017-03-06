@@ -61,15 +61,15 @@ public class Gene extends Sequence {
     this.organism = organism;
     this.comment = comment;
   }
-  
+
   public Gene(String sequence, int id, String name, String researcher, String organism,
-	      String comment, Date date) {
-	    super(sequence, researcher, date);
-	    this.name = name;
-	    this.id = id;
-	    this.organism = organism;
-	    this.comment = comment;
-	  }
+      String comment, Date date) {
+    super(sequence, researcher, date);
+    this.name = name;
+    this.id = id;
+    this.organism = organism;
+    this.comment = comment;
+  }
 
 
   // GETTERs and SETTERs:

@@ -18,7 +18,7 @@ import io.GeneHandler;
  * @author lovisheindrich
  *
  */
-public class GeneReadingTest {
+public class GeneHandlingTests {
 
   private String path;
   private String writePath;

@@ -361,7 +361,7 @@ public class WritingTests {
 
     AnalysedSequence seq = new AnalysedSequence();
     seq.setReferencedGene(new Gene("A", 0, "A", null));
-    
+
     // Nothing added (no mutations) - does it still work?
     FileSaver.storeResultsLocally("", seq);
 

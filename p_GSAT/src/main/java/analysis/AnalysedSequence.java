@@ -24,10 +24,10 @@ public class AnalysedSequence extends Sequence {
    * with the quality values. Quality is in "phread scala", this channel in "pixel" or something
    * else.
    */
-  private int[] ChannelA;
-  private int[] ChannelC;
-  private int[] ChannelG;
-  private int[] ChannelT;
+  private int[] channelA;
+  private int[] channelC;
+  private int[] channelG;
+  private int[] channelT;
 
   /**
    * The name of the file this sequence was obtained from. This is used to create the name of the
@@ -113,6 +113,7 @@ public class AnalysedSequence extends Sequence {
 
   /**
    * constructor which sets all values
+   * 
    * @param gene
    * @param name
    * @param sequence
@@ -129,25 +130,25 @@ public class AnalysedSequence extends Sequence {
    * 
    * @author Lovis Heindrich
    */
-  public AnalysedSequence(Gene gene, LinkedList<String> mutations, String name, String sequence, java.util.Date date, String researcher, String comment,
-		char manualcheck, String primer2, String vecLeft, String vecRight, int trimpercent, int histag,
-		int avgquality2) {
-	  super(sequence, researcher, date);
-	this.referencedGene = gene;
-	this.mutations = mutations;
-	this.fileName = name;
-	this.comments = comment;
-	this.manuallyChecked = manualcheck == 'y' ? true : false;
-	this.primer = primer2;
-	this.leftVector = vecLeft;
-	this.rightVector = vecRight;
-	this.trimPercentage = trimpercent;
-	this.hisTagPosition = histag;
-	this.avgQuality = avgquality2;
-}
+  public AnalysedSequence(Gene gene, LinkedList<String> mutations, String name, String sequence,
+      java.util.Date date, String researcher, String comment, char manualcheck, String primer2,
+      String vecLeft, String vecRight, int trimpercent, int histag, int avgquality2) {
+    super(sequence, researcher, date);
+    this.referencedGene = gene;
+    this.mutations = mutations;
+    this.fileName = name;
+    this.comments = comment;
+    this.manuallyChecked = manualcheck == 'y' ? true : false;
+    this.primer = primer2;
+    this.leftVector = vecLeft;
+    this.rightVector = vecRight;
+    this.trimPercentage = trimpercent;
+    this.hisTagPosition = histag;
+    this.avgQuality = avgquality2;
+  }
 
 
-/**
+  /**
    * Add a discovered, String-encoded mutation to the list of already discovered mutations.
    * 
    * @param mutation A discovered mutation
@@ -357,7 +358,7 @@ public class AnalysedSequence extends Sequence {
    * @return the channelA
    */
   public int[] getChannelA() {
-    return ChannelA;
+    return channelA;
   }
 
 
@@ -365,7 +366,7 @@ public class AnalysedSequence extends Sequence {
    * @param channelA the channelA to set
    */
   public void setChannelA(int[] channelA) {
-    ChannelA = channelA;
+    this.channelA = channelA;
   }
 
 
@@ -373,7 +374,7 @@ public class AnalysedSequence extends Sequence {
    * @return the channelC
    */
   public int[] getChannelC() {
-    return ChannelC;
+    return channelC;
   }
 
 
@@ -381,7 +382,7 @@ public class AnalysedSequence extends Sequence {
    * @param channelC the channelC to set
    */
   public void setChannelC(int[] channelC) {
-    ChannelC = channelC;
+    this.channelC = channelC;
   }
 
 
@@ -389,7 +390,7 @@ public class AnalysedSequence extends Sequence {
    * @return the channelG
    */
   public int[] getChannelG() {
-    return ChannelG;
+    return channelG;
   }
 
 
@@ -397,7 +398,7 @@ public class AnalysedSequence extends Sequence {
    * @param channelG the channelG to set
    */
   public void setChannelG(int[] channelG) {
-    ChannelG = channelG;
+    this.channelG = channelG;
   }
 
 
@@ -405,7 +406,7 @@ public class AnalysedSequence extends Sequence {
    * @return the channelT
    */
   public int[] getChannelT() {
-    return ChannelT;
+    return channelT;
   }
 
 
@@ -413,7 +414,7 @@ public class AnalysedSequence extends Sequence {
    * @param channelT the channelT to set
    */
   public void setChannelT(int[] channelT) {
-    ChannelT = channelT;
+    this.channelT = channelT;
   }
 
 

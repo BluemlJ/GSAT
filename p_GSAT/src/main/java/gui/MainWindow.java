@@ -482,9 +482,15 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
         if (changesOnGenes || changesOnPrimers || changesOnResults) {
           Alert alert = new Alert(AlertType.CONFIRMATION);
           alert.setTitle("There are unsaved changes with:");
-          if (changesOnGenes) alert.setTitle(alert.getTitle() + " genes,");
-          if (changesOnPrimers) alert.setTitle(alert.getTitle() + " primers,");
-          if (changesOnResults) alert.setTitle(alert.getTitle() + " results,");
+          if (changesOnGenes) {
+            alert.setTitle(alert.getTitle() + " genes,");
+          }
+          if (changesOnPrimers) {
+            alert.setTitle(alert.getTitle() + " primers,");
+          }
+          if (changesOnResults) {
+            alert.setTitle(alert.getTitle() + " results,");
+          }
           alert.setTitle(alert.getTitle().substring(0, alert.getTitle().length() - 1));
 
           alert.setHeaderText("Look, a Confirmation Dialog with Custom Actions");
@@ -506,7 +512,7 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
               // TODO Auto-generated catch block
             }
           } else if (result.get() == dontSave) {
-
+             // TODO
           } else {
             event.consume();
           }
