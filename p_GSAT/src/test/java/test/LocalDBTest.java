@@ -53,6 +53,20 @@ public class LocalDBTest {
 	
 	@Ignore
 	@Test
+	public void testPullAndSavePrimer() throws SQLException, DatabaseConnectionException, NumberFormatException, IOException{
+		//TODO manual test with 2 computers
+		DatabaseConnection.setDatabaseConnection(user, pass, port, server);
+		Connection conn = DatabaseConnection.establishConnection();
+		DatabaseConnection.createDatabase();
+		PrimerHandler.readPrimer();
+		
+		
+		DatabaseConnection.pullAndSavePrimer();
+
+	}
+	
+	@Ignore
+	@Test
 	public void testPullSequencesPerResearcher() throws SQLException, DatabaseConnectionException{
 		DatabaseConnection.setDatabaseConnection(user, pass, port, server);
 		conn = DatabaseConnection.establishConnection();

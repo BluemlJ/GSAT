@@ -712,6 +712,7 @@ public class DatabaseConnection {
 		for (Primer primer : primerList) {
 			// search for researcher
 			int researcherId = pushResearcher(conn, primer.getResearcher());
+			System.out.println("push researcher: " +primer.getResearcher());
 			// push the gene
 			pushPrimer(conn, primer, researcherId);
 		}
@@ -788,11 +789,12 @@ public class DatabaseConnection {
 			String name = rs.getString("name");
 			String sequence = rs.getString("sequence");
 			java.util.Date date = new Date(rs.getTimestamp("date").getTime());
-			String researcher = rs.getString("researcher");
+			int researcherId = rs.getInt("researcher");
 			String primerId = rs.getString("primerid");
 			int meltingPoint = rs.getInt("meltingpoint");
 			String comment = rs.getString("comment");
 
+			String researcher = pullResearcherPerIndex(researcherId);
 			Primer primer = new Primer(sequence, researcher, meltingPoint, primerId, name, comment, date);
 			primerList.add(primer);
 		}
@@ -1016,20 +1018,63 @@ public class DatabaseConnection {
 		stmt.close();
 		return sequences;
 	}
-
+	
+	/**
+	 * Retrieves the index of a given researcher from the database
+	 * @param conn2
+	 * @param researcher name of the researcher
+	 * @return database index of the given researcher or -1
+	 * @throws SQLException
+	 * @author Lovis Heindrich
+	 */
 	private static int getResearcherId(Connection conn2, String researcher) throws SQLException {
+		// get a connection
 		Statement stmt = conn2.createStatement();
 		stmt.execute("USE gsat");
 		stmt.close();
 
-		// check if researcher exists
+		// db query for given researcher
 		PreparedStatement pstmt = conn2.prepareStatement("SELECT id, name FROM researchers WHERE name = ?");
 		pstmt.setString(1, researcher);
 		ResultSet res = pstmt.executeQuery();
 		if (res.next()) {
+			// return index
 			return res.getInt(1);
 		} else {
+			// researcher does not exist
 			return -1;
 		}
 	}
+	
+	/**
+	   * Pulls all primer data from database and adds it to the local primer.txt
+	   * @throws DatabaseConnectionException
+	   * @throws SQLException
+	   * @throws NumberFormatException local reading error
+	   * @throws IOException
+	   * @author Lovis Heindrich
+	   */
+	  public static void pullAndSavePrimer() throws DatabaseConnectionException, SQLException, NumberFormatException, IOException{
+		  ArrayList<Primer> databasePrimer = pullAllPrimer();
+		  PrimerHandler.readPrimer();
+		  for(Primer primer: databasePrimer){
+			  PrimerHandler.addPrimer(primer);
+		  }
+		  PrimerHandler.writePrimer();
+	  }
+	  
+	  /**
+	   * Pulls all gene data from database and adds it to the local genes.txt
+	   * @throws DatabaseConnectionException
+	   * @throws SQLException
+	   * @throws IOException
+	   */
+	  public static void pullAndSaveGenes() throws DatabaseConnectionException, SQLException, IOException{
+		  ArrayList<Gene> databaseGenes = pullAllGenes();
+		  
+		  for(Gene gene: databaseGenes){
+			  //gene handler already writes and reads config when a gene is added
+			  GeneHandler.addGene(gene);
+		  }
+	  }
 }
