@@ -12,6 +12,7 @@ import analysis.QualityAnalysis;
 import analysis.StringAnalysis;
 import exceptions.CorruptedSequenceException;
 import exceptions.FileReadingException;
+import exceptions.MissingPathException;
 import exceptions.UndefinedTypeOfMutationException;
 import io.SequenceReader;
 
@@ -103,10 +104,11 @@ public class PrivateTest {
    * @throws IOException
    * @throws UndefinedTypeOfMutationException
    * @throws CorruptedSequenceException
+   * @throws MissingPathException 
    */
 
   public void testLocalFile() throws FileReadingException, IOException,
-      UndefinedTypeOfMutationException, CorruptedSequenceException {
+      UndefinedTypeOfMutationException, CorruptedSequenceException, MissingPathException {
     SequenceReader.configurePath(pathToUse + fileName);
     System.out.println("Path set");
     AnalysedSequence testSeq = SequenceReader.convertFileIntoSequence();

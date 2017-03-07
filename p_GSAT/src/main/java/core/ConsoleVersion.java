@@ -485,6 +485,9 @@ public class ConsoleVersion {
       System.out.println();
     } catch (IOException e) {
       e.printStackTrace();
+    } catch (MissingPathException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
     }
     return null;
   }

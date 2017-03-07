@@ -413,6 +413,9 @@ public class GUIUtils {
       System.err.println("Could not read from file.\n");
     } catch (IOException e) {
       System.err.println("Error during reading occured.\n");
+    } catch (MissingPathException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
     }
     return new Pair<AnalysedSequence, Pair<Boolean, Text>>(null, ret);
   }

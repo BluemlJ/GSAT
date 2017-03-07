@@ -13,6 +13,7 @@ import org.junit.Test;
 import analysis.AnalysedSequence;
 import analysis.Pair;
 import exceptions.FileReadingException;
+import exceptions.MissingPathException;
 import io.SequenceReader;
 
 /**
@@ -30,9 +31,10 @@ public class ReadingTests {
    * 
    * @throws FileReadingException
    * @throws IOException
+   * @throws MissingPathException 
    */
   @Before
-  public void initializeSequence() throws FileReadingException, IOException {
+  public void initializeSequence() throws FileReadingException, IOException, MissingPathException {
     // sequence for ab1/Tk_Gs40Hits/Forward/95EI60.ab1 obtained with Chromas
     // (http://technelysium.com.au/wp/chromas/)
     correctSequence =
@@ -84,9 +86,10 @@ public class ReadingTests {
    * 
    * @throws FileReadingException
    * @throws IOException
+   * @throws MissingPathException 
    */
   @Test
-  public void readFromFileTest() throws FileReadingException, IOException {
+  public void readFromFileTest() throws FileReadingException, IOException, MissingPathException {
 
     File parsedFile =
         new File(new File("resources/ab1/Tk_Gs40Hits/Forward/95EI60.ab1").getAbsolutePath());
@@ -112,9 +115,10 @@ public class ReadingTests {
    * This tests checks if a corrupt file leads to an ioexception (Userstory 003 - Unusual behavior)
    * 
    * @throws FileReadingException
+   * @throws MissingPathException 
    */
   @Test
-  public void testCorruptSequence() throws FileReadingException {
+  public void testCorruptSequence() throws FileReadingException, MissingPathException {
     SequenceReader.configurePath(new File("resources/ab1/corrupt.ab1").getAbsolutePath());
     try {
       SequenceReader.convertFileIntoSequence();

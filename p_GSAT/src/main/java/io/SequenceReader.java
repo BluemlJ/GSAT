@@ -13,6 +13,8 @@ import org.jcvi.jillion.trace.chromat.abi.AbiChromatogram;
 import analysis.AnalysedSequence;
 import analysis.Pair;
 import exceptions.FileReadingException;
+import exceptions.MissingPathException;
+import exceptions.PathUsage;
 
 
 
@@ -54,9 +56,10 @@ public class SequenceReader {
    * @throws IllegalSymbolException
    * 
    * @author Lovis Heindrich
+   * @throws MissingPathException 
    */
   public static AnalysedSequence convertFileIntoSequence()
-      throws FileReadingException, IOException {
+      throws FileReadingException, IOException, MissingPathException {
     return convertFileIntoSequence(new File(path));
   }
 
@@ -69,10 +72,15 @@ public class SequenceReader {
    * @throws IllegalSymbolException
    * 
    * @author Lovis Heindrich
+   * @throws MissingPathException 
    */
-  public static AnalysedSequence convertFileIntoSequence(File file)
-      throws FileReadingException, IOException {
-
+  public static AnalysedSequence convertFileIntoSequence(File file) throws FileReadingException, IOException, MissingPathException {
+  
+  if (path == null) {
+    throw new MissingPathException(PathUsage.READING);
+  }
+  
+   
     File referencedFile = file;
 
 
@@ -110,16 +118,6 @@ public class SequenceReader {
     return path;
   }
 
-  /**
-   * Indicates whether there is a path set at the moment.
-   * 
-   * @return Whether a path is set or not
-   * 
-   * @author Ben Kohr
-   */
-  public static boolean isPathSet() {
-    return path != null;
-  }
 
   /**
    * Returns a list of all AB1 files in the path that was set via configurePath()

@@ -13,6 +13,7 @@ import org.junit.Test;
 import analysis.AnalysedSequence;
 import analysis.QualityAnalysis;
 import exceptions.FileReadingException;
+import exceptions.MissingPathException;
 import io.SequenceReader;
 
 /**
@@ -43,9 +44,10 @@ public class QualityTests {
 
   /**
    * Initializes a sample file using SequenceReader
+   * @throws MissingPathException 
    */
   @Before
-  public void initializeSequence() throws FileReadingException, IOException {
+  public void initializeSequence() throws FileReadingException, IOException, MissingPathException {
     // set SequenceReader file path
     SequenceReader
         .configurePath(new File("resources/ab1/Tk_Gs40Hits/Forward/95EI60.ab1").getAbsolutePath());
