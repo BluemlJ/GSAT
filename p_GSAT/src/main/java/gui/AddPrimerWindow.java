@@ -16,7 +16,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
-public class ShowPrimerWindow extends Application implements javafx.fxml.Initializable {
+public class AddPrimerWindow extends Application implements javafx.fxml.Initializable {
 
   // private SettingsWindow parent;
 
@@ -34,7 +34,10 @@ public class ShowPrimerWindow extends Application implements javafx.fxml.Initial
   private javafx.scene.control.TextArea geneArea;
 
   @FXML
-  private Button okButton;
+  private Button cancelButton;
+  
+  @FXML
+  private Button confirmButton;
   
   Stage activeStage;
 
@@ -45,7 +48,7 @@ public class ShowPrimerWindow extends Application implements javafx.fxml.Initial
     
     
     geneArea.setWrapText(true);
-    GUIUtils.setColorOnButton(okButton, ButtonColor.BLUE);
+    //GUIUtils.setColorOnButton(okButton, ButtonColor.BLUE);
 
 
     Primer selectedPrimer = SettingsWindow.getSelectedPrimer();
@@ -58,13 +61,13 @@ public class ShowPrimerWindow extends Application implements javafx.fxml.Initial
 
 
 
-    okButton.setOnAction(new EventHandler<ActionEvent>() {
+    /*okButton.setOnAction(new EventHandler<ActionEvent>() {
       @Override
       public void handle(ActionEvent arg0) {
         Stage stage = (Stage) okButton.getScene().getWindow();
         stage.close();
       }
-    });
+    });*/
   }
 
   @Override
@@ -76,7 +79,7 @@ public class ShowPrimerWindow extends Application implements javafx.fxml.Initial
   public void start(Stage primaryStage) throws Exception {
     Parent root;
     try {
-      root = FXMLLoader.load(getClass().getResource("/fxml/ShowPrimerWindow.fxml"));
+      root = FXMLLoader.load(getClass().getResource("/fxml/AddPrimerWindow.fxml"));
     } catch (IOException e) {
       e.printStackTrace();
       return;
