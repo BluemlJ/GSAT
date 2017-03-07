@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-import analysis.Gene;
 import analysis.Primer;
 import javafx.application.Application;
 import javafx.event.ActionEvent;

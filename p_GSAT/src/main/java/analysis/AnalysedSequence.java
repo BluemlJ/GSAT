@@ -131,14 +131,14 @@ public class AnalysedSequence extends Sequence {
    * @author Lovis Heindrich
    */
   public AnalysedSequence(Gene gene, LinkedList<String> mutations, String name, String sequence,
-      java.util.Date date, String researcher, String comment, char manualcheck, String primer2,
+      java.util.Date date, String researcher, String comment, boolean manuallyChecked, String primer2,
       String vecLeft, String vecRight, int trimpercent, int histag, int avgquality2) {
     super(sequence, researcher, date);
     this.referencedGene = gene;
     this.mutations = mutations;
     this.fileName = name;
     this.comments = comment;
-    this.manuallyChecked = manualcheck == 'y' ? true : false;
+    this.manuallyChecked = manuallyChecked;
     this.primer = primer2;
     this.leftVector = vecLeft;
     this.rightVector = vecRight;

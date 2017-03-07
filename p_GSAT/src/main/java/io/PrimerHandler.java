@@ -6,11 +6,9 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.sql.SQLException;
 import java.util.ArrayList;
 
 import analysis.Primer;
-import exceptions.DatabaseConnectionException;
 
 public class PrimerHandler {
   private static ArrayList<Primer> primerList;

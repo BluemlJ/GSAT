@@ -948,7 +948,12 @@ public class DatabaseConnection {
       java.util.Date date = new Date(rs.getTimestamp("date").getTime());
       int researcherId = rs.getInt("researcher");
       String comment = rs.getString("comment");
-      char manualcheck = rs.getString("manualcheck").charAt(0);
+      boolean manuallyChecked;
+      if (rs.getString("manualcheck").charAt(0) == 'y') {
+        manuallyChecked = true;
+      } else {
+        manuallyChecked = false;
+      }
       int geneIndex = rs.getInt("gene");
       String primer = rs.getString("Primer");
       String vecLeft = rs.getString("vectorleft");
@@ -962,7 +967,7 @@ public class DatabaseConnection {
       LinkedList<String> mutations = pullMutationsPerSequence(id);
 
       AnalysedSequence seq = new AnalysedSequence(gene, mutations, name, sequence, date, researcher,
-          comment, manualcheck, primer, vecLeft, vecRight, trimpercent, histag, avgquality);
+          comment, manuallyChecked, primer, vecLeft, vecRight, trimpercent, histag, avgquality);
       sequences.add(seq);
     }
     stmt.close();
@@ -993,7 +998,12 @@ public class DatabaseConnection {
       java.util.Date date = new Date(rs.getTimestamp("date").getTime());
       int researcherid = rs.getInt("researcher");
       String comment = rs.getString("comment");
-      char manualcheck = rs.getString("manualcheck").charAt(0);
+      boolean manuallyChecked;
+      if (rs.getString("manualcheck").charAt(0) == 'y') {
+        manuallyChecked = true;
+      } else {
+        manuallyChecked = false;
+      }
       int geneIndex = rs.getInt("gene");
       String primer = rs.getString("Primer");
       String vecLeft = rs.getString("vectorleft");
@@ -1007,7 +1017,7 @@ public class DatabaseConnection {
       LinkedList<String> mutations = pullMutationsPerSequence(id);
 
       AnalysedSequence seq = new AnalysedSequence(gene, mutations, name, sequence, date, researcher,
-          comment, manualcheck, primer, vecLeft, vecRight, trimpercent, histag, avgquality);
+          comment, manuallyChecked, primer, vecLeft, vecRight, trimpercent, histag, avgquality);
       sequences.add(seq);
 
     }

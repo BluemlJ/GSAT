@@ -272,7 +272,7 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
               new Text("Selected gene:  " + geneBox.getSelectionModel().getSelectedItem() + "\n"));
         }
 
-        if (outputCheckbox.selectedProperty().get() == true) {
+        if (outputCheckbox.selectedProperty().get()) {
           FileSaver.setSeparateFiles(true);
         } else {
           FileSaver.setSeparateFiles(false);
@@ -512,6 +512,7 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
               // TODO Auto-generated catch block
             }
           } else if (result.get() == dontSave) {
+            System.out.println("dont save"); 
             // TODO
           } else {
             event.consume();
