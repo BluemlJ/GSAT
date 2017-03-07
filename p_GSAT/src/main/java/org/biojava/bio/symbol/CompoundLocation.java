@@ -1,21 +1,18 @@
 /*
- *                    BioJava development code
+ * BioJava development code
  *
- * This code may be freely distributed and modified under the
- * terms of the GNU Lesser General Public Licence.  This should
- * be distributed with the code.  If you do not have a copy,
- * see:
+ * This code may be freely distributed and modified under the terms of the GNU Lesser General Public
+ * Licence. This should be distributed with the code. If you do not have a copy, see:
  *
- *      http://www.gnu.org/copyleft/lesser.html
+ * http://www.gnu.org/copyleft/lesser.html
  *
- * Copyright for this code is held jointly by the individual
- * authors.  These should be listed in @author doc comments.
+ * Copyright for this code is held jointly by the individual authors. These should be listed
+ * in @author doc comments.
  *
- * For more information on the BioJava project and its aims,
- * or to join the biojava-l mailing list, visit the home page
- * at:
+ * For more information on the BioJava project and its aims, or to join the biojava-l mailing list,
+ * visit the home page at:
  *
- *      http://www.biojava.org/
+ * http://www.biojava.org/
  *
  */
 
@@ -31,13 +28,13 @@ import org.biojava.bio.BioError;
 
 /**
  * <p>
- * A complex location. It is made up from multiple sub-locations and is essentially
- * the point-wise union of the child locations.
+ * A complex location. It is made up from multiple sub-locations and is essentially the point-wise
+ * union of the child locations.
  * </p>
  *
  * <p>
- * <strong>NOTE:</strong> It is no longer possible to directly construct
- * CompoundLocations.  Use LocationTools.union instead.
+ * <strong>NOTE:</strong> It is no longer possible to directly construct CompoundLocations. Use
+ * LocationTools.union instead.
  * </p>
  *
  * @author Matthew Pocock
@@ -45,12 +42,9 @@ import org.biojava.bio.BioError;
  * @author Greg Cox
  */
 
-class CompoundLocation extends AbstractLocation
-      implements Location, Serializable 
-{
+class CompoundLocation extends AbstractLocation implements Location, Serializable {
   /**
-   * The list of child locations in order. Should contain only RangeLocation
-   * instances.
+   * The list of child locations in order. Should contain only RangeLocation instances.
    */
   private List locations;
 
@@ -70,17 +64,15 @@ class CompoundLocation extends AbstractLocation
    * </p>
    *
    * <p>
-   * You will nearly always want to generate these beasts using the
-   * Location.union method.
+   * You will nearly always want to generate these beasts using the Location.union method.
    * </p>
    *
    * <p>
-   * The locations list should contain contiguous locations, sorted by getMin()
-   * and guaranteed to be non-overlapping.
+   * The locations list should contain contiguous locations, sorted by getMin() and guaranteed to be
+   * non-overlapping.
    * </p>
    *
-   * @param locations a list of Location instances to combine into a single
-   *        compound location
+   * @param locations a list of Location instances to combine into a single compound location
    */
   CompoundLocation(List locs) {
     this.locations = new ArrayList(locs);
@@ -103,22 +95,21 @@ class CompoundLocation extends AbstractLocation
   }
 
   public boolean contains(int p) {
-    if(p < min || p > max)
-      return false;
+    if (p < min || p > max) return false;
 
     int m = locations.size();
     int n = 0;
     while (m >= n) {
-	int i = (m + n) / 2;
-	Location l = (Location) locations.get(i);
+      int i = (m + n) / 2;
+      Location l = (Location) locations.get(i);
 
-	if (p < l.getMin()) {
-	    m = i - 1;
-	} else if (p > l.getMax()) {
-	    n = i + 1;
-	} else {
-	    return true;
-	}
+      if (p < l.getMin()) {
+        m = i - 1;
+      } else if (p > l.getMax()) {
+        n = i + 1;
+      } else {
+        return true;
+      }
     }
 
     return false;
@@ -141,7 +132,7 @@ class CompoundLocation extends AbstractLocation
   }
 
   public boolean equals(Object o) {
-    if(!(o instanceof Location)) {
+    if (!(o instanceof Location)) {
       return false;
     } else {
       return LocationTools.areEqual(this, (Location) o);
@@ -149,13 +140,12 @@ class CompoundLocation extends AbstractLocation
   }
 
   public SymbolList symbols(SymbolList seq) {
-      if (isContiguous())
-	  return seq.subList(min, max);
+    if (isContiguous()) return seq.subList(min, max);
 
     List res = new ArrayList();
-    for (Iterator i = blockIterator(); i.hasNext(); ) {
-	Location l = (Location) i.next();
-	res.addAll(l.symbols(seq).toList());
+    for (Iterator i = blockIterator(); i.hasNext();) {
+      Location l = (Location) i.next();
+      res.addAll(l.symbols(seq).toList());
     }
 
     try {
@@ -166,14 +156,14 @@ class CompoundLocation extends AbstractLocation
   }
 
   public Location translate(int dist) {
-      if (dist == 0) {
-	  return this;
-      }
+    if (dist == 0) {
+      return this;
+    }
 
     List res = new ArrayList();
 
-    for(Iterator i = locations.iterator(); i.hasNext(); ) {
-      res.add( ((Location) i.next()).translate(dist) );
+    for (Iterator i = locations.iterator(); i.hasNext();) {
+      res.add(((Location) i.next()).translate(dist));
     }
 
     return new CompoundLocation(res);
@@ -183,9 +173,9 @@ class CompoundLocation extends AbstractLocation
     return locations.size() <= 1;
   }
 
-    List getBlockList() {
-	return locations;
-    }
+  List getBlockList() {
+    return locations;
+  }
 
   public Iterator blockIterator() {
     return locations.iterator();
@@ -199,9 +189,8 @@ class CompoundLocation extends AbstractLocation
     StringBuffer sb = new StringBuffer();
     sb.append(getMin() + ", " + getMax() + " {");
     Iterator i = locations.iterator();
-    if(i.hasNext())
-      sb.append("(" + i.next() + ")");
-    while(i.hasNext())
+    if (i.hasNext()) sb.append("(" + i.next() + ")");
+    while (i.hasNext())
       sb.append(", (" + i.next() + ")");
     sb.append("}");
 

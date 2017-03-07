@@ -1,21 +1,18 @@
 /*
- *                    BioJava development code
+ * BioJava development code
  *
- * This code may be freely distributed and modified under the
- * terms of the GNU Lesser General Public Licence.  This should
- * be distributed with the code.  If you do not have a copy,
- * see:
+ * This code may be freely distributed and modified under the terms of the GNU Lesser General Public
+ * Licence. This should be distributed with the code. If you do not have a copy, see:
  *
- *      http://www.gnu.org/copyleft/lesser.html
+ * http://www.gnu.org/copyleft/lesser.html
  *
- * Copyright for this code is held jointly by the individual
- * authors.  These should be listed in @author doc comments.
+ * Copyright for this code is held jointly by the individual authors. These should be listed
+ * in @author doc comments.
  *
- * For more information on the BioJava project and its aims,
- * or to join the biojava-l mailing list, visit the home page
- * at:
+ * For more information on the BioJava project and its aims, or to join the biojava-l mailing list,
+ * visit the home page at:
  *
- *      http://www.biojava.org/
+ * http://www.biojava.org/
  *
  */
 
@@ -45,8 +42,8 @@ public class SVMRegressionModel {
   }
 
   public SVMRegressionModel(int capacity) {
-    vectors    = new Object[capacity];
-    alphas     = new double[capacity];
+    vectors = new Object[capacity];
+    alphas = new double[capacity];
     alphaStars = new double[capacity];
     size = 0;
   }
@@ -69,13 +66,13 @@ public class SVMRegressionModel {
 
   public void addVector(Object v, double alpha, double alphaStar) {
     if ((size + 1) >= vectors.length) {
-	    Object [] nVectors = new Object[vectors.length * 2];
-	    System.arraycopy(vectors, 0, nVectors, 0, size);
-	    vectors = nVectors;
-	    double [] nAlphas = new double[alphas.length * 2];
-	    System.arraycopy(alphas, 0, nAlphas, 0, size);
-	    alphas = nAlphas;
-      double [] nAlphaStars = new double[alphaStars.length * 2];
+      Object[] nVectors = new Object[vectors.length * 2];
+      System.arraycopy(vectors, 0, nVectors, 0, size);
+      vectors = nVectors;
+      double[] nAlphas = new double[alphas.length * 2];
+      System.arraycopy(alphas, 0, nAlphas, 0, size);
+      alphas = nAlphas;
+      double[] nAlphaStars = new double[alphaStars.length * 2];
       System.arraycopy(alphaStars, 0, nAlphaStars, 0, size);
     }
 
@@ -110,7 +107,7 @@ public class SVMRegressionModel {
 
   public void setAlpha(int pos, double a) {
     if (pos >= size) {
-	    throw new NoSuchElementException();
+      throw new NoSuchElementException();
     }
     alphas[pos] = a;
     System.out.println("setting alpha " + pos + "=" + alphas[pos]);
@@ -126,17 +123,17 @@ public class SVMRegressionModel {
 
   public void setAlphaStar(int pos, double a) {
     if (pos >= size) {
-	    throw new NoSuchElementException();
+      throw new NoSuchElementException();
     }
     alphaStars[pos] = a;
     System.out.println("setting alpha* " + pos + "=" + alphaStars[pos]);
   }
 
   public double classify(Object v) {
-    double delta=0;
+    double delta = 0;
     for (int i = 0; i < size; ++i) {
       double a = alphas[i] - alphaStars[i];
-	    if (a != 0) {
+      if (a != 0) {
         delta += a * kernel.evaluate(vectors[i], v);
       }
     }
@@ -144,10 +141,10 @@ public class SVMRegressionModel {
   }
 
   public double internalClassify(int obj) {
-    double delta=0;
+    double delta = 0;
     for (int i = 0; i < size; ++i) {
       double a = alphas[i] - alphaStars[i];
-	    delta += a * kvals[i][obj];
+      delta += a * kvals[i][obj];
     }
     return delta + threshold;
   }
@@ -155,8 +152,8 @@ public class SVMRegressionModel {
   public void calcKernel() {
     kvals = new double[size][size];
 
-    for(int i = 0; i < size; i++) {
-      for(int j = 0; j < i; j++) {
+    for (int i = 0; i < size; i++) {
+      for (int j = 0; j < i; j++) {
         kvals[i][j] = kvals[j][i] = kernel.evaluate(vectors[i], vectors[j]);
       }
       kvals[i][i] = kernel.evaluate(vectors[i], vectors[i]);

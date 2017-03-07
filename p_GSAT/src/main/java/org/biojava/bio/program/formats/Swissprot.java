@@ -19,10 +19,9 @@ import org.biojava.bio.symbol.Location;
 import org.biojava.utils.ParserException;
 import org.biojava.utils.lsid.LifeScienceIdentifier;
 
-public class Swissprot
-implements Format {
+public class Swissprot implements Format {
   private static final AnnotationType ANNO_TYPE;
-  //private static final LineSplitParser PARSER;
+  // private static final LineSplitParser PARSER;
   private static final LifeScienceIdentifier LSID;
 
   static {
@@ -33,7 +32,7 @@ implements Format {
     Location ONE = CardinalityConstraint.ONE;
     Location ONE_OR_MORE = CardinalityConstraint.ONE_OR_MORE;
 
-    //PARSER = new LineSplitParser(LineSplitParser.EMBL);
+    // PARSER = new LineSplitParser(LineSplitParser.EMBL);
 
     PropertyConstraint c_string = new PropertyConstraint.ByClass(String.class);
 
@@ -74,10 +73,7 @@ implements Format {
   }
 
   public ParserListener getParserListener(TagValueListener listener) {
-    RegexSplitter semiColonSplitter = new RegexSplitter(
-      Pattern.compile("(\\w+)[;.]"),
-      1
-    );
+    RegexSplitter semiColonSplitter = new RegexSplitter(Pattern.compile("(\\w+)[;.]"), 1);
     ValueChanger semiColonChanger = new ValueChanger(listener);
     semiColonChanger.setDefaultSplitter(semiColonSplitter);
 
@@ -93,12 +89,9 @@ implements Format {
     LineSplitParser lsp = LineSplitParser.EMBL;
     TagDelegator td = new TagDelegator(listener);
 
-    td.setListener("ID", new RegexFieldFinder(
-      listener,
-      Pattern.compile("(\\w+)\\s+(\\w+);\\s+(\\w+);\\s+(\\d+)"),
-      new String[] { "ID", "TYPE", "MOLECULE", "LENGTH" },
-      true
-    ));
+    td.setListener("ID",
+        new RegexFieldFinder(listener, Pattern.compile("(\\w+)\\s+(\\w+);\\s+(\\w+);\\s+(\\d+)"),
+            new String[] {"ID", "TYPE", "MOLECULE", "LENGTH"}, true));
     td.setListener("AC", semiColonChanger);
     td.setListener("KW", semiColonChanger);
     td.setListener("OC", semiColonChanger);
@@ -118,8 +111,7 @@ implements Format {
     return LSID;
   }
 
-  private static class SPFeatureTableListener
-  extends SimpleTagValueWrapper {
+  private static class SPFeatureTableListener extends SimpleTagValueWrapper {
     private Pattern pat = Pattern.compile("(\\w+)\\s+((<?\\d+)|(?))\\s+((>?\\d+)|(\\?))");
     private int depth = 0;
     private Object tag;
@@ -128,40 +120,35 @@ implements Format {
       super(delegate);
     }
 
-    public void startRecord()
-    throws ParserException {
+    public void startRecord() throws ParserException {
       depth++;
       super.startRecord();
     }
 
-    public void endRecord()
-    throws ParserException {
+    public void endRecord() throws ParserException {
       super.endRecord();
       depth--;
     }
 
-    public void startTag(Object tag)
-    throws ParserException {
-      if(depth == 1) {
+    public void startTag(Object tag) throws ParserException {
+      if (depth == 1) {
         this.tag = tag;
       } else {
         super.startTag(tag);
       }
     }
 
-    public void endTag(Object tag)
-    throws ParserException {
-      if(depth == 1) {
+    public void endTag(Object tag) throws ParserException {
+      if (depth == 1) {
         // do we need something here?
       }
 
       super.endTag();
     }
 
-    public void value(TagValueContext ctxt, Object val)
-    throws ParserException {
-      if(depth == 1) {
-        if(tag != null) {
+    public void value(TagValueContext ctxt, Object val) throws ParserException {
+      if (depth == 1) {
+        if (tag != null) {
           try {
             Matcher m = pat.matcher(tag.toString());
             m.find();

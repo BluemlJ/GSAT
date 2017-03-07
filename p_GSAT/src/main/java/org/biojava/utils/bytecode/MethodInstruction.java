@@ -1,21 +1,18 @@
 /*
- *                    BioJava development code
+ * BioJava development code
  *
- * This code may be freely distributed and modified under the
- * terms of the GNU Lesser General Public Licence.  This should
- * be distributed with the code.  If you do not have a copy,
- * see:
+ * This code may be freely distributed and modified under the terms of the GNU Lesser General Public
+ * Licence. This should be distributed with the code. If you do not have a copy, see:
  *
- *      http://www.gnu.org/copyleft/lesser.html
+ * http://www.gnu.org/copyleft/lesser.html
  *
- * Copyright for this code is held jointly by the individual
- * authors.  These should be listed in @author doc comments.
+ * Copyright for this code is held jointly by the individual authors. These should be listed
+ * in @author doc comments.
  *
- * For more information on the BioJava project and its aims,
- * or to join the biojava-l mailing list, visit the home page
- * at:
+ * For more information on the BioJava project and its aims, or to join the biojava-l mailing list,
+ * visit the home page at:
  *
- *      http://www.biojava.org/
+ * http://www.biojava.org/
  *
  */
 package org.biojava.utils.bytecode;
@@ -30,16 +27,16 @@ package org.biojava.utils.bytecode;
 class MethodInstruction implements Instruction {
   private final CodeMethod meth;
   private final byte opcode;
-  
+
   MethodInstruction(byte op, CodeMethod m) {
-    if(m == null) {
+    if (m == null) {
       throw new NullPointerException("CodeMethod can not be null");
     }
-    
+
     this.opcode = op;
     this.meth = m;
   }
-  
+
   public void writeCode(CodeContext ctx) throws CodeException {
     ctx.writeByte(opcode);
     if (opcode == ByteCode.op_invokeinterface) {
@@ -55,22 +52,22 @@ class MethodInstruction implements Instruction {
       ctx.writeShort(ctx.getConstants().resolveMethod(meth));
     }
   }
-  
+
   public int stackDepth() {
     return 0;
   }
-  
+
   public int stackDelta() {
     int popped = 0;
-    
-    if( (meth.getModifiers() & CodeUtils.ACC_STATIC) == 0) {
+
+    if ((meth.getModifiers() & CodeUtils.ACC_STATIC) == 0) {
       popped++;
     }
-    
+
     popped += meth.numParameters();
-    
+
     int pushed = (meth.getReturnType() == CodeUtils.TYPE_VOID) ? 0 : 1;
-    
+
     return pushed - popped;
   }
 }

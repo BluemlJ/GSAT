@@ -1,21 +1,18 @@
 /*
- *                    BioJava development code
+ * BioJava development code
  *
- * This code may be freely distributed and modified under the
- * terms of the GNU Lesser General Public Licence.  This should
- * be distributed with the code.  If you do not have a copy,
- * see:
+ * This code may be freely distributed and modified under the terms of the GNU Lesser General Public
+ * Licence. This should be distributed with the code. If you do not have a copy, see:
  *
- *      http://www.gnu.org/copyleft/lesser.html
+ * http://www.gnu.org/copyleft/lesser.html
  *
- * Copyright for this code is held jointly by the individual
- * authors.  These should be listed in @author doc comments.
+ * Copyright for this code is held jointly by the individual authors. These should be listed
+ * in @author doc comments.
  *
- * For more information on the BioJava project and its aims,
- * or to join the biojava-l mailing list, visit the home page
- * at:
+ * For more information on the BioJava project and its aims, or to join the biojava-l mailing list,
+ * visit the home page at:
  *
- *      http://www.biojava.org/
+ * http://www.biojava.org/
  *
  */
 
@@ -50,19 +47,16 @@ import org.biojava.utils.ChangeVetoException;
 /**
  * A basic implementation of the <code>Sequence</code> interface.
  * <p>
- * This class now implements all methods in the SymbolList interface by
- * delegating to another SymbolList object. This avoids unnecessary copying, but
- * means that any changes in the underlying SymbolList will be silently
- * reflected in the SimpleSequence. In general, SimpleSequences should
- * <em>only</em> be constructed from SymbolLists which are known to be
- * immutable.
+ * This class now implements all methods in the SymbolList interface by delegating to another
+ * SymbolList object. This avoids unnecessary copying, but means that any changes in the underlying
+ * SymbolList will be silently reflected in the SimpleSequence. In general, SimpleSequences should
+ * <em>only</em> be constructed from SymbolLists which are known to be immutable.
  * </p>
  * 
  * <p>
- * By default, features attached to a SimpleSequence are realized as simple
- * in-memory implementations using <code>SimpleFeatureRealizer.DEFAULT</code>.
- * If you need alternative feature realization behaviour, any
- * <code>FeatureRealizer</code> implementation may be supplied at
+ * By default, features attached to a SimpleSequence are realized as simple in-memory
+ * implementations using <code>SimpleFeatureRealizer.DEFAULT</code>. If you need alternative feature
+ * realization behaviour, any <code>FeatureRealizer</code> implementation may be supplied at
  * construction-time.
  * </p>
  * More functionality and better persistence to biosql is offered by
@@ -71,270 +65,262 @@ import org.biojava.utils.ChangeVetoException;
  * @author Matthew Pocock
  * @author Thomas Down
  * @author Mark Schreiber
- * @serial WARNING serialized versions of this class may not be compatable with
- *         future versions of Biojava
+ * @serial WARNING serialized versions of this class may not be compatable with future versions of
+ *         Biojava
  */
-public class SimpleSequence extends AbstractChangeable implements Sequence,
-		RealizingFeatureHolder, Serializable {
-	//
-	// This section is for the SymbolList implementation-by-delegation
-	//
+public class SimpleSequence extends AbstractChangeable
+    implements
+      Sequence,
+      RealizingFeatureHolder,
+      Serializable {
+  //
+  // This section is for the SymbolList implementation-by-delegation
+  //
 
-	private class FeatureForwarder implements ChangeListener {
-		public void postChange(ChangeEvent cev) {
-			ChangeSupport cs = getChangeSupport(cev.getType());
-			synchronized (cs) {
-				cs.firePostChangeEvent(cev);
-			}
-		}
+  private class FeatureForwarder implements ChangeListener {
+    public void postChange(ChangeEvent cev) {
+      ChangeSupport cs = getChangeSupport(cev.getType());
+      synchronized (cs) {
+        cs.firePostChangeEvent(cev);
+      }
+    }
 
-		public void preChange(ChangeEvent cev) throws ChangeVetoException {
-			ChangeSupport cs = getChangeSupport(cev.getType());
-			synchronized (cs) {
-				cs.firePreChangeEvent(cev);
-			}
-		}
-	}
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -8681680737943980721L;
+    public void preChange(ChangeEvent cev) throws ChangeVetoException {
+      ChangeSupport cs = getChangeSupport(cev.getType());
+      synchronized (cs) {
+        cs.firePreChangeEvent(cev);
+      }
+    }
+  }
 
-	private Annotation annotation;
+  /**
+   * 
+   */
+  private static final long serialVersionUID = -8681680737943980721L;
 
-	private transient ChangeListener featureForwarder;
+  private Annotation annotation;
 
-	private SimpleFeatureHolder featureHolder;
+  private transient ChangeListener featureForwarder;
 
-	private transient FeatureRealizer featureRealizer;
+  private SimpleFeatureHolder featureHolder;
 
-	private String name;
+  private transient FeatureRealizer featureRealizer;
 
-	/**
-	 * Delegate SymbolList.
-	 */
+  private String name;
 
-	private SymbolList symList;
+  /**
+   * Delegate SymbolList.
+   */
 
-	private String urn;
+  private SymbolList symList;
 
-	/**
-	 * Create a SimpleSequence with the symbols and alphabet of sym, and the
-	 * sequence properties listed.
-	 * 
-	 * @param sym
-	 *            the SymbolList to wrap as a sequence
-	 * @param urn
-	 *            the URN
-	 * @param name
-	 *            the name - should be unique if practical
-	 * @param annotation
-	 *            the annotation object to use or null
-	 */
-	public SimpleSequence(SymbolList sym, String urn, String name,
-			Annotation annotation) {
-		symList = sym;
+  private String urn;
 
-		setURN(urn);
-		setName(name);
-		this.annotation = annotation;
-		this.featureRealizer = FeatureImpl.DEFAULT;
-	}
+  /**
+   * Create a SimpleSequence with the symbols and alphabet of sym, and the sequence properties
+   * listed.
+   * 
+   * @param sym the SymbolList to wrap as a sequence
+   * @param urn the URN
+   * @param name the name - should be unique if practical
+   * @param annotation the annotation object to use or null
+   */
+  public SimpleSequence(SymbolList sym, String urn, String name, Annotation annotation) {
+    symList = sym;
 
-	//
-	// Extra stuff which is unique to Sequences
-	//
+    setURN(urn);
+    setName(name);
+    this.annotation = annotation;
+    this.featureRealizer = FeatureImpl.DEFAULT;
+  }
 
-	/**
-	 * Create a SimpleSequence using a specified FeatureRealizer.
-	 * 
-	 * @param sym
-	 *            the SymbolList to wrap as a sequence
-	 * @param urn
-	 *            the URN
-	 * @param name
-	 *            the name - should be unique if practical
-	 * @param annotation
-	 *            the annotation object to use or null
-	 * @param realizer
-	 *            the FeatureRealizer implemetation to use when adding features
-	 */
-	public SimpleSequence(SymbolList sym, String urn, String name,
-			Annotation annotation, FeatureRealizer realizer) {
-		symList = sym;
+  //
+  // Extra stuff which is unique to Sequences
+  //
 
-		setURN(urn);
-		setName(name);
-		this.annotation = annotation;
-		this.featureRealizer = realizer;
-	}
-	public boolean containsFeature(Feature f) {
-		if (featureHolderAllocated()) {
-			return getFeatureHolder().containsFeature(f);
-		} else {
-			return false;
-		}
-	}
-	public int countFeatures() {
-		if (featureHolderAllocated())
-			return getFeatureHolder().countFeatures();
-		return 0;
-	}
-	public Feature createFeature(Feature.Template template)
-			throws BioException, ChangeVetoException {
-		Feature f = realizeFeature(this, template);
-		SimpleFeatureHolder fh = this.getFeatureHolder();
-		synchronized (fh) {
-			fh.addFeature(f);
-		}
-		return f;
-	}
-	/**
-	 * Create a new feature in any FeatureHolder associated with this sequence.
-	 * 
-	 * @deprecated Please use new 1-arg createFeature instead.
-	 */
+  /**
+   * Create a SimpleSequence using a specified FeatureRealizer.
+   * 
+   * @param sym the SymbolList to wrap as a sequence
+   * @param urn the URN
+   * @param name the name - should be unique if practical
+   * @param annotation the annotation object to use or null
+   * @param realizer the FeatureRealizer implemetation to use when adding features
+   */
+  public SimpleSequence(SymbolList sym, String urn, String name, Annotation annotation,
+      FeatureRealizer realizer) {
+    symList = sym;
 
-	public Feature createFeature(FeatureHolder fh, Feature.Template template)
-			throws BioException, ChangeVetoException {
-		return fh.createFeature(template);
-	}
+    setURN(urn);
+    setName(name);
+    this.annotation = annotation;
+    this.featureRealizer = realizer;
+  }
 
-	// private void readObject(ObjectInputStream s)throws IOException,
-	// ClassNotFoundException{
-	// s.defaultReadObject();
-	// this.featureRealizer = FeatureImpl.DEFAULT;
-	// }
+  public boolean containsFeature(Feature f) {
+    if (featureHolderAllocated()) {
+      return getFeatureHolder().containsFeature(f);
+    } else {
+      return false;
+    }
+  }
 
-	public void edit(Edit edit) throws ChangeVetoException {
-		throw new ChangeVetoException("Can't edit the underlying SymbolList");
-	}
+  public int countFeatures() {
+    if (featureHolderAllocated()) return getFeatureHolder().countFeatures();
+    return 0;
+  }
 
-	protected boolean featureHolderAllocated() {
-		return featureHolder != null;
-	}
+  public Feature createFeature(Feature.Template template) throws BioException, ChangeVetoException {
+    Feature f = realizeFeature(this, template);
+    SimpleFeatureHolder fh = this.getFeatureHolder();
+    synchronized (fh) {
+      fh.addFeature(f);
+    }
+    return f;
+  }
 
-	public Iterator<Feature> features() {
-		if (featureHolderAllocated())
-			return getFeatureHolder().features();
-		return Collections.EMPTY_LIST.iterator();
-	}
+  /**
+   * Create a new feature in any FeatureHolder associated with this sequence.
+   * 
+   * @deprecated Please use new 1-arg createFeature instead.
+   */
 
-	public FeatureHolder filter(FeatureFilter filter) {
-		return getFeatureHolder().filter(filter);
-	}
+  public Feature createFeature(FeatureHolder fh, Feature.Template template)
+      throws BioException, ChangeVetoException {
+    return fh.createFeature(template);
+  }
 
-	public FeatureHolder filter(FeatureFilter ff, boolean recurse) {
-		if (featureHolderAllocated()) {
-			return getFeatureHolder().filter(ff, recurse);
-		}
-		return FeatureHolder.EMPTY_FEATURE_HOLDER;
-	}
+  // private void readObject(ObjectInputStream s)throws IOException,
+  // ClassNotFoundException{
+  // s.defaultReadObject();
+  // this.featureRealizer = FeatureImpl.DEFAULT;
+  // }
 
-	public Alphabet getAlphabet() {
-		return symList.getAlphabet();
-	}
+  public void edit(Edit edit) throws ChangeVetoException {
+    throw new ChangeVetoException("Can't edit the underlying SymbolList");
+  }
 
-	public Annotation getAnnotation() {
-		if (annotation == null)
-			annotation = new SimpleAnnotation();
-		return annotation;
-	}
+  protected boolean featureHolderAllocated() {
+    return featureHolder != null;
+  }
 
-	protected ChangeSupport getChangeSupport(ChangeType ct) {
-		ChangeSupport changeSupport = super.getChangeSupport(ct);
+  public Iterator<Feature> features() {
+    if (featureHolderAllocated()) return getFeatureHolder().features();
+    return Collections.EMPTY_LIST.iterator();
+  }
 
-		if (featureForwarder == null && featureHolder != null) {
-			featureForwarder = new FeatureForwarder();
-			featureHolder.addChangeListener(featureForwarder,
-					ChangeType.UNKNOWN);
-		}
+  public FeatureHolder filter(FeatureFilter filter) {
+    return getFeatureHolder().filter(filter);
+  }
 
-		return changeSupport;
-	}
+  public FeatureHolder filter(FeatureFilter ff, boolean recurse) {
+    if (featureHolderAllocated()) {
+      return getFeatureHolder().filter(ff, recurse);
+    }
+    return FeatureHolder.EMPTY_FEATURE_HOLDER;
+  }
 
-	protected SimpleFeatureHolder getFeatureHolder() {
-		if (featureHolder == null) {
-			featureHolder = new SimpleFeatureHolder(FeatureFilter.top_level);
-		}
-		return featureHolder;
-	}
+  public Alphabet getAlphabet() {
+    return symList.getAlphabet();
+  }
 
-	public String getName() {
-		return name;
-	}
+  public Annotation getAnnotation() {
+    if (annotation == null) annotation = new SimpleAnnotation();
+    return annotation;
+  }
 
-	public FeatureFilter getSchema() {
-		return getFeatureHolder().getSchema();
-	}
+  protected ChangeSupport getChangeSupport(ChangeType ct) {
+    ChangeSupport changeSupport = super.getChangeSupport(ct);
 
-	public String getURN() {
-		return urn;
-	}
+    if (featureForwarder == null && featureHolder != null) {
+      featureForwarder = new FeatureForwarder();
+      featureHolder.addChangeListener(featureForwarder, ChangeType.UNKNOWN);
+    }
 
-	public Iterator iterator() {
-		return symList.iterator();
-	}
+    return changeSupport;
+  }
 
-	public int length() {
-		return symList.length();
-	}
+  protected SimpleFeatureHolder getFeatureHolder() {
+    if (featureHolder == null) {
+      featureHolder = new SimpleFeatureHolder(FeatureFilter.top_level);
+    }
+    return featureHolder;
+  }
 
-	public Feature realizeFeature(FeatureHolder parent,
-			Feature.Template template) throws BioException {
-		return featureRealizer.realizeFeature(this, parent, template);
-	}
+  public String getName() {
+    return name;
+  }
 
-	/**
-	 * Remove a feature attached to this sequence.
-	 */
+  public FeatureFilter getSchema() {
+    return getFeatureHolder().getSchema();
+  }
 
-	public void removeFeature(Feature f) throws ChangeVetoException,
-			BioException {
-		getFeatureHolder().removeFeature(f);
-	}
+  public String getURN() {
+    return urn;
+  }
 
-	public String seqString() {
-		return symList.seqString();
-	}
+  public Iterator iterator() {
+    return symList.iterator();
+  }
 
-	/**
-	 *Assign a name to this sequence
-	 */
+  public int length() {
+    return symList.length();
+  }
 
-	public void setName(String name) {
-		this.name = name;
-	}
+  public Feature realizeFeature(FeatureHolder parent, Feature.Template template)
+      throws BioException {
+    return featureRealizer.realizeFeature(this, parent, template);
+  }
 
-	/**
-	 *Provide the URN for this sequence
-	 */
+  /**
+   * Remove a feature attached to this sequence.
+   */
 
-	public void setURN(String urn) {
-		this.urn = urn;
-	}
+  public void removeFeature(Feature f) throws ChangeVetoException, BioException {
+    getFeatureHolder().removeFeature(f);
+  }
 
-	public SymbolList subList(int start, int end) {
-		return symList.subList(start, end);
-	}
+  public String seqString() {
+    return symList.seqString();
+  }
 
-	public String subStr(int start, int end) {
-		return symList.subStr(start, end);
-	}
+  /**
+   * Assign a name to this sequence
+   */
 
-	//
-	// Changeable stuff
-	//
+  public void setName(String name) {
+    this.name = name;
+  }
 
-	public Symbol symbolAt(int index) {
-		return symList.symbolAt(index);
-	}
+  /**
+   * Provide the URN for this sequence
+   */
 
-	public List toList() {
-		return symList.toList();
-	}
+  public void setURN(String urn) {
+    this.urn = urn;
+  }
 
-	public String toString() {
-		return super.toString() + " name: " + getName();
-	}
+  public SymbolList subList(int start, int end) {
+    return symList.subList(start, end);
+  }
+
+  public String subStr(int start, int end) {
+    return symList.subStr(start, end);
+  }
+
+  //
+  // Changeable stuff
+  //
+
+  public Symbol symbolAt(int index) {
+    return symList.symbolAt(index);
+  }
+
+  public List toList() {
+    return symList.toList();
+  }
+
+  public String toString() {
+    return super.toString() + " name: " + getName();
+  }
 }

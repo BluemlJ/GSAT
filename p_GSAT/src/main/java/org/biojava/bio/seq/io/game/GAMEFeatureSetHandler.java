@@ -1,21 +1,18 @@
 /**
- *                    BioJava development code
+ * BioJava development code
  *
- * This code may be freely distributed and modified under the
- * terms of the GNU Lesser General Public Licence.  This should
- * be distributed with the code.  If you do not have a copy,
- * see:
+ * This code may be freely distributed and modified under the terms of the GNU Lesser General Public
+ * Licence. This should be distributed with the code. If you do not have a copy, see:
  *
- *      http://www.gnu.org/copyleft/lesser.html
+ * http://www.gnu.org/copyleft/lesser.html
  *
- * Copyright for this code is held jointly by the individual
- * authors.  These should be listed in @author doc comments.
+ * Copyright for this code is held jointly by the individual authors. These should be listed
+ * in @author doc comments.
  *
- * For more information on the BioJava project and its aims,
- * or to join the biojava-l mailing list, visit the home page
- * at:
+ * For more information on the BioJava project and its aims, or to join the biojava-l mailing list,
+ * visit the home page at:
  *
- *      http://www.biojava.org/
+ * http://www.biojava.org/
  *
  */
 
@@ -39,24 +36,24 @@ import org.xml.sax.SAXException;
  * @author David Huen
  * @since 1.2
  */
-public class GAMEFeatureSetHandler
-               extends StAXFeatureHandler
-               implements GAMENameCallbackItf, GAMETranscriptCallbackItf  
-{
-  // <feature_span> is one of the worst elements in GAME.  The type of element
-  // is only known from reading the nested <type> element.  The bloody
+public class GAMEFeatureSetHandler extends StAXFeatureHandler
+    implements
+      GAMENameCallbackItf,
+      GAMETranscriptCallbackItf {
+  // <feature_span> is one of the worst elements in GAME. The type of element
+  // is only known from reading the nested <type> element. The bloody
   // strand and coordinates are nested 4-deep within the element.
   // this element is implemented as a transcript.
 
   private Location transcriptRange;
   private StAXFeatureHandler staxenv;
 
-  public static final StAXHandlerFactory GAME_FEATURESET_HANDLER_FACTORY
-    = new StAXHandlerFactory() {
-    public StAXContentHandler getHandler(StAXFeatureHandler staxenv) {
-      return new GAMEFeatureSetHandler(staxenv);
-    }
-  };
+  public static final StAXHandlerFactory GAME_FEATURESET_HANDLER_FACTORY =
+      new StAXHandlerFactory() {
+        public StAXContentHandler getHandler(StAXFeatureHandler staxenv) {
+          return new GAMEFeatureSetHandler(staxenv);
+        }
+      };
 
   GAMEFeatureSetHandler(StAXFeatureHandler staxenv) {
     // setup up environment stuff
@@ -65,12 +62,12 @@ public class GAMEFeatureSetHandler
     setHandlerCharacteristics("feature_set", true);
 
     // setup handlers
-       // <name>
-       super.addHandler(new ElementRecognizer.ByLocalName("name"),
-         GAMENamePropHandler.GAME_NAME_PROP_HANDLER_FACTORY);
-       // <feature_span>
-       super.addHandler(new ElementRecognizer.ByLocalName("feature_span"),
-         GAMEFeatureSpanHandler.GAME_FEATURESPAN_HANDLER_FACTORY);
+    // <name>
+    super.addHandler(new ElementRecognizer.ByLocalName("name"),
+        GAMENamePropHandler.GAME_NAME_PROP_HANDLER_FACTORY);
+    // <feature_span>
+    super.addHandler(new ElementRecognizer.ByLocalName("feature_span"),
+        GAMEFeatureSpanHandler.GAME_FEATURESPAN_HANDLER_FACTORY);
   }
 
 
@@ -78,9 +75,8 @@ public class GAMEFeatureSetHandler
     // the id overrides name element by default.
     if (!featureTemplate.annotation.containsProperty("id")) {
       try {
-       featureTemplate.annotation.setProperty("id", s);
-      }
-      catch (ChangeVetoException cve) {
+        featureTemplate.annotation.setProperty("id", s);
+      } catch (ChangeVetoException cve) {
         // baulk and discard exception
         System.out.println("GAMEFeatureSetHandler: change vetoed");
       }
@@ -112,56 +108,47 @@ public class GAMEFeatureSetHandler
     return st;
   }
 
-  public void startElementHandler(
-                String nsURI,
-                String localName,
-                String qName,
-                Attributes attrs)
-	 throws SAXException
-  {
+  public void startElementHandler(String nsURI, String localName, String qName, Attributes attrs)
+      throws SAXException {
     // handle the attributes
     String s = (String) attrs.getValue("id");
     if (s != null) {
       try {
         featureTemplate.annotation.setProperty("id", s);
-      }
-      catch (ChangeVetoException cve) {
+      } catch (ChangeVetoException cve) {
         // just ignore change
         System.err.println("GAMEFeatureSetHandler: change vetoed");
       }
     }
   }
 
-  public void endElementHandler(
-                String nsURI,
-                String localName,
-                String qName,
-                StAXContentHandler handler)
-  {
+  public void endElementHandler(String nsURI, String localName, String qName,
+      StAXContentHandler handler) {
     // set the extent of the transcript to its limits
     if (transcriptRange != null) {
-//      featureTemplate.location = new RangeLocation(transcriptRange.getMin(), transcriptRange.getMax());
-      featureTemplate.location = transcriptRange;      
-    }
-    else
+      // featureTemplate.location = new RangeLocation(transcriptRange.getMin(),
+      // transcriptRange.getMax());
+      featureTemplate.location = transcriptRange;
+    } else
       featureTemplate.location = Location.empty;
 
     // tell nesting feature about my extent and strand.
     int currLevel = staxenv.getLevel();
-//    System.out.println("GAMEFeatureSetHandler.endElement entered. currlevel: " + currLevel);
- 
-    if (currLevel >=1) {
+    // System.out.println("GAMEFeatureSetHandler.endElement entered. currlevel: " + currLevel);
+
+    if (currLevel >= 1) {
       // search down stack for callback handler
       ListIterator li = staxenv.getHandlerStackIterator(currLevel);
-//    System.out.println("GAMEFeatureSetHandler.endElement entered. got ListIterator");
+      // System.out.println("GAMEFeatureSetHandler.endElement entered. got ListIterator");
       while (li.hasPrevious()) {
         Object ob = li.previous();
-//    System.out.println("GAMEFeatureSetHandler.endElement entered. got stack object");
+        // System.out.println("GAMEFeatureSetHandler.endElement entered. got stack object");
         if (ob instanceof GAMEFeatureCallbackItf) {
           // we have a nesting handler, use it
-//    System.out.println("GAMEFeatureSetHandler.endElement calling back");
+          // System.out.println("GAMEFeatureSetHandler.endElement calling back");
           ((GAMEFeatureCallbackItf) ob).reportFeature(featureTemplate.location);
-          ((GAMEFeatureCallbackItf) ob).reportStrand(((StrandedFeature.Template) featureTemplate).strand);
+          ((GAMEFeatureCallbackItf) ob)
+              .reportStrand(((StrandedFeature.Template) featureTemplate).strand);
           return;
         }
       }

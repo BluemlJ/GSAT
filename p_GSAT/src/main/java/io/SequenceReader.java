@@ -56,7 +56,7 @@ public class SequenceReader {
    * @throws IllegalSymbolException
    * 
    * @author Lovis Heindrich
-   * @throws MissingPathException 
+   * @throws MissingPathException
    */
   public static AnalysedSequence convertFileIntoSequence()
       throws FileReadingException, IOException, MissingPathException {
@@ -72,15 +72,16 @@ public class SequenceReader {
    * @throws IllegalSymbolException
    * 
    * @author Lovis Heindrich
-   * @throws MissingPathException 
+   * @throws MissingPathException
    */
-  public static AnalysedSequence convertFileIntoSequence(File file) throws FileReadingException, IOException, MissingPathException {
-  
-  if (path == null) {
-    throw new MissingPathException(PathUsage.READING);
-  }
-  
-   
+  public static AnalysedSequence convertFileIntoSequence(File file)
+      throws FileReadingException, IOException, MissingPathException {
+
+    if (path == null) {
+      throw new MissingPathException(PathUsage.READING);
+    }
+
+
     File referencedFile = file;
 
 

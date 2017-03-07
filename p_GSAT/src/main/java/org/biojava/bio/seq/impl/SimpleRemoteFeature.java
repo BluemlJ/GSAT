@@ -1,21 +1,18 @@
 /*
- *                    BioJava development code
+ * BioJava development code
  *
- * This code may be freely distributed and modified under the
- * terms of the GNU Lesser General Public Licence.  This should
- * be distributed with the code.  If you do not have a copy,
- * see:
+ * This code may be freely distributed and modified under the terms of the GNU Lesser General Public
+ * Licence. This should be distributed with the code. If you do not have a copy, see:
  *
- *      http://www.gnu.org/copyleft/lesser.html
+ * http://www.gnu.org/copyleft/lesser.html
  *
- * Copyright for this code is held jointly by the individual
- * authors.  These should be listed in @author doc comments.
+ * Copyright for this code is held jointly by the individual authors. These should be listed
+ * in @author doc comments.
  *
- * For more information on the BioJava project and its aims,
- * or to join the biojava-l mailing list, visit the home page
- * at:
+ * For more information on the BioJava project and its aims, or to join the biojava-l mailing list,
+ * visit the home page at:
  *
- *      http://www.biojava.org/
+ * http://www.biojava.org/
  *
  */
 
@@ -44,9 +41,10 @@ import org.biojava.bio.seq.db.SequenceDB;
  * @author Greg Cox
  * @since 1.2
  */
-public class SimpleRemoteFeature
-extends SimpleStrandedFeature
-implements RemoteFeature, java.io.Serializable {
+public class SimpleRemoteFeature extends SimpleStrandedFeature
+    implements
+      RemoteFeature,
+      java.io.Serializable {
   private List regions;
   private RemoteFeature.Resolver resolver;
 
@@ -74,13 +72,10 @@ implements RemoteFeature, java.io.Serializable {
     rt.regions = new ArrayList(getRegions());
   }
 
-  public SimpleRemoteFeature(
-    Sequence sourceSeq,
-    FeatureHolder parent,
-    RemoteFeature.Template template
-  ) {
+  public SimpleRemoteFeature(Sequence sourceSeq, FeatureHolder parent,
+      RemoteFeature.Template template) {
     super(sourceSeq, parent, template);
-    // System.err.println("Constructing a RemoteFeature.  Strand = " + template.strand);
+    // System.err.println("Constructing a RemoteFeature. Strand = " + template.strand);
     this.regions = new ArrayList(template.regions);
     this.resolver = template.resolver;
   }
@@ -97,8 +92,7 @@ implements RemoteFeature, java.io.Serializable {
     }
 
     public Feature resolve(RemoteFeature rFeat) throws BioException {
-      FeatureFilter remoteFilter
-        = new FeatureFilter.ByClass(RemoteFeature.class);
+      FeatureFilter remoteFilter = new FeatureFilter.ByClass(RemoteFeature.class);
 
       Set seqs = new HashSet();
       LinkedList ids = new LinkedList();
@@ -107,21 +101,21 @@ implements RemoteFeature, java.io.Serializable {
       Sequence parent = rFeat.getSequence();
       ids.add(parent);
 
-      while(!ids.isEmpty()) {
+      while (!ids.isEmpty()) {
         Sequence seq = (Sequence) ids.removeFirst();
         seqs.add(seq);
 
         FeatureHolder remotes = seq.filter(remoteFilter, false);
-        for(Iterator fi = remotes.features(); fi.hasNext(); ) {
+        for (Iterator fi = remotes.features(); fi.hasNext();) {
           RemoteFeature rf = (RemoteFeature) fi.next();
           feats.add(rf);
-          for(Iterator ri = rf.getRegions().iterator(); ri.hasNext(); ) {
+          for (Iterator ri = rf.getRegions().iterator(); ri.hasNext();) {
             RemoteFeature.Region r = (RemoteFeature.Region) ri.next();
-            if(r.isRemote()) {
+            if (r.isRemote()) {
               // potentialy expensive - should we cache IDs? What about the ID
               // of this sequence?
               Sequence rseq = getSeqDB().getSequence(r.getSeqID());
-              if(!ids.contains(rseq) && !seqs.contains(rseq)) {
+              if (!ids.contains(rseq) && !seqs.contains(rseq)) {
                 ids.addLast(rseq);
               }
             }
@@ -134,7 +128,7 @@ implements RemoteFeature, java.io.Serializable {
         Iterator si = seqs.iterator();
         Sequence nextSeq = (Sequence) si.next(); // don't need to check hasNext
         nameBuff.append(nextSeq.getName());
-        while(si.hasNext()) {
+        while (si.hasNext()) {
           nextSeq = (Sequence) si.next();
           nameBuff.append("-");
           nameBuff.append(nextSeq.getName());

@@ -1,21 +1,18 @@
 /*
- *                    BioJava development code
+ * BioJava development code
  *
- * This code may be freely distributed and modified under the
- * terms of the GNU Lesser General Public Licence.  This should
- * be distributed with the code.  If you do not have a copy,
- * see:
+ * This code may be freely distributed and modified under the terms of the GNU Lesser General Public
+ * Licence. This should be distributed with the code. If you do not have a copy, see:
  *
- *      http://www.gnu.org/copyleft/lesser.html
+ * http://www.gnu.org/copyleft/lesser.html
  *
- * Copyright for this code is held jointly by the individual
- * authors.  These should be listed in @author doc comments.
+ * Copyright for this code is held jointly by the individual authors. These should be listed
+ * in @author doc comments.
  *
- * For more information on the BioJava project and its aims,
- * or to join the biojava-l mailing list, visit the home page
- * at:
+ * For more information on the BioJava project and its aims, or to join the biojava-l mailing list,
+ * visit the home page at:
  *
- *      http://www.biojava.org/
+ * http://www.biojava.org/
  *
  */
 package org.biojava.utils.bytecode;
@@ -24,8 +21,7 @@ package org.biojava.utils.bytecode;
  * Wrap up details about a field in a Java class file.
  *
  * <p>
- * Instances of this type will be instantiated by CodeClass instances, using
- * the getField() methods.
+ * Instances of this type will be instantiated by CodeClass instances, using the getField() methods.
  * </p>
  *
  * @author Thomas Down
@@ -47,7 +43,7 @@ public final class CodeField {
   /**
    * Get the name of the field.
    *
-   * @return  the name of the field
+   * @return the name of the field
    */
   public String getName() {
     return name;
@@ -90,9 +86,7 @@ public final class CodeField {
   }
 
   public String toString() {
-    return super.toString() +
-            " type: " + getType() +
-            " class: " + clazz.getName() +
-            " name: " + getName();
+    return super.toString() + " type: " + getType() + " class: " + clazz.getName() + " name: "
+        + getName();
   }
 }

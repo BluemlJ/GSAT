@@ -1,21 +1,18 @@
 /*
- *                    BioJava development code
+ * BioJava development code
  *
- * This code may be freely distributed and modified under the
- * terms of the GNU Lesser General Public Licence.  This should
- * be distributed with the code.  If you do not have a copy,
- * see:
+ * This code may be freely distributed and modified under the terms of the GNU Lesser General Public
+ * Licence. This should be distributed with the code. If you do not have a copy, see:
  *
- *      http://www.gnu.org/copyleft/lesser.html
+ * http://www.gnu.org/copyleft/lesser.html
  *
- * Copyright for this code is held jointly by the individual
- * authors.  These should be listed in @author doc comments.
+ * Copyright for this code is held jointly by the individual authors. These should be listed
+ * in @author doc comments.
  *
- * For more information on the BioJava project and its aims,
- * or to join the biojava-l mailing list, visit the home page
- * at:
+ * For more information on the BioJava project and its aims, or to join the biojava-l mailing list,
+ * visit the home page at:
  *
- *      http://www.biojava.org/
+ * http://www.biojava.org/
  *
  */
 
@@ -48,27 +45,20 @@ import org.biojava.utils.SingletonList;
 /**
  * A model that guarantees to only contain emission states and dot states.
  * <p>
- * A flat model is essentialy a view onto a more complicated model that makes it
- * appear to only contain emission states and dot states. States that emit models
- * and other exotica are expressed purely in terms of these two state types.
+ * A flat model is essentialy a view onto a more complicated model that makes it appear to only
+ * contain emission states and dot states. States that emit models and other exotica are expressed
+ * purely in terms of these two state types.
  * <p>
  * You can train the resulting flat model, and the underlying models will be altered.
  *
  * @author Matthew Pocock
  * @author Thomas Down
  */
-class FlatModel
-  extends
-    AbstractChangeable
-  implements
-    MarkovModel,
-    Serializable
-{
+class FlatModel extends AbstractChangeable implements MarkovModel, Serializable {
   private final MarkovModel source;
   private final MarkovModel delegate;
 
-  protected void addAState(State ourState)
-  throws IllegalSymbolException {
+  protected void addAState(State ourState) throws IllegalSymbolException {
     try {
       delegate.addState(ourState);
     } catch (ChangeVetoException cve) {
@@ -96,42 +86,33 @@ class FlatModel
     return delegate.magicalState();
   }
 
-  public Distribution getWeights(State source)
-  throws IllegalSymbolException {
+  public Distribution getWeights(State source) throws IllegalSymbolException {
     return delegate.getWeights(source);
   }
 
-  public boolean containsTransition(State from, State to)
-  throws IllegalSymbolException {
+  public boolean containsTransition(State from, State to) throws IllegalSymbolException {
     return delegate.containsTransition(from, to);
   }
 
-  public FiniteAlphabet transitionsFrom(State from)
-  throws IllegalSymbolException {
+  public FiniteAlphabet transitionsFrom(State from) throws IllegalSymbolException {
     return delegate.transitionsFrom(from);
   }
 
-  public FiniteAlphabet transitionsTo(State to)
-  throws IllegalSymbolException {
+  public FiniteAlphabet transitionsTo(State to) throws IllegalSymbolException {
     return delegate.transitionsTo(to);
   }
 
-  public void setWeights(State source, Distribution dist)
-  throws ChangeVetoException {
+  public void setWeights(State source, Distribution dist) throws ChangeVetoException {
     throw new ChangeVetoException("Can't set weights in immutable view");
   }
 
-  public FlatModel(MarkovModel model)
-  throws IllegalSymbolException, IllegalAlphabetException {
+  public FlatModel(MarkovModel model) throws IllegalSymbolException, IllegalAlphabetException {
     this.source = model;
-    this.delegate = new SimpleMarkovModel(
-      source.advance().length,
-      source.emissionAlphabet(),
-      "flat"
-    );
+    this.delegate =
+        new SimpleMarkovModel(source.advance().length, source.emissionAlphabet(), "flat");
 
     // add all the states
-    //System.out.println("Adding states");
+    // System.out.println("Adding states");
     Map toM = new HashMap();
     Map inModel = new HashMap();
     Map misStart = new HashMap();
@@ -139,28 +120,27 @@ class FlatModel
     Map modelStart = new HashMap();
     Map modelEnd = new HashMap();
 
-    for(Iterator i = model.stateAlphabet().iterator(); i.hasNext(); ) {
+    for (Iterator i = model.stateAlphabet().iterator(); i.hasNext();) {
       State s = (State) i.next();
-      if(s instanceof DotState) { // simple dot state in model
+      if (s instanceof DotState) { // simple dot state in model
         DotStateWrapper dsw = new DotStateWrapper(s);
         addAState(dsw);
         inModel.put(s, model);
         toM.put(s, dsw);
-        //System.out.println("Added dot state " + dsw.getName());
-      } else if(s instanceof EmissionState) {  // simple emission state in model
-        if(s instanceof MagicalState) {
+        // System.out.println("Added dot state " + dsw.getName());
+      } else if (s instanceof EmissionState) { // simple emission state in model
+        if (s instanceof MagicalState) {
           modelStart.put(model, model.magicalState());
           modelEnd.put(model, model.magicalState());
         } else {
-          EmissionWrapper esw =
-            new EmissionWrapper((EmissionState) s);
+          EmissionWrapper esw = new EmissionWrapper((EmissionState) s);
           addAState(esw);
           inModel.put(s, model);
           toM.put(s, esw);
-          //System.out.println("Added emission state " + esw.getName());
+          // System.out.println("Added emission state " + esw.getName());
         }
-      } else if(s instanceof ModelInState) { // complex model inside state
-        //System.out.println("Adding a model-in-state");
+      } else if (s instanceof ModelInState) { // complex model inside state
+        // System.out.println("Adding a model-in-state");
         ModelInState mis = (ModelInState) s;
         MarkovModel flatM = DP.flatView(mis.getModel());
 
@@ -173,28 +153,27 @@ class FlatModel
         modelEnd.put(flatM, end);
         misStart.put(mis, start);
         misEnd.put(mis, end);
-        //System.out.println("Added " + start.getName() + " and " + end.getName());
+        // System.out.println("Added " + start.getName() + " and " + end.getName());
 
-        for(Iterator j = flatM.stateAlphabet().iterator(); j.hasNext(); ) {
+        for (Iterator j = flatM.stateAlphabet().iterator(); j.hasNext();) {
           State t = (State) j.next();
-          if(t instanceof DotState) {
+          if (t instanceof DotState) {
             DotStateWrapper dsw = new DotStateWrapper(t);
             addAState(dsw);
             inModel.put(t, flatM);
             toM.put(t, dsw);
             toM.put(((Wrapper) t).getWrapped(), dsw);
-            //System.out.println("Added wrapped dot state " + dsw.getName());
-          } else if(t instanceof EmissionState) {
-            if(t instanceof MagicalState) {
+            // System.out.println("Added wrapped dot state " + dsw.getName());
+          } else if (t instanceof EmissionState) {
+            if (t instanceof MagicalState) {
               continue;
             }
-            EmissionWrapper esw =
-              new EmissionWrapper((EmissionState) t);
+            EmissionWrapper esw = new EmissionWrapper((EmissionState) t);
             addAState(esw);
             inModel.put(t, flatM);
             toM.put(t, esw);
-            //toM.put(((Wrapper) t).getUnprojectedFeatures(), esw);
-            //System.out.println("Added wrapped emission state " + esw.getName());
+            // toM.put(((Wrapper) t).getUnprojectedFeatures(), esw);
+            // System.out.println("Added wrapped emission state " + esw.getName());
           } else { // unknown eventuality
             throw new IllegalSymbolException(s, "Don't know how to handle state: " + s.getName());
           }
@@ -205,16 +184,16 @@ class FlatModel
     }
 
     // wire
-    for(Iterator i = delegate.stateAlphabet().iterator(); i.hasNext(); ) {
+    for (Iterator i = delegate.stateAlphabet().iterator(); i.hasNext();) {
       State s = (State) i.next();
 
       State sOrig;
       MarkovModel sModel;
 
-      //System.out.println("Processing transitions from " + s.getName());
+      // System.out.println("Processing transitions from " + s.getName());
 
       // find underlying state and model for s
-      if(s instanceof MagicalState) { // from magic
+      if (s instanceof MagicalState) { // from magic
         sOrig = s;
         sModel = model;
       } else { // from not Magic
@@ -222,11 +201,11 @@ class FlatModel
         State swrapped = swrapper.getWrapped();
         MarkovModel subModel = (MarkovModel) inModel.get(swrapped);
 
-        if(subModel != model) { // subModel -> *
+        if (subModel != model) { // subModel -> *
           sOrig = swrapped;
           sModel = subModel;
-        } else if(swrapper instanceof ModelInState) { // mis -> ?
-          if(swrapper == modelStart.get(subModel)) { // mis -> subModel
+        } else if (swrapper instanceof ModelInState) { // mis -> ?
+          if (swrapper == modelStart.get(subModel)) { // mis -> subModel
             sModel = ((ModelInState) swrapped).getModel();
             sOrig = sModel.magicalState();
           } else { // mis -> model
@@ -245,11 +224,10 @@ class FlatModel
 
       TranslatedDistribution dist = null;
       // TranslatedDistribution dist = TranslatedDistribution.getDistribution(
-      //  delegate.transitionsFrom(s),
-      //  sModel.getWeights(sOrig)
+      // delegate.transitionsFrom(s),
+      // sModel.getWeights(sOrig)
       // );
-      SimpleReversibleTranslationTable table =
-        (SimpleReversibleTranslationTable) dist.getTable();
+      SimpleReversibleTranslationTable table = (SimpleReversibleTranslationTable) dist.getTable();
       try {
         delegate.setWeights(s, dist);
       } catch (ChangeVetoException cve) {
@@ -258,14 +236,11 @@ class FlatModel
       table.setTranslation(s, sOrig);
 
       // find all reachable states from s
-      for(
-        Iterator j = sModel.transitionsFrom(sOrig).iterator();
-        j.hasNext();
-      ) {
+      for (Iterator j = sModel.transitionsFrom(sOrig).iterator(); j.hasNext();) {
         State tOrig = (State) j.next();
         State t;
-        if(tOrig instanceof MagicalState) { // * -> magic
-          if(sModel == model) { // outer -> magic
+        if (tOrig instanceof MagicalState) { // * -> magic
+          if (sModel == model) { // outer -> magic
             t = tOrig;
           } else { // subModel -> magic
             t = (State) modelEnd.get(sModel);
@@ -279,7 +254,7 @@ class FlatModel
   }
 
   public void createTransition(State from, State to)
-  throws IllegalSymbolException, UnsupportedOperationException {
+      throws IllegalSymbolException, UnsupportedOperationException {
     Alphabet a = stateAlphabet();
     a.validate(from);
     a.validate(to);
@@ -287,20 +262,18 @@ class FlatModel
   }
 
   public void destroyTransition(State from, State to)
-  throws IllegalSymbolException, UnsupportedOperationException {
+      throws IllegalSymbolException, UnsupportedOperationException {
     Alphabet a = stateAlphabet();
     a.validate(from);
     a.validate(to);
     throw new UnsupportedOperationException("destroyTransition not supported by FlatModel");
   }
 
-  public void addState(State toAdd)
-  throws UnsupportedOperationException {
+  public void addState(State toAdd) throws UnsupportedOperationException {
     throw new UnsupportedOperationException("addState not supported by FlatModel");
   }
 
-  public void removeState(State toGo)
-  throws UnsupportedOperationException {
+  public void removeState(State toGo) throws UnsupportedOperationException {
     throw new UnsupportedOperationException("removeState not supported by FlatModel");
   }
 
@@ -308,13 +281,7 @@ class FlatModel
     modelTrainer.registerModel(delegate);
   }
 
-  private static class Wrapper
-    extends
-      AbstractChangeable
-    implements
-      State,
-      Serializable
-  {
+  private static class Wrapper extends AbstractChangeable implements State, Serializable {
     private final State wrapped;
     private final String extra;
     private final Alphabet matches;
@@ -346,7 +313,7 @@ class FlatModel
     }
 
     public Wrapper(State wrapped, String extra) {
-      if(wrapped == null) {
+      if (wrapped == null) {
         throw new NullPointerException("Can't wrap null");
       }
       this.wrapped = wrapped;
@@ -355,30 +322,26 @@ class FlatModel
     }
   }
 
-  private static class DotStateWrapper
-  extends Wrapper implements DotState {
+  private static class DotStateWrapper extends Wrapper implements DotState {
     public DotStateWrapper(State wrapped, String extra) {
       super(wrapped, extra);
     }
 
-    public DotStateWrapper(State wrapped)
-    throws NullPointerException {
+    public DotStateWrapper(State wrapped) throws NullPointerException {
       this(wrapped, "f");
     }
   }
 
-  private static class EmissionWrapper
-  extends Wrapper implements EmissionState {
+  private static class EmissionWrapper extends Wrapper implements EmissionState {
     private EmissionState getWrappedES() {
       return (EmissionState) getWrapped();
     }
 
-    public void setAdvance(int [] advance)
-    throws ChangeVetoException {
+    public void setAdvance(int[] advance) throws ChangeVetoException {
       getWrappedES().setAdvance(advance);
     }
 
-    public int [] getAdvance() {
+    public int[] getAdvance() {
       return getWrappedES().getAdvance();
     }
 
@@ -386,8 +349,7 @@ class FlatModel
       return getWrappedES().getDistribution();
     }
 
-    public void setDistribution(Distribution dis)
-    throws ChangeVetoException {
+    public void setDistribution(Distribution dis) throws ChangeVetoException {
       getWrappedES().setDistribution(dis);
     }
 

@@ -19,8 +19,7 @@ import org.biojava.bio.program.tagvalue.ValueChanger;
 import org.biojava.bio.symbol.Location;
 import org.biojava.utils.lsid.LifeScienceIdentifier;
 
-public class Enzyme
-implements Format {
+public class Enzyme implements Format {
   private static final AnnotationType ANNO_TYPE;
   private static final LineSplitParser PARSER;
   private static final LifeScienceIdentifier LSID;
@@ -60,7 +59,7 @@ implements Format {
     ChangeTable.Changer trailingDotStripper = new ChangeTable.Changer() {
       public Object change(Object value) {
         String val = (String) value;
-        if(val.endsWith(".")) {
+        if (val.endsWith(".")) {
           return val.substring(0, val.length() - 1);
         } else {
           return val;
@@ -79,43 +78,45 @@ implements Format {
     changeTable.setChanger("DE", trailingDotStripper);
     changeTable.setChanger("CA", trailingDotStripper);
     changeTable.setChanger("CF", trailingDotStripper);
-    changeTable.setSplitter("DR", new RegexSplitter(
-      Pattern.compile("\\S+,\\s*\\S+;"),
-      0 ));
+    changeTable.setSplitter("DR", new RegexSplitter(Pattern.compile("\\S+,\\s*\\S+;"), 0));
 
     ValueChanger valueChanger = new ValueChanger(listener, changeTable);
 
-    MultiTagger dotMultiTag = new MultiTagger(
-      valueChanger,
-      new BoundaryFinder() {
-        public boolean dropBoundaryValues() { return false; }
-        public boolean isBoundaryStart(Object value) { return false; }
-        public boolean isBoundaryEnd(Object value) {
-          return ((String) value).endsWith(".");
-        }
+    MultiTagger dotMultiTag = new MultiTagger(valueChanger, new BoundaryFinder() {
+      public boolean dropBoundaryValues() {
+        return false;
       }
-    );
 
-    MultiTagger commentMultiTag = new MultiTagger(
-      valueChanger,
-      new BoundaryFinder() {
-        public boolean dropBoundaryValues() { return false; }
-        public boolean isBoundaryStart(Object value) {
-          return ((String) value).startsWith("-!-");
-        }
-        public boolean isBoundaryEnd(Object value) { return false; }
+      public boolean isBoundaryStart(Object value) {
+        return false;
       }
-    );
+
+      public boolean isBoundaryEnd(Object value) {
+        return ((String) value).endsWith(".");
+      }
+    });
+
+    MultiTagger commentMultiTag = new MultiTagger(valueChanger, new BoundaryFinder() {
+      public boolean dropBoundaryValues() {
+        return false;
+      }
+
+      public boolean isBoundaryStart(Object value) {
+        return ((String) value).startsWith("-!-");
+      }
+
+      public boolean isBoundaryEnd(Object value) {
+        return false;
+      }
+    });
 
     TagDelegator tagDelegator = new TagDelegator(valueChanger);
     tagDelegator.setListener("AN", dotMultiTag);
     tagDelegator.setListener("CA", dotMultiTag);
     tagDelegator.setListener("CC", commentMultiTag);
-    tagDelegator.setListener("DI", new RegexFieldFinder(
-      valueChanger,
-      Pattern.compile("([^;]+);\\s*MIM:\\s*(\\S+)\\."),
-      new String[] { "Disease_name", "MIM:Number" },
-      false ));
+    tagDelegator.setListener("DI",
+        new RegexFieldFinder(valueChanger, Pattern.compile("([^;]+);\\s*MIM:\\s*(\\S+)\\."),
+            new String[] {"Disease_name", "MIM:Number"}, false));
 
 
     return new ParserListener(PARSER, tagDelegator);

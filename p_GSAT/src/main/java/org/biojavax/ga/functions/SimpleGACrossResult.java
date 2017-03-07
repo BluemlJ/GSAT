@@ -1,21 +1,18 @@
 /*
- *                    BioJava development code
+ * BioJava development code
  *
- * This code may be freely distributed and modified under the
- * terms of the GNU Lesser General Public Licence.  This should
- * be distributed with the code.  If you do not have a copy,
- * see:
+ * This code may be freely distributed and modified under the terms of the GNU Lesser General Public
+ * Licence. This should be distributed with the code. If you do not have a copy, see:
  *
- *      http://www.gnu.org/copyleft/lesser.html
+ * http://www.gnu.org/copyleft/lesser.html
  *
- * Copyright for this code is held jointly by the individual
- * authors.  These should be listed in @author doc comments.
+ * Copyright for this code is held jointly by the individual authors. These should be listed
+ * in @author doc comments.
  *
- * For more information on the BioJava project and its aims,
- * or to join the biojava-l mailing list, visit the home page
- * at:
+ * For more information on the BioJava project and its aims, or to join the biojava-l mailing list,
+ * visit the home page at:
  *
- *      http://www.biojava.org/
+ * http://www.biojava.org/
  *
  */
 package org.biojavax.ga.functions;
@@ -24,8 +21,10 @@ import org.biojava.bio.symbol.PointLocation;
 import org.biojava.bio.symbol.SymbolList;
 
 /**
- * <p>Simple implementation of the <code>GACross</code> interface. Basically a
- * data structure to hold the results of a GACross</p>
+ * <p>
+ * Simple implementation of the <code>GACross</code> interface. Basically a data structure to hold
+ * the results of a GACross
+ * </p>
  * 
  * @author Mark Schreiber
  * @version 1.0
@@ -36,8 +35,7 @@ public final class SimpleGACrossResult implements GACrossResult {
   private PointLocation[] crossOverPositions;
   private SymbolList[] chromosomes;
 
-  public SimpleGACrossResult(PointLocation[] crossOverPositions,
-                              SymbolList[] chromosomes){
+  public SimpleGACrossResult(PointLocation[] crossOverPositions, SymbolList[] chromosomes) {
     this.chromosomes = chromosomes;
     this.crossOverPositions = crossOverPositions;
   }

@@ -1,21 +1,18 @@
 /*
- *                    BioJava development code
+ * BioJava development code
  *
- * This code may be freely distributed and modified under the
- * terms of the GNU Lesser General Public Licence.  This should
- * be distributed with the code.  If you do not have a copy,
- * see:
+ * This code may be freely distributed and modified under the terms of the GNU Lesser General Public
+ * Licence. This should be distributed with the code. If you do not have a copy, see:
  *
- *      http://www.gnu.org/copyleft/lesser.html
+ * http://www.gnu.org/copyleft/lesser.html
  *
- * Copyright for this code is held jointly by the individual
- * authors.  These should be listed in @author doc comments.
+ * Copyright for this code is held jointly by the individual authors. These should be listed
+ * in @author doc comments.
  *
- * For more information on the BioJava project and its aims,
- * or to join the biojava-l mailing list, visit the home page
- * at:
+ * For more information on the BioJava project and its aims, or to join the biojava-l mailing list,
+ * visit the home page at:
  *
- *      http://www.biojava.org/
+ * http://www.biojava.org/
  *
  */
 
@@ -27,14 +24,13 @@ import org.biojava.bio.symbol.IllegalSymbolException;
 
 /**
  * <p>
- * The interface for all functions that can calculate the 'scores' array for
- * a given cell.
+ * The interface for all functions that can calculate the 'scores' array for a given cell.
  * </p>
  *
  * <p>
- * The methods in this interface work on a square matrix of cells. The cell at
- * 0,0 is considered the 'target' cell to which data can be written. The other cells
- * are the neighbours to this cell in the DP matrix.
+ * The methods in this interface work on a square matrix of cells. The cell at 0,0 is considered the
+ * 'target' cell to which data can be written. The other cells are the neighbours to this cell in
+ * the DP matrix.
  * </p>
  *
  * @author Matthew Pocock
@@ -44,13 +40,10 @@ public interface CellCalculator {
   /**
    * Initialize the cell at [0][0] to the recursion initial parameters.
    *
-   * @param cells  the 2-D array of cells
+   * @param cells the 2-D array of cells
    */
-  public void initialize(Cell [][] cells)
-  throws
-    IllegalSymbolException,
-    IllegalAlphabetException,
-    IllegalTransitionException;
+  public void initialize(Cell[][] cells)
+      throws IllegalSymbolException, IllegalAlphabetException, IllegalTransitionException;
 
   /**
    * <p>
@@ -58,16 +51,11 @@ public interface CellCalculator {
    * </p>
    *
    * <p>
-   * These objects implement the actual cell-by-cell recursions, such as
-   * forwards or viterbi.
+   * These objects implement the actual cell-by-cell recursions, such as forwards or viterbi.
    * </p>
    *
-   * @param cells the array of cells to read from, with the cell to update
-   *        at 0,0
+   * @param cells the array of cells to read from, with the cell to update at 0,0
    */
-  public void calcCell(Cell [][] cells)
-  throws
-    IllegalSymbolException,
-    IllegalAlphabetException,
-    IllegalTransitionException;
+  public void calcCell(Cell[][] cells)
+      throws IllegalSymbolException, IllegalAlphabetException, IllegalTransitionException;
 }

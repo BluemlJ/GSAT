@@ -16,32 +16,28 @@ import org.biojava.utils.ChangeVetoException;
  * Annotates a sequence with hits to a weight-matrix.
  *
  * <p>
- * This SequenceAnnotator implementation returns a new
- * ViewSequence wrapping the underlying Sequence
+ * This SequenceAnnotator implementation returns a new ViewSequence wrapping the underlying Sequence
  * </p>
  *
  * @author Matthew Pocock
  * @author Thomas Down
  * @author Tanya Vavouri
  */
-public class WeightMatrixAnnotator implements SequenceAnnotator,
-    Serializable {
+public class WeightMatrixAnnotator implements SequenceAnnotator, Serializable {
   private WeightMatrix matrix;
   private double threshold;
   private final ScoreType scoreType;
   private String wmID;
 
-  public Sequence annotate(Sequence seq) throws IllegalAlphabetException,
-      BioException, ChangeVetoException {
+  public Sequence annotate(Sequence seq)
+      throws IllegalAlphabetException, BioException, ChangeVetoException {
     seq = new ViewSequence(seq);
 
     int cols = matrix.columns();
     Feature.Template template = new Feature.Template();
     template.source = "WeightMatrixAnnotator";
     template.type = wmID;
-    for (int offset = 1;
-         offset <= seq.length() - cols + 1;
-         offset++) {
+    for (int offset = 1; offset <= seq.length() - cols + 1; offset++) {
       double score = DP.scoreWeightMatrix(matrix, seq, scoreType, offset);
       double q = Math.exp(score);
       if (q >= threshold) {
@@ -57,15 +53,14 @@ public class WeightMatrixAnnotator implements SequenceAnnotator,
   }
 
   /**
-   * Create a new annotator that uses the PROBABILITY score type and an ID
-   for the weight matrix.
+   * Create a new annotator that uses the PROBABILITY score type and an ID for the weight matrix.
    *
-   * @param wm        the weight matrix
+   * @param wm the weight matrix
    * @param threshold the threshold
    * @param wmID the weight matrix ID
    */
-  public WeightMatrixAnnotator(WeightMatrix wm, ScoreType scoreType,
-                               double threshold, String wmID) {
+  public WeightMatrixAnnotator(WeightMatrix wm, ScoreType scoreType, double threshold,
+      String wmID) {
     this.matrix = wm;
     this.threshold = threshold;
     this.scoreType = ScoreType.PROBABILITY;
@@ -85,13 +80,12 @@ public class WeightMatrixAnnotator implements SequenceAnnotator,
   /**
    * Create a new annotator that uses a specific score type.
    *
-   * @param wm        the weigth matrix
+   * @param wm the weigth matrix
    * @param scoreType the score type
    * @param threshold the threshold
    * @since 1.4
    */
-  public WeightMatrixAnnotator(WeightMatrix wm, ScoreType scoreType,
-                               double threshold) {
+  public WeightMatrixAnnotator(WeightMatrix wm, ScoreType scoreType, double threshold) {
     this.matrix = wm;
     this.scoreType = scoreType;
     this.threshold = threshold;
@@ -100,6 +94,7 @@ public class WeightMatrixAnnotator implements SequenceAnnotator,
 
   /**
    * Get the value of the weight matrix id.
+   * 
    * @return value of the weight matrix id.
    */
   public String getWeightMatrixID() {
@@ -108,7 +103,8 @@ public class WeightMatrixAnnotator implements SequenceAnnotator,
 
   /**
    * Set the weight matrix id.
-   * @param id  Value to assign to the weight matrix id.
+   * 
+   * @param id Value to assign to the weight matrix id.
    */
   public void setWeightMatrixID(String id) {
     this.wmID = id;

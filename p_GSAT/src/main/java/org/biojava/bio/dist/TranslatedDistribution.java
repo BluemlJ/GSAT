@@ -1,21 +1,18 @@
 /*
- *                    BioJava development code
+ * BioJava development code
  *
- * This code may be freely distributed and modified under the
- * terms of the GNU Lesser General Public Licence.  This should
- * be distributed with the code.  If you do not have a copy,
- * see:
+ * This code may be freely distributed and modified under the terms of the GNU Lesser General Public
+ * Licence. This should be distributed with the code. If you do not have a copy, see:
  *
- *      http://www.gnu.org/copyleft/lesser.html
+ * http://www.gnu.org/copyleft/lesser.html
  *
- * Copyright for this code is held jointly by the individual
- * authors.  These should be listed in @author doc comments.
+ * Copyright for this code is held jointly by the individual authors. These should be listed
+ * in @author doc comments.
  *
- * For more information on the BioJava project and its aims,
- * or to join the biojava-l mailing list, visit the home page
- * at:
+ * For more information on the BioJava project and its aims, or to join the biojava-l mailing list,
+ * visit the home page at:
  *
- *      http://www.biojava.org/
+ * http://www.biojava.org/
  *
  */
 
@@ -42,22 +39,19 @@ import org.biojava.utils.ChangeType;
 import org.biojava.utils.ChangeVetoException;
 
 /**
- * A translated view of some underlying distribution.  The <code>getWeight</code>
- * method returns the result of calling <code>getWeight</code> on the underlying
- * distribution, having first translated the <code>Symbol</code> parameter using
- * the supplied <code>ReversibleTranslationTable</code>.  All changes to the
- * underlying distribution are reflected by the <code>TranslatedDistribution</code>.
+ * A translated view of some underlying distribution. The <code>getWeight</code> method returns the
+ * result of calling <code>getWeight</code> on the underlying distribution, having first translated
+ * the <code>Symbol</code> parameter using the supplied <code>ReversibleTranslationTable</code>. All
+ * changes to the underlying distribution are reflected by the <code>TranslatedDistribution</code>.
  *
  * <p>
- * The <code>TranslatedDistribution</code> is not directly mutable: calling
- * <code>setWeight</code> will result in a <code>ChangeVetoException</code>.
- * However, a <code>DistributionTrainer</code> may be registered for a
- * <code>TranslatedDistribution</code>.  Any counts received by this trainer
- * are untranslated then forwarded to the underlying distribution.  It is
- * valid to add counts to both a <code>TranslatedDistribution</code> and
- * its underlying distribution in a single training session, so
- * <code>TranslatedDistribution</code> objects are useful for tying
- * parameters together when training Markov Models.
+ * The <code>TranslatedDistribution</code> is not directly mutable: calling <code>setWeight</code>
+ * will result in a <code>ChangeVetoException</code>. However, a <code>DistributionTrainer</code>
+ * may be registered for a <code>TranslatedDistribution</code>. Any counts received by this trainer
+ * are untranslated then forwarded to the underlying distribution. It is valid to add counts to both
+ * a <code>TranslatedDistribution</code> and its underlying distribution in a single training
+ * session, so <code>TranslatedDistribution</code> objects are useful for tying parameters together
+ * when training Markov Models.
  * </p>
  *
  * <h2>Example usage</h2>
@@ -84,13 +78,10 @@ import org.biojava.utils.ChangeVetoException;
  * @author Thomas Down
  * @since 1.1
  */
-public class TranslatedDistribution
-  extends
-    AbstractChangeable
-  implements
-    Distribution,
-    Serializable
-{
+public class TranslatedDistribution extends AbstractChangeable
+    implements
+      Distribution,
+      Serializable {
   private final Distribution other;
   private final Distribution delegate;
   private final ReversibleTranslationTable table;
@@ -100,73 +91,67 @@ public class TranslatedDistribution
   /**
    * Create a new TranslatedDistribution. Make these things via getDistribuiton.
    *
-   * @param table    a ReversibleTranslationTable used to map the symbols
-   * @param other    the underlying ditribution
-   * @param distFact a DistributionFactory used to create a delegate for
-   *    stooring mapped weights
+   * @param table a ReversibleTranslationTable used to map the symbols
+   * @param other the underlying ditribution
+   * @param distFact a DistributionFactory used to create a delegate for stooring mapped weights
    */
-  public TranslatedDistribution(
-    ReversibleTranslationTable table,
-    Distribution other,
-    DistributionFactory distFact
-  ) throws IllegalAlphabetException {
-    if (! (other.getAlphabet() instanceof FiniteAlphabet)) {
-        throw new IllegalAlphabetException("The current implementation of TranslatedDistribution is only valid for distributions over finite alphabets");
-    }
-      
-    if(!table.getTargetAlphabet().equals(other.getAlphabet())) {
+  public TranslatedDistribution(ReversibleTranslationTable table, Distribution other,
+      DistributionFactory distFact) throws IllegalAlphabetException {
+    if (!(other.getAlphabet() instanceof FiniteAlphabet)) {
       throw new IllegalAlphabetException(
-        "Table target alphabet and distribution alphabet don't match: " +
-        table.getTargetAlphabet().getName() + " and " +
-        other.getAlphabet().getName() + " without symbol "
-      );
+          "The current implementation of TranslatedDistribution is only valid for distributions over finite alphabets");
+    }
+
+    if (!table.getTargetAlphabet().equals(other.getAlphabet())) {
+      throw new IllegalAlphabetException(
+          "Table target alphabet and distribution alphabet don't match: "
+              + table.getTargetAlphabet().getName() + " and " + other.getAlphabet().getName()
+              + " without symbol ");
     }
     this.other = other;
     this.table = table;
     this.delegate = distFact.createDistribution(table.getSourceAlphabet());
-    
+
     syncDelegate();
-    
+
     delegateUpdate = new ChangeListener() {
-        public void preChange(ChangeEvent ce) {}
-        public void postChange(ChangeEvent ce) {
-            ChangeType ct = ce.getType();
-            Object change = ce.getChange();
-            if(ct == Distribution.WEIGHTS) {
-                boolean synced = false;
-                if((change != null) && (change instanceof Object[]) ) {
-                    Object[] ca = (Object[]) change;
-                    if( (ca.length == 2) && (ca[0] instanceof Symbol) && (ca[1] instanceof Number)) {
-                        try {
-                            delegate.setWeight(
-                                (Symbol) ca[0],
-                                ((Number) ca[1]).doubleValue()
-                            );
-                            synced = true;
-                        } catch (Exception ise) {
-                            throw new BioError("Couldn't synchronize weight", ise);
-                        }
-                    }
-                }
-                if (!synced) {
-                    // Weights have changed, but we can't understand the event, so re-sync them
-                    // all.
-                    syncDelegate();
-                }
+      public void preChange(ChangeEvent ce) {}
+
+      public void postChange(ChangeEvent ce) {
+        ChangeType ct = ce.getType();
+        Object change = ce.getChange();
+        if (ct == Distribution.WEIGHTS) {
+          boolean synced = false;
+          if ((change != null) && (change instanceof Object[])) {
+            Object[] ca = (Object[]) change;
+            if ((ca.length == 2) && (ca[0] instanceof Symbol) && (ca[1] instanceof Number)) {
+              try {
+                delegate.setWeight((Symbol) ca[0], ((Number) ca[1]).doubleValue());
+                synced = true;
+              } catch (Exception ise) {
+                throw new BioError("Couldn't synchronize weight", ise);
+              }
             }
+          }
+          if (!synced) {
+            // Weights have changed, but we can't understand the event, so re-sync them
+            // all.
+            syncDelegate();
+          }
         }
-    } ;
+      }
+    };
     addChangeListener(delegateUpdate);
   }
-  
+
   private void syncDelegate() {
-      for (Iterator i = ((FiniteAlphabet) delegate.getAlphabet()).iterator(); i.hasNext(); ) {
-        Symbol s = (Symbol) i.next();
-        try {
-            delegate.setWeight(s, other.getWeight(table.untranslate(s)));
-        } catch (Exception ex) {
-            throw new BioError(ex, "Assertion failed: couldn't map distributions");
-        }
+    for (Iterator i = ((FiniteAlphabet) delegate.getAlphabet()).iterator(); i.hasNext();) {
+      Symbol s = (Symbol) i.next();
+      try {
+        delegate.setWeight(s, other.getWeight(table.untranslate(s)));
+      } catch (Exception ex) {
+        throw new BioError(ex, "Assertion failed: couldn't map distributions");
+      }
     }
   }
 
@@ -174,15 +159,12 @@ public class TranslatedDistribution
     return table.getSourceAlphabet();
   }
 
-  public double getWeight(Symbol sym)
-    throws IllegalSymbolException
-  {
+  public double getWeight(Symbol sym) throws IllegalSymbolException {
     return delegate.getWeight(sym);
   }
 
   public void setWeight(Symbol sym, double weight)
-    throws IllegalSymbolException, ChangeVetoException 
-  {
+      throws IllegalSymbolException, ChangeVetoException {
     throw new ChangeVetoException("Can't directly edit a TranslatedDistribution");
   }
 
@@ -194,14 +176,13 @@ public class TranslatedDistribution
     return delegate.getNullModel();
   }
 
-  public void setNullModel(Distribution dist)
-  throws IllegalAlphabetException, ChangeVetoException {
+  public void setNullModel(Distribution dist) throws IllegalAlphabetException, ChangeVetoException {
     delegate.setNullModel(dist);
   }
 
   /**
-   * Retrieve the translation table encapsulating the map from this emission
-   * spectrum to the underlying one.
+   * Retrieve the translation table encapsulating the map from this emission spectrum to the
+   * underlying one.
    *
    * @return a ReversibleTranslationtTable
    */
@@ -213,39 +194,30 @@ public class TranslatedDistribution
     dtc.registerDistribution(other);
 
     dtc.registerTrainer(this, new DistributionTrainer() {
-      public void addCount(
-        DistributionTrainerContext dtc,
-        AtomicSymbol s,
-        double count
-      ) throws IllegalSymbolException {
+      public void addCount(DistributionTrainerContext dtc, AtomicSymbol s, double count)
+          throws IllegalSymbolException {
         dtc.addCount(other, table.translate(s), count);
       }
 
-      public double getCount(
-        DistributionTrainerContext dtc,
-        AtomicSymbol s
-      ) throws IllegalSymbolException {
+      public double getCount(DistributionTrainerContext dtc, AtomicSymbol s)
+          throws IllegalSymbolException {
         return dtc.getCount(other, table.translate(s));
       }
 
-      public void train(DistributionTrainerContext dtc, double weight)
-        throws ChangeVetoException 
-      {
-          // This is a no-op, since our counts have already been passed on to
-          // the sister Distribution.
+      public void train(DistributionTrainerContext dtc, double weight) throws ChangeVetoException {
+        // This is a no-op, since our counts have already been passed on to
+        // the sister Distribution.
       }
 
-      public void clearCounts(DistributionTrainerContext dtc) {
-      }
+      public void clearCounts(DistributionTrainerContext dtc) {}
     });
   }
 
   protected ChangeSupport getChangeSupport(ChangeType ct) {
     ChangeSupport cs = super.getChangeSupport(ct);
 
-    if(forwarder == null &&
-       (Distribution.WEIGHTS.isMatchingType(ct) || ct.isMatchingType(Distribution.WEIGHTS)))
-    {
+    if (forwarder == null
+        && (Distribution.WEIGHTS.isMatchingType(ct) || ct.isMatchingType(Distribution.WEIGHTS))) {
       forwarder = new Forwarder(this, cs);
       other.addChangeListener(forwarder, Distribution.WEIGHTS);
     }
@@ -262,35 +234,32 @@ public class TranslatedDistribution
       ChangeType ct = ce.getType();
       Object change = ce.getChange();
       Object previous = ce.getPrevious();
-      if(ct == Distribution.WEIGHTS) {
-        if( (change != null) && (change instanceof Object[]) ) {
+      if (ct == Distribution.WEIGHTS) {
+        if ((change != null) && (change instanceof Object[])) {
           Object[] ca = (Object[]) change;
-          if( (ca.length == 2) && (ca[0] instanceof Symbol) ) {
+          if ((ca.length == 2) && (ca[0] instanceof Symbol)) {
             try {
-              change = new Object[] { table.translate((Symbol) ca[0]), ca[1] };
+              change = new Object[] {table.translate((Symbol) ca[0]), ca[1]};
             } catch (IllegalSymbolException ise) {
               throw new BioError("Couldn't translate symbol", ise);
             }
           }
         }
-        if( (previous != null) && (previous instanceof Object[]) ) {
+        if ((previous != null) && (previous instanceof Object[])) {
           Object[] pa = (Object[]) previous;
-          if( (pa.length == 2) && (pa[0] instanceof Symbol) ) {
+          if ((pa.length == 2) && (pa[0] instanceof Symbol)) {
             try {
-              previous = new Object[] { table.translate((Symbol) pa[0]), pa[1] };
+              previous = new Object[] {table.translate((Symbol) pa[0]), pa[1]};
             } catch (IllegalSymbolException ise) {
               throw new BioError("Couldn't translate symbol", ise);
             }
           }
         }
-      } else if(ct == Distribution.NULL_MODEL) {
+      } else if (ct == Distribution.NULL_MODEL) {
         change = null;
         previous = null;
       }
-      return new ChangeEvent(
-        TranslatedDistribution.this, ct,
-        change, previous, ce
-      );
+      return new ChangeEvent(TranslatedDistribution.this, ct, change, previous, ce);
     }
   }
 }

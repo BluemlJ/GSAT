@@ -1,21 +1,18 @@
 /*
- *                    BioJava development code
+ * BioJava development code
  *
- * This code may be freely distributed and modified under the
- * terms of the GNU Lesser General Public Licence.  This should
- * be distributed with the code.  If you do not have a copy,
- * see:
+ * This code may be freely distributed and modified under the terms of the GNU Lesser General Public
+ * Licence. This should be distributed with the code. If you do not have a copy, see:
  *
- *      http://www.gnu.org/copyleft/lesser.html
+ * http://www.gnu.org/copyleft/lesser.html
  *
- * Copyright for this code is held jointly by the individual
- * authors.  These should be listed in @author doc comments.
+ * Copyright for this code is held jointly by the individual authors. These should be listed
+ * in @author doc comments.
  *
- * For more information on the BioJava project and its aims,
- * or to join the biojava-l mailing list, visit the home page
- * at:
+ * For more information on the BioJava project and its aims, or to join the biojava-l mailing list,
+ * visit the home page at:
  *
- *      http://www.biojava.org/
+ * http://www.biojava.org/
  *
  */
 
@@ -47,13 +44,7 @@ import org.biojava.utils.Unchangeable;
  * @author Matthew Pocock
  * @author Nimesh Singh
  */
-public class SimpleStatePath
-  extends
-    Unchangeable
-  implements
-    StatePath,
-    Serializable
-{
+public class SimpleStatePath extends Unchangeable implements StatePath, Serializable {
   private final double score;
   private final Alignment delegate;
 
@@ -61,12 +52,8 @@ public class SimpleStatePath
     return score;
   }
 
-  public SimpleStatePath(
-    double score,
-    SymbolList sequence,
-    SymbolList states,
-    SymbolList scores
-  ) throws IllegalArgumentException {
+  public SimpleStatePath(double score, SymbolList sequence, SymbolList states, SymbolList scores)
+      throws IllegalArgumentException {
     this.score = score;
     Map map = new HashMap();
     map.put(StatePath.SEQUENCE, sequence);
@@ -87,23 +74,20 @@ public class SimpleStatePath
     return delegate.length();
   }
 
-  public Alignment subAlignment(Set labels, Location loc)
-  throws NoSuchElementException {
+  public Alignment subAlignment(Set labels, Location loc) throws NoSuchElementException {
     return delegate.subAlignment(labels, loc);
   }
 
-  public Symbol symbolAt(int col)
-  throws IndexOutOfBoundsException {
+  public Symbol symbolAt(int col) throws IndexOutOfBoundsException {
     return delegate.symbolAt(col);
   }
 
   public Symbol symbolAt(String label, int col)
-  throws IndexOutOfBoundsException, NoSuchElementException {
+      throws IndexOutOfBoundsException, NoSuchElementException {
     return delegate.symbolAt(label, col);
   }
 
-  public SymbolList symbolListForLabel(String label)
-  throws NoSuchElementException {
+  public SymbolList symbolListForLabel(String label) throws NoSuchElementException {
     return delegate.symbolListForLabel(label);
   }
 
@@ -123,13 +107,12 @@ public class SimpleStatePath
     return delegate.seqString();
   }
 
-  public String subStr(int start, int end)
-  throws IndexOutOfBoundsException {
+  public String subStr(int start, int end) throws IndexOutOfBoundsException {
     return delegate.subStr(start, end);
   }
 
   public void edit(Edit edit)
-  throws IllegalAlphabetException, IndexOutOfBoundsException, ChangeVetoException {
+      throws IllegalAlphabetException, IndexOutOfBoundsException, ChangeVetoException {
     throw new ChangeVetoException("Can't edit SimpleStatePath");
   }
 

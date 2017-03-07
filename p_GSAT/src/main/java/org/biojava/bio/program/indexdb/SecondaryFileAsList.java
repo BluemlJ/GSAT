@@ -1,21 +1,18 @@
 /*
- *                    BioJava development code
+ * BioJava development code
  *
- * This code may be freely distributed and modified under the
- * terms of the GNU Lesser General Public Licence.  This should
- * be distributed with the code.  If you do not have a copy,
- * see:
+ * This code may be freely distributed and modified under the terms of the GNU Lesser General Public
+ * Licence. This should be distributed with the code. If you do not have a copy, see:
  *
- *      http://www.gnu.org/copyleft/lesser.html
+ * http://www.gnu.org/copyleft/lesser.html
  *
- * Copyright for this code is held jointly by the individual
- * authors.  These should be listed in @author doc comments.
+ * Copyright for this code is held jointly by the individual authors. These should be listed
+ * in @author doc comments.
  *
- * For more information on the BioJava project and its aims,
- * or to join the biojava-l mailing list, visit the home page
- * at:
+ * For more information on the BioJava project and its aims, or to join the biojava-l mailing list,
+ * visit the home page at:
  *
- *      http://www.biojava.org/
+ * http://www.biojava.org/
  *
  */
 
@@ -28,8 +25,7 @@ import java.util.Comparator;
 /**
  * @author Matthew Pocock
  */
-class SecondaryFileAsList
-extends SearchableFileAsList {
+class SecondaryFileAsList extends SearchableFileAsList {
   private Comparator KEY_VALUE_COMPARATOR = new Comparator() {
     public int compare(Object a, Object b) {
       String as = a.toString();
@@ -39,19 +35,17 @@ extends SearchableFileAsList {
     }
   };
 
-  public SecondaryFileAsList(File file, int recordLen)
-  throws IOException {
+  public SecondaryFileAsList(File file, int recordLen) throws IOException {
     super(file, recordLen);
   }
 
-  public SecondaryFileAsList(File file, boolean mutable)
-  throws IOException {
+  public SecondaryFileAsList(File file, boolean mutable) throws IOException {
     super(file, mutable);
   }
 
   protected Object parseRecord(byte[] buffer) {
     int tabI = 0;
-    while(buffer[tabI] != '\t') {
+    while (buffer[tabI] != '\t') {
       tabI++;
     }
     String prim = new String(buffer, 0, tabI);
@@ -69,37 +63,30 @@ extends SearchableFileAsList {
 
     try {
       str = kp.getPrimary().getBytes();
-      for(int j = 0; j < str.length; j++) {
+      for (int j = 0; j < str.length; j++) {
         buffer[i++] = str[j];
       }
     } catch (ArrayIndexOutOfBoundsException e) {
-      throw new ArrayIndexOutOfBoundsException(
-        "Over ran buffer with primary ID: " + new String(str) +
-        " "+ str.length +
-        " : " + buffer.length +" index: "+i
-      );
+      throw new ArrayIndexOutOfBoundsException("Over ran buffer with primary ID: " + new String(str)
+          + " " + str.length + " : " + buffer.length + " index: " + i);
     }
 
     buffer[i++] = '\t';
 
     try {
       str = kp.getSecondary().getBytes();
-      for(int j = 0; j < str.length; j++) {
-        if(i < buffer.length)
+      for (int j = 0; j < str.length; j++) {
+        if (i < buffer.length)
           buffer[i++] = str[j];
         else
           break;
       }
     } catch (ArrayIndexOutOfBoundsException e) {
-      throw new ArrayIndexOutOfBoundsException(
-        "Over ran buffer with secondary ID: " + new String(str) +
-        " "+ str.length +
-        " : " + buffer.length +
-        " index: "+i
-      );
+      throw new ArrayIndexOutOfBoundsException("Over ran buffer with secondary ID: "
+          + new String(str) + " " + str.length + " : " + buffer.length + " index: " + i);
     }
 
-    while(i < buffer.length) {
+    while (i < buffer.length) {
       buffer[i++] = ' ';
     }
   }

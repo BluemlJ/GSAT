@@ -1,21 +1,18 @@
 /*
- *                    BioJava development code
+ * BioJava development code
  *
- * This code may be freely distributed and modified under the
- * terms of the GNU Lesser General Public Licence.  This should
- * be distributed with the code.  If you do not have a copy,
- * see:
+ * This code may be freely distributed and modified under the terms of the GNU Lesser General Public
+ * Licence. This should be distributed with the code. If you do not have a copy, see:
  *
- *      http://www.gnu.org/copyleft/lesser.html
+ * http://www.gnu.org/copyleft/lesser.html
  *
- * Copyright for this code is held jointly by the individual
- * authors.  These should be listed in @author doc comments.
+ * Copyright for this code is held jointly by the individual authors. These should be listed
+ * in @author doc comments.
  *
- * For more information on the BioJava project and its aims,
- * or to join the biojava-l mailing list, visit the home page
- * at:
+ * For more information on the BioJava project and its aims, or to join the biojava-l mailing list,
+ * visit the home page at:
  *
- *      http://www.biojava.org/
+ * http://www.biojava.org/
  *
  */
 package org.biojava.bio.program.abi;
@@ -41,16 +38,15 @@ import org.biojava.bio.symbol.SymbolListViews;
 import org.biojava.utils.ListTools;
 
 /**
- * Useful functionality for working with fasta files where the quality of the
- * DNA is encoded as upper and lower case DNA characters.
+ * Useful functionality for working with fasta files where the quality of the DNA is encoded as
+ * upper and lower case DNA characters.
  *
  * @author Matthew Pocock
  */
 public class ABITools {
   /**
-   * The quality alphabet. This is equivalent to DNA x [0,1] where 0 represents
-   * poorly supported (lower case) and 1 represents strongly supported (upper
-   * case).
+   * The quality alphabet. This is equivalent to DNA x [0,1] where 0 represents poorly supported
+   * (lower case) and 1 represents strongly supported (upper case).
    */
   public static final FiniteAlphabet QUALITY;
 
@@ -76,8 +72,7 @@ public class ABITools {
 
   static {
     try {
-      IntegerAlphabet.SubIntegerAlphabet _01
-      = IntegerAlphabet.getSubAlphabet(0, 1);
+      IntegerAlphabet.SubIntegerAlphabet _01 = IntegerAlphabet.getSubAlphabet(0, 1);
       _0 = _01.getSymbol(0);
       _1 = _01.getSymbol(1);
 
@@ -95,7 +90,7 @@ public class ABITools {
       SymbolList sl = DNATools.createDNA("agctrymkswhbvdn");
       ListTools.Doublet pair = new ListTools.Doublet();
       SymbolTokenization dnaTok = DNATools.getDNA().getTokenization("token");
-      for(Iterator i = sl.iterator(); i.hasNext(); ) {
+      for (Iterator i = sl.iterator(); i.hasNext();) {
         pair.setA((Symbol) i.next());
         String c = dnaTok.tokenizeSymbol((Symbol) pair.getA());
 
@@ -109,7 +104,7 @@ public class ABITools {
       quality.putTokenization("token", tok);
       QUALITY = quality;
     } catch (Exception e) {
-      throw new BioError("Could not initialize ABI quality alphabet",e);
+      throw new BioError("Could not initialize ABI quality alphabet", e);
     }
   }
 
@@ -119,19 +114,15 @@ public class ABITools {
    * </p>
    *
    * <p>
-   * The alignment will have labels of SEQUENCE and SUPPORT that retrieve the
-   * DNA sequence and the binary support values respectively.
+   * The alignment will have labels of SEQUENCE and SUPPORT that retrieve the DNA sequence and the
+   * binary support values respectively.
    * </p>
    *
-   * @param abiSeq  the SymbolList over the QUALITY alphabet to view
+   * @param abiSeq the SymbolList over the QUALITY alphabet to view
    * @return an Alignment view of abiSeq
    * @throws IllegalAlphabetException if abiSeq is not over QUALITY
    */
-  public static Alignment getAlignment(SymbolList abiSeq)
-  throws IllegalAlphabetException {
-    return SymbolListViews.alignment(
-      new ListTools.Doublet(SEQUENCE, SUPPORT),
-      abiSeq
-    );
+  public static Alignment getAlignment(SymbolList abiSeq) throws IllegalAlphabetException {
+    return SymbolListViews.alignment(new ListTools.Doublet(SEQUENCE, SUPPORT), abiSeq);
   }
 }

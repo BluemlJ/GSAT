@@ -1,21 +1,18 @@
 /*
- *                    BioJava development code
+ * BioJava development code
  *
- * This code may be freely distributed and modified under the
- * terms of the GNU Lesser General Public Licence.  This should
- * be distributed with the code.  If you do not have a copy,
- * see:
+ * This code may be freely distributed and modified under the terms of the GNU Lesser General Public
+ * Licence. This should be distributed with the code. If you do not have a copy, see:
  *
- *      http://www.gnu.org/copyleft/lesser.html
+ * http://www.gnu.org/copyleft/lesser.html
  *
- * Copyright for this code is held jointly by the individual
- * authors.  These should be listed in @author doc comments.
+ * Copyright for this code is held jointly by the individual authors. These should be listed
+ * in @author doc comments.
  *
- * For more information on the BioJava project and its aims,
- * or to join the biojava-l mailing list, visit the home page
- * at:
+ * For more information on the BioJava project and its aims, or to join the biojava-l mailing list,
+ * visit the home page at:
  *
- *      http://www.biojava.org/
+ * http://www.biojava.org/
  *
  */
 
@@ -45,17 +42,11 @@ import org.biojava.utils.SingletonList;
  * @author Thomas Down
  * @author Mark Schreiber
  */
-public class SimpleEmissionState
-  extends
-    AbstractChangeable
-  implements
-    EmissionState,
-    Serializable
-{
+public class SimpleEmissionState extends AbstractChangeable implements EmissionState, Serializable {
   private Distribution dis;
   private String name;
   private Annotation ann;
-  private int [] advance;
+  private int[] advance;
   private Alphabet matches;
 
   protected transient ChangeForwarder annotationForwarder;
@@ -65,17 +56,13 @@ public class SimpleEmissionState
     return this.ann;
   }
 
-  public final void setAnnotation(Annotation ann)
-      throws ChangeVetoException{
-    if(!hasListeners()) {
+  public final void setAnnotation(Annotation ann) throws ChangeVetoException {
+    if (!hasListeners()) {
       this.ann = ann;
     } else {
-      ChangeEvent ce = new ChangeEvent(
-        this, EmissionState.ANNOTATION,
-        this.ann, ann
-      );
+      ChangeEvent ce = new ChangeEvent(this, EmissionState.ANNOTATION, this.ann, ann);
       ChangeSupport changeSupport = getChangeSupport(EmissionState.ANNOTATION);
-      synchronized(changeSupport) {
+      synchronized (changeSupport) {
         changeSupport.firePreChangeEvent(ce);
         this.ann.removeChangeListener(annotationForwarder, Annotation.PROPERTY);
         ann.addChangeListener(annotationForwarder, Annotation.PROPERTY);
@@ -89,23 +76,19 @@ public class SimpleEmissionState
     return this.dis;
   }
 
-  public final void setDistribution(Distribution dis)
-  throws ChangeVetoException {
-    if(!hasListeners()) {
+  public final void setDistribution(Distribution dis) throws ChangeVetoException {
+    if (!hasListeners()) {
       this.dis = dis;
     } else {
-      ChangeEvent ce = new ChangeEvent(
-        this, EmissionState.DISTRIBUTION,
-        this.dis, dis
-      );
+      ChangeEvent ce = new ChangeEvent(this, EmissionState.DISTRIBUTION, this.dis, dis);
       ChangeSupport changeSupport = getChangeSupport(EmissionState.DISTRIBUTION);
-      synchronized(changeSupport) {
+      synchronized (changeSupport) {
         changeSupport.firePreChangeEvent(ce);
-        if(this.dis != null) {
+        if (this.dis != null) {
           this.dis.addChangeListener(distForwarder, Distribution.WEIGHTS);
           this.dis.addChangeListener(distForwarder, Distribution.NULL_MODEL);
         }
-        if(dis != null) {
+        if (dis != null) {
           dis.addChangeListener(distForwarder, Distribution.WEIGHTS);
           dis.addChangeListener(distForwarder, Distribution.NULL_MODEL);
         }
@@ -115,21 +98,17 @@ public class SimpleEmissionState
     }
   }
 
-  public int [] getAdvance() {
+  public int[] getAdvance() {
     return advance;
   }
 
-  public void setAdvance(int [] advance)
-  throws ChangeVetoException {
-    if(!hasListeners()) {
+  public void setAdvance(int[] advance) throws ChangeVetoException {
+    if (!hasListeners()) {
       this.advance = advance;
     } else {
-      ChangeEvent ce = new ChangeEvent(
-        this, EmissionState.ADVANCE,
-        this.advance, advance
-      );
+      ChangeEvent ce = new ChangeEvent(this, EmissionState.ADVANCE, this.advance, advance);
       ChangeSupport changeSupport = getChangeSupport(EmissionState.ADVANCE);
-      synchronized(changeSupport) {
+      synchronized (changeSupport) {
         changeSupport.firePreChangeEvent(ce);
         this.advance = advance;
         changeSupport.firePostChangeEvent(ce);
@@ -161,12 +140,7 @@ public class SimpleEmissionState
     return new SingletonList(this);
   }
 
-  public SimpleEmissionState(
-    String name,
-    Annotation ann,
-    int [] advance,
-    Distribution dis
-  ) {
+  public SimpleEmissionState(String name, Annotation ann, int[] advance, Distribution dis) {
     this.name = name;
     this.ann = ann;
     this.advance = advance;
@@ -178,30 +152,18 @@ public class SimpleEmissionState
     trainer.registerDistribution(getDistribution());
   }
 
-  protected ChangeSupport getChangeSupport(ChangeType ct){
+  protected ChangeSupport getChangeSupport(ChangeType ct) {
     ChangeSupport cs = super.getChangeSupport(ct);
 
-    if(
-            annotationForwarder == null &&
-            ct.isMatchingType(Annotatable.ANNOTATION))
-    {
+    if (annotationForwarder == null && ct.isMatchingType(Annotatable.ANNOTATION)) {
       annotationForwarder = new ChangeForwarder.Retyper(this, cs, Annotation.PROPERTY);
-      getAnnotation().addChangeListener(
-          annotationForwarder,
-          Annotatable.ANNOTATION);
+      getAnnotation().addChangeListener(annotationForwarder, Annotatable.ANNOTATION);
     }
 
-    if(
-            distForwarder == null &&
-            ct.isMatchingType(EmissionState.DISTRIBUTION))
-    {
+    if (distForwarder == null && ct.isMatchingType(EmissionState.DISTRIBUTION)) {
       distForwarder = new ChangeForwarder.Retyper(this, cs, EmissionState.DISTRIBUTION);
-      getDistribution().addChangeListener(
-              distForwarder,
-              Distribution.WEIGHTS);
-      getDistribution().addChangeListener(
-              distForwarder,
-              Distribution.NULL_MODEL);
+      getDistribution().addChangeListener(distForwarder, Distribution.WEIGHTS);
+      getDistribution().addChangeListener(distForwarder, Distribution.NULL_MODEL);
     }
     return cs;
   }

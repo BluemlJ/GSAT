@@ -1,21 +1,18 @@
 /*
- *                    BioJava development code
+ * BioJava development code
  *
- * This code may be freely distributed and modified under the
- * terms of the GNU Lesser General Public Licence.  This should
- * be distributed with the code.  If you do not have a copy,
- * see:
+ * This code may be freely distributed and modified under the terms of the GNU Lesser General Public
+ * Licence. This should be distributed with the code. If you do not have a copy, see:
  *
- *      http://www.gnu.org/copyleft/lesser.html
+ * http://www.gnu.org/copyleft/lesser.html
  *
- * Copyright for this code is held jointly by the individual
- * authors.  These should be listed in @author doc comments.
+ * Copyright for this code is held jointly by the individual authors. These should be listed
+ * in @author doc comments.
  *
- * For more information on the BioJava project and its aims,
- * or to join the biojava-l mailing list, visit the home page
- * at:
+ * For more information on the BioJava project and its aims, or to join the biojava-l mailing list,
+ * visit the home page at:
  *
- *      http://www.biojava.org/
+ * http://www.biojava.org/
  *
  */
 package org.biojava.utils.bytecode;
@@ -45,14 +42,10 @@ public class IfExpression implements CodeGenerator {
   private Label trueLabel;
   private Label endLabel;
   private Instruction skipTrue;
-  
+
   private InstructionVector instructions;
-  
-  public IfExpression(
-    byte ifInstruction, 
-    CodeGenerator ifTrue, 
-    CodeGenerator ifFalse
-  ) {
+
+  public IfExpression(byte ifInstruction, CodeGenerator ifTrue, CodeGenerator ifFalse) {
     this.trueLabel = new Label();
     this.endLabel = new Label();
     this.skipTrue = ByteCode.make_goto(endLabel);
@@ -60,7 +53,7 @@ public class IfExpression implements CodeGenerator {
     this.ifInstruction = ByteCode.make_if(ifInstruction, trueLabel);
     this.ifTrue = ifTrue;
     this.ifFalse = ifFalse;
-    
+
     // lazyness - avoid work later
     instructions = new InstructionVector();
     instructions.add(this.ifInstruction);
@@ -70,34 +63,32 @@ public class IfExpression implements CodeGenerator {
     instructions.add(this.ifTrue);
     instructions.add(ByteCode.make_markLabel(endLabel));
   }
-  
+
   public Instruction getIfInstruction() {
     return ifInstruction;
   }
-  
+
   public CodeGenerator getIfTrue() {
     return ifTrue;
   }
-  
+
   public CodeGenerator getIfFalse() {
     return ifFalse;
   }
-  
+
   public void writeCode(CodeContext ctx) throws CodeException {
     instructions.writeCode(ctx);
   }
-  
+
   public int stackDepth() {
     // custom handlers needed because of jumps
-    return
-      ifInstruction.stackDepth() +
-      Math.max(ifFalse.stackDepth(), ifTrue.stackDepth());
+    return ifInstruction.stackDepth() + Math.max(ifFalse.stackDepth(), ifTrue.stackDepth());
   }
-  
+
   public int stackDelta() {
     // custom handler needed because of jumps
-    return
-      ifInstruction.stackDepth() +
-      Math.max(ifFalse.stackDepth(), ifTrue.stackDepth()); // these should agree
+    return ifInstruction.stackDepth() + Math.max(ifFalse.stackDepth(), ifTrue.stackDepth()); // these
+                                                                                             // should
+                                                                                             // agree
   }
 }

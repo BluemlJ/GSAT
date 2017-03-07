@@ -1,21 +1,18 @@
 /*
- *                    BioJava development code
+ * BioJava development code
  *
- * This code may be freely distributed and modified under the
- * terms of the GNU Lesser General Public Licence.  This should
- * be distributed with the code.  If you do not have a copy,
- * see:
+ * This code may be freely distributed and modified under the terms of the GNU Lesser General Public
+ * Licence. This should be distributed with the code. If you do not have a copy, see:
  *
- *      http://www.gnu.org/copyleft/lesser.html
+ * http://www.gnu.org/copyleft/lesser.html
  *
- * Copyright for this code is held jointly by the individual
- * authors.  These should be listed in @author doc comments.
+ * Copyright for this code is held jointly by the individual authors. These should be listed
+ * in @author doc comments.
  *
- * For more information on the BioJava project and its aims,
- * or to join the biojava-l mailing list, visit the home page
- * at:
+ * For more information on the BioJava project and its aims, or to join the biojava-l mailing list,
+ * visit the home page at:
  *
- *      http://www.biojava.org/
+ * http://www.biojava.org/
  *
  */
 
@@ -31,8 +28,8 @@ import org.biojava.bio.symbol.IllegalSymbolException;
 import org.biojava.bio.symbol.SymbolList;
 
 /**
- * An abstract implementation of TrainingAlgorithm that provides a framework
- * for plugging in per-cycle code for parameter optimization.
+ * An abstract implementation of TrainingAlgorithm that provides a framework for plugging in
+ * per-cycle code for parameter optimization.
  *
  * @author Matthew Pocock
  * @author Thomas Down
@@ -60,18 +57,14 @@ public abstract class AbstractTrainer implements TrainingAlgorithm {
     return dp;
   }
 
-  protected abstract double singleSequenceIteration(ModelTrainer trainer,
-                                                    SymbolList symList)
-  throws IllegalSymbolException, IllegalTransitionException, IllegalAlphabetException;
+  protected abstract double singleSequenceIteration(ModelTrainer trainer, SymbolList symList)
+      throws IllegalSymbolException, IllegalTransitionException, IllegalAlphabetException;
 
   /**
    * Trains the sequences in db until stopper says to finnish.
    */
-  public void train(
-    SequenceDB db,
-    double nullModelWeight,
-    StoppingCriteria stopper
-  ) throws IllegalSymbolException, BioException {
+  public void train(SequenceDB db, double nullModelWeight, StoppingCriteria stopper)
+      throws IllegalSymbolException, BioException {
     try {
       ModelTrainer trainer = new SimpleModelTrainer();
       trainer.setNullModelWeight(nullModelWeight);
@@ -81,13 +74,13 @@ public abstract class AbstractTrainer implements TrainingAlgorithm {
         cycle++;
         lastScore = currentScore;
         currentScore = 0.0;
-        for(SequenceIterator si = db.sequenceIterator(); si.hasNext(); ) {
+        for (SequenceIterator si = db.sequenceIterator(); si.hasNext();) {
           Sequence seq = si.nextSequence();
           currentScore += singleSequenceIteration(trainer, seq);
         }
         trainer.train();
         trainer.clearCounts();
-      } while(!stopper.isTrainingComplete(this));
+      } while (!stopper.isTrainingComplete(this));
     } catch (Exception e) {
       throw new BioException("Unable to train", e);
     }

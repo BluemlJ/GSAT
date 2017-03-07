@@ -1,26 +1,23 @@
 /*
- *                    BioJava development code
+ * BioJava development code
  *
- * This code may be freely distributed and modified under the
- * terms of the GNU Lesser General Public Licence.  This should
- * be distributed with the code.  If you do not have a copy,
- * see:
+ * This code may be freely distributed and modified under the terms of the GNU Lesser General Public
+ * Licence. This should be distributed with the code. If you do not have a copy, see:
  *
- *      http://www.gnu.org/copyleft/lesser.html
+ * http://www.gnu.org/copyleft/lesser.html
  *
- * Copyright for this code is held jointly by the individual
- * authors.  These should be listed in @author doc comments.
+ * Copyright for this code is held jointly by the individual authors. These should be listed
+ * in @author doc comments.
  *
- * For more information on the BioJava project and its aims,
- * or to join the biojava-l mailing list, visit the home page
- * at:
+ * For more information on the BioJava project and its aims, or to join the biojava-l mailing list,
+ * visit the home page at:
  *
- *      http://www.biojava.org/
+ * http://www.biojava.org/
  *
  */
 
 /*
- *    ReaderWriterPipe.java
+ * ReaderWriterPipe.java
  */
 package org.biojava.utils.process;
 
@@ -32,126 +29,130 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * A {@linkplain java.lang.Runnable multi threaded} class
- * which pipes the contents of an input reader to an output 
- * writer. 
+ * A {@linkplain java.lang.Runnable multi threaded} class which pipes the contents of an input
+ * reader to an output writer.
+ * 
  * @author <a href="mailto:Martin.Szugat@GMX.net">Martin Szugat</a>
  * @version $Revision$
  */
 public class ReaderWriterPipe implements Runnable {
-    
-    /* STATIC FIELDS */
-    
-    /**
-     * The class logger.
-     */
-    private static final Logger LOGGER = 
-        Logger.getLogger(ReaderWriterPipe.class.getName());
-    
-    /* PRIVATE FIELDS */
 
-    /**
-     * The reader from which to read.
-     */
-    private Reader reader;
+  /* STATIC FIELDS */
 
-    /**
-     * The writer to which to write.
-     */
-    private Writer writer;
+  /**
+   * The class logger.
+   */
+  private static final Logger LOGGER = Logger.getLogger(ReaderWriterPipe.class.getName());
 
-    /**
-     * A tag for logging.
-     */
-    private String tag;
-    
-    /* PUBLIC CONSTRUCTORS */
+  /* PRIVATE FIELDS */
 
-    /**
-     * Initializes the reader writer pipe.
-     * @param reader the reader from which to read. May be <code>null</code>.
-     * @param writer the writer to which to write. May be <code>null</code>.
-     * @param tag a tag for loggging. May be <code>null</code>.
-     */
-    public ReaderWriterPipe(Reader reader, Writer writer, String tag) {
-        setReader(reader);
-        setWriter(writer);
-        this.tag = tag;
-    }
-    
-    /* PUBLIC PROPERTIES */
+  /**
+   * The reader from which to read.
+   */
+  private Reader reader;
 
-    /**
-     * Gets the reader.
-     * @return the reader from which to read. May be <code>null</code>.
-     */
-    public Reader getReader() {
-        return reader;
-    }
+  /**
+   * The writer to which to write.
+   */
+  private Writer writer;
 
-    /**
-     * Gets the writer.
-     * @return the writer to which to write. May be <code>null</code>.
-     */
-    public Writer getWriter() {
-        return writer;
-    }
+  /**
+   * A tag for logging.
+   */
+  private String tag;
 
-    /**
-     * Sets the reader.
-     * @param reader the reader from which to read. May be <code>null</code>.
-     */
-    public void setReader(Reader reader) {
-        this.reader = reader;
-    }
+  /* PUBLIC CONSTRUCTORS */
 
-    /**
-     * Sets the writer.
-     * @param writer the writer to which to write. May be <code>null</code>.
-     */
-    public void setWriter(Writer writer) {
-        this.writer = writer;
-    }
+  /**
+   * Initializes the reader writer pipe.
+   * 
+   * @param reader the reader from which to read. May be <code>null</code>.
+   * @param writer the writer to which to write. May be <code>null</code>.
+   * @param tag a tag for loggging. May be <code>null</code>.
+   */
+  public ReaderWriterPipe(Reader reader, Writer writer, String tag) {
+    setReader(reader);
+    setWriter(writer);
+    this.tag = tag;
+  }
 
-    /* INTERFACE Runnable */
+  /* PUBLIC PROPERTIES */
 
-    /**
-     * {@inheritDoc}
-     */
-    public void run() {
+  /**
+   * Gets the reader.
+   * 
+   * @return the reader from which to read. May be <code>null</code>.
+   */
+  public Reader getReader() {
+    return reader;
+  }
 
-        LOGGER.entering(getClass().getName(), "run");
+  /**
+   * Gets the writer.
+   * 
+   * @return the writer to which to write. May be <code>null</code>.
+   */
+  public Writer getWriter() {
+    return writer;
+  }
 
-        if (reader != null) {
-            try {
+  /**
+   * Sets the reader.
+   * 
+   * @param reader the reader from which to read. May be <code>null</code>.
+   */
+  public void setReader(Reader reader) {
+    this.reader = reader;
+  }
 
-                BufferedWriter bout = null;
-                if (writer != null) {
-                    bout = new BufferedWriter(writer);
-                }
-                BufferedReader bin = new BufferedReader(reader);
-                boolean log = LOGGER.isLoggable(Level.FINEST);
-                String line = null;
-                while ((line = bin.readLine()) != null) {
-                    if (bout != null) {
-                        if (log) {
-                            if (tag == null) {
-                                LOGGER.finest(line);
-                            } else {
-                                LOGGER.finest("<" + tag + "> " + line);
-                            }
-                        }
-                        bout.write(line);
-                        bout.newLine();
-                        bout.flush();
-                    }
-                }
+  /**
+   * Sets the writer.
+   * 
+   * @param writer the writer to which to write. May be <code>null</code>.
+   */
+  public void setWriter(Writer writer) {
+    this.writer = writer;
+  }
 
-            } catch (Exception e) {
-                LOGGER.severe(e.toString());
+  /* INTERFACE Runnable */
+
+  /**
+   * {@inheritDoc}
+   */
+  public void run() {
+
+    LOGGER.entering(getClass().getName(), "run");
+
+    if (reader != null) {
+      try {
+
+        BufferedWriter bout = null;
+        if (writer != null) {
+          bout = new BufferedWriter(writer);
+        }
+        BufferedReader bin = new BufferedReader(reader);
+        boolean log = LOGGER.isLoggable(Level.FINEST);
+        String line = null;
+        while ((line = bin.readLine()) != null) {
+          if (bout != null) {
+            if (log) {
+              if (tag == null) {
+                LOGGER.finest(line);
+              } else {
+                LOGGER.finest("<" + tag + "> " + line);
+              }
             }
+            bout.write(line);
+            bout.newLine();
+            bout.flush();
+          }
         }
 
-        LOGGER.exiting(getClass().getName(), "run");
+      } catch (Exception e) {
+        LOGGER.severe(e.toString());
+      }
     }
+
+    LOGGER.exiting(getClass().getName(), "run");
+  }
 }

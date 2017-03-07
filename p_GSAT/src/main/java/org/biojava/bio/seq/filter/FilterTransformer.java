@@ -8,29 +8,22 @@ import org.biojava.utils.walker.Visitor;
  * Base-class for visitors that re-write a filter tree.
  *
  * <p>
- * This filter transformer will just duplicate a tree, using the same leaf
- * instances, and re-creating all logical filters, like And and ByDescendant.
+ * This filter transformer will just duplicate a tree, using the same leaf instances, and
+ * re-creating all logical filters, like And and ByDescendant.
  * </p>
  *
  * @author Matthew Pocock
  */
-public class FilterTransformer
-implements Visitor {
+public class FilterTransformer implements Visitor {
   public FeatureFilter featureFilter(FeatureFilter filter) {
     return filter;
   }
 
-  public FeatureFilter and(FeatureFilter.And and,
-                           FeatureFilter c1,
-                           FeatureFilter c2)
-  {
+  public FeatureFilter and(FeatureFilter.And and, FeatureFilter c1, FeatureFilter c2) {
     return FilterUtils.and(c1, c2);
   }
 
-  public FeatureFilter or(FeatureFilter.Or or,
-                          FeatureFilter c1,
-                          FeatureFilter c2)
-  {
+  public FeatureFilter or(FeatureFilter.Or or, FeatureFilter c1, FeatureFilter c2) {
     return FilterUtils.or(c1, c2);
   }
 

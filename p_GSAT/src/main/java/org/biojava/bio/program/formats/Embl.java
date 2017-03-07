@@ -9,8 +9,7 @@ import org.biojava.bio.program.tagvalue.TagValueListener;
 import org.biojava.bio.symbol.Location;
 import org.biojava.utils.lsid.LifeScienceIdentifier;
 
-public class Embl
-implements Format {
+public class Embl implements Format {
   private static final AnnotationType ANNO_TYPE;
   private static final LineSplitParser PARSER;
   private static final LifeScienceIdentifier LSID;

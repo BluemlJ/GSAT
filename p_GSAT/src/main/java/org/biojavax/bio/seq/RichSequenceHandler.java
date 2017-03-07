@@ -16,49 +16,45 @@ import org.biojava.bio.symbol.SymbolList;
 import org.biojava.utils.ChangeVetoException;
 
 /**
- * An interface for classes that know how to handle subsequence operations.
- * Implementations may be optimized so that they perform more efficiently in
- * certain conditions. For example a subsequence operation on a huge BioSQL
- * backed <code>RichSequence</code> could be optimized so that the operation
- * is performed more efficiently than dragging the whole sequence to memory and
- * then doing the operation.
+ * An interface for classes that know how to handle subsequence operations. Implementations may be
+ * optimized so that they perform more efficiently in certain conditions. For example a subsequence
+ * operation on a huge BioSQL backed <code>RichSequence</code> could be optimized so that the
+ * operation is performed more efficiently than dragging the whole sequence to memory and then doing
+ * the operation.
  *
  * Implementations of <code>RichSequence</code> should generally delegate
  * <code>symbolAt(int index)</code>, <code>subStr(int start, int end)</code>,
- * <code>subList(int start, int end)</code> and subSequence(int start, int end)
- * to some implementation of this interface.
+ * <code>subList(int start, int end)</code> and subSequence(int start, int end) to some
+ * implementation of this interface.
  *
  * @author Mark Schreiber
  * @author Richard Holland
  * @since 1.5
  */
 public interface RichSequenceHandler {
-    
+
   /**
    * Apply an edit to the Sequence as specified by the edit object.
    *
    * <h2>Description</h2>
    *
    * <p>
-   * All edits can be broken down into a series of operations that change
-   * contiguous blocks of the sequence. This represent a one of those operations.
+   * All edits can be broken down into a series of operations that change contiguous blocks of the
+   * sequence. This represent a one of those operations.
    * </p>
    *
    * <p>
-   * When applied, this Edit will replace 'length' number of symbols starting a
-   * position 'pos' by the SymbolList 'replacement'. This allow to do insertions
-   * (length=0), deletions (replacement=SymbolList.EMPTY_LIST) and replacements
-   * (length>=1 and replacement.length()>=1).
+   * When applied, this Edit will replace 'length' number of symbols starting a position 'pos' by
+   * the SymbolList 'replacement'. This allow to do insertions (length=0), deletions
+   * (replacement=SymbolList.EMPTY_LIST) and replacements (length>=1 and replacement.length()>=1).
    * </p>
    *
    * <p>
-   * The pos and pos+length should always be valid positions on the SymbolList
-   * to:
+   * The pos and pos+length should always be valid positions on the SymbolList to:
    * <ul>
    * <li>be edited (between 0 and symL.length()+1).</li>
    * <li>To append to a sequence, pos=symL.length()+1, pos=0.</li>
-   * <li>To insert something at the beginning of the sequence, set pos=1 and
-   * length=0.</li>
+   * <li>To insert something at the beginning of the sequence, set pos=1 and length=0.</li>
    * </ul>
    * </p>
    *
@@ -104,76 +100,72 @@ public interface RichSequenceHandler {
    * </pre></code>
    *
    * @param edit the Edit to perform
-   * @throws IndexOutOfBoundsException if the edit does not lie within the
-   *         SymbolList
-   * @throws IllegalAlphabetException if the SymbolList to insert has an
-   *         incompatible alphabet
-   * @throws ChangeVetoException  if either the SymboList does not support the
-   *         edit, or if the change was vetoed
+   * @throws IndexOutOfBoundsException if the edit does not lie within the SymbolList
+   * @throws IllegalAlphabetException if the SymbolList to insert has an incompatible alphabet
+   * @throws ChangeVetoException if either the SymboList does not support the edit, or if the change
+   *         was vetoed
    */
-    public void edit(RichSequence seq, Edit edit) throws IndexOutOfBoundsException, IllegalAlphabetException, ChangeVetoException;
-    
+  public void edit(RichSequence seq, Edit edit)
+      throws IndexOutOfBoundsException, IllegalAlphabetException, ChangeVetoException;
+
   /**
    * Return the symbol at index, counting from 1.
    *
    * @param index the offset into this SymbolList
-   * @return  the Symbol at that index
-   * @throws IndexOutOfBoundsException if index is less than 1, or greater than
-   *                                   the length of the symbol list
+   * @return the Symbol at that index
+   * @throws IndexOutOfBoundsException if index is less than 1, or greater than the length of the
+   *         symbol list
    */
-    public Symbol symbolAt(RichSequence seq, int index) throws IndexOutOfBoundsException;
-    
-   /**
+  public Symbol symbolAt(RichSequence seq, int index) throws IndexOutOfBoundsException;
+
+  /**
    * Returns a List of symbols.
    * <p>
    * This should be an immutable list of symbols or a copy.
    *
-   * @return  a List of Symbols
+   * @return a List of Symbols
    */
-    public List<Symbol> toList(RichSequence seq);
-    
+  public List<Symbol> toList(RichSequence seq);
+
   /**
    * Return a region of this sequence as a String.
    * <p>
    * This should use the same rules as seqString.
    *
-   * @param start  the first symbol to include
+   * @param start the first symbol to include
    * @param end the last symbol to include
    * @return the string representation
-   * @throws IndexOutOfBoundsException if either start or end are not within the
-   *         SymbolList
+   * @throws IndexOutOfBoundsException if either start or end are not within the SymbolList
    */
-    public String subStr(RichSequence seq, int start, int end) throws IndexOutOfBoundsException;
-    
+  public String subStr(RichSequence seq, int start, int end) throws IndexOutOfBoundsException;
+
   /**
    * Return a new SymbolList for the symbols start to end inclusive.
    * <p>
-   * The resulting SymbolList will count from 1 to (end-start + 1) inclusive, and
-   * refer to the symbols start to end of the original sequence.
+   * The resulting SymbolList will count from 1 to (end-start + 1) inclusive, and refer to the
+   * symbols start to end of the original sequence.
    *
    * @param start the first symbol of the new SymbolList
    * @param end the last symbol (inclusive) of the new SymbolList
    */
-    public SymbolList subList(RichSequence seq, int start, int end) throws IndexOutOfBoundsException;
-    
-   /**
+  public SymbolList subList(RichSequence seq, int start, int end) throws IndexOutOfBoundsException;
+
+  /**
    * Stringify this Sequences.
    * <p>
-   * It is expected that this will use the symbol's token to render each
-   * symbol. It should be parsable back into a SymbolList using the default
-   * token parser for this alphabet.
+   * It is expected that this will use the symbol's token to render each symbol. It should be
+   * parsable back into a SymbolList using the default token parser for this alphabet.
    *
-   * @return  a string representation of the symbol list
+   * @return a string representation of the symbol list
    */
-    public String seqString(RichSequence seq);
-    
-   /**
+  public String seqString(RichSequence seq);
+
+  /**
    * An Iterator over all Symbols in this SymbolList.
    * <p>
-   * This is an ordered iterator over the Symbols. It cannot be used
-   * to edit the underlying symbols.
+   * This is an ordered iterator over the Symbols. It cannot be used to edit the underlying symbols.
    *
-   * @return  an iterator
+   * @return an iterator
    */
-    public Iterator<Symbol> iterator(RichSequence seq);
+  public Iterator<Symbol> iterator(RichSequence seq);
 }

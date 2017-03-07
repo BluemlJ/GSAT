@@ -9,13 +9,11 @@ package org.biojava.bio.program.tagvalue;
 public interface PropertyChanger {
   /**
    * <p>
-   * <code>getNewTag</code> returns the tag which substitutes the
-   * specified value.
+   * <code>getNewTag</code> returns the tag which substitutes the specified value.
    * </p>
    *
    * <p>
-   * If there is no mapping associated with this tag, it is returned
-   * unchanged.
+   * If there is no mapping associated with this tag, it is returned unchanged.
    * </p>
    *
    * @param oldTag an <code>Object</code> to substitute.

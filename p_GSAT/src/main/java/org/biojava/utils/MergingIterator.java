@@ -9,9 +9,7 @@ import java.util.Iterator;
  *
  * @author Matthew Pocock
  */
-public class MergingIterator
-        implements Iterator
-{
+public class MergingIterator implements Iterator {
   private final Iterator sourceIt;
   private Iterator currentIt;
   private Object nextVal;
@@ -37,9 +35,9 @@ public class MergingIterator
   }
 
   private Object findNextVal() {
-    while(true) {
-      if(!currentIt.hasNext()) {
-        if(!sourceIt.hasNext()) {
+    while (true) {
+      if (!currentIt.hasNext()) {
+        if (!sourceIt.hasNext()) {
           return null;
         }
 

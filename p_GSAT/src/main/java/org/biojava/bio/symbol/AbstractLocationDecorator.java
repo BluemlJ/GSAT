@@ -1,21 +1,18 @@
 /*
- *                    BioJava development code
+ * BioJava development code
  *
- * This code may be freely distributed and modified under the
- * terms of the GNU Lesser General Public Licence.  This should
- * be distributed with the code.  If you do not have a copy,
- * see:
+ * This code may be freely distributed and modified under the terms of the GNU Lesser General Public
+ * Licence. This should be distributed with the code. If you do not have a copy, see:
  *
- *      http://www.gnu.org/copyleft/lesser.html
+ * http://www.gnu.org/copyleft/lesser.html
  *
- * Copyright for this code is held jointly by the individual
- * authors.  These should be listed in @author doc comments.
+ * Copyright for this code is held jointly by the individual authors. These should be listed
+ * in @author doc comments.
  *
- * For more information on the BioJava project and its aims,
- * or to join the biojava-l mailing list, visit the home page
- * at:
+ * For more information on the BioJava project and its aims, or to join the biojava-l mailing list,
+ * visit the home page at:
  *
- *      http://www.biojava.org/
+ * http://www.biojava.org/
  *
  */
 
@@ -27,11 +24,12 @@ import java.util.Iterator;
  * Abstract <code>Location</code> decorator (wrapper).
  *
  * <p>
- * These wrap up a normal <code>Location</code> object, and act as markers to indicate that
- * the location has some kind of special semantics.
+ * These wrap up a normal <code>Location</code> object, and act as markers to indicate that the
+ * location has some kind of special semantics.
  * </p>
  *
  * When implementing a new Location decorator.
+ * 
  * @author Matthew Pocock
  */
 public abstract class AbstractLocationDecorator implements Location {
@@ -52,7 +50,7 @@ public abstract class AbstractLocationDecorator implements Location {
   protected abstract Location decorate(Location loc);
 
   public Location newInstance(Location loc) {
-    if(loc instanceof AbstractLocationDecorator) {
+    if (loc instanceof AbstractLocationDecorator) {
       Location wrapped = ((AbstractLocationDecorator) loc).getWrapped();
       loc = wrapped.newInstance(wrapped);
     }
@@ -60,7 +58,7 @@ public abstract class AbstractLocationDecorator implements Location {
   }
 
   public Location getDecorator(Class decoratorClass) {
-    if(decoratorClass.isInstance(this)) {
+    if (decoratorClass.isInstance(this)) {
       return this;
     } else {
       return getWrapped().getDecorator(decoratorClass);

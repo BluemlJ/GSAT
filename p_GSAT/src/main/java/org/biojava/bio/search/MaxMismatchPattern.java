@@ -1,21 +1,18 @@
 /*
- *                    BioJava development code
+ * BioJava development code
  *
- * This code may be freely distributed and modified under the
- * terms of the GNU Lesser General Public Licence.  This should
- * be distributed with the code.  If you do not have a copy,
- * see:
+ * This code may be freely distributed and modified under the terms of the GNU Lesser General Public
+ * Licence. This should be distributed with the code. If you do not have a copy, see:
  *
- *      http://www.gnu.org/copyleft/lesser.html
+ * http://www.gnu.org/copyleft/lesser.html
  *
- * Copyright for this code is held jointly by the individual
- * authors.  These should be listed in @author doc comments.
+ * Copyright for this code is held jointly by the individual authors. These should be listed
+ * in @author doc comments.
  *
- * For more information on the BioJava project and its aims,
- * or to join the biojava-l mailing list, visit the home page
- * at:
+ * For more information on the BioJava project and its aims, or to join the biojava-l mailing list,
+ * visit the home page at:
  *
- *      http://www.biojava.org/
+ * http://www.biojava.org/
  *
  */
 
@@ -25,15 +22,13 @@ import org.biojava.bio.symbol.IllegalAlphabetException;
 import org.biojava.bio.symbol.SymbolList;
 
 /**
- * This class permits searching a SymbolList with another SymbolList while
- * permitting a specified number of mismatches.  The search pattern can
- * include ambiguity Symbols.
+ * This class permits searching a SymbolList with another SymbolList while permitting a specified
+ * number of mismatches. The search pattern can include ambiguity Symbols.
  *
  * @author Matthew Pocock (wrote original MaxMissmatchPattern class)
  * @author David Huen (debugging and extension to permit ambiguity symbols)
  */
-public class MaxMismatchPattern
-implements BioPattern {
+public class MaxMismatchPattern implements BioPattern {
   private int mismatches;
   private SymbolList pattern;
 
@@ -60,8 +55,7 @@ implements BioPattern {
     this.pattern = pattern;
   }
 
-  public BioMatcher matcher(SymbolList symList)
-          throws IllegalAlphabetException {
+  public BioMatcher matcher(SymbolList symList) throws IllegalAlphabetException {
     return new MaxMismatchMatcher(symList, pattern, mismatches);
   }
 }

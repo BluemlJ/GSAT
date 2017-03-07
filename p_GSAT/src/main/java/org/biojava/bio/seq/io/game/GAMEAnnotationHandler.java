@@ -1,21 +1,18 @@
 /**
- *                    BioJava development code
+ * BioJava development code
  *
- * This code may be freely distributed and modified under the
- * terms of the GNU Lesser General Public Licence.  This should
- * be distributed with the code.  If you do not have a copy,
- * see:
+ * This code may be freely distributed and modified under the terms of the GNU Lesser General Public
+ * Licence. This should be distributed with the code. If you do not have a copy, see:
  *
- *      http://www.gnu.org/copyleft/lesser.html
+ * http://www.gnu.org/copyleft/lesser.html
  *
- * Copyright for this code is held jointly by the individual
- * authors.  These should be listed in @author doc comments.
+ * Copyright for this code is held jointly by the individual authors. These should be listed
+ * in @author doc comments.
  *
- * For more information on the BioJava project and its aims,
- * or to join the biojava-l mailing list, visit the home page
- * at:
+ * For more information on the BioJava project and its aims, or to join the biojava-l mailing list,
+ * visit the home page at:
  *
- *      http://www.biojava.org/
+ * http://www.biojava.org/
  *
  */
 
@@ -36,18 +33,16 @@ import org.xml.sax.Attributes;
  * @author David Huen
  * @since 1.2
  */
-public class GAMEAnnotationHandler 
-               extends StAXFeatureHandler 
-               implements GAMEFeatureCallbackItf {
+public class GAMEAnnotationHandler extends StAXFeatureHandler implements GAMEFeatureCallbackItf {
   // all Gadfly data concerning a single "gene" appears in
   // single <annotation>.
   // set up factory method
-  public static final StAXHandlerFactory GAME_ANNOTATION_HANDLER_FACTORY
-    = new StAXHandlerFactory() {
-    public StAXContentHandler getHandler(StAXFeatureHandler staxenv) {
-      return new GAMEAnnotationHandler(staxenv);
-    }
-  };
+  public static final StAXHandlerFactory GAME_ANNOTATION_HANDLER_FACTORY =
+      new StAXHandlerFactory() {
+        public StAXContentHandler getHandler(StAXFeatureHandler staxenv) {
+          return new GAMEAnnotationHandler(staxenv);
+        }
+      };
 
   private Location range = Location.empty;
 
@@ -57,24 +52,24 @@ public class GAMEAnnotationHandler
     setHandlerCharacteristics("annotation", true);
 
     // setup handlers
-       // <seq>: never seen it used yet.
-//       super.addHandler(new ElementRecognizer.ByLocalName("seq"),
-//         GAMESeqPropHandler.GAME_SEQ_PROP_HANDLER_FACTORY);
-       // <map_position>
-//       super.addHandler(new ElementRecognizer.ByLocalName("map_position"),
-//         GAMEMapPosPropHandler.GAME_MAP_POS_PROP_HANDLER_FACTORY);
-       // <gene>
-       super.addHandler(new ElementRecognizer.ByLocalName("gene"),
-         GAMEGenePropHandler.GAME_GENE_PROP_HANDLER_FACTORY);
-       // <feature_set>
-       super.addHandler(new ElementRecognizer.ByLocalName("feature_set"),
-         GAMEFeatureSetHandler.GAME_FEATURESET_HANDLER_FACTORY);
-       // <dbxref>
-       super.addHandler(new ElementRecognizer.ByLocalName("dbxref"),
-         GAMEDbxrefPropHandler.GAME_DBXREF_PROP_HANDLER_FACTORY);
-       // <Aspect>
-//       super.addHandler(new ElementRecognizer.ByLocalName("aspect"),
-//         GAMEAspectPropHandler.GAME_ASPECT_PROP_HANDLER_FACTORY);
+    // <seq>: never seen it used yet.
+    // super.addHandler(new ElementRecognizer.ByLocalName("seq"),
+    // GAMESeqPropHandler.GAME_SEQ_PROP_HANDLER_FACTORY);
+    // <map_position>
+    // super.addHandler(new ElementRecognizer.ByLocalName("map_position"),
+    // GAMEMapPosPropHandler.GAME_MAP_POS_PROP_HANDLER_FACTORY);
+    // <gene>
+    super.addHandler(new ElementRecognizer.ByLocalName("gene"),
+        GAMEGenePropHandler.GAME_GENE_PROP_HANDLER_FACTORY);
+    // <feature_set>
+    super.addHandler(new ElementRecognizer.ByLocalName("feature_set"),
+        GAMEFeatureSetHandler.GAME_FEATURESET_HANDLER_FACTORY);
+    // <dbxref>
+    super.addHandler(new ElementRecognizer.ByLocalName("dbxref"),
+        GAMEDbxrefPropHandler.GAME_DBXREF_PROP_HANDLER_FACTORY);
+    // <Aspect>
+    // super.addHandler(new ElementRecognizer.ByLocalName("aspect"),
+    // GAMEAspectPropHandler.GAME_ASPECT_PROP_HANDLER_FACTORY);
   }
 
   protected Feature.Template createTemplate() {
@@ -91,52 +86,37 @@ public class GAMEAnnotationHandler
     return gt;
   }
 
-  public void reportFeature(Location loc)
-  {
-//    System.out.println("GAMEAnnotationHandler location is " + loc);
+  public void reportFeature(Location loc) {
+    // System.out.println("GAMEAnnotationHandler location is " + loc);
     // accumulate locations of features here.
     range = range.union(loc);
-//    System.out.println("GAMEAnnotationHandler after union is  " + range);
+    // System.out.println("GAMEAnnotationHandler after union is " + range);
   }
 
-  public void reportStrand(StrandedFeature.Strand strand)
-  {
+  public void reportStrand(StrandedFeature.Strand strand) {
     // obtains strand from elements that are in the know.
     ((StrandedFeature.Template) featureTemplate).strand = strand;
   }
 
-  public void startElementHandler(
-                String nsURI,
-                String localName,
-                String qName,
-                Attributes attrs)
-  {
-    String annotationId =  attrs.getValue("id");
+  public void startElementHandler(String nsURI, String localName, String qName, Attributes attrs) {
+    String annotationId = attrs.getValue("id");
     if (annotationId != null) {
       // stuff Gadfly annotation id into our annotation bundle for info.
-//      System.out.println("GAMEAnnotationHandler is setting id to " + annotationId);
+      // System.out.println("GAMEAnnotationHandler is setting id to " + annotationId);
       try {
-         featureTemplate.annotation.setProperty(
-                          "annotation_id", annotationId);
-      }
-      catch (ChangeVetoException cae) {
+        featureTemplate.annotation.setProperty("annotation_id", annotationId);
+      } catch (ChangeVetoException cae) {
         System.err.println("GAMEAnnotationHandler: veto exception caught.");
       }
     }
-//    System.out.println("GAMEAnnotationHandler.startElementHandler: leaving.");
+    // System.out.println("GAMEAnnotationHandler.startElementHandler: leaving.");
   }
 
-  public void endElementHandler(
-                String nsURI,
-                String localName,
-                String qName,
-                StAXContentHandler handler)
-  {
+  public void endElementHandler(String nsURI, String localName, String qName,
+      StAXContentHandler handler) {
     // finalise the sequence extent to encompass all reported features
     if (range != Location.empty)
-      featureTemplate.location = new RangeLocation(
-                                       range.getMin(), 
-                                       range.getMax());
+      featureTemplate.location = new RangeLocation(range.getMin(), range.getMax());
   }
 
 }

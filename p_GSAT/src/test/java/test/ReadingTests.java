@@ -31,7 +31,7 @@ public class ReadingTests {
    * 
    * @throws FileReadingException
    * @throws IOException
-   * @throws MissingPathException 
+   * @throws MissingPathException
    */
   @Before
   public void initializeSequence() throws FileReadingException, IOException, MissingPathException {
@@ -86,7 +86,7 @@ public class ReadingTests {
    * 
    * @throws FileReadingException
    * @throws IOException
-   * @throws MissingPathException 
+   * @throws MissingPathException
    */
   @Test
   public void readFromFileTest() throws FileReadingException, IOException, MissingPathException {
@@ -115,7 +115,7 @@ public class ReadingTests {
    * This tests checks if a corrupt file leads to an ioexception (Userstory 003 - Unusual behavior)
    * 
    * @throws FileReadingException
-   * @throws MissingPathException 
+   * @throws MissingPathException
    */
   @Test
   public void testCorruptSequence() throws FileReadingException, MissingPathException {

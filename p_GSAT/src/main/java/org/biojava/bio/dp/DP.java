@@ -1,21 +1,18 @@
 /*
- *                    BioJava development code
+ * BioJava development code
  *
- * This code may be freely distributed and modified under the
- * terms of the GNU Lesser General Public Licence.  This should
- * be distributed with the code.  If you do not have a copy,
- * see:
+ * This code may be freely distributed and modified under the terms of the GNU Lesser General Public
+ * Licence. This should be distributed with the code. If you do not have a copy, see:
  *
- *      http://www.gnu.org/copyleft/lesser.html
+ * http://www.gnu.org/copyleft/lesser.html
  *
- * Copyright for this code is held jointly by the individual
- * authors.  These should be listed in @author doc comments.
+ * Copyright for this code is held jointly by the individual authors. These should be listed
+ * in @author doc comments.
  *
- * For more information on the BioJava project and its aims,
- * or to join the biojava-l mailing list, visit the home page
- * at:
+ * For more information on the BioJava project and its aims, or to join the biojava-l mailing list,
+ * visit the home page at:
  *
- *      http://www.biojava.org/
+ * http://www.biojava.org/
  *
  */
 
@@ -52,30 +49,26 @@ import org.biojava.utils.ChangeVetoException;
 
 /**
  * <p>
- * Objects that can perform dymamic programming operations upon sequences with
- * HMMs.
+ * Objects that can perform dymamic programming operations upon sequences with HMMs.
  * </p>
  *
  * <p>
- * The three main DP operations are Forwards, Backwards and Viterbi. Forwards
- * and Backwards calculate the probability of the sequences having been made in
- * any way by the model. Viterbi finds the most supported way that the sequence
- * could have been made.
+ * The three main DP operations are Forwards, Backwards and Viterbi. Forwards and Backwards
+ * calculate the probability of the sequences having been made in any way by the model. Viterbi
+ * finds the most supported way that the sequence could have been made.
  * </p>
  *
  * <p>
- * Each of the functions can return the dynamic-programming matrix containing
- * the intermediate results. This may be useful for model training, or for
- * visualisation.
+ * Each of the functions can return the dynamic-programming matrix containing the intermediate
+ * results. This may be useful for model training, or for visualisation.
  * </p>
  *
  * <p>
- * Each of the funcitons can be calculated using the model probabilities, the
- * null-model probabilities or the odds (ratio between the two). For Forwards
- * and Backwards, the odds calculations produce numbers with questionable basis
- * in reality. For Viterbi with odds, you will recieve the path through the
- * model that is most different from the null model, and supported by the
- * probabilities.
+ * Each of the funcitons can be calculated using the model probabilities, the null-model
+ * probabilities or the odds (ratio between the two). For Forwards and Backwards, the odds
+ * calculations produce numbers with questionable basis in reality. For Viterbi with odds, you will
+ * recieve the path through the model that is most different from the null model, and supported by
+ * the probabilities.
  * </p>
  *
  * @author Matthew Pocock
@@ -101,71 +94,60 @@ public abstract class DP {
   }
 
   /**
-   * Scores the SymbolList from symbol start to symbol (start+columns) with a
-   * weight matrix.
+   * Scores the SymbolList from symbol start to symbol (start+columns) with a weight matrix.
    *
-   * @param matrix  the weight matrix used to evaluate the sequences
+   * @param matrix the weight matrix used to evaluate the sequences
    * @param symList the SymbolList to assess
-   * @param start   the index of the first symbol in the window to evaluate
-   * @return  the log probability or likelyhood of this weight matrix
-   *          having generated symbols start to (start + columns) of symList
+   * @param start the index of the first symbol in the window to evaluate
+   * @return the log probability or likelyhood of this weight matrix having generated symbols start
+   *         to (start + columns) of symList
    */
-  public static double scoreWeightMatrix(
-          WeightMatrix matrix, SymbolList symList, int start)
-          throws IllegalSymbolException {
+  public static double scoreWeightMatrix(WeightMatrix matrix, SymbolList symList, int start)
+      throws IllegalSymbolException {
     double score = 0;
     int cols = matrix.columns();
 
     for (int c = 0; c < cols; c++) {
-      score += Math.log(
-              matrix.getColumn(c).getWeight(symList.symbolAt(c + start)));
+      score += Math.log(matrix.getColumn(c).getWeight(symList.symbolAt(c + start)));
     }
 
     return score;
   }
 
   /**
-   * Scores the SymbolList from symbol start to symbol (start+columns) with a
-   * weight matrix using a particular ScoreType.
+   * Scores the SymbolList from symbol start to symbol (start+columns) with a weight matrix using a
+   * particular ScoreType.
    *
    * <p>
-   * This method allows you to use score types such as ScoreType.ODDS. The other
-   * scoreWeightMatrix methods gives a result similar or identical to
-   * ScoreType.PROBABILITY.
+   * This method allows you to use score types such as ScoreType.ODDS. The other scoreWeightMatrix
+   * methods gives a result similar or identical to ScoreType.PROBABILITY.
    * </p>
    *
-   * @param matrix  the weight matrix used to evaluate the sequences
+   * @param matrix the weight matrix used to evaluate the sequences
    * @param symList the SymbolList to assess
    * @param scoreType the score type to apply
-   * @param start   the index of the first symbol in the window to evaluate
-   * @return  the sum of log scores of this weight matrix
-   *          having generated symbols start to (start + columns) of symList
+   * @param start the index of the first symbol in the window to evaluate
+   * @return the sum of log scores of this weight matrix having generated symbols start to (start +
+   *         columns) of symList
    * @since 1.4
    */
-  public static double scoreWeightMatrix(
-          WeightMatrix matrix,
-          SymbolList symList,
-          ScoreType scoreType,
-          int start)
-          throws IllegalSymbolException {
+  public static double scoreWeightMatrix(WeightMatrix matrix, SymbolList symList,
+      ScoreType scoreType, int start) throws IllegalSymbolException {
     double score = 0;
     int cols = matrix.columns();
 
     for (int c = 0; c < cols; c++) {
-      score += Math.log(scoreType.calculateScore(
-              matrix.getColumn(c), symList.symbolAt(c + start)));
+      score += Math.log(scoreType.calculateScore(matrix.getColumn(c), symList.symbolAt(c + start)));
     }
 
     return score;
   }
+
   public static MarkovModel flatView(MarkovModel model)
-          throws IllegalAlphabetException, IllegalSymbolException {
+      throws IllegalAlphabetException, IllegalSymbolException {
     for (Iterator i = model.stateAlphabet().iterator(); i.hasNext();) {
       State s = (State) i.next();
-      if (
-              !(s instanceof DotState) &&
-              !(s instanceof EmissionState)
-      ) {
+      if (!(s instanceof DotState) && !(s instanceof EmissionState)) {
         return new FlatModel(model);
       }
     }
@@ -174,8 +156,7 @@ public abstract class DP {
   }
 
   public State[] stateList(MarkovModel mm)
-          throws IllegalSymbolException, IllegalTransitionException,
-          BioException {
+      throws IllegalSymbolException, IllegalTransitionException, BioException {
     FiniteAlphabet alpha = mm.stateAlphabet();
 
     List emissionStates = new ArrayList();
@@ -242,10 +223,8 @@ public abstract class DP {
       int[] ad = ex.getAdvance();
       if (ad.length != mm.advance().length) {
         throw new BioException(
-                "State " + ex.getName() + " advances " + ad.length + " heads. " +
-                " however, the model " + mm.stateAlphabet().getName() +
-                " advances " + mm.advance().length + " heads."
-        );
+            "State " + ex.getName() + " advances " + ad.length + " heads. " + " however, the model "
+                + mm.stateAlphabet().getName() + " advances " + mm.advance().length + " heads.");
       }
       for (int adi = 0; ad != null && adi < ad.length; adi++) {
         if (ad[adi] != 0) {
@@ -253,9 +232,7 @@ public abstract class DP {
         }
       }
       if (ad != null) {
-        throw new Error(
-                "State " + ex.getName() + " has advance " + ad
-        );
+        throw new Error("State " + ex.getName() + " has advance " + ad);
       }
       sl[i++] = ex;
     }
@@ -266,21 +243,19 @@ public abstract class DP {
   }
 
   /**
-   * Returns a matrix for the specified States describing all
-   * valid Transitions between those States.
+   * Returns a matrix for the specified States describing all valid Transitions between those
+   * States.
    * <p>
-   * The matrix is 2-dimensional.  The primary array has an element
-   * corresponding to every State in the states argument.  That
-   * element is itself an array the elements of which identify 
-   * the States that can reach that State.  The source States 
-   * are identified by their index within the states [] array.
+   * The matrix is 2-dimensional. The primary array has an element corresponding to every State in
+   * the states argument. That element is itself an array the elements of which identify the States
+   * that can reach that State. The source States are identified by their index within the states []
+   * array.
+   * 
    * @param model MarkovModel to be analysed.
    * @param states The States for which the transition matrix is to be determined.
    */
-  public static int[][] forwardTransitions(
-          MarkovModel model,
-          State[] states
-          ) throws IllegalSymbolException {
+  public static int[][] forwardTransitions(MarkovModel model, State[] states)
+      throws IllegalSymbolException {
     int stateCount = states.length;
     int[][] transitions = new int[stateCount][];
 
@@ -304,25 +279,20 @@ public abstract class DP {
   }
 
   /**
-   * Compute the log(score) of all transitions
-   * between the specified States.  The layout
-   * of the array is identical to that of the transitions
-   * array.
+   * Compute the log(score) of all transitions between the specified States. The layout of the array
+   * is identical to that of the transitions array.
    * <p>
-   * Note that all parameters <b>MUST</b> be
-   * consistent with each other!!!!
+   * Note that all parameters <b>MUST</b> be consistent with each other!!!!
    * <p>
+   * 
    * @param model The model for which the data is to be computed.
    * @param states The States within that model for which scores are required.
-   * @param transitions The transition matrix obtained by calling forwardTransitions() with the above argument values.
+   * @param transitions The transition matrix obtained by calling forwardTransitions() with the
+   *        above argument values.
    * @param scoreType The type of score to be evaluated.
    */
-  public static double[][] forwardTransitionScores(
-          MarkovModel model,
-          State[] states,
-          int[][] transitions,
-          ScoreType scoreType
-          ) {
+  public static double[][] forwardTransitionScores(MarkovModel model, State[] states,
+      int[][] transitions, ScoreType scoreType) {
     // System.out.println("forwardTransitionScores");
     int stateCount = states.length;
     double[][] scores = new double[stateCount][];
@@ -332,23 +302,15 @@ public abstract class DP {
       scores[i] = new double[transitions[i].length];
       for (int j = 0; j < scores[i].length; j++) {
         try {
-          scores[i][j] = Math.log(scoreType.calculateScore(
-                  model.getWeights(states[transitions[i][j]]),
-                  is
-          ));
-          /*System.out.println(
-            states[transitions[i][j]] + "\t-> " +
-            is.getName() + "\t = " +
-            scores[i][j] + "\t(" +
-            scoreType.calculateScore(
-              model.getWeights(states[transitions[i][j]]),
-              is
-            )
-          );*/
+          scores[i][j] =
+              Math.log(scoreType.calculateScore(model.getWeights(states[transitions[i][j]]), is));
+          /*
+           * System.out.println( states[transitions[i][j]] + "\t-> " + is.getName() + "\t = " +
+           * scores[i][j] + "\t(" + scoreType.calculateScore(
+           * model.getWeights(states[transitions[i][j]]), is ) );
+           */
         } catch (IllegalSymbolException ite) {
-          throw new BioError(
-                  "Transition listed in transitions array has dissapeared.",
-                  ite);
+          throw new BioError("Transition listed in transitions array has dissapeared.", ite);
         }
       }
     }
@@ -356,10 +318,8 @@ public abstract class DP {
     return scores;
   }
 
-  public static int[][] backwardTransitions(
-          MarkovModel model,
-          State[] states
-          ) throws IllegalSymbolException {
+  public static int[][] backwardTransitions(MarkovModel model, State[] states)
+      throws IllegalSymbolException {
     int stateCount = states.length;
     int[][] transitions = new int[stateCount][];
 
@@ -382,11 +342,8 @@ public abstract class DP {
     return transitions;
   }
 
-  public static double[][] backwardTransitionScores(MarkovModel model,
-                                                    State[] states,
-                                                    int[][] transitions,
-                                                    ScoreType scoreType
-                                                    ) {
+  public static double[][] backwardTransitionScores(MarkovModel model, State[] states,
+      int[][] transitions, ScoreType scoreType) {
     int stateCount = states.length;
     double[][] scores = new double[stateCount][];
 
@@ -395,14 +352,10 @@ public abstract class DP {
       scores[i] = new double[transitions[i].length];
       for (int j = 0; j < scores[i].length; j++) {
         try {
-          scores[i][j] = Math.log(scoreType.calculateScore(
-                  model.getWeights(is),
-                  states[transitions[i][j]]
-          ));
+          scores[i][j] =
+              Math.log(scoreType.calculateScore(model.getWeights(is), states[transitions[i][j]]));
         } catch (IllegalSymbolException ite) {
-          throw new BioError(
-                  "Transition listed in transitions array has dissapeared",
-                  ite);
+          throw new BioError("Transition listed in transitions array has dissapeared", ite);
         }
       }
     }
@@ -439,9 +392,8 @@ public abstract class DP {
   public double[][] getForwardTransitionScores(ScoreType scoreType) {
     double[][] ts = (double[][]) forwardTransitionScores.get(scoreType);
     if (ts == null) {
-      forwardTransitionScores.put(scoreType, ts = forwardTransitionScores(
-              getModel(), getStates(), forwardTransitions, scoreType
-      ));
+      forwardTransitionScores.put(scoreType,
+          ts = forwardTransitionScores(getModel(), getStates(), forwardTransitions, scoreType));
     }
     return ts;
   }
@@ -453,9 +405,8 @@ public abstract class DP {
   public double[][] getBackwardTransitionScores(ScoreType scoreType) {
     double[][] ts = (double[][]) backwardTransitionScores.get(scoreType);
     if (ts == null) {
-      backwardTransitionScores.put(scoreType, ts = backwardTransitionScores(
-              getModel(), getStates(), backwardTransitions, scoreType
-      ));
+      backwardTransitionScores.put(scoreType,
+          ts = backwardTransitionScores(getModel(), getStates(), backwardTransitions, scoreType));
     }
     return ts;
   }
@@ -474,7 +425,7 @@ public abstract class DP {
 
   public void update() {
     try {
-      if(this.states == null) {
+      if (this.states == null) {
         this.states = stateList(model);
         this.forwardTransitions = forwardTransitions(model, states);
         this.backwardTransitions = backwardTransitions(model, states);
@@ -496,17 +447,17 @@ public abstract class DP {
     }
   }
 
-  public DP(MarkovModel model){
+  public DP(MarkovModel model) {
     this.setModel(model);
   }
-  
+
   /**
-   * This method will result in a DP with no model. Use the setModel() method
-   * to set the model before use.
+   * This method will result in a DP with no model. Use the setModel() method to set the model
+   * before use.
    */
-  public DP(){}
-  
-  public void setModel(MarkovModel model){
+  public DP() {}
+
+  public void setModel(MarkovModel model) {
     this.model = model;
     this.forwardTransitionScores = new HashMap();
     this.backwardTransitionScores = new HashMap();
@@ -516,30 +467,30 @@ public abstract class DP {
   }
 
   public abstract double forward(SymbolList[] symList, ScoreType scoreType)
-          throws IllegalSymbolException, IllegalAlphabetException, IllegalTransitionException;
+      throws IllegalSymbolException, IllegalAlphabetException, IllegalTransitionException;
 
   public abstract double backward(SymbolList[] symList, ScoreType scoreType)
-          throws IllegalSymbolException, IllegalAlphabetException, IllegalTransitionException;
+      throws IllegalSymbolException, IllegalAlphabetException, IllegalTransitionException;
 
   public abstract DPMatrix forwardMatrix(SymbolList[] symList, ScoreType scoreType)
-          throws IllegalSymbolException, IllegalAlphabetException, IllegalTransitionException;
+      throws IllegalSymbolException, IllegalAlphabetException, IllegalTransitionException;
 
   public abstract DPMatrix backwardMatrix(SymbolList[] symList, ScoreType scoreType)
-          throws IllegalSymbolException, IllegalAlphabetException, IllegalTransitionException;
+      throws IllegalSymbolException, IllegalAlphabetException, IllegalTransitionException;
 
   public abstract DPMatrix forwardMatrix(SymbolList[] symList, DPMatrix matrix, ScoreType scoreType)
-          throws IllegalArgumentException, IllegalSymbolException,
-          IllegalAlphabetException, IllegalTransitionException;
+      throws IllegalArgumentException, IllegalSymbolException, IllegalAlphabetException,
+      IllegalTransitionException;
 
-  public abstract DPMatrix backwardMatrix(SymbolList[] symList, DPMatrix matrix, ScoreType scoreType)
-          throws IllegalArgumentException, IllegalSymbolException,
-          IllegalAlphabetException, IllegalTransitionException;
+  public abstract DPMatrix backwardMatrix(SymbolList[] symList, DPMatrix matrix,
+      ScoreType scoreType) throws IllegalArgumentException, IllegalSymbolException,
+      IllegalAlphabetException, IllegalTransitionException;
 
   public abstract StatePath viterbi(SymbolList[] symList, ScoreType scoreType)
-          throws IllegalSymbolException, IllegalArgumentException, IllegalAlphabetException, IllegalTransitionException;
+      throws IllegalSymbolException, IllegalArgumentException, IllegalAlphabetException,
+      IllegalTransitionException;
 
-  public DPMatrix forwardsBackwards(SymbolList[] symList, ScoreType scoreType)
-          throws BioException {
+  public DPMatrix forwardsBackwards(SymbolList[] symList, ScoreType scoreType) throws BioException {
     try {
       System.out.println("Making backward matrix");
       final DPMatrix bMatrix = backwardMatrix(symList, scoreType);
@@ -579,17 +530,15 @@ public abstract class DP {
    * </p>
    *
    * <p>
-   * If the length is set to -1 then the model length will be sampled
-   * using the model's transition to the end state. If the length is
-   * fixed using length, then the transitions to the end state are implicitly
-   * invoked.
+   * If the length is set to -1 then the model length will be sampled using the model's transition
+   * to the end state. If the length is fixed using length, then the transitions to the end state
+   * are implicitly invoked.
    * </p>
    *
-   * @param length  the length of the sequence to generate
-   * @return  a StatePath generated at random
+   * @param length the length of the sequence to generate
+   * @return a StatePath generated at random
    */
-  public StatePath generate(int length)
-          throws IllegalSymbolException, BioException {
+  public StatePath generate(int length) throws IllegalSymbolException, BioException {
     List tokenList = new ArrayList();
     List stateList = new ArrayList();
     List scoreList = new ArrayList();
@@ -624,9 +573,7 @@ public abstract class DP {
       try {
         symScore += dist.getWeight(newState);
       } catch (IllegalSymbolException ise) {
-        throw new BioError(
-                "Transition returned from sampleTransition is invalid",
-                ise);
+        throw new BioError("Transition returned from sampleTransition is invalid", ise);
       }
 
       if (newState == model.magicalState()) {
@@ -651,12 +598,7 @@ public abstract class DP {
     SymbolList states = new SimpleSymbolList(model.stateAlphabet(), stateList);
     SymbolList scores = new SimpleSymbolList(dAlpha, scoreList);
 
-    return new SimpleStatePath(
-            totScore,
-            tokens,
-            states,
-            scores
-    );
+    return new SimpleStatePath(totScore, tokens, states, scores);
   }
 
   public static class ReverseIterator implements Iterator, Serializable {
@@ -682,9 +624,7 @@ public abstract class DP {
   }
 
   private final ChangeListener UPDATER = new ChangeListener() {
-    public void preChange(ChangeEvent ce)
-            throws ChangeVetoException {
-    }
+    public void preChange(ChangeEvent ce) throws ChangeVetoException {}
 
     public void postChange(ChangeEvent ce) {
       if (ce.getType().isMatchingType(MarkovModel.ARCHITECTURE)) {
@@ -692,10 +632,8 @@ public abstract class DP {
         states = null;
       }
 
-      if (
-              (ce.getType().isMatchingType(MarkovModel.ARCHITECTURE)) ||
-              (ce.getType().isMatchingType(MarkovModel.PARAMETER))
-      ) {
+      if ((ce.getType().isMatchingType(MarkovModel.ARCHITECTURE))
+          || (ce.getType().isMatchingType(MarkovModel.PARAMETER))) {
         update();
       }
     }
@@ -714,7 +652,7 @@ public abstract class DP {
     }
 
     public Object compare(Object o1, Object o2)
-            throws IllegalTransitionException, IllegalSymbolException {
+        throws IllegalTransitionException, IllegalSymbolException {
       if (o1 == o2) {
         return EQUAL;
       }
@@ -732,13 +670,10 @@ public abstract class DP {
     }
 
     private boolean transitionsTo(State from, State to)
-            throws IllegalTransitionException, IllegalSymbolException {
+        throws IllegalTransitionException, IllegalSymbolException {
       Set checkedSet = new HashSet();
       Set workingSet = new HashSet();
-      for (
-              Iterator i = mm.transitionsFrom(from).iterator();
-              i.hasNext();
-              ) {
+      for (Iterator i = mm.transitionsFrom(from).iterator(); i.hasNext();) {
         workingSet.add(i.next());
       }
 
@@ -750,9 +685,7 @@ public abstract class DP {
             continue;
           }
           if (s == from) {
-            throw new IllegalTransitionException(
-                    from, from, "Loop in dot states."
-            );
+            throw new IllegalTransitionException(from, from, "Loop in dot states.");
           }
           if (s == to) {
             return true;

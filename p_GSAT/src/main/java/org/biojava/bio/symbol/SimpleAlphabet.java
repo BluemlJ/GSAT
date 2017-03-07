@@ -1,21 +1,18 @@
 /*
- *                    BioJava development code
+ * BioJava development code
  *
- * This code may be freely distributed and modified under the
- * terms of the GNU Lesser General Public Licence.  This should
- * be distributed with the code.  If you do not have a copy,
- * see:
+ * This code may be freely distributed and modified under the terms of the GNU Lesser General Public
+ * Licence. This should be distributed with the code. If you do not have a copy, see:
  *
- *      http://www.gnu.org/copyleft/lesser.html
+ * http://www.gnu.org/copyleft/lesser.html
  *
- * Copyright for this code is held jointly by the individual
- * authors.  These should be listed in @author doc comments.
+ * Copyright for this code is held jointly by the individual authors. These should be listed
+ * in @author doc comments.
  *
- * For more information on the BioJava project and its aims,
- * or to join the biojava-l mailing list, visit the home page
- * at:
+ * For more information on the BioJava project and its aims, or to join the biojava-l mailing list,
+ * visit the home page at:
  *
- *      http://www.biojava.org/
+ * http://www.biojava.org/
  *
  */
 
@@ -44,21 +41,18 @@ import org.biojava.utils.SingletonList;
  * @serial WARNING the serialized version of this class may not be compatible with future versions
  * @author Matthew Pocock
  */
-public class SimpleAlphabet
-extends AbstractAlphabet
-implements Serializable {
+public class SimpleAlphabet extends AbstractAlphabet implements Serializable {
   private String name;
   private Annotation annotation;
   private final Set symbols;
   protected transient ChangeForwarder annotationForwarder;
 
-    //BE SURE TO CHANGE THIS VALUE IF YOU CHANGE THE IMPLEMENTATION
-    //SUCH THAT SERIALIZATION WILL FAIL.
+  // BE SURE TO CHANGE THIS VALUE IF YOU CHANGE THE IMPLEMENTATION
+  // SUCH THAT SERIALIZATION WILL FAIL.
   private static final long serialVersionUID = 216254146;
 
   /**
-   * A list of alphabets that make up this one - a singleton list containing
-   * this.
+   * A list of alphabets that make up this one - a singleton list containing this.
    */
   private List alphabets;
 
@@ -72,6 +66,7 @@ implements Serializable {
 
   /**
    * Assign a name to the alphabet
+   * 
    * @param name the name you wish to give this alphabet
    */
   public void setName(String name) {
@@ -79,8 +74,7 @@ implements Serializable {
   }
 
   public Annotation getAnnotation() {
-    if(annotation == null)
-      annotation = new SimpleAnnotation();
+    if (annotation == null) annotation = new SimpleAnnotation();
     return annotation;
   }
 
@@ -92,51 +86,48 @@ implements Serializable {
     return symbols.contains(s);
   }
 
-  protected void addSymbolImpl(AtomicSymbol s)
-  throws IllegalSymbolException, ChangeVetoException {
+  protected void addSymbolImpl(AtomicSymbol s) throws IllegalSymbolException, ChangeVetoException {
     symbols.add(s);
   }
 
-  public void removeSymbol(Symbol s)
-  throws IllegalSymbolException {
+  public void removeSymbol(Symbol s) throws IllegalSymbolException {
     validate(s);
-    //change checking should probably happen in AbstractAlphabet but oh well.
-    if(hasListeners(Alphabet.SYMBOLS)) {
+    // change checking should probably happen in AbstractAlphabet but oh well.
+    if (hasListeners(Alphabet.SYMBOLS)) {
       ChangeSupport cs = getChangeSupport(Alphabet.SYMBOLS);
-      synchronized(cs) {
+      synchronized (cs) {
         ChangeEvent ce = new ChangeEvent(this, Alphabet.SYMBOLS, null, s);
         cs.firePreChangeEvent(ce);
         _removeSymbol(s);
         cs.firePostChangeEvent(ce);
       }
-    }else{
-        _removeSymbol(s);
+    } else {
+      _removeSymbol(s);
     }
   }
 
-    private void _removeSymbol(final Symbol s) {
-        
-        if(s instanceof AtomicSymbol) {
-          symbols.remove(s);
-        } else {
-          FiniteAlphabet sa = (FiniteAlphabet) s.getMatches();
-          Iterator i = sa.iterator();
-          while(i.hasNext()) {
-            Symbol sym = (Symbol) i.next();
-            symbols.remove(sym);
-          }
-        }
+  private void _removeSymbol(final Symbol s) {
+
+    if (s instanceof AtomicSymbol) {
+      symbols.remove(s);
+    } else {
+      FiniteAlphabet sa = (FiniteAlphabet) s.getMatches();
+      Iterator i = sa.iterator();
+      while (i.hasNext()) {
+        Symbol sym = (Symbol) i.next();
+        symbols.remove(sym);
+      }
     }
+  }
 
   public List getAlphabets() {
-    if(this.alphabets == null) {
+    if (this.alphabets == null) {
       this.alphabets = new SingletonList(this);
     }
     return this.alphabets;
   }
 
-  protected AtomicSymbol getSymbolImpl(List symL)
-  throws IllegalSymbolException {
+  protected AtomicSymbol getSymbolImpl(List symL) throws IllegalSymbolException {
     AtomicSymbol s = (AtomicSymbol) symL.get(0);
     return s;
   }
@@ -160,23 +151,19 @@ implements Serializable {
 
     // this costs, but I am tracking down a ClassCast exception.
     // roll on parameterised types.
-    for(Iterator i = symbols.iterator(); i.hasNext(); ) {
+    for (Iterator i = symbols.iterator(); i.hasNext();) {
       AtomicSymbol a = (AtomicSymbol) i.next();
       this.symbols.add(a);
     }
   }
 
-  protected ChangeSupport getChangeSupport(ChangeType ct){
+  protected ChangeSupport getChangeSupport(ChangeType ct) {
     ChangeSupport cs = super.getChangeSupport(ct);
 
-    if(annotationForwarder == null &&
-      (ct.isMatchingType(Annotatable.ANNOTATION) || Annotatable.ANNOTATION.isMatchingType(ct)))
-    {
-      annotationForwarder =
-              new ChangeForwarder.Retyper(this, cs, Annotation.PROPERTY);
-      getAnnotation().addChangeListener(
-          annotationForwarder,
-          Annotatable.ANNOTATION);
+    if (annotationForwarder == null && (ct.isMatchingType(Annotatable.ANNOTATION)
+        || Annotatable.ANNOTATION.isMatchingType(ct))) {
+      annotationForwarder = new ChangeForwarder.Retyper(this, cs, Annotation.PROPERTY);
+      getAnnotation().addChangeListener(annotationForwarder, Annotatable.ANNOTATION);
     }
     return cs;
   }

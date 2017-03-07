@@ -1,21 +1,18 @@
 /*
- *                    BioJava development code
+ * BioJava development code
  *
- * This code may be freely distributed and modified under the
- * terms of the GNU Lesser General Public Licence.  This should
- * be distributed with the code.  If you do not have a copy,
- * see:
+ * This code may be freely distributed and modified under the terms of the GNU Lesser General Public
+ * Licence. This should be distributed with the code. If you do not have a copy, see:
  *
- *      http://www.gnu.org/copyleft/lesser.html
+ * http://www.gnu.org/copyleft/lesser.html
  *
- * Copyright for this code is held jointly by the individual
- * authors.  These should be listed in @author doc comments.
+ * Copyright for this code is held jointly by the individual authors. These should be listed
+ * in @author doc comments.
  *
- * For more information on the BioJava project and its aims,
- * or to join the biojava-l mailing list, visit the home page
- * at:
+ * For more information on the BioJava project and its aims, or to join the biojava-l mailing list,
+ * visit the home page at:
  *
- *      http://www.biojava.org/
+ * http://www.biojava.org/
  *
  */
 package org.biojava.bio.program.blast2html;
@@ -23,20 +20,19 @@ package org.biojava.bio.program.blast2html;
 
 /**
  * <p>
- * Interface for specifying whether a particular pair
- * of residues/bases should be coloured.
+ * Interface for specifying whether a particular pair of residues/bases should be coloured.
  * </p>
  *
  * <p>
- * This can be independent of the method that
- * chooses which colour.
+ * This can be independent of the method that chooses which colour.
  * </p>
  *
  * <p>
  * Example usage: highlight mismatches only.
  * </p>
  *
- * <p><pre>
+ * <p>
+ * <pre>
  * Primary author -
  *                 Colin Hardman      (CAT)
  * Other authors  -
@@ -48,11 +44,11 @@ package org.biojava.bio.program.blast2html;
  *                 Neil Benn          (CAT)
  *
  * Copyright 2001 Cambridge Antibody Technology Group plc.
- * </pre></p>
+ * </pre>
+ * </p>
  *
  * <p>
- * This code released to the biojava project, May 2001
- * under the LGPL license.
+ * This code released to the biojava project, May 2001 under the LGPL license.
  * </p>
  *
  * @author Cambridge Antibody Technology Group plc
@@ -61,13 +57,12 @@ package org.biojava.bio.program.blast2html;
  */
 public interface ColourCommand {
 
-    /**
-     * Returns true if the alignment pair should be coloured
-     * else false.
-     *
-     * @param poFirst  - the first character
-     * @param poSecond - the second character.
-     * @return boolean - true if colour, else false.
-     */
-    public boolean isColoured( String poFirst, String poSecond );
+  /**
+   * Returns true if the alignment pair should be coloured else false.
+   *
+   * @param poFirst - the first character
+   * @param poSecond - the second character.
+   * @return boolean - true if colour, else false.
+   */
+  public boolean isColoured(String poFirst, String poSecond);
 }

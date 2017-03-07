@@ -10,30 +10,25 @@ import java.util.Set;
  *
  * @author Matthew Pocock
  */
-public class MergingSet
-        extends AbstractSet
-{
+public class MergingSet extends AbstractSet {
   private final Set sets;
   private Set modifiable;
 
-  public static MergingSet merge(Set first, Set seccond)
-  {
+  public static MergingSet merge(Set first, Set seccond) {
     MergingSet ms = new MergingSet();
     ms.add(first);
     ms.add(seccond);
     return ms;
   }
 
-  public static MergingSet modifiableMerge()
-  {
+  public static MergingSet modifiableMerge() {
     MergingSet ms = new MergingSet();
     ms.modifiable = new HashSet();
     ms.addSet(ms.modifiable);
     return ms;
   }
 
-  public static MergingSet modifiableMerge(Set original)
-  {
+  public static MergingSet modifiableMerge(Set original) {
     MergingSet ms = new MergingSet();
     ms.modifiable = new HashSet();
     ms.addSet(ms.modifiable);
@@ -54,22 +49,20 @@ public class MergingSet
   }
 
   public boolean removeSet(Set set) {
-    if(set == modifiable) {
-      throw new IllegalArgumentException(
-              "Can't remove the set that contains modifications");
+    if (set == modifiable) {
+      throw new IllegalArgumentException("Can't remove the set that contains modifications");
     }
     return sets.remove(set);
   }
 
-  public Set getModifiable()
-  {
+  public Set getModifiable() {
     return modifiable;
   }
 
   public int size() {
     int size = 0;
 
-    for(Iterator i = sets.iterator(); i.hasNext(); ) {
+    for (Iterator i = sets.iterator(); i.hasNext();) {
       Set s = (Set) i.next();
       size += s.size();
     }
@@ -80,7 +73,7 @@ public class MergingSet
   public boolean contains(Object o) {
     for (Iterator i = sets.iterator(); i.hasNext();) {
       Set s = (Set) i.next();
-      if(s.contains(o)) {
+      if (s.contains(o)) {
         return true;
       }
     }
@@ -92,24 +85,21 @@ public class MergingSet
     return new MergingIterator(sets.iterator());
   }
 
-  public boolean add(Object o)
-  {
-    if(modifiable == null) {
+  public boolean add(Object o) {
+    if (modifiable == null) {
       throw new UnsupportedOperationException();
     }
 
     return modifiable.add(o);
   }
 
-  public boolean remove(Object o)
-  {
-    if(modifiable == null) {
+  public boolean remove(Object o) {
+    if (modifiable == null) {
       throw new UnsupportedOperationException();
     }
 
-    if(this.contains(o) && !modifiable.contains(o)) {
-      throw new IllegalArgumentException(
-              "Can't remove items not added to this merged view");
+    if (this.contains(o) && !modifiable.contains(o)) {
+      throw new IllegalArgumentException("Can't remove items not added to this merged view");
     }
 
     return modifiable.remove(o);

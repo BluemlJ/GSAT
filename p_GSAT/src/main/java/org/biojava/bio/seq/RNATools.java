@@ -1,21 +1,18 @@
 /*
- *                    BioJava development code
+ * BioJava development code
  *
- * This code may be freely distributed and modified under the
- * terms of the GNU Lesser General Public Licence.  This should
- * be distributed with the code.  If you do not have a copy,
- * see:
+ * This code may be freely distributed and modified under the terms of the GNU Lesser General Public
+ * Licence. This should be distributed with the code. If you do not have a copy, see:
  *
- *      http://www.gnu.org/copyleft/lesser.html
+ * http://www.gnu.org/copyleft/lesser.html
  *
- * Copyright for this code is held jointly by the individual
- * authors.  These should be listed in @author doc comments.
+ * Copyright for this code is held jointly by the individual authors. These should be listed
+ * in @author doc comments.
  *
- * For more information on the BioJava project and its aims,
- * or to join the biojava-l mailing list, visit the home page
- * at:
+ * For more information on the BioJava project and its aims, or to join the biojava-l mailing list,
+ * visit the home page at:
  *
- *      http://www.biojava.org/
+ * http://www.biojava.org/
  *
  */
 
@@ -101,16 +98,16 @@ public final class RNATools {
       symbolToComplement.put(gap, gap);
 
       // add all other ambiguity symbols
-      for(Iterator i = AlphabetManager.getAllSymbols(rna).iterator(); i.hasNext();) {
-          Symbol as = (Symbol) i.next();
-          FiniteAlphabet matches = (FiniteAlphabet) as.getMatches();
-          if (matches.size() > 1) {   // We've hit an ambiguous symbol.
-              Set l = new HashSet();
-              for(Iterator j = matches.iterator(); j.hasNext(); ) {
-                  l.add(complement((Symbol) j.next()));
-              }
-              symbolToComplement.put(as, rna.getAmbiguity(l));
+      for (Iterator i = AlphabetManager.getAllSymbols(rna).iterator(); i.hasNext();) {
+        Symbol as = (Symbol) i.next();
+        FiniteAlphabet matches = (FiniteAlphabet) as.getMatches();
+        if (matches.size() > 1) { // We've hit an ambiguous symbol.
+          Set l = new HashSet();
+          for (Iterator j = matches.iterator(); j.hasNext();) {
+            l.add(complement((Symbol) j.next()));
           }
+          symbolToComplement.put(as, rna.getAmbiguity(l));
+        }
       }
       complementTable = new RNAComplementTranslationTable();
 
@@ -127,15 +124,28 @@ public final class RNATools {
     }
   }
 
-  public static AtomicSymbol a() { return a; }
-  public static AtomicSymbol g() { return g; }
-  public static AtomicSymbol c() { return c; }
-  public static AtomicSymbol u() { return u; }
-  public static Symbol n() { return n; }
-
-  private RNATools() {
+  public static AtomicSymbol a() {
+    return a;
   }
-  
+
+  public static AtomicSymbol g() {
+    return g;
+  }
+
+  public static AtomicSymbol c() {
+    return c;
+  }
+
+  public static AtomicSymbol u() {
+    return u;
+  }
+
+  public static Symbol n() {
+    return n;
+  }
+
+  private RNATools() {}
+
   /**
    * Return the RNA alphabet.
    *
@@ -147,24 +157,21 @@ public final class RNATools {
 
   /**
    * Gets the (RNA x RNA x RNA) Alphabet
+   * 
    * @return a flyweight version of the (RNA x RNA x RNA) alphabet
    */
-  public static FiniteAlphabet getCodonAlphabet(){
-    return (FiniteAlphabet)AlphabetManager.generateCrossProductAlphaFromName("(RNA x RNA x RNA)");
+  public static FiniteAlphabet getCodonAlphabet() {
+    return (FiniteAlphabet) AlphabetManager.generateCrossProductAlphaFromName("(RNA x RNA x RNA)");
   }
 
   /**
-   * Return a new RNA <span class="type">SymbolList</span> for
-   * <span class="arg">rna</span>.
+   * Return a new RNA <span class="type">SymbolList</span> for <span class="arg">rna</span>.
    *
    * @param rna a <span class="type">String</span> to parse into RNA
-   * @return a <span class="type">SymbolList</span> created form
-   *         <span class="arg">rna</span>
-   * @throws IllegalSymbolException if  <span class="arg">rna</span> contains
-   *         any non-RNA characters
+   * @return a <span class="type">SymbolList</span> created form <span class="arg">rna</span>
+   * @throws IllegalSymbolException if <span class="arg">rna</span> contains any non-RNA characters
    */
-  public static SymbolList createRNA(String rna)
-  throws IllegalSymbolException {
+  public static SymbolList createRNA(String rna) throws IllegalSymbolException {
     SymbolTokenization p = null;
     try {
       p = getRNA().getTokenization("token");
@@ -176,23 +183,17 @@ public final class RNATools {
   }
 
   /**
-   * Return a new RNA <span class="type">Sequence</span> for
-   * <span class="arg">rna</span>.
+   * Return a new RNA <span class="type">Sequence</span> for <span class="arg">rna</span>.
    *
    * @param rna a <span class="type">String</span> to parse into RNA
    * @param name a <span class="type">String</span> to use as the name
-   * @return a <span class="type">Sequence</span> created form
-   *         <span class="arg">dna</span>
-   * @throws IllegalSymbolException if <span class="arg">rna</span> contains
-   *         any non-DNA characters
+   * @return a <span class="type">Sequence</span> created form <span class="arg">dna</span>
+   * @throws IllegalSymbolException if <span class="arg">rna</span> contains any non-DNA characters
    */
-  public static Sequence createRNASequence(String rna, String name)
-  throws IllegalSymbolException {
+  public static Sequence createRNASequence(String rna, String name) throws IllegalSymbolException {
     try {
-      return new SimpleSequenceFactory().createSequence(
-        createRNA(rna),
-        "", name, new SimpleAnnotation()
-      );
+      return new SimpleSequenceFactory().createSequence(createRNA(rna), "", name,
+          new SimpleAnnotation());
     } catch (BioException se) {
       throw new BioError("Something has gone badly wrong with RNA", se);
     }
@@ -203,23 +204,22 @@ public final class RNATools {
    * <p>
    * The index for a symbol is stable across virtual machines & invocations.
    *
-   * @param sym  the Symbol to index
-   * @return     the index for that symbol
+   * @param sym the Symbol to index
+   * @return the index for that symbol
    * @throws IllegalSymbolException if sym is not a member of the DNA alphabet
    */
   public static int index(Symbol sym) throws IllegalSymbolException {
-    if(sym == a) {
+    if (sym == a) {
       return 0;
-    } else if(sym == g) {
+    } else if (sym == g) {
       return 1;
-    } else if(sym == c) {
+    } else if (sym == c) {
       return 2;
-    } else if(sym == u) {
+    } else if (sym == u) {
       return 3;
     }
     getRNA().validate(sym);
-    throw new IllegalSymbolException("Really confused. Can't find index for " +
-                                      sym.getName());
+    throw new IllegalSymbolException("Really confused. Can't find index for " + sym.getName());
   }
 
   /**
@@ -227,68 +227,63 @@ public final class RNATools {
    * <p>
    * The index for a symbol is stable accross virtual machines & invocations.
    *
-   * @param index  the index to look up
-   * @return       the symbol at that index
+   * @param index the index to look up
+   * @return the symbol at that index
    * @throws IndexOutOfBoundsException if index is not between 0 and 3
    */
-  static public Symbol forIndex(int index)
-  throws IndexOutOfBoundsException {
-    if(index == 0)
+  static public Symbol forIndex(int index) throws IndexOutOfBoundsException {
+    if (index == 0)
       return a;
-    else if(index == 1)
+    else if (index == 1)
       return g;
-    else if(index == 2)
+    else if (index == 2)
       return c;
-    else if(index == 3)
+    else if (index == 3)
       return u;
-    else throw new IndexOutOfBoundsException("No symbol for index " + index);
+    else
+      throw new IndexOutOfBoundsException("No symbol for index " + index);
   }
 
   /**
    * Complement the symbol.
    *
-   * @param sym  the symbol to complement
+   * @param sym the symbol to complement
    * @return a Symbol that is the complement of sym
    * @throws IllegalSymbolException if sym is not a member of the RNA alphabet
    */
-  static public Symbol complement(Symbol sym)
-  throws IllegalSymbolException {
-    if(sym == a) {
+  static public Symbol complement(Symbol sym) throws IllegalSymbolException {
+    if (sym == a) {
       return u;
-    } else if(sym == g) {
+    } else if (sym == g) {
       return c;
-    } else if(sym == c) {
+    } else if (sym == c) {
       return g;
-    } else if(sym == u) {
+    } else if (sym == u) {
       return a;
     }
     Symbol s = (Symbol) symbolToComplement.get(sym);
-    if(s != null) {
+    if (s != null) {
       return s;
     } else {
       getRNA().validate(sym);
-      throw new BioError(
-        "Really confused. Can't find symbol " +
-        sym.getName()
-      );
+      throw new BioError("Really confused. Can't find symbol " + sym.getName());
     }
   }
 
   /**
    * Retrieve the symbol for a symbol.
    *
-   * @param token  the char to look up
-   * @return  the symbol for that char
+   * @param token the char to look up
+   * @return the symbol for that char
    * @throws IllegalSymbolException if the char is not a valid IUB code.
    */
-  static public Symbol forSymbol(char token)
-  throws IllegalSymbolException {
+  static public Symbol forSymbol(char token) throws IllegalSymbolException {
     String t = String.valueOf(token);
     SymbolTokenization toke;
 
-    try{
+    try {
       toke = getRNA().getTokenization("token");
-    }catch(BioException e){
+    } catch (BioException e) {
       throw new BioError("Cannot find the 'token' Tokenization for RNA!?", e);
     }
     return toke.parseToken(t);
@@ -297,39 +292,38 @@ public final class RNATools {
   /**
    * Retrieve a complement view of list.
    *
-   * @param list  the SymbolList to complement
+   * @param list the SymbolList to complement
    * @return a SymbolList that is the complement
    * @throws IllegalAlphabetException if list is not a complementable alphabet
    */
-  public static SymbolList complement(SymbolList list)
-  throws IllegalAlphabetException {
+  public static SymbolList complement(SymbolList list) throws IllegalAlphabetException {
     return SymbolListViews.translate(list, complementTable());
   }
 
   /**
    * Retrieve a reverse-complement view of list.
    *
-   * @param list  the SymbolList to complement
+   * @param list the SymbolList to complement
    * @return a SymbolList that is the complement
    * @throws IllegalAlphabetException if list is not a complementable alphabet
    */
-  public static SymbolList reverseComplement(SymbolList list)
-  throws IllegalAlphabetException {
+  public static SymbolList reverseComplement(SymbolList list) throws IllegalAlphabetException {
     return SymbolListViews.translate(SymbolListViews.reverse(list), complementTable());
   }
 
   /**
    * Transcribe DNA into RNA.
-   * @deprecated The naming of this method is confusing and inconsistent use either DNATools.toRNA(SymbolList list) or
-   * DNATools.transcribeToRNA(SymbolList list) depending on the desired behaivour.
+   * 
+   * @deprecated The naming of this method is confusing and inconsistent use either
+   *             DNATools.toRNA(SymbolList list) or DNATools.transcribeToRNA(SymbolList list)
+   *             depending on the desired behaivour.
    * @param list the SymbolList to transcribe
    * @return a SymbolList that is the transcribed view
    * @throws IllegalAlphabetException if the list is not DNA
    */
-   public static SymbolList transcribe(SymbolList list)
-   throws IllegalAlphabetException {
-     return SymbolListViews.translate(list, transcriptionTable());
-   }
+  public static SymbolList transcribe(SymbolList list) throws IllegalAlphabetException {
+    return SymbolListViews.translate(list, transcriptionTable());
+  }
 
   /**
    * Get a translation table for complementing DNA symbols.
@@ -372,26 +366,23 @@ public final class RNATools {
    * <li>"SCENEDESMUS_MITOCHONDRIAL"</li>
    * </ul>
    *
-   * There are public static final fields in the TranslationTable
-   * interface which contain these values. One of these should be used
-   * as the argument for this method.
+   * There are public static final fields in the TranslationTable interface which contain these
+   * values. One of these should be used as the argument for this method.
    * <p>
-   * You can now get the reverse translation of the residue back to its
-   * (usually several) codons too.
+   * You can now get the reverse translation of the residue back to its (usually several) codons
+   * too.
    *
    * @since 1.1
    */
   public static ManyToOneTranslationTable getGeneticCode(String name) {
     return (ManyToOneTranslationTable) geneticCodes.get(name);
   }
-  
+
   /**
-   * Retrieve a TranslationTable by number.
-   * These numbers correspond to the transl_table qualifier in the
-   * DDBJ/EMBL/GenBank Feature Table (Version 6.5  Apr 2006): transl_table
-   * defines the genetic code table used if other than the universal 
-   * genetic code table. Tables are described in appendix V,
-   * section 7.5.5:
+   * Retrieve a TranslationTable by number. These numbers correspond to the transl_table qualifier
+   * in the DDBJ/EMBL/GenBank Feature Table (Version 6.5 Apr 2006): transl_table defines the genetic
+   * code table used if other than the universal genetic code table. Tables are described in
+   * appendix V, section 7.5.5:
    *
    * <ul>
    * <li>" 1 - UNIVERSAL"</li>
@@ -416,17 +407,16 @@ public final class RNATools {
    * @since 1.5
    */
   public static ManyToOneTranslationTable getGeneticCode(int table_num) {
-      Set tables = getGeneticCodeNames();
-      Iterator it = tables.iterator();
-      while(it.hasNext()) {
-          String tableName = (String) it.next();
-          SimpleGeneticCodeTable table = (SimpleGeneticCodeTable) geneticCodes.get(tableName);
-          if(table.getTableNumber()==table_num)
-              return table;
-      }
-      throw new IllegalArgumentException("There is no genetic code table at that number");
+    Set tables = getGeneticCodeNames();
+    Iterator it = tables.iterator();
+    while (it.hasNext()) {
+      String tableName = (String) it.next();
+      SimpleGeneticCodeTable table = (SimpleGeneticCodeTable) geneticCodes.get(tableName);
+      if (table.getTableNumber() == table_num) return table;
+    }
+    throw new IllegalArgumentException("There is no genetic code table at that number");
   }
-  
+
   /**
    * Retrieve a Set containing the name of each genetic code.
    *
@@ -437,28 +427,24 @@ public final class RNATools {
   }
 
   /**
-   * Translate RNA into protein (with termination symbols).  For
-   * compatibility with BioJava 1.1, this will also handle sequences
-   * which are already expressed in the (RNA x RNA x RNA) (codon)
+   * Translate RNA into protein (with termination symbols). For compatibility with BioJava 1.1, this
+   * will also handle sequences which are already expressed in the (RNA x RNA x RNA) (codon)
    * alphabet.
    *
    * @since 1.1
    */
-  public static SymbolList translate(SymbolList syms)
-    throws IllegalAlphabetException
-  {
-      if (syms.getAlphabet() == getRNA()) {
-          syms = SymbolListViews.windowedSymbolList(syms, 3);
-      }
-      return SymbolListViews.translate(syms, getGeneticCode("UNIVERSAL"));
+  public static SymbolList translate(SymbolList syms) throws IllegalAlphabetException {
+    if (syms.getAlphabet() == getRNA()) {
+      syms = SymbolListViews.windowedSymbolList(syms, 3);
+    }
+    return SymbolListViews.translate(syms, getGeneticCode("UNIVERSAL"));
   }
 
   private static void loadGeneticCodes() {
     try {
-      InputStream tablesStream = ClassTools.getClassLoader(RNATools.class).getResourceAsStream(
-        "org/biojava/bio/seq/TranslationTables.xml"
-      );
-      if(tablesStream == null ) {
+      InputStream tablesStream = ClassTools.getClassLoader(RNATools.class)
+          .getResourceAsStream("org/biojava/bio/seq/TranslationTables.xml");
+      if (tablesStream == null) {
         throw new BioError("Couldn't locate TranslationTables.xml.");
       }
 
@@ -467,57 +453,52 @@ public final class RNATools {
       Document doc = parser.parse(is);
 
       NodeList children = doc.getDocumentElement().getChildNodes();
-      for(int i = 0; i < children.getLength(); i++) {
+      for (int i = 0; i < children.getLength(); i++) {
         Node cnode = children.item(i);
-        if(! (cnode instanceof Element)) {
+        if (!(cnode instanceof Element)) {
           continue;
         }
 
         Element child = (Element) cnode;
         String name = child.getNodeName();
-        if(name.equals("table")) {
+        if (name.equals("table")) {
           String tableName = child.getAttribute("name");
           String source = child.getAttribute("source");
           String target = child.getAttribute("target");
-          FiniteAlphabet sourceA =
-            (FiniteAlphabet) AlphabetManager.alphabetForName(source);
-          FiniteAlphabet targetA =
-            (FiniteAlphabet) AlphabetManager.alphabetForName(target);
+          FiniteAlphabet sourceA = (FiniteAlphabet) AlphabetManager.alphabetForName(source);
+          FiniteAlphabet targetA = (FiniteAlphabet) AlphabetManager.alphabetForName(target);
           SymbolTokenization targetP = targetA.getTokenization("name");
-          SimpleGeneticCodeTable table = new SimpleGeneticCodeTable (
-            sourceA,
-            targetA
-          );
+          SimpleGeneticCodeTable table = new SimpleGeneticCodeTable(sourceA, targetA);
 
           NodeList translates = child.getChildNodes();
-          for(int j = 0; j < translates.getLength(); j++) {
+          for (int j = 0; j < translates.getLength(); j++) {
             Node tn = translates.item(j);
-            if(tn instanceof Element) {
+            if (tn instanceof Element) {
               Element te = (Element) tn;
-              if(te.getTagName().equals("transl_table")) {
-                  int num = Integer.valueOf(te.getAttribute("value")).intValue();
-                  String description = te.getAttribute("description");
-                  table.setTableNumber(num);
-                  table.setDescription(description);
-                  continue;
+              if (te.getTagName().equals("transl_table")) {
+                int num = Integer.valueOf(te.getAttribute("value")).intValue();
+                String description = te.getAttribute("description");
+                table.setTableNumber(num);
+                table.setDescription(description);
+                continue;
               }
               String from = te.getAttribute("from");
               String to = te.getAttribute("to");
 
               //
               // Not the most elegant solution, but I wanted this working
-              // quickly for 1.1.  It's been broken for ages.
-              //     -td 26/i/20001
+              // quickly for 1.1. It's been broken for ages.
+              // -td 26/i/20001
               //
 
               SymbolList fromSymbols = RNATools.createRNA(from);
               if (fromSymbols.length() != 3) {
-                  throw new BioError("`" + from + "' is not a valid codon");
+                throw new BioError("`" + from + "' is not a valid codon");
               }
 
               // AtomicSymbol fromS = (AtomicSymbol) sourceP.parseToken(from);
               AtomicSymbol fromS = (AtomicSymbol) sourceA.getSymbol(fromSymbols.toList());
-              AtomicSymbol toS   = (AtomicSymbol) targetP.parseToken(to);
+              AtomicSymbol toS = (AtomicSymbol) targetP.parseToken(to);
               table.setTranslation(fromS, toS);
             }
           }
@@ -534,25 +515,22 @@ public final class RNATools {
    * Sneaky class for complementing RNA bases.
    */
 
-  private static class RNAComplementTranslationTable
-  extends AbstractReversibleTranslationTable {
-    public Symbol doTranslate(Symbol s)
-          throws IllegalSymbolException {
-            return (Symbol) RNATools.complement(s);
-          }
-
-          public Symbol doUntranslate(Symbol s)
-          throws IllegalSymbolException {
-            return (Symbol) RNATools.complement(s);
+  private static class RNAComplementTranslationTable extends AbstractReversibleTranslationTable {
+    public Symbol doTranslate(Symbol s) throws IllegalSymbolException {
+      return (Symbol) RNATools.complement(s);
     }
 
-          public Alphabet getSourceAlphabet() {
-            return RNATools.getRNA();
-          }
+    public Symbol doUntranslate(Symbol s) throws IllegalSymbolException {
+      return (Symbol) RNATools.complement(s);
+    }
 
-          public Alphabet getTargetAlphabet() {
-            return RNATools.getRNA();
-          }
+    public Alphabet getSourceAlphabet() {
+      return RNATools.getRNA();
+    }
+
+    public Alphabet getTargetAlphabet() {
+      return RNATools.getRNA();
+    }
   }
 }
 

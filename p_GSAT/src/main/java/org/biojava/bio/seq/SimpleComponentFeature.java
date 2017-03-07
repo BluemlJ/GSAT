@@ -1,21 +1,18 @@
 /*
- *                    BioJava development code
+ * BioJava development code
  *
- * This code may be freely distributed and modified under the
- * terms of the GNU Lesser General Public Licence.  This should
- * be distributed with the code.  If you do not have a copy,
- * see:
+ * This code may be freely distributed and modified under the terms of the GNU Lesser General Public
+ * Licence. This should be distributed with the code. If you do not have a copy, see:
  *
- *      http://www.gnu.org/copyleft/lesser.html
+ * http://www.gnu.org/copyleft/lesser.html
  *
- * Copyright for this code is held jointly by the individual
- * authors.  These should be listed in @author doc comments.
+ * Copyright for this code is held jointly by the individual authors. These should be listed
+ * in @author doc comments.
  *
- * For more information on the BioJava project and its aims,
- * or to join the biojava-l mailing list, visit the home page
- * at:
+ * For more information on the BioJava project and its aims, or to join the biojava-l mailing list,
+ * visit the home page at:
  *
- *      http://www.biojava.org/
+ * http://www.biojava.org/
  *
  */
 
@@ -43,10 +40,7 @@ import org.biojava.utils.Unchangeable;
  * @since 1.1
  */
 
-class SimpleComponentFeature
-        extends Unchangeable
-        implements ComponentFeature
-{
+class SimpleComponentFeature extends Unchangeable implements ComponentFeature {
   private FeatureHolder parent;
 
   private FeatureHolder projectedFeatures;
@@ -64,20 +58,21 @@ class SimpleComponentFeature
   private Location componentLocation;
   private int translation;
 
-  public SimpleComponentFeature(FeatureHolder parent,
-                                ComponentFeature.Template temp)
-          throws BioException {
+  public SimpleComponentFeature(FeatureHolder parent, ComponentFeature.Template temp)
+      throws BioException {
     if (temp.componentSequence == null) {
-      throw new BioException("This implementation of ComponentFeature requires that sequences must already be resolved");
+      throw new BioException(
+          "This implementation of ComponentFeature requires that sequences must already be resolved");
     }
 
-    if (locationContent(temp.location) !=
-            locationContent(temp.componentLocation)) {
-      throw new BioException("Component and container locations must contain an equal number of symbols.");
+    if (locationContent(temp.location) != locationContent(temp.componentLocation)) {
+      throw new BioException(
+          "Component and container locations must contain an equal number of symbols.");
     }
 
     if (!temp.location.isContiguous() || !temp.componentLocation.isContiguous()) {
-      throw new BioException("Can only include contiguous segments in an assembly [may change in future]");
+      throw new BioException(
+          "Can only include contiguous segments in an assembly [may change in future]");
     }
 
     this.parent = parent;
@@ -96,13 +91,11 @@ class SimpleComponentFeature
     if (temp.strand == StrandedFeature.NEGATIVE) {
       this.translation = temp.location.getMax() + temp.componentLocation.getMin();
       this.projectedFeatures = new ProjectedFeatureHolder(
-              new TranslateFlipContext(
-                      this, componentSequence, translation, true));
+          new TranslateFlipContext(this, componentSequence, translation, true));
     } else if (temp.strand == StrandedFeature.POSITIVE) {
       this.translation = temp.location.getMin() - temp.componentLocation.getMin();
       this.projectedFeatures = new ProjectedFeatureHolder(
-              new TranslateFlipContext(
-                      this, componentSequence, translation, false));
+          new TranslateFlipContext(this, componentSequence, translation, false));
     } else {
       throw new BioException("Strand must be specified when creating a ComponentFeature");
     }
@@ -121,8 +114,7 @@ class SimpleComponentFeature
   }
 
   private int locationContent(Location l) {
-    if (l.isContiguous())
-      return l.getMax() - l.getMin() + 1;
+    if (l.isContiguous()) return l.getMax() - l.getMin() + 1;
     int content = 0;
     for (Iterator i = l.blockIterator(); i.hasNext();) {
       Location sl = (Location) i.next();
@@ -132,8 +124,8 @@ class SimpleComponentFeature
   }
 
   /**
-   * SimpleComponentFeatures are always constructed with an explicit
-   * Sequence object, and are thus resolvable by definition.
+   * SimpleComponentFeatures are always constructed with an explicit Sequence object, and are thus
+   * resolvable by definition.
    */
 
   public boolean isComponentResolvable() {
@@ -148,24 +140,18 @@ class SimpleComponentFeature
     return strand;
   }
 
-  public void setStrand(Strand strand)
-          throws ChangeVetoException {
-    throw new ChangeVetoException(
-            new ChangeEvent(this, STRAND, strand, this.strand),
-            "Can't change strand as it is immutable"
-    );
+  public void setStrand(Strand strand) throws ChangeVetoException {
+    throw new ChangeVetoException(new ChangeEvent(this, STRAND, strand, this.strand),
+        "Can't change strand as it is immutable");
   }
 
   public Location getLocation() {
     return location;
   }
 
-  public void setLocation(Location loc)
-          throws ChangeVetoException {
-    throw new ChangeVetoException(
-            new ChangeEvent(this, LOCATION, loc, this.location),
-            "Can't change location as it is immutable"
-    );
+  public void setLocation(Location loc) throws ChangeVetoException {
+    throw new ChangeVetoException(new ChangeEvent(this, LOCATION, loc, this.location),
+        "Can't change location as it is immutable");
   }
 
   public FeatureHolder getParent() {
@@ -191,20 +177,14 @@ class SimpleComponentFeature
     return typeTerm;
   }
 
-  public void setSource(String source)
-          throws ChangeVetoException {
-    throw new ChangeVetoException(
-            new ChangeEvent(this, SOURCE, source, this.source),
-            "Can't change source as it is immutable"
-    );
+  public void setSource(String source) throws ChangeVetoException {
+    throw new ChangeVetoException(new ChangeEvent(this, SOURCE, source, this.source),
+        "Can't change source as it is immutable");
   }
 
-  public void setSourceTerm(Term source)
-          throws ChangeVetoException {
-    throw new ChangeVetoException(
-            new ChangeEvent(this, SOURCE, source, this.sourceTerm),
-            "Can't change source as it is immutable"
-    );
+  public void setSourceTerm(Term source) throws ChangeVetoException {
+    throw new ChangeVetoException(new ChangeEvent(this, SOURCE, source, this.sourceTerm),
+        "Can't change source as it is immutable");
   }
 
   public String getSource() {
@@ -220,20 +200,14 @@ class SimpleComponentFeature
   }
 
 
-  public void setType(String type)
-          throws ChangeVetoException {
-    throw new ChangeVetoException(
-            new ChangeEvent(this, TYPE, type, this.type),
-            "Can't change type as it is immutable"
-    );
+  public void setType(String type) throws ChangeVetoException {
+    throw new ChangeVetoException(new ChangeEvent(this, TYPE, type, this.type),
+        "Can't change type as it is immutable");
   }
 
-  public void setTypeTerm(Term type)
-          throws ChangeVetoException {
-    throw new ChangeVetoException(
-            new ChangeEvent(this, SOURCE, type, this.typeTerm),
-            "Can't change type as it is immutable"
-    );
+  public void setTypeTerm(Term type) throws ChangeVetoException {
+    throw new ChangeVetoException(new ChangeEvent(this, SOURCE, type, this.typeTerm),
+        "Can't change type as it is immutable");
   }
 
   public Annotation getAnnotation() {
@@ -242,13 +216,13 @@ class SimpleComponentFeature
 
   public SymbolList getSymbols() {
     SymbolList syms = componentLocation.symbols(componentSequence);
-//  	if (strand == StrandedFeature.NEGATIVE) {
-//  	    try {
-//  		syms = DNATools.reverseComplement(syms);
-//  	    } catch (IllegalAlphabetException ex) {
-//  		throw new BioError(ex);
-//  	    }
-//  	}
+    // if (strand == StrandedFeature.NEGATIVE) {
+    // try {
+    // syms = DNATools.reverseComplement(syms);
+    // } catch (IllegalAlphabetException ex) {
+    // throw new BioError(ex);
+    // }
+    // }
     return syms;
   }
 
@@ -261,10 +235,10 @@ class SimpleComponentFeature
   }
 
   protected FeatureHolder getProjectedFeatures() {
-//  if (projectedFeatures == null) {
-//  	    projectedFeatures = new ProjectedFeatureHolder(componentSequence,
-//  							   this, translation);
-//  	}
+    // if (projectedFeatures == null) {
+    // projectedFeatures = new ProjectedFeatureHolder(componentSequence,
+    // this, translation);
+    // }
     return projectedFeatures;
   }
 
@@ -281,8 +255,9 @@ class SimpleComponentFeature
   }
 
   public FeatureHolder filter(FeatureFilter ff) {
-    FeatureFilter childFilter = new FeatureFilter.And(new FeatureFilter.ByParent(new FeatureFilter.ByClass(ComponentFeature.class)),
-                                                      new FeatureFilter.Not(FeatureFilter.top_level));
+    FeatureFilter childFilter = new FeatureFilter.And(
+        new FeatureFilter.ByParent(new FeatureFilter.ByClass(ComponentFeature.class)),
+        new FeatureFilter.Not(FeatureFilter.top_level));
 
     if (FilterUtils.areDisjoint(ff, childFilter)) {
       return FeatureHolder.EMPTY_FEATURE_HOLDER;
@@ -292,8 +267,9 @@ class SimpleComponentFeature
   }
 
   public FeatureHolder filter(FeatureFilter ff, boolean recurse) {
-    FeatureFilter childFilter = new FeatureFilter.And(new FeatureFilter.ByParent(new FeatureFilter.ByClass(ComponentFeature.class)),
-                                                      new FeatureFilter.Not(FeatureFilter.top_level));
+    FeatureFilter childFilter = new FeatureFilter.And(
+        new FeatureFilter.ByParent(new FeatureFilter.ByClass(ComponentFeature.class)),
+        new FeatureFilter.Not(FeatureFilter.top_level));
 
     if (FilterUtils.areDisjoint(ff, childFilter)) {
       return FeatureHolder.EMPTY_FEATURE_HOLDER;
@@ -302,8 +278,7 @@ class SimpleComponentFeature
     }
   }
 
-  public Feature createFeature(Feature.Template temp)
-          throws BioException {
+  public Feature createFeature(Feature.Template temp) throws BioException {
     throw new BioException("Can't create features in a ComponentFeature (yet?)");
   }
 

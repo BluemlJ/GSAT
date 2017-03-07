@@ -1,21 +1,18 @@
 /*
- *                    BioJava development code
+ * BioJava development code
  *
- * This code may be freely distributed and modified under the
- * terms of the GNU Lesser General Public Licence.  This should
- * be distributed with the code.  If you do not have a copy,
- * see:
+ * This code may be freely distributed and modified under the terms of the GNU Lesser General Public
+ * Licence. This should be distributed with the code. If you do not have a copy, see:
  *
- *      http://www.gnu.org/copyleft/lesser.html
+ * http://www.gnu.org/copyleft/lesser.html
  *
- * Copyright for this code is held jointly by the individual
- * authors.  These should be listed in @author doc comments.
+ * Copyright for this code is held jointly by the individual authors. These should be listed
+ * in @author doc comments.
  *
- * For more information on the BioJava project and its aims,
- * or to join the biojava-l mailing list, visit the home page
- * at:
+ * For more information on the BioJava project and its aims, or to join the biojava-l mailing list,
+ * visit the home page at:
  *
- *      http://www.biojava.org/
+ * http://www.biojava.org/
  *
  */
 
@@ -28,14 +25,16 @@ import org.biojava.utils.ChangeSupport;
 import org.biojava.utils.ChangeVetoException;
 
 /**
- * Abstract implementation of <code>MutationFunction</code> all custom
- * implementations should inherit from here.
+ * Abstract implementation of <code>MutationFunction</code> all custom implementations should
+ * inherit from here.
+ * 
  * @author Mark Schreiber
  * @version 1.0
  * @since 1.5
  */
-public abstract class AbstractMutationFunction
-    extends AbstractChangeable implements MutationFunction {
+public abstract class AbstractMutationFunction extends AbstractChangeable
+    implements
+      MutationFunction {
 
   private double[] mutationProbs;
   private OrderNDistribution mutationSpectrum;
@@ -45,22 +44,20 @@ public abstract class AbstractMutationFunction
   }
 
   public final void setMutationProbs(double[] mutationProbs) throws ChangeVetoException {
-    if(!hasListeners()){
+    if (!hasListeners()) {
       this.mutationProbs = mutationProbs;
-    }else{
-      ChangeEvent ce = new ChangeEvent(this,
-                                       MutationFunction.MUTATION_PROBS,
-                                       mutationProbs,
-                                       this.mutationProbs
-                                       );
+    } else {
+      ChangeEvent ce =
+          new ChangeEvent(this, MutationFunction.MUTATION_PROBS, mutationProbs, this.mutationProbs);
       ChangeSupport changeSupport = super.getChangeSupport(MutationFunction.MUTATION_PROBS);
-      synchronized(changeSupport){
+      synchronized (changeSupport) {
         changeSupport.firePreChangeEvent(ce);
-          this.mutationProbs = mutationProbs;
+        this.mutationProbs = mutationProbs;
         changeSupport.firePostChangeEvent(ce);
       }
     }
   }
+
   public final double[] getMutationProbs() {
     return mutationProbs;
   }
@@ -68,23 +65,20 @@ public abstract class AbstractMutationFunction
   public final void setMutationSpectrum(OrderNDistribution mutationSpectrum)
       throws ChangeVetoException {
 
-    if(!hasListeners()){
+    if (!hasListeners()) {
       this.mutationSpectrum = mutationSpectrum;
-    }else{
-      ChangeEvent ce = new ChangeEvent(this,
-                                       MutationFunction.MUTATION_SPECTRUM,
-                                       mutationSpectrum,
-                                       this.mutationSpectrum
-                                       );
-      ChangeSupport changeSupport =
-          super.getChangeSupport(MutationFunction.MUTATION_SPECTRUM);
-      synchronized(changeSupport){
+    } else {
+      ChangeEvent ce = new ChangeEvent(this, MutationFunction.MUTATION_SPECTRUM, mutationSpectrum,
+          this.mutationSpectrum);
+      ChangeSupport changeSupport = super.getChangeSupport(MutationFunction.MUTATION_SPECTRUM);
+      synchronized (changeSupport) {
         changeSupport.firePreChangeEvent(ce);
-          this.mutationSpectrum = mutationSpectrum;
+        this.mutationSpectrum = mutationSpectrum;
         changeSupport.firePostChangeEvent(ce);
       }
     }
   }
+
   public final OrderNDistribution getMutationSpectrum() {
     return mutationSpectrum;
   }

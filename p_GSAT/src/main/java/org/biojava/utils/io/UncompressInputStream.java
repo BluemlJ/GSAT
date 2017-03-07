@@ -1,32 +1,27 @@
 /*
- * @(#)UncompressInputStream.java           0.3-3 06/05/2001
+ * @(#)UncompressInputStream.java 0.3-3 06/05/2001
  *
- *  This file is part of the HTTPClient package
- *  Copyright (C) 1996-2001 Ronald Tschalar
+ * This file is part of the HTTPClient package Copyright (C) 1996-2001 Ronald Tschalar
  *
- *  This library is free software; you can redistribute it and/or
- *  modify it under the terms of the GNU Lesser General Public
- *  License as published by the Free Software Foundation; either
- *  version 2 of the License, or (at your option) any later version.
+ * This library is free software; you can redistribute it and/or modify it under the terms of the
+ * GNU Lesser General Public License as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
  *
- *  This library is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- *  Lesser General Public License for more details.
+ * This library is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without
+ * even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+ * Lesser General Public License for more details.
  *
- *  You should have received a copy of the GNU Lesser General Public
- *  License along with this library; if not, write to the Free
- *  Software Foundation, Inc., 59 Temple Place, Suite 330, Boston,
- *  MA 02111-1307, USA
+ * You should have received a copy of the GNU Lesser General Public License along with this library;
+ * if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+ * 02111-1307, USA
  *
- *  For questions, suggestions, bug-reports, enhancement-requests etc.
- *  I may be contacted at:
+ * For questions, suggestions, bug-reports, enhancement-requests etc. I may be contacted at:
  *
- *  ronald@xxxxxxxxxxxxx
+ * ronald@xxxxxxxxxxxxx
  *
- *  The HTTPClient's home page is located at:
+ * The HTTPClient's home page is located at:
  *
- *  http://www.innovation.ch/java/HTTPClient/
+ * http://www.innovation.ch/java/HTTPClient/
  */
 
 package org.biojava.utils.io;
@@ -40,23 +35,19 @@ import java.io.InputStream;
 
 
 /**
- * This class decompresses an input stream containing data compressed with
- * the unix "compress" utility (LZC, a LZW variant). This code is based
- * heavily on the <var>unlzw.c</var> code in <var>gzip-1.2.4</var> (written
- * by Peter Jannesen) and the original compress code.
+ * This class decompresses an input stream containing data compressed with the unix "compress"
+ * utility (LZC, a LZW variant). This code is based heavily on the <var>unlzw.c</var> code in
+ * <var>gzip-1.2.4</var> (written by Peter Jannesen) and the original compress code.
  *
  *
- *  This version has been modified from the original 0.3-3 version by the
- *  Unidata Program Center (support@xxxxxxxxxxxxxxxx) to make the constructor
- *  public and to fix a couple of bugs.
- *  Also:
- *   - markSupported() returns false
- *   - add uncompress() static method
+ * This version has been modified from the original 0.3-3 version by the Unidata Program Center
+ * (support@xxxxxxxxxxxxxxxx) to make the constructor public and to fix a couple of bugs. Also: -
+ * markSupported() returns false - add uncompress() static method
  *
  * @version 0.3-3 06/05/2001
- * @author  Ronald Tschalar
- * @author  Unidata Program Center
- * @author  Richard Holland - making LZW_MAGIC package-visible.
+ * @author Ronald Tschalar
+ * @author Unidata Program Center
+ * @author Richard Holland - making LZW_MAGIC package-visible.
  */
 public class UncompressInputStream extends FilterInputStream {
   /**
@@ -108,13 +99,12 @@ public class UncompressInputStream extends FilterInputStream {
   private static final int EXTRA = 64;
 
 
-  public synchronized int read(byte[] buf, int off, int len)
-      throws IOException {
+  public synchronized int read(byte[] buf, int off, int len) throws IOException {
     if (eof) return -1;
     int start = off;
 
-/* Using local copies of various variables speeds things up by as
-     * much as 30% !
+    /*
+     * Using local copies of various variables speeds things up by as much as 30% !
      */
     int[] l_tab_prefix = tab_prefix;
     byte[] l_tab_suffix = tab_suffix;
@@ -131,7 +121,7 @@ public class UncompressInputStream extends FilterInputStream {
     int l_bit_pos = bit_pos;
 
 
-// empty stack if stuff still left
+    // empty stack if stuff still left
 
     int s_size = l_stack.length - l_stackp;
     if (s_size > 0) {
@@ -148,13 +138,12 @@ public class UncompressInputStream extends FilterInputStream {
     }
 
 
-// loop, filling local buffer until enough data has been decompressed
+    // loop, filling local buffer until enough data has been decompressed
 
     main_loop: do {
       if (end < EXTRA) fill();
 
-      int bit_in = (got > 0) ? (end - end % l_n_bits) << 3 :
-          (end << 3) - (l_n_bits - 1);
+      int bit_in = (got > 0) ? (end - end % l_n_bits) << 3 : (end << 3) - (l_n_bits - 1);
 
       while (l_bit_pos < bit_in) {
         // handle 1-byte reads correctly
@@ -176,15 +165,12 @@ public class UncompressInputStream extends FilterInputStream {
 
         if (l_free_ent > l_maxcode) {
           int n_bytes = l_n_bits << 3;
-          l_bit_pos = (l_bit_pos - 1) +
-              n_bytes - (l_bit_pos - 1 + n_bytes) % n_bytes;
+          l_bit_pos = (l_bit_pos - 1) + n_bytes - (l_bit_pos - 1 + n_bytes) % n_bytes;
 
           l_n_bits++;
-          l_maxcode = (l_n_bits == maxbits) ? l_maxmaxcode :
-              (1 << l_n_bits) - 1;
+          l_maxcode = (l_n_bits == maxbits) ? l_maxmaxcode : (1 << l_n_bits) - 1;
 
-          if (debug)
-            System.err.println("Code-width expanded to " + l_n_bits);
+          if (debug) System.err.println("Code-width expanded to " + l_n_bits);
 
           l_bitmask = (1 << l_n_bits) - 1;
           l_bit_pos = resetbuf(l_bit_pos);
@@ -195,18 +181,15 @@ public class UncompressInputStream extends FilterInputStream {
         // read next code
 
         int pos = l_bit_pos >> 3;
-        int code = (((l_data[pos] & 0xFF) | ((l_data[pos + 1] & 0xFF) << 8) |
-            ((l_data[pos + 2] & 0xFF) << 16))
-            >> (l_bit_pos & 0x7)) & l_bitmask;
+        int code = (((l_data[pos] & 0xFF) | ((l_data[pos + 1] & 0xFF) << 8)
+            | ((l_data[pos + 2] & 0xFF) << 16)) >> (l_bit_pos & 0x7)) & l_bitmask;
         l_bit_pos += l_n_bits;
 
 
         // handle first iteration
 
         if (l_oldcode == -1) {
-          if (code >= 256)
-            throw new IOException("corrupt input: " + code +
-                " > 255");
+          if (code >= 256) throw new IOException("corrupt input: " + code + " > 255");
           l_finchar = (byte) (l_oldcode = code);
           buf[off++] = l_finchar;
           len--;
@@ -221,8 +204,7 @@ public class UncompressInputStream extends FilterInputStream {
           l_free_ent = TBL_FIRST - 1;
 
           int n_bytes = l_n_bits << 3;
-          l_bit_pos = (l_bit_pos - 1) +
-              n_bytes - (l_bit_pos - 1 + n_bytes) % n_bytes;
+          l_bit_pos = (l_bit_pos - 1) + n_bytes - (l_bit_pos - 1 + n_bytes) % n_bytes;
           l_n_bits = INIT_BITS;
           l_maxcode = (1 << l_n_bits) - 1;
           l_bitmask = l_maxcode;
@@ -244,8 +226,7 @@ public class UncompressInputStream extends FilterInputStream {
 
         if (code >= l_free_ent) {
           if (code > l_free_ent)
-            throw new IOException("corrupt input: code=" + code +
-                ", free_ent=" + l_free_ent);
+            throw new IOException("corrupt input: code=" + code + ", free_ent=" + l_free_ent);
 
           l_stack[--l_stackp] = l_finchar;
           code = l_oldcode;
@@ -321,8 +302,7 @@ public class UncompressInputStream extends FilterInputStream {
 
 
   /**
-   * Moves the unread data in the buffer to the beginning and resets
-   * the pointers.
+   * Moves the unread data in the buffer to the beginning and resets the pointers.
    */
   private final int resetbuf(int bit_pos) {
     int pos = bit_pos >> 3;
@@ -365,7 +345,7 @@ public class UncompressInputStream extends FilterInputStream {
   private static final int HDR_BLOCK_MODE = 0x80;
 
   private void parse_header() throws IOException {
-// read in and check magic number
+    // read in and check magic number
 
     int t = in.read();
     if (t < 0) throw new EOFException("Failed to read magic number");
@@ -373,13 +353,11 @@ public class UncompressInputStream extends FilterInputStream {
     t = in.read();
     if (t < 0) throw new EOFException("Failed to read magic number");
     magic += t & 0xff;
-    if (magic != LZW_MAGIC)
-      throw new IOException("Input not in compress format (read " +
-          "magic number 0x" +
-          Integer.toHexString(magic) + ")");
+    if (magic != LZW_MAGIC) throw new IOException("Input not in compress format (read "
+        + "magic number 0x" + Integer.toHexString(magic) + ")");
 
 
-// read in header byte
+    // read in header byte
 
     int header = in.read();
     if (header < 0) throw new EOFException("Failed to read header");
@@ -387,16 +365,12 @@ public class UncompressInputStream extends FilterInputStream {
     block_mode = (header & HDR_BLOCK_MODE) > 0;
     maxbits = header & HDR_MAXBITS;
 
-    if (maxbits > MAX_BITS)
-      throw new IOException("Stream compressed with " + maxbits +
-          " bits, but can only handle " + MAX_BITS +
-          " bits");
+    if (maxbits > MAX_BITS) throw new IOException(
+        "Stream compressed with " + maxbits + " bits, but can only handle " + MAX_BITS + " bits");
 
-    if ((header & HDR_EXTENDED) > 0)
-      throw new IOException("Header extension bit set");
+    if ((header & HDR_EXTENDED) > 0) throw new IOException("Header extension bit set");
 
-    if ((header & HDR_FREE) > 0)
-      throw new IOException("Header bit 6 set");
+    if ((header & HDR_FREE) > 0) throw new IOException("Header bit 6 set");
 
     if (debug) {
       System.err.println("block mode: " + block_mode);
@@ -404,7 +378,7 @@ public class UncompressInputStream extends FilterInputStream {
     }
 
 
-// initialize stuff
+    // initialize stuff
 
     maxmaxcode = 1 << maxbits;
     n_bits = INIT_BITS;
@@ -432,10 +406,10 @@ public class UncompressInputStream extends FilterInputStream {
     return false;
   }
 
-  static public void uncompress( String fileInName, FileOutputStream out) throws IOException {
+  static public void uncompress(String fileInName, FileOutputStream out) throws IOException {
     long start = System.currentTimeMillis();
 
-    InputStream in = new UncompressInputStream(  new FileInputStream(fileInName));
+    InputStream in = new UncompressInputStream(new FileInputStream(fileInName));
 
     int total = 0;
     byte[] buffer = new byte[100000];
@@ -464,8 +438,7 @@ public class UncompressInputStream extends FilterInputStream {
       System.exit(1);
     }
 
-    InputStream in =
-        new UncompressInputStream(new FileInputStream(args[0]));
+    InputStream in = new UncompressInputStream(new FileInputStream(args[0]));
 
     byte[] buf = new byte[100000];
     int tot = 0;

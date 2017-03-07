@@ -1,21 +1,18 @@
 /*
- *                    BioJava development code
+ * BioJava development code
  *
- * This code may be freely distributed and modified under the
- * terms of the GNU Lesser General Public Licence.  This should
- * be distributed with the code.  If you do not have a copy,
- * see:
+ * This code may be freely distributed and modified under the terms of the GNU Lesser General Public
+ * Licence. This should be distributed with the code. If you do not have a copy, see:
  *
- *      http://www.gnu.org/copyleft/lesser.html
+ * http://www.gnu.org/copyleft/lesser.html
  *
- * Copyright for this code is held jointly by the individual
- * authors.  These should be listed in @author doc comments.
+ * Copyright for this code is held jointly by the individual authors. These should be listed
+ * in @author doc comments.
  *
- * For more information on the BioJava project and its aims,
- * or to join the biojava-l mailing list, visit the home page
- * at:
+ * For more information on the BioJava project and its aims, or to join the biojava-l mailing list,
+ * visit the home page at:
  *
- *      http://www.biojava.org/
+ * http://www.biojava.org/
  *
  */
 package org.biojava.bio.seq.db;
@@ -55,55 +52,48 @@ import org.biojava.utils.ChangeVetoException;
  * @author Richard Holland
  * @George Waldon
  */
-public class GenbankSequenceDB
-{
-  private static SequenceFormat format = new GenbankFormat();;//return format of the sequence
-  private static String DBName="Genbank";//predefined the database name -- Genbank
-  protected boolean IOExceptionFound=false;//check if IOException is found
-  protected boolean ExceptionFound=false;//check if any exception is found
+public class GenbankSequenceDB {
+  private static SequenceFormat format = new GenbankFormat();;// return format of the sequence
+  private static String DBName = "Genbank";// predefined the database name -- Genbank
+  protected boolean IOExceptionFound = false;// check if IOException is found
+  protected boolean ExceptionFound = false;// check if any exception is found
   protected static final String urlBatchSequences =
-    "http://www.ncbi.nlm.nih.gov:80/entrez/eutils/efetch.fcgi";
+      "http://www.ncbi.nlm.nih.gov:80/entrez/eutils/efetch.fcgi";
 
-  public GenbankSequenceDB() {
-  }
+  public GenbankSequenceDB() {}
 
-  protected SequenceFormat getSequenceFormat()
-  {
+  protected SequenceFormat getSequenceFormat() {
     return format;
   }
 
-  protected Alphabet getAlphabet()
-  {
+  protected Alphabet getAlphabet() {
     return DNATools.getDNA();
   }
 
   /**
-   * Get the URL object for locating sequence object using eutils.
-   * The default value of the return format of the sequence object is text.
+   * Get the URL object for locating sequence object using eutils. The default value of the return
+   * format of the sequence object is text.
    **/
-  protected URL getAddress (String id) throws MalformedURLException
-  {
-        String defaultReturnFormat="text";
-        return getAddress(id,defaultReturnFormat);
+  protected URL getAddress(String id) throws MalformedURLException {
+    String defaultReturnFormat = "text";
+    return getAddress(id, defaultReturnFormat);
   }
 
   /**
-   * Get the URL object for locating sequence object using eutils.
-   * User could specify the return format of the sequence object.
+   * Get the URL object for locating sequence object using eutils. User could specify the return
+   * format of the sequence object.
    */
-  protected URL getAddress(String id, String format) throws MalformedURLException
-  {
-        FetchURL seqURL = new FetchURL(DBName, format);
-        String baseurl = seqURL.getbaseURL();
-        String db = seqURL.getDB();
-        String type = seqURL.getRetrievalType();
-        String mode = seqURL.getRetrievalMode();
-        String url = baseurl+db+"&id="+id+"&rettype="+type+"&retmode="+mode;
-        return new URL(url);
+  protected URL getAddress(String id, String format) throws MalformedURLException {
+    FetchURL seqURL = new FetchURL(DBName, format);
+    String baseurl = seqURL.getbaseURL();
+    String db = seqURL.getDB();
+    String type = seqURL.getRetrievalType();
+    String mode = seqURL.getRetrievalMode();
+    String url = baseurl + db + "&id=" + id + "&rettype=" + type + "&retmode=" + mode;
+    return new URL(url);
   }
 
-  public String getName()
-  {
+  public String getName() {
     return DBName;
   }
 
@@ -111,11 +101,11 @@ public class GenbankSequenceDB
     try {
       IOExceptionFound = false;
       ExceptionFound = false;
-      URL queryURL = getAddress(id); //get URL based on ID
+      URL queryURL = getAddress(id); // get URL based on ID
 
-      //  System.err.println("query is "+ queryURL.toString());
+      // System.err.println("query is "+ queryURL.toString());
 
-      //System.err.println("got data from " + queryURL);
+      // System.err.println("got data from " + queryURL);
 
       DataInputStream in = new DataInputStream(queryURL.openStream());
       BufferedReader reader = new BufferedReader(new InputStreamReader(in));
@@ -132,19 +122,17 @@ public class GenbankSequenceDB
     }
   }
 
-  public boolean checkIOException()
-  {
-        return IOExceptionFound;
+  public boolean checkIOException() {
+    return IOExceptionFound;
   }
 
-  public boolean checkException()
-  {
-        return ExceptionFound;
+  public boolean checkException() {
+    return ExceptionFound;
   }
 
   /**
-   * Create the Http Post Request to fetch (in batch mode) a list of sequence
-   * with Genbank.
+   * Create the Http Post Request to fetch (in batch mode) a list of sequence with Genbank.
+   * 
    * @param url URL of the request
    * @param list List of sequence identifier
    * @return The Post request.
@@ -158,11 +146,11 @@ public class GenbankSequenceDB
     for (Iterator i = list.iterator(); b;) {
       String idSequence = (String) i.next();
       params.append(idSequence);
-      if(i.hasNext()){
+      if (i.hasNext()) {
         params.append(",");
-      }else{
-        b =false;
-        //params.append("\r\n");
+      } else {
+        b = false;
+        // params.append("\r\n");
       }
     }
 
@@ -170,17 +158,11 @@ public class GenbankSequenceDB
     header.append("POST ");
     header.append(url.getPath());
     header.append(
-      " HTTP/1.0\r\n"
-        + "Connection: close\r\n"
-        + "Accept: text/html, text/plain\r\n"
-        + "Host: ");
+        " HTTP/1.0\r\n" + "Connection: close\r\n" + "Accept: text/html, text/plain\r\n" + "Host: ");
 
     header.append(url.getHost());
-    header.append(
-      "\r\n"
-        + "User-Agent: Biojava/GenbankSequenceDB\r\n"
-        + "Content-Type: application/x-www-form-urlencoded\r\n"
-        + "Content-Length: ");
+    header.append("\r\n" + "User-Agent: Biojava/GenbankSequenceDB\r\n"
+        + "Content-Type: application/x-www-form-urlencoded\r\n" + "Content-Length: ");
     header.append(params.length());
     header.append("\r\n\r\n");
 
@@ -194,8 +176,7 @@ public class GenbankSequenceDB
   /**
    * Retrieve sequences from a Genbank
    *
-   * @param list List of NCBI sequence number (GI), accession, accession.version,
-   * fasta or seqid.
+   * @param list List of NCBI sequence number (GI), accession, accession.version, fasta or seqid.
    * @return The database object (HashSequenceDB) with downloaded sequences.
    */
   public SequenceDB getSequences(Set list) throws BioException {
@@ -206,17 +187,13 @@ public class GenbankSequenceDB
   /**
    * Retrieve sequences from a Genbank
    *
-   * @param list List of NCBI sequence number (GI), accession, accession.version,
-   * fasta or seqid.
-   * @param database Where to store sequences. if database is null, use an
-   * HashSequenceDB Objet.
+   * @param list List of NCBI sequence number (GI), accession, accession.version, fasta or seqid.
+   * @param database Where to store sequences. if database is null, use an HashSequenceDB Objet.
    * @return The database object with downloaded sequences.
    */
-  public SequenceDB getSequences(Set list, SequenceDB database)
-    throws BioException {
+  public SequenceDB getSequences(Set list, SequenceDB database) throws BioException {
 
-    if (database == null)
-      database = new HashSequenceDB();
+    if (database == null) database = new HashSequenceDB();
 
     try {
 
@@ -224,12 +201,11 @@ public class GenbankSequenceDB
       int port = url.getPort();
       String hostname = url.getHost();
 
-      //Open the connection and the streams
+      // Open the connection and the streams
       Socket s = new Socket(hostname, port);
 
       InputStream sin = s.getInputStream();
-      BufferedReader fromServer =
-        new BufferedReader(new InputStreamReader(sin));
+      BufferedReader fromServer = new BufferedReader(new InputStreamReader(sin));
       OutputStream sout = s.getOutputStream();
       PrintWriter toServer = new PrintWriter(new OutputStreamWriter(sout));
 
@@ -239,11 +215,8 @@ public class GenbankSequenceDB
 
       // Delete response headers
       boolean finEntete = false;
-      for (String l = null;
-        ((l = fromServer.readLine()) != null) && (!finEntete);
-        )
-        if (l.equals(""))
-          finEntete = true;
+      for (String l = null; ((l = fromServer.readLine()) != null) && (!finEntete);)
+        if (l.equals("")) finEntete = true;
 
       SequenceIterator seqI = SeqIOTools.readGenbank(fromServer);
 
@@ -251,13 +224,13 @@ public class GenbankSequenceDB
         database.addSequence(seqI.nextSequence());
 
     } catch (MalformedURLException e) {
-      throw new BioException(e,"Exception found in GenbankSequenceDB -- getSequences");
+      throw new BioException(e, "Exception found in GenbankSequenceDB -- getSequences");
     } catch (IOException e) {
-      throw new BioException(e,"Exception found in GenbankSequenceDB -- getSequences");
+      throw new BioException(e, "Exception found in GenbankSequenceDB -- getSequences");
     } catch (BioException e) {
-      throw new BioException(e,"Exception found in GenbankSequenceDB -- getSequences");
+      throw new BioException(e, "Exception found in GenbankSequenceDB -- getSequences");
     } catch (ChangeVetoException e) {
-      throw new BioException(e,"Exception found in GenbankSequenceDB -- getSequences");
+      throw new BioException(e, "Exception found in GenbankSequenceDB -- getSequences");
     }
 
     return database;

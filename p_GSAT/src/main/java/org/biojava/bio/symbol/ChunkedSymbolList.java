@@ -6,25 +6,20 @@ import java.io.Serializable;
 import org.biojava.utils.ChangeListener;
 
 /**
- * SymbolList implementation using constant-size chunks. Each chunk provides
- * the same number of symbols (except the last one, which may be shorter). When
- * a request for symbols comes in, firstly the apropreate chunk is located, and
- * then the symbols are extracted. This implementation is used in the IO package
- * to avoid allocating and re-allocating memory when the total length of the
- * symbol list is unknown. It can also be used when chunks are to be lazily
- * fetched from some high-latency stoorage by implementing a single lazy-fetch
- * SymbolList class and populating a ChunkedSymbolList with a complete
- * tile-path of them.
+ * SymbolList implementation using constant-size chunks. Each chunk provides the same number of
+ * symbols (except the last one, which may be shorter). When a request for symbols comes in, firstly
+ * the apropreate chunk is located, and then the symbols are extracted. This implementation is used
+ * in the IO package to avoid allocating and re-allocating memory when the total length of the
+ * symbol list is unknown. It can also be used when chunks are to be lazily fetched from some
+ * high-latency stoorage by implementing a single lazy-fetch SymbolList class and populating a
+ * ChunkedSymbolList with a complete tile-path of them.
  *
  * @author David Huen
  * @author Matthew Pocock
  */
-public class ChunkedSymbolList
-        extends AbstractSymbolList
-        implements Serializable
-{
+public class ChunkedSymbolList extends AbstractSymbolList implements Serializable {
   // state
-  private SymbolList [] chunks;
+  private SymbolList[] chunks;
   private final int chunkSize;
   private final Alphabet alpha;
   private final int length;
@@ -35,8 +30,7 @@ public class ChunkedSymbolList
   private transient SymbolList currentChunk = null;
 
   private void readObject(java.io.ObjectInputStream stream)
-          throws IOException, ClassNotFoundException
-  {
+      throws IOException, ClassNotFoundException {
     stream.defaultReadObject();
 
     currentMin = Integer.MAX_VALUE;
@@ -49,11 +43,7 @@ public class ChunkedSymbolList
     alpha.removeChangeListener(ChangeListener.ALWAYS_VETO, Alphabet.SYMBOLS);
   }
 
-  public ChunkedSymbolList(SymbolList [] chunks,
-                           int chunkSize,
-                           int length,
-                           Alphabet alpha)
-  {
+  public ChunkedSymbolList(SymbolList[] chunks, int chunkSize, int length, Alphabet alpha) {
     this.chunks = chunks;
     this.chunkSize = chunkSize;
     this.length = length;
@@ -76,13 +66,12 @@ public class ChunkedSymbolList
     if ((pos < currentMin) || (pos > currentMax)) {
       // bad - we are outside the current chunk
       int chnk = pos / chunkSize;
-      offset =  pos % chunkSize;
+      offset = pos % chunkSize;
 
       currentMin = pos - offset;
       currentMax = currentMin + chunkSize - 1;
       currentChunk = chunks[chnk];
-    }
-    else {
+    } else {
       offset = pos - currentMin;
     }
 
@@ -92,14 +81,12 @@ public class ChunkedSymbolList
   public SymbolList subList(int start, int end) {
     if (start < 1 || end > length()) {
       throw new IndexOutOfBoundsException(
-              "Sublist index out of bounds " + length() + ":" + start + "," + end
-      );
+          "Sublist index out of bounds " + length() + ":" + start + "," + end);
     }
 
     if (end < start) {
       throw new IllegalArgumentException(
-              "end must not be lower than start: start=" + start + ", end=" + end
-      );
+          "end must not be lower than start: start=" + start + ", end=" + end);
     }
 
     //

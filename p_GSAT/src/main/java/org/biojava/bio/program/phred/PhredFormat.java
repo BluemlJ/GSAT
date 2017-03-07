@@ -1,21 +1,18 @@
 /*
- *                    BioJava development code
+ * BioJava development code
  *
- * This code may be freely distributed and modified under the
- * terms of the GNU Lesser General Public Licence.  This should
- * be distributed with the code.  If you do not have a copy,
- * see:
+ * This code may be freely distributed and modified under the terms of the GNU Lesser General Public
+ * Licence. This should be distributed with the code. If you do not have a copy, see:
  *
- *      http://www.gnu.org/copyleft/lesser.html
+ * http://www.gnu.org/copyleft/lesser.html
  *
- * Copyright for this code is held jointly by the individual
- * authors.  These should be listed in @author doc comments.
+ * Copyright for this code is held jointly by the individual authors. These should be listed
+ * in @author doc comments.
  *
- * For more information on the BioJava project and its aims,
- * or to join the biojava-l mailing list, visit the home page
- * at:
+ * For more information on the BioJava project and its aims, or to join the biojava-l mailing list,
+ * visit the home page at:
  *
- *      http://www.biojava.org/
+ * http://www.biojava.org/
  *
  */
 
@@ -41,15 +38,16 @@ import org.biojava.utils.ParseErrorListener;
 import org.biojava.utils.ParseErrorSource;
 
 /**
- * Format object representing Phred Quality files.
- * The only `sequence property' reported by this parser
- * is PROPERTY_DESCRIPTIONLINE, which is the contents of the
- * sequence's description line (the line starting with a '>'
- * character).
+ * Format object representing Phred Quality files. The only `sequence property' reported by this
+ * parser is PROPERTY_DESCRIPTIONLINE, which is the contents of the sequence's description line (the
+ * line starting with a '>' character).
  *
- * Essentially a rework of FastaFormat to cope with the quirks of Phred Quality data.<p>
- * Copyright (c) 2001<p>
- * Company:      AgResearch<p>
+ * Essentially a rework of FastaFormat to cope with the quirks of Phred Quality data.
+ * <p>
+ * Copyright (c) 2001
+ * <p>
+ * Company: AgResearch
+ * <p>
  *
  * @author Mark Schreiber
  * @author Greg Cox
@@ -57,15 +55,20 @@ import org.biojava.utils.ParseErrorSource;
  * @since 1.1
  */
 
-public class PhredFormat implements SequenceFormat, ParseErrorSource, ParseErrorListener, Serializable {
+public class PhredFormat
+    implements
+      SequenceFormat,
+      ParseErrorSource,
+      ParseErrorListener,
+      Serializable {
 
   public static final String DEFAULT = "PHRED";
 
   private Vector mListeners = new Vector();
 
   /**
-   * Constant string which is the property key used to notify
-   * listeners of the description lines of Phred sequences.
+   * Constant string which is the property key used to notify listeners of the description lines of
+   * Phred sequences.
    */
 
   public final static String PROPERTY_DESCRIPTIONLINE = "description_line";
@@ -88,8 +91,7 @@ public class PhredFormat implements SequenceFormat, ParseErrorSource, ParseError
   /**
    * Set the line width.
    * <p>
-   * When writing, the lines of sequence will never be longer than the line
-   * width.
+   * When writing, the lines of sequence will never be longer than the line width.
    *
    * @param width the new line width
    */
@@ -98,10 +100,8 @@ public class PhredFormat implements SequenceFormat, ParseErrorSource, ParseError
     this.lineWidth = width;
   }
 
-  public boolean readSequence(BufferedReader reader,
-  SymbolTokenization symParser,
-  SeqIOListener siol)
-  throws IllegalSymbolException, IOException, ParseException {
+  public boolean readSequence(BufferedReader reader, SymbolTokenization symParser,
+      SeqIOListener siol) throws IllegalSymbolException, IOException, ParseException {
     String line = reader.readLine();
     if (line == null) {
       throw new IOException("Premature stream end");
@@ -121,43 +121,43 @@ public class PhredFormat implements SequenceFormat, ParseErrorSource, ParseError
     return !seenEOF;
   }
 
-  private boolean readSequenceData(BufferedReader br,
-  SymbolTokenization parser,
-  SeqIOListener listener)
-  throws IOException, IllegalSymbolException {
+  private boolean readSequenceData(BufferedReader br, SymbolTokenization parser,
+      SeqIOListener listener) throws IOException, IllegalSymbolException {
     char[] buffer = new char[256];
     StreamParser sparser = parser.parseStream(listener);
-    boolean seenEOF = false; //reached the end of the file
-    boolean reachedEnd = false; //reached the end of this sequence
+    boolean seenEOF = false; // reached the end of the file
+    boolean reachedEnd = false; // reached the end of this sequence
 
-    while(reachedEnd == false){// while more sequence
+    while (reachedEnd == false) {// while more sequence
       br.mark(buffer.length); // mark the read ahead limit
-      int bytesRead = br.read(buffer,0,buffer.length); // read into the buffer
-      while(Character.isDigit(buffer[buffer.length -1])){// may have ended halfway through a number
+      int bytesRead = br.read(buffer, 0, buffer.length); // read into the buffer
+      while (Character.isDigit(buffer[buffer.length - 1])) {// may have ended halfway through a
+                                                            // number
         br.reset();// if so reset
-        buffer = new char[buffer.length+64]; //make the buffer a little bigger
-        br.mark(buffer.length); //mark the new read ahead limit
-        bytesRead = br.read(buffer,0,buffer.length); //read into buffer
+        buffer = new char[buffer.length + 64]; // make the buffer a little bigger
+        br.mark(buffer.length); // mark the new read ahead limit
+        bytesRead = br.read(buffer, 0, buffer.length); // read into buffer
       }
-      if(bytesRead < 0){ //ie -1 indicates end of file
+      if (bytesRead < 0) { // ie -1 indicates end of file
         seenEOF = reachedEnd = true;
-      }else{ // otherwise
+      } else { // otherwise
 
         int parseEnd = 0;
 
         // while more sequence and more chars in the buffer and not a new sequence
-        while(!reachedEnd && parseEnd < bytesRead && buffer[parseEnd] != '>'){
+        while (!reachedEnd && parseEnd < bytesRead && buffer[parseEnd] != '>') {
           ++parseEnd;
         }
-        sparser.characters(buffer,0,parseEnd);
+        sparser.characters(buffer, 0, parseEnd);
 
-        //If found the start of a new sequence
-        if(parseEnd < bytesRead && buffer[parseEnd] == '>'){
+        // If found the start of a new sequence
+        if (parseEnd < bytesRead && buffer[parseEnd] == '>') {
           br.reset(); // reset the reader
           // then skip the file reading pointer to the start of the new sequence ready for the
-          //next read (if required).
-          if(br.skip(parseEnd) != parseEnd) throw new IOException("Couldn't reset to start of next sequence");
-          reachedEnd = true; //found the end of this sequence.
+          // next read (if required).
+          if (br.skip(parseEnd) != parseEnd)
+            throw new IOException("Couldn't reset to start of next sequence");
+          reachedEnd = true; // found the end of this sequence.
         }
       }
     }
@@ -167,9 +167,8 @@ public class PhredFormat implements SequenceFormat, ParseErrorSource, ParseError
   }
 
   /**
-   * Return a suitable description line for a Sequence. If the
-   * sequence's annotation bundle contains PROPERTY_DESCRIPTIONLINE,
-   * this is used verbatim.  Otherwise, the sequence's name is used.
+   * Return a suitable description line for a Sequence. If the sequence's annotation bundle contains
+   * PROPERTY_DESCRIPTIONLINE, this is used verbatim. Otherwise, the sequence's name is used.
    */
 
   protected String describeSequence(Sequence seq) {
@@ -183,14 +182,11 @@ public class PhredFormat implements SequenceFormat, ParseErrorSource, ParseError
   }
 
   /**
-   * This method will print symbols to the line width followed by a
-   * new line etc.  NOTE that an integer symbol does not always
-   * correspond to one character therefore a line width of sixty
-   * will print sixty characters followed by a new line. Not
-   * necessarily sixty integers.
+   * This method will print symbols to the line width followed by a new line etc. NOTE that an
+   * integer symbol does not always correspond to one character therefore a line width of sixty will
+   * print sixty characters followed by a new line. Not necessarily sixty integers.
    */
-  public void writeSequence(Sequence seq, PrintStream os)
-  throws IOException {
+  public void writeSequence(Sequence seq, PrintStream os) throws IOException {
     os.print(">");
     os.println(describeSequence(seq));
 
@@ -198,7 +194,7 @@ public class PhredFormat implements SequenceFormat, ParseErrorSource, ParseError
     int seqLen = seq.length();
 
     for (int i = 1; i <= seqLen; i++) {
-      int val = ((IntegerAlphabet.IntegerSymbol)seq.symbolAt(i)).intValue();
+      int val = ((IntegerAlphabet.IntegerSymbol) seq.symbolAt(i)).intValue();
       String s = Integer.toString(val);
       if ((line.length() + s.length()) > lineWidth) {
         os.println(line.substring(0));
@@ -209,31 +205,25 @@ public class PhredFormat implements SequenceFormat, ParseErrorSource, ParseError
   }
 
   /**
-   * <code>writeSequence</code> writes a sequence to the specified
-   * <code>PrintStream</code>, using the specified format.
+   * <code>writeSequence</code> writes a sequence to the specified <code>PrintStream</code>, using
+   * the specified format.
    *
    * @param seq a <code>Sequence</code> to write out.
-   * @param format a <code>String</code> indicating which sub-format
-   * of those available from a particular
-   * <code>SequenceFormat</code> implemention to use when
-   * writing.
+   * @param format a <code>String</code> indicating which sub-format of those available from a
+   *        particular <code>SequenceFormat</code> implemention to use when writing.
    * @param os a <code>PrintStream</code> object.
    *
    * @exception IOException if an error occurs.
    * @deprecated use writeSequence(Sequence seq, PrintStream os)
    */
-  public void writeSequence(Sequence seq, String format, PrintStream os)
-  throws IOException {
-    if (! format.equalsIgnoreCase(getDefaultFormat()))
-      throw new IllegalArgumentException("Unknown format '"
-      + format
-      + "'");
+  public void writeSequence(Sequence seq, String format, PrintStream os) throws IOException {
+    if (!format.equalsIgnoreCase(getDefaultFormat()))
+      throw new IllegalArgumentException("Unknown format '" + format + "'");
     writeSequence(seq, os);
   }
 
   /**
-   * <code>getDefaultFormat</code> returns the String identifier for
-   * the default format.
+   * <code>getDefaultFormat</code> returns the String identifier for the default format.
    *
    * @return a <code>String</code>.
    * @deprecated
@@ -243,8 +233,7 @@ public class PhredFormat implements SequenceFormat, ParseErrorSource, ParseError
   }
 
   /**
-   * Adds a parse error listener to the list of listeners if it isn't already
-   * included.
+   * Adds a parse error listener to the list of listeners if it isn't already included.
    *
    * @param theListener Listener to be added.
    */
@@ -255,8 +244,7 @@ public class PhredFormat implements SequenceFormat, ParseErrorSource, ParseError
   }
 
   /**
-   * Removes a parse error listener from the list of listeners if it is
-   * included.
+   * Removes a parse error listener from the list of listeners if it is included.
    *
    * @param theListener Listener to be removed.
    */
@@ -267,9 +255,8 @@ public class PhredFormat implements SequenceFormat, ParseErrorSource, ParseError
   }
 
   /**
-   * This method determines the behaviour when a bad line is processed.
-   * Some options are to log the error, throw an exception, ignore it
-   * completely, or pass the event through.
+   * This method determines the behaviour when a bad line is processed. Some options are to log the
+   * error, throw an exception, ignore it completely, or pass the event through.
    * <p>
    * This method should be overwritten when different behavior is desired.
    *
@@ -287,12 +274,12 @@ public class PhredFormat implements SequenceFormat, ParseErrorSource, ParseError
    */
   protected void notifyParseErrorEvent(ParseErrorEvent theEvent) {
     Vector listeners;
-    synchronized(this) {
-      listeners = (Vector)mListeners.clone();
+    synchronized (this) {
+      listeners = (Vector) mListeners.clone();
     }
 
     for (int index = 0; index < listeners.size(); index++) {
-      ParseErrorListener client = (ParseErrorListener)listeners.elementAt(index);
+      ParseErrorListener client = (ParseErrorListener) listeners.elementAt(index);
       client.BadLineParsed(theEvent);
     }
   }

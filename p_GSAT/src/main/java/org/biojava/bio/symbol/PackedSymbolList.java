@@ -1,21 +1,18 @@
 /*
- *                    BioJava development code
+ * BioJava development code
  *
- * This code may be freely distributed and modified under the
- * terms of the GNU Lesser General Public Licence.  This should
- * be distributed with the code.  If you do not have a copy,
- * see:
+ * This code may be freely distributed and modified under the terms of the GNU Lesser General Public
+ * Licence. This should be distributed with the code. If you do not have a copy, see:
  *
- *      http://www.gnu.org/copyleft/lesser.html
+ * http://www.gnu.org/copyleft/lesser.html
  *
- * Copyright for this code is held jointly by the individual
- * authors.  These should be listed in @author doc comments.
+ * Copyright for this code is held jointly by the individual authors. These should be listed
+ * in @author doc comments.
  *
- * For more information on the BioJava project and its aims,
- * or to join the biojava-l mailing list, visit the home page
- * at:
+ * For more information on the BioJava project and its aims, or to join the biojava-l mailing list,
+ * visit the home page at:
  *
- *      http://www.biojava.org/
+ * http://www.biojava.org/
  *
  */
 package org.biojava.bio.symbol;
@@ -28,23 +25,20 @@ import org.biojava.utils.AssertionFailure;
  * </p>
  *
  * <p>
- * Bit-packed symbol lists are space efficient compared to the usual pointer
- * storage model employed by implementations like SimpleSymbolList. This
- * comes at the cost of encoding/decoding symbols from the storage. In
- * practice, the decrease in memory when storing large sequences makes
+ * Bit-packed symbol lists are space efficient compared to the usual pointer storage model employed
+ * by implementations like SimpleSymbolList. This comes at the cost of encoding/decoding symbols
+ * from the storage. In practice, the decrease in memory when storing large sequences makes
  * applications go quicker because of issues like page swapping.
  * </p>
  *
  * <p>
- * Symbols can be mapped to and from bit-patterns. The Pattern interface
- * encapsulates this. A SymbolList can then be stored by writing these
- * bit-patterns into memory. This implementation stores the bits
- * in the long elements of an array. The first symbol will be packed into
- * bits 0 through packing.wordLength()-1 of the long at index 0.
+ * Symbols can be mapped to and from bit-patterns. The Pattern interface encapsulates this. A
+ * SymbolList can then be stored by writing these bit-patterns into memory. This implementation
+ * stores the bits in the long elements of an array. The first symbol will be packed into bits 0
+ * through packing.wordLength()-1 of the long at index 0.
  * <p>
  *
- * <h2>Example Usage</h2>
- * <pre>
+ * <h2>Example Usage</h2> <pre>
  * SymbolList symL = ...;
  * SymbolList packed = new PackedSymbolList(
  *   PackingFactory.getPacking(symL.getAlphabet(), true),
@@ -55,12 +49,7 @@ import org.biojava.utils.AssertionFailure;
  * @author Matthew Pocock
  * @author David Huen (new constructor for Symbol arrays and some speedups)
  */
-public class PackedSymbolList
-  extends
-    AbstractSymbolList
-  implements
-    java.io.Serializable
-{
+public class PackedSymbolList extends AbstractSymbolList implements java.io.Serializable {
   private static final byte BITS_PER_ELEMENT = 64;
 
   private final Packing packing;
@@ -72,7 +61,7 @@ public class PackedSymbolList
   // scratch area for optimisations
   // WARNING: these variables constitute an opportunity
   // for things to go wrong when doing multithreaded access
-  // via symbolAt().  Keep SymbolAt() synchronized so they
+  // via symbolAt(). Keep SymbolAt() synchronized so they
   // don't get changed during a lookup! Naaasssty.
   private int currentMin = Integer.MAX_VALUE;
   private int currentMax = Integer.MIN_VALUE;
@@ -93,10 +82,9 @@ public class PackedSymbolList
    * </p>
    *
    * <p>
-   * <em>Warning:</em> This is a risky developer method.
-   * You must be sure that the syms array is packed in a
-   * way that is consistent with the packing. Also, it is your
-   * responsibility to ensure that the length is sensible.</em>
+   * <em>Warning:</em> This is a risky developer method. You must be sure that the syms array is
+   * packed in a way that is consistent with the packing. Also, it is your responsibility to ensure
+   * that the length is sensible.</em>
    * </p>
    *
    * @param packing the Packing used
@@ -118,41 +106,35 @@ public class PackedSymbolList
    * </p>
    *
    * <p>
-   * This will create a new and independent symbol list that is a copy of
-   * the symbols in symList. Both lists can be modified independently.
+   * This will create a new and independent symbol list that is a copy of the symbols in symList.
+   * Both lists can be modified independently.
    * </p>
    *
    * @param packing the way to bit-pack symbols
    * @param symList the SymbolList to copy
    */
-  public PackedSymbolList(Packing packing, SymbolList symList)
-  throws IllegalAlphabetException {
-    if(packing.getAlphabet() != symList.getAlphabet()) {
-      throw new IllegalAlphabetException(
-        "Can't pack with alphabet " + packing.getAlphabet() +
-        " and symbol list " + symList.getAlphabet()
-      );
+  public PackedSymbolList(Packing packing, SymbolList symList) throws IllegalAlphabetException {
+    if (packing.getAlphabet() != symList.getAlphabet()) {
+      throw new IllegalAlphabetException("Can't pack with alphabet " + packing.getAlphabet()
+          + " and symbol list " + symList.getAlphabet());
     }
 
     try {
       this.symsPerElement = (byte) (BITS_PER_ELEMENT / packing.wordSize());
       this.packing = packing;
       this.length = symList.length();
-      this.syms = new long[
-        length / symsPerElement +
-        ((length % symsPerElement == 0) ? 0 : 1)
-      ];
+      this.syms = new long[length / symsPerElement + ((length % symsPerElement == 0) ? 0 : 1)];
       this.mask = calcMask(packing);
       wordsize = packing.wordSize();
 
       // pack the body of the sequence
       int ii = 0;
-      for(int i = 0; i < (syms.length - 1); i++) {
-//        int ii = i * symsPerElement;
+      for (int i = 0; i < (syms.length - 1); i++) {
+        // int ii = i * symsPerElement;
         long l = 0;
         int jj = 0;
-        for(int j = 0; j < symsPerElement; j++) {
-//          int jj = j * packing.wordSize();
+        for (int j = 0; j < symsPerElement; j++) {
+          // int jj = j * packing.wordSize();
           long p = packing.pack(symList.symbolAt(ii + j + 1));
           l |= (long) ((long) p << (long) jj);
           jj += wordsize;
@@ -162,14 +144,14 @@ public class PackedSymbolList
       }
 
       // pack the final word
-      if(syms.length > 0) {
+      if (syms.length > 0) {
         long l = 0;
         ii = (syms.length - 1) * symsPerElement;
         int jMax = symList.length() % symsPerElement;
-        if(jMax == 0) {
+        if (jMax == 0) {
           jMax = symsPerElement;
         }
-        for(int j = 0; j < jMax; j++) {
+        for (int j = 0; j < jMax; j++) {
           int jj = j * packing.wordSize();
           long p = packing.pack(symList.symbolAt(ii + j + 1));
           l |= (long) ((long) p << (long) jj);
@@ -187,8 +169,7 @@ public class PackedSymbolList
    * </p>
    *
    * <p>
-   * This will create a new and independent SymbolList formed from the
-   * the symbol array.
+   * This will create a new and independent SymbolList formed from the the symbol array.
    * </p>
    *
    * @param packing the way to bit-pack symbols
@@ -196,42 +177,35 @@ public class PackedSymbolList
    * @param length the number of Symbols to process from symbols
    * @param alfa the alphabet from which the Symbols are drawn
    */
-  public PackedSymbolList(Packing packing, Symbol [] symbols, int length, Alphabet alfa)
-  throws IllegalAlphabetException,IllegalArgumentException {
+  public PackedSymbolList(Packing packing, Symbol[] symbols, int length, Alphabet alfa)
+      throws IllegalAlphabetException, IllegalArgumentException {
 
     // verify that the alphabet is one I can deal with.
-    if(packing.getAlphabet() != alfa) {
+    if (packing.getAlphabet() != alfa) {
       throw new IllegalAlphabetException(
-        "Can't pack with alphabet " + packing.getAlphabet() +
-        " and symbol list " + alfa
-      );
+          "Can't pack with alphabet " + packing.getAlphabet() + " and symbol list " + alfa);
     }
 
     // check that array length makes sense
     if (symbols.length < length) {
       throw new IllegalArgumentException(
-        "Symbol array size is too small to get " + length +
-        "symbols from."
-      );
+          "Symbol array size is too small to get " + length + "symbols from.");
     }
 
     try {
       this.symsPerElement = (byte) (BITS_PER_ELEMENT / packing.wordSize());
       this.packing = packing;
       this.length = length;
-      this.syms = new long[
-        length / symsPerElement +
-        ((length % symsPerElement == 0) ? 0 : 1)
-      ];
+      this.syms = new long[length / symsPerElement + ((length % symsPerElement == 0) ? 0 : 1)];
       this.mask = calcMask(packing);
       wordsize = packing.wordSize();
 
       // pack the body of the sequence
       int ii = 0;
-      for(int i = 0; i < (syms.length - 1); i++) {
+      for (int i = 0; i < (syms.length - 1); i++) {
         long l = 0;
         int jj = 0;
-        for(int j = 0; j < symsPerElement; j++) {
+        for (int j = 0; j < symsPerElement; j++) {
           long p = packing.pack(symbols[ii + j]);
           l |= (long) ((long) p << (long) jj);
           jj += wordsize;
@@ -241,14 +215,14 @@ public class PackedSymbolList
       }
 
       // pack the final word
-      if(syms.length > 0) {
+      if (syms.length > 0) {
         long l = 0;
         ii = (syms.length - 1) * symsPerElement;
         int jMax = length % symsPerElement;
-        if(jMax == 0) {
+        if (jMax == 0) {
           jMax = symsPerElement;
         }
-        for(int j = 0; j < jMax; j++) {
+        for (int j = 0; j < jMax; j++) {
           int jj = j * packing.wordSize();
           long p = packing.pack(symbols[ii + j]);
           l |= (long) ((long) p << (long) jj);
@@ -256,7 +230,7 @@ public class PackedSymbolList
         syms[syms.length - 1] = l;
       }
     } catch (IllegalSymbolException ise) {
-      throw new AssertionFailure("Assertion Failure: Symbol got lost somewhere",ise);
+      throw new AssertionFailure("Assertion Failure: Symbol got lost somewhere", ise);
     }
   }
 
@@ -267,7 +241,7 @@ public class PackedSymbolList
     int offset;
     long l;
 
-    synchronized(this) {
+    synchronized (this) {
       if ((indx < currentMin) || (indx > currentMax)) {
         word = indx / symsPerElement;
         offset = indx % symsPerElement;
@@ -275,8 +249,7 @@ public class PackedSymbolList
         currentMin = indx - offset;
         currentMax = currentMin + symsPerElement - 1;
         currentWord = syms[word];
-      }
-      else {
+      } else {
         offset = indx - currentMin;
       }
 
@@ -294,7 +267,7 @@ public class PackedSymbolList
 
   private static byte calcMask(Packing packing) {
     byte mask = 0;
-    for(int i = 0; i < packing.wordSize(); i++) {
+    for (int i = 0; i < packing.wordSize(); i++) {
       mask |= 1 << i;
     }
     return mask;
@@ -306,13 +279,11 @@ public class PackedSymbolList
    * </p>
    *
    * <p>
-   * <em>Warning:</em> This is a risky developer method.
-   * This is the actual array that this object uses to store the bits
-   * representing symbols. You should not modify this in any way. If you do,
-   * you will modify the symbols returned by symbolAt(). This methd is
-   * provided primarily as an easy way for developers to extract the
-   * bit pattern for storage in such a way as it could be fetched later and
-   * fed into the appropriate constructor.
+   * <em>Warning:</em> This is a risky developer method. This is the actual array that this object
+   * uses to store the bits representing symbols. You should not modify this in any way. If you do,
+   * you will modify the symbols returned by symbolAt(). This methd is provided primarily as an easy
+   * way for developers to extract the bit pattern for storage in such a way as it could be fetched
+   * later and fed into the appropriate constructor.
    * </p>
    *
    * @return the actual long array used to store bit-packed symbols

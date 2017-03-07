@@ -1,21 +1,18 @@
 /*
- *                    BioJava development code
+ * BioJava development code
  *
- * This code may be freely distributed and modified under the
- * terms of the GNU Lesser General Public Licence.  This should
- * be distributed with the code.  If you do not have a copy,
- * see:
+ * This code may be freely distributed and modified under the terms of the GNU Lesser General Public
+ * Licence. This should be distributed with the code. If you do not have a copy, see:
  *
- *      http://www.gnu.org/copyleft/lesser.html
+ * http://www.gnu.org/copyleft/lesser.html
  *
- * Copyright for this code is held jointly by the individual
- * authors.  These should be listed in @author doc comments.
+ * Copyright for this code is held jointly by the individual authors. These should be listed
+ * in @author doc comments.
  *
- * For more information on the BioJava project and its aims,
- * or to join the biojava-l mailing list, visit the home page
- * at:
+ * For more information on the BioJava project and its aims, or to join the biojava-l mailing list,
+ * visit the home page at:
  *
- *      http://www.biojava.org/
+ * http://www.biojava.org/
  *
  */
 
@@ -35,34 +32,32 @@ import org.biojava.bio.symbol.Symbol;
 abstract class AbstractCursor implements DPCursor {
   private static final Symbol gap = AlphabetManager.getGapSymbol();
   private Iterator symIterator;
-  
+
   private Symbol currentRes;
   private Symbol lastRes;
-  
+
   public Symbol currentRes() {
     return currentRes;
   }
-  
+
   public Symbol lastRes() {
     return lastRes;
   }
-  
+
   public boolean canAdvance() {
     return symIterator.hasNext() || currentRes != gap;
   }
-  
+
   public void advance() {
     lastRes = currentRes;
-    currentRes = (symIterator.hasNext()) ? (Symbol) symIterator.next()
-                                         : gap;
+    currentRes = (symIterator.hasNext()) ? (Symbol) symIterator.next() : gap;
   }
-  
+
   public AbstractCursor(Iterator symIterator) {
     this.symIterator = symIterator;
     this.currentRes = gap;
     this.lastRes = gap;
   }
-  
-  protected AbstractCursor() {
-  }
+
+  protected AbstractCursor() {}
 }

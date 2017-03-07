@@ -1,21 +1,18 @@
- /*
- *                    BioJava development code
+/*
+ * BioJava development code
  *
- * This code may be freely distributed and modified under the
- * terms of the GNU Lesser General Public Licence.  This should
- * be distributed with the code.  If you do not have a copy,
- * see:
+ * This code may be freely distributed and modified under the terms of the GNU Lesser General Public
+ * Licence. This should be distributed with the code. If you do not have a copy, see:
  *
- *      http://www.gnu.org/copyleft/lesser.html
+ * http://www.gnu.org/copyleft/lesser.html
  *
- * Copyright for this code is held jointly by the individual
- * authors.  These should be listed in @author doc comments.
+ * Copyright for this code is held jointly by the individual authors. These should be listed
+ * in @author doc comments.
  *
- * For more information on the BioJava project and its aims,
- * or to join the biojava-l mailing list, visit the home page
- * at:
+ * For more information on the BioJava project and its aims, or to join the biojava-l mailing list,
+ * visit the home page at:
  *
- *      http://www.biojava.org/
+ * http://www.biojava.org/
  *
  */
 
@@ -34,49 +31,56 @@ import org.biojava.bio.symbol.SymbolList;
 import org.biojava.utils.ChangeVetoException;
 
 /**
- * <p>PhredSequence is an extension of SimpleSequence that implements
- * Qualitative to hold Phred quality scores.</p>
+ * <p>
+ * PhredSequence is an extension of SimpleSequence that implements Qualitative to hold Phred quality
+ * scores.
+ * </p>
  *
- * <p>Copyright:    Copyright (c) 2001</p>
- * <p>Company:      AgResearch</p>
+ * <p>
+ * Copyright: Copyright (c) 2001
+ * </p>
+ * <p>
+ * Company: AgResearch
+ * </p>
+ * 
  * @author Mark Schreiber
  * @since 1.1
  */
 
-public class PhredSequence extends SimpleSequence implements Qualitative{
+public class PhredSequence extends SimpleSequence implements Qualitative {
 
   /**
    * Constructs a new PhredSequence.
+   * 
    * @param phredSequence - a SymbolList over the Phred Alphabet.
    * @param name - the name for the sequence.
    * @param urn - the URN for the sequence.
    * @param anno - the Annotation object for the sequence.
    */
   public PhredSequence(SymbolList phredSequence, String name, String urn, Annotation anno)
-  throws IllegalAlphabetException{
-    super(phredSequence,urn,name,anno);
-    if(this.getAlphabet() != PhredTools.getPhredAlphabet()){
-      throw new IllegalAlphabetException(
-        "Cannot build a PhredSequence using a "+
-        phredSequence.getAlphabet().getName()+
-        " SymbolList.");
+      throws IllegalAlphabetException {
+    super(phredSequence, urn, name, anno);
+    if (this.getAlphabet() != PhredTools.getPhredAlphabet()) {
+      throw new IllegalAlphabetException("Cannot build a PhredSequence using a "
+          + phredSequence.getAlphabet().getName() + " SymbolList.");
     }
   }
 
   /**
-   * Extracts the quality part if the Phred Alphabet and returns it as a SymbolList
-   * over the Integer SubAlphabet from 0..99.
+   * Extracts the quality part if the Phred Alphabet and returns it as a SymbolList over the Integer
+   * SubAlphabet from 0..99.
    */
-  public SymbolList getQuality(){
-    SimpleSymbolList qual = new SimpleSymbolList(IntegerAlphabet.getSubAlphabet(0,99));
-    for(int i = 1; i < this.length() + 1; i++){
-      try{
+  public SymbolList getQuality() {
+    SimpleSymbolList qual = new SimpleSymbolList(IntegerAlphabet.getSubAlphabet(0, 99));
+    for (int i = 1; i < this.length() + 1; i++) {
+      try {
         qual.addSymbol(PhredTools.integerSymbolFromPhred(this.symbolAt(i)));
-      }catch(IllegalSymbolException ise){
+      } catch (IllegalSymbolException ise) {
         throw new BioError(
-        "PhredTools.integerSymbolFromPhred() has returned a symbol not in this SymbolLists alphabet", ise);
-      }catch(ChangeVetoException cve){
-        throw new BioError( "Cannot construct symbol list as it has becomed locked?", cve);
+            "PhredTools.integerSymbolFromPhred() has returned a symbol not in this SymbolLists alphabet",
+            ise);
+      } catch (ChangeVetoException cve) {
+        throw new BioError("Cannot construct symbol list as it has becomed locked?", cve);
       }
     }
     return qual;
@@ -85,33 +89,33 @@ public class PhredSequence extends SimpleSequence implements Qualitative{
   /**
    * Extracts the DNA part of the PhredAlpahbet SymbolList and returns it as a SymbolList
    */
-  public SymbolList getDNA(){
+  public SymbolList getDNA() {
     SimpleSymbolList dna = new SimpleSymbolList(DNATools.getDNA());
-    for(int i = 1; i < this.length() + 1; i++){
-      try{
+    for (int i = 1; i < this.length() + 1; i++) {
+      try {
         dna.addSymbol(PhredTools.dnaSymbolFromPhred(this.symbolAt(i)));
-      }catch(ChangeVetoException cve){
+      } catch (ChangeVetoException cve) {
         throw new BioError("Cannot construct symbol list as it has becomed locked?", cve);
-      }catch(IllegalSymbolException ise){
+      } catch (IllegalSymbolException ise) {
         throw new BioError(
-        "PhredTools.dnaSymbolFromPhred() has returned a symbol not in the DNA alphabet", ise);
+            "PhredTools.dnaSymbolFromPhred() has returned a symbol not in the DNA alphabet", ise);
       }
     }
     return dna;
   }
 
-  public Symbol getQualityAt(int index) throws IndexOutOfBoundsException{
-    try{
+  public Symbol getQualityAt(int index) throws IndexOutOfBoundsException {
+    try {
       return PhredTools.integerSymbolFromPhred(this.symbolAt(index));
-    }catch(IllegalSymbolException ise){
+    } catch (IllegalSymbolException ise) {
       throw new BioError("Something has gone badly wrong with the Phred Alphabet!", ise);
     }
   }
 
-  public Symbol getDNAAt(int index) throws IndexOutOfBoundsException{
-    try{
+  public Symbol getDNAAt(int index) throws IndexOutOfBoundsException {
+    try {
       return PhredTools.dnaSymbolFromPhred(this.symbolAt(index));
-    }catch(IllegalSymbolException ise){
+    } catch (IllegalSymbolException ise) {
       throw new BioError("Something has gone badly wrong with the Phred Alphabet!", ise);
     }
   }

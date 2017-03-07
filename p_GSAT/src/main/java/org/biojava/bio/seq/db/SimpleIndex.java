@@ -1,21 +1,18 @@
 /*
- *                    BioJava development code
+ * BioJava development code
  *
- * This code may be freely distributed and modified under the
- * terms of the GNU Lesser General Public Licence.  This should
- * be distributed with the code.  If you do not have a copy,
- * see:
+ * This code may be freely distributed and modified under the terms of the GNU Lesser General Public
+ * Licence. This should be distributed with the code. If you do not have a copy, see:
  *
- *      http://www.gnu.org/copyleft/lesser.html
+ * http://www.gnu.org/copyleft/lesser.html
  *
- * Copyright for this code is held jointly by the individual
- * authors.  These should be listed in @author doc comments.
+ * Copyright for this code is held jointly by the individual authors. These should be listed
+ * in @author doc comments.
  *
- * For more information on the BioJava project and its aims,
- * or to join the biojava-l mailing list, visit the home page
- * at:
+ * For more information on the BioJava project and its aims, or to join the biojava-l mailing list,
+ * visit the home page at:
  *
- *      http://www.biojava.org/
+ * http://www.biojava.org/
  *
  */
 
@@ -26,10 +23,9 @@ import java.io.File;
 /**
  * This is a no-frills implementation of the Index interface.
  * <p>
- * The file, start and ID are explicitly maintained as immutable properties of
- * the index. This implementation should be appropriate for many indexing
- * schemes. However, some schemes may wish to implement this interface as a
- * wrapper around a simple file offset, or an array index.
+ * The file, start and ID are explicitly maintained as immutable properties of the index. This
+ * implementation should be appropriate for many indexing schemes. However, some schemes may wish to
+ * implement this interface as a wrapper around a simple file offset, or an array index.
  *
  * @author Matthew Pocock
  */
@@ -38,7 +34,7 @@ public class SimpleIndex implements Index {
   private final long start;
   private final int length;
   private final String id;
-  
+
   /**
    * Build the index using the given file, start and id
    *
@@ -53,15 +49,15 @@ public class SimpleIndex implements Index {
     this.length = length;
     this.id = id;
   }
-  
+
   public File getFile() {
     return file;
   }
-    
+
   public long getStart() {
     return start;
   }
-  
+
   public int getLength() {
     return length;
   }

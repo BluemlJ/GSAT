@@ -1,27 +1,24 @@
 /*
- *                    BioJava development code
+ * BioJava development code
  *
- * This code may be freely distributed and modified under the
- * terms of the GNU Lesser General Public Licence.  This should
- * be distributed with the code.  If you do not have a copy,
- * see:
+ * This code may be freely distributed and modified under the terms of the GNU Lesser General Public
+ * Licence. This should be distributed with the code. If you do not have a copy, see:
  *
- *      http://www.gnu.org/copyleft/lesser.html
+ * http://www.gnu.org/copyleft/lesser.html
  *
- * Copyright for this code is held jointly by the individual
- * authors.  These should be listed in @author doc comments.
+ * Copyright for this code is held jointly by the individual authors. These should be listed
+ * in @author doc comments.
  *
- * For more information on the BioJava project and its aims,
- * or to join the biojava-l mailing list, visit the home page
- * at:
+ * For more information on the BioJava project and its aims, or to join the biojava-l mailing list,
+ * visit the home page at:
  *
- *      http://www.biojava.org/
+ * http://www.biojava.org/
  *
  */
 
 
 /*
- * @(#)Train.java      0.1 00/01/15
+ * @(#)Train.java 0.1 00/01/15
  *
  * By Thomas Down <td2@sanger.ac.uk>
  */
@@ -51,7 +48,7 @@ import org.biojava.stats.svm.TrainingListener;
 public class Train {
   public static void main(String[] args) throws Throwable {
     if (args.length != 2) {
-	    throw new Exception("usage: stats.svm.tools.Classify <train_examples> <model_file>");
+      throw new Exception("usage: stats.svm.tools.Classify <train_examples> <model_file>");
     }
     String trainFile = args[0];
     String modelFile = args[1];
@@ -64,7 +61,7 @@ public class Train {
       if (line.length() == 0 || line.startsWith("#")) {
         continue;
       }
-	    SVM_Light.LabelledVector ex = SVM_Light.parseExample(line);
+      SVM_Light.LabelledVector ex = SVM_Light.parseExample(line);
       target.addItemTarget(ex.getVector(), ex.getLabel());
     }
     r.close();
@@ -83,23 +80,23 @@ public class Train {
     trainer.setEpsilon(1.0e-9);
     trainer.setC(1000);
     TrainingListener tl = new TrainingListener() {
-	    public void trainingCycleComplete(TrainingEvent e) {
+      public void trainingCycleComplete(TrainingEvent e) {
         System.out.print('.');
-	    }
-	    public void trainingComplete(TrainingEvent e) {
+      }
+
+      public void trainingComplete(TrainingEvent e) {
         System.out.println("");
-	    }
+      }
     };
-    
+
     System.out.println("Training");
-	  SVMClassifierModel model = trainer.trainModel(target, cK, tl);
+    SVMClassifierModel model = trainer.trainModel(target, cK, tl);
     System.out.println("Done");
 
-    for(Iterator i = target.items().iterator(); i.hasNext(); ) {
+    for (Iterator i = target.items().iterator(); i.hasNext();) {
       Object item = i.next();
-	    System.out.println(target.getTarget(item) + "\t" +
-                         model.classify(item) + "\t(" +
-                         model.getAlpha(item) + ")");
+      System.out.println(target.getTarget(item) + "\t" + model.classify(item) + "\t("
+          + model.getAlpha(item) + ")");
     }
 
     SVM_Light.writeModelFile(model, modelFile);

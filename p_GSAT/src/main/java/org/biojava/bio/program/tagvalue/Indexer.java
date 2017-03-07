@@ -1,21 +1,18 @@
 /*
- *                    BioJava development code
+ * BioJava development code
  *
- * This code may be freely distributed and modified under the
- * terms of the GNU Lesser General Public Licence.  This should
- * be distributed with the code.  If you do not have a copy,
- * see:
+ * This code may be freely distributed and modified under the terms of the GNU Lesser General Public
+ * Licence. This should be distributed with the code. If you do not have a copy, see:
  *
- *      http://www.gnu.org/copyleft/lesser.html
+ * http://www.gnu.org/copyleft/lesser.html
  *
- * Copyright for this code is held jointly by the individual
- * authors.  These should be listed in @author doc comments.
+ * Copyright for this code is held jointly by the individual authors. These should be listed
+ * in @author doc comments.
  *
- * For more information on the BioJava project and its aims,
- * or to join the biojava-l mailing list, visit the home page
- * at:
+ * For more information on the BioJava project and its aims, or to join the biojava-l mailing list,
+ * visit the home page at:
  *
- *      http://www.biojava.org/
+ * http://www.biojava.org/
  *
  */
 
@@ -41,17 +38,17 @@ import org.biojava.utils.io.RAF;
  * </p>
  *
  * <p>
- * This class is provided to allow the indexing of arbitrary record-based text
- * files. Indexer objects are built for a single file and the indexes are
- * written to a single index store. To keep all of the reader offsets in sync
- * with one another, you will almost certainly wish to use the getReader()
- * method to retrieve a CountedBufferedReader instance if you want to read the
- * byte-offset between calls to Parser.read(). Below is an example of how to
- * index a file.
+ * This class is provided to allow the indexing of arbitrary record-based text files. Indexer
+ * objects are built for a single file and the indexes are written to a single index store. To keep
+ * all of the reader offsets in sync with one another, you will almost certainly wish to use the
+ * getReader() method to retrieve a CountedBufferedReader instance if you want to read the
+ * byte-offset between calls to Parser.read(). Below is an example of how to index a file.
  * </p>
  *
- * <p><em>Note:</em> It is very important to configure the BioStoreFactory
- * instance with all the right keys before hand.</p>
+ * <p>
+ * <em>Note:</em> It is very important to configure the BioStoreFactory instance with all the right
+ * keys before hand.
+ * </p>
  *
  * <pre>
  * File fileToIndex; // get this from somewhere
@@ -76,8 +73,7 @@ import org.biojava.utils.io.RAF;
  * @since 1.2
  * @author Matthew Pocock
  */
-public class Indexer
-implements TagValueListener {
+public class Indexer implements TagValueListener {
   private final RAF file;
   private final CountedBufferedReader reader;
   private final IndexStore indexStore;
@@ -87,22 +83,21 @@ implements TagValueListener {
   private Object tag;
   private long offset;
   private int depth;
-  
+
   /**
    * Build a new Indexer.
    *
-   * @param file  the file to be processed
-   * @param indexStore  the IndexStore to write to
+   * @param file the file to be processed
+   * @param indexStore the IndexStore to write to
    */
-  public Indexer(File file, IndexStore indexStore)
-  throws FileNotFoundException {
+  public Indexer(File file, IndexStore indexStore) throws FileNotFoundException {
     this.file = new RAF(file, "r");
     this.reader = new CountedBufferedReader(new FileReader(file));
     this.indexStore = indexStore;
     this.seccondaryKeys = new SmallMap();
     this.depth = 0;
   }
-  
+
   /**
    * Retrieve the reader that can be safely used to index this file.
    * 
@@ -111,20 +106,20 @@ implements TagValueListener {
   public CountedBufferedReader getReader() {
     return reader;
   }
-  
+
   /**
    * <p>
    * Set the tag to use as a primary key in the index.
    * </p>
    *
    * <p>
-   * Whenever a value for the primary key tag is seen, this is passed to the
-   * indexer as the primary key for indexing.
+   * Whenever a value for the primary key tag is seen, this is passed to the indexer as the primary
+   * key for indexing.
    * </p>
    *
    * <p>
-   * Primary keys must be unique between entries, and each entry must provide
-   * exactly one primary key value.
+   * Primary keys must be unique between entries, and each entry must provide exactly one primary
+   * key value.
    * </p>
    *
    * @param primaryKeyName the tag to use as primary key
@@ -132,7 +127,7 @@ implements TagValueListener {
   public void setPrimaryKeyName(String primaryKeyName) {
     this.primaryKeyName = primaryKeyName;
   }
-  
+
   /**
    * Retrieve the tag currently used as primary key.
    *
@@ -141,80 +136,72 @@ implements TagValueListener {
   public String getPrimaryKeyName() {
     return primaryKeyName;
   }
-  
+
   /**
    * <p>
    * Add a secondary key.
    * </p>
    *
    * <p>
-   * Secondary keys are potentially non-unique properties of the entries being
-   * indexed. Multiple records can use the same secondary key values, and a
-   * single record can have multiple values for a secondary key.
+   * Secondary keys are potentially non-unique properties of the entries being indexed. Multiple
+   * records can use the same secondary key values, and a single record can have multiple values for
+   * a secondary key.
    * </p>
    *
-   * @param secKeyName  the name of the secondary key to add
+   * @param secKeyName the name of the secondary key to add
    */
   public void addSecondaryKey(String secKeyName) {
     seccondaryKeys.put(secKeyName, new ArrayList());
   }
-  
+
   /**
    * Remove a secondary key.
    *
-   * @param secKeyName  the name of the secondary key to remove
+   * @param secKeyName the name of the secondary key to remove
    */
   public void removeSecondaryKey(String secKeyName) {
     seccondaryKeys.remove(secKeyName);
   }
-  
+
   public void startRecord() {
-    if(depth == 0) {
+    if (depth == 0) {
       offset = reader.getFilePointer();
       primaryKey = null;
-      for(Iterator i = seccondaryKeys.values().iterator(); i.hasNext(); ) {
+      for (Iterator i = seccondaryKeys.values().iterator(); i.hasNext();) {
         List list = (List) i.next();
         list.clear();
       }
     }
-    
+
     depth++;
   }
-  
+
   public void startTag(Object tag) {
     this.tag = tag;
   }
-  
+
   public void value(TagValueContext ctxt, Object value) {
-    if(tag.equals(primaryKeyName)) {
+    if (tag.equals(primaryKeyName)) {
       primaryKey = value.toString();
     }
-    
+
     List l = (List) seccondaryKeys.get(tag);
-    if(l != null) {
+    if (l != null) {
       l.add(value.toString());
     }
   }
-  
+
   public void endTag() {}
-  
-  public void endRecord()
-  throws ParserException
-  {
+
+  public void endRecord() throws ParserException {
     depth--;
-    if(depth == 0) {
-      if(primaryKey == null) {
+    if (depth == 0) {
+      if (primaryKey == null) {
         throw new NullPointerException("No primary key");
       }
 
       int length = (int) (reader.getFilePointer() - offset);
-      indexStore.writeRecord(
-        file,
-        offset,
-        length,
-        primaryKey,
-        seccondaryKeys
-      );
+      indexStore.writeRecord(file, offset, length, primaryKey, seccondaryKeys);
     }
   }
 }

@@ -1,21 +1,18 @@
 /*
- *                    BioJava development code
+ * BioJava development code
  *
- * This code may be freely distributed and modified under the
- * terms of the GNU Lesser General Public Licence.  This should
- * be distributed with the code.  If you do not have a copy,
- * see:
+ * This code may be freely distributed and modified under the terms of the GNU Lesser General Public
+ * Licence. This should be distributed with the code. If you do not have a copy, see:
  *
- *      http://www.gnu.org/copyleft/lesser.html
+ * http://www.gnu.org/copyleft/lesser.html
  *
- * Copyright for this code is held jointly by the individual
- * authors.  These should be listed in @author doc comments.
+ * Copyright for this code is held jointly by the individual authors. These should be listed
+ * in @author doc comments.
  *
- * For more information on the BioJava project and its aims,
- * or to join the biojava-l mailing list, visit the home page
- * at:
+ * For more information on the BioJava project and its aims, or to join the biojava-l mailing list,
+ * visit the home page at:
  *
- *      http://www.biojava.org/
+ * http://www.biojava.org/
  *
  */
 
@@ -47,72 +44,65 @@ import org.biojava.utils.ChangeVetoException;
  * @author Thomas Down
  * @author Mark Schreiber
  * @since 1.0
- * @serial WARNING serialized versions of this class may not be compatible with later versions of BioJava
+ * @serial WARNING serialized versions of this class may not be compatible with later versions of
+ *         BioJava
  */
-public class SimpleDistribution
-extends AbstractDistribution implements Serializable{
-    static final long serialVersionUID = 7252850540926095728L;
-    
-    
+public class SimpleDistribution extends AbstractDistribution implements Serializable {
+  static final long serialVersionUID = 7252850540926095728L;
+
+
   private transient AlphabetIndex indexer;
-  private transient double[] weights = null;//because indexer is transient.
+  private transient double[] weights = null;// because indexer is transient.
   private Distribution nullModel;
   private FiniteAlphabet alpha;
-  
+
   private static class SymbolWeightMemento implements Serializable {
-      static final long serialVersionUID = 5223128163879670657L;
-      
-      public final Symbol symbol;
-      public final double weight;
-      
-      public SymbolWeightMemento(Symbol s, double weight) {
-          this.symbol = s;
-          this.weight = weight;
-      }
-  }
-  
-  private void writeObject(ObjectOutputStream oos)
-      throws IOException
-  {
-      oos.defaultWriteObject();
-      
-      if (weights != null) {// fix for bug 2360
-          SymbolWeightMemento[] swm = new SymbolWeightMemento[weights.length];
-          for (int w = 0; w < swm.length; ++w) {
-              swm[w] = new SymbolWeightMemento(indexer.symbolForIndex(w), weights[w]);
-          }
-          oos.writeObject(swm);
-      }
+    static final long serialVersionUID = 5223128163879670657L;
+
+    public final Symbol symbol;
+    public final double weight;
+
+    public SymbolWeightMemento(Symbol s, double weight) {
+      this.symbol = s;
+      this.weight = weight;
+    }
   }
 
-  private void readObject(ObjectInputStream stream)
-    throws IOException, ClassNotFoundException
-  {
+  private void writeObject(ObjectOutputStream oos) throws IOException {
+    oos.defaultWriteObject();
+
+    if (weights != null) {// fix for bug 2360
+      SymbolWeightMemento[] swm = new SymbolWeightMemento[weights.length];
+      for (int w = 0; w < swm.length; ++w) {
+        swm[w] = new SymbolWeightMemento(indexer.symbolForIndex(w), weights[w]);
+      }
+      oos.writeObject(swm);
+    }
+  }
+
+  private void readObject(ObjectInputStream stream) throws IOException, ClassNotFoundException {
     stream.defaultReadObject();
-    
-    //System.out.println("Alphabet for this dist is: "+alpha.getName());
+
+    // System.out.println("Alphabet for this dist is: "+alpha.getName());
     indexer = AlphabetManager.getAlphabetIndex(alpha);
-    indexer.addChangeListener(
-      new ChangeAdapter(){
-        public void preChange(ChangeEvent ce) throws ChangeVetoException{
-          if(hasWeights()){
-            throw new ChangeVetoException(
-              ce,
-              "Can't allow the index to change as we have probabilities."
-            );
-          }
+    indexer.addChangeListener(new ChangeAdapter() {
+      public void preChange(ChangeEvent ce) throws ChangeVetoException {
+        if (hasWeights()) {
+          throw new ChangeVetoException(ce,
+              "Can't allow the index to change as we have probabilities.");
         }
-      },AlphabetIndex.INDEX
-    );
+      }
+    }, AlphabetIndex.INDEX);
     weights = new double[alpha.size()];
-    
+
     SymbolWeightMemento[] swm = (SymbolWeightMemento[]) stream.readObject();
     for (int m = 0; m < swm.length; ++m) {
-        try {
-            weights[indexer.indexForSymbol(swm[m].symbol)] = swm[m].weight;
-        } catch (IllegalSymbolException ex) {
-            throw new IOException("Symbol in serialized stream: "+swm[m].symbol.getName()+" can't be found in the alphabet");
-        }
+      try {
+        weights[indexer.indexForSymbol(swm[m].symbol)] = swm[m].weight;
+      } catch (IllegalSymbolException ex) {
+        throw new IOException("Symbol in serialized stream: " + swm[m].symbol.getName()
+            + " can't be found in the alphabet");
+      }
     }
   }
 
@@ -128,7 +118,7 @@ extends AbstractDistribution implements Serializable{
 
   protected void setNullModelImpl(Distribution nullModel)
 
-  throws IllegalAlphabetException, ChangeVetoException {
+      throws IllegalAlphabetException, ChangeVetoException {
     this.nullModel = nullModel;
   }
 
@@ -136,7 +126,7 @@ extends AbstractDistribution implements Serializable{
   /**
    * Indicate whether the weights array has been allocated yet.
    *
-   * @return  true if the weights are allocated
+   * @return true if the weights are allocated
    */
   protected boolean hasWeights() {
     return weights != null;
@@ -150,25 +140,25 @@ extends AbstractDistribution implements Serializable{
    * Modifying this will modify the state of the distribution.
    * </p>
    *
-   * @return  the weights array
+   * @return the weights array
    */
   protected double[] getWeights() {
-    if(weights == null) {
-      weights = new double[((FiniteAlphabet)getAlphabet()).size()];
-      for(int i = 0; i < weights.length; i++) {
+    if (weights == null) {
+      weights = new double[((FiniteAlphabet) getAlphabet()).size()];
+      for (int i = 0; i < weights.length; i++) {
         weights[i] = Double.NaN;
 
       }
     }
-     return weights;
+    return weights;
   }
 
 
 
   public double getWeightImpl(AtomicSymbol s)
 
-  throws IllegalSymbolException {
-    if(!hasWeights()) {
+      throws IllegalSymbolException {
+    if (!hasWeights()) {
       return Double.NaN;
     } else {
       int index = indexer.indexForSymbol(s);
@@ -178,13 +168,11 @@ extends AbstractDistribution implements Serializable{
 
 
   protected void setWeightImpl(AtomicSymbol s, double w)
-  throws IllegalSymbolException, ChangeVetoException {
+      throws IllegalSymbolException, ChangeVetoException {
     double[] weights = getWeights();
-    if(w < 0.0) {
+    if (w < 0.0) {
       throw new IllegalArgumentException(
-        "Can't set weight to negative score: " +
-        s.getName() + " -> " + w
-      );
+          "Can't set weight to negative score: " + s.getName() + " -> " + w);
     }
     weights[indexer.indexForSymbol(s)] = w;
   }
@@ -192,19 +180,14 @@ extends AbstractDistribution implements Serializable{
   private void initialise(FiniteAlphabet alphabet) {
     this.alpha = alphabet;
     this.indexer = AlphabetManager.getAlphabetIndex(alphabet);
-    indexer.addChangeListener(
-      new ChangeAdapter() {
-        public void preChange(ChangeEvent ce) throws ChangeVetoException {
-          if(hasWeights()) {
-            throw new ChangeVetoException(
-              ce,
-              "Can't allow the index to change as we have probabilities."
-            );
-          }
+    indexer.addChangeListener(new ChangeAdapter() {
+      public void preChange(ChangeEvent ce) throws ChangeVetoException {
+        if (hasWeights()) {
+          throw new ChangeVetoException(ce,
+              "Can't allow the index to change as we have probabilities.");
         }
-      },
-      AlphabetIndex.INDEX
-    );
+      }
+    }, AlphabetIndex.INDEX);
 
     try {
       setNullModel(new UniformDistribution(alphabet));
@@ -216,32 +199,29 @@ extends AbstractDistribution implements Serializable{
   /**
    * make an instance of SimpleDistribution for the specified Alphabet.
    */
-  public SimpleDistribution(FiniteAlphabet alphabet)
-  {
+  public SimpleDistribution(FiniteAlphabet alphabet) {
     initialise(alphabet);
   }
 
   /**
-   * make an instance of SimpleDistribution with weights identical
-   * to the specified Distribution.
+   * make an instance of SimpleDistribution with weights identical to the specified Distribution.
    *
    * @param dist Distribution to copy the weights from.
    */
-  public SimpleDistribution(Distribution dist)
-  {
+  public SimpleDistribution(Distribution dist) {
     try {
-    initialise((FiniteAlphabet) dist.getAlphabet());
+      initialise((FiniteAlphabet) dist.getAlphabet());
 
-    // now copy over weights
-    int alfaSize = ((FiniteAlphabet)getAlphabet()).size();
+      // now copy over weights
+      int alfaSize = ((FiniteAlphabet) getAlphabet()).size();
 
-    for (int i = 0; i < alfaSize; i++) {
-      weights = new double[alfaSize];
-      weights[i] = dist.getWeight(indexer.symbolForIndex(i));
-    }
-    }
-    catch (IllegalSymbolException ise) {
-      System.err.println("an impossible error surely! "); ise.printStackTrace();
+      for (int i = 0; i < alfaSize; i++) {
+        weights = new double[alfaSize];
+        weights[i] = dist.getWeight(indexer.symbolForIndex(i));
+      }
+    } catch (IllegalSymbolException ise) {
+      System.err.println("an impossible error surely! ");
+      ise.printStackTrace();
     }
   }
 
@@ -249,7 +229,7 @@ extends AbstractDistribution implements Serializable{
    * Register an SimpleDistribution.Trainer instance as the trainer for this distribution.
    */
   public void registerWithTrainer(DistributionTrainerContext dtc) {
-   dtc.registerTrainer(this, new Trainer());
+    dtc.registerTrainer(this, new Trainer());
   }
 
 
@@ -270,18 +250,16 @@ extends AbstractDistribution implements Serializable{
     }
 
     public void addCount(DistributionTrainerContext dtc, AtomicSymbol sym, double times)
-    throws IllegalSymbolException {
+        throws IllegalSymbolException {
       try {
-          counts.increaseCount(sym, times);
+        counts.increaseCount(sym, times);
       } catch (ChangeVetoException cve) {
-        throw new BioError(
-          "Assertion Failure: Change to Count object vetoed", cve
-        );
+        throw new BioError("Assertion Failure: Change to Count object vetoed", cve);
       }
     }
 
     public double getCount(DistributionTrainerContext dtc, AtomicSymbol sym)
-    throws IllegalSymbolException {
+        throws IllegalSymbolException {
       return counts.getCount(sym);
     }
 
@@ -290,29 +268,23 @@ extends AbstractDistribution implements Serializable{
     public void clearCounts(DistributionTrainerContext dtc) {
       try {
         int size = ((FiniteAlphabet) counts.getAlphabet()).size();
-        for(int i = 0; i < size; i++) {
+        for (int i = 0; i < size; i++) {
           counts.zeroCounts();
         }
       } catch (ChangeVetoException cve) {
-        throw new BioError(
-          "Assertion Failure: Change to Count object vetoed",cve
-        );
+        throw new BioError("Assertion Failure: Change to Count object vetoed", cve);
       }
     }
 
 
 
-    public void train(DistributionTrainerContext dtc, double weight)
-    throws ChangeVetoException {
-      if(!hasListeners())  {
+    public void train(DistributionTrainerContext dtc, double weight) throws ChangeVetoException {
+      if (!hasListeners()) {
         trainImpl(dtc, weight);
       } else {
         ChangeSupport changeSupport = getChangeSupport(Distribution.WEIGHTS);
-        synchronized(changeSupport) {
-          ChangeEvent ce = new ChangeEvent(
-            SimpleDistribution.this,
-            Distribution.WEIGHTS
-          );
+        synchronized (changeSupport) {
+          ChangeEvent ce = new ChangeEvent(SimpleDistribution.this, Distribution.WEIGHTS);
           changeSupport.firePreChangeEvent(ce);
           trainImpl(dtc, weight);
           changeSupport.firePostChangeEvent(ce);
@@ -323,33 +295,27 @@ extends AbstractDistribution implements Serializable{
 
 
     protected void trainImpl(DistributionTrainerContext dtc, double weight) {
-      //System.out.println("Training");
+      // System.out.println("Training");
       try {
         Distribution nullModel = getNullModel();
         double[] weights = getWeights();
         double[] total = new double[weights.length];
         double sum = 0.0;
 
-        for(int i = 0; i < total.length; i++) {
+        for (int i = 0; i < total.length; i++) {
           AtomicSymbol s = (AtomicSymbol) indexer.symbolForIndex(i);
-          sum +=
-            total[i] =
-              getCount(dtc, s) +
-              nullModel.getWeight(s) * weight;
+          sum += total[i] = getCount(dtc, s) + nullModel.getWeight(s) * weight;
         }
         double sum_inv = 1.0 / sum;
-        for(int i = 0; i < total.length; i++) {
-          //System.out.println("\t" + weights[i] + "\t" + total[i] * sum_inv);
+        for (int i = 0; i < total.length; i++) {
+          // System.out.println("\t" + weights[i] + "\t" + total[i] * sum_inv);
           weights[i] = total[i] * sum_inv;
         }
       } catch (IllegalSymbolException ise) {
-        throw new BioError(
-          "Assertion Failure: Should be impossible to mess up the symbols.",ise
-        );
+        throw new BioError("Assertion Failure: Should be impossible to mess up the symbols.", ise);
       }
     }
   }
 }
-
 
 

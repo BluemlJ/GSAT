@@ -1,21 +1,18 @@
 /*
- *                    BioJava development code
+ * BioJava development code
  *
- * This code may be freely distributed and modified under the
- * terms of the GNU Lesser General Public Licence.  This should
- * be distributed with the code.  If you do not have a copy,
- * see:
+ * This code may be freely distributed and modified under the terms of the GNU Lesser General Public
+ * Licence. This should be distributed with the code. If you do not have a copy, see:
  *
- *      http://www.gnu.org/copyleft/lesser.html
+ * http://www.gnu.org/copyleft/lesser.html
  *
- * Copyright for this code is held jointly by the individual
- * authors.  These should be listed in @author doc comments.
+ * Copyright for this code is held jointly by the individual authors. These should be listed
+ * in @author doc comments.
  *
- * For more information on the BioJava project and its aims,
- * or to join the biojava-l mailing list, visit the home page
- * at:
+ * For more information on the BioJava project and its aims, or to join the biojava-l mailing list,
+ * visit the home page at:
  *
- *      http://www.biojava.org/
+ * http://www.biojava.org/
  *
  */
 
@@ -39,13 +36,7 @@ import org.biojava.bio.seq.io.CrossProductTokenization;
 import org.biojava.bio.seq.io.SymbolTokenization;
 import org.biojava.utils.Unchangeable;
 
-class InfiniteCrossProductAlphabet
-  extends
-    Unchangeable
-  implements
-    Alphabet,
-    Serializable
-{
+class InfiniteCrossProductAlphabet extends Unchangeable implements Alphabet, Serializable {
   private final List alphas;
 
   InfiniteCrossProductAlphabet(List alphas) {
@@ -59,9 +50,9 @@ class InfiniteCrossProductAlphabet
   public String getName() {
     StringBuffer name = new StringBuffer("(");
     for (int i = 0; i < alphas.size(); ++i) {
-	    Alphabet a = (Alphabet) alphas.get(i);
-	    name.append(a.getName());
-	    if (i < alphas.size() - 1) {
+      Alphabet a = (Alphabet) alphas.get(i);
+      name.append(a.getName());
+      if (i < alphas.size() - 1) {
         name.append(" x ");
       }
     }
@@ -70,35 +61,33 @@ class InfiniteCrossProductAlphabet
   }
 
   public boolean contains(Symbol s) {
-    if(! (s instanceof AtomicSymbol)) {
+    if (!(s instanceof AtomicSymbol)) {
       Alphabet ma = s.getMatches();
-      if(ma instanceof FiniteAlphabet) {
-        for(Iterator i = ((FiniteAlphabet) ma).iterator(); i.hasNext(); ) {
-          if(!contains((Symbol) i.next())) {
+      if (ma instanceof FiniteAlphabet) {
+        for (Iterator i = ((FiniteAlphabet) ma).iterator(); i.hasNext();) {
+          if (!contains((Symbol) i.next())) {
             return false;
           }
         }
         return true;
       } else {
-        throw new BioError(
-          "Problem: Can't work out if I contain ambiguity symbol " + s.getName()
-        );
+        throw new BioError("Problem: Can't work out if I contain ambiguity symbol " + s.getName());
       }
     } else {
       AtomicSymbol cs = (AtomicSymbol) s;
 
       List sl = cs.getSymbols();
-      if(sl.size() != alphas.size()) {
+      if (sl.size() != alphas.size()) {
         return false;
       }
 
       Iterator ai = alphas.iterator();
       Iterator si = sl.iterator();
 
-      while(ai.hasNext() && si.hasNext()) {
+      while (ai.hasNext() && si.hasNext()) {
         Alphabet aa = (Alphabet) ai.next();
         Symbol ss = (Symbol) si.next();
-        if(!aa.contains(ss)) {
+        if (!aa.contains(ss)) {
           return false;
         }
       }
@@ -108,12 +97,10 @@ class InfiniteCrossProductAlphabet
   }
 
   public void validate(Symbol s) throws IllegalSymbolException {
-    if(!this.contains(s)) {
-	    throw new IllegalSymbolException(
-        "CrossProductAlphabet " + getName() + " does not accept " + s.getName() +
-        " as it is not an instance of CrossProductSymbol or " +
-        " an AmbiguitySymbol over a subset of symbols in this alphabet."
-      );
+    if (!this.contains(s)) {
+      throw new IllegalSymbolException("CrossProductAlphabet " + getName() + " does not accept "
+          + s.getName() + " as it is not an instance of CrossProductSymbol or "
+          + " an AmbiguitySymbol over a subset of symbols in this alphabet.");
     }
   }
 
@@ -125,27 +112,22 @@ class InfiniteCrossProductAlphabet
     return alphas;
   }
 
-  public Symbol getSymbol(List sList)
-  throws IllegalSymbolException {
-    if(sList.size() != alphas.size()) {
+  public Symbol getSymbol(List sList) throws IllegalSymbolException {
+    if (sList.size() != alphas.size()) {
       throw new IllegalSymbolException(
-        "List of symbols is the wrong length (" + alphas.size() +
-        ":" + sList.size() + ")"
-      );
+          "List of symbols is the wrong length (" + alphas.size() + ":" + sList.size() + ")");
     }
 
     Iterator ai = alphas.iterator();
     Iterator si = sList.iterator();
 
-    while(ai.hasNext() && si.hasNext()) {
+    while (ai.hasNext() && si.hasNext()) {
       Alphabet aa = (Alphabet) ai.next();
       Symbol ss = (Symbol) si.next();
-      if(!aa.contains(ss)) {
+      if (!aa.contains(ss)) {
         throw new IllegalSymbolException(
-          "CrossProductAlphabet " + getName() + " does not accept " + sList +
-          " as symbol " + ss.getName() + " is not a member of the alphabet " +
-          aa.getName()
-        );
+            "CrossProductAlphabet " + getName() + " does not accept " + sList + " as symbol "
+                + ss.getName() + " is not a member of the alphabet " + aa.getName());
       }
     }
 
@@ -157,12 +139,10 @@ class InfiniteCrossProductAlphabet
   }
 
   public SymbolTokenization getTokenization(String name)
-  throws NoSuchElementException, BioException {
-      if(name == "name") {
-          return new CrossProductTokenization(this);
-      }
-    throw new NoSuchElementException(
-      "No parser for " + name + " is defined for " + getName()
-    );
+      throws NoSuchElementException, BioException {
+    if (name == "name") {
+      return new CrossProductTokenization(this);
+    }
+    throw new NoSuchElementException("No parser for " + name + " is defined for " + getName());
   }
 }

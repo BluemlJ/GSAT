@@ -1,22 +1,19 @@
 /* -*- c-basic-offset: 2; indent-tabs-mode: nil -*- */
 /*
- *                    BioJava development code
+ * BioJava development code
  *
- * This code may be freely distributed and modified under the
- * terms of the GNU Lesser General Public Licence.  This should
- * be distributed with the code.  If you do not have a copy,
- * see:
+ * This code may be freely distributed and modified under the terms of the GNU Lesser General Public
+ * Licence. This should be distributed with the code. If you do not have a copy, see:
  *
- *      http://www.gnu.org/copyleft/lesser.html
+ * http://www.gnu.org/copyleft/lesser.html
  *
- * Copyright for this code is held jointly by the individual
- * authors.  These should be listed in @author doc comments.
+ * Copyright for this code is held jointly by the individual authors. These should be listed
+ * in @author doc comments.
  *
- * For more information on the BioJava project and its aims,
- * or to join the biojava-l mailing list, visit the home page
- * at:
+ * For more information on the BioJava project and its aims, or to join the biojava-l mailing list,
+ * visit the home page at:
  *
- *      http://www.biojava.org/
+ * http://www.biojava.org/
  *
  */
 
@@ -82,10 +79,10 @@ public class SimpleGFFRecord implements GFFRecord {
   private String comment;
 
   /**
-  * Create a new SimpleGFFRecord from GFFRecord object
-  * 
-  * @param rec - A GFFRecord object
-  */
+   * Create a new SimpleGFFRecord from GFFRecord object
+   * 
+   * @param rec - A GFFRecord object
+   */
 
   public SimpleGFFRecord(GFFRecord rec) {
     this.seqName = rec.getSeqName();
@@ -100,18 +97,8 @@ public class SimpleGFFRecord implements GFFRecord {
     this.groupAttributes = new SmallMap(rec.getGroupAttributes());
   }
 
-  public SimpleGFFRecord(
-                         String seqName,
-                         String source,
-                         String feature,
-                         int start,
-                         int end,
-                         double score,
-                         StrandedFeature.Strand strand,
-                         int frame,
-                         String comment,
-                         Map groupAttributes
-                         ) {
+  public SimpleGFFRecord(String seqName, String source, String feature, int start, int end,
+      double score, StrandedFeature.Strand strand, int frame, String comment, Map groupAttributes) {
     this.seqName = seqName;
     this.source = source;
     this.feature = feature;
@@ -125,7 +112,7 @@ public class SimpleGFFRecord implements GFFRecord {
   }
 
 
-   /**
+  /**
    * Create a new SimpleGFFRecord with values set to null or zero
    */
   public SimpleGFFRecord() {
@@ -144,7 +131,7 @@ public class SimpleGFFRecord implements GFFRecord {
   /**
    * Set the sequence name to <span class="arg">seqName</span>.
    *
-   * @param seqName  the new name
+   * @param seqName the new name
    */
   public void setSeqName(String seqName) {
     this.seqName = seqName;
@@ -157,7 +144,7 @@ public class SimpleGFFRecord implements GFFRecord {
   /**
    * Set the feature source to <span class="arg">source</source>.
    *
-   * @param source  the new source
+   * @param source the new source
    */
   public void setSource(String source) {
     this.source = source;
@@ -170,7 +157,7 @@ public class SimpleGFFRecord implements GFFRecord {
   /**
    * Set the feature type to <span class="arg">type</source>.
    *
-   * @param feature  the new feature type
+   * @param feature the new feature type
    */
   public void setFeature(String feature) {
     this.feature = feature;
@@ -183,7 +170,7 @@ public class SimpleGFFRecord implements GFFRecord {
   /**
    * Set the start coordinate to <span class="arg">start</source>.
    *
-   * @param start  the new start coordinate
+   * @param start the new start coordinate
    */
   public void setStart(int start) {
     this.start = start;
@@ -196,7 +183,7 @@ public class SimpleGFFRecord implements GFFRecord {
   /**
    * Set the end coordinate to <span class="arg">end</source>.
    *
-   * @param end  the new end coordinate
+   * @param end the new end coordinate
    */
   public void setEnd(int end) {
     this.end = end;
@@ -209,11 +196,10 @@ public class SimpleGFFRecord implements GFFRecord {
   /**
    * Set the score to <span class="arg">score</source>.
    * <p>
-   * The score must be a double, inclusive of <code>0</code>.
-   * If you wish to indicate that there is no score, then use
-   * <span class="type">GFFRecord</span>.<span class="const">NO_SCORE</span>.
+   * The score must be a double, inclusive of <code>0</code>. If you wish to indicate that there is
+   * no score, then use <span class="type">GFFRecord</span>.<span class="const">NO_SCORE</span>.
    *
-   * @param score  the new score
+   * @param score the new score
    */
   public void setScore(double score) {
     this.score = score;
@@ -239,16 +225,14 @@ public class SimpleGFFRecord implements GFFRecord {
   /**
    * Set the frame to <span class="arg">frame</source>.
    * <p>
-   * The score must be  one of <code>{0, 1, 2}</code> or
+   * The score must be one of <code>{0, 1, 2}</code> or
    * <span class="type">GFFRecord</span>.<span class="const">NO_FRAME</span>.
    *
    * @param frame the frame
    * @throws IllegalArgumentException if score is not valid.
    */
   public void setFrame(int frame) {
-    if (frame != GFFTools.NO_FRAME &&
-       (frame < 0 || frame > 2))
-    {
+    if (frame != GFFTools.NO_FRAME && (frame < 0 || frame > 2)) {
       throw new IllegalArgumentException("Illegal frame: " + frame);
     }
     this.frame = frame;
@@ -259,13 +243,12 @@ public class SimpleGFFRecord implements GFFRecord {
   }
 
   /**
-   * Replace the group-attribute <span class="type">Map</span> with
-   * <span class="arg">ga</span>.
+   * Replace the group-attribute <span class="type">Map</span> with <span class="arg">ga</span>.
    * <p>
-   * To efficiently add a key, call <span class="method">getGroupAttributes()</span>
-   * and modify the <span class="type">Map</span>.
+   * To efficiently add a key, call <span class="method">getGroupAttributes()</span> and modify the
+   * <span class="type">Map</span>.
    *
-   * @param ga  the new group-attribute <span class="type">Map</span>
+   * @param ga the new group-attribute <span class="type">Map</span>
    */
   public void setGroupAttributes(Map ga) {
     this.groupAttributes = ga;
@@ -294,15 +277,13 @@ public class SimpleGFFRecord implements GFFRecord {
   }
 
   /**
-   * Create a <span class="type">String</span> representation of
-   * <span class="arg">attMap</span>.
+   * Create a <span class="type">String</span> representation of <span class="arg">attMap</span>.
    *
-   * <span class="arg">attMap</span> is assumed to contain
-   * <span class="type">String</span> keys and
+   * <span class="arg">attMap</span> is assumed to contain <span class="type">String</span> keys and
    * <span class="type">List</span> values.
    *
-   * @param attMap  the <span class="type">Map</span> of attributes and value lists
-   * @return  a GFF attribute/value <span class="type">String</span>
+   * @param attMap the <span class="type">Map</span> of attributes and value lists
+   * @return a GFF attribute/value <span class="type">String</span>
    */
   public static String stringifyAttributes(Map attMap) {
     StringBuffer sBuff = new StringBuffer();
@@ -327,9 +308,8 @@ public class SimpleGFFRecord implements GFFRecord {
   }
 
   /**
-   * Returns true if a string is "textual". The GFF Spec says that
-   * "textual" values must be quoted. This implementation just tests
-   * if the string contains letters or whitespace.
+   * Returns true if a string is "textual". The GFF Spec says that "textual" values must be quoted.
+   * This implementation just tests if the string contains letters or whitespace.
    *
    * @param value a <code>String</code> value.
    * @return true if value is "textual".

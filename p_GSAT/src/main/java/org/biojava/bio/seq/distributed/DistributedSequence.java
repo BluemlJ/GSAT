@@ -1,21 +1,18 @@
 /*
- *                    BioJava development code
+ * BioJava development code
  *
- * This code may be freely distributed and modified under the
- * terms of the GNU Lesser General Public Licence.  This should
- * be distributed with the code.  If you do not have a copy,
- * see:
+ * This code may be freely distributed and modified under the terms of the GNU Lesser General Public
+ * Licence. This should be distributed with the code. If you do not have a copy, see:
  *
- *      http://www.gnu.org/copyleft/lesser.html
+ * http://www.gnu.org/copyleft/lesser.html
  *
- * Copyright for this code is held jointly by the individual
- * authors.  These should be listed in @author doc comments.
+ * Copyright for this code is held jointly by the individual authors. These should be listed
+ * in @author doc comments.
  *
- * For more information on the BioJava project and its aims,
- * or to join the biojava-l mailing list, visit the home page
- * at:
+ * For more information on the BioJava project and its aims, or to join the biojava-l mailing list,
+ * visit the home page at:
  *
- *      http://www.biojava.org/
+ * http://www.biojava.org/
  *
  */
 
@@ -54,11 +51,7 @@ import org.biojava.utils.ChangeVetoException;
  * @since 1.2
  */
 
-class DistributedSequence
-        extends
-        AbstractChangeable
-        implements
-        Sequence {
+class DistributedSequence extends AbstractChangeable implements Sequence {
   private DistributedSequenceDB db;
   private DistDataSource seqSource;
   private Set featureSources;
@@ -69,11 +62,9 @@ class DistributedSequence
 
   private transient ChangeListener dsListener;
 
-  DistributedSequence(String id,
-                      DistributedSequenceDB db,
-                      DistDataSource seqSource,
-                      Set featureSources) {
-//System.err.println("*** Constructing DistributedSequence: " + id);
+  DistributedSequence(String id, DistributedSequenceDB db, DistDataSource seqSource,
+      Set featureSources) {
+    // System.err.println("*** Constructing DistributedSequence: " + id);
 
     this.id = id;
     this.seqSource = seqSource;
@@ -84,10 +75,10 @@ class DistributedSequence
 
   private void installListener() {
     dsListener = new ChangeListener() {
-      public void preChange(ChangeEvent cev)
-              throws ChangeVetoException {
+      public void preChange(ChangeEvent cev) throws ChangeVetoException {
         if (cev.getPrevious() == seqSource) {
-          throw new ChangeVetoException(cev, "Can't remove this datasource, since it is providing sequence data");
+          throw new ChangeVetoException(cev,
+              "Can't remove this datasource, since it is providing sequence data");
         }
 
         if (hasListeners()) {
@@ -106,7 +97,7 @@ class DistributedSequence
           }
         }
 
-        mfh = null;  // C'mon, we can do better than that...
+        mfh = null; // C'mon, we can do better than that...
 
         if (hasListeners()) {
           getChangeSupport(ChangeType.UNKNOWN).firePostChangeEvent(makeChainedEvent(cev));
@@ -114,10 +105,7 @@ class DistributedSequence
       }
 
       private ChangeEvent makeChainedEvent(ChangeEvent cev) {
-        return new ChangeEvent(DistributedSequence.this,
-                               FeatureHolder.FEATURES,
-                               null, null,
-                               cev);
+        return new ChangeEvent(DistributedSequence.this, FeatureHolder.FEATURES, null, null, cev);
       }
     };
     db.addChangeListener(dsListener, DistributedSequenceDB.DATASOURCE);
@@ -172,52 +160,53 @@ class DistributedSequence
     return getSymbols().subStr(start, end);
   }
 
-  public void edit(Edit e)
-          throws ChangeVetoException {
+  public void edit(Edit e) throws ChangeVetoException {
     throw new ChangeVetoException("Can't edit sequence in EGADS -- or at least not yet...");
   }
 
   public Iterator features() {
     return getFeatures().features();
   }
-  
-  
-    private FeatureHolder components = null;
 
-    public FeatureHolder filter(FeatureFilter ff, boolean recurse) {
-        if (recurse) {
-            MergeFeatureHolder results = new MergeFeatureHolder();
-            try {
-                results.addFeatureHolder(getFeatures().filter(new FeatureFilter.And(new FeatureFilter.Not(new FeatureFilter.ByAncestor(new FeatureFilter.ByClass(ComponentFeature.class))), ff), recurse));
-                if (components == null) {
-                    components = getFeatures().filter(new FeatureFilter.And(FeatureFilter.top_level, new FeatureFilter.ByClass(ComponentFeature.class)));
-                }
-                for (Iterator i = components.features(); i.hasNext(); ) {
-                    FeatureHolder fh = ((Feature) i.next()).filter(ff);
-                    if (fh.countFeatures() > 0) {
-                        results.addFeatureHolder(fh);
-                    }
-                }
-            } catch (Exception ex) {
-                throw new BioRuntimeException(ex);
-            }
-            return results;
-        } else {
-            return getFeatures().filter(ff, recurse);
+
+  private FeatureHolder components = null;
+
+  public FeatureHolder filter(FeatureFilter ff, boolean recurse) {
+    if (recurse) {
+      MergeFeatureHolder results = new MergeFeatureHolder();
+      try {
+        results.addFeatureHolder(getFeatures().filter(new FeatureFilter.And(
+            new FeatureFilter.Not(
+                new FeatureFilter.ByAncestor(new FeatureFilter.ByClass(ComponentFeature.class))),
+            ff), recurse));
+        if (components == null) {
+          components = getFeatures().filter(new FeatureFilter.And(FeatureFilter.top_level,
+              new FeatureFilter.ByClass(ComponentFeature.class)));
         }
+        for (Iterator i = components.features(); i.hasNext();) {
+          FeatureHolder fh = ((Feature) i.next()).filter(ff);
+          if (fh.countFeatures() > 0) {
+            results.addFeatureHolder(fh);
+          }
+        }
+      } catch (Exception ex) {
+        throw new BioRuntimeException(ex);
+      }
+      return results;
+    } else {
+      return getFeatures().filter(ff, recurse);
     }
+  }
 
-    public FeatureHolder filter(FeatureFilter ff) {
-        return filter(ff, true);
-    }
+  public FeatureHolder filter(FeatureFilter ff) {
+    return filter(ff, true);
+  }
 
-  public void removeFeature(Feature f)
-          throws ChangeVetoException {
+  public void removeFeature(Feature f) throws ChangeVetoException {
     throw new ChangeVetoException("Can't edit sequence in EGADS -- or at least not yet...");
   }
 
-  public Feature createFeature(Feature.Template f)
-          throws ChangeVetoException {
+  public Feature createFeature(Feature.Template f) throws ChangeVetoException {
     throw new ChangeVetoException("Can't edit sequence in EGADS -- or at least not yet...");
   }
 
@@ -249,15 +238,8 @@ class DistributedSequence
         try {
           Annotation ann = new SmallAnnotation();
           ann.setProperty("source", dds);
-          mfh.addFeatureHolder(
-              new ProjectedFeatureHolder(
-                  new DistProjectionContext(
-                      dds.getFeatures(id, FeatureFilter.all, false),
-                      this,
-                      ann
-                  )
-              )
-          );
+          mfh.addFeatureHolder(new ProjectedFeatureHolder(
+              new DistProjectionContext(dds.getFeatures(id, FeatureFilter.all, false), this, ann)));
         } catch (Exception ex) {
           ex.printStackTrace();
         }

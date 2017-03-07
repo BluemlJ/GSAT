@@ -1,41 +1,41 @@
 /*
-
- *                    BioJava development code
-
+ * 
+ * BioJava development code
  *
-
+ * 
+ * 
  * This code may be freely distributed and modified under the
-
- * terms of the GNU Lesser General Public Licence.  This should
-
- * be distributed with the code.  If you do not have a copy,
-
+ * 
+ * terms of the GNU Lesser General Public Licence. This should
+ * 
+ * be distributed with the code. If you do not have a copy,
+ * 
  * see:
-
  *
-
- *      http://www.gnu.org/copyleft/lesser.html
-
+ * 
+ * 
+ * http://www.gnu.org/copyleft/lesser.html
  *
-
+ * 
+ * 
  * Copyright for this code is held jointly by the individual
-
- * authors.  These should be listed in @author doc comments.
-
+ * 
+ * authors. These should be listed in @author doc comments.
  *
-
+ * 
+ * 
  * For more information on the BioJava project and its aims,
-
+ * 
  * or to join the biojava-l mailing list, visit the home page
-
+ * 
  * at:
-
  *
-
- *      http://www.biojava.org/
-
+ * 
+ * 
+ * http://www.biojava.org/
  *
-
+ * 
+ * 
  */
 
 package org.biojava.bio.seq.io.agave;
@@ -46,22 +46,20 @@ import org.xml.sax.SAXException;
 
 
 
-
-
 /**
-
- * Deals with sequence code
-
  * 
-
- * @author Hanning Ni    Doubletwist Inc
-  * @author Greg Cox
-
+ * Deals with sequence code
+ * 
+ * 
+ * 
+ * @author Hanning Ni Doubletwist Inc
+ * @author Greg Cox
+ * 
  */
 
 public class AGAVESeqPropHandler
 
-               extends StAXPropertyHandler
+    extends StAXPropertyHandler
 
 {
 
@@ -69,17 +67,17 @@ public class AGAVESeqPropHandler
 
   public static final StAXHandlerFactory AGAVE_SEQ_PROP_HANDLER_FACTORY
 
-    = new StAXHandlerFactory() {
+      = new StAXHandlerFactory() {
 
-    public StAXContentHandler getHandler(StAXFeatureHandler staxenv) {
+        public StAXContentHandler getHandler(StAXFeatureHandler staxenv) {
 
-      return new AGAVESeqPropHandler(staxenv);
+          return new AGAVESeqPropHandler(staxenv);
 
-    }
+        }
 
-  };
+      };
 
-  private StringBuffer dnaTokens  ;
+  private StringBuffer dnaTokens;
 
 
 
@@ -95,25 +93,25 @@ public class AGAVESeqPropHandler
 
 
 
-   public void characters(char[] ch, int start, int length)
+  public void characters(char[] ch, int start, int length)
 
-        throws SAXException
+      throws SAXException
 
   {
 
-       dnaTokens = new StringBuffer()  ;
+    dnaTokens = new StringBuffer();
 
-       for( int i = start ; i < start + length; i++)
+    for (int i = start; i < start + length; i++)
 
-       {
+    {
 
-           char c = ch[i] ;
+      char c = ch[i];
 
-           if( c != ' '  && c != '\n' && c!= '\t')
+      if (c != ' ' && c != '\n' && c != '\t')
 
-              dnaTokens.append( c  );
+        dnaTokens.append(c);
 
-       }
+    }
 
   }
 
@@ -121,65 +119,65 @@ public class AGAVESeqPropHandler
 
   public void endElementHandler(
 
-                String nsURI,
+      String nsURI,
 
-                String localName,
+      String localName,
 
-                String qName,
+      String qName,
 
-                StAXContentHandler handler)
+      StAXContentHandler handler)
 
-              throws SAXException
+      throws SAXException
 
   {
 
-        int currLevel = staxenv.getLevel();
+    int currLevel = staxenv.getLevel();
 
-        if (currLevel >=1)
+    if (currLevel >= 1)
+
+    {
+
+      ListIterator li = staxenv.getHandlerStackIterator(currLevel);
+
+      while (li.hasPrevious())
+
+      {
+
+        Object ob = li.previous();
+
+        if (ob instanceof AGAVEBioSeqCallbackItf)
 
         {
 
-            ListIterator li = staxenv.getHandlerStackIterator(currLevel);
+          ((AGAVEBioSeqCallbackItf) ob).reportDna(dnaTokens.substring(0));
 
-            while(li.hasPrevious())
-
-            {
-
-               Object ob = li.previous();
-
-                if (ob instanceof AGAVEBioSeqCallbackItf)
-
-                {
-
-                     ((AGAVEBioSeqCallbackItf) ob).reportDna( dnaTokens.substring(0) );
-
-                    return;
-
-                }
-
-            }
-
-            li = staxenv.getHandlerStackIterator(currLevel);
-
-            while (li.hasPrevious())
-
-            {
-
-                Object ob = li.previous();
-
-                if (ob instanceof AGAVEContigCallbackItf)
-
-                {
-
-                    ((AGAVEContigCallbackItf) ob).reportDna( dnaTokens.substring(0) );
-
-                    return;
-
-                }
-
-            }
+          return;
 
         }
+
+      }
+
+      li = staxenv.getHandlerStackIterator(currLevel);
+
+      while (li.hasPrevious())
+
+      {
+
+        Object ob = li.previous();
+
+        if (ob instanceof AGAVEContigCallbackItf)
+
+        {
+
+          ((AGAVEContigCallbackItf) ob).reportDna(dnaTokens.substring(0));
+
+          return;
+
+        }
+
+      }
+
+    }
 
   }
 

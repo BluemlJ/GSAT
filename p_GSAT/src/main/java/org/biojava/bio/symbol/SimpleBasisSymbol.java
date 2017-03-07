@@ -13,52 +13,38 @@ import org.biojava.bio.Annotation;
  * @since 1.4
  * @author Matthew Pocock
  */
-class SimpleBasisSymbol
-        extends AbstractSimpleBasisSymbol
-        implements Serializable
-{
-  public SimpleBasisSymbol(Annotation annotation, List symbols)
-          throws IllegalSymbolException
-  {
+class SimpleBasisSymbol extends AbstractSimpleBasisSymbol implements Serializable {
+  public SimpleBasisSymbol(Annotation annotation, List symbols) throws IllegalSymbolException {
     super(annotation, symbols);
   }
 
-  public SimpleBasisSymbol(Annotation annotation)
-  {
+  public SimpleBasisSymbol(Annotation annotation) {
     super(annotation);
   }
 
-  public SimpleBasisSymbol(Annotation annotation, Alphabet matches)
-  {
+  public SimpleBasisSymbol(Annotation annotation, Alphabet matches) {
     super(annotation, matches);
   }
 
   public SimpleBasisSymbol(Annotation annotation, List symbols, Alphabet matches)
-          throws IllegalSymbolException
-  {
+      throws IllegalSymbolException {
     super(annotation, symbols, matches);
   }
 
-  private Object writeReplace()
-  {
+  private Object writeReplace() {
     return new SBSH(this);
   }
 
-  private static class SBSH
-          implements Serializable
-  {
+  private static class SBSH implements Serializable {
     private List syms;
     private Annotation ann;
 
-    public SBSH(SimpleBasisSymbol sym)
-    {
+    public SBSH(SimpleBasisSymbol sym) {
       syms = sym.getSymbols();
       ann = sym.getAnnotation();
     }
 
-    public Object readResolve()
-            throws ObjectStreamException
-    {
+    public Object readResolve() throws ObjectStreamException {
       try {
         return AlphabetManager.createSymbol(ann, syms, null);
       } catch (IllegalSymbolException ex) {

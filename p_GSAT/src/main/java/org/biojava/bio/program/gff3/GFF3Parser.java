@@ -1,21 +1,18 @@
 /*
- *                    BioJava development code
+ * BioJava development code
  *
- * This code may be freely distributed and modified under the
- * terms of the GNU Lesser General Public Licence.  This should
- * be distributed with the code.  If you do not have a copy,
- * see:
+ * This code may be freely distributed and modified under the terms of the GNU Lesser General Public
+ * Licence. This should be distributed with the code. If you do not have a copy, see:
  *
- *      http://www.gnu.org/copyleft/lesser.html
+ * http://www.gnu.org/copyleft/lesser.html
  *
- * Copyright for this code is held jointly by the individual
- * authors.  These should be listed in @author doc comments.
+ * Copyright for this code is held jointly by the individual authors. These should be listed
+ * in @author doc comments.
  *
- * For more information on the BioJava project and its aims,
- * or to join the biojava-l mailing list, visit the home page
- * at:
+ * For more information on the BioJava project and its aims, or to join the biojava-l mailing list,
+ * visit the home page at:
  *
- *      http://www.biojava.org/
+ * http://www.biojava.org/
  *
  */
 
@@ -56,107 +53,88 @@ public class GFF3Parser {
   private GFFErrorHandler errors = GFFErrorHandler.ABORT_PARSING;
 
   /**
-  * Set the error handler used by this parser.
-  */
+   * Set the error handler used by this parser.
+   */
 
   public void setErrorHandler(GFFErrorHandler errors) {
     this.errors = errors;
   }
 
   /**
-  * Find the error handler used by this parser.
-  */
+   * Find the error handler used by this parser.
+   */
 
   public GFFErrorHandler getErrorHandler() {
     return errors;
   }
 
   /**
-  * Informs <span class="arg">handler</span> of each line of
-  * gff read from <span class="arg">bReader</span>.  This form
-  * of the method should only be used if no locator string is
-  * available for the resource being parsed.
-  *
-  * @param bReader the <span class="type">BufferedReader</span> to parse
-  * @param handler the <span class="type">GFF3DocumentHandler</span> that will
-  *                listen for 'stuff'
-  * @param ontology  an Ontology that all terms should come from
-  *
-  * @throws <span class="type">IOException</span> if for any reason
-  *         <span class="arg">bReader</span> throws one
-  * @throws <span class="type">BioException</span> if
-  *         <span class="arg">handler</span> can not correct a parse error
-  */
+   * Informs <span class="arg">handler</span> of each line of gff read from
+   * <span class="arg">bReader</span>. This form of the method should only be used if no locator
+   * string is available for the resource being parsed.
+   *
+   * @param bReader the <span class="type">BufferedReader</span> to parse
+   * @param handler the <span class="type">GFF3DocumentHandler</span> that will listen for 'stuff'
+   * @param ontology an Ontology that all terms should come from
+   *
+   * @throws <span class="type">IOException</span> if for any reason
+   *         <span class="arg">bReader</span> throws one
+   * @throws <span class="type">BioException</span> if <span class="arg">handler</span> can not
+   *         correct a parse error
+   */
 
-  public void parse(
-    BufferedReader bReader,
-    GFF3DocumentHandler handler,
-    Ontology ontology
-  )
-  throws IOException, BioException, ParserException
-  {
+  public void parse(BufferedReader bReader, GFF3DocumentHandler handler, Ontology ontology)
+      throws IOException, BioException, ParserException {
     parse(bReader, handler, ontology, "unknown:");
   }
 
   /**
-  * Informs <span class="arg">handler</span> of each line of
-  * GFF read from <span class="arg">bReader</span>
-  *
-  * @param bReader the <span class="type">BufferedReader</span> to parse
-  * @param handler the <span class="type">GFF3DocumentHandler</span> that will
-  *                listen for 'stuff'
-  * @param ontology  an Ontology that all terms should come from
-  *
-  * @throws <span class="type">IOException</span> if for any reason
-  *         <span class="arg">bReader</span> throws one
-  * @throws <span class="type">BioException</span> if
-  *         <span class="arg">handler</span> can not correct a parse error
-  */
+   * Informs <span class="arg">handler</span> of each line of GFF read from
+   * <span class="arg">bReader</span>
+   *
+   * @param bReader the <span class="type">BufferedReader</span> to parse
+   * @param handler the <span class="type">GFF3DocumentHandler</span> that will listen for 'stuff'
+   * @param ontology an Ontology that all terms should come from
+   *
+   * @throws <span class="type">IOException</span> if for any reason
+   *         <span class="arg">bReader</span> throws one
+   * @throws <span class="type">BioException</span> if <span class="arg">handler</span> can not
+   *         correct a parse error
+   */
 
-  public void parse(
-    BufferedReader bReader,
-    GFF3DocumentHandler handler,
-    Ontology ontology,
-    String locator
-  )
-  throws IOException, BioException, ParserException
-  {
+  public void parse(BufferedReader bReader, GFF3DocumentHandler handler, Ontology ontology,
+      String locator) throws IOException, BioException, ParserException {
     Ontology fallBack;
     try {
-        fallBack = OntoTools.getDefaultFactory().createOntology(
-            "Unknown in " + locator,
-            ""
-        );
+      fallBack = OntoTools.getDefaultFactory().createOntology("Unknown in " + locator, "");
     } catch (OntologyException ex) {
-        throw new ParserException("Couldn't create fallback ontology", ex);
+      throw new ParserException("Couldn't create fallback ontology", ex);
     }
 
     handler.startDocument(locator);
     ArrayList aList = new ArrayList();
     int lineNum = 0;
-    for(String line = bReader.readLine(); line != null; line = bReader.readLine()) {
+    for (String line = bReader.readLine(); line != null; line = bReader.readLine()) {
       ++lineNum;
 
       try {
         aList.clear();
-        if(line.startsWith("#")) {
+        if (line.startsWith("#")) {
           handler.commentLine(line.substring(1));
-        } else if (line.length() == 0) {
-        } else {
+        } else if (line.length() == 0) {} else {
           StringTokenizer st = new StringTokenizer(line, "\t", false);
-          while(st.hasMoreTokens() && aList.size() < 8) {
+          while (st.hasMoreTokens() && aList.size() < 8) {
             String token = st.nextToken();
             aList.add(token);
           }
           String rest = null;
           String comment = null;
-          if(st.hasMoreTokens()) {
+          if (st.hasMoreTokens()) {
             try {
               rest = st.nextToken(((char) 0) + "");
-            } catch (NoSuchElementException nsee) {
-            }
+            } catch (NoSuchElementException nsee) {}
           }
-          if(rest != null) {
+          if (rest != null) {
             int ci = rest.indexOf("#");
             if (ci != -1) {
               comment = rest.substring(ci);
@@ -167,10 +145,7 @@ public class GFF3Parser {
           handler.recordLine(record);
         }
       } catch (ParserException ex) {
-        throw new ParserException(ex, "",
-        locator,
-        lineNum,
-        line);
+        throw new ParserException(ex, "", locator, lineNum, line);
       } catch (IgnoreRecordException ex) {
         // Silently skip any more work on this record
       }
@@ -179,31 +154,23 @@ public class GFF3Parser {
   }
 
   /**
-  * Actually turns a list of tokens, some value string and a comment into a
-  * <span class="type">GFF3Record</span> and informs
-  * <span class="arg">handler</span>.
-  *
-  * @param handler a <span class="type">GFF3DocumentHandler</span> to inform of
-  *                any parse errors, and the completed <span class="type">GFF3Record</span>
-  * @param aList   a <span class="type">List</span> containing the 8 mandatory GFF columns
-  * @param rest    a <span class="type">String</span> representing the unparsed
-  *                attribute-value text, or <span class="kw">null</span> if there is none
-  * @param comment a <span class="type">String</span> containing the comment (without the
-  *                leading '<code>#</code>' character.
-  * @param ontology  the Ontology to resolve Terms in
-  * @throws <span class="type">BioException</span> if <span class="arg">handler</span>
-  *         could not correct a parse error
-  */
-  protected GFF3Record createRecord(
-    GFF3DocumentHandler handler,
-    List aList,
-    String rest,
-    String comment,
-    Ontology ontology,
-    Ontology fallBack
-  )
-  throws BioException, ParserException, IgnoreRecordException
-  {
+   * Actually turns a list of tokens, some value string and a comment into a
+   * <span class="type">GFF3Record</span> and informs <span class="arg">handler</span>.
+   *
+   * @param handler a <span class="type">GFF3DocumentHandler</span> to inform of any parse errors,
+   *        and the completed <span class="type">GFF3Record</span>
+   * @param aList a <span class="type">List</span> containing the 8 mandatory GFF columns
+   * @param rest a <span class="type">String</span> representing the unparsed attribute-value text,
+   *        or <span class="kw">null</span> if there is none
+   * @param comment a <span class="type">String</span> containing the comment (without the leading
+   *        '<code>#</code>' character.
+   * @param ontology the Ontology to resolve Terms in
+   * @throws <span class="type">BioException</span> if <span class="arg">handler</span> could not
+   *         correct a parse error
+   */
+  protected GFF3Record createRecord(GFF3DocumentHandler handler, List aList, String rest,
+      String comment, Ontology ontology, Ontology fallBack)
+      throws BioException, ParserException, IgnoreRecordException {
     GFF3Record.Impl record = new GFF3Record.Impl();
 
     record.setSequenceID((String) aList.get(0));
@@ -211,9 +178,9 @@ public class GFF3Parser {
     {
       Term st;
       String stn = (String) aList.get(1);
-      if(ontology.containsTerm(stn)) {
+      if (ontology.containsTerm(stn)) {
         st = ontology.getTerm(stn);
-      } else if(fallBack.containsTerm(stn)) {
+      } else if (fallBack.containsTerm(stn)) {
         st = fallBack.getTerm(stn);
       } else {
         try {
@@ -230,9 +197,9 @@ public class GFF3Parser {
     {
       Term tt;
       String ttn = (String) aList.get(2);
-      if(ontology.containsTerm(ttn)) {
+      if (ontology.containsTerm(ttn)) {
         tt = ontology.getTerm(ttn);
-      } else if(fallBack.containsTerm(ttn)) {
+      } else if (fallBack.containsTerm(ttn)) {
         tt = fallBack.getTerm(ttn);
       } else {
         try {
@@ -248,7 +215,7 @@ public class GFF3Parser {
 
     int start = -1;
     try {
-      start = Integer.parseInt( (String) aList.get(3));
+      start = Integer.parseInt((String) aList.get(3));
     } catch (NumberFormatException nfe) {
       start = errors.invalidStart((String) aList.get(3));
     }
@@ -256,20 +223,14 @@ public class GFF3Parser {
 
     int end = -1;
     try {
-      end = Integer.parseInt( (String) aList.get(4));
+      end = Integer.parseInt((String) aList.get(4));
     } catch (NumberFormatException nfe) {
       end = errors.invalidEnd((String) aList.get(3));
     }
     record.setEnd(end);
 
     String score = (String) aList.get(5);
-    if(
-      score == null     ||
-      score.equals("")  ||
-    score.equals(".") ||
-    score.equals("0")
-    )
-    {
+    if (score == null || score.equals("") || score.equals(".") || score.equals("0")) {
       record.setScore(GFFTools.NO_SCORE);
     } else {
       double sc = 0.0;
@@ -282,12 +243,12 @@ public class GFF3Parser {
     }
 
     String strand = (String) aList.get(6);
-    if(strand == null || strand.equals("") || strand.equals(".")) {
+    if (strand == null || strand.equals("") || strand.equals(".")) {
       record.setStrand(StrandedFeature.UNKNOWN);
     } else {
-      if(strand.equals("+")) {
+      if (strand.equals("+")) {
         record.setStrand(StrandedFeature.POSITIVE);
-      } else if(strand.equals("-")) {
+      } else if (strand.equals("-")) {
         record.setStrand(StrandedFeature.NEGATIVE);
       } else {
         record.setStrand(errors.invalidStrand(strand));
@@ -295,7 +256,7 @@ public class GFF3Parser {
     }
 
     String frame = (String) aList.get(7);
-    if(frame.equals(".")) {
+    if (frame.equals(".")) {
       record.setPhase(GFFTools.NO_FRAME);
     } else {
       int fr = 0;
@@ -319,67 +280,66 @@ public class GFF3Parser {
   }
 
   /**
-  * Parse <span class="arg">attValList</span> into a
-  * <span class="type">Map</span> of attributes and value lists.
-  * <p>
-  * Populates an Annotation instance with Ontology Term keys and string/list
-  * values.
-  * </p>
-  *
-  * @param attValList  the <span class="type">String</span> to parse
-  */
+   * Parse <span class="arg">attValList</span> into a <span class="type">Map</span> of attributes
+   * and value lists.
+   * <p>
+   * Populates an Annotation instance with Ontology Term keys and string/list values.
+   * </p>
+   *
+   * @param attValList the <span class="type">String</span> to parse
+   */
 
-  protected void parseAttribute(String attValList, Annotation anno, Ontology onto, Ontology fallBack)
-  throws ChangeVetoException {
+  protected void parseAttribute(String attValList, Annotation anno, Ontology onto,
+      Ontology fallBack) throws ChangeVetoException {
     StringTokenizer sTok = new StringTokenizer(attValList, ";", false);
-    while(sTok.hasMoreTokens()) {
+    while (sTok.hasMoreTokens()) {
       String attVal = sTok.nextToken().trim();
       String attName;
       List valList = new ArrayList();
       int spaceIndx = attVal.indexOf("=");
-      if(spaceIndx == -1) {
+      if (spaceIndx == -1) {
         attName = attVal;
       } else {
         attName = attVal.substring(0, spaceIndx);
-        attValList = attVal.substring(spaceIndx+1).trim();
-        while(attValList.length() > 0) {
-          if(attValList.startsWith("\"")) {
+        attValList = attVal.substring(spaceIndx + 1).trim();
+        while (attValList.length() > 0) {
+          if (attValList.startsWith("\"")) {
             // System.out.println("Quoted");
             int quoteIndx = 0;
             do {
               quoteIndx++;
               quoteIndx = attValList.indexOf("\"", quoteIndx);
-            } while(quoteIndx != -1 && attValList.charAt(quoteIndx-1) == '\\');
-            if(quoteIndx > 0){
+            } while (quoteIndx != -1 && attValList.charAt(quoteIndx - 1) == '\\');
+            if (quoteIndx > 0) {
               valList.add(attValList.substring(1, quoteIndx));
-              attValList = attValList.substring(quoteIndx+1).trim();
-            }else{
+              attValList = attValList.substring(quoteIndx + 1).trim();
+            } else {
               valList.add(attValList);
               attValList = "";
             }
           } else {
             int commaIndx = attValList.indexOf(",");
-            if(commaIndx == -1) {
+            if (commaIndx == -1) {
               valList.add(attValList);
               attValList = "";
             } else {
               valList.add(attValList.substring(0, commaIndx));
-              attValList = attValList.substring(commaIndx+1).trim();
+              attValList = attValList.substring(commaIndx + 1).trim();
             }
           }
         }
       }
 
       Term key;
-      if(onto.containsTerm(attName)) {
+      if (onto.containsTerm(attName)) {
         key = onto.getTerm(attName);
-      } else if(fallBack.containsTerm(attName)) {
+      } else if (fallBack.containsTerm(attName)) {
         key = fallBack.getTerm(attName);
       } else {
         try {
           key = fallBack.createTerm(attName, "");
         } catch (AlreadyExistsException te) {
-          throw new BioError("Assertion Failure: Term should not be there yet",te);
+          throw new BioError("Assertion Failure: Term should not be there yet", te);
         } catch (ChangeVetoException cve) {
           throw new BioError("Assertion Failure: Unable to create term", cve);
         }

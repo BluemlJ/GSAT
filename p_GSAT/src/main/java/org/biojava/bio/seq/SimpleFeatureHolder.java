@@ -1,21 +1,18 @@
 /*
- *                    BioJava development code
+ * BioJava development code
  *
- * This code may be freely distributed and modified under the
- * terms of the GNU Lesser General Public Licence.  This should
- * be distributed with the code.  If you do not have a copy,
- * see:
+ * This code may be freely distributed and modified under the terms of the GNU Lesser General Public
+ * Licence. This should be distributed with the code. If you do not have a copy, see:
  *
- *      http://www.gnu.org/copyleft/lesser.html
+ * http://www.gnu.org/copyleft/lesser.html
  *
- * Copyright for this code is held jointly by the individual
- * authors.  These should be listed in @author doc comments.
+ * Copyright for this code is held jointly by the individual authors. These should be listed
+ * in @author doc comments.
  *
- * For more information on the BioJava project and its aims,
- * or to join the biojava-l mailing list, visit the home page
- * at:
+ * For more information on the BioJava project and its aims, or to join the biojava-l mailing list,
+ * visit the home page at:
  *
- *      http://www.biojava.org/
+ * http://www.biojava.org/
  *
  */
 
@@ -39,7 +36,7 @@ import org.biojava.utils.ListTools;
  * @author Thomas Down
  *
  */
-public class SimpleFeatureHolder extends AbstractFeatureHolder implements Serializable{
+public class SimpleFeatureHolder extends AbstractFeatureHolder implements Serializable {
   /**
    * The child features.
    */
@@ -51,7 +48,7 @@ public class SimpleFeatureHolder extends AbstractFeatureHolder implements Serial
    */
 
   public SimpleFeatureHolder() {
-      this.schema = FeatureFilter.all;
+    this.schema = FeatureFilter.all;
   }
 
   /**
@@ -59,7 +56,7 @@ public class SimpleFeatureHolder extends AbstractFeatureHolder implements Serial
    */
 
   public SimpleFeatureHolder(FeatureFilter schema) {
-      this.schema = schema;
+    this.schema = schema;
   }
 
   /**
@@ -70,8 +67,8 @@ public class SimpleFeatureHolder extends AbstractFeatureHolder implements Serial
   }
 
   /**
-  *Returns the list of features in this featureholder.
-  */
+   * Returns the list of features in this featureholder.
+   */
   protected List getFeatures() {
     return features;
   }
@@ -84,43 +81,35 @@ public class SimpleFeatureHolder extends AbstractFeatureHolder implements Serial
     return ListTools.nonRemoveIterator(features.iterator());
   }
 
-    /**
-    *Add a feature to the featureholder
-    */
+  /**
+   * Add a feature to the featureholder
+   */
 
-  public void addFeature(Feature f)
-  throws ChangeVetoException {
-    if(!hasListeners()) {
+  public void addFeature(Feature f) throws ChangeVetoException {
+    if (!hasListeners()) {
       features.add(f);
     } else {
       ChangeSupport changeSupport = getChangeSupport(FeatureHolder.FEATURES);
-      synchronized(changeSupport) {
-        ChangeEvent ce = new ChangeEvent(
-          this, FeatureHolder.FEATURES,
-          f, null
-        );
-        synchronized(ce){
-        	changeSupport.firePreChangeEvent(ce);
+      synchronized (changeSupport) {
+        ChangeEvent ce = new ChangeEvent(this, FeatureHolder.FEATURES, f, null);
+        synchronized (ce) {
+          changeSupport.firePreChangeEvent(ce);
         }
         features.add(f);
-        synchronized(ce){
-        	changeSupport.firePostChangeEvent(ce);
+        synchronized (ce) {
+          changeSupport.firePostChangeEvent(ce);
         }
       }
     }
   }
 
-  public void removeFeature(Feature f)
-  throws ChangeVetoException {
-    if(!hasListeners()) {
+  public void removeFeature(Feature f) throws ChangeVetoException {
+    if (!hasListeners()) {
       features.remove(f);
     } else {
       ChangeSupport changeSupport = getChangeSupport(FeatureHolder.FEATURES);
-      synchronized(changeSupport) {
-        ChangeEvent ce = new ChangeEvent(
-          this, FeatureHolder.FEATURES,
-          null, f
-        );
+      synchronized (changeSupport) {
+        ChangeEvent ce = new ChangeEvent(this, FeatureHolder.FEATURES, null, f);
         changeSupport.firePreChangeEvent(ce);
         features.remove(f);
         changeSupport.firePostChangeEvent(ce);
@@ -133,6 +122,6 @@ public class SimpleFeatureHolder extends AbstractFeatureHolder implements Serial
   }
 
   public FeatureFilter getSchema() {
-      return schema;
+    return schema;
   }
 }

@@ -1,21 +1,18 @@
 /*
- *                    BioJava development code
+ * BioJava development code
  *
- * This code may be freely distributed and modified under the
- * terms of the GNU Lesser General Public Licence.  This should
- * be distributed with the code.  If you do not have a copy,
- * see:
+ * This code may be freely distributed and modified under the terms of the GNU Lesser General Public
+ * Licence. This should be distributed with the code. If you do not have a copy, see:
  *
- *      http://www.gnu.org/copyleft/lesser.html
+ * http://www.gnu.org/copyleft/lesser.html
  *
- * Copyright for this code is held jointly by the individual
- * authors.  These should be listed in @author doc comments.
+ * Copyright for this code is held jointly by the individual authors. These should be listed
+ * in @author doc comments.
  *
- * For more information on the BioJava project and its aims,
- * or to join the biojava-l mailing list, visit the home page
- * at:
+ * For more information on the BioJava project and its aims, or to join the biojava-l mailing list,
+ * visit the home page at:
  *
- *      http://www.biojava.org/
+ * http://www.biojava.org/
  *
  */
 
@@ -27,10 +24,9 @@ import org.biojava.bio.BioException;
 /**
  * The exception to indicate that a symbol is not valid within a context.
  * <p>
- * The usual reason for throwing an IllegalSymbolException is that you are
- * trying to add a symbol to a sequence with an alpabet that does not contain
- * the symbol. This is the sequence/alphabet equivalent of a ClassCastException
- * for objects.
+ * The usual reason for throwing an IllegalSymbolException is that you are trying to add a symbol to
+ * a sequence with an alpabet that does not contain the symbol. This is the sequence/alphabet
+ * equivalent of a ClassCastException for objects.
  * <p>
  * Frequently, these excepions are actualy generated from Alphabet.validate.
  *

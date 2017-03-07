@@ -1,21 +1,18 @@
 /**
- *                    BioJava development code
+ * BioJava development code
  *
- * This code may be freely distributed and modified under the
- * terms of the GNU Lesser General Public Licence.  This should
- * be distributed with the code.  If you do not have a copy,
- * see:
+ * This code may be freely distributed and modified under the terms of the GNU Lesser General Public
+ * Licence. This should be distributed with the code. If you do not have a copy, see:
  *
- *      http://www.gnu.org/copyleft/lesser.html
+ * http://www.gnu.org/copyleft/lesser.html
  *
- * Copyright for this code is held jointly by the individual
- * authors.  These should be listed in @author doc comments.
+ * Copyright for this code is held jointly by the individual authors. These should be listed
+ * in @author doc comments.
  *
- * For more information on the BioJava project and its aims,
- * or to join the biojava-l mailing list, visit the home page
- * at:
+ * For more information on the BioJava project and its aims, or to join the biojava-l mailing list,
+ * visit the home page at:
  *
- *      http://www.biojava.org/
+ * http://www.biojava.org/
  *
  */
 
@@ -36,11 +33,13 @@ import org.biojava.bio.symbol.SymbolList;
 import org.biojava.utils.StaticMemberPlaceHolder;
 
 /**
- * Basic SequenceBuilder implementation which accumulates all
- * notified information and creates a SimpleSequence.
+ * Basic SequenceBuilder implementation which accumulates all notified information and creates a
+ * SimpleSequence.
  *
- * <p>More functionality is offered by {@link org.biojavax.bio.seq.io.SimpleRichSequenceBuilder SimpleRichSequenceBuilder},
- * Use of this class is prefered.</p>
+ * <p>
+ * More functionality is offered by {@link org.biojavax.bio.seq.io.SimpleRichSequenceBuilder
+ * SimpleRichSequenceBuilder}, Use of this class is prefered.
+ * </p>
  *
  * @author Thomas Down
  * @author David Huen (modified to derive from SequenceBuilderBase)
@@ -49,46 +48,43 @@ import org.biojava.utils.StaticMemberPlaceHolder;
  */
 
 public class SimpleSequenceBuilder extends SequenceBuilderBase {
-    public final static SequenceBuilderFactory FACTORY = new SSBFactory();
+  public final static SequenceBuilderFactory FACTORY = new SSBFactory();
 
-    private static class SSBFactory implements SequenceBuilderFactory, Serializable {
-	private SSBFactory() {
-	}
+  private static class SSBFactory implements SequenceBuilderFactory, Serializable {
+    private SSBFactory() {}
 
-	public SequenceBuilder makeSequenceBuilder() {
-	    return new SimpleSequenceBuilder();
-	}
-
-	private Object writeReplace() throws ObjectStreamException {
-	    try {
-		return new StaticMemberPlaceHolder(SimpleSequenceBuilder.class.getField("FACTORY"));
-	    } catch (NoSuchFieldException nsfe) {
-		throw new NotSerializableException(nsfe.getMessage());
-	    }
-	}
+    public SequenceBuilder makeSequenceBuilder() {
+      return new SimpleSequenceBuilder();
     }
+
+    private Object writeReplace() throws ObjectStreamException {
+      try {
+        return new StaticMemberPlaceHolder(SimpleSequenceBuilder.class.getField("FACTORY"));
+      } catch (NoSuchFieldException nsfe) {
+        throw new NotSerializableException(nsfe.getMessage());
+      }
+    }
+  }
 
   private ChunkedSymbolListFactory slFactory;
 
   {
-	 slFactory = new ChunkedSymbolListFactory(new SimpleSymbolListFactory());
+    slFactory = new ChunkedSymbolListFactory(new SimpleSymbolListFactory());
   }
 
-    //
-    // SeqIOListener
-    //
+  //
+  // SeqIOListener
+  //
 
-    public void addSymbols(Alphabet alpha, Symbol[] syms, int pos, int len)
-        throws IllegalAlphabetException
-    {
-	slFactory.addSymbols(alpha, syms, pos, len);
-    }
+  public void addSymbols(Alphabet alpha, Symbol[] syms, int pos, int len)
+      throws IllegalAlphabetException {
+    slFactory.addSymbols(alpha, syms, pos, len);
+  }
 
 
-  public Sequence makeSequence()
-          throws BioException {
-	SymbolList symbols = slFactory.makeSymbolList();
-	seq = new SimpleSequence(symbols, uri, name, annotation);
+  public Sequence makeSequence() throws BioException {
+    SymbolList symbols = slFactory.makeSymbolList();
+    seq = new SimpleSequence(symbols, uri, name, annotation);
 
     return super.makeSequence();
   }

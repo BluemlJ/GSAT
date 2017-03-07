@@ -32,24 +32,25 @@ import org.biojava.utils.io.CountedBufferedReader;
 import org.biojava.utils.io.RAF;
 
 /**
- * <p>A UnigeneFactory that will use flat-file indexing of the unigene ascii-art
- * files.</p>
+ * <p>
+ * A UnigeneFactory that will use flat-file indexing of the unigene ascii-art files.
+ * </p>
  *
- * <p><em>This class is for developers and power-users.</em> Usually you will
- * not use this class directly, but rather use UnigeneTools.loadDatabase() with
- * a file URL.</p>
+ * <p>
+ * <em>This class is for developers and power-users.</em> Usually you will not use this class
+ * directly, but rather use UnigeneTools.loadDatabase() with a file URL.
+ * </p>
  *
- * <p>This will create all the index files necisary to look up records in a timely
- * manner. It requires read/write access to the unigene directory. No files
- * will be deleted during this opperation. The indexing strategy used is
- * compattible with the OBDA flat-file indexing spec and uses the package
- * org.biojava.bio.program.indexdb and parsers that are compattible with the
- * tag-value API.</p>
+ * <p>
+ * This will create all the index files necisary to look up records in a timely manner. It requires
+ * read/write access to the unigene directory. No files will be deleted during this opperation. The
+ * indexing strategy used is compattible with the OBDA flat-file indexing spec and uses the package
+ * org.biojava.bio.program.indexdb and parsers that are compattible with the tag-value API.
+ * </p>
  *
  * @author Matthew Pocock
  */
-public class FlatFileUnigeneFactory
-implements UnigeneFactory {
+public class FlatFileUnigeneFactory implements UnigeneFactory {
   private static final String DATA_INDEX = "data.index";
   private static final String LIB_INFO_INDEX = "libInfo.index";
   private static final String UNIQUE_INDEX = "unique.index";
@@ -62,51 +63,41 @@ implements UnigeneFactory {
     return unigeneLoc.getProtocol().equals("file");
   }
 
-  public UnigeneDB loadUnigene(URL unigeneLoc)
-  throws BioException {
-    if(!unigeneLoc.getProtocol().equals("file")) {
-      throw new BioException(
-        "Can't create unigene from non-file URL: " +
-        unigeneLoc
-      );
+  public UnigeneDB loadUnigene(URL unigeneLoc) throws BioException {
+    if (!unigeneLoc.getProtocol().equals("file")) {
+      throw new BioException("Can't create unigene from non-file URL: " + unigeneLoc);
     }
 
     File unigeneDir = new File(unigeneLoc.getPath());
-    if(!unigeneDir.exists()) {
+    if (!unigeneDir.exists()) {
       throw new BioException("Could not locate directory: " + unigeneDir);
     }
-    if(!unigeneDir.isDirectory()) {
+    if (!unigeneDir.isDirectory()) {
       throw new BioException("Expecting a directory at: " + unigeneDir);
     }
 
 
     // load a pre-made unigene file set
     try {
-      return new FlatFileUnigeneDB(
-        new BioStore(new File(unigeneDir, DATA_INDEX), true),
-        new BioStore(new File(unigeneDir, LIB_INFO_INDEX), true),
-        new BioStore(new File(unigeneDir, UNIQUE_INDEX), true),
-        new BioStore(new File(unigeneDir, ALL_INDEX), true)
-      );
+      return new FlatFileUnigeneDB(new BioStore(new File(unigeneDir, DATA_INDEX), true),
+          new BioStore(new File(unigeneDir, LIB_INFO_INDEX), true),
+          new BioStore(new File(unigeneDir, UNIQUE_INDEX), true),
+          new BioStore(new File(unigeneDir, ALL_INDEX), true));
     } catch (IOException ioe) {
-      throw new BioException("Could not instantiate flat file unigene db",ioe);
+      throw new BioException("Could not instantiate flat file unigene db", ioe);
     }
   }
 
-  public UnigeneDB createUnigene(URL unigeneLoc)
-  throws BioException {
-    if(!unigeneLoc.getProtocol().equals("file")) {
-      throw new BioException(
-        "Can't create unigene from non-file URL: " +
-        unigeneLoc
-      );
+  public UnigeneDB createUnigene(URL unigeneLoc) throws BioException {
+    if (!unigeneLoc.getProtocol().equals("file")) {
+      throw new BioException("Can't create unigene from non-file URL: " + unigeneLoc);
     }
 
     File unigeneDir = new File(unigeneLoc.getPath());
-    if(!unigeneDir.exists()) {
+    if (!unigeneDir.exists()) {
       throw new BioException("Could not locate directory: " + unigeneDir);
     }
-    if(!unigeneDir.isDirectory()) {
+    if (!unigeneDir.isDirectory()) {
       throw new BioException("Expecting a directory at: " + unigeneDir);
     }
 
@@ -116,14 +107,13 @@ implements UnigeneFactory {
       indexData(unigeneDir);
       indexLibInfo(unigeneDir);
     } catch (IOException ioe) {
-      throw new BioException("Failed to index data",ioe);
+      throw new BioException("Failed to index data", ioe);
     }
 
     return loadUnigene(unigeneLoc);
   }
 
-  private void indexData(File unigeneDir)
-  throws BioException, IOException {
+  private void indexData(File unigeneDir) throws BioException, IOException {
     // create index file for all *.data files
     File dataIndexFile = new File(unigeneDir, DATA_INDEX);
     BioStoreFactory dataBSF = new BioStoreFactory();
@@ -136,18 +126,16 @@ implements UnigeneFactory {
         return pathName.getName().endsWith(".data");
       }
     });
-    for(int i = 0; i < dataFiles.length; i++) {
+    for (int i = 0; i < dataFiles.length; i++) {
       File f = dataFiles[i];
       try {
         Indexer indexer = new Indexer(f, dataStore);
         indexer.setPrimaryKeyName("ID");
         Parser parser = new Parser();
         ParserListener pl = UnigeneTools.buildDataParser(indexer);
-        while(parser.read(
-          indexer.getReader(),
-          pl.getParser(),
-          pl.getListener()
-        )) { ; }
+        while (parser.read(indexer.getReader(), pl.getParser(), pl.getListener())) {
+          ;
+        }
       } catch (ParserException pe) {
         throw new BioException("Failed to parse " + f, pe);
       }
@@ -159,8 +147,7 @@ implements UnigeneFactory {
     }
   }
 
-  private void indexLibInfo(File unigeneDir)
-  throws BioException, IOException {
+  private void indexLibInfo(File unigeneDir) throws BioException, IOException {
     // create index for all *.lib.info files
     File liIndexFile = new File(unigeneDir, LIB_INFO_INDEX);
     BioStoreFactory liBSF = new BioStoreFactory();
@@ -173,18 +160,16 @@ implements UnigeneFactory {
         return pathName.getName().endsWith(".lib.info");
       }
     });
-    for(int i = 0; i < liFiles.length; i++) {
+    for (int i = 0; i < liFiles.length; i++) {
       File f = liFiles[i];
       try {
         Indexer indexer = new Indexer(f, liStore);
         indexer.setPrimaryKeyName("ID");
         Parser parser = new Parser();
         ParserListener pl = UnigeneTools.buildLibInfoParser(indexer);
-        while(parser.read(
-            indexer.getReader(),
-            pl.getParser(),
-            pl.getListener()
-        )) { ; }
+        while (parser.read(indexer.getReader(), pl.getParser(), pl.getListener())) {
+          ;
+        }
       } catch (ParserException pe) {
         throw new BioException("Failed to parse " + f, pe);
       }
@@ -196,8 +181,7 @@ implements UnigeneFactory {
     }
   }
 
-  private void indexUnique(File unigeneDir)
-  throws BioException, IOException {
+  private void indexUnique(File unigeneDir) throws BioException, IOException {
     File uniqueIndex = new File(unigeneDir, UNIQUE_INDEX);
     BioStoreFactory uniqueBSF = new BioStoreFactory();
     uniqueBSF.setStoreLocation(uniqueIndex);
@@ -209,24 +193,14 @@ implements UnigeneFactory {
         return pathName.getName().endsWith(".seq.uniq");
       }
     });
-    for(int i = 0; i < uniqueFiles.length; i++) {
+    for (int i = 0; i < uniqueFiles.length; i++) {
       File f = uniqueFiles[i];
       RAF raf = new RAF(f, "r");
-      FastaIndexer indexer = new FastaIndexer(
-        raf,
-        uniqueStore,
-        Pattern.compile("#(\\S+)"),
-        1
-      );
+      FastaIndexer indexer = new FastaIndexer(raf, uniqueStore, Pattern.compile("#(\\S+)"), 1);
       FastaFormat format = new FastaFormat();
       SymbolTokenization tok = DNATools.getDNA().getTokenization("token");
-      StreamReader sreader = new StreamReader(
-        indexer.getReader(),
-        format,
-        tok,
-        indexer
-      );
-      while(sreader.hasNext()) {
+      StreamReader sreader = new StreamReader(indexer.getReader(), format, tok, indexer);
+      while (sreader.hasNext()) {
         sreader.nextSequence();
       }
     }
@@ -237,8 +211,7 @@ implements UnigeneFactory {
     }
   }
 
-  private void indexAll(File unigeneDir)
-  throws BioException, IOException {
+  private void indexAll(File unigeneDir) throws BioException, IOException {
     File allIndex = new File(unigeneDir, ALL_INDEX);
     BioStoreFactory allBSF = new BioStoreFactory();
     allBSF.setStoreLocation(allIndex);
@@ -251,17 +224,17 @@ implements UnigeneFactory {
       }
     });
     Pattern pattern = Pattern.compile("/gb=(\\S+)");
-    for(int i = 0; i < allFiles.length; i++) {
+    for (int i = 0; i < allFiles.length; i++) {
       File f = allFiles[i];
       RAF raf = new RAF(f, "r");
       CountedBufferedReader reader = new CountedBufferedReader(new FileReader(f));
 
       long offset = -1;
       String id = null;
-      for(String line = reader.readLine(); line != null; line = reader.readLine()) {
-        if(line.startsWith("#")) {
+      for (String line = reader.readLine(); line != null; line = reader.readLine()) {
+        if (line.startsWith("#")) {
           long nof = reader.getFilePointer();
-          if(id != null) {
+          if (id != null) {
             allStore.writeRecord(raf, offset, (int) (nof - offset), id, Collections.EMPTY_MAP);
           }
           Matcher matcher = pattern.matcher(line);
@@ -287,16 +260,12 @@ implements UnigeneFactory {
     private final int idGroup;
 
     public FastaIndexer(RAF raf, IndexStore store, Pattern idPattern, int idGroup)
-    throws IOException {
+        throws IOException {
       this.raf = raf;
       this.store = store;
       this.idPattern = idPattern;
       this.idGroup = idGroup;
-      reader = new CountedBufferedReader(
-        new FileReader(
-          raf.getFile()
-        )
-      );
+      reader = new CountedBufferedReader(new FileReader(raf.getFile()));
     }
 
     public CountedBufferedReader getReader() {
@@ -317,7 +286,7 @@ implements UnigeneFactory {
       }
 
       public void addSequenceProperty(Object key, Object value) {
-        if(key.equals(FastaFormat.PROPERTY_DESCRIPTIONLINE)) {
+        if (key.equals(FastaFormat.PROPERTY_DESCRIPTIONLINE)) {
           String line = (String) value;
           Matcher m = idPattern.matcher(line);
           m.find();

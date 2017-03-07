@@ -1,21 +1,18 @@
 /*
- *                    BioJava development code
+ * BioJava development code
  *
- * This code may be freely distributed and modified under the
- * terms of the GNU Lesser General Public Licence.  This should
- * be distributed with the code.  If you do not have a copy,
- * see:
+ * This code may be freely distributed and modified under the terms of the GNU Lesser General Public
+ * Licence. This should be distributed with the code. If you do not have a copy, see:
  *
- *      http://www.gnu.org/copyleft/lesser.html
+ * http://www.gnu.org/copyleft/lesser.html
  *
- * Copyright for this code is held jointly by the individual
- * authors.  These should be listed in @author doc comments.
+ * Copyright for this code is held jointly by the individual authors. These should be listed
+ * in @author doc comments.
  *
- * For more information on the BioJava project and its aims,
- * or to join the biojava-l mailing list, visit the home page
- * at:
+ * For more information on the BioJava project and its aims, or to join the biojava-l mailing list,
+ * visit the home page at:
  *
- *      http://www.biojava.org/
+ * http://www.biojava.org/
  *
  */
 
@@ -43,19 +40,17 @@ public class ProjectionUtils {
    * Transform a location, translating and flipping as required.
    *
    * <p>
-   * If oppositeStrand is false, this is equivalent to translating the location.
-   * If it is true, this is equivalent to flipping it.
+   * If oppositeStrand is false, this is equivalent to translating the location. If it is true, this
+   * is equivalent to flipping it.
    * </p>
    *
-   * @param oldLoc          the Location to transform
-   * @param translation     the translation to apply
-   * @param oppositeStrand  wether or not this is a flip
-   * @return  the transformed location
+   * @param oldLoc the Location to transform
+   * @param translation the translation to apply
+   * @param oppositeStrand wether or not this is a flip
+   * @return the transformed location
    */
-  public static Location transformLocation(Location oldLoc,
-                                           int translation,
-                                           boolean oppositeStrand)
-  {
+  public static Location transformLocation(Location oldLoc, int translation,
+      boolean oppositeStrand) {
     if (oppositeStrand) {
       return flipLocation(oldLoc, translation);
     } else {
@@ -67,19 +62,16 @@ public class ProjectionUtils {
    * Revert a location, translating and flipping as required.
    *
    * <p>
-   * If oppositeStrand is false, this is equivalent to un-translating the
-   * location. If it is true, this is equivalent to (un)flipping it.
+   * If oppositeStrand is false, this is equivalent to un-translating the location. If it is true,
+   * this is equivalent to (un)flipping it.
    * </p>
    *
-   * @param oldLoc          the Location to revert
-   * @param translation     the translation to unapply
-   * @param oppositeStrand  wether or not this is a flip
-   * @return  the reverted location
+   * @param oldLoc the Location to revert
+   * @param translation the translation to unapply
+   * @param oppositeStrand wether or not this is a flip
+   * @return the reverted location
    */
-  public static Location revertLocation(Location oldLoc,
-                                        int translation,
-                                        boolean oppositeStrand)
-  {
+  public static Location revertLocation(Location oldLoc, int translation, boolean oppositeStrand) {
     if (oppositeStrand) {
       return flipLocation(oldLoc, translation);
     } else {
@@ -91,32 +83,30 @@ public class ProjectionUtils {
    * Flip a location.
    *
    * <p>
-   * All points <code>p</code> map to <code>translation - p</code>. Clearly,
-   * this mapping is its own inverse. If you wish to flip all locations between
-   * 1 and length, you should use a translation of length + 1. In general, if
-   * you wish to flip all features between x and y, you should use a translation
-   * of x + y.
+   * All points <code>p</code> map to <code>translation - p</code>. Clearly, this mapping is its own
+   * inverse. If you wish to flip all locations between 1 and length, you should use a translation
+   * of length + 1. In general, if you wish to flip all features between x and y, you should use a
+   * translation of x + y.
    * </p>
    *
-   * @param oldLoc      the Location to flip
+   * @param oldLoc the Location to flip
    * @param translation the translation to use
-   * @return  the flipped Location
+   * @return the flipped Location
    */
   public static Location flipLocation(Location oldLoc, int translation) {
     if (oldLoc.isContiguous()) {
       if (oldLoc instanceof PointLocation) {
         return new PointLocation(translation - oldLoc.getMin());
       } else {
-        return new RangeLocation(translation - oldLoc.getMax(),
-                                 translation - oldLoc.getMin());
+        return new RangeLocation(translation - oldLoc.getMax(), translation - oldLoc.getMin());
       }
     } else {
       Location compound;
       List locList = new ArrayList();
       for (Iterator i = oldLoc.blockIterator(); i.hasNext();) {
         Location oldBlock = (Location) i.next();
-        locList.add(new RangeLocation(translation - oldBlock.getMax(),
-                                      translation - oldBlock.getMin()));
+        locList.add(
+            new RangeLocation(translation - oldBlock.getMax(), translation - oldBlock.getMin()));
       }
       compound = LocationTools.union(locList);
       return compound;

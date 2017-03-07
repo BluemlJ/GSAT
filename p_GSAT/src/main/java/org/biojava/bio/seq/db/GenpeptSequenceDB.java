@@ -1,21 +1,18 @@
 /*
- *                    BioJava development code
+ * BioJava development code
  *
- * This code may be freely distributed and modified under the
- * terms of the GNU Lesser General Public Licence.  This should
- * be distributed with the code.  If you do not have a copy,
- * see:
+ * This code may be freely distributed and modified under the terms of the GNU Lesser General Public
+ * Licence. This should be distributed with the code. If you do not have a copy, see:
  *
- *      http://www.gnu.org/copyleft/lesser.html
+ * http://www.gnu.org/copyleft/lesser.html
  *
- * Copyright for this code is held jointly by the individual
- * authors.  These should be listed in @author doc comments.
+ * Copyright for this code is held jointly by the individual authors. These should be listed
+ * in @author doc comments.
  *
- * For more information on the BioJava project and its aims,
- * or to join the biojava-l mailing list, visit the home page
- * at:
+ * For more information on the BioJava project and its aims, or to join the biojava-l mailing list,
+ * visit the home page at:
  *
- *      http://www.biojava.org/
+ * http://www.biojava.org/
  *
  */
 package org.biojava.bio.seq.db;
@@ -56,20 +53,19 @@ public class GenpeptSequenceDB {
   }
 
   protected URL getAddress(String id) throws MalformedURLException {
-      String defaultReturnFormat = "text";
-      return getAddress(id, defaultReturnFormat);
+    String defaultReturnFormat = "text";
+    return getAddress(id, defaultReturnFormat);
   }
 
-    //ask user to input id and return format
-   protected URL getAddress(String id, String format) throws
-          MalformedURLException {
-      FetchURL seqURL = new FetchURL(DBName, format);
-      String baseurl = seqURL.getbaseURL();
-      String db = seqURL.getDB();
-      String type = seqURL.getRetrievalType();
-      String mode = seqURL.getRetrievalMode();
-      String url = baseurl + db + "&id=" + id + "&rettype=" + type + "&retmode=" + mode;
-      return new URL(url);
+  // ask user to input id and return format
+  protected URL getAddress(String id, String format) throws MalformedURLException {
+    FetchURL seqURL = new FetchURL(DBName, format);
+    String baseurl = seqURL.getbaseURL();
+    String db = seqURL.getDB();
+    String type = seqURL.getRetrievalType();
+    String mode = seqURL.getRetrievalMode();
+    String url = baseurl + db + "&id=" + id + "&rettype=" + type + "&retmode=" + mode;
+    return new URL(url);
   }
 
   public String getName() {
@@ -80,10 +76,10 @@ public class GenpeptSequenceDB {
     try {
       IOExceptionFound = false;
       ExceptionFound = false;
-      URL queryURL = getAddress(id); //achieve URL based on ID
+      URL queryURL = getAddress(id); // achieve URL based on ID
 
 
-      //System.err.println("got data from " + queryURL);
+      // System.err.println("got data from " + queryURL);
       DataInputStream in = new DataInputStream(queryURL.openStream());
       BufferedReader reader = new BufferedReader(new InputStreamReader(in));
       SequenceIterator seqI = SeqIOTools.readGenpept(reader);

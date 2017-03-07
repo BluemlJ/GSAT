@@ -1,21 +1,18 @@
 /*
- *                    BioJava development code
+ * BioJava development code
  *
- * This code may be freely distributed and modified under the
- * terms of the GNU Lesser General Public Licence.  This should
- * be distributed with the code.  If you do not have a copy,
- * see:
+ * This code may be freely distributed and modified under the terms of the GNU Lesser General Public
+ * Licence. This should be distributed with the code. If you do not have a copy, see:
  *
- *      http://www.gnu.org/copyleft/lesser.html
+ * http://www.gnu.org/copyleft/lesser.html
  *
- * Copyright for this code is held jointly by the individual
- * authors.  These should be listed in @author doc comments.
+ * Copyright for this code is held jointly by the individual authors. These should be listed
+ * in @author doc comments.
  *
- * For more information on the BioJava project and its aims,
- * or to join the biojava-l mailing list, visit the home page
- * at:
+ * For more information on the BioJava project and its aims, or to join the biojava-l mailing list,
+ * visit the home page at:
  *
- *      http://www.biojava.org/
+ * http://www.biojava.org/
  *
  */
 
@@ -28,10 +25,9 @@ import org.biojava.utils.ParserException;
  * Rename tags using a TagMapper.
  * </p>
  *
- * <p> 
- * This will rename tags as they stream into this listener using a TagMapper.
- * Once renamed, the events will be forwarded onto a delegate TagValueListener
- * for further processing.
+ * <p>
+ * This will rename tags as they stream into this listener using a TagMapper. Once renamed, the
+ * events will be forwarded onto a delegate TagValueListener for further processing.
  * </p>
  *
  * @author Matthew Pocock
@@ -39,7 +35,7 @@ import org.biojava.utils.ParserException;
  */
 public class TagRenamer extends SimpleTagValueWrapper {
   private PropertyChanger mapper;
-  
+
   /**
    * Build a new TagRenamer with a delegate and mapper.
    *
@@ -50,7 +46,7 @@ public class TagRenamer extends SimpleTagValueWrapper {
     super(delegate);
     this.mapper = mapper;
   }
-  
+
   /**
    * Retrieve the mapper used to rename tags
    *
@@ -59,14 +55,13 @@ public class TagRenamer extends SimpleTagValueWrapper {
   public PropertyChanger getMapper() {
     return mapper;
   }
-  
-  public void startTag(Object tag)
-  throws ParserException {
+
+  public void startTag(Object tag) throws ParserException {
     Object newTag = mapper.getNewTag(tag);
-    if(newTag != null) {
+    if (newTag != null) {
       tag = newTag;
     }
-    
+
     super.startTag(tag);
   }
 }

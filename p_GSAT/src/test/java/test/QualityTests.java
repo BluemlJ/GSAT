@@ -29,7 +29,6 @@ public class QualityTests {
   // store main vars to avoid interfering with other tests
   private static int avgApproximationStart = 30;
   private static int avgApproximationEnd = 25;
-  private static int avgQualityEdge = 30;
   private static int breakcounter = 9;
   private static int numAverageNucleotides = 20;
   private static int startcounter = 3;
@@ -37,14 +36,14 @@ public class QualityTests {
   // local test values
   private static int avgApproximationStartTest = 30;
   private static int avgApproximationEndTest = 25;
-  private static int avgQualityEdgeTest = 30;
   private static int breakcounterTest = 9;
   private static int numAverageNucleotidesTest = 20;
   private static int startcounterTest = 3;
 
   /**
    * Initializes a sample file using SequenceReader
-   * @throws MissingPathException 
+   * 
+   * @throws MissingPathException
    */
   @Before
   public void initializeSequence() throws FileReadingException, IOException, MissingPathException {
@@ -127,12 +126,12 @@ public class QualityTests {
   public void qualityTestB() throws IOException {
     // whole sequence is perfect quality
     int[] qualitiesB = {100, 100, 100, 100, 100, 100, 100, 100, 100};
-    AnalysedSequence testSequenceB = new AnalysedSequence("aaatttggg", "", "", qualitiesB);
+    AnalysedSequence testSequenceB = new AnalysedSequence("aaaaaaggg", "", "", qualitiesB);
     int[] trim = QualityAnalysis.findLowQuality(testSequenceB);
     assertEquals(trim[1], 9);
     assertEquals(trim[0], 0);
     QualityAnalysis.trimLowQuality(testSequenceB);
-    assertEquals(testSequenceB.getSequence(), "AAATTTGGG");
+    assertEquals(testSequenceB.getSequence(), "AAAAAAGGG");
   }
 
   /**
@@ -158,22 +157,6 @@ public class QualityTests {
   @Test
   public void qualityTestD() throws IOException {
     // start is bad quality, end is low quality
-    int[] qualitiesD = {0, 0, 0, 100, 100, 100, 100, 100, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
-    AnalysedSequence testSequenceD = new AnalysedSequence("aaatttgggaaattt", "", "", qualitiesD);
-    int[] trim = QualityAnalysis.findLowQuality(testSequenceD);
-    assertEquals(trim[1], 9);
-    assertEquals(trim[0], 3);
-    QualityAnalysis.trimLowQuality(testSequenceD);
-    assertEquals(testSequenceD.getSequence(), "TTTGGG");
-  }
-
-  /**
-   * This test confirms expected quality trimming behaviour for a synthetic sequence (Userstory 008
-   * - Expected behavior)
-   */
-  @Test
-  public void qualityTestE() throws IOException {
-    // start is bad quality, end is low quality
     int[] qualitiesE = {0, 0, 0, 100, 100, 100, 100, 100, 100};
     AnalysedSequence testSequenceE = new AnalysedSequence("aaatttggg", "", "", qualitiesE);
     int[] trim = QualityAnalysis.findLowQuality(testSequenceE);
@@ -184,18 +167,22 @@ public class QualityTests {
   }
 
   /**
-   * This tests checks if the average Quality calculation is correctly integrated in findLowQuality
-   * by using testAverageQualityTrimB (Userstory 029 - Expected Behavior)
+   * This test confirms expected quality trimming behaviour for a synthetic sequence (Userstory 008
+   * - Expected behavior)
    */
   @Test
-  public void testAverageQualityOnMainQualityFunction() {
-    int[] qualities = {0, 0, 0, 0, 0, 0, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100,
-        0, 0, 0, 30, 0, 0, 0, 30, 0, 0, 0, 30, 0, 0, 0, 30, 0, 0};
-    AnalysedSequence testSequence =
-        new AnalysedSequence("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", "", "", qualities);
-    int[] trim = QualityAnalysis.findLowQuality(testSequence);
-    assertEquals(trim[1], 18);
+  public void qualityTestE() throws IOException {
+    // start is bad quality, end is low quality
+    int[] qualitiesD = {0, 0, 0, 100, 100, 100, 100, 100, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+    AnalysedSequence testSequenceD = new AnalysedSequence("aaatttgggaaattt", "", "", qualitiesD);
+    int[] trim = QualityAnalysis.findLowQuality(testSequenceD);
+    assertEquals(trim[1], 9);
+    assertEquals(trim[0], 3);
+    QualityAnalysis.trimLowQuality(testSequenceD);
+    assertEquals(testSequenceD.getSequence(), "TTTGGG");
   }
+
+
 
   /**
    * Tests if the average Quality Trim detects a regular bad quality ending (Userstory 029 -

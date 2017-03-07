@@ -1,21 +1,18 @@
 /*
- *                    BioJava development code
+ * BioJava development code
  *
- * This code may be freely distributed and modified under the
- * terms of the GNU Lesser General Public Licence.  This should
- * be distributed with the code.  If you do not have a copy,
- * see:
+ * This code may be freely distributed and modified under the terms of the GNU Lesser General Public
+ * Licence. This should be distributed with the code. If you do not have a copy, see:
  *
- *      http://www.gnu.org/copyleft/lesser.html
+ * http://www.gnu.org/copyleft/lesser.html
  *
- * Copyright for this code is held jointly by the individual
- * authors.  These should be listed in @author doc comments.
+ * Copyright for this code is held jointly by the individual authors. These should be listed
+ * in @author doc comments.
  *
- * For more information on the BioJava project and its aims,
- * or to join the biojava-l mailing list, visit the home page
- * at:
+ * For more information on the BioJava project and its aims, or to join the biojava-l mailing list,
+ * visit the home page at:
  *
- *      http://www.biojava.org/
+ * http://www.biojava.org/
  *
  */
 
@@ -39,7 +36,7 @@ import org.biojava.bio.seq.Sequence;
 
 public class CachingSequenceDB extends SequenceDBWrapper {
   private transient Map cache;
-  
+
   /**
    * Create a new CachingSequenceDB that caches the sequences in parent.
    *
@@ -49,33 +46,32 @@ public class CachingSequenceDB extends SequenceDBWrapper {
     super(parent);
     cache = new HashMap();
   }
-  
+
   public String getName() {
     return getParent().getName();
   }
-  
+
   public Sequence getSequence(String id) throws BioException {
     SoftReference ref = (SoftReference) cache.get(id);
     Sequence seq;
-    if(ref == null) {
+    if (ref == null) {
       seq = getParent().getSequence(id);
       cache.put(id, new SoftReference(seq));
     } else {
       seq = (Sequence) ref.get();
-      if(seq == null) {
+      if (seq == null) {
         seq = getParent().getSequence(id);
         cache.put(id, new SoftReference(seq));
       }
     }
     return seq;
   }
-  
+
   public Set ids() {
     return getParent().ids();
   }
-  
-  private void readObject(ObjectInputStream in)
-  throws IOException, ClassNotFoundException {
+
+  private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
     in.defaultReadObject();
     this.cache = new HashMap();
   }

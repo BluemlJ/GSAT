@@ -1,41 +1,41 @@
 /*
-
- *                    BioJava development code
-
+ * 
+ * BioJava development code
  *
-
+ * 
+ * 
  * This code may be freely distributed and modified under the
-
- * terms of the GNU Lesser General Public Licence.  This should
-
- * be distributed with the code.  If you do not have a copy,
-
+ * 
+ * terms of the GNU Lesser General Public Licence. This should
+ * 
+ * be distributed with the code. If you do not have a copy,
+ * 
  * see:
-
  *
-
- *      http://www.gnu.org/copyleft/lesser.html
-
+ * 
+ * 
+ * http://www.gnu.org/copyleft/lesser.html
  *
-
+ * 
+ * 
  * Copyright for this code is held jointly by the individual
-
- * authors.  These should be listed in @author doc comments.
-
+ * 
+ * authors. These should be listed in @author doc comments.
  *
-
+ * 
+ * 
  * For more information on the BioJava project and its aims,
-
+ * 
  * or to join the biojava-l mailing list, visit the home page
-
+ * 
  * at:
-
  *
-
- *      http://www.biojava.org/
-
+ * 
+ * 
+ * http://www.biojava.org/
  *
-
+ * 
+ * 
  */
 
 package org.biojava.bio.seq.io.agave;
@@ -47,149 +47,149 @@ import java.util.List;
 
 
 /**
-
+ * 
  * xrefs
-
  *
+ * 
+ * 
+ * @author Hanning Ni Doubletwist Inc
+ * @author Greg Cox
+ * 
+ */
 
- * @author Hanning Ni    Doubletwist Inc
-  * @author Greg Cox
+public class AGAVEXrefs {
 
-*/
+  private List db_ids;
 
-public class  AGAVEXrefs{
+  private List xrefs;
 
-     private List db_ids ;
+  /** add @param id **/
 
-     private List xrefs ;
+  public void addDbId(AGAVEDbId id)
 
-     /** add @param id **/
+  {
 
-     public void addDbId(AGAVEDbId id)
+    if (db_ids == null)
 
-     {
+      db_ids = new ArrayList(1);
 
-         if( db_ids == null )
+    db_ids.add(id);
 
-             db_ids =  new ArrayList(1) ;
+  }
 
-         db_ids .add( id ) ;
+  /** add @param xref **/
 
-     }
+  public void addXref(AGAVEXref xref)
 
-     /** add @param xref **/
+  {
 
-     public void addXref(AGAVEXref xref)
+    if (xrefs == null)
 
-     {
+      xrefs = new ArrayList(1);
 
-         if( xrefs == null )
+    xrefs.add(xref);
 
-             xrefs = new ArrayList(1) ;
+  }
 
-         xrefs.add( xref ) ;
+  /** return a set of DbId **/
 
-     }
+  public Iterator getDbIds()
 
-     /** return a set of DbId **/
+  {
 
-     public Iterator getDbIds()
+    return db_ids.iterator();
 
-     {
+  }
 
-         return db_ids.iterator() ;
+  /** return a set of AGAVEXref **/
 
-     }
+  public Iterator getXrefs()
 
-     /** return a set of AGAVEXref **/
+  {
 
-     public Iterator getXrefs()
+    return xrefs.iterator();
 
-     {
+  }
 
-         return xrefs.iterator() ;
+  /**
+   * 
+   * @param indent the leading space
+   * 
+   * @param indent_unit the unit of indenting for xml format
+   *
+   * 
+   * 
+   **/
 
-     }
+  public String toString(String indent, String indent_unit)
 
-     /**
+  {
 
-      * @param indent  the leading space
+    StringBuffer tmp = new StringBuffer();
 
-      *  @param indent_unit the unit of indenting for xml format
+    tmp.append(indent + "<xrefs>" + "\n");
 
-      *
+    Iterator it = db_ids.iterator();
 
-      **/
+    while (it.hasNext())
 
-     public String toString(String indent, String indent_unit)
+    {
 
-     {
+      tmp.append(((AGAVEDbId) it.next()).toString(indent + indent_unit, indent_unit));
 
-       StringBuffer tmp = new StringBuffer();
+    }
 
-       tmp.append(indent +  "<xrefs>" + "\n" );
+    it = xrefs.iterator();
 
-       Iterator it = db_ids.iterator() ;
+    while (it.hasNext())
 
-       while( it.hasNext() )
+    {
 
-       {
+      tmp.append(((AGAVEXref) it.next()).toString(indent + indent_unit, indent_unit));
 
-           tmp.append( ((AGAVEDbId)it.next()).toString(indent + indent_unit, indent_unit) ) ;
+    }
 
-       }
+    tmp.append(indent + "</xrefs>" + "\n");
 
-       it = xrefs.iterator() ;
+    return tmp.substring(0);
 
-       while( it.hasNext() )
+  }
 
-       {
+  /** the agave xml representation of xrefs **/
 
-           tmp.append( ((AGAVEXref)it.next()).toString(indent + indent_unit, indent_unit) ) ;
+  public String toString()
 
-       }
+  {
 
-       tmp.append(indent + "</xrefs>" + "\n" );
+    StringBuffer tmp = new StringBuffer();
 
-       return tmp.substring(0) ;
+    tmp.append("<xrefs>" + "\n");
 
-     }
+    Iterator it = db_ids.iterator();
 
-     /** the agave xml representation of xrefs **/
+    while (it.hasNext())
 
-     public String toString()
+    {
 
-     {
+      tmp.append(it.next().toString());
 
-       StringBuffer tmp = new StringBuffer();
+    }
 
-       tmp.append( "<xrefs>" + "\n" );
+    it = xrefs.iterator();
 
-       Iterator it = db_ids.iterator() ;
+    while (it.hasNext())
 
-       while( it.hasNext() )
+    {
 
-       {
+      tmp.append(it.next().toString());
 
-           tmp.append(it.next().toString() ) ;
+    }
 
-       }
+    tmp.append("</xrefs>" + "\n");
 
-       it = xrefs.iterator() ;
+    return tmp.substring(0);
 
-       while( it.hasNext() )
-
-       {
-
-           tmp.append(it.next().toString() ) ;
-
-       }
-
-       tmp.append("</xrefs>" + "\n" );
-
-       return tmp.substring(0) ;
-
-     }
+  }
 
 }
 

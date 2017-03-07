@@ -1,21 +1,18 @@
 /**
- *                    BioJava development code
+ * BioJava development code
  *
- * This code may be freely distributed and modified under the
- * terms of the GNU Lesser General Public Licence.  This should
- * be distributed with the code.  If you do not have a copy,
- * see:
+ * This code may be freely distributed and modified under the terms of the GNU Lesser General Public
+ * Licence. This should be distributed with the code. If you do not have a copy, see:
  *
- *      http://www.gnu.org/copyleft/lesser.html
+ * http://www.gnu.org/copyleft/lesser.html
  *
- * Copyright for this code is held jointly by the individual
- * authors.  These should be listed in @author doc comments.
+ * Copyright for this code is held jointly by the individual authors. These should be listed
+ * in @author doc comments.
  *
- * For more information on the BioJava project and its aims,
- * or to join the biojava-l mailing list, visit the home page
- * at:
+ * For more information on the BioJava project and its aims, or to join the biojava-l mailing list,
+ * visit the home page at:
  *
- *      http://www.biojava.org/
+ * http://www.biojava.org/
  *
  */
 
@@ -36,14 +33,15 @@ import org.biojava.bio.symbol.SymbolList;
 import org.biojava.utils.StaticMemberPlaceHolder;
 
 /**
- * Basic SequenceBuilder implementation which accumulates all
- * notified information and chooses a sequence implementation
- * suited to the size of the sequence. This may or may not bit-encode
- * the symbols (using PackedSymbolList), and may or may not store the
- * symbols in multiple fixed-length chunks (using ChunkedSymbolList).
+ * Basic SequenceBuilder implementation which accumulates all notified information and chooses a
+ * sequence implementation suited to the size of the sequence. This may or may not bit-encode the
+ * symbols (using PackedSymbolList), and may or may not store the symbols in multiple fixed-length
+ * chunks (using ChunkedSymbolList).
  *
- * <p>More functionality is offered by {@link org.biojavax.bio.seq.io.SimpleRichSequenceBuilder SimpleRichSequenceBuilder},
- * Use of this class is prefered.</p>
+ * <p>
+ * More functionality is offered by {@link org.biojavax.bio.seq.io.SimpleRichSequenceBuilder
+ * SimpleRichSequenceBuilder}, Use of this class is prefered.
+ * </p>
  *
  * @author David Huen
  * @author Matthew Pocock
@@ -76,8 +74,7 @@ public class SmartSequenceBuilder extends SequenceBuilderBase {
   private ChunkedSymbolListFactory slFactory;
 
   private SmartSequenceBuilder(int threshold) {
-    slFactory = new ChunkedSymbolListFactory(
-            new PackedSymbolListFactory(), threshold);
+    slFactory = new ChunkedSymbolListFactory(new PackedSymbolListFactory(), threshold);
   }
 
   //
@@ -85,21 +82,17 @@ public class SmartSequenceBuilder extends SequenceBuilderBase {
   //
 
   public void addSymbols(Alphabet alpha, Symbol[] syms, int pos, int len)
-          throws IllegalAlphabetException
-  {
+      throws IllegalAlphabetException {
     slFactory.addSymbols(alpha, syms, pos, len);
   }
 
 
-  public Sequence makeSequence()
-          throws BioException
-  {
+  public Sequence makeSequence() throws BioException {
     SymbolList symbols;
     try {
       symbols = slFactory.makeSymbolList();
       seq = new SimpleSequence(symbols, uri, name, annotation);
-    }
-    catch (IllegalAlphabetException iae) {
+    } catch (IllegalAlphabetException iae) {
       // this shouldn't happen!!!
     }
 

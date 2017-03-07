@@ -1,33 +1,29 @@
 /*
- *                    BioJava development code
+ * BioJava development code
  *
- * This code may be freely distributed and modified under the
- * terms of the GNU Lesser General Public Licence.  This should
- * be distributed with the code.  If you do not have a copy,
- * see:
+ * This code may be freely distributed and modified under the terms of the GNU Lesser General Public
+ * Licence. This should be distributed with the code. If you do not have a copy, see:
  *
- *      http://www.gnu.org/copyleft/lesser.html
+ * http://www.gnu.org/copyleft/lesser.html
  *
- * Copyright for this code is held jointly by the individual
- * authors.  These should be listed in @author doc comments.
+ * Copyright for this code is held jointly by the individual authors. These should be listed
+ * in @author doc comments.
  *
- * For more information on the BioJava project and its aims,
- * or to join the biojava-l mailing list, visit the home page
- * at:
+ * For more information on the BioJava project and its aims, or to join the biojava-l mailing list,
+ * visit the home page at:
  *
- *      http://www.biojava.org/
+ * http://www.biojava.org/
  *
  */
 package org.biojava.utils;
 
 /**
- * utility methods for implementing the equals() and hashCode() methods of Objects.
- * All credit for this class goes to Mark Davis (Java Report 5(1), 46; Java Report 5(4), 60).
+ * utility methods for implementing the equals() and hashCode() methods of Objects. All credit for
+ * this class goes to Mark Davis (Java Report 5(1), 46; Java Report 5(4), 60).
  * <p>
- * All equals() methods in this class take the two fields to compare for equality as arguments and return whether they
- * are equal. Consequently, the equals() method of class AClass should be implemented (taking advantage of the equals() 
- * methods in this class) as follows:
- * <pre>
+ * All equals() methods in this class take the two fields to compare for equality as arguments and
+ * return whether they are equal. Consequently, the equals() method of class AClass should be
+ * implemented (taking advantage of the equals() methods in this class) as follows: <pre>
  * public boolean equals(Object o) {
  *   if (o == this) return true;
  *   // if this class AClass is a direct sub-class of Object:
@@ -46,11 +42,11 @@ package org.biojava.utils;
  * }
  * </pre>
  * <p>
- * All hashCode() methods in this class take the current hashCode value as the first argument and the field to take into
- * account as the second argument and return the newly calculated hashCode value (which now includes the influence of
- * the given field). Consequently, the hashCode() method of class AClass should be implemented (taking advantage of the
- * hashCode() methods in this class) as follows:
- * <pre>
+ * All hashCode() methods in this class take the current hashCode value as the first argument and
+ * the field to take into account as the second argument and return the newly calculated hashCode
+ * value (which now includes the influence of the given field). Consequently, the hashCode() method
+ * of class AClass should be implemented (taking advantage of the hashCode() methods in this class)
+ * as follows: <pre>
  * public int hashCode() {
  *   // if this class AClass is a direct sub-class of Object:
  *   int hc = 0;
@@ -68,8 +64,8 @@ package org.biojava.utils;
  */
 public final class ObjectUtil {
   /**
-   * the current hashCode is always first multiplied with this prime before the hashCode value for a particular field is
-   * added.
+   * the current hashCode is always first multiplied with this prime before the hashCode value for a
+   * particular field is added.
    */
   public static final int PRIME = 1000003;
 
@@ -77,15 +73,15 @@ public final class ObjectUtil {
     return b1 == b2;
   }
 
-  public static boolean equals(int i1,  int i2) {
+  public static boolean equals(int i1, int i2) {
     return i1 == i2;
   }
 
-  public static boolean equals(long l1,  long l2) {
+  public static boolean equals(long l1, long l2) {
     return l1 == l2;
   }
 
-  public static boolean equals(float f1,  float f2) {
+  public static boolean equals(float f1, float f2) {
     return ((Float.isNaN(f1) && Float.isNaN(f2)) || (f1 == f2));
   }
 
@@ -172,19 +168,20 @@ public final class ObjectUtil {
   }
 
   public static boolean equals(Object o1, Object o2) {
-    return ((o1 == null && o2 == null) || (o1 != null && o1.equals(o2)) || (o2 != null && o2.equals(o1)));
+    return ((o1 == null && o2 == null) || (o1 != null && o1.equals(o2))
+        || (o2 != null && o2.equals(o1)));
   }
 
   public static int hashCode(int currentHashCodeValue, boolean b) {
-    return PRIME*currentHashCodeValue + (b ? 1 : 0);
+    return PRIME * currentHashCodeValue + (b ? 1 : 0);
   }
 
   public static int hashCode(int currentHashCodeValue, int i) {
-    return PRIME*currentHashCodeValue + i;
+    return PRIME * currentHashCodeValue + i;
   }
 
   public static int hashCode(int currentHashCodeValue, long l) {
-    return PRIME*(PRIME*currentHashCodeValue + ((int) (l>>>32))) + ((int) (l&0xFFFFFFFF));
+    return PRIME * (PRIME * currentHashCodeValue + ((int) (l >>> 32))) + ((int) (l & 0xFFFFFFFF));
   }
 
   public static int hashCode(int currentHashCodeValue, float f) {
@@ -196,8 +193,8 @@ public final class ObjectUtil {
   }
 
   public static int hashCode(int currentHashCodeValue, boolean[] a) {
-    if (a == null) return PRIME*currentHashCodeValue;
-    
+    if (a == null) return PRIME * currentHashCodeValue;
+
     final int l = a.length;
     for (int i = 0; i < l; i++) {
       currentHashCodeValue = hashCode(currentHashCodeValue, a[i]);
@@ -206,8 +203,8 @@ public final class ObjectUtil {
   }
 
   public static int hashCode(int currentHashCodeValue, int[] a) {
-    if (a == null) return PRIME*currentHashCodeValue;
-    
+    if (a == null) return PRIME * currentHashCodeValue;
+
     final int l = a.length;
     for (int i = 0; i < l; i++) {
       currentHashCodeValue = hashCode(currentHashCodeValue, a[i]);
@@ -216,8 +213,8 @@ public final class ObjectUtil {
   }
 
   public static int hashCode(int currentHashCodeValue, long[] a) {
-    if (a == null) return PRIME*currentHashCodeValue;
-    
+    if (a == null) return PRIME * currentHashCodeValue;
+
     final int l = a.length;
     for (int i = 0; i < l; i++) {
       currentHashCodeValue = hashCode(currentHashCodeValue, a[i]);
@@ -226,8 +223,8 @@ public final class ObjectUtil {
   }
 
   public static int hashCode(int currentHashCodeValue, float[] a) {
-    if (a == null) return PRIME*currentHashCodeValue;
-    
+    if (a == null) return PRIME * currentHashCodeValue;
+
     final int l = a.length;
     for (int i = 0; i < l; i++) {
       currentHashCodeValue = hashCode(currentHashCodeValue, a[i]);
@@ -236,8 +233,8 @@ public final class ObjectUtil {
   }
 
   public static int hashCode(int currentHashCodeValue, double[] a) {
-    if (a == null) return PRIME*currentHashCodeValue;
-    
+    if (a == null) return PRIME * currentHashCodeValue;
+
     final int l = a.length;
     for (int i = 0; i < l; i++) {
       currentHashCodeValue = hashCode(currentHashCodeValue, a[i]);
@@ -246,8 +243,8 @@ public final class ObjectUtil {
   }
 
   public static int hashCode(int currentHashCodeValue, Object[] a) {
-    if (a == null) return PRIME*currentHashCodeValue;
-    
+    if (a == null) return PRIME * currentHashCodeValue;
+
     final int l = a.length;
     for (int i = 0; i < l; i++) {
       currentHashCodeValue = hashCode(currentHashCodeValue, a[i]);
@@ -256,6 +253,6 @@ public final class ObjectUtil {
   }
 
   public static int hashCode(int currentHashCodeValue, Object o) {
-    return PRIME*currentHashCodeValue + (o == null ? 0 : o.hashCode());
+    return PRIME * currentHashCodeValue + (o == null ? 0 : o.hashCode());
   }
 }

@@ -1,41 +1,41 @@
 /*
-
- *                    BioJava development code
-
+ * 
+ * BioJava development code
  *
-
+ * 
+ * 
  * This code may be freely distributed and modified under the
-
- * terms of the GNU Lesser General Public Licence.  This should
-
- * be distributed with the code.  If you do not have a copy,
-
+ * 
+ * terms of the GNU Lesser General Public Licence. This should
+ * 
+ * be distributed with the code. If you do not have a copy,
+ * 
  * see:
-
  *
-
- *      http://www.gnu.org/copyleft/lesser.html
-
+ * 
+ * 
+ * http://www.gnu.org/copyleft/lesser.html
  *
-
+ * 
+ * 
  * Copyright for this code is held jointly by the individual
-
- * authors.  These should be listed in @author doc comments.
-
+ * 
+ * authors. These should be listed in @author doc comments.
  *
-
+ * 
+ * 
  * For more information on the BioJava project and its aims,
-
+ * 
  * or to join the biojava-l mailing list, visit the home page
-
+ * 
  * at:
-
  *
-
- *      http://www.biojava.org/
-
+ * 
+ * 
+ * http://www.biojava.org/
  *
-
+ * 
+ * 
  */
 
 package org.biojava.bio.seq.io.agave;
@@ -43,45 +43,45 @@ package org.biojava.bio.seq.io.agave;
 
 
 /**
-
- * @author Hanning Ni    Doubletwist Inc
-  * @author Greg Cox
-
+ * 
+ * @author Hanning Ni Doubletwist Inc
+ * @author Greg Cox
+ * 
  */
 
 public class AGAVEMapLocation {
 
-  private AGAVEMapPosition first ;
+  private AGAVEMapPosition first;
 
-  private AGAVEMapPosition second ;
+  private AGAVEMapPosition second;
 
-  private String map_type ;
+  private String map_type;
 
-  private String source ;
+  private String source;
 
-  private String units ;
+  private String units;
 
-  private String chromosome ;
+  private String chromosome;
 
-  private String subseq_start ;
+  private String subseq_start;
 
-  private String orientation ;
+  private String orientation;
 
   public AGAVEMapLocation() {
 
   }
 
-  public void  addPosition(AGAVEMapPosition pos)
+  public void addPosition(AGAVEMapPosition pos)
 
   {
 
-      if( first == null )
+    if (first == null)
 
-          first = pos ;
+      first = pos;
 
-      else
+    else
 
-          second = pos ;
+      second = pos;
 
   }
 
@@ -89,7 +89,7 @@ public class AGAVEMapLocation {
 
   {
 
-      return first ;
+    return first;
 
   }
 
@@ -99,7 +99,7 @@ public class AGAVEMapLocation {
 
   {
 
-      return second;
+    return second;
 
   }
 
@@ -109,7 +109,7 @@ public class AGAVEMapLocation {
 
   {
 
-      map_type = value ;
+    map_type = value;
 
   }
 
@@ -117,7 +117,7 @@ public class AGAVEMapLocation {
 
   {
 
-     return map_type ;
+    return map_type;
 
   }
 
@@ -125,7 +125,7 @@ public class AGAVEMapLocation {
 
   {
 
-      units = value ;
+    units = value;
 
   }
 
@@ -133,7 +133,7 @@ public class AGAVEMapLocation {
 
   {
 
-      return units ;
+    return units;
 
   }
 
@@ -141,7 +141,7 @@ public class AGAVEMapLocation {
 
   {
 
-      source= value ;
+    source = value;
 
   }
 
@@ -149,7 +149,7 @@ public class AGAVEMapLocation {
 
   {
 
-      return source ;
+    return source;
 
   }
 
@@ -157,7 +157,7 @@ public class AGAVEMapLocation {
 
   {
 
-      chromosome = value ;
+    chromosome = value;
 
   }
 
@@ -165,7 +165,7 @@ public class AGAVEMapLocation {
 
   {
 
-      return chromosome ;
+    return chromosome;
 
   }
 
@@ -173,7 +173,7 @@ public class AGAVEMapLocation {
 
   {
 
-      subseq_start = value ;
+    subseq_start = value;
 
   }
 
@@ -181,15 +181,15 @@ public class AGAVEMapLocation {
 
   {
 
-      return subseq_start ;
+    return subseq_start;
 
   }
 
-    public void setOrientation(String value)
+  public void setOrientation(String value)
 
   {
 
-      orientation = value ;
+    orientation = value;
 
   }
 
@@ -197,7 +197,7 @@ public class AGAVEMapLocation {
 
   {
 
-      return orientation ;
+    return orientation;
 
   }
 
@@ -205,47 +205,47 @@ public class AGAVEMapLocation {
 
   {
 
-      StringBuffer tmp = new StringBuffer() ;
+    StringBuffer tmp = new StringBuffer();
 
-      tmp.append(indent + "<map_location ") ;
+    tmp.append(indent + "<map_location ");
 
-      if( map_type != null )
+    if (map_type != null)
 
-         tmp.append( " map_type=\"" + map_type + "\" " );
+      tmp.append(" map_type=\"" + map_type + "\" ");
 
-      if( source != null )
+    if (source != null)
 
-         tmp.append( " source=\"" + source + "\" " );
+      tmp.append(" source=\"" + source + "\" ");
 
-      if( units != null )
+    if (units != null)
 
-         tmp.append( " units=\"" + units + "\" " );
+      tmp.append(" units=\"" + units + "\" ");
 
-      if( orientation != null )
+    if (orientation != null)
 
-         tmp.append( " orientation=\"" + orientation + "\" " );
+      tmp.append(" orientation=\"" + orientation + "\" ");
 
-      if( chromosome != null )
+    if (chromosome != null)
 
-         tmp.append( " chromosome=\"" + chromosome + "\" " );
+      tmp.append(" chromosome=\"" + chromosome + "\" ");
 
-      if( subseq_start != null )
+    if (subseq_start != null)
 
-         tmp.append( " subseq_start=\"" + subseq_start + "\" " );
+      tmp.append(" subseq_start=\"" + subseq_start + "\" ");
 
-      tmp.append( ">" + "\n") ;
+    tmp.append(">" + "\n");
 
-      if( first != null )
+    if (first != null)
 
-         tmp.append ( first.toString(indent + indent_unit, indent_unit) ) ;
+      tmp.append(first.toString(indent + indent_unit, indent_unit));
 
-      if( second != null )
+    if (second != null)
 
-         tmp.append( second.toString(indent + indent_unit, indent_unit) ) ;
+      tmp.append(second.toString(indent + indent_unit, indent_unit));
 
-      tmp.append(indent + "</map_location>"+ "\n" ) ;
+    tmp.append(indent + "</map_location>" + "\n");
 
-      return tmp.substring(0) ;
+    return tmp.substring(0);
 
   }
 
@@ -253,47 +253,47 @@ public class AGAVEMapLocation {
 
   {
 
-      StringBuffer tmp = new StringBuffer() ;
+    StringBuffer tmp = new StringBuffer();
 
-      tmp.append("<map_location ") ;
+    tmp.append("<map_location ");
 
-      if( map_type != null )
+    if (map_type != null)
 
-         tmp.append( " map_type=\"" + map_type + "\" " );
+      tmp.append(" map_type=\"" + map_type + "\" ");
 
-      if( source != null )
+    if (source != null)
 
-         tmp.append( " source=\"" + source + "\" " );
+      tmp.append(" source=\"" + source + "\" ");
 
-      if( units != null )
+    if (units != null)
 
-         tmp.append( " units=\"" + units + "\" " );
+      tmp.append(" units=\"" + units + "\" ");
 
-      if( orientation != null )
+    if (orientation != null)
 
-         tmp.append( " orientation=\"" + orientation + "\" " );
+      tmp.append(" orientation=\"" + orientation + "\" ");
 
-      if( chromosome != null )
+    if (chromosome != null)
 
-         tmp.append( " chromosome=\"" + chromosome + "\" " );
+      tmp.append(" chromosome=\"" + chromosome + "\" ");
 
-      if( subseq_start != null )
+    if (subseq_start != null)
 
-         tmp.append( " subseq_start=\"" + subseq_start + "\" " );
+      tmp.append(" subseq_start=\"" + subseq_start + "\" ");
 
-      tmp.append( ">" + "\n") ;
+    tmp.append(">" + "\n");
 
-      if( first != null )
+    if (first != null)
 
-         tmp.append ( first ) ;
+      tmp.append(first);
 
-      if( second != null )
+    if (second != null)
 
-         tmp.append( second ) ;
+      tmp.append(second);
 
-      tmp.append( "</map_location>"+ "\n" ) ;
+    tmp.append("</map_location>" + "\n");
 
-      return tmp.substring(0) ;
+    return tmp.substring(0);
 
   }
 

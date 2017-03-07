@@ -24,24 +24,20 @@ import org.biojava.utils.lsid.LifeScienceIdentifier;
 public class Ligand {
   private Ligand() {}
 
-  public static final class Enzyme
-  implements Format {
+  public static final class Enzyme implements Format {
     private static final AnnotationType ANNO_TYPE;
     private static final LineSplitParser PARSER;
     private static final LifeScienceIdentifier LSID;
 
     static {
-      LSID = LifeScienceIdentifier.valueOf(
-        "open-bio.org", "format", "ligand/enzyme" );
+      LSID = LifeScienceIdentifier.valueOf("open-bio.org", "format", "ligand/enzyme");
 
       Location NONE = CardinalityConstraint.NONE;
       Location ANY = CardinalityConstraint.ANY;
       Location ONE = CardinalityConstraint.ONE;
 
-      PropertyConstraint c_string =
-        new PropertyConstraint.ByClass(String.class);
-      PropertyConstraint c_ecNumber =
-        new PropertyConstraint.ByClass(EcNumber.class);
+      PropertyConstraint c_string = new PropertyConstraint.ByClass(String.class);
+      PropertyConstraint c_ecNumber = new PropertyConstraint.ByClass(EcNumber.class);
 
       PARSER = new LineSplitParser(LineSplitParser.GENBANK);
 
@@ -72,7 +68,7 @@ public class Ligand {
           String sv = (String) value;
           sv = sv.substring("EC ".length(), sv.length());
           int spc = sv.indexOf(" ");
-          if(spc != -1) { // remove obsolete - should publish this better
+          if (spc != -1) { // remove obsolete - should publish this better
             sv = sv.substring(0, spc);
           }
           return EcNumber.Impl.valueOf(sv);
@@ -92,21 +88,25 @@ public class Ligand {
       tagDelegator.setListener("SUBSTRATE", catter);
       tagDelegator.setListener("PRODUCT", catter);
       tagDelegator.setListener("DEFINITION", catter);
-      tagDelegator.setListener("REFERENCE", new MultiTagger(valueChanger,
-        new BoundaryFinder() {
-          public boolean dropBoundaryValues() { return true; }
-          public boolean isBoundaryStart(Object value) {
-            // we should realy extract the UI entries
-            String sv = (String) value;
-            return ref_start.matcher(sv).matches();
-          }
-          public boolean isBoundaryEnd(Object value) { return false; }
-        })
-      );
+      tagDelegator.setListener("REFERENCE", new MultiTagger(valueChanger, new BoundaryFinder() {
+        public boolean dropBoundaryValues() {
+          return true;
+        }
+
+        public boolean isBoundaryStart(Object value) {
+          // we should realy extract the UI entries
+          String sv = (String) value;
+          return ref_start.matcher(sv).matches();
+        }
+
+        public boolean isBoundaryEnd(Object value) {
+          return false;
+        }
+      }));
       return new ParserListener(PARSER, tagDelegator);
     }
 
-    
+
     public AnnotationType getType() {
       return ANNO_TYPE;
     }
@@ -116,15 +116,13 @@ public class Ligand {
     }
   }
 
-  public static class Reaction
-  implements Format {
+  public static class Reaction implements Format {
     private static final AnnotationType ANNO_TYPE;
     private static final LineSplitParser PARSER;
     private static final LifeScienceIdentifier LSID;
 
     static {
-      LSID = LifeScienceIdentifier.valueOf(
-              "open-bio.org", "format", "ligand/reaction" );
+      LSID = LifeScienceIdentifier.valueOf("open-bio.org", "format", "ligand/reaction");
 
       PARSER = new LineSplitParser(LineSplitParser.GENBANK);
 
@@ -133,10 +131,8 @@ public class Ligand {
       Location ONE = CardinalityConstraint.ONE;
       Location ONE_OR_MORE = CardinalityConstraint.ONE_OR_MORE;
 
-      PropertyConstraint c_string =
-        new PropertyConstraint.ByClass(String.class);
-      PropertyConstraint c_ecNumber =
-        new PropertyConstraint.ByClass(EcNumber.class);
+      PropertyConstraint c_string = new PropertyConstraint.ByClass(String.class);
+      PropertyConstraint c_ecNumber = new PropertyConstraint.ByClass(EcNumber.class);
 
       ANNO_TYPE = new AnnotationType.Impl();
       ANNO_TYPE.setDefaultConstraints(PropertyConstraint.NONE, NONE);
@@ -171,26 +167,22 @@ public class Ligand {
     }
   }
 
-  public static class Compound
-  implements Format {
+  public static class Compound implements Format {
     private static final AnnotationType ANNO_TYPE;
     private static final LineSplitParser PARSER;
     private static final LifeScienceIdentifier LSID;
 
     static {
-      LSID = LifeScienceIdentifier.valueOf(
-              "open-bio.org", "format", "ligand/compound" );
+      LSID = LifeScienceIdentifier.valueOf("open-bio.org", "format", "ligand/compound");
 
       PARSER = new LineSplitParser(LineSplitParser.GENBANK);
 
       Location NONE = CardinalityConstraint.NONE;
       Location ANY = CardinalityConstraint.ANY;
       Location ONE = CardinalityConstraint.ONE;
-      
-      PropertyConstraint c_string =
-        new PropertyConstraint.ByClass(String.class);
-      PropertyConstraint c_ecNumber =
-        new PropertyConstraint.ByClass(EcNumber.class);
+
+      PropertyConstraint c_string = new PropertyConstraint.ByClass(String.class);
+      PropertyConstraint c_ecNumber = new PropertyConstraint.ByClass(EcNumber.class);
 
       ANNO_TYPE = new AnnotationType.Impl();
       ANNO_TYPE.setDefaultConstraints(PropertyConstraint.NONE, NONE);
@@ -228,8 +220,7 @@ public class Ligand {
       return LSID;
     }
   }
-  private static class DollarStringCatter
-  extends SimpleTagValueWrapper {
+  private static class DollarStringCatter extends SimpleTagValueWrapper {
     private StringBuffer sBuff;
 
     public DollarStringCatter(TagValueListener listener) {
@@ -237,17 +228,15 @@ public class Ligand {
       sBuff = new StringBuffer();
     }
 
-    public void startTag(Object tag)
-    throws ParserException {
+    public void startTag(Object tag) throws ParserException {
       super.startTag(tag);
 
       sBuff.setLength(0);
     }
 
-    public void value(TagValueContext ctxt, java.lang.Object value)
-    throws ParserException {
+    public void value(TagValueContext ctxt, java.lang.Object value) throws ParserException {
       String sv = (String) value;
-      if(sv.startsWith("$")) {
+      if (sv.startsWith("$")) {
         sBuff.append(sv.substring(1, sv.length()));
       } else {
         sBuff.append(' ');
@@ -255,8 +244,7 @@ public class Ligand {
       }
     }
 
-    public void endTag()
-    throws ParserException {
+    public void endTag() throws ParserException {
       super.value(null, sBuff.toString());
       super.endTag();
 

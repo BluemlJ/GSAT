@@ -1,41 +1,41 @@
 /*
-
- *                    BioJava development code
-
+ * 
+ * BioJava development code
  *
-
+ * 
+ * 
  * This code may be freely distributed and modified under the
-
- * terms of the GNU Lesser General Public Licence.  This should
-
- * be distributed with the code.  If you do not have a copy,
-
+ * 
+ * terms of the GNU Lesser General Public Licence. This should
+ * 
+ * be distributed with the code. If you do not have a copy,
+ * 
  * see:
-
  *
-
- *      http://www.gnu.org/copyleft/lesser.html
-
+ * 
+ * 
+ * http://www.gnu.org/copyleft/lesser.html
  *
-
+ * 
+ * 
  * Copyright for this code is held jointly by the individual
-
- * authors.  These should be listed in @author doc comments.
-
+ * 
+ * authors. These should be listed in @author doc comments.
  *
-
+ * 
+ * 
  * For more information on the BioJava project and its aims,
-
+ * 
  * or to join the biojava-l mailing list, visit the home page
-
+ * 
  * at:
-
  *
-
- *      http://www.biojava.org/
-
+ * 
+ * 
+ * http://www.biojava.org/
  *
-
+ * 
+ * 
  */
 
 
@@ -70,15 +70,15 @@ import org.biojava.bio.symbol.SymbolListViews;
 
 
 /**
-
+ * 
  * Useful functionality for processing nucleotide sequences.
-
  *
-
+ * 
+ * 
  * @author Matthew Pocock
-
+ * 
  * @author Keith James (docs)
-
+ * 
  */
 
 public final class NucleotideTools {
@@ -87,7 +87,7 @@ public final class NucleotideTools {
 
   static private final FiniteAlphabet nucleotide;
 
-    private static final SymbolTokenization nucleotideTokens;
+  private static final SymbolTokenization nucleotideTokens;
 
 
 
@@ -122,8 +122,6 @@ public final class NucleotideTools {
   static private final Symbol v;
 
   static private final Symbol n;
-
-
 
 
 
@@ -189,29 +187,27 @@ public final class NucleotideTools {
 
       // add all other ambiguity symbols
 
-      for(Iterator i = AlphabetManager.getAllSymbols(nucleotide).iterator(); i.hasNext();) {
+      for (Iterator i = AlphabetManager.getAllSymbols(nucleotide).iterator(); i.hasNext();) {
 
-          Symbol as = (Symbol) i.next();
+        Symbol as = (Symbol) i.next();
 
-          FiniteAlphabet matches = (FiniteAlphabet) as.getMatches();
+        FiniteAlphabet matches = (FiniteAlphabet) as.getMatches();
 
-          if (matches.size() > 1) {   // We've hit an ambiguous symbol.
+        if (matches.size() > 1) { // We've hit an ambiguous symbol.
 
-              Set l = new HashSet();
+          Set l = new HashSet();
 
-              for(Iterator j = matches.iterator(); j.hasNext(); ) {
+          for (Iterator j = matches.iterator(); j.hasNext();) {
 
-                  l.add(complement((Symbol) j.next()));
-
-              }
-
-              symbolToComplement.put(as, nucleotide.getAmbiguity(l));
+            l.add(complement((Symbol) j.next()));
 
           }
 
+          symbolToComplement.put(as, nucleotide.getAmbiguity(l));
+
+        }
+
       }
-
-
 
 
 
@@ -219,7 +215,7 @@ public final class NucleotideTools {
 
     } catch (Throwable t) {
 
-      throw new BioError("Unable to initialize NucleotideTools",t);
+      throw new BioError("Unable to initialize NucleotideTools", t);
 
     }
 
@@ -227,50 +223,81 @@ public final class NucleotideTools {
 
 
 
-  public static AtomicSymbol a() { return a; }
-
-  public static AtomicSymbol g() { return g; }
-
-  public static AtomicSymbol c() { return c; }
-
-  public static AtomicSymbol t() { return t; }
-
-  public static AtomicSymbol u() { return u; }
-
-  public static Symbol r() { return r; }
-
-  public static Symbol y() { return y; }
-
-  public static Symbol m() { return m; }
-
-  public static Symbol k() { return k; }
-
-  public static Symbol s() { return s; }
-
-  public static Symbol w() { return w; }
-
-  public static Symbol b() { return b; }
-
-  public static Symbol d() { return d; }
-
-  public static Symbol h() { return h; }
-
-  public static Symbol v() { return v; }
-
-  public static Symbol n() { return n; }
-
-
-  private NucleotideTools() {
+  public static AtomicSymbol a() {
+    return a;
   }
 
+  public static AtomicSymbol g() {
+    return g;
+  }
+
+  public static AtomicSymbol c() {
+    return c;
+  }
+
+  public static AtomicSymbol t() {
+    return t;
+  }
+
+  public static AtomicSymbol u() {
+    return u;
+  }
+
+  public static Symbol r() {
+    return r;
+  }
+
+  public static Symbol y() {
+    return y;
+  }
+
+  public static Symbol m() {
+    return m;
+  }
+
+  public static Symbol k() {
+    return k;
+  }
+
+  public static Symbol s() {
+    return s;
+  }
+
+  public static Symbol w() {
+    return w;
+  }
+
+  public static Symbol b() {
+    return b;
+  }
+
+  public static Symbol d() {
+    return d;
+  }
+
+  public static Symbol h() {
+    return h;
+  }
+
+  public static Symbol v() {
+    return v;
+  }
+
+  public static Symbol n() {
+    return n;
+  }
+
+
+  private NucleotideTools() {}
+
   /**
-
+   * 
    * Return the Nucleotide alphabet.
-
    *
-
+   * 
+   * 
    * @return a flyweight version of the Nucleotide alphabet
-
+   * 
    */
 
   public static FiniteAlphabet getNucleotide() {
@@ -282,28 +309,28 @@ public final class NucleotideTools {
 
 
   /**
-
+   * 
    * Return a new Nucleotide <span class="type">SymbolList</span> for
-
+   * 
    * <span class="arg">nucleotide</span>.
-
    *
-
+   * 
+   * 
    * @param nucleotide a <span class="type">String</span> to parse into Nucleotide
-
+   * 
    * @return a <span class="type">SymbolList</span> created form
-
+   * 
    *         <span class="arg">nucleotide</span>
-
+   * 
    * @throws IllegalSymbolException if <span class="arg">nucleotide</span> contains
-
+   * 
    *         any non-Nucleotide characters
-
+   * 
    */
 
   public static SymbolList createNucleotide(String nucleotide)
 
-  throws IllegalSymbolException {
+      throws IllegalSymbolException {
 
     try {
 
@@ -313,7 +340,7 @@ public final class NucleotideTools {
 
     } catch (BioException se) {
 
-      throw new BioError("Something has gone badly wrong with Nucleotide",se);
+      throw new BioError("Something has gone badly wrong with Nucleotide", se);
 
     }
 
@@ -322,44 +349,44 @@ public final class NucleotideTools {
 
 
   /**
-
+   * 
    * Return a new Nucleotide <span class="type">Sequence</span> for
-
+   * 
    * <span class="arg">nucleotide</span>.
-
    *
-
+   * 
+   * 
    * @param nucleotide a <span class="type">String</span> to parse into Nucleotide
-
+   * 
    * @param name a <span class="type">String</span> to use as the name
-
+   * 
    * @return a <span class="type">Sequence</span> created form
-
+   * 
    *         <span class="arg">nucleotide</span>
-
+   * 
    * @throws IllegalSymbolException if <span class="arg">nucleotide</span> contains
-
+   * 
    *         any non-Nucleotide characters
-
+   * 
    */
 
   public static Sequence createNucleotideSequence(String nucleotide, String name)
 
-  throws IllegalSymbolException {
+      throws IllegalSymbolException {
 
     try {
 
       return new SimpleSequenceFactory().createSequence(
 
-        createNucleotide(nucleotide),
+          createNucleotide(nucleotide),
 
-        "", name, new SimpleAnnotation()
+          "", name, new SimpleAnnotation()
 
       );
 
     } catch (BioException se) {
 
-      throw new BioError("Something has gone badly wrong with Nucleotide",se);
+      throw new BioError("Something has gone badly wrong with Nucleotide", se);
 
     }
 
@@ -368,54 +395,54 @@ public final class NucleotideTools {
 
 
   /**
-
+   * 
    * Return an integer index for a symbol - compatible with
-
+   * 
    * <code>forIndex</code>.
-
    *
-
+   * 
+   * 
    * <p>
-
+   * 
    * The index for a symbol is stable accross virtual machines &
-
+   * 
    * invocations.
-
+   * 
    * </p>
-
    *
-
-   * @param sym  the Symbol to index
-
+   * 
+   * 
+   * @param sym the Symbol to index
+   * 
    * @return the index for that symbol
-
    *
-
+   * 
+   * 
    * @throws IllegalSymbolException if sym is not a member of the Nucleotide
-
-   * alphabet
-
+   * 
+   *         alphabet
+   * 
    */
 
   public static int index(Symbol sym) throws IllegalSymbolException {
 
-    if(sym == a) {
+    if (sym == a) {
 
       return 0;
 
-    } else if(sym == g) {
+    } else if (sym == g) {
 
       return 1;
 
-    } else if(sym == c) {
+    } else if (sym == c) {
 
       return 2;
 
-    } else if(sym == t) {
+    } else if (sym == t) {
 
       return 3;
 
-    } else if(sym == u) {
+    } else if (sym == u) {
 
       return 4;
 
@@ -425,103 +452,104 @@ public final class NucleotideTools {
 
     throw new IllegalSymbolException("Really confused. Can't find index for " +
 
-                                      sym.getName());
+        sym.getName());
 
   }
 
 
 
   /**
-
+   * 
    * Return the symbol for an index - compatible with <code>index</code>.
-
    *
-
+   * 
+   * 
    * <p>
-
+   * 
    * The index for a symbol is stable accross virtual machines &
-
+   * 
    * invocations.
-
+   * 
    * </p>
-
    *
-
-   * @param index  the index to look up
-
-   * @return       the symbol at that index
-
+   * 
+   * 
+   * @param index the index to look up
+   * 
+   * @return the symbol at that index
    *
-
+   * 
+   * 
    * @throws IndexOutOfBoundsException if index is not between 0 and 3
-
+   * 
    */
 
   static public Symbol forIndex(int index)
 
-  throws IndexOutOfBoundsException {
+      throws IndexOutOfBoundsException {
 
-    if(index == 0)
+    if (index == 0)
 
       return a;
 
-    else if(index == 1)
+    else if (index == 1)
 
       return g;
 
-    else if(index == 2)
+    else if (index == 2)
 
       return c;
 
-    else if(index == 3)
+    else if (index == 3)
 
       return t;
 
-    else if(index == 4)
+    else if (index == 4)
 
       return u;
 
-    else throw new IndexOutOfBoundsException("No symbol for index " + index);
+    else
+      throw new IndexOutOfBoundsException("No symbol for index " + index);
 
   }
 
 
 
   /**
-
+   * 
    * Complement the symbol.
-
    *
-
-   * @param sym  the symbol to complement
-
+   * 
+   * 
+   * @param sym the symbol to complement
+   * 
    * @return a Symbol that is the complement of sym
-
+   * 
    * @throws IllegalSymbolException if sym is not a member of the Nucleotide alphabet
-
+   * 
    */
 
   static public Symbol complement(Symbol sym)
 
-  throws IllegalSymbolException {
+      throws IllegalSymbolException {
 
-    if(sym == a) {
+    if (sym == a) {
 
       return t;
 
-    } else if(sym == g) {
+    } else if (sym == g) {
 
       return c;
 
-    } else if(sym == c) {
+    } else if (sym == c) {
 
       return g;
 
-    } else if(sym == t) {
+    } else if (sym == t) {
 
       return a;
 
-    } else if(sym == u) {
+    } else if (sym == u) {
 
       return a;
 
@@ -529,7 +557,7 @@ public final class NucleotideTools {
 
     Symbol s = (Symbol) symbolToComplement.get(sym);
 
-    if(s != null) {
+    if (s != null) {
 
       return s;
 
@@ -539,9 +567,9 @@ public final class NucleotideTools {
 
       throw new BioError(
 
-        "Really confused. Can't find symbol " +
+          "Really confused. Can't find symbol " +
 
-        sym.getName()
+              sym.getName()
 
       );
 
@@ -552,40 +580,40 @@ public final class NucleotideTools {
 
 
   /**
-
+   * 
    * Retrieve the symbol for a symbol.
-
    *
-
-   * @param token  the char to look up
-
-   * @return  the symbol for that char
-
+   * 
+   * 
+   * @param token the char to look up
+   * 
+   * @return the symbol for that char
+   * 
    * @throws IllegalSymbolException if the char does not belong to {a, g, c, t, u}
-
+   * 
    */
 
   static public Symbol forSymbol(char token)
 
-  throws IllegalSymbolException {
+      throws IllegalSymbolException {
 
-    if(token == 'a') {
+    if (token == 'a') {
 
       return a;
 
-    } else if(token == 'g') {
+    } else if (token == 'g') {
 
       return g;
 
-    } else if(token == 'c') {
+    } else if (token == 'c') {
 
       return c;
 
-    } else if(token == 't') {
+    } else if (token == 't') {
 
       return t;
 
-    } else if(token == 'u') {
+    } else if (token == 'u') {
 
       return u;
 
@@ -598,22 +626,22 @@ public final class NucleotideTools {
 
 
   /**
-
+   * 
    * Retrieve a complement view of list.
-
    *
-
-   * @param list  the SymbolList to complement
-
+   * 
+   * 
+   * @param list the SymbolList to complement
+   * 
    * @return a SymbolList that is the complement
-
+   * 
    * @throws IllegalAlphabetException if list is not a complementable alphabet
-
+   * 
    */
 
   public static SymbolList complement(SymbolList list)
 
-  throws IllegalAlphabetException {
+      throws IllegalAlphabetException {
 
     return SymbolListViews.translate(list, complementTable());
 
@@ -622,22 +650,22 @@ public final class NucleotideTools {
 
 
   /**
-
+   * 
    * Retrieve a reverse-complement view of list.
-
    *
-
-   * @param list  the SymbolList to complement
-
+   * 
+   * 
+   * @param list the SymbolList to complement
+   * 
    * @return a SymbolList that is the complement
-
+   * 
    * @throws IllegalAlphabetException if list is not a complementable alphabet
-
+   * 
    */
 
   public static SymbolList reverseComplement(SymbolList list)
 
-  throws IllegalAlphabetException {
+      throws IllegalAlphabetException {
 
     return SymbolListViews.translate(SymbolListViews.reverse(list), complementTable());
 
@@ -646,13 +674,13 @@ public final class NucleotideTools {
 
 
   /**
-
+   * 
    * Get a translation table for complementing Nucleotide symbols.
-
    *
-
+   * 
+   * 
    * @since 1.1
-
+   * 
    */
 
 
@@ -665,79 +693,79 @@ public final class NucleotideTools {
 
 
 
-    /**
+  /**
+   * 
+   * Get a single-character token for a Nucleotide symbol
+   *
+   * 
+   * 
+   * @throws IllegalSymbolException if <code>sym</code> is not a member of the Nucleotide alphabet
+   * 
+   */
 
-     * Get a single-character token for a Nucleotide symbol
-
-     *
-
-     * @throws IllegalSymbolException if <code>sym</code> is not a member of the Nucleotide alphabet
-
-     */
 
 
+  public static char nucleotideToken(Symbol sym)
 
-    public static char nucleotideToken(Symbol sym)
+      throws IllegalSymbolException
 
-        throws IllegalSymbolException
+  {
 
-    {
+    return nucleotideTokens.tokenizeSymbol(sym).charAt(0);
 
-        return nucleotideTokens.tokenizeSymbol(sym).charAt(0);
-
-    }
+  }
 
 
 
   /**
-
+   * 
    * Sneaky class for complementing Nucleotide bases.
-
+   * 
    */
 
 
 
   private static class NucleotideComplementTranslationTable
 
-  implements ReversibleTranslationTable {
+      implements
+        ReversibleTranslationTable {
 
     public Symbol translate(Symbol s)
 
-          throws IllegalSymbolException {
+        throws IllegalSymbolException {
 
-            return NucleotideTools.complement(s);
+      return NucleotideTools.complement(s);
 
-          }
+    }
 
 
 
     public Symbol untranslate(Symbol s)
 
-          throws IllegalSymbolException	{
+        throws IllegalSymbolException {
 
-            return NucleotideTools.complement(s);
+      return NucleotideTools.complement(s);
 
-          }
-
-
-
-          public Alphabet getSourceAlphabet() {
-
-            return NucleotideTools.getNucleotide();
-
-          }
+    }
 
 
 
-          public Alphabet getTargetAlphabet() {
+    public Alphabet getSourceAlphabet() {
 
-            return NucleotideTools.getNucleotide();
+      return NucleotideTools.getNucleotide();
 
-          }
+    }
+
+
+
+    public Alphabet getTargetAlphabet() {
+
+      return NucleotideTools.getNucleotide();
+
+    }
 
   }
 
 }
-
 
 

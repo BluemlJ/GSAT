@@ -1,21 +1,18 @@
 /*
- *                    BioJava development code
+ * BioJava development code
  *
- * This code may be freely distributed and modified under the
- * terms of the GNU Lesser General Public Licence.  This should
- * be distributed with the code.  If you do not have a copy,
- * see:
+ * This code may be freely distributed and modified under the terms of the GNU Lesser General Public
+ * Licence. This should be distributed with the code. If you do not have a copy, see:
  *
- *      http://www.gnu.org/copyleft/lesser.html
+ * http://www.gnu.org/copyleft/lesser.html
  *
- * Copyright for this code is held jointly by the individual
- * authors.  These should be listed in @author doc comments.
+ * Copyright for this code is held jointly by the individual authors. These should be listed
+ * in @author doc comments.
  *
- * For more information on the BioJava project and its aims,
- * or to join the biojava-l mailing list, visit the home page
- * at:
+ * For more information on the BioJava project and its aims, or to join the biojava-l mailing list,
+ * visit the home page at:
  *
- *      http://www.biojava.org/
+ * http://www.biojava.org/
  *
  */
 
@@ -45,17 +42,17 @@ public class DPInterpreter implements CellCalculatorFactory, Serializable {
   }
 
   public CellCalculator forwards(ScoreType scoreType)
-  throws IllegalSymbolException, IllegalAlphabetException, IllegalTransitionException {
+      throws IllegalSymbolException, IllegalAlphabetException, IllegalTransitionException {
     return new Forward(dp, scoreType);
   }
 
   public CellCalculator backwards(ScoreType scoreType)
-  throws IllegalSymbolException, IllegalAlphabetException, IllegalTransitionException {
+      throws IllegalSymbolException, IllegalAlphabetException, IllegalTransitionException {
     return new Backward(dp, scoreType);
   }
 
   public CellCalculator viterbi(ScoreType scoreType, BackPointer terminal)
-  throws IllegalSymbolException, IllegalAlphabetException, IllegalTransitionException {
+      throws IllegalSymbolException, IllegalAlphabetException, IllegalTransitionException {
     return new Viterbi(dp, scoreType, terminal);
   }
 
@@ -67,7 +64,7 @@ public class DPInterpreter implements CellCalculatorFactory, Serializable {
     private final State magicalState;
 
     public Forward(DP dp, ScoreType scoreType)
-    throws IllegalSymbolException, IllegalAlphabetException, IllegalTransitionException {
+        throws IllegalSymbolException, IllegalAlphabetException, IllegalTransitionException {
       states = dp.getStates();
 
       transitions = dp.getForwardTransitions();
@@ -75,78 +72,64 @@ public class DPInterpreter implements CellCalculatorFactory, Serializable {
       magicalState = dp.getModel().magicalState();
     }
 
-    public void initialize(Cell [][] cells)
-    throws
-      IllegalSymbolException,
-      IllegalAlphabetException,
-      IllegalTransitionException
-    {
+    public void initialize(Cell[][] cells)
+        throws IllegalSymbolException, IllegalAlphabetException, IllegalTransitionException {
       _calcCell(cells, true);
     }
 
-    public void calcCell(Cell [][] cells)
-    throws
-      IllegalSymbolException,
-      IllegalAlphabetException,
-      IllegalTransitionException
-    {
+    public void calcCell(Cell[][] cells)
+        throws IllegalSymbolException, IllegalAlphabetException, IllegalTransitionException {
       _calcCell(cells, false);
     }
 
-    public void _calcCell(Cell [][] cells, boolean initializationHack)
-    throws
-      IllegalSymbolException,
-      IllegalAlphabetException,
-      IllegalTransitionException
-    {
+    public void _calcCell(Cell[][] cells, boolean initializationHack)
+        throws IllegalSymbolException, IllegalAlphabetException, IllegalTransitionException {
       Cell curCell = cells[0][0];
       double[] curCol = curCell.scores;
       double[] emissions = curCell.emissions;
-      //System.out.println("curCol = " + curCol);
+      // System.out.println("curCol = " + curCol);
 
-     STATELOOP:
-      for (int l = 0; l < states.length; ++l) {
+      STATELOOP: for (int l = 0; l < states.length; ++l) {
         State curState = states[l];
-        //System.out.println("State = " + states[l].getName());
+        // System.out.println("State = " + states[l].getName());
         try {
-          if(initializationHack && (curState instanceof EmissionState)) {
-            if(curState == magicalState) {
+          if (initializationHack && (curState instanceof EmissionState)) {
+            if (curState == magicalState) {
               curCol[l] = 0.0;
             } else {
               curCol[l] = Double.NaN;
             }
-            //System.out.println("Initialized state to " + curCol[l]);
+            // System.out.println("Initialized state to " + curCol[l]);
             continue STATELOOP;
           }
 
-          //System.out.println("Calculating weight");
+          // System.out.println("Calculating weight");
           double[] sourceScores;
           double weight;
-          if (! (curState instanceof EmissionState)) {
+          if (!(curState instanceof EmissionState)) {
             weight = 0.0;
             sourceScores = curCol;
           } else {
             weight = emissions[l];
-            //System.out.println("Weight " + emissions[l]);
-            if(weight == Double.NEGATIVE_INFINITY || Double.isNaN(weight)) {
+            // System.out.println("Weight " + emissions[l]);
+            if (weight == Double.NEGATIVE_INFINITY || Double.isNaN(weight)) {
               curCol[l] = Double.NaN;
               continue STATELOOP;
             }
-            int [] advance = ((EmissionState)curState).getAdvance();
+            int[] advance = ((EmissionState) curState).getAdvance();
             sourceScores = cells[advance[0]][advance[1]].scores;
-            //System.out.println("Values from " + advance[0] + ", " + advance[1] + " " + sourceScores);
+            // System.out.println("Values from " + advance[0] + ", " + advance[1] + " " +
+            // sourceScores);
           }
-          //System.out.println("weight = " + weight);
+          // System.out.println("weight = " + weight);
 
-          int [] tr = transitions[l];
+          int[] tr = transitions[l];
           double[] trs = transitionScores[l];
 
-          /*for(int ci = 0; ci < tr.length; ci++) {
-            System.out.println(
-              "Source = " + states[tr[ci]].getName() +
-              "\t= " + sourceScores[tr[ci]]
-            );
-          }*/
+          /*
+           * for(int ci = 0; ci < tr.length; ci++) { System.out.println( "Source = " +
+           * states[tr[ci]].getName() + "\t= " + sourceScores[tr[ci]] ); }
+           */
 
           // Calculate probabilities for states with transitions
           // here.
@@ -154,48 +137,39 @@ public class DPInterpreter implements CellCalculatorFactory, Serializable {
           // Find base for addition
           double constant = Double.NaN;
           double score = 0.0;
-          for (
-            int ci = 0;
-            ci < tr.length;
-            ci++
-          ) {
+          for (int ci = 0; ci < tr.length; ci++) {
             int trc = tr[ci];
             double trSc = sourceScores[trc];
-            if(!Double.isNaN(trSc) && trSc != Double.NEGATIVE_INFINITY) {
-              if(Double.isNaN(constant)) {
+            if (!Double.isNaN(trSc) && trSc != Double.NEGATIVE_INFINITY) {
+              if (Double.isNaN(constant)) {
                 constant = trSc;
               }
               double sk = trs[ci];
-              if(!Double.isNaN(sk) && sk != Double.NEGATIVE_INFINITY) {
+              if (!Double.isNaN(sk) && sk != Double.NEGATIVE_INFINITY) {
                 score += Math.exp(trSc + sk - constant);
               }
             }
           }
-          if(Double.isNaN(constant)) {
+          if (Double.isNaN(constant)) {
             curCol[l] = Double.NaN;
-            //System.out.println("found no source");
+            // System.out.println("found no source");
           } else {
             curCol[l] = weight + Math.log(score) + constant;
           }
         } catch (Exception e) {
           throw new BioError(
 
-            "Problem with state " + l + " -> " + states[l].getName(), e
-          );
+              "Problem with state " + l + " -> " + states[l].getName(), e);
         } catch (BioError e) {
           throw new BioError(
 
-            "Error  with state " + l + " -> " + states[l].getName(), e
-          );
+              "Error  with state " + l + " -> " + states[l].getName(), e);
         }
       }
-      /*for (int l = 0; l < states.length; ++l) {
-        State curState = states[l];
-        System.out.println(
-          "State = " + states[l].getName() +
-          "\t = " + curCol[l]
-        );
-      }*/
+      /*
+       * for (int l = 0; l < states.length; ++l) { State curState = states[l]; System.out.println(
+       * "State = " + states[l].getName() + "\t = " + curCol[l] ); }
+       */
     }
   }
 
@@ -205,62 +179,47 @@ public class DPInterpreter implements CellCalculatorFactory, Serializable {
     private final State[] states;
     private final State magicalState;
 
-    public Backward(
-      DP dp, ScoreType scoreType
-    ) throws
-      IllegalSymbolException,
-      IllegalAlphabetException,
-      IllegalTransitionException
-    {
+    public Backward(DP dp, ScoreType scoreType)
+        throws IllegalSymbolException, IllegalAlphabetException, IllegalTransitionException {
       states = dp.getStates();
       transitions = dp.getBackwardTransitions();
       transitionScores = dp.getBackwardTransitionScores(scoreType);
       magicalState = dp.getModel().magicalState();
     }
 
-    public void initialize(Cell [][] cells)
-    throws
-      IllegalSymbolException,
-      IllegalAlphabetException,
-      IllegalTransitionException
-    {
+    public void initialize(Cell[][] cells)
+        throws IllegalSymbolException, IllegalAlphabetException, IllegalTransitionException {
       _calcCell(cells, true);
     }
 
-    public void calcCell(Cell [][] cells)
-    throws
-      IllegalSymbolException,
-      IllegalAlphabetException,
-      IllegalTransitionException
-    {
+    public void calcCell(Cell[][] cells)
+        throws IllegalSymbolException, IllegalAlphabetException, IllegalTransitionException {
       _calcCell(cells, false);
     }
 
-    public void _calcCell(Cell [][] cells, boolean initializationHack)
-    throws IllegalSymbolException, IllegalAlphabetException, IllegalTransitionException
-    {
+    public void _calcCell(Cell[][] cells, boolean initializationHack)
+        throws IllegalSymbolException, IllegalAlphabetException, IllegalTransitionException {
       Cell curCell = cells[0][0];
       double[] curCol = curCell.scores;
 
-     STATELOOP:
-      for (int l = states.length - 1; l >= 0; --l) {
-        //System.out.println("State = " + states[l].getName());
+      STATELOOP: for (int l = states.length - 1; l >= 0; --l) {
+        // System.out.println("State = " + states[l].getName());
         State curState = states[l];
-        if(initializationHack && (curState instanceof EmissionState)) {
-          if(curState == magicalState) {
+        if (initializationHack && (curState instanceof EmissionState)) {
+          if (curState == magicalState) {
             curCol[l] = 0.0;
           } else {
             curCol[l] = Double.NaN;
           }
           continue STATELOOP;
         }
-        int [] tr = transitions[l];
+        int[] tr = transitions[l];
         double[] trs = transitionScores[l];
 
         // Calculate probabilities for states with transitions
         // here.
 
-            double[] sourceScores = new double[tr.length];
+        double[] sourceScores = new double[tr.length];
         for (int ci = 0; ci < tr.length; ++ci) {
           double weight;
 
@@ -268,10 +227,10 @@ public class DPInterpreter implements CellCalculatorFactory, Serializable {
           State destS = states[destI];
           Cell targetCell;
           if (destS instanceof EmissionState) {
-            int [] advance = ((EmissionState)destS).getAdvance();
+            int[] advance = ((EmissionState) destS).getAdvance();
             targetCell = cells[advance[0]][advance[1]];
             weight = targetCell.emissions[destI];
-            if(Double.isNaN(weight)) {
+            if (Double.isNaN(weight)) {
               curCol[l] = Double.NaN;
               continue STATELOOP;
             }
@@ -281,46 +240,37 @@ public class DPInterpreter implements CellCalculatorFactory, Serializable {
           }
           sourceScores[ci] = targetCell.scores[destI] + weight;
         }
-        /*for(int ci = 0; ci < tr.length; ci++) {
-          System.out.println(
-            "Source = " + states[tr[ci]].getName() +
-            "\t= " + sourceScores[ci]
-          );
-        }*/
+        /*
+         * for(int ci = 0; ci < tr.length; ci++) { System.out.println( "Source = " +
+         * states[tr[ci]].getName() + "\t= " + sourceScores[ci] ); }
+         */
 
         // Find base for addition
         double constant = Double.NaN;
         double score = 0.0;
-        for(
-          int ci = 0;
-          ci < tr.length;
-          ci++
-        ) {
+        for (int ci = 0; ci < tr.length; ci++) {
           double skc = sourceScores[ci];
-          if(skc != Double.NEGATIVE_INFINITY && !Double.isNaN(skc)) {
-            if(Double.isNaN(constant)) {
+          if (skc != Double.NEGATIVE_INFINITY && !Double.isNaN(skc)) {
+            if (Double.isNaN(constant)) {
               constant = skc;
             }
             double sk = trs[ci];
-            if(!Double.isNaN(sk) && sk != Double.NEGATIVE_INFINITY) {
+            if (!Double.isNaN(sk) && sk != Double.NEGATIVE_INFINITY) {
               score += Math.exp(skc + sk - constant);
             }
           }
         }
-        if(Double.isNaN(constant)) {
+        if (Double.isNaN(constant)) {
           curCol[l] = Double.NaN;
         } else {
           curCol[l] = Math.log(score) + constant;
-          //System.out.println(curCol[l]);
+          // System.out.println(curCol[l]);
         }
       }
-      /*for (int l = 0; l < states.length; ++l) {
-        State curState = states[l];
-        System.out.println(
-          "State = " + states[l].getName() +
-          "\t = " + curCol[l]
-        );
-      }*/
+      /*
+       * for (int l = 0; l < states.length; ++l) { State curState = states[l]; System.out.println(
+       * "State = " + states[l].getName() + "\t = " + curCol[l] ); }
+       */
     }
   }
 
@@ -333,11 +283,7 @@ public class DPInterpreter implements CellCalculatorFactory, Serializable {
     private final State magicalState;
 
     public Viterbi(DP dp, ScoreType scoreType, BackPointer terminal)
-    throws
-      IllegalSymbolException,
-      IllegalAlphabetException,
-      IllegalTransitionException
-    {
+        throws IllegalSymbolException, IllegalAlphabetException, IllegalTransitionException {
       TERMINAL_BP = terminal;
       states = dp.getStates();
       transitions = dp.getForwardTransitions();
@@ -346,76 +292,63 @@ public class DPInterpreter implements CellCalculatorFactory, Serializable {
     }
 
     public void initialize(Cell[][] cells)
-    throws
-      IllegalSymbolException,
-      IllegalAlphabetException,
-      IllegalTransitionException
-    {
+        throws IllegalSymbolException, IllegalAlphabetException, IllegalTransitionException {
       _calcCell(cells, true);
     }
 
     public void calcCell(Cell[][] cells)
-    throws
-      IllegalSymbolException,
-      IllegalAlphabetException,
-      IllegalTransitionException
-    {
+        throws IllegalSymbolException, IllegalAlphabetException, IllegalTransitionException {
       _calcCell(cells, false);
     }
 
-    public void _calcCell(Cell [][] cells, boolean initializationHack)
-    throws
-      IllegalSymbolException,
-      IllegalAlphabetException,
-      IllegalTransitionException
-    {
+    public void _calcCell(Cell[][] cells, boolean initializationHack)
+        throws IllegalSymbolException, IllegalAlphabetException, IllegalTransitionException {
       Cell curCell = cells[0][0];
       double[] curCol = curCell.scores;
       BackPointer[] curBPs = curCell.backPointers;
       double[] emissions = curCell.emissions;
-      //System.out.println("Scores " + curCol);
-     STATELOOP:
-      for (int l = 0; l < states.length; ++l) {
+      // System.out.println("Scores " + curCol);
+      STATELOOP: for (int l = 0; l < states.length; ++l) {
         State curState = states[l];
-            //System.out.println("State = " + l + "=" + states[l].getName());
+        // System.out.println("State = " + l + "=" + states[l].getName());
         try {
-          //System.out.println("trying initialization");
-          if(initializationHack && (curState instanceof EmissionState)) {
-            if(curState == magicalState) {
+          // System.out.println("trying initialization");
+          if (initializationHack && (curState instanceof EmissionState)) {
+            if (curState == magicalState) {
               curCol[l] = 0.0;
               curBPs[l] = TERMINAL_BP;
             } else {
               curCol[l] = Double.NaN;
               curBPs[l] = null;
             }
-            //System.out.println("Initialized state to " + curCol[l]);
+            // System.out.println("Initialized state to " + curCol[l]);
             continue STATELOOP;
           }
 
           double weight;
           double[] sourceScores;
           BackPointer[] oldBPs;
-          if(! (curState instanceof EmissionState)) {
+          if (!(curState instanceof EmissionState)) {
             weight = 0.0;
             sourceScores = curCol;
             oldBPs = curBPs;
           } else {
             weight = emissions[l];
-            if(weight == Double.NEGATIVE_INFINITY || Double.isNaN(weight)) {
+            if (weight == Double.NEGATIVE_INFINITY || Double.isNaN(weight)) {
               curCol[l] = Double.NaN;
               curBPs[l] = null;
               continue STATELOOP;
             }
-            int [] advance = ((EmissionState)curState).getAdvance();
+            int[] advance = ((EmissionState) curState).getAdvance();
             Cell oldCell = cells[advance[0]][advance[1]];
             sourceScores = oldCell.scores;
             oldBPs = oldCell.backPointers;
-            //System.out.println("Looking back " + advance[0] + ", " + advance[1]);
+            // System.out.println("Looking back " + advance[0] + ", " + advance[1]);
           }
-          //System.out.println("weight = " + weight);
+          // System.out.println("weight = " + weight);
 
           double score = Double.NEGATIVE_INFINITY;
-          int [] tr = transitions[l];
+          int[] tr = transitions[l];
           double[] trs = transitionScores[l];
 
           int bestK = -1; // index into states[l]
@@ -423,73 +356,60 @@ public class DPInterpreter implements CellCalculatorFactory, Serializable {
             int k = tr[kc]; // actual state index
             double sk = sourceScores[k];
 
-            /*System.out.println("kc is " + kc);
-            System.out.println("with from " + k + "=" + states[k].getName());
-            System.out.println("prevScore = " + sk);*/
+            /*
+             * System.out.println("kc is " + kc); System.out.println("with from " + k + "=" +
+             * states[k].getName()); System.out.println("prevScore = " + sk);
+             */
             if (sk != Double.NEGATIVE_INFINITY && !Double.isNaN(sk)) {
               double t = trs[kc];
-              //System.out.println("Transition score = " + t);
+              // System.out.println("Transition score = " + t);
               double newScore = t + sk;
               if (newScore > score) {
                 score = newScore;
                 bestK = k;
-                //System.out.println("New best source at " + kc + " is " + score);
+                // System.out.println("New best source at " + kc + " is " + score);
               }
             }
           }
           if (bestK != -1) {
             curCol[l] = weight + score;
-            /*System.out.println("Weight = " + weight);
-            System.out.println("Score = " + score);
-            System.out.println(
-              "Creating " + states[bestK].getName() +
-              " -> " + states[l].getName() +
-              " (" + curCol[l] + ")"
-            );*/
+            /*
+             * System.out.println("Weight = " + weight); System.out.println("Score = " + score);
+             * System.out.println( "Creating " + states[bestK].getName() + " -> " +
+             * states[l].getName() + " (" + curCol[l] + ")" );
+             */
             try {
               State s = states[l];
-              curBPs[l] = new BackPointer(
-                s,
-                oldBPs[bestK],
-                curCol[l]
-              );
+              curBPs[l] = new BackPointer(s, oldBPs[bestK], curCol[l]);
             } catch (Throwable t) {
               throw new BioError(
 
-                "Couldn't generate backpointer for " + states[l].getName() +
-                " back to " + states[bestK].getName(), t
-              );
+                  "Couldn't generate backpointer for " + states[l].getName() + " back to "
+                      + states[bestK].getName(),
+                  t);
             }
           } else {
-            //System.out.println("No where to come from");;
+            // System.out.println("No where to come from");;
             curBPs[l] = null;
             curCol[l] = Double.NaN;
           }
         } catch (Exception e) {
           throw new BioError(
 
-            "Problem with state " + l + " -> " + states[l].getName(),e
-          );
+              "Problem with state " + l + " -> " + states[l].getName(), e);
         } catch (BioError e) {
           throw new BioError(
 
-            "Error  with state " + l + " -> " + states[l].getName(),e
-          );
+              "Error  with state " + l + " -> " + states[l].getName(), e);
         }
       }
-      /*System.out.println("backpointers:");
-      for(int l = 0; l < states.length; l++) {
-        System.out.print(states[l].getName() + "\t" + curCol[l] + "\t");
-        BackPointer b = curBPs[l];
-        if(b != null) {
-          for(BackPointer bb = b; bb.back != bb; bb = bb.back) {
-            System.out.print(bb.state.getName() + " -> ");
-          }
-          System.out.println("!");
-        } else {
-          System.out.print("\n");
-        }
-      }*/
+      /*
+       * System.out.println("backpointers:"); for(int l = 0; l < states.length; l++) {
+       * System.out.print(states[l].getName() + "\t" + curCol[l] + "\t"); BackPointer b = curBPs[l];
+       * if(b != null) { for(BackPointer bb = b; bb.back != bb; bb = bb.back) {
+       * System.out.print(bb.state.getName() + " -> "); } System.out.println("!"); } else {
+       * System.out.print("\n"); } }
+       */
       initializationHack = false;
     }
   }

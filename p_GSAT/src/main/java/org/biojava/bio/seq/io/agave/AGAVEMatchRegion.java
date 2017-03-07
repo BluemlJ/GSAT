@@ -1,41 +1,41 @@
 /*
-
- *                    BioJava development code
-
+ * 
+ * BioJava development code
  *
-
+ * 
+ * 
  * This code may be freely distributed and modified under the
-
- * terms of the GNU Lesser General Public Licence.  This should
-
- * be distributed with the code.  If you do not have a copy,
-
+ * 
+ * terms of the GNU Lesser General Public Licence. This should
+ * 
+ * be distributed with the code. If you do not have a copy,
+ * 
  * see:
-
  *
-
- *      http://www.gnu.org/copyleft/lesser.html
-
+ * 
+ * 
+ * http://www.gnu.org/copyleft/lesser.html
  *
-
+ * 
+ * 
  * Copyright for this code is held jointly by the individual
-
- * authors.  These should be listed in @author doc comments.
-
+ * 
+ * authors. These should be listed in @author doc comments.
  *
-
+ * 
+ * 
  * For more information on the BioJava project and its aims,
-
+ * 
  * or to join the biojava-l mailing list, visit the home page
-
+ * 
  * at:
-
  *
-
- *      http://www.biojava.org/
-
+ * 
+ * 
+ * http://www.biojava.org/
  *
-
+ * 
+ * 
  */
 
 package org.biojava.bio.seq.io.agave;
@@ -43,137 +43,137 @@ package org.biojava.bio.seq.io.agave;
 
 
 /**
-
+ * 
  * match_region
-
  *
-
- * @author Hanning Ni    Doubletwist Inc
-  * @author Greg Cox
-
+ * 
+ * 
+ * @author Hanning Ni Doubletwist Inc
+ * @author Greg Cox
+ * 
  */
 
 public class AGAVEMatchRegion
 
 {
 
-    private int start ;
+  private int start;
 
-    private int end ;
+  private int end;
 
-    private String element_id ;
+  private String element_id;
 
-    private AGAVEDbId db_id ;
-
-
-
-    //ignore bio_sequence
+  private AGAVEDbId db_id;
 
 
 
-    public void setStart(int start)
-
-    {
-
-        this.start = start ;
-
-    }
+  // ignore bio_sequence
 
 
 
-    public void setEnd(int end)
+  public void setStart(int start)
 
-    {
+  {
 
-        this.end = end ;
+    this.start = start;
 
-    }
-
-    public void setElementId(String id)
-
-    {
-
-        this.element_id = id ;
-
-    }
-
-    public void setDbId(AGAVEDbId id)
-
-    {
-
-        this.db_id = id ;
-
-    }
+  }
 
 
 
-    public int getStart()
+  public void setEnd(int end)
 
-    {
+  {
 
-        return start ;
+    this.end = end;
 
-    }
+  }
 
-    public int getEnd()
+  public void setElementId(String id)
 
-    {
+  {
 
-        return end ;
+    this.element_id = id;
 
-    }
+  }
 
-    public String getElementId()
+  public void setDbId(AGAVEDbId id)
 
-    {
+  {
 
-        return element_id ;
+    this.db_id = id;
 
-    }
-
-    public AGAVEDbId getDbId()
-
-    {
-
-        return db_id ;
-
-    }
+  }
 
 
 
-    public String toString(String indent, String indent_unit)
+  public int getStart()
 
-    {
+  {
 
-        StringBuffer sb = new StringBuffer();
+    return start;
 
-        sb.append(indent + "<match_region start=\"" + start + "\" end=\"" + end +"\">" + "\n" ) ;
+  }
 
-        sb.append( indent + indent_unit + "<element_id id=\"" + element_id + "\"/>" + "\n" );
+  public int getEnd()
 
-        if( db_id != null )
+  {
 
-           sb.append( db_id.toString( indent + indent_unit, indent_unit)) ;
+    return end;
 
-        sb.append( indent + "</match_region>" + "\n" ) ;
+  }
 
-        return  sb.substring(0) ;
+  public String getElementId()
 
-    }
+  {
 
-    public String toString()
+    return element_id;
 
-    {
+  }
 
-        return "<match_region start=\"" + start + "\" end=\"" + end +"\">" + "\n"
+  public AGAVEDbId getDbId()
 
-               + "<element_id id=\"" + element_id + "\"/>" + "\n"
+  {
 
-               + db_id + "\n"
+    return db_id;
 
-               + "</match_region>" + "\n" ;
+  }
 
-    }
+
+
+  public String toString(String indent, String indent_unit)
+
+  {
+
+    StringBuffer sb = new StringBuffer();
+
+    sb.append(indent + "<match_region start=\"" + start + "\" end=\"" + end + "\">" + "\n");
+
+    sb.append(indent + indent_unit + "<element_id id=\"" + element_id + "\"/>" + "\n");
+
+    if (db_id != null)
+
+      sb.append(db_id.toString(indent + indent_unit, indent_unit));
+
+    sb.append(indent + "</match_region>" + "\n");
+
+    return sb.substring(0);
+
+  }
+
+  public String toString()
+
+  {
+
+    return "<match_region start=\"" + start + "\" end=\"" + end + "\">" + "\n"
+
+        + "<element_id id=\"" + element_id + "\"/>" + "\n"
+
+        + db_id + "\n"
+
+        + "</match_region>" + "\n";
+
+  }
 
 }
 

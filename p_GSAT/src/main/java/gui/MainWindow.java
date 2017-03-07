@@ -512,7 +512,7 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
               // TODO Auto-generated catch block
             }
           } else if (result.get() == dontSave) {
-             // TODO
+            // TODO
           } else {
             event.consume();
           }

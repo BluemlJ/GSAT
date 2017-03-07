@@ -1,21 +1,18 @@
 /*
- *                    BioJava development code
+ * BioJava development code
  *
- * This code may be freely distributed and modified under the
- * terms of the GNU Lesser General Public Licence.  This should
- * be distributed with the code.  If you do not have a copy,
- * see:
+ * This code may be freely distributed and modified under the terms of the GNU Lesser General Public
+ * Licence. This should be distributed with the code. If you do not have a copy, see:
  *
- *      http://www.gnu.org/copyleft/lesser.html
+ * http://www.gnu.org/copyleft/lesser.html
  *
- * Copyright for this code is held jointly by the individual
- * authors.  These should be listed in @author doc comments.
+ * Copyright for this code is held jointly by the individual authors. These should be listed
+ * in @author doc comments.
  *
- * For more information on the BioJava project and its aims,
- * or to join the biojava-l mailing list, visit the home page
- * at:
+ * For more information on the BioJava project and its aims, or to join the biojava-l mailing list,
+ * visit the home page at:
  *
- *      http://www.biojava.org/
+ * http://www.biojava.org/
  *
  */
 
@@ -36,34 +33,34 @@ public class FixedSizeMap implements CacheMap {
   private Map map = new HashMap();
   private LinkedList keys = new LinkedList();
   private int maxSize;
-  
+
   public int getMaxSize() {
     return maxSize;
   }
-  
+
   public FixedSizeMap(int maxSize) {
     this.maxSize = maxSize;
   }
-  
+
   public void put(Object key, Object value) {
-    if(map.containsKey(key)) {
+    if (map.containsKey(key)) {
       keys.remove(key);
     }
-    
+
     keys.addLast(key);
-    
-    if(keys.size() > maxSize) {
+
+    if (keys.size() > maxSize) {
       Object k = keys.removeFirst();
       map.remove(k);
     }
     map.put(key, value);
-    
+
   }
-  
+
   public Object get(Object key) {
     return map.get(key);
   }
-  
+
   public void remove(Object key) {
     map.remove(key);
     keys.remove(key);

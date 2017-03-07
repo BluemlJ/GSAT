@@ -14,18 +14,14 @@ import org.biojava.utils.Unchangeable;
 /**
  * The empty immutable implementation.
  */
-class EmptySymbolList
-extends Unchangeable
-implements SymbolList, Serializable {
+class EmptySymbolList extends Unchangeable implements SymbolList, Serializable {
   private Alphabet alphabet;
 
-  EmptySymbolList()
-  {
+  EmptySymbolList() {
     this.alphabet = Alphabet.EMPTY_ALPHABET;
   }
 
-  EmptySymbolList(Alphabet alpha)
-  {
+  EmptySymbolList(Alphabet alpha) {
     this.alphabet = alpha;
   }
 
@@ -50,7 +46,7 @@ implements SymbolList, Serializable {
   }
 
   public SymbolList subList(int start, int end) throws IndexOutOfBoundsException {
-    Collections.EMPTY_LIST.subList(start-1, end);
+    Collections.EMPTY_LIST.subList(start - 1, end);
     return SymbolList.EMPTY_LIST;
   }
 
@@ -59,16 +55,11 @@ implements SymbolList, Serializable {
   }
 
   public String subStr(int start, int end) throws IndexOutOfBoundsException {
-    throw new IndexOutOfBoundsException(
-      "You can not retrieve part of an empty symbol list"
-    );
+    throw new IndexOutOfBoundsException("You can not retrieve part of an empty symbol list");
   }
 
-  public void edit(Edit edit)
-  throws IndexOutOfBoundsException, ChangeVetoException {
-    throw new ChangeVetoException(
-      "You can't edit the empty symbol list"
-    );
+  public void edit(Edit edit) throws IndexOutOfBoundsException, ChangeVetoException {
+    throw new ChangeVetoException("You can't edit the empty symbol list");
   }
 
   private Object writeReplace() throws ObjectStreamException {

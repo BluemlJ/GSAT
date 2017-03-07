@@ -1,21 +1,18 @@
 /*
- *                    BioJava development code
+ * BioJava development code
  *
- * This code may be freely distributed and modified under the
- * terms of the GNU Lesser General Public Licence.  This should
- * be distributed with the code.  If you do not have a copy,
- * see:
+ * This code may be freely distributed and modified under the terms of the GNU Lesser General Public
+ * Licence. This should be distributed with the code. If you do not have a copy, see:
  *
- *      http://www.gnu.org/copyleft/lesser.html
+ * http://www.gnu.org/copyleft/lesser.html
  *
- * Copyright for this code is held jointly by the individual
- * authors.  These should be listed in @author doc comments.
+ * Copyright for this code is held jointly by the individual authors. These should be listed
+ * in @author doc comments.
  *
- * For more information on the BioJava project and its aims,
- * or to join the biojava-l mailing list, visit the home page
- * at:
+ * For more information on the BioJava project and its aims, or to join the biojava-l mailing list,
+ * visit the home page at:
  *
- *      http://www.biojava.org/
+ * http://www.biojava.org/
  *
  */
 
@@ -49,7 +46,8 @@ import org.biojava.utils.ChangeVetoException;
 
 
 /**
- * <p> Utility methods for the GA library
+ * <p>
+ * Utility methods for the GA library
  * 
  * @author Mark Schreiber
  * @version 1.0
@@ -62,12 +60,13 @@ public final class GATools {
   private static AtomicSymbol zero;
   private static AtomicSymbol one;
 
-  static{
+  static {
     zero = AlphabetManager.createSymbol("zero");
     one = AlphabetManager.createSymbol("one");
 
     Set syms = new HashSet();
-    syms.add(zero); syms.add(one);
+    syms.add(zero);
+    syms.add(one);
 
     binary = new SimpleAlphabet(syms, "GA_Binary");
     CharacterTokenization tk = new CharacterTokenization(binary, false);
@@ -80,36 +79,35 @@ public final class GATools {
   }
 
   /**
-   * Gets a Reference to the FlyWeight GA_Binary <code>Alphabet</code>.
-   * It contains the Symbols one and zero.
+   * Gets a Reference to the FlyWeight GA_Binary <code>Alphabet</code>. It contains the Symbols one
+   * and zero.
+   * 
    * @return the finite, flyweight Binary Alphabet
    */
-  public static FiniteAlphabet getBinaryAlphabet(){
+  public static FiniteAlphabet getBinaryAlphabet() {
     return binary;
   }
 
   /**
    * @return the GA_Binary symbol "one"
    */
-  public static AtomicSymbol one(){
+  public static AtomicSymbol one() {
     return one;
   }
 
   /**
    * Creates a <code>SymbolList</code> in the GABinary <code>Alphabet</code>
+   * 
    * @param binarySequence a String like "01010000101010101" with no white space
    * @return a <code>SymbolList</code> parsed from <code>binarySequence</code>
    * @throws IllegalSymbolException if a character other than 1 or 0 is found.
    */
-  public static SymbolList createBinary(String binarySequence)
-       throws IllegalSymbolException{
+  public static SymbolList createBinary(String binarySequence) throws IllegalSymbolException {
 
     SymbolTokenization toke = null;
     try {
-      toke =
-          getBinaryAlphabet().getTokenization("token");
-    }
-    catch (BioException ex) {
+      toke = getBinaryAlphabet().getTokenization("token");
+    } catch (BioException ex) {
       throw new BioError("Cannot make binary tokenization", ex);
     }
 
@@ -119,71 +117,73 @@ public final class GATools {
   /**
    * @return the GA_Binary symbol "zero"
    */
-  public static AtomicSymbol zero(){
+  public static AtomicSymbol zero() {
     return zero;
   }
 
   /**
-   * Makes a 1st order distribution which is infact uniform (equivalent to a
-   * uniform zero order distribution).
+   * Makes a 1st order distribution which is infact uniform (equivalent to a uniform zero order
+   * distribution).
+   * 
    * @param a the zero order Alphabet which will be multiplied into the 1st order alphabet
    * @return the "1st order" distribution
    * @throws IllegalAlphabetException if the Distribution cannot be constructed from <code>a</code>.
    */
-  public static OrderNDistribution uniformMutationDistribution(FiniteAlphabet a) throws IllegalAlphabetException{
+  public static OrderNDistribution uniformMutationDistribution(FiniteAlphabet a)
+      throws IllegalAlphabetException {
     List l = Collections.nCopies(2, a);
     Alphabet alpha = AlphabetManager.getCrossProductAlphabet(l);
 
     OrderNDistribution d =
-        (OrderNDistribution)OrderNDistributionFactory.DEFAULT.createDistribution(alpha);
+        (OrderNDistribution) OrderNDistributionFactory.DEFAULT.createDistribution(alpha);
 
     AlphabetIndex ind = AlphabetManager.getAlphabetIndex(a);
     UniformDistribution u = new UniformDistribution(a);
-    for(int i = 0; i < a.size(); i++){
+    for (int i = 0; i < a.size(); i++) {
       try {
         d.setDistribution(ind.symbolForIndex(i), u);
-      }
-      catch (IllegalSymbolException ex) {
-        throw new BioError(ex); //shouldn't happen
+      } catch (IllegalSymbolException ex) {
+        throw new BioError(ex); // shouldn't happen
       }
     }
     return d;
   }
 
   /**
-   * Makes a mutation <code>Distribution</code> where the probability
-   * of a <code>Symbol</code> being mutated to itself is zero and the
-   * probability of it being changed to any other <code>Symbol</code> in
-   * the <code>Alphabet a</code> is <code>1.0 / (a.size() - 1.0)</code>
+   * Makes a mutation <code>Distribution</code> where the probability of a <code>Symbol</code> being
+   * mutated to itself is zero and the probability of it being changed to any other
+   * <code>Symbol</code> in the <code>Alphabet a</code> is <code>1.0 / (a.size() - 1.0)</code>
+   * 
    * @param a the <code>FiniteAlphabet</code> which mutations are sampled from.
    * @return A <code>Distribution</code> suitable for use in a <code>MutationFunction</code>
-   * @throws IllegalAlphabetException if the <code>Distribution</code> cannot be made
-   * over the <code>FiniteAlphabet</code>
+   * @throws IllegalAlphabetException if the <code>Distribution</code> cannot be made over the
+   *         <code>FiniteAlphabet</code>
    */
-  public static OrderNDistribution standardMutationDistribution(FiniteAlphabet a) throws IllegalAlphabetException{
+  public static OrderNDistribution standardMutationDistribution(FiniteAlphabet a)
+      throws IllegalAlphabetException {
     List l = Collections.nCopies(2, a);
     Alphabet alpha = AlphabetManager.getCrossProductAlphabet(l);
 
     OrderNDistribution d =
-        (OrderNDistribution)OrderNDistributionFactory.DEFAULT.createDistribution(alpha);
+        (OrderNDistribution) OrderNDistributionFactory.DEFAULT.createDistribution(alpha);
 
     AlphabetIndex ind = AlphabetManager.getAlphabetIndex(a);
-    for(int i = 0; i < a.size(); i++){
+    for (int i = 0; i < a.size(); i++) {
       try {
         Distribution sub_dist = d.getDistribution(ind.symbolForIndex(i));
 
         AlphabetIndex ind2 = AlphabetManager.getAlphabetIndex(a);
-        for (int j = 0; j < a.size(); j++){
-          if(ind.symbolForIndex(i) == ind2.symbolForIndex(j)){
+        for (int j = 0; j < a.size(); j++) {
+          if (ind.symbolForIndex(i) == ind2.symbolForIndex(j)) {
             sub_dist.setWeight(ind2.symbolForIndex(j), 0.0);
-          }else{
-            sub_dist.setWeight(ind2.symbolForIndex(j), 1.0/ (double)(a.size() -1));
+          } else {
+            sub_dist.setWeight(ind2.symbolForIndex(j), 1.0 / (double) (a.size() - 1));
           }
         }
-      }catch (IllegalSymbolException ex) {
-        throw new BioError(ex); //shouldn't happen
-      }catch (ChangeVetoException ex){
-        throw new BioError(ex); //shouldn't happen
+      } catch (IllegalSymbolException ex) {
+        throw new BioError(ex); // shouldn't happen
+      } catch (ChangeVetoException ex) {
+        throw new BioError(ex); // shouldn't happen
       }
     }
     return d;

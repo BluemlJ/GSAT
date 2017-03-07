@@ -1,41 +1,41 @@
 /**
-
- *                    BioJava development code
-
+ * 
+ * BioJava development code
  *
-
+ * 
+ * 
  * This code may be freely distributed and modified under the
-
- * terms of the GNU Lesser General Public Licence.  This should
-
- * be distributed with the code.  If you do not have a copy,
-
+ * 
+ * terms of the GNU Lesser General Public Licence. This should
+ * 
+ * be distributed with the code. If you do not have a copy,
+ * 
  * see:
-
  *
-
- *      http://www.gnu.org/copyleft/lesser.html
-
+ * 
+ * 
+ * http://www.gnu.org/copyleft/lesser.html
  *
-
+ * 
+ * 
  * Copyright for this code is held jointly by the individual
-
- * authors.  These should be listed in @author doc comments.
-
+ * 
+ * authors. These should be listed in @author doc comments.
  *
-
+ * 
+ * 
  * For more information on the BioJava project and its aims,
-
+ * 
  * or to join the biojava-l mailing list, visit the home page
-
+ * 
  * at:
-
  *
-
- *      http://www.biojava.org/
-
+ * 
+ * 
+ * http://www.biojava.org/
  *
-
+ * 
+ * 
  */
 
 package org.biojava.bio.seq.io.agave;
@@ -61,39 +61,39 @@ import org.xml.sax.SAXException;
 
 
 /**
-
+ * 
  * StAX handler shamelessly ripped off from Thomas Down's
-
- * XFFFeatureSetHandler.  It was modified for greater
-
+ * 
+ * XFFFeatureSetHandler. It was modified for greater
+ * 
  * generality.
-
  *
-
+ * 
+ * 
  * <strong>NOTE</strong> This class is not thread-safe -- it
-
+ * 
  * must only be used for one parse at any time.
-
+ * 
  * <p>
-
+ * 
  * Because AGAVE has nested feature and each feature must attached to
-
+ * 
  * some parent feature-holder in biojava, which means we need to generate parents first,
-
+ * 
  * so we have to keep the tree structure of features in memory, which is really bad.
-
+ * 
  * anyway, we still saved a lot of memory compared with DOM tree . Hanning Ni)
-
- 
-
+ * 
+ * 
+ * 
  * @author copied from Thomas Down
-
+ * 
  * @author copied from David Huen
-
- * @author Hanning Ni   Doubletwist Inc
-
+ * 
+ * @author Hanning Ni Doubletwist Inc
  *
-
+ * 
+ * 
  */
 
 public class StAXFeatureHandler extends StAXContentHandlerBase
@@ -110,11 +110,11 @@ public class StAXFeatureHandler extends StAXContentHandlerBase
 
   private List handlers;
 
-  private boolean startFired=false;
+  private boolean startFired = false;
 
-  private boolean endFired=false;
+  private boolean endFired = false;
 
-  private boolean inFeature=false;  // have we been here before?
+  private boolean inFeature = false; // have we been here before?
 
 
 
@@ -122,37 +122,37 @@ public class StAXFeatureHandler extends StAXContentHandlerBase
 
   protected Feature.Template featureTemplate;
 
-  protected StAXFeatureHandler staxenv ;
+  protected StAXFeatureHandler staxenv;
 
   protected SeqIOListener featureListener;
 
   protected int startLoc;
 
-  protected int endLoc;  // needed because some XML don't give start and stops as attributes.
+  protected int endLoc; // needed because some XML don't give start and stops as attributes.
 
-/**
-
- * this is the stack of handler objects for the current feature.
-
-  * The base value is the FeatureHandler itself.
-
-  * your feature and property handlers place and remove themselves
-
-  * from this stack.
-
-  *
-
-  * the purpose of all this is to implement context sensitivty for
-
-  * property handlers translucently.  Property handlers can pop the
-
-  * stack for other handlers that implement interfaces that process
-
-  * that element.  This way the context code is within the object that
-
-  * defines that context rather than in a child property handler.
-
-  */
+  /**
+   * 
+   * this is the stack of handler objects for the current feature.
+   * 
+   * The base value is the FeatureHandler itself.
+   * 
+   * your feature and property handlers place and remove themselves
+   * 
+   * from this stack.
+   *
+   * 
+   * 
+   * the purpose of all this is to implement context sensitivty for
+   * 
+   * property handlers translucently. Property handlers can pop the
+   * 
+   * stack for other handlers that implement interfaces that process
+   * 
+   * that element. This way the context code is within the object that
+   * 
+   * defines that context rather than in a child property handler.
+   * 
+   */
 
   protected List callbackStack;
 
@@ -160,29 +160,29 @@ public class StAXFeatureHandler extends StAXContentHandlerBase
 
 
 
-  //store all the sub features,  should be a tree structure with the root is
+  // store all the sub features, should be a tree structure with the root is
 
-  //top level seqeuence
+  // top level seqeuence
 
-  protected List subFeatures ;
+  protected List subFeatures;
 
 
 
-  protected  SimpleAnnotation annot = new SimpleAnnotation();
+  protected SimpleAnnotation annot = new SimpleAnnotation();
 
 
 
   StAXFeatureHandler(StAXFeatureHandler staxenv) {
 
-       // cache environmnet
+    // cache environmnet
 
-       this.staxenv = staxenv;
+    this.staxenv = staxenv;
 
-       handlers = new ArrayList();
+    handlers = new ArrayList();
 
-       callbackStack = new ArrayList();
+    callbackStack = new ArrayList();
 
-       subFeatures = new ArrayList(1) ;
+    subFeatures = new ArrayList(1);
 
   }
 
@@ -194,7 +194,7 @@ public class StAXFeatureHandler extends StAXContentHandlerBase
 
     callbackStack = new ArrayList();
 
-    subFeatures = new ArrayList(1) ;
+    subFeatures = new ArrayList(1);
 
   }
 
@@ -204,11 +204,11 @@ public class StAXFeatureHandler extends StAXContentHandlerBase
 
 
 
-/**
-
- * Sets the element name that the class responds to.
-
- */
+  /**
+   * 
+   * Sets the element name that the class responds to.
+   * 
+   */
 
   public void setHandlerCharacteristics(String localName, boolean hasCallback) {
 
@@ -260,15 +260,15 @@ public class StAXFeatureHandler extends StAXContentHandlerBase
 
   // we do not distinguish whither it is a feature or property
 
-  // handler.  The factory method creates the right type subclassed
+  // handler. The factory method creates the right type subclassed
 
   // from the correct type of handler
 
   protected void addHandler(
 
-                   ElementRecognizer rec,
+      ElementRecognizer rec,
 
-                   StAXHandlerFactory handler)
+      StAXHandlerFactory handler)
 
   {
 
@@ -278,17 +278,17 @@ public class StAXFeatureHandler extends StAXContentHandlerBase
 
 
 
-/**
-
- *  generates a very basic Template for the feature with
-
- *  SmallAnnotation in the annotation field.
-
- *  <p>
-
- *  Override if you wish a more specialised Template.
-
- */
+  /**
+   * 
+   * generates a very basic Template for the feature with
+   * 
+   * SmallAnnotation in the annotation field.
+   * 
+   * <p>
+   * 
+   * Override if you wish a more specialised Template.
+   * 
+   */
 
   protected Feature.Template createTemplate() {
 
@@ -308,13 +308,13 @@ public class StAXFeatureHandler extends StAXContentHandlerBase
 
     // set up annotation bundle
 
-    st.annotation = annot ;
+    st.annotation = annot;
 
     st.location = Location.empty;
 
-    if( staxenv != null )
+    if (staxenv != null)
 
-        staxenv. subFeatures .add( this ) ;
+      staxenv.subFeatures.add(this);
 
 
 
@@ -325,38 +325,42 @@ public class StAXFeatureHandler extends StAXContentHandlerBase
 
 
   /**
-
+   * 
    * recursively attach children features to parent
-
+   * 
    */
 
   protected void realizeSubFeatures(Feature feature)
 
   {
 
-    try{
+    try {
 
-      Iterator it = subFeatures.iterator() ;
+      Iterator it = subFeatures.iterator();
 
-      while( it.hasNext() )
+      while (it.hasNext())
 
       {
 
-          StAXFeatureHandler handler =  (StAXFeatureHandler)it.next()  ;
+        StAXFeatureHandler handler = (StAXFeatureHandler) it.next();
 
-          if( handler instanceof SequenceHandler ) //already handled
+        if (handler instanceof SequenceHandler) // already handled
 
-              continue ;
+          continue;
 
-            Feature f =  feature.createFeature ( handler.featureTemplate ) ;
+        Feature f = feature.createFeature(handler.featureTemplate);
 
-          handler.realizeSubFeatures( f ) ;
+        handler.realizeSubFeatures(f);
 
       }
 
-     }catch(BioException e){  e.printStackTrace();}
+    } catch (BioException e) {
+      e.printStackTrace();
+    }
 
-     catch(ChangeVetoException e){ e.printStackTrace();}
+    catch (ChangeVetoException e) {
+      e.printStackTrace();
+    }
 
   }
 
@@ -366,33 +370,33 @@ public class StAXFeatureHandler extends StAXContentHandlerBase
 
   {
 
-      Iterator it = subFeatures.iterator() ;
+    Iterator it = subFeatures.iterator();
 
-      while( it.hasNext() )
+    while (it.hasNext())
 
-      {
+    {
 
-          StAXFeatureHandler handler =  (StAXFeatureHandler)it.next()  ;
+      StAXFeatureHandler handler = (StAXFeatureHandler) it.next();
 
-          Feature f =  seq.createFeature ( handler.featureTemplate ) ;
+      Feature f = seq.createFeature(handler.featureTemplate);
 
-          handler.realizeSubFeatures( f ) ;
+      handler.realizeSubFeatures(f);
 
-      }
+    }
 
   }
 
-/**
-
- * return current stack level.  Remember that the
-
- * stack level is incremented/decremented AFTER
-
- * the push()/pop() calls and superclass
-
- * startElement()/StopElement calls.
-
- */
+  /**
+   * 
+   * return current stack level. Remember that the
+   * 
+   * stack level is incremented/decremented AFTER
+   * 
+   * the push()/pop() calls and superclass
+   * 
+   * startElement()/StopElement calls.
+   * 
+   */
 
   protected int getLevel() {
 
@@ -402,11 +406,11 @@ public class StAXFeatureHandler extends StAXContentHandlerBase
 
 
 
-/**
-
- * return iterator to callbackStack
-
- */
+  /**
+   * 
+   * return iterator to callbackStack
+   * 
+   */
 
   protected ListIterator getHandlerStackIterator(int level) {
 
@@ -416,11 +420,11 @@ public class StAXFeatureHandler extends StAXContentHandlerBase
 
 
 
-/**
-
- * Push StAXContentHandler object onto stack
-
- */
+  /**
+   * 
+   * Push StAXContentHandler object onto stack
+   * 
+   */
 
   protected void push(StAXContentHandler handler) {
 
@@ -438,11 +442,11 @@ public class StAXFeatureHandler extends StAXContentHandlerBase
 
 
 
-/**
-
- * pop a StAXContentHandler off the stack.
-
- */
+  /**
+   * 
+   * pop a StAXContentHandler off the stack.
+   * 
+   */
 
   protected void pop() {
 
@@ -460,11 +464,11 @@ public class StAXFeatureHandler extends StAXContentHandlerBase
 
 
 
-/**
-
- * Return current feature listener
-
- */
+  /**
+   * 
+   * Return current feature listener
+   * 
+   */
 
   public SeqIOListener getFeatureListener() {
 
@@ -474,15 +478,15 @@ public class StAXFeatureHandler extends StAXContentHandlerBase
 
 
 
-/**
-
- *  Fire the startFeature event.
-
- */
+  /**
+   * 
+   * Fire the startFeature event.
+   * 
+   */
 
   private void fireStartFeature()
 
-    throws ParseException
+      throws ParseException
 
   {
 
@@ -512,15 +516,15 @@ public class StAXFeatureHandler extends StAXContentHandlerBase
 
 
 
-/**
-
- * Fire the endFeature event.
-
- */
+  /**
+   * 
+   * Fire the endFeature event.
+   * 
+   */
 
   private void fireEndFeature()
 
-    throws ParseException
+      throws ParseException
 
   {
 
@@ -546,57 +550,57 @@ public class StAXFeatureHandler extends StAXContentHandlerBase
 
   {
 
-      if ( value != null) {
+    if (value != null) {
 
-         try {
+      try {
 
-           annot.setProperty( name, value);
+        annot.setProperty(name, value);
 
-           if( forFeature )
+        if (forFeature)
 
-               featureListener.addFeatureProperty(name, value);
+          featureListener.addFeatureProperty(name, value);
 
-           else
+        else
 
-               featureListener.addSequenceProperty(name, value);
+          featureListener.addSequenceProperty(name, value);
 
-         }
+      }
 
-         catch (ChangeVetoException cae) {
+      catch (ChangeVetoException cae) {
 
-                 System.err.println(" veto exception caught.");
+        System.err.println(" veto exception caught.");
 
-         }
+      }
 
-         catch (ParseException cae) {
+      catch (ParseException cae) {
 
-                 System.err.println("parse exception in addProperty() .");
+        System.err.println("parse exception in addProperty() .");
 
-         }
+      }
 
-     }
+    }
 
   }
 
-/**
-
- * Element-specific handler.
-
- * Subclass this to do something useful!
-
- */
+  /**
+   * 
+   * Element-specific handler.
+   * 
+   * Subclass this to do something useful!
+   * 
+   */
 
   public void startElementHandler(
 
-                String nsURI,
+      String nsURI,
 
-                String localName,
+      String localName,
 
-                String qName,
+      String qName,
 
-                Attributes attrs)
+      Attributes attrs)
 
-         throws SAXException
+      throws SAXException
 
   {
 
@@ -604,31 +608,29 @@ public class StAXFeatureHandler extends StAXContentHandlerBase
 
 
 
-
-
-/**
-
- * Handles basic entry processing for all feature handlers.
-
- */
+  /**
+   * 
+   * Handles basic entry processing for all feature handlers.
+   * 
+   */
 
   public void startElement(
 
-                String nsURI,
+      String nsURI,
 
-                String localName,
+      String localName,
 
-                String qName,
+      String qName,
 
-                Attributes attrs,
+      Attributes attrs,
 
-                DelegationManager dm)
+      DelegationManager dm)
 
-         throws SAXException
+      throws SAXException
 
   {
 
-     // sanity check
+    // sanity check
 
     if (!setOnceFired)
 
@@ -640,31 +642,31 @@ public class StAXFeatureHandler extends StAXContentHandlerBase
 
     // perform delegation
 
-  //  if (!(myLocalName.equals(localName)) ) {
+    // if (!(myLocalName.equals(localName)) ) {
 
-     if( dm.getRecursive() )
+    if (dm.getRecursive())
 
-        for (int i = handlers.size() - 1; i >= 0; --i) {
+      for (int i = handlers.size() - 1; i >= 0; --i) {
 
-            Binding b = (Binding) handlers.get(i);
+      Binding b = (Binding) handlers.get(i);
 
-            if (b.recognizer.filterStartElement(nsURI, localName, qName, attrs)) {
+      if (b.recognizer.filterStartElement(nsURI, localName, qName, attrs)) {
 
-             dm.delegate(b.handlerFactory.getHandler(this));
+      dm.delegate(b.handlerFactory.getHandler(this));
 
-            return;
+      return;
 
-            }
+      }
 
-        }
+      }
 
-  //  }
+    // }
 
     // I don't have a delegate for it but it might be a stray...
 
-    if (!(myLocalName.equals(localName)) ) {
+    if (!(myLocalName.equals(localName))) {
 
-      //this one's not for me!
+      // this one's not for me!
 
       return;
 
@@ -718,25 +720,25 @@ public class StAXFeatureHandler extends StAXContentHandlerBase
 
 
 
-/**
-
- * Element specific exit handler
-
- * Subclass to do anything useful.
-
- */
+  /**
+   * 
+   * Element specific exit handler
+   * 
+   * Subclass to do anything useful.
+   * 
+   */
 
   public void endElementHandler(
 
-                String nsURI,
+      String nsURI,
 
-                String localName,
+      String localName,
 
-                String qName,
+      String qName,
 
-                StAXContentHandler handler)
+      StAXContentHandler handler)
 
-              throws SAXException
+      throws SAXException
 
   {
 
@@ -744,37 +746,37 @@ public class StAXFeatureHandler extends StAXContentHandlerBase
 
 
 
-/**
-
- * Handles basic exit processing.
-
- */
+  /**
+   * 
+   * Handles basic exit processing.
+   * 
+   */
 
   public void endElement(
 
-                String nsURI,
+      String nsURI,
 
-                String localName,
+      String localName,
 
-                String qName,
+      String qName,
 
-                StAXContentHandler handler)
+      StAXContentHandler handler)
 
-              throws SAXException
+      throws SAXException
 
   {
 
     // is this a return after delegation or really mine?
 
-    if (!(myLocalName.equals(localName)) )
+    if (!(myLocalName.equals(localName)))
 
-       return;
+      return;
 
 
 
     // last chance to clear up before exiting
 
-    //endElementHandler(nsURI, localName, qName, handler);
+    // endElementHandler(nsURI, localName, qName, handler);
 
 
 
@@ -800,7 +802,7 @@ public class StAXFeatureHandler extends StAXContentHandlerBase
 
       catch (ParseException pe) {
 
-          throw new SAXException("ParseException thrown in user code");
+        throw new SAXException("ParseException thrown in user code");
 
       }
 

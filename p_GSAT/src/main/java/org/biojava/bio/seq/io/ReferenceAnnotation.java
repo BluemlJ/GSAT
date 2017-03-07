@@ -1,21 +1,18 @@
 /*
- *                    BioJava development code
+ * BioJava development code
  *
- * This code may be freely distributed and modified under the
- * terms of the GNU Lesser General Public Licence.  This should
- * be distributed with the code.  If you do not have a copy,
- * see:
+ * This code may be freely distributed and modified under the terms of the GNU Lesser General Public
+ * Licence. This should be distributed with the code. If you do not have a copy, see:
  *
- *      http://www.gnu.org/copyleft/lesser.html
+ * http://www.gnu.org/copyleft/lesser.html
  *
- * Copyright for this code is held jointly by the individual
- * authors.  These should be listed in @author doc comments.
+ * Copyright for this code is held jointly by the individual authors. These should be listed
+ * in @author doc comments.
  *
- * For more information on the BioJava project and its aims,
- * or to join the biojava-l mailing list, visit the home page
- * at:
+ * For more information on the BioJava project and its aims, or to join the biojava-l mailing list,
+ * visit the home page at:
  *
- *      http://www.biojava.org/
+ * http://www.biojava.org/
  */
 
 package org.biojava.bio.seq.io;
@@ -33,31 +30,30 @@ import org.biojava.utils.ChangeVetoException;
  */
 public class ReferenceAnnotation extends AbstractAnnotation {
 
-     /**
-   * The properties map. This may be null if no property values have
-   * yet been set.
+  /**
+   * The properties map. This may be null if no property values have yet been set.
    */
-    private Map properties;
+  private Map properties;
 
-    public ReferenceAnnotation() {
+  public ReferenceAnnotation() {
 
-            super();
-        try {
-            //System.out.println("Calling refAnnot");
-            this.setProperty(EmblLikeFormat.SEPARATOR_TAG, "");//all references have an epty XX line
-        } catch (ChangeVetoException e) {
-            e.printStackTrace();
-        }
+    super();
+    try {
+      // System.out.println("Calling refAnnot");
+      this.setProperty(EmblLikeFormat.SEPARATOR_TAG, "");// all references have an epty XX line
+    } catch (ChangeVetoException e) {
+      e.printStackTrace();
     }
+  }
 
-    protected Map getProperties() {
-        if(!propertiesAllocated()) {
-            properties = new HashMap();
-        }
-        return properties;
+  protected Map getProperties() {
+    if (!propertiesAllocated()) {
+      properties = new HashMap();
     }
+    return properties;
+  }
 
-    protected boolean propertiesAllocated() {
-        return properties != null;
-    }
+  protected boolean propertiesAllocated() {
+    return properties != null;
+  }
 }

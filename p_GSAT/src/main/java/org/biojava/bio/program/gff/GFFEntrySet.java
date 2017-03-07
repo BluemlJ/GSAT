@@ -1,21 +1,18 @@
 /*
- *                    BioJava development code
+ * BioJava development code
  *
- * This code may be freely distributed and modified under the
- * terms of the GNU Lesser General Public Licence.  This should
- * be distributed with the code.  If you do not have a copy,
- * see:
+ * This code may be freely distributed and modified under the terms of the GNU Lesser General Public
+ * Licence. This should be distributed with the code. If you do not have a copy, see:
  *
- *      http://www.gnu.org/copyleft/lesser.html
+ * http://www.gnu.org/copyleft/lesser.html
  *
- * Copyright for this code is held jointly by the individual
- * authors.  These should be listed in @author doc comments.
+ * Copyright for this code is held jointly by the individual authors. These should be listed
+ * in @author doc comments.
  *
- * For more information on the BioJava project and its aims,
- * or to join the biojava-l mailing list, visit the home page
- * at:
+ * For more information on the BioJava project and its aims, or to join the biojava-l mailing list,
+ * visit the home page at:
  *
- *      http://www.biojava.org/
+ * http://www.biojava.org/
  *
  */
 
@@ -40,9 +37,8 @@ import org.biojava.utils.ChangeVetoException;
 /**
  * A set of entries and comments as a representation of a GFF file.
  * <p>
- * This is an intermediate storage solution for GFF stuff. It lets you
- * collect together an arbitrary set of GFF records and comments, and then
- * do something with them later.
+ * This is an intermediate storage solution for GFF stuff. It lets you collect together an arbitrary
+ * set of GFF records and comments, and then do something with them later.
  *
  * @author Matthew Pocock
  * @author Keith James (docs)
@@ -66,11 +62,10 @@ public class GFFEntrySet {
   /**
    * Loop over all lines in the set.
    * <p>
-   * The <span class="type">Iterator</span>
-   * will return <span class="type">String</span> and <span class="type">
-   * GFFRecord</span> objects in the order that they were added to this set.
-   * It is your responsibility to check the type of
-   * <span class="method">hasNext()</span> before casting it.
+   * The <span class="type">Iterator</span> will return <span class="type">String</span> and
+   * <span class="type"> GFFRecord</span> objects in the order that they were added to this set. It
+   * is your responsibility to check the type of <span class="method">hasNext()</span> before
+   * casting it.
    */
   public Iterator lineIterator() {
     return lines.iterator();
@@ -79,8 +74,7 @@ public class GFFEntrySet {
   /**
    * Add a comment to the end of this set.
    * <p>
-   * This should be the text of the comment, without the leading
-   * '<code>#</code>'.
+   * This should be the text of the comment, without the leading '<code>#</code>'.
    *
    * @param comment a <span class="type">String</span> giving the comment
    */
@@ -107,16 +101,14 @@ public class GFFEntrySet {
   }
 
   /**
-   * Get an annotator that can add GFF features to a
-   * <span class="type">Sequence</span> using the features in this
-   * <span class="type">GFFEntrySet</span>.  The SequenceAnnotator
-   * returned by this method currently adds new features to an
-   * existing sequence (assuming it implements MutableFeatureHolder).
+   * Get an annotator that can add GFF features to a <span class="type">Sequence</span> using the
+   * features in this <span class="type">GFFEntrySet</span>. The SequenceAnnotator returned by this
+   * method currently adds new features to an existing sequence (assuming it implements
+   * MutableFeatureHolder).
    *
    * <p>
-   * Sequences are only annotated if their getName() method returns
-   * a name equal to the sequence name field of one or more records
-   * in this GFFEntrySet.
+   * Sequences are only annotated if their getName() method returns a name equal to the sequence
+   * name field of one or more records in this GFFEntrySet.
    * </p>
    *
    * @return an <span class="type">SequenceAnnotator</span> that adds GFF features
@@ -126,24 +118,20 @@ public class GFFEntrySet {
   }
 
   /**
-   * Get an annotator that can add GFF features to a
-   * <span class="type">Sequence</span> using the features in this
-   * <span class="type">GFFEntrySet</span>.  The SequenceAnnotator
-   * returned by this method currently adds new features to an
-   * existing sequence (assuming it implements MutableFeatureHolder).
+   * Get an annotator that can add GFF features to a <span class="type">Sequence</span> using the
+   * features in this <span class="type">GFFEntrySet</span>. The SequenceAnnotator returned by this
+   * method currently adds new features to an existing sequence (assuming it implements
+   * MutableFeatureHolder).
    *
    * <p>
-   * If checkSeqName is set to true,
-   * Sequences are only annotated if their getName() method returns
-   * a name equal to the sequence name field of one or more records
-   * in this GFFEntrySet. If checkSeqName is false, then all features are
-   * added to the sequence regardless of name.
+   * If checkSeqName is set to true, Sequences are only annotated if their getName() method returns
+   * a name equal to the sequence name field of one or more records in this GFFEntrySet. If
+   * checkSeqName is false, then all features are added to the sequence regardless of name.
    * </p>
    *
-   * @param checkSeqName  boolean to indicate if only records with names
-   *        matching the sequences name should be added
-   * @return an <span class="type">SequenceAnnotator</span> that adds GFF featur
-   es
+   * @param checkSeqName boolean to indicate if only records with names matching the sequences name
+   *        should be added
+   * @return an <span class="type">SequenceAnnotator</span> that adds GFF featur es
    */
   public SequenceAnnotator getAnnotator(final boolean checkSeqName) {
     return new SequenceAnnotator() {
@@ -214,8 +202,8 @@ public class GFFEntrySet {
    * Filter this entry set into another set.
    *
    * @param filter the <span class="type">GFFRecordFilter</span> to filter with
-   * @return  a new <span class="type">GFFEntrySet</span> containing only the
-   *          items filtered in by the filter
+   * @return a new <span class="type">GFFEntrySet</span> containing only the items filtered in by
+   *         the filter
    */
   public GFFEntrySet filter(GFFRecordFilter filter) {
     GFFEntrySet accepted = new GFFEntrySet();
@@ -233,11 +221,10 @@ public class GFFEntrySet {
   }
 
   /**
-   * Get the <span class="type">GFFDocumentHandler</span> for adding to this
-   * set.
+   * Get the <span class="type">GFFDocumentHandler</span> for adding to this set.
    *
-   * @return  a <span class="type">GFFDocumentHandler</span> that adds everything
-   *          that it recieves to this set
+   * @return a <span class="type">GFFDocumentHandler</span> that adds everything that it recieves to
+   *         this set
    */
   public GFFDocumentHandler getAddHandler() {
     return new EntrySetBuilder();
@@ -246,7 +233,7 @@ public class GFFEntrySet {
   /**
    * Write all records in this set out to a handler.
    *
-   * @param handler  the GFFDocumentHandler to inform of the records
+   * @param handler the GFFDocumentHandler to inform of the records
    */
   public void streamRecords(GFFDocumentHandler handler) {
     handler.startDocument("");
@@ -270,11 +257,9 @@ public class GFFEntrySet {
    * @author Thomas Down
    */
   private class EntrySetBuilder implements GFFDocumentHandler {
-    public void startDocument(String locator) {
-    }
+    public void startDocument(String locator) {}
 
-    public void endDocument() {
-    }
+    public void endDocument() {}
 
     public void commentLine(String comment) {
       lines.add(comment);

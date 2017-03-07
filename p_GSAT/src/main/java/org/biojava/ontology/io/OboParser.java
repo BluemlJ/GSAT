@@ -1,21 +1,18 @@
 /*
- *                  BioJava development code
+ * BioJava development code
  *
- * This code may be freely distributed and modified under the
- * terms of the GNU Lesser General Public Licence.  This should
- * be distributed with the code.  If you do not have a copy,
- * see:
+ * This code may be freely distributed and modified under the terms of the GNU Lesser General Public
+ * Licence. This should be distributed with the code. If you do not have a copy, see:
  *
- *      http://www.gnu.org/copyleft/lesser.html
+ * http://www.gnu.org/copyleft/lesser.html
  *
- * Copyright for this code is held jointly by the individual
- * authors.  These should be listed in @author doc comments.
+ * Copyright for this code is held jointly by the individual authors. These should be listed
+ * in @author doc comments.
  *
- * For more information on the BioJava project and its aims,
- * or to join the biojava-l mailing list, visit the home page
- * at:
+ * For more information on the BioJava project and its aims, or to join the biojava-l mailing list,
+ * visit the home page at:
  *
- *      http://www.biojava.org/
+ * http://www.biojava.org/
  * 
  * Created on Jan 18, 2008
  * 
@@ -25,7 +22,6 @@ package org.biojava.ontology.io;
 
 import java.io.BufferedReader;
 import java.io.IOException;
-
 
 import org.biojava.bio.BioError;
 import org.biojava.bio.seq.io.ParseException;
@@ -39,13 +35,13 @@ import org.biojava.ontology.obo.OboFileHandler;
 import org.biojava.ontology.obo.OboFileParser;
 import org.biojava.utils.ChangeVetoException;
 
-/** Parses an OBO file.
+/**
+ * Parses an OBO file.
  * 
  * @author Andreas Prlic
  * @since 1.7
  * 
- * <h2>Example</h2>
- * <pre>
+ *        <h2>Example</h2> <pre>
  * OboParser parser = new OboParser();
 		InputStream inStream = this.getClass().getResourceAsStream("/files/ontology/biosapiens.obo");
 		
@@ -66,45 +62,42 @@ import org.biojava.utils.ChangeVetoException;
  *
  */
 public class OboParser {
-	
-	/** Parse a OBO file and return its content as a BioJava Ontology object
-	 * 
-	 * @param oboFile the file to be parsed 
-	 * @param ontoName
-	 * @param ontoDescription
 
-	 * @return the ontology represented as a BioJava ontology file
-	 * @throws ParseException
-	 * @throws IOException
-	 */
-	public Ontology parseOBO(
-			BufferedReader oboFile,
-            String ontoName,
-            String ontoDescription
-            )
-	throws ParseException, IOException {
-		
-		 try {
-			 OntologyFactory factory = OntoTools.getDefaultFactory();
-			 Ontology ontology = factory.createOntology(ontoName, ontoDescription);
-			 
-	         OboFileParser parser = new OboFileParser();
-	         
-	         OboFileEventListener handler = new OboFileHandler(ontology);
-	         
-	         parser.addOboFileEventListener(handler);
-	         parser.parseOBO(oboFile);
-	         
-	         return ontology;
-	         
-			 
-		 } catch (AlreadyExistsException ex) {
-	            throw new ParseException(ex, "Duplication in ontology");
-	        } catch (OntologyException ex) {
-	            throw new ParseException(ex);
-	        } catch (ChangeVetoException ex) {
-	            throw new BioError("Error accessing newly created ontology",ex);
-	        }
-	        
-	}
+  /**
+   * Parse a OBO file and return its content as a BioJava Ontology object
+   * 
+   * @param oboFile the file to be parsed
+   * @param ontoName
+   * @param ontoDescription
+   * 
+   * @return the ontology represented as a BioJava ontology file
+   * @throws ParseException
+   * @throws IOException
+   */
+  public Ontology parseOBO(BufferedReader oboFile, String ontoName, String ontoDescription)
+      throws ParseException, IOException {
+
+    try {
+      OntologyFactory factory = OntoTools.getDefaultFactory();
+      Ontology ontology = factory.createOntology(ontoName, ontoDescription);
+
+      OboFileParser parser = new OboFileParser();
+
+      OboFileEventListener handler = new OboFileHandler(ontology);
+
+      parser.addOboFileEventListener(handler);
+      parser.parseOBO(oboFile);
+
+      return ontology;
+
+
+    } catch (AlreadyExistsException ex) {
+      throw new ParseException(ex, "Duplication in ontology");
+    } catch (OntologyException ex) {
+      throw new ParseException(ex);
+    } catch (ChangeVetoException ex) {
+      throw new BioError("Error accessing newly created ontology", ex);
+    }
+
+  }
 }

@@ -13,32 +13,29 @@ import org.biojava.utils.cache.WeakValueHashMap;
  *
  * @author Matthew Pocock
  */
-class SQLUnigeneDB
-extends AbstractChangeable
-implements UnigeneDB {
+class SQLUnigeneDB extends AbstractChangeable implements UnigeneDB {
   private final Map clusterCache;
-  
+
   public SQLUnigeneDB(JDBCConnectionPool connPool) {
     this.clusterCache = new WeakValueHashMap();
   }
-  
-  public UnigeneCluster getCluster(String clusterID)
-  throws BioException {
+
+  public UnigeneCluster getCluster(String clusterID) throws BioException {
     UnigeneCluster cluster = (UnigeneCluster) clusterCache.get(clusterID);
-    
-    if(cluster == null) {
+
+    if (cluster == null) {
       clusterCache.put(clusterID, cluster = fetchCluster(clusterID));
     }
-    
+
     return cluster;
   }
-  
+
   public UnigeneCluster addCluster(UnigeneCluster cluster)
-  throws BioException, ChangeVetoException {
+      throws BioException, ChangeVetoException {
 
     return fetchCluster(cluster.getID());
   }
-  
+
   public UnigeneCluster fetchCluster(String clusterID) {
     return null;
   }

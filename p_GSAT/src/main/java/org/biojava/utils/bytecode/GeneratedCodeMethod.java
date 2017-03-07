@@ -1,21 +1,18 @@
 /*
- *                    BioJava development code
+ * BioJava development code
  *
- * This code may be freely distributed and modified under the
- * terms of the GNU Lesser General Public Licence.  This should
- * be distributed with the code.  If you do not have a copy,
- * see:
+ * This code may be freely distributed and modified under the terms of the GNU Lesser General Public
+ * Licence. This should be distributed with the code. If you do not have a copy, see:
  *
- *      http://www.gnu.org/copyleft/lesser.html
+ * http://www.gnu.org/copyleft/lesser.html
  *
- * Copyright for this code is held jointly by the individual
- * authors.  These should be listed in @author doc comments.
+ * Copyright for this code is held jointly by the individual authors. These should be listed
+ * in @author doc comments.
  *
- * For more information on the BioJava project and its aims,
- * or to join the biojava-l mailing list, visit the home page
- * at:
+ * For more information on the BioJava project and its aims, or to join the biojava-l mailing list,
+ * visit the home page at:
  *
- *      http://www.biojava.org/
+ * http://www.biojava.org/
  *
  */
 package org.biojava.utils.bytecode;
@@ -26,8 +23,8 @@ import java.util.*;
  * A method that will be generated.
  *
  * <p>
- * These are instantiated by factory methods on {@link GeneratedCodeClass}, and
- * can not be instantiated directly.
+ * These are instantiated by factory methods on {@link GeneratedCodeClass}, and can not be
+ * instantiated directly.
  * </p>
  *
  * @author Thomas Down
@@ -44,14 +41,8 @@ public final class GeneratedCodeMethod implements CodeMethod {
   private Set thrownExceptions;
   private Map nameToLocals;
 
-  GeneratedCodeMethod(
-    CodeClass container, 
-    String name, 
-    CodeClass type, 
-    CodeClass[] args, 
-    String[] names,
-    int modifiers
-  ) {
+  GeneratedCodeMethod(CodeClass container, String name, CodeClass type, CodeClass[] args,
+      String[] names, int modifiers) {
     this.container = container;
     this.name = name;
     this.args = new ArrayList(Arrays.asList(args));
@@ -59,8 +50,8 @@ public final class GeneratedCodeMethod implements CodeMethod {
     this.type = type;
     nameToLocals = new HashMap();
     localvars = new ArrayList();
-    for(int i = 0; i < this.args.size(); ++i) {
-      if(i < names.length) {
+    for (int i = 0; i < this.args.size(); ++i) {
+      if (i < names.length) {
         LocalVariable arg = new LocalVariable(args[i], names[i]);
         localvars.add(arg);
         nameToLocals.put(names[i], arg);
@@ -69,7 +60,7 @@ public final class GeneratedCodeMethod implements CodeMethod {
       }
     }
 
-    if((modifiers & CodeUtils.ACC_STATIC) == 0) {
+    if ((modifiers & CodeUtils.ACC_STATIC) == 0) {
       thisV = new LocalVariable(container, "this");
       nameToLocals.put("this", thisV);
     }
@@ -90,7 +81,7 @@ public final class GeneratedCodeMethod implements CodeMethod {
   public String getDescriptor() {
     StringBuffer sb = new StringBuffer();
     sb.append('(');
-    for(Iterator i = args.iterator(); i.hasNext(); ) {
+    for (Iterator i = args.iterator(); i.hasNext();) {
       CodeClass cc = (CodeClass) i.next();
       sb.append(cc.getDescriptor());
     }
@@ -116,71 +107,66 @@ public final class GeneratedCodeMethod implements CodeMethod {
   }
 
   /**
-   *  Gets the Variable attribute of the GeneratedCodeMethod object.
+   * Gets the Variable attribute of the GeneratedCodeMethod object.
    *
    * <p>
-   * There is one local variable for each of the arguments of the method,
-   * indexed from 0.
+   * There is one local variable for each of the arguments of the method, indexed from 0.
    * </p>
    *
-   * @param  pos  the index of the local variable
-   * @return      the local variable
+   * @param pos the index of the local variable
+   * @return the local variable
    */
   public LocalVariable getVariable(int pos) {
     return (LocalVariable) localvars.get(pos);
   }
-  
+
   /**
    * Gets the Variable attribute of the GenerateCodeMethod object by name.
    *
    * <P>
-   * All methods have a variable under the string "this". If it was constructed
-   * with a String [] naming the args, the locals for each local can be
-   * retrieved by name.
+   * All methods have a variable under the string "this". If it was constructed with a String []
+   * naming the args, the locals for each local can be retrieved by name.
    * </p>
    *
    * @param argName a String naming the local
-   * @return        the LocalVariable for that argName
-   * @throws        NoSuchElementException if there is no local with that name
+   * @return the LocalVariable for that argName
+   * @throws NoSuchElementException if there is no local with that name
    */
-  public LocalVariable getVariable(String argName)
-  throws NoSuchElementException {
+  public LocalVariable getVariable(String argName) throws NoSuchElementException {
     LocalVariable lv = (LocalVariable) nameToLocals.get(argName);
-    if(lv == null) {
-      throw new NoSuchElementException(
-        "Can't find local for argName " + argName
-      );
+    if (lv == null) {
+      throw new NoSuchElementException("Can't find local for argName " + argName);
     }
     return lv;
   }
 
   /**
-   *  Gets the This attribute of the GeneratedCodeMethod object 
+   * Gets the This attribute of the GeneratedCodeMethod object
    *
-   * @return    The This value 
+   * @return The This value
    */
   public LocalVariable getThis() {
     return thisV;
   }
 
   /**
-   *  Gets the ThrownExceptions attribute of the GeneratedCodeMethod object 
+   * Gets the ThrownExceptions attribute of the GeneratedCodeMethod object
    *
-   * @return    The ThrownExceptions value 
+   * @return The ThrownExceptions value
    */
   public Set getThrownExceptions() {
     return Collections.unmodifiableSet(thrownExceptions);
   }
 
   /**
-   *  Adds a feature to the ThrownException attribute of the GeneratedCodeMethod object 
+   * Adds a feature to the ThrownException attribute of the GeneratedCodeMethod object
    *
-   * @param  cc  The feature to be added to the ThrownException attribute 
+   * @param cc The feature to be added to the ThrownException attribute
    */
   public void addThrownException(CodeClass cc) {
     thrownExceptions.add(cc);
   }
-  
+
   {
     thrownExceptions = new HashSet();
   }

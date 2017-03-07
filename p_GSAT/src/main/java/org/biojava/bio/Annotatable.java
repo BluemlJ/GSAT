@@ -1,21 +1,18 @@
 /*
- *                    BioJava development code
+ * BioJava development code
  *
- * This code may be freely distributed and modified under the
- * terms of the GNU Lesser General Public Licence.  This should
- * be distributed with the code.  If you do not have a copy,
- * see:
+ * This code may be freely distributed and modified under the terms of the GNU Lesser General Public
+ * Licence. This should be distributed with the code. If you do not have a copy, see:
  *
- *      http://www.gnu.org/copyleft/lesser.html
+ * http://www.gnu.org/copyleft/lesser.html
  *
- * Copyright for this code is held jointly by the individual
- * authors.  These should be listed in @author doc comments.
+ * Copyright for this code is held jointly by the individual authors. These should be listed
+ * in @author doc comments.
  *
- * For more information on the BioJava project and its aims,
- * or to join the biojava-l mailing list, visit the home page
- * at:
+ * For more information on the BioJava project and its aims, or to join the biojava-l mailing list,
+ * visit the home page at:
  *
- *      http://www.biojava.org/
+ * http://www.biojava.org/
  *
  */
 
@@ -29,18 +26,19 @@ import org.biojava.utils.ChangeType;
 import org.biojava.utils.Changeable;
 
 /**
- * <p>Indicates that an object has an associated annotation.</p>
+ * <p>
+ * Indicates that an object has an associated annotation.
+ * </p>
  *
- * <p>Many BioJava objects will have associated unstructured
- * data. This should be stored in an Annotation instance. However, the
- * BioJava object itself will probably not want to extend the
- * Annotation interface directly, but rather delegate off that
- * functionality to an Annotation property. The Annotatable interface
- * indicates that there is an Annotation property. When implementing
- * Annotatable, you should always create a protected or private field
- * containing an instance of ChangeForwarder, and register it as a
- * ChangeListener with the associated Annotation delegate
- * instance.</p>
+ * <p>
+ * Many BioJava objects will have associated unstructured data. This should be stored in an
+ * Annotation instance. However, the BioJava object itself will probably not want to extend the
+ * Annotation interface directly, but rather delegate off that functionality to an Annotation
+ * property. The Annotatable interface indicates that there is an Annotation property. When
+ * implementing Annotatable, you should always create a protected or private field containing an
+ * instance of ChangeForwarder, and register it as a ChangeListener with the associated Annotation
+ * delegate instance.
+ * </p>
  *
  * <pre>
  * public class Foo extends AbstractChangeable implements Annotatable {
@@ -62,37 +60,31 @@ import org.biojava.utils.Changeable;
  *     return ann;
  *   }
  * }
- * </pre>
- * Check if BioJava classes and interfaces extend Annotatable. This
- * will tell  you if you should look for associated annotation.
+ * </pre> Check if BioJava classes and interfaces extend Annotatable. This will tell you if you
+ * should look for associated annotation.
  *
- *  If an object implements Annotatable, it may well propagate
- * ChangeEvent notifications from the associated Annotation. You may
- * need to track these to maintain the state of your applications.
+ * If an object implements Annotatable, it may well propagate ChangeEvent notifications from the
+ * associated Annotation. You may need to track these to maintain the state of your applications.
  *
  * Be careful to hook up the appropriate event forwarders.
  *
- * The getAnnotation() method can be implemented lazily
- * (instantiate the Annotation instance and event forwarders when the first
- * request comes in). It can also be implemented by returning throw-away
- * immutable Annotation instances that are built from scratch each time.
- * @author  Matthew Pocock
+ * The getAnnotation() method can be implemented lazily (instantiate the Annotation instance and
+ * event forwarders when the first request comes in). It can also be implemented by returning
+ * throw-away immutable Annotation instances that are built from scratch each time.
+ * 
+ * @author Matthew Pocock
  * @author <a href="mailto:kdj@sanger.ac.uk">Keith James</a> (docs).
- * @author  Kalle N�slund (docs)
+ * @author Kalle N�slund (docs)
  * @see org.biojavax.RichAnnotatable
  * @since 1.0
  */
 public interface Annotatable extends Changeable {
   /**
-   * Signals that the associated Annotation has altered in some way. The
-   * chainedEvent property should refer back to the event fired by the
-   * Annotation object.
+   * Signals that the associated Annotation has altered in some way. The chainedEvent property
+   * should refer back to the event fired by the Annotation object.
    */
   public static final ChangeType ANNOTATION = new ChangeType(
-    "the associated annotation has changed",
-    "org.biojava.bio.Annotatable",
-    "ANNOTATION"
-  );
+      "the associated annotation has changed", "org.biojava.bio.Annotatable", "ANNOTATION");
 
   /**
    * Should return the associated annotation object.
@@ -102,30 +94,31 @@ public interface Annotatable extends Changeable {
   Annotation getAnnotation();
 
   /**
-   * <p>A helper class so that you don't have to worry about
-   * forwarding events from the Annotation object to the Annotatable
-   * one.</p>
+   * <p>
+   * A helper class so that you don't have to worry about forwarding events from the Annotation
+   * object to the Annotatable one.
+   * </p>
    *
-   * <p>Once a listener is added to your Annotatable that is
-   * interested in ANNOTATION events, then instantiate one of these
-   * and add it as a listener to the annotation object. It will
-   * forward the events to your listeners and translate them
-   * accordingly.</p> This will ease the pain of letting your Annotatable tell its
-   * listeners about changes in the Annotation.
+   * <p>
+   * Once a listener is added to your Annotatable that is interested in ANNOTATION events, then
+   * instantiate one of these and add it as a listener to the annotation object. It will forward the
+   * events to your listeners and translate them accordingly.
+   * </p>
+   * This will ease the pain of letting your Annotatable tell its listeners about changes in the
+   * Annotation.
    *
-   * @author Matthew Pocock 
+   * @author Matthew Pocock
    *
-   * @deprecated use
-   *   <code>new ChangeForwarder.Retyper(source, cs, Annotation.PROPERTY)</code>
-   *   instead
+   * @deprecated use <code>new ChangeForwarder.Retyper(source, cs, Annotation.PROPERTY)</code>
+   *             instead
    */
   static class AnnotationForwarder extends ChangeForwarder {
     /**
-     * Create a new AnnotationForwarder that will forward events for a source
-     * using a change support.
+     * Create a new AnnotationForwarder that will forward events for a source using a change
+     * support.
      *
-     * @param source  the Object to forward events on behalf of
-     * @param cs      the change support that manages listeners
+     * @param source the Object to forward events on behalf of
+     * @param cs the change support that manages listeners
      */
     public AnnotationForwarder(Object source, ChangeSupport cs) {
       super(source, cs);
@@ -133,12 +126,8 @@ public interface Annotatable extends Changeable {
 
     protected ChangeEvent generateEvent(ChangeEvent ce) {
       ChangeType ct = ce.getType();
-      if(ct == Annotation.PROPERTY) {
-        return new ChangeEvent(
-          getSource(),
-          ANNOTATION,
-          ct
-        );
+      if (ct == Annotation.PROPERTY) {
+        return new ChangeEvent(getSource(), ANNOTATION, ct);
       }
       return null;
     }

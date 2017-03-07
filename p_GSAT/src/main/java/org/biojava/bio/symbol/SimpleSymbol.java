@@ -1,21 +1,18 @@
 /*
- *                    BioJava development code
+ * BioJava development code
  *
- * This code may be freely distributed and modified under the
- * terms of the GNU Lesser General Public Licence.  This should
- * be distributed with the code.  If you do not have a copy,
- * see:
+ * This code may be freely distributed and modified under the terms of the GNU Lesser General Public
+ * Licence. This should be distributed with the code. If you do not have a copy, see:
  *
- *      http://www.gnu.org/copyleft/lesser.html
+ * http://www.gnu.org/copyleft/lesser.html
  *
- * Copyright for this code is held jointly by the individual
- * authors.  These should be listed in @author doc comments.
+ * Copyright for this code is held jointly by the individual authors. These should be listed
+ * in @author doc comments.
  *
- * For more information on the BioJava project and its aims,
- * or to join the biojava-l mailing list, visit the home page
- * at:
+ * For more information on the BioJava project and its aims, or to join the biojava-l mailing list,
+ * visit the home page at:
  *
- *      http://www.biojava.org/
+ * http://www.biojava.org/
  *
  */
 
@@ -33,38 +30,26 @@ import org.biojava.bio.SimpleAnnotation;
 /**
  * A basic implementation of Symbol.
  *
- * If you wish to construct new Symbols, you should normally do so via utility methods
- * on <code>AlphabetManager</code>.
+ * If you wish to construct new Symbols, you should normally do so via utility methods on
+ * <code>AlphabetManager</code>.
  *
  * This may be a useful base class for custom implementations.
  *
  * @author Matthew Pocock
  * @author Greg Cox
  */
-class SimpleSymbol
-  extends
-    AbstractSymbol
-  implements
-    Symbol,
-    Serializable
-{
+class SimpleSymbol extends AbstractSymbol implements Symbol, Serializable {
   private final Annotation annotation;
   protected Alphabet matches;
 
-  protected SimpleSymbol(Annotation annotation)
-  {
+  protected SimpleSymbol(Annotation annotation) {
     this.annotation = new SimpleAnnotation(annotation);
   }
 
-  public SimpleSymbol(
-    Annotation annotation,
-    Alphabet matches
-  ) {
+  public SimpleSymbol(Annotation annotation, Alphabet matches) {
     this(annotation);
-    if(matches == null) {
-      throw new NullPointerException(
-        "Can't construct SimpleSymbol with a null matches alphabet"
-      );
+    if (matches == null) {
+      throw new NullPointerException("Can't construct SimpleSymbol with a null matches alphabet");
     } else {
       this.matches = matches;
     }
@@ -75,16 +60,14 @@ class SimpleSymbol
   }
 
   public Alphabet getMatches() {
-    if(matches == null) {
+    if (matches == null) {
       matches = createMatches();
     }
     return matches;
   }
 
   protected Alphabet createMatches() {
-    throw new BioError(
-      "Assertion Failure: Matches alphabet is null in " + this
-    );
+    throw new BioError("Assertion Failure: Matches alphabet is null in " + this);
   }
 
   public String getName() {
@@ -95,11 +78,11 @@ class SimpleSymbol
         StringBuffer sb = new StringBuffer();
         sb.append('(');
         Iterator si = l.iterator();
-        if(si.hasNext()) {
+        if (si.hasNext()) {
           Symbol sym = (Symbol) si.next();
           sb.append(sym.getName());
         }
-        while(si.hasNext()) {
+        while (si.hasNext()) {
           Symbol sym = (Symbol) si.next();
           sb.append(' ');
           sb.append(sym.getName());
@@ -117,11 +100,11 @@ class SimpleSymbol
       StringBuffer sb = new StringBuffer();
       sb.append('[');
       Iterator si = fa.iterator();
-      if(si.hasNext()) {
+      if (si.hasNext()) {
         Symbol sym = (Symbol) si.next();
         sb.append(sym.getName());
       }
-      while(si.hasNext()) {
+      while (si.hasNext()) {
         Symbol sym = (Symbol) si.next();
         sb.append(' ');
         sb.append(sym.getName());

@@ -16,7 +16,7 @@ public final class OntoTools {
   private static final Ontology CORE_ONTOLOGY;
   private static final OntologyFactory DEFAULT_FACTORY;
   private static final IntegerOntology CORE_INTEGER;
-  //private static final Ontology CORE_STRING;
+  // private static final Ontology CORE_STRING;
 
   // public static final Term TYPE;
   public static final Term RELATION;
@@ -51,26 +51,17 @@ public final class OntoTools {
 
   static {
     DEFAULT_FACTORY = new OntologyFactory() {
-      public Ontology createOntology(String name, String desc)
-      throws OntologyException {
+      public Ontology createOntology(String name, String desc) throws OntologyException {
         return new Ontology.Impl(name, desc);
       }
     };
 
     try {
-      BufferedReader reader = new BufferedReader(
-        new InputStreamReader(
-          ClassTools.getClassLoader(OntoTools.class).getResourceAsStream(
-            "org/biojava/ontology/core.onto"
-          )
-        )
-      );
+      BufferedReader reader = new BufferedReader(new InputStreamReader(ClassTools
+          .getClassLoader(OntoTools.class).getResourceAsStream("org/biojava/ontology/core.onto")));
 
       CORE_INTEGER = new IntegerOntology();
-      CORE_ONTOLOGY = new TabDelimParser().parse(
-              reader,
-              DEFAULT_FACTORY
-      );
+      CORE_ONTOLOGY = new TabDelimParser().parse(reader, DEFAULT_FACTORY);
 
       // TYPE = CORE_ONTOLOGY.getTerm("type");
       RELATION = CORE_ONTOLOGY.getTerm("relation");
@@ -78,7 +69,7 @@ public final class OntoTools {
       NONE = CORE_ONTOLOGY.getTerm("none");
       IS_A = CORE_ONTOLOGY.getTerm("is-a");
       PART_OF = CORE_ONTOLOGY.getTerm("part-of");
-      
+
       // SUB_TYPE_OF = CORE_ONTOLOGY.getTerm("sub_type_of");
       // INSTANCE_OF = CORE_ONTOLOGY.getTerm("instance_of");
       // DOMAIN = CORE_ONTOLOGY.getTerm("domain");
@@ -115,9 +106,11 @@ public final class OntoTools {
   /**
    * Get the Ontology that defines our core "central dogma".
    *
-   * <p>This contains definitions that we have to have, such as <code>any</code>,
-   * <code>predicate</code>, <code>is-a</code> and <code>transient</code>. These
-   * are our axioms, upon which the default interpreters build.</p>
+   * <p>
+   * This contains definitions that we have to have, such as <code>any</code>,
+   * <code>predicate</code>, <code>is-a</code> and <code>transient</code>. These are our axioms,
+   * upon which the default interpreters build.
+   * </p>
    *
    * @return the "core" Ontology
    */
@@ -128,8 +121,10 @@ public final class OntoTools {
   /**
    * Get the Ontology that defines integers.
    *
-   * <p>This contains a term for each and every integer. I haven't decided yet
-   * if it contains terms for arithmatic.</p>
+   * <p>
+   * This contains a term for each and every integer. I haven't decided yet if it contains terms for
+   * arithmatic.
+   * </p>
    *
    * @return the integer Ontology
    */

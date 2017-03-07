@@ -1,19 +1,16 @@
 /*
- *                    PDB web development code
+ * PDB web development code
  *
- * This code may be freely distributed and modified under the
- * terms of the GNU Lesser General Public Licence.  This should
- * be distributed with the code.  If you do not have a copy,
- * see:
+ * This code may be freely distributed and modified under the terms of the GNU Lesser General Public
+ * Licence. This should be distributed with the code. If you do not have a copy, see:
  *
- *      http://www.gnu.org/copyleft/lesser.html
+ * http://www.gnu.org/copyleft/lesser.html
  *
- * Copyright for this code is held jointly by the individual
- * authors.  These should be listed in @author doc comments.
+ * Copyright for this code is held jointly by the individual authors. These should be listed
+ * in @author doc comments.
  *
  *
- * Created on Mar 26, 2009
- * Created by ap3
+ * Created on Mar 26, 2009 Created by ap3
  *
  */
 
@@ -28,238 +25,237 @@ import java.util.Map;
 import java.util.Set;
 
 
-/** A in memory cache using soft references. (can be garbage collected)
+/**
+ * A in memory cache using soft references. (can be garbage collected)
  * 
- * This code is based on: http://java-interview-faqs.blogspot.com/2008/09/building-faster-and-efficient-cache.html 
- * */
+ * This code is based on:
+ * http://java-interview-faqs.blogspot.com/2008/09/building-faster-and-efficient-cache.html
+ */
 
 
 public class SoftHashMap extends AbstractMap {
 
-   public static final boolean DEBUG = false;
+  public static final boolean DEBUG = false;
 
 
-   public static final int DEFAULT_LIMIT = 1;
+  public static final int DEFAULT_LIMIT = 1;
 
-   /** The internal HashMap that stores SoftReference to actual data. */
+  /** The internal HashMap that stores SoftReference to actual data. */
 
-   private final Map map = new HashMap();
+  private final Map map = new HashMap();
 
-   /** Maximum Number of references you dont want GC to collect. */
+  /** Maximum Number of references you dont want GC to collect. */
 
-   private final int max_limit;
+  private final int max_limit;
 
-   /** The FIFO list of hard references, order of last access. */
+  /** The FIFO list of hard references, order of last access. */
 
-   private final LinkedList hardCache = new LinkedList();
+  private final LinkedList hardCache = new LinkedList();
 
-   /** Reference queue for cleared SoftReference objects. */
+  /** Reference queue for cleared SoftReference objects. */
 
-   private final ReferenceQueue queue = new ReferenceQueue();
+  private final ReferenceQueue queue = new ReferenceQueue();
 
-   public SoftHashMap() {
+  public SoftHashMap() {
 
-      this(1000);
+    this(1000);
 
-   }
+  }
 
-   public SoftHashMap(int hardSize) {
+  public SoftHashMap(int hardSize) {
 
-      max_limit = hardSize;
+    max_limit = hardSize;
 
-   }
+  }
 
-   public Object get(Object key) {
+  public Object get(Object key) {
 
-      Object result = null;
+    Object result = null;
 
-      // We get the SoftReference represented by that key
+    // We get the SoftReference represented by that key
 
-      SoftReference soft_ref = (SoftReference) map.get(key);
+    SoftReference soft_ref = (SoftReference) map.get(key);
 
-      if (soft_ref != null) {
+    if (soft_ref != null) {
 
-         try {
+      try {
 
-            // From the SoftReference we get the value, which can be
+        // From the SoftReference we get the value, which can be
 
-            // null if it was not in the map, or it was removed in
+        // null if it was not in the map, or it was removed in
 
-            // the clearGCCollected() method defined below
+        // the clearGCCollected() method defined below
 
-            result = soft_ref.get();
+        result = soft_ref.get();
 
-            if (result == null) {
+        if (result == null) {
 
-               // If the value has been garbage collected, remove the
+          // If the value has been garbage collected, remove the
 
-               // entry from the HashMap.
+          // entry from the HashMap.
 
-               map.remove(key);
+          map.remove(key);
 
-            } else {
+        } else {
 
-               // We now add this object to the beginning of the hard
+          // We now add this object to the beginning of the hard
 
-               // reference queue. One reference can occur more than
+          // reference queue. One reference can occur more than
 
-               // once, because lookups of the FIFO queue are slow, so
+          // once, because lookups of the FIFO queue are slow, so
 
-               // we don't want to search through it each time to remove
+          // we don't want to search through it each time to remove
 
-               // duplicates.
+          // duplicates.
 
-               synchronized (hardCache){
-                  hardCache.addFirst(result);
+          synchronized (hardCache) {
+            hardCache.addFirst(result);
 
-                  if (hardCache.size() > max_limit) {
+            if (hardCache.size() > max_limit) {
 
-                     // Remove the last entry if list greater than MAX_LIMIT
+              // Remove the last entry if list greater than MAX_LIMIT
 
-                     hardCache.removeLast();
-
-                  }
-               }
+              hardCache.removeLast();
 
             }
-         } catch (Exception e){
-            e.printStackTrace();
-         }
+          }
 
+        }
+      } catch (Exception e) {
+        e.printStackTrace();
       }
 
-      return result;
+    }
 
-   }
+    return result;
 
+  }
 
 
-   /**
 
-    * We define our own subclass of SoftReference which contains not only the
+  /**
+   * 
+   * We define our own subclass of SoftReference which contains not only the
+   * 
+   * value but also the key to make it easier to find the entry in the HashMap
+   * 
+   * after it's been garbage collected.
+   * 
+   */
 
-    * value but also the key to make it easier to find the entry in the HashMap
+  private static class SoftValue extends SoftReference {
 
-    * after it's been garbage collected.
+    private final Object key; // always make data member final
 
-    */
 
-   private static class SoftValue extends SoftReference {
 
-      private final Object key; // always make data member final
+    /**
+     * 
+     * Did you know that an outer class can access private data members and
+     * 
+     * methods of an inner class? I didn't know that! I thought it was only
+     * 
+     * the inner class who could access the outer class's private
+     * 
+     * information. An outer class can also access private members of an
+     * 
+     * inner class inside its inner class.
+     * 
+     */
 
+    private SoftValue(Object k, Object key, ReferenceQueue q) {
 
+      super(k, q);
 
-      /**
+      this.key = key;
 
-       * Did you know that an outer class can access private data members and
+    }
 
-       * methods of an inner class? I didn't know that! I thought it was only
+  }
 
-       * the inner class who could access the outer class's private
 
-       * information. An outer class can also access private members of an
 
-       * inner class inside its inner class.
+  /**
+   * 
+   * Here we go through the ReferenceQueue and remove garbage collected
+   * 
+   * SoftValue objects from the HashMap by looking them up using the
+   * 
+   * SoftValue.key data member.
+   * 
+   */
 
-       */
+  private void clearGCCollected() {
 
-      private SoftValue(Object k, Object key, ReferenceQueue q) {
+    SoftValue sv;
 
-         super(k, q);
+    while ((sv = (SoftValue) queue.poll()) != null) {
 
-         this.key = key;
+      map.remove(sv.key); // we can access private data!
 
-      }
+    }
 
-   }
+  }
 
 
 
-   /**
+  /**
+   * 
+   * Here we put the key, value pair into the HashMap using a SoftValue
+   * 
+   * object.
+   * 
+   */
 
-    * Here we go through the ReferenceQueue and remove garbage collected
+  public synchronized Object put(Object key, Object value) {
 
-    * SoftValue objects from the HashMap by looking them up using the
+    clearGCCollected();
 
-    * SoftValue.key data member.
+    if (DEBUG) System.out.println("putting " + key + " on cache. size: " + size());
+    return map.put(key, new SoftValue(value, key, queue));
 
-    */
+  }
 
-   private void clearGCCollected() {
 
-      SoftValue sv;
 
-      while ((sv = (SoftValue) queue.poll()) != null) {
+  public Object remove(Object key) {
 
-         map.remove(sv.key); // we can access private data!
+    clearGCCollected();
+    if (DEBUG) System.out.println("removing " + key + " from cache. size: " + size());
+    return map.remove(key);
 
-      }
+  }
 
-   }
 
 
+  public void clear() {
 
-   /**
+    synchronized (hardCache) {
+      hardCache.clear();
+    }
 
-    * Here we put the key, value pair into the HashMap using a SoftValue
+    clearGCCollected();
+    if (DEBUG) System.out.println("clearing cache");
+    map.clear();
 
-    * object.
+  }
 
-    */
 
-   public synchronized Object put(Object key, Object value) {
 
-      clearGCCollected();
+  public int size() {
 
-      if ( DEBUG)
-         System.out.println("putting " + key + " on cache. size: " + size());
-      return map.put(key, new SoftValue(value, key, queue));
+    clearGCCollected();
 
-   }
+    return map.size();
 
+  }
 
 
-   public Object remove(Object key) {
 
-      clearGCCollected();
-      if ( DEBUG)
-          System.out.println("removing " + key + " from cache. size: " + size());
-      return map.remove(key);
+  public Set entrySet() {
 
-   }
+    throw new UnsupportedOperationException();
 
-
-
-   public void clear() {
-
-      synchronized (hardCache){
-         hardCache.clear();
-      }
-
-      clearGCCollected();
-      if ( DEBUG)
-          System.out.println("clearing cache");
-      map.clear();
-
-   }
-
-
-
-   public int size() {
-
-      clearGCCollected();
-
-      return map.size();
-
-   }
-
-
-
-   public Set entrySet() {
-
-      throw new UnsupportedOperationException();
-
-   }
+  }
 
 }

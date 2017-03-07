@@ -1,69 +1,54 @@
 package org.biojava.bio.symbol;
 
 /**
- * Packing that uses the ordering in an AlphabetIndex to map between bytes and
- * symbols.
+ * Packing that uses the ordering in an AlphabetIndex to map between bytes and symbols.
  *
- * @since 1.4 
+ * @since 1.4
  * @author Matthew Pocock
  */
-class IndexedNoAmbPack
-        implements Packing, java.io.Serializable
-{
+class IndexedNoAmbPack implements Packing, java.io.Serializable {
   private final AlphabetIndex index;
   private final byte wordSize;
 
-  IndexedNoAmbPack(AlphabetIndex index)
-          throws IllegalAlphabetException
-  {
+  IndexedNoAmbPack(AlphabetIndex index) throws IllegalAlphabetException {
     this.index = index;
 
     // calculate the number of bits needed to encode the alphabet without
     // ambiguity
     // ceil(log_2(size))
-    int size = (int) Math.ceil(Math.log(index.getAlphabet().size())
-                               / Math.log(2));
-    if(size > 8) {
+    int size = (int) Math.ceil(Math.log(index.getAlphabet().size()) / Math.log(2));
+    if (size > 8) {
       throw new IllegalAlphabetException("Alphabet too big to pack into a byte");
     }
 
     this.wordSize = (byte) size;
   }
 
-  public AlphabetIndex getIndex()
-  {
+  public AlphabetIndex getIndex() {
     return index;
   }
 
-  public FiniteAlphabet getAlphabet()
-  {
+  public FiniteAlphabet getAlphabet() {
     return index.getAlphabet();
   }
 
-  public byte wordSize()
-  {
+  public byte wordSize() {
     return wordSize;
   }
 
-  public boolean handlesAmbiguity()
-  {
+  public boolean handlesAmbiguity() {
     return false;
   }
 
-  public byte pack(Symbol sym)
-          throws IllegalSymbolException
-  {
+  public byte pack(Symbol sym) throws IllegalSymbolException {
     return (byte) index.indexForSymbol(sym);
   }
 
-  public Symbol unpack(byte packed)
-          throws IllegalSymbolException
-  {
+  public Symbol unpack(byte packed) throws IllegalSymbolException {
     return index.symbolForIndex(packed);
   }
 
-  public boolean equals(Object o)
-  {
+  public boolean equals(Object o) {
     if (this == o) {
       return true;
     }
@@ -80,8 +65,7 @@ class IndexedNoAmbPack
     return true;
   }
 
-  public int hashCode()
-  {
+  public int hashCode() {
     return index.hashCode();
   }
 }

@@ -1,21 +1,18 @@
 /*
- *                    BioJava development code
+ * BioJava development code
  *
- * This code may be freely distributed and modified under the
- * terms of the GNU Lesser General Public Licence.  This should
- * be distributed with the code.  If you do not have a copy,
- * see:
+ * This code may be freely distributed and modified under the terms of the GNU Lesser General Public
+ * Licence. This should be distributed with the code. If you do not have a copy, see:
  *
- *      http://www.gnu.org/copyleft/lesser.html
+ * http://www.gnu.org/copyleft/lesser.html
  *
- * Copyright for this code is held jointly by the individual
- * authors.  These should be listed in @author doc comments.
+ * Copyright for this code is held jointly by the individual authors. These should be listed
+ * in @author doc comments.
  *
- * For more information on the BioJava project and its aims,
- * or to join the biojava-l mailing list, visit the home page
- * at:
+ * For more information on the BioJava project and its aims, or to join the biojava-l mailing list,
+ * visit the home page at:
  *
- *      http://www.biojava.org/
+ * http://www.biojava.org/
  *
  */
 
@@ -47,25 +44,19 @@ import org.biojava.utils.ChangeVetoException;
  *
  * This is not for you.
  *
- * This is the base class that the projection engine extends. If you modify this
- * you will modify every projected feature. That is probably a bad thing.
+ * This is the base class that the projection engine extends. If you modify this you will modify
+ * every projected feature. That is probably a bad thing.
  *
  * @author Thomas Down
  * @author Matthew Pocock
  * @since 1.1
  */
 
-public abstract class ProjectedFeature
-        implements
-        Feature,
-        Projection {
+public abstract class ProjectedFeature implements Feature, Projection {
   private final Feature feature;
   private final ProjectionContext context;
 
-  public ProjectedFeature(
-          Feature f,
-          ProjectionContext ctx
-          ) {
+  public ProjectedFeature(Feature f, ProjectionContext ctx) {
     this.feature = f;
     this.context = ctx;
   }
@@ -77,9 +68,9 @@ public abstract class ProjectedFeature
   public ProjectionContext getProjectionContext() {
     return context;
   }
-  
+
   public Sequence getSequence() {
-      return context.getSequence(getViewedFeature());
+    return context.getSequence(getViewedFeature());
   }
 
   public FeatureHolder getParent() {
@@ -124,8 +115,8 @@ public abstract class ProjectedFeature
   }
 
   public FeatureHolder filter(FeatureFilter ff) {
-    FeatureFilter membershipFilter = new FeatureFilter.And(
-            new FeatureFilter.Not(FeatureFilter.top_level),
+    FeatureFilter membershipFilter =
+        new FeatureFilter.And(new FeatureFilter.Not(FeatureFilter.top_level),
             new FeatureFilter.ContainedByLocation(getLocation()));
     if (FilterUtils.areDisjoint(ff, membershipFilter)) {
       return FeatureHolder.EMPTY_FEATURE_HOLDER;
@@ -135,8 +126,7 @@ public abstract class ProjectedFeature
   }
 
   public FeatureHolder filter(FeatureFilter ff, boolean recurse) {
-    FeatureFilter membershipFilter =
-            new FeatureFilter.ContainedByLocation(getLocation());
+    FeatureFilter membershipFilter = new FeatureFilter.ContainedByLocation(getLocation());
     if (FilterUtils.areDisjoint(ff, membershipFilter)) {
       return FeatureHolder.EMPTY_FEATURE_HOLDER;
     }
@@ -144,13 +134,11 @@ public abstract class ProjectedFeature
     return getProjectedFeatures().filter(ff, recurse);
   }
 
-  public Feature createFeature(Feature.Template temp)
-          throws ChangeVetoException, BioException {
+  public Feature createFeature(Feature.Template temp) throws ChangeVetoException, BioException {
     return context.createFeature(feature, temp);
   }
 
-  public void removeFeature(Feature f)
-          throws ChangeVetoException, BioException {
+  public void removeFeature(Feature f) throws ChangeVetoException, BioException {
     context.removeFeature(feature, f);
   }
 
@@ -158,8 +146,8 @@ public abstract class ProjectedFeature
     try {
       return TemplateUtils.makeTemplate(this);
     } catch (BioException be) {
-      throw new AssertionFailure("Could not build/populate template for: " +
-                                 this.toString() + " ", be);
+      throw new AssertionFailure("Could not build/populate template for: " + this.toString() + " ",
+          be);
     }
   }
 

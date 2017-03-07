@@ -1,21 +1,18 @@
- /*
- *                    BioJava development code
+/*
+ * BioJava development code
  *
- * This code may be freely distributed and modified under the
- * terms of the GNU Lesser General Public Licence.  This should
- * be distributed with the code.  If you do not have a copy,
- * see:
+ * This code may be freely distributed and modified under the terms of the GNU Lesser General Public
+ * Licence. This should be distributed with the code. If you do not have a copy, see:
  *
- *      http://www.gnu.org/copyleft/lesser.html
+ * http://www.gnu.org/copyleft/lesser.html
  *
- * Copyright for this code is held jointly by the individual
- * authors.  These should be listed in @author doc comments.
+ * Copyright for this code is held jointly by the individual authors. These should be listed
+ * in @author doc comments.
  *
- * For more information on the BioJava project and its aims,
- * or to join the biojava-l mailing list, visit the home page
- * at:
+ * For more information on the BioJava project and its aims, or to join the biojava-l mailing list,
+ * visit the home page at:
  *
- *      http://www.biojava.org/
+ * http://www.biojava.org/
  *
  */
 
@@ -71,8 +68,7 @@ public class GFFTools {
    * @deprecated use: readGff(File)
    */
   public static GFFEntrySet readGFF(String fileName)
-    throws FileNotFoundException, ParserException, BioException, IOException
-  {
+      throws FileNotFoundException, ParserException, BioException, IOException {
     return readGFF(fileName, GFFRecordFilter.ACCEPT_ALL);
   }
 
@@ -89,28 +85,26 @@ public class GFFTools {
    * @deprecated use: readGff(File,GFFRecordFilter)
    */
   public static GFFEntrySet readGFF(String fileName, GFFRecordFilter recFilt)
-    throws FileNotFoundException, ParserException, BioException, IOException
-  {
+      throws FileNotFoundException, ParserException, BioException, IOException {
     GFFEntrySet gffEntries = new GFFEntrySet();
-    GFFFilterer filterer = new GFFFilterer(gffEntries.getAddHandler(),recFilt);
+    GFFFilterer filterer = new GFFFilterer(gffEntries.getAddHandler(), recFilt);
     GFFParser parser = new GFFParser();
-    parser.parse(new BufferedReader(new FileReader(fileName)),filterer);
+    parser.parse(new BufferedReader(new FileReader(fileName)), filterer);
     return gffEntries;
   }
-  
- /**
-  * Reads a <code>GFFEntrySet</code> from a file with no filtering.
-  *
-  * @param inFile the File containing the GFF
-  * @throws FileNotFoundException if file is not found
-  * @throws ParserException if format is wrong
-  * @throws BioException if format is wrong
-  * @throws IOException if file reading error occurs
-  * @return a <code>GFFEntrySet</code> encapsulating the records read from the file
-  */
+
+  /**
+   * Reads a <code>GFFEntrySet</code> from a file with no filtering.
+   *
+   * @param inFile the File containing the GFF
+   * @throws FileNotFoundException if file is not found
+   * @throws ParserException if format is wrong
+   * @throws BioException if format is wrong
+   * @throws IOException if file reading error occurs
+   * @return a <code>GFFEntrySet</code> encapsulating the records read from the file
+   */
   public static GFFEntrySet readGFF(File inFile)
-    throws FileNotFoundException, ParserException, BioException, IOException
-  {
+      throws FileNotFoundException, ParserException, BioException, IOException {
     return readGFF(inFile, GFFRecordFilter.ACCEPT_ALL);
   }
 
@@ -126,12 +120,11 @@ public class GFFTools {
    * @return a <code>GFFEntrySet</code> encapsulating the records read from the file
    */
   public static GFFEntrySet readGFF(File inFile, GFFRecordFilter recFilt)
-    throws FileNotFoundException, ParserException, BioException, IOException
-  {
+      throws FileNotFoundException, ParserException, BioException, IOException {
     GFFEntrySet gffEntries = new GFFEntrySet();
-    GFFFilterer filterer = new GFFFilterer(gffEntries.getAddHandler(),recFilt);
+    GFFFilterer filterer = new GFFFilterer(gffEntries.getAddHandler(), recFilt);
     GFFParser parser = new GFFParser();
-    parser.parse(new BufferedReader(new FileReader(inFile)),filterer);
+    parser.parse(new BufferedReader(new FileReader(inFile)), filterer);
     return gffEntries;
   }
 
@@ -140,15 +133,14 @@ public class GFFTools {
    *
    * This will read up untill the end of the reader.
    *
-   * @param gffIn  the BufferedReader to read text from
+   * @param gffIn the BufferedReader to read text from
    * @return a GFFEntrySet containing all of the GFF that could be read
-   * @throws parserException  if the text could not be parsed as GFF
+   * @throws parserException if the text could not be parsed as GFF
    * @throws BioException if there was some error reading the GFF
    * @throws IOException if there was an error with the reader
    */
   public static GFFEntrySet readGFF(BufferedReader gffIn)
-    throws ParserException, BioException, IOException
-  {
+      throws ParserException, BioException, IOException {
     return readGFF(gffIn, GFFRecordFilter.ACCEPT_ALL);
   }
 
@@ -157,17 +149,16 @@ public class GFFTools {
    *
    * This will read up untill the end of the reader.
    *
-   * @param gffIn  the BufferedReader to read text from
+   * @param gffIn the BufferedReader to read text from
    * @return a GFFEntrySet containing all of the GFF that could be read
-   * @throws parserException  if the text could not be parsed as GFF
+   * @throws parserException if the text could not be parsed as GFF
    * @throws BioException if there was some error reading the GFF
    * @throws IOException if there was an error with the reader
    */
   public static GFFEntrySet readGFF(BufferedReader gffIn, GFFRecordFilter recFilt)
-    throws ParserException, BioException, IOException
-  {
+      throws ParserException, BioException, IOException {
     GFFEntrySet gffEntries = new GFFEntrySet();
-    GFFFilterer filterer = new GFFFilterer(gffEntries.getAddHandler(),recFilt);
+    GFFFilterer filterer = new GFFFilterer(gffEntries.getAddHandler(), recFilt);
     GFFParser parser = new GFFParser();
     parser.parse(gffIn, filterer);
     return gffEntries;
@@ -180,24 +171,20 @@ public class GFFTools {
    * @param ents the entries to write
    * @throws IOException if file writing fails
    */
-  public static void writeGFF(String fileName, GFFEntrySet ents)
-    throws IOException
-  {
+  public static void writeGFF(String fileName, GFFEntrySet ents) throws IOException {
     PrintWriter pw = new PrintWriter(new FileWriter(fileName));
     writeGFF(pw, ents);
     pw.close();
   }
-  
+
   /**
    * Writes a GFFEntrySet to a file.
    *
-   * @param outFile  the file to write to
-   * @param ents  the entry set to write
+   * @param outFile the file to write to
+   * @param ents the entry set to write
    * @throws IOException if writing to the file fails
    */
-  public static void writeGFF(File outFile, GFFEntrySet ents)
-    throws IOException
-  {
+  public static void writeGFF(File outFile, GFFEntrySet ents) throws IOException {
     PrintWriter pw = new PrintWriter(new FileWriter(outFile));
     writeGFF(pw, ents);
     pw.close();
@@ -206,34 +193,31 @@ public class GFFTools {
   /**
    * Writes a GFFEntrySet to a PrintWriter.
    *
-   * @param pw  the PrintWriter to write to
+   * @param pw the PrintWriter to write to
    * @param ents the entries to write
    * @throws IOException if file writing fails
    */
-  public static void writeGFF(PrintWriter pw, GFFEntrySet ents)
-    throws IOException
-  {
+  public static void writeGFF(PrintWriter pw, GFFEntrySet ents) throws IOException {
     GFFWriter writer = new GFFWriter(pw);
     ents.streamRecords(writer);
   }
 
   /**
-   * Annotates a sequence with the features from a GFF entry set with sequence
-   * name matching this sequence.
+   * Annotates a sequence with the features from a GFF entry set with sequence name matching this
+   * sequence.
    *
    * @param seq the <code>Sequence</code> to annotate.
    * @param ents the the GFF features to annotate it with.
    * @return a reference to a newly annotated sequence.
    */
-  public static Sequence annotateSequence(Sequence seq, GFFEntrySet ents){
+  public static Sequence annotateSequence(Sequence seq, GFFEntrySet ents) {
     Sequence annotated;
     try {
       annotated = ents.getAnnotator().annotate(seq);
-    }
-    catch (ChangeVetoException ex) {
-      throw new BioError("Assertion Error: Unable to annotate sequence",ex);
-    }catch (BioException ex) {
-      throw new BioError("Assertion Error: Unable to annotate sequence",ex);
+    } catch (ChangeVetoException ex) {
+      throw new BioError("Assertion Error: Unable to annotate sequence", ex);
+    } catch (BioException ex) {
+      throw new BioError("Assertion Error: Unable to annotate sequence", ex);
     }
     return annotated;
   }
@@ -243,24 +227,18 @@ public class GFFTools {
    *
    * @param seq the <code>Sequence</code> to annotate.
    * @param ents the the GFF features to annotate it with.
-   * @param checkSeqName  boolean flat, if true only annotate sequence with
-   *        features that have matching sequence names, otherwise annotate
-   *        all features
+   * @param checkSeqName boolean flat, if true only annotate sequence with features that have
+   *        matching sequence names, otherwise annotate all features
    * @return a reference to a newly annotated sequence.
    */
-  public static Sequence annotateSequence(
-    Sequence seq,
-    GFFEntrySet ents,
-    boolean checkSeqName
-  ) {
+  public static Sequence annotateSequence(Sequence seq, GFFEntrySet ents, boolean checkSeqName) {
     Sequence annotated;
     try {
       annotated = ents.getAnnotator(checkSeqName).annotate(seq);
-    }
-    catch (ChangeVetoException ex) {
-      throw new BioError("Assertion Error: Unable to annotate sequence",ex);
-    }catch (BioException ex) {
-      throw new BioError("Assertion Error: Unable to annotate sequence",ex);
+    } catch (ChangeVetoException ex) {
+      throw new BioError("Assertion Error: Unable to annotate sequence", ex);
+    } catch (BioException ex) {
+      throw new BioError("Assertion Error: Unable to annotate sequence", ex);
     }
     return annotated;
   }
@@ -268,31 +246,31 @@ public class GFFTools {
   /**
    * Annotates all sequences in a sequence DB with features from a GFF entry set.
    *
-   * @param seqs  the SequenceDB to annotate
-   * @param ents  the GFFEntrySet to annote with
+   * @param seqs the SequenceDB to annotate
+   * @param ents the GFFEntrySet to annote with
    * @return a SequenceDB with all the annotations on
    */
   public static SequenceDB annotateSequences(SequenceDB seqs, GFFEntrySet ents)
-    throws IllegalIDException, BioException{
+      throws IllegalIDException, BioException {
     Set names = new HashSet();
 
-    //get the list of names for each sequence
-    for (Iterator i = ents.lineIterator(); i.hasNext(); ) {
+    // get the list of names for each sequence
+    for (Iterator i = ents.lineIterator(); i.hasNext();) {
       Object o = i.next();
-      if(o instanceof GFFRecord){//only process GFFRecords not comments
-        GFFRecord record = (GFFRecord)o;
-        if(! names.contains(record.getSeqName())){
+      if (o instanceof GFFRecord) {// only process GFFRecords not comments
+        GFFRecord record = (GFFRecord) o;
+        if (!names.contains(record.getSeqName())) {
           names.add(record.getSeqName());
         }
       }
     }
 
-    //filter entry set into subsets with same names, use that subset to annotate
-    //the correct sequence.
-    for (Iterator i = names.iterator(); i.hasNext(); ) {
-      final String name = (String)i.next();
-      GFFRecordFilter filt = new GFFRecordFilter(){
-        public boolean accept(GFFRecord rec){
+    // filter entry set into subsets with same names, use that subset to annotate
+    // the correct sequence.
+    for (Iterator i = names.iterator(); i.hasNext();) {
+      final String name = (String) i.next();
+      GFFRecordFilter filt = new GFFRecordFilter() {
+        public boolean accept(GFFRecord rec) {
           return rec.getSeqName().equals(name);
         }
       };
@@ -308,36 +286,32 @@ public class GFFTools {
   /**
    * Creates a GFFEntrySet containing one entry for each feature on a sequence.
    *
-   * @param seq  the Sequence to create features for
+   * @param seq the Sequence to create features for
    * @return a new GFFEntrySet with gff records for each featre on the sequence
-   * @throws BioException if something went wrong GFF-ifying the sequences
-   *         features
+   * @throws BioException if something went wrong GFF-ifying the sequences features
    */
-  public static GFFEntrySet gffFromSequence(Sequence seq)
-  throws BioException {
+  public static GFFEntrySet gffFromSequence(Sequence seq) throws BioException {
     SequencesAsGFF sagff = new SequencesAsGFF();
     GFFEntrySet gffES = new GFFEntrySet();
     sagff.processSequence(seq, gffES.getAddHandler());
     return gffES;
   }
-  
+
   /**
-   * Creates a GFFEntrySet containing one entry for each feature on each
-   * sequence of a SequenceDB.
+   * Creates a GFFEntrySet containing one entry for each feature on each sequence of a SequenceDB.
    *
-   * <p><em>Note:</em> This converts all features in the whole database to
-   * in-memorey GFFRecord instances. This will take up considerable memory for
-   * large databases.</p>
+   * <p>
+   * <em>Note:</em> This converts all features in the whole database to in-memorey GFFRecord
+   * instances. This will take up considerable memory for large databases.
+   * </p>
    *
-   * @param seqDB  the SequenceDB to create features for
-   * @return  a new GFFEntrySet with gff records for each feature on the database
-   * @throws BioException if something went wrong GFF-ifying the sequences
-   *         features
+   * @param seqDB the SequenceDB to create features for
+   * @return a new GFFEntrySet with gff records for each feature on the database
+   * @throws BioException if something went wrong GFF-ifying the sequences features
    */
-public static GFFEntrySet gffFromSeqDB(SequenceDB seqDB)
-  throws BioException {
+  public static GFFEntrySet gffFromSeqDB(SequenceDB seqDB) throws BioException {
     GFFEntrySet gffES = new GFFEntrySet();
-    for(SequenceIterator si = seqDB.sequenceIterator(); si.hasNext(); ) {
+    for (SequenceIterator si = seqDB.sequenceIterator(); si.hasNext();) {
       Sequence seq = si.nextSequence();
       SequencesAsGFF sagff = new SequencesAsGFF();
       sagff.processSequence(seq, gffES.getAddHandler());

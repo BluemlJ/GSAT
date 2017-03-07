@@ -104,7 +104,7 @@ public class PrivateTest {
    * @throws IOException
    * @throws UndefinedTypeOfMutationException
    * @throws CorruptedSequenceException
-   * @throws MissingPathException 
+   * @throws MissingPathException
    */
 
   public void testLocalFile() throws FileReadingException, IOException,

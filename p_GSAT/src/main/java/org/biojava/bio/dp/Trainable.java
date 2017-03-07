@@ -1,21 +1,18 @@
 /*
- *                    BioJava development code
+ * BioJava development code
  *
- * This code may be freely distributed and modified under the
- * terms of the GNU Lesser General Public Licence.  This should
- * be distributed with the code.  If you do not have a copy,
- * see:
+ * This code may be freely distributed and modified under the terms of the GNU Lesser General Public
+ * Licence. This should be distributed with the code. If you do not have a copy, see:
  *
- *      http://www.gnu.org/copyleft/lesser.html
+ * http://www.gnu.org/copyleft/lesser.html
  *
- * Copyright for this code is held jointly by the individual
- * authors.  These should be listed in @author doc comments.
+ * Copyright for this code is held jointly by the individual authors. These should be listed
+ * in @author doc comments.
  *
- * For more information on the BioJava project and its aims,
- * or to join the biojava-l mailing list, visit the home page
- * at:
+ * For more information on the BioJava project and its aims, or to join the biojava-l mailing list,
+ * visit the home page at:
  *
- *      http://www.biojava.org/
+ * http://www.biojava.org/
  *
  */
 package org.biojava.bio.dp;
@@ -31,11 +28,10 @@ public interface Trainable {
   /**
    * Perform any registration that is necessary with mt.
    * <p>
-   * This may include registering handlers for transition or emission counts,
-   * or registering other Trainable objects with the ModelTrainer.
+   * This may include registering handlers for transition or emission counts, or registering other
+   * Trainable objects with the ModelTrainer.
    *
-   * @param mt  the ModelTrainer that encapsulates the training environment
+   * @param mt the ModelTrainer that encapsulates the training environment
    */
-  public void registerWithTrainer(ModelTrainer mt)
-  throws BioException;
+  public void registerWithTrainer(ModelTrainer mt) throws BioException;
 }

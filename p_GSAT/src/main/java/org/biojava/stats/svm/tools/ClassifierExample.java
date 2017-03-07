@@ -1,21 +1,18 @@
 /*
- *                    BioJava development code
+ * BioJava development code
  *
- * This code may be freely distributed and modified under the
- * terms of the GNU Lesser General Public Licence.  This should
- * be distributed with the code.  If you do not have a copy,
- * see:
+ * This code may be freely distributed and modified under the terms of the GNU Lesser General Public
+ * Licence. This should be distributed with the code. If you do not have a copy, see:
  *
- *      http://www.gnu.org/copyleft/lesser.html
+ * http://www.gnu.org/copyleft/lesser.html
  *
- * Copyright for this code is held jointly by the individual
- * authors.  These should be listed in @author doc comments.
+ * Copyright for this code is held jointly by the individual authors. These should be listed
+ * in @author doc comments.
  *
- * For more information on the BioJava project and its aims,
- * or to join the biojava-l mailing list, visit the home page
- * at:
+ * For more information on the BioJava project and its aims, or to join the biojava-l mailing list,
+ * visit the home page at:
  *
- *      http://www.biojava.org/
+ * http://www.biojava.org/
  *
  */
 
@@ -65,8 +62,8 @@ import org.biojava.stats.svm.SVMTarget;
 import org.biojava.stats.svm.SimpleSVMTarget;
 
 /**
- * A simple toy example that allows you to put points on a canvas, and find a
- * polynomial hyperplane to seperate them.
+ * A simple toy example that allows you to put points on a canvas, and find a polynomial hyperplane
+ * to seperate them.
  *
  * @author Ewan Birney
  * @author Matthew Pocock
@@ -96,7 +93,7 @@ public class ClassifierExample {
     bGroup.add(rbNeg);
     ActionListener addTypeAction = new ActionListener() {
       public void actionPerformed(ActionEvent ae) {
-        //JRadioButton rb = (JRadioButton) ae.getSource();
+        // JRadioButton rb = (JRadioButton) ae.getSource();
         pc.setAddPos(rbPos.isSelected());
       }
     };
@@ -122,45 +119,44 @@ public class ClassifierExample {
     panel.add(clearB);
     rbPos.setSelected(pc.getAddPos());
     rbNeg.setSelected(!pc.getAddPos());
-    
+
     JComboBox kernelBox = new JComboBox();
     kernelBox.addItem("polynomeal");
     kernelBox.addItem("rbf");
-    
+
     kernelBox.addItemListener(new ItemListener() {
       public void itemStateChanged(ItemEvent e) {
-        if(e.getStateChange() == ItemEvent.SELECTED) {
+        if (e.getStateChange() == ItemEvent.SELECTED) {
           Object o = e.getItem();
-          if(o.equals("polynomeal")) {
+          if (o.equals("polynomeal")) {
             pc.setKernel(PointClassifier.polyKernel);
-          } else if(o.equals("rbf")) {
+          } else if (o.equals("rbf")) {
             pc.setKernel(PointClassifier.rbfKernel);
           }
         }
       }
     });
     panel.add(kernelBox);
-    
+
     f.getContentPane().add(BorderLayout.NORTH, panel);
     f.setSize(400, 300);
     f.setVisible(true);
   }
 
   /**
-   * An extention of JComponent that contains the points & encapsulates the
-   * classifier.
+   * An extention of JComponent that contains the points & encapsulates the classifier.
    */
   public static class PointClassifier extends JComponent {
     // public kernels
     public static SVMKernel polyKernel;
     public static SVMKernel rbfKernel;
     public static SMOTrainer trainer;
-    
+
     static {
       trainer = new SMOTrainer();
       trainer.setC(1.0E+7);
       trainer.setEpsilon(1.0E-9);
-      
+
       SVMKernel k = new SVMKernel() {
         public double evaluate(Object a, Object b) {
           Point2D pa = (Point2D) a;
@@ -176,15 +172,15 @@ public class ClassifierExample {
       pk.setOrder(2.0);
       pk.setConstant(1.0);
       pk.setMultiplier(0.0000001);
-      
+
       RadialBaseKernel rb = new RadialBaseKernel();
       rb.setNestedKernel(k);
       rb.setWidth(10000.0);
-      
+
       polyKernel = pk;
       rbfKernel = rb;
     }
-    
+
     // private variables that should only be diddled by internal methods
     private SVMTarget target;
     private SVMClassifierModel model;
@@ -207,13 +203,13 @@ public class ClassifierExample {
     /**
      * Set the kernel used for classification.
      *
-     * @param kernel  the SVMKernel to use
+     * @param kernel the SVMKernel to use
      */
     public void setKernel(SVMKernel kernel) {
       firePropertyChange("kernel", this.kernel, kernel);
       this.kernel = kernel;
     }
-    
+
     /**
      * Retrieve the currently used kernel
      *
@@ -224,10 +220,10 @@ public class ClassifierExample {
     }
 
     /**
-     * Set a flag so that newly added points will be in the positive class or
-     * negative class, depending on wether addPos is true or false respectively.
+     * Set a flag so that newly added points will be in the positive class or negative class,
+     * depending on wether addPos is true or false respectively.
      *
-     * @param addPos  boolean to flag which class to add new points to
+     * @param addPos boolean to flag which class to add new points to
      */
     public void setAddPos(boolean addPos) {
       firePropertyChange("addPos", this.addPos, addPos);
@@ -237,8 +233,8 @@ public class ClassifierExample {
     /**
      * Retrieve the current value of addPos.
      *
-     * @return  true if new points will be added to the positive examples and
-     *          false if they will be added to the negative examples.
+     * @return true if new points will be added to the positive examples and false if they will be
+     *         added to the negative examples.
      */
     public boolean getAddPos() {
       return addPos;
@@ -309,13 +305,10 @@ public class ClassifierExample {
           model = trainer.trainModel(target, kernel, null);
 
           System.out.println("Threshold = " + model.getThreshold());
-          for(Iterator i = model.items().iterator(); i.hasNext(); ) {
+          for (Iterator i = model.items().iterator(); i.hasNext();) {
             Object item = i.next();
-            System.out.println(item + "\t" +
-                               target.getTarget(item) + "\t" +
-                               model.getAlpha(item) + "\t" +
-                               model.classify(item)
-            );
+            System.out.println(item + "\t" + target.getTarget(item) + "\t" + model.getAlpha(item)
+                + "\t" + model.classify(item));
           }
 
           PointClassifier.this.model = model;
@@ -328,8 +321,7 @@ public class ClassifierExample {
     /**
      * Make a new PointClassifier.
      * <p>
-     * Hooks up the mouse listener & cursor.
-     * Chooses default colors & Shapes.
+     * Hooks up the mouse listener & cursor. Chooses default colors & Shapes.
      */
     public PointClassifier() {
       setCursor(new Cursor(Cursor.CROSSHAIR_CURSOR));
@@ -345,7 +337,7 @@ public class ClassifierExample {
       addMouseListener(new MouseAdapter() {
         public void mouseReleased(MouseEvent me) {
           Point p = me.getPoint();
-          if(getAddPos()) {
+          if (getAddPos()) {
             target.addItemTarget(p, +1.0);
           } else {
             target.addItemTarget(p, -1.0);
@@ -355,10 +347,9 @@ public class ClassifierExample {
         }
       });
     }
-  
+
     /**
-     * Renders this component to display the points, and if present, the
-     * support vector machine.
+     * Renders this component to display the points, and if present, the support vector machine.
      */
     public void paintComponent(Graphics g) {
       Graphics2D g2 = (Graphics2D) g;
@@ -367,19 +358,19 @@ public class ClassifierExample {
       Rectangle r = g2.getClipBounds();
       int step = 3;
 
-      if(model != null) {
+      if (model != null) {
         Rectangle rr = new Rectangle(r.x, r.y, step, step);
         Point p = new Point(r.x, r.y);
-        for(int x = r.x; x < r.x + r.width; x+=step) {
+        for (int x = r.x; x < r.x + r.width; x += step) {
           p.x = x;
           rr.x = x;
-          for(int y = r.y; y < r.y + r.height; y+=step) {
+          for (int y = r.y; y < r.y + r.height; y += step) {
             p.y = y;
             rr.y = y;
             double s = model.classify(p);
-            if(s <= -1.0) {
+            if (s <= -1.0) {
               g2.setPaint(negPaint);
-            } else if(s >= +1.0) {
+            } else if (s >= +1.0) {
               g2.setPaint(posPaint);
             } else {
               g2.setPaint(Color.white);
@@ -390,20 +381,20 @@ public class ClassifierExample {
       }
 
       Set supportVectors = Collections.EMPTY_SET;
-      if(model != null) {
+      if (model != null) {
         supportVectors = model.items();
       }
-      for(Iterator it = target.items().iterator(); it.hasNext(); i++) {
+      for (Iterator it = target.items().iterator(); it.hasNext(); i++) {
         Point2D p = (Point2D) it.next();
         at.setToTranslation(p.getX(), p.getY());
         Shape glyph;
-        if(target.getTarget(p) > 0) {
+        if (target.getTarget(p) > 0) {
           glyph = getPosShape();
         } else {
           glyph = getNegShape();
         }
         Shape s = at.createTransformedShape(glyph);
-        if(supportVectors.contains(p)) {
+        if (supportVectors.contains(p)) {
           g2.setPaint(svPaint);
         } else {
           g2.setPaint(plainPaint);

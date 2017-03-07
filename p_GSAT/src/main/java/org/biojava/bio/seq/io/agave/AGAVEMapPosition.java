@@ -1,41 +1,41 @@
 /*
-
- *                    BioJava development code
-
+ * 
+ * BioJava development code
  *
-
+ * 
+ * 
  * This code may be freely distributed and modified under the
-
- * terms of the GNU Lesser General Public Licence.  This should
-
- * be distributed with the code.  If you do not have a copy,
-
+ * 
+ * terms of the GNU Lesser General Public Licence. This should
+ * 
+ * be distributed with the code. If you do not have a copy,
+ * 
  * see:
-
  *
-
- *      http://www.gnu.org/copyleft/lesser.html
-
+ * 
+ * 
+ * http://www.gnu.org/copyleft/lesser.html
  *
-
+ * 
+ * 
  * Copyright for this code is held jointly by the individual
-
- * authors.  These should be listed in @author doc comments.
-
+ * 
+ * authors. These should be listed in @author doc comments.
  *
-
+ * 
+ * 
  * For more information on the BioJava project and its aims,
-
+ * 
  * or to join the biojava-l mailing list, visit the home page
-
+ * 
  * at:
-
  *
-
- *      http://www.biojava.org/
-
+ * 
+ * 
+ * http://www.biojava.org/
  *
-
+ * 
+ * 
  */
 
 package org.biojava.bio.seq.io.agave;
@@ -47,19 +47,19 @@ import java.util.List;
 
 
 /**
-
  * 
-
- * @author Hanning Ni    Doubletwist Inc
-  * @author Greg Cox
-
+ * 
+ * 
+ * @author Hanning Ni Doubletwist Inc
+ * @author Greg Cox
+ * 
  */
 
 public class AGAVEMapPosition {
 
-  private String pos  ;
+  private String pos;
 
-  private List db_ids ;
+  private List db_ids;
 
 
 
@@ -67,11 +67,11 @@ public class AGAVEMapPosition {
 
   }
 
-  public void  setPos(String pos)
+  public void setPos(String pos)
 
   {
 
-      this.pos = pos ;
+    this.pos = pos;
 
   }
 
@@ -79,7 +79,7 @@ public class AGAVEMapPosition {
 
   {
 
-      return pos ;
+    return pos;
 
   }
 
@@ -87,11 +87,11 @@ public class AGAVEMapPosition {
 
   {
 
-      if( db_ids == null )
+    if (db_ids == null)
 
-          db_ids = new ArrayList(1) ;
+      db_ids = new ArrayList(1);
 
-      db_ids.add( id );
+    db_ids.add(id);
 
   }
 
@@ -99,7 +99,7 @@ public class AGAVEMapPosition {
 
   {
 
-      return db_ids.iterator() ;
+    return db_ids.iterator();
 
   }
 
@@ -107,23 +107,23 @@ public class AGAVEMapPosition {
 
   {
 
-      StringBuffer tmp = new StringBuffer() ;
+    StringBuffer tmp = new StringBuffer();
 
-      tmp.append(indent + "<map_position pos=\"" + pos + "\">" + "\n" ) ;
+    tmp.append(indent + "<map_position pos=\"" + pos + "\">" + "\n");
 
-      Iterator it  = db_ids.iterator() ;
+    Iterator it = db_ids.iterator();
 
-      while( it.hasNext() )
+    while (it.hasNext())
 
-      {
+    {
 
-          tmp.append( ((AGAVEDbId) it.next()).toString(indent + indent_unit, indent_unit) ) ;
+      tmp.append(((AGAVEDbId) it.next()).toString(indent + indent_unit, indent_unit));
 
-      }
+    }
 
-      tmp.append(indent + "</map_position>") ;
+    tmp.append(indent + "</map_position>");
 
-      return tmp.substring(0) ;
+    return tmp.substring(0);
 
   }
 
@@ -131,23 +131,23 @@ public class AGAVEMapPosition {
 
   {
 
-      StringBuffer tmp = new StringBuffer() ;
+    StringBuffer tmp = new StringBuffer();
 
-      tmp.append("<map_position pos=\"" + pos + "\">" + "\n" ) ;
+    tmp.append("<map_position pos=\"" + pos + "\">" + "\n");
 
-      Iterator it  = db_ids.iterator() ;
+    Iterator it = db_ids.iterator();
 
-      while( it.hasNext() )
+    while (it.hasNext())
 
-      {
+    {
 
-          tmp.append( (AGAVEDbId) it.next() ) ;
+      tmp.append((AGAVEDbId) it.next());
 
-      }
+    }
 
-      tmp.append("</map_position>") ;
+    tmp.append("</map_position>");
 
-      return tmp.substring(0) ;
+    return tmp.substring(0);
 
   }
 

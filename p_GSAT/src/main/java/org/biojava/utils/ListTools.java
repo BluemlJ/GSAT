@@ -1,21 +1,18 @@
 /*
- *                    BioJava development code
+ * BioJava development code
  *
- * This code may be freely distributed and modified under the
- * terms of the GNU Lesser General Public Licence.  This should
- * be distributed with the code.  If you do not have a copy,
- * see:
+ * This code may be freely distributed and modified under the terms of the GNU Lesser General Public
+ * Licence. This should be distributed with the code. If you do not have a copy, see:
  *
- *      http://www.gnu.org/copyleft/lesser.html
+ * http://www.gnu.org/copyleft/lesser.html
  *
- * Copyright for this code is held jointly by the individual
- * authors.  These should be listed in @author doc comments.
+ * Copyright for this code is held jointly by the individual authors. These should be listed
+ * in @author doc comments.
  *
- * For more information on the BioJava project and its aims,
- * or to join the biojava-l mailing list, visit the home page
- * at:
+ * For more information on the BioJava project and its aims, or to join the biojava-l mailing list,
+ * visit the home page at:
  *
- *      http://www.biojava.org/
+ * http://www.biojava.org/
  *
  */
 package org.biojava.utils;
@@ -37,16 +34,18 @@ import java.util.Set;
  * @author Thomas Down
  * @author Mark Schreiber
  */
-public class ListTools implements Serializable{
+public class ListTools implements Serializable {
   public static Iterator nonRemoveIterator(Iterator i) {
     final Iterator it = i;
     return new Iterator() {
       public boolean hasNext() {
         return it.hasNext();
       }
+
       public Object next() {
         return it.next();
       }
+
       public void remove() {
         throw new UnsupportedOperationException();
       }
@@ -77,10 +76,10 @@ public class ListTools implements Serializable{
       case 1:
         return Collections.nCopies(1, a[0]);
       case 2:
-        Doublet d = new Doublet(a[0],a[1]);
+        Doublet d = new Doublet(a[0], a[1]);
         return d;
       case 3:
-        Triplet t = new Triplet(a[0],a[1],a[2]);
+        Triplet t = new Triplet(a[0], a[1], a[2]);
         return t;
       default:
         return Arrays.asList(a);
@@ -90,18 +89,13 @@ public class ListTools implements Serializable{
   /**
    * Create a new SeriesList with the given leader, trailer and size.
    *
-   * @param leader  the String that will prefix the index
+   * @param leader the String that will prefix the index
    * @param trailer the String that will suffix the index
-   * @param size  the length of the list
-   * @throws NullPointerException if leader or trailer are null (use the empty
-   *   string instead)
+   * @param size the length of the list
+   * @throws NullPointerException if leader or trailer are null (use the empty string instead)
    * @throws IllegalArgumentException if the size is negative
    */
-  public static SeriesList createSeriesList(
-    String leader,
-    String trailer,
-    int size
-  ) {
+  public static SeriesList createSeriesList(String leader, String trailer, int size) {
     return new SeriesList(leader, trailer, size);
   }
 
@@ -110,6 +104,7 @@ public class ListTools implements Serializable{
     private Object b;
 
     public Doublet() {}
+
     public Doublet(Object a, Object b) {
       this();
       set(a, b);
@@ -163,8 +158,7 @@ public class ListTools implements Serializable{
           return get(indx++);
         }
 
-        public void remove()
-        throws UnsupportedOperationException {
+        public void remove() throws UnsupportedOperationException {
           throw new UnsupportedOperationException();
         }
       };
@@ -172,18 +166,18 @@ public class ListTools implements Serializable{
 
     public int hashCode() {
       int hashcode = 1;
-      hashcode = 31*hashcode + a.hashCode();
-      hashcode = 31*hashcode + b.hashCode();
+      hashcode = 31 * hashcode + a.hashCode();
+      hashcode = 31 * hashcode + b.hashCode();
       return hashcode;
     }
 
     public boolean equals(Object o) {
-      if(! (o instanceof List) ) {
+      if (!(o instanceof List)) {
         return false;
       }
 
       List other = (List) o;
-      if(other.size() != 2) {
+      if (other.size() != 2) {
         return false;
       }
 
@@ -197,6 +191,7 @@ public class ListTools implements Serializable{
     private Object c;
 
     public Triplet() {}
+
     public Triplet(Object a, Object b, Object c) {
       this();
       set(a, b, c);
@@ -261,8 +256,7 @@ public class ListTools implements Serializable{
           return get(indx++);
         }
 
-        public void remove()
-        throws UnsupportedOperationException {
+        public void remove() throws UnsupportedOperationException {
           throw new UnsupportedOperationException();
         }
       };
@@ -270,19 +264,19 @@ public class ListTools implements Serializable{
 
     public int hashCode() {
       int hashcode = 1;
-      hashcode = 31*hashcode + a.hashCode();
-      hashcode = 31*hashcode + b.hashCode();
-      hashcode = 31*hashcode + c.hashCode();
+      hashcode = 31 * hashcode + a.hashCode();
+      hashcode = 31 * hashcode + b.hashCode();
+      hashcode = 31 * hashcode + c.hashCode();
       return hashcode;
     }
 
     public boolean equals(Object o) {
-      if(! (o instanceof List) ) {
+      if (!(o instanceof List)) {
         return false;
       }
 
       List other = (List) o;
-      if(other.size() != 3) {
+      if (other.size() != 3) {
         return false;
       }
 
@@ -293,36 +287,36 @@ public class ListTools implements Serializable{
   /**
    * A list that represents a series of values.
    *
-   * <p>This provides a simple list implementation that synthesises elements from
-   * a leading and trailing string and the index into the list.</p>
+   * <p>
+   * This provides a simple list implementation that synthesises elements from a leading and
+   * trailing string and the index into the list.
+   * </p>
    *
-   * <p>For example, a SeriesList with leader "" and trailer ":" will contain
-   * values like "0:", "1:", "2:" and so on. A SeriesList with leader "Chapter "
-   * and trailer "" will have values like "Chapter 5".</p>
+   * <p>
+   * For example, a SeriesList with leader "" and trailer ":" will contain values like "0:", "1:",
+   * "2:" and so on. A SeriesList with leader "Chapter " and trailer "" will have values like
+   * "Chapter 5".
+   * </p>
    *
    * @author Matthew Pocock
    * @since 1.4
    */
-  public static class SeriesList
-  extends AbstractList {
+  public static class SeriesList extends AbstractList {
     private final String leader;
     private final String trailer;
     private final int size;
 
     private SeriesList(String leader, String trailer, int size) {
-      if(leader == null) {
-        throw new NullPointerException(
-        "Leader was null. Use the empty string instead");
+      if (leader == null) {
+        throw new NullPointerException("Leader was null. Use the empty string instead");
       }
 
-      if(trailer == null) {
-        throw new NullPointerException(
-        "Trailer was null. Use the empty string instead");
+      if (trailer == null) {
+        throw new NullPointerException("Trailer was null. Use the empty string instead");
       }
 
-      if(size < 0) {
-        throw new IllegalArgumentException(
-          "Size must be zero or positive: " + size );
+      if (size < 0) {
+        throw new IllegalArgumentException("Size must be zero or positive: " + size);
       }
 
       this.leader = leader;
@@ -347,78 +341,60 @@ public class ListTools implements Serializable{
     }
   }
 
-  public static List mapList(final List list,
-                             final Mapper mapper)
-  {
+  public static List mapList(final List list, final Mapper mapper) {
     return new AbstractList() {
-      public Object get(int index)
-      {
+      public Object get(int index) {
         return mapper.map(list.get(index));
       }
 
-      public int size()
-      {
+      public int size() {
         return list.size();
       }
     };
   }
 
-  public static Set mapSet(final Set set,
-                           final Mapper mapper)
-  {
+  public static Set mapSet(final Set set, final Mapper mapper) {
     return new AbstractSet() {
-      public Iterator iterator()
-      {
+      public Iterator iterator() {
         return new Iterator() {
           Iterator i = set.iterator();
-          public boolean hasNext()
-          {
+
+          public boolean hasNext() {
             return i.hasNext();
           }
 
-          public Object next()
-          {
+          public Object next() {
             return mapper.map(i.next());
           }
 
-          public void remove()
-          {
+          public void remove() {
             i.remove();
           }
         };
       }
 
-      public int size()
-      {
+      public int size() {
         return set.size();
       }
     };
   }
 
-  public static Map mapMap(final Map map,
-                           final Mapper keyMapper,
-                           final Mapper valMapper)
-  {
+  public static Map mapMap(final Map map, final Mapper keyMapper, final Mapper valMapper) {
     return new AbstractMap() {
-      public Set entrySet()
-      {
+      public Set entrySet() {
         return mapSet(map.entrySet(), new Mapper() {
-          public Object map(Object val)
-          {
+          public Object map(Object val) {
             final Map.Entry ent = (Map.Entry) val;
             return new Map.Entry() {
-              public Object getKey()
-              {
+              public Object getKey() {
                 return keyMapper.map(ent.getKey());
               }
 
-              public Object getValue()
-              {
+              public Object getValue() {
                 return valMapper.map(ent.getValue());
               }
 
-              public Object setValue(Object value)
-              {
+              public Object setValue(Object value) {
                 throw new UnsupportedOperationException();
               }
             };
@@ -438,15 +414,14 @@ public class ListTools implements Serializable{
     /**
      * Map the object.
      *
-     * @param val   the object to map
-     * @return      the new value
+     * @param val the object to map
+     * @return the new value
      */
     public Object map(Object val);
   }
 
   public static final Mapper NULL_MAPPER = new Mapper() {
-    public Object map(Object val)
-    {
+    public Object map(Object val) {
       return val;
     }
   };

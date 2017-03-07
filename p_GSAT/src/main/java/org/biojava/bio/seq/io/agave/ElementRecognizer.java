@@ -1,24 +1,22 @@
 /*
- *                    BioJava development code
+ * BioJava development code
  *
- * This code may be freely distributed and modified under the
- * terms of the GNU Lesser General Public Licence.  This should
- * be distributed with the code.  If you do not have a copy,
- * see:
+ * This code may be freely distributed and modified under the terms of the GNU Lesser General Public
+ * Licence. This should be distributed with the code. If you do not have a copy, see:
  *
- *      http://www.gnu.org/copyleft/lesser.html
+ * http://www.gnu.org/copyleft/lesser.html
  *
- * Copyright for this code is held jointly by the individual
- * authors.  These should be listed in @author doc comments.
+ * Copyright for this code is held jointly by the individual authors. These should be listed
+ * in @author doc comments.
  *
- * For more information on the BioJava project and its aims,
- * or to join the biojava-l mailing list, visit the home page
- * at:
+ * For more information on the BioJava project and its aims, or to join the biojava-l mailing list,
+ * visit the home page at:
  *
- *      http://www.biojava.org/
+ * http://www.biojava.org/
  *
  */
 package org.biojava.bio.seq.io.agave;
+
 import org.xml.sax.Attributes;
 
 /**
@@ -28,79 +26,67 @@ import org.xml.sax.Attributes;
  *
  */
 public interface ElementRecognizer {
-    public static final ElementRecognizer ALL = new AllElementRecognizer();
+  public static final ElementRecognizer ALL = new AllElementRecognizer();
 
-    public static class AllElementRecognizer implements ElementRecognizer {
-        public boolean filterStartElement(String nsURI,
-                                              String localName,
-                                              String qName,
-                                              Attributes attrs)
-        {
-            return true;
-        }
+  public static class AllElementRecognizer implements ElementRecognizer {
+    public boolean filterStartElement(String nsURI, String localName, String qName,
+        Attributes attrs) {
+      return true;
+    }
+  }
+
+  /**
+   * Filter elements on the existence of a specified attribute.
+   */
+
+  public static class HasAttribute implements ElementRecognizer {
+    private String attributeName;
+
+    public HasAttribute(String name) {
+      attributeName = name;
     }
 
-    /**
-     * Filter elements on the existence of a specified attribute.
-     */
+    public boolean filterStartElement(String nsURI, String localName, String qName,
+        Attributes attrs) {
+      return (attrs.getValue(attributeName) != null);
+    }
+  }
 
-    public static class HasAttribute implements ElementRecognizer {
-        private String attributeName;
+  /**
+   * Filter elements by name and namespace.
+   */
 
-        public HasAttribute(String name) {
-            attributeName = name;
-        }
+  public static class ByNSName implements ElementRecognizer {
+    private String nsURI;
+    private String localName;
 
-        public boolean filterStartElement(String nsURI,
-                                          String localName,
-                                          String qName,
-                                          Attributes attrs)
-        {
-            return (attrs.getValue(attributeName) != null);
-        }
+    public ByNSName(String nsURI, String localName) {
+      this.nsURI = nsURI;
+      this.localName = localName;
     }
 
-    /**
-     * Filter elements by name and namespace.
-     */
+    public boolean filterStartElement(String nsURI, String localName, String qName,
+        Attributes attrs) {
+      return (localName.equals(this.localName) && nsURI.equals(this.nsURI));
+    }
+  }
 
-    public static class ByNSName implements ElementRecognizer {
-        private String nsURI;
-        private String localName;
+  /**
+   * Filter elements by local name (not recommended).
+   */
 
-        public ByNSName(String nsURI, String localName) {
-            this.nsURI = nsURI;
-            this.localName = localName;
-        }
+  public static class ByLocalName implements ElementRecognizer {
+    private String localName;
 
-        public boolean filterStartElement(String nsURI,
-                                          String localName,
-                                          String qName,
-                                          Attributes attrs)
-        {
-            return (localName.equals(this.localName) && nsURI.equals(this.nsURI));
-        }
+    public ByLocalName(String localName) {
+      this.localName = localName;
     }
 
-    /**
-     * Filter elements by local name (not recommended).
-     */
-
-    public static class ByLocalName implements ElementRecognizer {
-        private String localName;
-
-        public ByLocalName(String localName) {
-            this.localName = localName;
-        }
-
-        public boolean filterStartElement(String nsURI,
-                                          String localName,
-                                          String qName,
-                                          Attributes attrs)
-        {
-            return (localName.equals(this.localName));
-        }
+    public boolean filterStartElement(String nsURI, String localName, String qName,
+        Attributes attrs) {
+      return (localName.equals(this.localName));
     }
+  }
 
-    public boolean filterStartElement(String nsURI, String localName, String qName, Attributes attrs);
+  public boolean filterStartElement(String nsURI, String localName, String qName, Attributes attrs);
 }

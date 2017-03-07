@@ -12,14 +12,11 @@ import javax.naming.NamingException;
  *
  * @author Matthew Pocock
  */
-public class ObdaUriParser
-        implements NameParser
-{
+public class ObdaUriParser implements NameParser {
   private static final Properties syntax;
   private static final ObdaUriParser INSTANCE;
 
-  static
-  {
+  static {
     syntax = new Properties();
     syntax.put("jndi.syntax.direction", "left_to_right");
     syntax.put("jndi.syntax.separator", ":");
@@ -28,19 +25,15 @@ public class ObdaUriParser
     INSTANCE = new ObdaUriParser();
   }
 
-  public static ObdaUriParser getInstance()
-  {
+  public static ObdaUriParser getInstance() {
     return INSTANCE;
   }
 
-  private ObdaUriParser()
-  {
+  private ObdaUriParser() {
     // only we should make one
   }
 
-  public Name parse(String name)
-          throws NamingException
-  {
+  public Name parse(String name) throws NamingException {
     return new CompoundName(name, syntax);
   }
 }

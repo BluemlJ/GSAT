@@ -1,21 +1,18 @@
 /*
- *                    BioJava development code
+ * BioJava development code
  *
- * This code may be freely distributed and modified under the
- * terms of the GNU Lesser General Public Licence.  This should
- * be distributed with the code.  If you do not have a copy,
- * see:
+ * This code may be freely distributed and modified under the terms of the GNU Lesser General Public
+ * Licence. This should be distributed with the code. If you do not have a copy, see:
  *
- *      http://www.gnu.org/copyleft/lesser.html
+ * http://www.gnu.org/copyleft/lesser.html
  *
- * Copyright for this code is held jointly by the individual
- * authors.  These should be listed in @author doc comments.
+ * Copyright for this code is held jointly by the individual authors. These should be listed
+ * in @author doc comments.
  *
- * For more information on the BioJava project and its aims,
- * or to join the biojava-l mailing list, visit the home page
- * at:
+ * For more information on the BioJava project and its aims, or to join the biojava-l mailing list,
+ * visit the home page at:
  *
- *      http://www.biojava.org/
+ * http://www.biojava.org/
  *
  */
 
@@ -64,100 +61,87 @@ public class Meme {
   }
 
   public Meme(InputStream is, SymbolTokenization symParser)
-         throws IOException, IllegalSymbolException, IllegalAlphabetException {
-    StreamTokenizer st = new StreamTokenizer(
-      new BufferedReader(new InputStreamReader(is)));
+      throws IOException, IllegalSymbolException, IllegalAlphabetException {
+    StreamTokenizer st = new StreamTokenizer(new BufferedReader(new InputStreamReader(is)));
     st.eolIsSignificant(true);
     st.wordChars('*', '*');
     st.parseNumbers();
 
     SymbolList sym = null;
 
-   ALPHABET:
-    while( true ) {
+    ALPHABET: while (true) {
       int nt = st.nextToken();
       if (nt == StreamTokenizer.TT_EOF) {
-          return;
+        return;
       } else if (nt == StreamTokenizer.TT_WORD) {
-          if(st.sval.startsWith("ALPHABET")) {
-            while(st.nextToken() != StreamTokenizer.TT_WORD) {}
-            sym = new SimpleSymbolList(symParser, st.sval);
-            break ALPHABET;
-          }
+        if (st.sval.startsWith("ALPHABET")) {
+          while (st.nextToken() != StreamTokenizer.TT_WORD) {}
+          sym = new SimpleSymbolList(symParser, st.sval);
+          break ALPHABET;
+        }
       }
     }
 
-    while(st.nextToken() != StreamTokenizer.TT_EOL) {}
-    while(st.nextToken() != StreamTokenizer.TT_EOL) {}
+    while (st.nextToken() != StreamTokenizer.TT_EOL) {}
+    while (st.nextToken() != StreamTokenizer.TT_EOL) {}
 
-   SEQLIST:
-    while( true ) {
-      if(st.nextToken() == StreamTokenizer.TT_WORD) {
-          if(st.sval != null && st.sval.startsWith("*"))
-            break SEQLIST;
+    SEQLIST: while (true) {
+      if (st.nextToken() == StreamTokenizer.TT_WORD) {
+        if (st.sval != null && st.sval.startsWith("*")) break SEQLIST;
 
-          //need this cause lines sometimes wrap!?
-          if(! st.sval.startsWith("Length"))
-           seqIDs.add(st.sval.intern());
+        // need this cause lines sometimes wrap!?
+        if (!st.sval.startsWith("Length")) seqIDs.add(st.sval.intern());
       }
     }
 
-   OUTER:
-    while( true ) {
+    OUTER: while (true) {
       int width = 0;
 
-     FINDMOTIF:
-      while( true ) {
+      FINDMOTIF: while (true) {
         int nt = st.nextToken();
         if (nt == StreamTokenizer.TT_EOF) {
-            break OUTER;
+          break OUTER;
         } else if (nt == StreamTokenizer.TT_WORD) {
-            if(st.sval.startsWith("MOTIF")) {
-              st.nextToken();			// MOTIF x
-              while(st.nextToken() != StreamTokenizer.TT_NUMBER) {} // width = w
-              width = (int) st.nval;		// w
-              break FINDMOTIF;
-            }
+          if (st.sval.startsWith("MOTIF")) {
+            st.nextToken(); // MOTIF x
+            while (st.nextToken() != StreamTokenizer.TT_NUMBER) {} // width = w
+            width = (int) st.nval; // w
+            break FINDMOTIF;
+          }
         }
       }
 
-     FINDWEIGHTS:
-      while( true ) {
+      FINDWEIGHTS: while (true) {
         int nt = st.nextToken();
         if (nt == StreamTokenizer.TT_EOF) {
-            break OUTER;
+          break OUTER;
         } else if (nt == StreamTokenizer.TT_WORD) {
-            if(st.sval.startsWith("letter")) {
-              while(st.nextToken() != StreamTokenizer.TT_EOL) {}
-              break FINDWEIGHTS;
-            }
+          if (st.sval.startsWith("letter")) {
+            while (st.nextToken() != StreamTokenizer.TT_EOL) {}
+            break FINDWEIGHTS;
+          }
         }
       }
 
-      SimpleWeightMatrix matrix = new SimpleWeightMatrix(
-        (FiniteAlphabet) symParser.getAlphabet(),
-        width,
-        DistributionFactory.DEFAULT
-      );
+      SimpleWeightMatrix matrix = new SimpleWeightMatrix((FiniteAlphabet) symParser.getAlphabet(),
+          width, DistributionFactory.DEFAULT);
 
       int r = 0;
       int c = 0;
-     READMOTIF:
-      while( true ) {
+      READMOTIF: while (true) {
         int nt = st.nextToken();
         if (nt == StreamTokenizer.TT_EOF) {
-            break OUTER;
+          break OUTER;
         } else if (nt == StreamTokenizer.TT_EOL) {
-            r = 0;
-            c++;
-            if(c == width)
-              break READMOTIF;
+          r = 0;
+          c++;
+          if (c == width) break READMOTIF;
         } else if (nt == StreamTokenizer.TT_NUMBER) {
           try {
-            matrix.getColumn(c).setWeight(sym.symbolAt(r+1), st.nval);
+            matrix.getColumn(c).setWeight(sym.symbolAt(r + 1), st.nval);
             r++;
           } catch (ChangeVetoException cve) {
-            throw new BioError("Couldn't set up the distribution ",cve);
+            throw new BioError("Couldn't set up the distribution ", cve);
           }
         }
       }
