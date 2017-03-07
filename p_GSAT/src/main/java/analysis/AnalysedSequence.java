@@ -131,8 +131,9 @@ public class AnalysedSequence extends Sequence {
    * @author Lovis Heindrich
    */
   public AnalysedSequence(Gene gene, LinkedList<String> mutations, String name, String sequence,
-      java.util.Date date, String researcher, String comment, boolean manuallyChecked, String primer2,
-      String vecLeft, String vecRight, int trimpercent, int histag, int avgquality2) {
+      java.util.Date date, String researcher, String comment, boolean manuallyChecked,
+      String primer2, String vecLeft, String vecRight, int trimpercent, int histag,
+      int avgquality2) {
     super(sequence, researcher, date);
     this.referencedGene = gene;
     this.mutations = mutations;
@@ -233,6 +234,21 @@ public class AnalysedSequence extends Sequence {
 
   public void setComments(String comments) {
     this.comments = comments;
+  }
+
+  /**
+   * adds comment to existing comments
+   * 
+   * @author Kevin
+   * @param comments
+   */
+  public void addComments(String comments) {
+    if (this.comments.length() > 0) {
+      this.comments = this.comments + ", " + comments;
+    } else {
+      setComments(comments);
+    }
+
   }
 
   public String getFileName() {

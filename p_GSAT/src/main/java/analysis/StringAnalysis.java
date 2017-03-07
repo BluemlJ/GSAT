@@ -670,7 +670,7 @@ public class StringAnalysis {
     // define new sequence
     String newSequence = toAlign.sequence;
 
-    // cut off everything befor begin found by findOffset and write into
+    // cut off everything before begin found by findOffset and write into
     // vector and newSequence
     String leftVector = newSequence.substring(0, Math.max(toAlign.getOffset(), 0));
     newSequence = newSequence.substring(Math.max(toAlign.getOffset(), 0));
@@ -734,6 +734,7 @@ public class StringAnalysis {
 
     // warn if sequence is to short for testing
     if (toTest.length() < 9) {
+      sequence.addComments("Usable part of Sequence is very short. Maybe adjust Quality Parameters");
       System.err.println("Usable part of Sequence might be too short for good Results");
     }
 
@@ -776,7 +777,7 @@ public class StringAnalysis {
         // EMERGENCY MODE
         System.err.println("EMERGENCY MODE REQUIRED");
         // TODO Implement
-
+        sequence.addComments("No match found, cant Analyse Sequence");
         // TODO REMOVE
         offsetNotFound = false;
       }
