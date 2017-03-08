@@ -20,11 +20,13 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.control.ToggleGroup;
+import javafx.scene.control.Alert.AlertType;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
@@ -100,12 +102,28 @@ public class DatabaseWindow extends Application implements javafx.fxml.Initializ
 				if (uploadToggle.isSelected()) {
 					try {
 						DatabaseConnection.pushAllPrimer();
+
+						Alert alert = new Alert(AlertType.INFORMATION);
+			            alert.setTitle("Success");
+			            alert.setHeaderText("Upload was successful");
+			            alert.showAndWait();
 					} catch (DatabaseConnectionException | SQLException e) {
 						// error while connecting to database
-						e.printStackTrace();
+						
+						Alert alert = new Alert(AlertType.INFORMATION);
+			            alert.setTitle("Failed");
+			            alert.setHeaderText("Connection to database failed");
+			            alert.showAndWait();
+			            
+			            e.printStackTrace();
 					} catch(NumberFormatException | IOException e){
 						// error while writing txt
 						e.printStackTrace();
+
+						Alert alert = new Alert(AlertType.INFORMATION);
+			            alert.setTitle("Failed");
+			            alert.setHeaderText("Failure while reading local file");
+			            alert.showAndWait();
 					}
 				}
 				
@@ -113,46 +131,91 @@ public class DatabaseWindow extends Application implements javafx.fxml.Initializ
 				else if (downloadToggle.isSelected()) {
 					try {
 						DatabaseConnection.pullAndSavePrimer();
+
+						Alert alert = new Alert(AlertType.INFORMATION);
+			            alert.setTitle("Success");
+			            alert.setHeaderText("Download was successful");
+			            alert.showAndWait();
 					} catch (DatabaseConnectionException | SQLException e) {
 						// error while connecting to database
 						e.printStackTrace();
+						
+						Alert alert = new Alert(AlertType.INFORMATION);
+			            alert.setTitle("Failed");
+			            alert.setHeaderText("Connection to database failed");
+			            alert.showAndWait();
 					} catch(NumberFormatException | IOException e){
 						// error while writing txt
 						e.printStackTrace();
+
+						Alert alert = new Alert(AlertType.INFORMATION);
+			            alert.setTitle("Failed");
+			            alert.setHeaderText("Failure while writing local file");
+			            alert.showAndWait();
 					}
 				}
 			}
 			
 			// update gene data
-			if (geneToggle.isSelected()) {
+			else if (geneToggle.isSelected()) {
 				// upload all data from genes.txt
 				if (uploadToggle.isSelected()) {
 					try {
 						DatabaseConnection.pushAllGenes();
+						
+						Alert alert = new Alert(AlertType.INFORMATION);
+			            alert.setTitle("Success");
+			            alert.setHeaderText("Upload was successful");
+			            alert.showAndWait();
 					} catch (SQLException | DatabaseConnectionException e) {
 						// error while connecting to database
 						e.printStackTrace();
+						
+						Alert alert = new Alert(AlertType.INFORMATION);
+			            alert.setTitle("Failed");
+			            alert.setHeaderText("Connection to database failed");
+			            alert.showAndWait();
 					} catch (IOException e){
 						// error while reading genes from txt
 						e.printStackTrace();
+
+						Alert alert = new Alert(AlertType.INFORMATION);
+			            alert.setTitle("Failed");
+			            alert.setHeaderText("Failure while reading local file");
+			            alert.showAndWait();
 					}
 				}
 				// download genes to genes.txt
 				else if (downloadToggle.isSelected()) {
 					try {
 						DatabaseConnection.pullAndSaveGenes();
+
+						Alert alert = new Alert(AlertType.INFORMATION);
+			            alert.setTitle("Success");
+			            alert.setHeaderText("Download was successful");
+			            alert.showAndWait();
 					} catch (DatabaseConnectionException | SQLException e) {
 						// error while connecting to database
 						e.printStackTrace();
+						
+						Alert alert = new Alert(AlertType.INFORMATION);
+			            alert.setTitle("Failed");
+			            alert.setHeaderText("Connection to database failed");
+			            alert.showAndWait();
 					} catch (IOException e){
 						// error while writing txt
 						e.printStackTrace();
+						
+						Alert alert = new Alert(AlertType.INFORMATION);
+			            alert.setTitle("Failed");
+			            alert.setHeaderText("Failure while writing local file");
+			            alert.showAndWait();
 					}
 				}
 			}
 
 			// sequences
-			if (resultToggle.isSelected()) {
+			else if (resultToggle.isSelected()) {
 				
 				// upload data from file
 				if (uploadToggle.isSelected()) {
@@ -160,12 +223,27 @@ public class DatabaseWindow extends Application implements javafx.fxml.Initializ
 					try {
 						LinkedList<AnalysedSequence> sequences = FileRetriever.convertFilesToSequences(path);
 						DatabaseConnection.pushAllData(sequences);
+						
+						Alert alert = new Alert(AlertType.INFORMATION);
+			            alert.setTitle("Success");
+			            alert.setHeaderText("Upload was successful");
+			            alert.showAndWait();
 					} catch (IOException e) {
 						// error while reading file
 						e.printStackTrace();
+						
+						Alert alert = new Alert(AlertType.INFORMATION);
+			            alert.setTitle("Failed");
+			            alert.setHeaderText("Failure while reading local file");
+			            alert.showAndWait();
 					} catch (SQLException | DatabaseConnectionException e) {
 						// error while writing to database
 						e.printStackTrace();
+						
+						Alert alert = new Alert(AlertType.INFORMATION);
+			            alert.setTitle("Failed");
+			            alert.setHeaderText("Connection to database failed");
+			            alert.showAndWait();
 					}
 				}
 				
