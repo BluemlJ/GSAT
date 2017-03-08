@@ -481,8 +481,8 @@ public class DatabaseConnection {
       checked = "n";
     }
     String primer = sequence.getPrimer();
-    String vecLeft = sequence.getLeftVector();
-    String vecRight = sequence.getRightVector();
+    // String vecLeft = sequence.getLeftVector();
+    // String vecRight = sequence.getRightVector();
     int avgquality = (int) sequence.getAvgQuality();
 
     int trimPercent = (int) sequence.getTrimPercentage();
@@ -514,8 +514,8 @@ public class DatabaseConnection {
     pstmt.setString(6, checked);
     pstmt.setInt(7, geneId);
     pstmt.setString(8, primer);
-    pstmt.setString(9, vecLeft);
-    pstmt.setString(10, vecRight);
+    // pstmt.setString(9, vecLeft);
+    // pstmt.setString(10, vecRight);
     pstmt.setInt(11, trimPercent);
     pstmt.setInt(12, histag);
     pstmt.setInt(13, avgquality);
@@ -967,7 +967,7 @@ public class DatabaseConnection {
       LinkedList<String> mutations = pullMutationsPerSequence(id);
 
       AnalysedSequence seq = new AnalysedSequence(gene, mutations, name, sequence, date, researcher,
-          comment, manuallyChecked, primer, vecLeft, vecRight, trimpercent, histag, avgquality);
+          comment, manuallyChecked, primer, trimpercent, histag, avgquality);
       sequences.add(seq);
     }
     stmt.close();
@@ -1017,7 +1017,7 @@ public class DatabaseConnection {
       LinkedList<String> mutations = pullMutationsPerSequence(id);
 
       AnalysedSequence seq = new AnalysedSequence(gene, mutations, name, sequence, date, researcher,
-          comment, manuallyChecked, primer, vecLeft, vecRight, trimpercent, histag, avgquality);
+          comment, manuallyChecked, primer, trimpercent, histag, avgquality);
       sequences.add(seq);
 
     }
@@ -1161,7 +1161,7 @@ public class DatabaseConnection {
 	      LinkedList<String> mutations = pullMutationsPerSequence(id);
 
 	      AnalysedSequence seq = new AnalysedSequence(gene, mutations, name, sequence, date, researcher,
-	          comment, manuallyChecked, primer, vecLeft, vecRight, trimpercent, histag, avgquality);
+	          comment, manuallyChecked, primer, trimpercent, histag, avgquality);
 	      sequences.add(seq);
 
 	    }

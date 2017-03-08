@@ -171,7 +171,7 @@ public class GeneHandlingTests {
 
     GeneHandler.readGenes();
 
-    assertTrue(GeneHandler.getGene("FSA") != null);
+    assertTrue(GeneHandler.getGene("fsa") != null);
 
     GeneHandler.setPath(oldPath);
   }

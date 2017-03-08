@@ -35,11 +35,6 @@ public class AnalysedSequence extends Sequence {
    */
   private String fileName;
 
-  /**
-   * The left vector to be stored with this sequence, i.e. the nucleotides at the left side of the
-   * sequence that corresponds to the gene.
-   */
-  private String leftVector;
 
   /**
    * Indicates whether the results of this analysis have been checked by a researcher.
@@ -67,11 +62,6 @@ public class AnalysedSequence extends Sequence {
    */
   private Gene referencedGene;
 
-  /**
-   * The right vector to be stored with this sequence, i.e. the nucleotides at the right hand side
-   * of the sequence that corresponds to the gene.
-   */
-  private String rightVector;
 
   /**
    * The percentage of trimmed nucleotides due to the quality trim.
@@ -80,7 +70,7 @@ public class AnalysedSequence extends Sequence {
 
   private String primer = "";
 
-  private double avgQuality;
+  private int avgQuality;
 
 
   /**
@@ -132,7 +122,7 @@ public class AnalysedSequence extends Sequence {
    */
   public AnalysedSequence(Gene gene, LinkedList<String> mutations, String name, String sequence,
       java.util.Date date, String researcher, String comment, boolean manuallyChecked,
-      String primer2, String vecLeft, String vecRight, int trimpercent, int histag,
+      String primer2, int trimpercent, int histag,
       int avgquality2) {
     super(sequence, researcher, date);
     this.referencedGene = gene;
@@ -141,8 +131,6 @@ public class AnalysedSequence extends Sequence {
     this.comments = comment;
     this.manuallyChecked = manuallyChecked;
     this.primer = primer2;
-    this.leftVector = vecLeft;
-    this.rightVector = vecRight;
     this.trimPercentage = trimpercent;
     this.hisTagPosition = histag;
     this.avgQuality = avgquality2;
@@ -261,16 +249,6 @@ public class AnalysedSequence extends Sequence {
   }
 
 
-  public String getLeftVector() {
-    return leftVector;
-  }
-
-
-  public void setLeftVector(String leftVector) {
-    this.leftVector = leftVector;
-  }
-
-
   public boolean isManuallyChecked() {
     return manuallyChecked;
   }
@@ -311,11 +289,11 @@ public class AnalysedSequence extends Sequence {
     this.qualities = qualities;
   }
 
-  public double getAvgQuality() {
+  public int getAvgQuality() {
     return avgQuality;
   }
 
-  public void setAvgQuality(double avgQuality) {
+  public void setAvgQuality(int avgQuality) {
     this.avgQuality = avgQuality;
   }
 
@@ -337,17 +315,6 @@ public class AnalysedSequence extends Sequence {
   public void setReferencedGene(Gene referencedGene) {
     this.referencedGene = referencedGene;
   }
-
-
-  public String getRightVector() {
-    return rightVector;
-  }
-
-
-  public void setRightVector(String rightVector) {
-    this.rightVector = rightVector;
-  }
-
 
 
   public double getTrimPercentage() {
