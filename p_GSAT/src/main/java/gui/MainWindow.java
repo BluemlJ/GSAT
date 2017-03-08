@@ -2,16 +2,22 @@ package gui;
 
 
 
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.LinkedList;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
+import analysis.AnalysedSequence;
+import analysis.Pair;
 import exceptions.ConfigNotFoundException;
+import exceptions.FileReadingException;
+import exceptions.MissingPathException;
 import exceptions.UnknownConfigFieldException;
 import io.ConfigHandler;
 import io.FileSaver;
+import io.SequenceReader;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
@@ -45,6 +51,9 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
 
   public static boolean settingsOpen = false;
   public static boolean autoGeneSearch = false;
+
+  private static Pair<LinkedList<File>, LinkedList<File>> files;
+  private static LinkedList<AnalysedSequence> sequences;
 
   // Warnings by closing without saving
   public static boolean changesOnGenes = false;
@@ -156,6 +165,16 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
     if (!ConfigHandler.getSrcPath().isEmpty()) {
       srcField.setText(ConfigHandler.getSrcPath());
       chromatogramButton.setDisable(false);
+      files = GUIUtils.getSequencesFromSourceFolder(srcField.getText());
+      
+      for (File file : files.first) {
+        try {
+          sequences.add(SequenceReader.convertFileIntoSequence(file));
+        } catch (FileReadingException | IOException | MissingPathException e) {
+          // TODO Auto-generated catch block
+          e.printStackTrace();
+        }
+      }
     }
     srcField.textProperty().addListener(new ChangeListener<String>() {
       @Override
@@ -169,6 +188,16 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
             chromatogramButton.setDisable(true);
           } else {
             chromatogramButton.setDisable(false);
+            files = GUIUtils.getSequencesFromSourceFolder(srcField.getText());
+            
+            for (File file : files.first) {
+              try {
+                sequences.add(SequenceReader.convertFileIntoSequence(file));
+              } catch (FileReadingException | IOException | MissingPathException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+              }
+            }
           }
         }
       }
@@ -301,7 +330,6 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
           @Override
           protected Void call() throws Exception {
 
-            String srcFieldTest = srcField.getText();
             String destfileNameText = fileNameField.getText();
             String geneBoxItem;
             if (autoGeneSearch) {
@@ -311,7 +339,7 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
             }
 
             LinkedList<Text> resultingLines =
-                GUIUtils.runAnalysis(srcFieldTest, geneBoxItem, destfileNameText, bar);
+                GUIUtils.runAnalysis(files, geneBoxItem, destfileNameText, bar);
             Platform.runLater(new Runnable() {
 
               @Override
@@ -451,6 +479,8 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
         ShowChromatogram chromaWindow = new ShowChromatogram();
         try {
           chromaWindow.start(new Stage());
+        
+          chromaWindow.setSequence(sequences);
         } catch (Exception e) {
           // TODO: handle exception
         }
@@ -512,7 +542,7 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
               // TODO Auto-generated catch block
             }
           } else if (result.get() == dontSave) {
-            System.out.println("dont save"); 
+            System.out.println("dont save");
             // TODO
           } else {
             event.consume();

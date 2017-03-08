@@ -124,13 +124,10 @@ public class GUIUtils {
    *         printed in the infoarea.
    * @throws DissimilarGeneException
    */
-  public static LinkedList<Text> runAnalysis(String sourcepath, String geneId, String resultname,
-      ProgressBar bar) throws DissimilarGeneException {
+  public static LinkedList<Text> runAnalysis(Pair<LinkedList<File>, LinkedList<File>> sequences,
+      String geneId, String resultname, ProgressBar bar) throws DissimilarGeneException {
 
     LinkedList<Text> resultingLines = new LinkedList<Text>();
-
-    // get all ab1 files
-    Pair<LinkedList<File>, LinkedList<File>> sequences = getSequencesFromSourceFolder(sourcepath);
 
     if (sequences.first == null) {
       if (sequences.second == null) {
@@ -374,8 +371,7 @@ public class GUIUtils {
    * @param source the path to check about .abi-Files
    * @return two lists in form of a Pair. The .ab1 files and the not usuable files.
    */
-  private static Pair<LinkedList<File>, LinkedList<File>> getSequencesFromSourceFolder(
-      String source) {
+  static Pair<LinkedList<File>, LinkedList<File>> getSequencesFromSourceFolder(String source) {
 
     LinkedList<File> files = null;
     LinkedList<File> oddFiles = null;
