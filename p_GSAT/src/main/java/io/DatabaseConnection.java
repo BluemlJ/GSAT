@@ -1110,4 +1110,8 @@ public class DatabaseConnection {
     }
     ConfigHandler.writeConfig();
   }
+  
+  public static void pullAllSequencesPerPeriod(Date date1, Date date2){
+	  
+  }
 }
