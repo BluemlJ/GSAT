@@ -116,9 +116,7 @@ public class FileRetriever {
 
     // data[0] contains the id
     sequence.setFileName(data[1]);
-    sequence.setReferencedGene(GeneHandler.getGene(data[2]));
-
-    // data[3] contains the organism (given by GeneHandler)
+    sequence.setReferencedGene(GeneHandler.checkGene(data[2], data[3]));
 
     String[] mutations = data[4].split(",");
     for (int i = 0; i < mutations.length; i++) {

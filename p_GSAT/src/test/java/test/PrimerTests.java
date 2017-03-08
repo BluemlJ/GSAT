@@ -36,14 +36,14 @@ public class PrimerTests {
 
   }
 
-  @Ignore
+
   @Test
   public void testPrimerRead() throws IOException {
     PrimerHandler.initPrimer();
     PrimerHandler.readPrimer();
   }
 
-  @Ignore
+
   @Test
   public void testPrimerWrite() throws IOException {
     PrimerHandler.initPrimer();
