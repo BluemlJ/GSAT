@@ -64,18 +64,22 @@ public class DatabaseWindow extends Application implements javafx.fxml.Initializ
   @FXML
   private DatePicker endDate;
 
+  private ToggleGroup typeGroupe;
+  private ToggleGroup usageGroupe;
+  
 
 
   @Override
   public void initialize(URL arg0, ResourceBundle arg1) {
 
-    ToggleGroup typeGroupe = new ToggleGroup();
+    typeGroupe = new ToggleGroup();
     resultToggle.setToggleGroup(typeGroupe);
     geneToggle.setToggleGroup(typeGroupe);
     primerToggle.setToggleGroup(typeGroupe);
     allToggle.setToggleGroup(typeGroupe);
+    
 
-    ToggleGroup usageGroupe = new ToggleGroup();
+    usageGroupe = new ToggleGroup();
     uploadToggle.setToggleGroup(usageGroupe);
     downloadToggle.setToggleGroup(usageGroupe);
     
