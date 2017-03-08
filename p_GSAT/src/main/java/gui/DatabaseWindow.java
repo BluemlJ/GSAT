@@ -51,7 +51,8 @@ public class DatabaseWindow extends Application implements javafx.fxml.Initializ
   private Button destButton;
   @FXML
   private Button settingsButton;
-
+  @FXML
+  private Button startButton;
 
   @FXML
   private TextField researcherField;
@@ -77,6 +78,15 @@ public class DatabaseWindow extends Application implements javafx.fxml.Initializ
     ToggleGroup usageGroupe = new ToggleGroup();
     uploadToggle.setToggleGroup(usageGroupe);
     downloadToggle.setToggleGroup(usageGroupe);
+    
+    startButton.setOnAction(new EventHandler<ActionEvent>() {
+      
+      @Override
+      public void handle(ActionEvent event) {
+        // TODO Auto-generated method stub
+        
+      }
+    });
 
     destField.textProperty().addListener(new ChangeListener<String>() {
         @Override
