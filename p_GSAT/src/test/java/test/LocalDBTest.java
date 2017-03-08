@@ -49,7 +49,7 @@ public class LocalDBTest {
   Connection conn = null;
   java.sql.Statement stmt = null;
   ResultSet rs = null;
-
+  
   @Ignore
   @Test
   public void testPullAndSavePrimer()

@@ -1111,7 +1111,61 @@ public class DatabaseConnection {
     ConfigHandler.writeConfig();
   }
   
-  public static void pullAllSequencesPerPeriod(Date date1, Date date2){
-	  
+  /**
+   * Pulls all Sequences (and linked genes, researchers and mutations) between two given dates
+   * @param date1 First date
+   * @param date2 Second date
+   * @return List of the sequences
+   * @throws DatabaseConnectionException
+   * @throws SQLException
+   * @author Lovis Heindrich
+   */
+  public static ArrayList<AnalysedSequence> pullAllSequencesPerPeriod(Date date1, Date date2) throws DatabaseConnectionException, SQLException{
+	  ArrayList<AnalysedSequence> sequences = new ArrayList<AnalysedSequence>();
+
+	    conn = establishConnection();
+
+	    Statement stmt = conn.createStatement();
+	    stmt.execute("USE gsat");
+
+	    // get the sequences
+	    PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM sequences WHERE date BETWEEN ? AND ?");
+	    pstmt.setDate(1, date1);
+	    pstmt.setDate(2, date2);
+
+	    ResultSet rs = pstmt.executeQuery();
+
+	    while (rs.next()) {
+	      int id = rs.getInt("id");
+	      String name = rs.getString("name");
+	      String sequence = rs.getString("sequence");
+	      java.util.Date date = new Date(rs.getTimestamp("date").getTime());
+	      int researcherid = rs.getInt("researcher");
+	      String comment = rs.getString("comment");
+	      boolean manuallyChecked;
+	      if (rs.getString("manualcheck").charAt(0) == 'y') {
+	        manuallyChecked = true;
+	      } else {
+	        manuallyChecked = false;
+	      }
+	      int geneIndex = rs.getInt("gene");
+	      String primer = rs.getString("Primer");
+	      String vecLeft = rs.getString("vectorleft");
+	      String vecRight = rs.getString("vectorright");
+	      int trimpercent = rs.getInt("trimpercent");
+	      int histag = rs.getInt("histag");
+	      int avgquality = rs.getInt("avgquality");
+
+	      String researcher = pullResearcherPerIndex(researcherid);
+	      Gene gene = pullGenePerIndex(geneIndex);
+	      LinkedList<String> mutations = pullMutationsPerSequence(id);
+
+	      AnalysedSequence seq = new AnalysedSequence(gene, mutations, name, sequence, date, researcher,
+	          comment, manuallyChecked, primer, vecLeft, vecRight, trimpercent, histag, avgquality);
+	      sequences.add(seq);
+
+	    }
+	    stmt.close();
+	    return sequences;
   }
 }
