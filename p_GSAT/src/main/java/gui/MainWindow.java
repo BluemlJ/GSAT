@@ -124,7 +124,7 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
     GUIUtils.setColorOnButton(manualButton, ButtonColor.GRAY);
     GUIUtils.setColorOnButton(aboutButton, ButtonColor.GRAY);
     GUIUtils.setColorOnButton(databaseButton, ButtonColor.GRAY);
-
+    GUIUtils.setColorOnButton(chromatogramButton, ButtonColor.GRAY);
 
     try {
       ConfigHandler.readConfig();

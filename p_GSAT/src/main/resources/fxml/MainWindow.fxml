@@ -82,12 +82,5 @@
             <Insets bottom="14.0" />
          </VBox.margin>
       </FlowPane>
-      <HBox alignment="CENTER_LEFT" spacing="1.0">
-         <children>
-            <Button fx:id="databaseButton1" mnemonicParsing="false" text="Database" />
-            <Button fx:id="chromatogramButton1" disable="true" mnemonicParsing="false" text="Chromatogram" />
-            <Button fx:id="settingsButton1" mnemonicParsing="false" text="Settings" />
-         </children>
-      </HBox>
   </children>
 </VBox>
