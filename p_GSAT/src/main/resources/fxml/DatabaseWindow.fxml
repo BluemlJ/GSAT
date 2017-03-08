@@ -44,13 +44,14 @@
                   <Font size="14.0" />
                </font>
             </Text>
-            <Button fx:id="settingsButton" layoutX="427.0" layoutY="221.0" mnemonicParsing="false" text="Database Settings" />
+            <Button fx:id="settingsButton" layoutX="367.0" layoutY="221.0" mnemonicParsing="false" text="Database Settings" />
             <TextField fx:id="researcherField" layoutX="142.0" layoutY="140.0" prefHeight="26.0" prefWidth="198.0" />
             <TextField fx:id="geneField" layoutX="423.0" layoutY="140.0" prefHeight="26.0" prefWidth="145.0" />
             <ToggleButton fx:id="resultToggle" layoutX="143.0" layoutY="60.0" mnemonicParsing="false" prefWidth="90.0" text="Results" />
             <ToggleButton fx:id="geneToggle" layoutX="233.0" layoutY="60.0" mnemonicParsing="false" prefWidth="90.0" text="Genes" />
             <ToggleButton fx:id="primerToggle" layoutX="322.0" layoutY="60.0" mnemonicParsing="false" prefWidth="90.0" text="Primer" />
             <ToggleButton fx:id="allToggle" layoutX="412.0" layoutY="60.0" mnemonicParsing="false" prefWidth="90.0" selected="true" text="All" />
+            <Button fx:id="startButton" layoutX="481.0" layoutY="222.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="112.0" text="Start" />
       </children>
     </AnchorPane>
   </children>
