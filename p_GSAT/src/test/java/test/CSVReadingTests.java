@@ -126,6 +126,7 @@ public class CSVReadingTests {
     AnalysedSequence test = result.pop();
 
     assertEquals("test1.ab1", test.getFileName());
+    System.out.println(test.getReversedSequence());
     assertEquals("FSA1", test.getReferencedGene().getName());
 
     assertTrue(test.getMutations().size() == 3);
