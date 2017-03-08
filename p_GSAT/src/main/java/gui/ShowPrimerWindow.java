@@ -83,8 +83,7 @@ public class ShowPrimerWindow extends Application implements javafx.fxml.Initial
     }
     Scene scene = new Scene(root);
     
-    //TODO @Jannis: hier giebt es denn nullpointer, der ist nicht von mir.
-    //primaryStage.setTitle("GSAT - Gene - " + SettingsWindow.getSelectedGene().getName());
+    primaryStage.setTitle("GSAT - Primer - " + SettingsWindow.getSelectedPrimer().getName());
     
     primaryStage.setScene(scene);
     primaryStage.sizeToScene();

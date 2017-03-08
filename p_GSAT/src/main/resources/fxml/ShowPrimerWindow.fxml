@@ -24,7 +24,7 @@
       <TextField fx:id="idField" editable="false" prefHeight="26.0" prefWidth="296.0" promptText="ID" />
       <HBox alignment="BOTTOM_CENTER" prefHeight="12.0" prefWidth="620.0" spacing="10.0">
          <children>
-            <TextField fx:id="meltingTempField" prefHeight="25.0" prefWidth="575.0" promptText="Melting Temperature" />
+            <TextField fx:id="meltingTempField" editable="false" prefHeight="25.0" prefWidth="575.0" promptText="Melting Temperature" />
             <Button fx:id="okButton" mnemonicParsing="false" text="OK" />
          </children>
       </HBox>
