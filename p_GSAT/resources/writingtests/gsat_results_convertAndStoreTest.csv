@@ -1,2 +1,2 @@
-id; file name; gene; gene organism; mutations (with codons); comments; researcher; date; average quality (percent); percentage of quality trim; nucleotide sequence; left vector; right vector; primer; HIS tag; mutations (without codons); manually checked
-1; sequence3.ab1; FSA; null; AAA7CAA, -1H5 (TCT); Nothing to say; Kurt Bohne; 08/03/17; 0.0; 0; ATC; null; null; none; none; AAA7CAA, -1H5; false
+file name; gene; gene organism; mutations (with codons); HIS tag; manually checked; comments; researcher; date; average quality (percent); percentage of quality trim; nucleotide sequence; primer; mutations (without codons)
+sequence3.ab1; FSA; null; AAA7CAA, -1H5 (TCT); none; false; Nothing to say; Kurt Bohne; 08/03/17; 0; 0; ATC; none; AAA7CAA, -1H5

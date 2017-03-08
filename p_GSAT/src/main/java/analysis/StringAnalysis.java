@@ -625,8 +625,6 @@ public class StringAnalysis {
     result = toAlign.sequence.substring(begin, end - ((end - begin) % 3));
     toAlign.trimQualityArray(begin, end - ((end - begin) % 3));
     // corect vectors
-    toAlign.setLeftVector(toAlign.getLeftVector() + toAlign.sequence.substring(0, begin));
-    toAlign.setRightVector(toAlign.getRightVector() + toAlign.sequence.substring(end));
 
     // sequence.setOffset(begin);ORIGINAL
     // System.out.println(template.sequence);
@@ -678,7 +676,6 @@ public class StringAnalysis {
     toAlign.trimQualityArray(Math.max(toAlign.getOffset(), 0), toAlign.length());
 
     // set vector and correct offset
-    toAlign.setLeftVector(leftVector);
     toAlign.setOffset(Math.min(toAlign.getOffset(), 0));
     toAlign.setOffset(-toAlign.getOffset());
     toAlign.setSequence(newSequence);
@@ -777,7 +774,7 @@ public class StringAnalysis {
         // EMERGENCY MODE
         System.err.println("EMERGENCY MODE REQUIRED");
         // TODO Implement
-        sequence.addComments("No match found, cant Analyse Sequence");
+        sequence.addComments("There was no match found, so the sequence can't be analysed.");
         // TODO REMOVE
         offsetNotFound = false;
       }

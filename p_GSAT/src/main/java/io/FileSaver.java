@@ -36,12 +36,6 @@ public class FileSaver {
   private static boolean firstCall = true;
 
   /**
-   * This value is needed to keep track of the momentarily used id of the data. One number
-   * corresponds to a single sequence. Ids start with one to be human-understandable.
-   */
-  private static long id = 1;
-
-  /**
    * Specifies the path where local files shall be created. This specifies the folder, not the file!
    */
   private static File localPath;
@@ -126,10 +120,7 @@ public class FileSaver {
     writer.write(toWrite);
 
     writer.close();
-
-    // if several files are desired, then the id field has to be set to
-    // zero. Also, ids have to be incremented.
-    updateIDs();
+    
   }
 
   /**
@@ -146,9 +137,6 @@ public class FileSaver {
 
     StringBuilder builder = new StringBuilder();
 
-    // id
-    builder.append(id).append(SEPARATOR_CHAR + " ");
-
     // file name
     String fileName = sequence.getFileName();
     builder.append(fileName).append(SEPARATOR_CHAR + " ");
@@ -161,6 +149,18 @@ public class FileSaver {
     String organism = sequence.getReferencedGene().getOrganism();
     builder.append(organism).append(SEPARATOR_CHAR + " ");
 
+    
+    if(containsProblematicComment(sequence.getComments())) {
+        builder.append(SEPARATOR_CHAR + " ").append(SEPARATOR_CHAR + " ").append(SEPARATOR_CHAR + " ");
+        builder.append(sequence.getComments().replace(SEPARATOR_CHAR, ','));
+        for(int i = 0; i < 7; i++) {
+          builder.append(SEPARATOR_CHAR + " ").append(SEPARATOR_CHAR + " ").append(SEPARATOR_CHAR + " ");
+        }
+        builder.append(System.lineSeparator());
+      return builder.toString();
+    }
+    
+    
     // mutations (with nucleotide codons)
     LinkedList<String> mutations = sequence.getMutations();
     int numberOfMutations = sequence.getMutations().size();
@@ -179,11 +179,25 @@ public class FileSaver {
         }
       }
     }
+    
+    // his tag
+    // The his tag position starts with 1 in the stored result.
+    int hisTagPosition = sequence.getHisTagPosition();
+    if (hisTagPosition == -1) {
+      builder.append("none" + SEPARATOR_CHAR + " ");
+    } else {
+      builder.append((hisTagPosition + 1) + SEPARATOR_CHAR + " ");
+    }
+    
+    // manually checked
+    boolean manuallyChecked = sequence.isManuallyChecked();
+    builder.append(manuallyChecked).append(SEPARATOR_CHAR + " ");
+    
     // comments
     // Replace the separator by a comma
     String comments = sequence.getComments().replace(SEPARATOR_CHAR, ',');
-    builder.append(comments).append(SEPARATOR_CHAR + " ");
-
+    builder.append(comments).append(SEPARATOR_CHAR + " "); 
+    
     // researcher
     String researcher = sequence.getResearcher();
     builder.append(researcher).append(SEPARATOR_CHAR + " ");
@@ -193,7 +207,7 @@ public class FileSaver {
     builder.append(addingDate).append(SEPARATOR_CHAR + " ");
 
     // average quality
-    double avgQuality = sequence.getAvgQuality();
+    int avgQuality = sequence.getAvgQuality();
     builder.append(avgQuality).append(SEPARATOR_CHAR + " ");
 
     // trim percentage
@@ -204,25 +218,9 @@ public class FileSaver {
     String nucleotides = sequence.getSequence();
     builder.append(nucleotides).append(SEPARATOR_CHAR + " ");
 
-    // left vector
-    String leftVector = sequence.getLeftVector();
-    builder.append(leftVector).append(SEPARATOR_CHAR + " ");
-
-    // right vector
-    String rightVector = sequence.getRightVector();
-    builder.append(rightVector).append(SEPARATOR_CHAR + " ");
-
     // primer (may be changed by user manually)
     builder.append("none" + SEPARATOR_CHAR + " ");
 
-    // his tag
-    // The his tag position starts with 1 in the stored result.
-    int hisTagPosition = sequence.getHisTagPosition();
-    if (hisTagPosition == -1) {
-      builder.append("none" + SEPARATOR_CHAR + " ");
-    } else {
-      builder.append((hisTagPosition + 1) + SEPARATOR_CHAR + " ");
-    }
 
     // mutations without nucleotide codons
     if (numberOfMutations == 0) {
@@ -239,15 +237,9 @@ public class FileSaver {
         builder.append(reducedMutation);
         if (i < numberOfMutations - 1) {
           builder.append(", ");
-        } else {
-          builder.append(SEPARATOR_CHAR + " ");
         }
       }
     }
-
-    // manually checked
-    boolean manuallyChecked = sequence.isManuallyChecked();
-    builder.append(manuallyChecked);
 
     builder.append(System.lineSeparator());
 
@@ -303,51 +295,40 @@ public class FileSaver {
     FileWriter writer = new FileWriter(newFile, append);
 
     if (!append) {
-      writer.write("id" + SEPARATOR_CHAR + " file name" + SEPARATOR_CHAR + " gene" + SEPARATOR_CHAR
-          + " gene organism" + SEPARATOR_CHAR + " mutations (with codons)" + SEPARATOR_CHAR
-          + " comments" + SEPARATOR_CHAR + " researcher" + SEPARATOR_CHAR + " date" + SEPARATOR_CHAR
+      writer.write("file name" + SEPARATOR_CHAR + " gene" + SEPARATOR_CHAR
+          + " gene organism" + SEPARATOR_CHAR + " mutations (with codons)" + SEPARATOR_CHAR 
+          + " HIS tag" + SEPARATOR_CHAR + " manually checked" + SEPARATOR_CHAR + " comments" + SEPARATOR_CHAR + " researcher" + SEPARATOR_CHAR + " date" + SEPARATOR_CHAR
           + " average quality (percent)" + SEPARATOR_CHAR + " percentage of quality trim"
-          + SEPARATOR_CHAR + " nucleotide sequence" + SEPARATOR_CHAR + " left vector"
-          + SEPARATOR_CHAR + " right vector" + SEPARATOR_CHAR + " primer" + SEPARATOR_CHAR
-          + " HIS tag" + SEPARATOR_CHAR + " mutations (without codons)" + SEPARATOR_CHAR
-          + " manually checked" + System.lineSeparator());
+          + SEPARATOR_CHAR + " nucleotide sequence" + SEPARATOR_CHAR + " primer" + SEPARATOR_CHAR
+          + " mutations (without codons)" + System.lineSeparator());
     }
 
     return writer;
   }
 
-  /**
-   * Sets the momentarily used id to one, if separate files are desired (each file has it's own
-   * number range, starting with one). This method is used within the writing process to handle the
-   * ids.
-   * 
-   * @see #resetIDs()
-   * 
-   * @author Ben Kohr
-   */
-  private static void updateIDs() {
-    if (separateFiles) {
-      resetIDs();
-    } else {
-      id++;
-    }
-  }
 
-  /**
-   * Sets the momentarily used id to one.
-   * 
-   * @author Ben Kohr
-   */
-  public static void resetIDs() {
-    id = 1;
+  public static boolean containsProblematicComment(String comments) {
+    
+    String[] criticalStrings = new String[]{"There was no match found, so the sequence can't be analysed."};
+    
+    for (String string : criticalStrings) {
+      if (comments.contains(string)) {
+        return true;
+      }
+    }
+    
+    return false;
+    
+    
   }
+  
+  
 
   /**
    * This method resets the class's state by resetting the ids and setting {@link #firstCall} to
    * true. This is necessary to start a completely new analyzing process.
    */
-  public static void resetAll() {
-    resetIDs();
+  public static void reset() {
     firstCall = true;
   }
 

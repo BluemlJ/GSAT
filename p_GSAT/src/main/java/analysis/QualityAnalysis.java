@@ -255,18 +255,17 @@ public class QualityAnalysis {
    * @return the average quality between 0 and 100.
    * @author bluemlj
    */
-  public static double getAvgQuality(AnalysedSequence toAnalysedSequence) {
+  public static int getAvgQuality(AnalysedSequence sequenceToAnalyse) {
 
-    if (toAnalysedSequence.getQuality().length == 0) {
+    if (sequenceToAnalyse.getQuality().length == 0) {
       return 0;
     }
 
     int sum = 0;
-    for (int i : toAnalysedSequence.getQuality()) {
+    for (int i : sequenceToAnalyse.getQuality()) {
       sum += i;
     }
-    double tmp = sum / (1.0 * toAnalysedSequence.getQuality().length);
-    return 100 - Math.pow(10, -tmp / 10);
+    return sum / sequenceToAnalyse.getQuality().length;
   }
 
 

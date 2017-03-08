@@ -196,7 +196,6 @@ public class AnalysisTests {
   public void findHISTAG1() throws CorruptedSequenceException {
     AnalysedSequence testSeq = new AnalysedSequence("ATGUUAUUUCCCTAACCCCCCCACCACCACCACCACTAA",
         "Jannis", "toAnalyse", null);
-    testSeq.setLeftVector("");
     int tmp = StringAnalysis.findHisTag(testSeq);
     assertTrue(tmp == 21);
   }
@@ -205,7 +204,6 @@ public class AnalysisTests {
   public void findHISTAG2() throws CorruptedSequenceException {
     AnalysedSequence testSeq =
         new AnalysedSequence("ATGCCTCCCCACCACCACCACCACCACTAA", "Jannis", "toAnalyse", null);
-    testSeq.setLeftVector("");
     int tmp = StringAnalysis.findHisTag(testSeq);
     assertTrue(tmp == 9);
   }

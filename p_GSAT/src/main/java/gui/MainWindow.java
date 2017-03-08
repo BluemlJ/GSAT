@@ -273,7 +273,7 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
                 + "\nStarting analysis\n"
                 + "---------------------------------------------------------------------------\n"));
 
-        FileSaver.resetAll();
+        FileSaver.reset();
         infoArea.getChildren()
             .add(new Text("Source folder or file:  " + srcField.getText() + "\n"));
 
@@ -511,20 +511,18 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
       public void handle(WindowEvent event) {
         if (changesOnGenes || changesOnPrimers || changesOnResults) {
           Alert alert = new Alert(AlertType.CONFIRMATION);
-          alert.setTitle("There are unsaved changes with:");
+          alert.setTitle("Unsaved changes!");
+          alert.setHeaderText("There are unsaved changes with:");
           if (changesOnGenes) {
-            alert.setTitle(alert.getTitle() + " genes,");
+            alert.setHeaderText(alert.getHeaderText() + " genes,");
           }
           if (changesOnPrimers) {
-            alert.setTitle(alert.getTitle() + " primers,");
+            alert.setHeaderText(alert.getHeaderText() + " primers,");
           }
           if (changesOnResults) {
-            alert.setTitle(alert.getTitle() + " results,");
+            alert.setHeaderText(alert.getHeaderText() + " results,");
           }
-          alert.setTitle(alert.getTitle().substring(0, alert.getTitle().length() - 1));
-
-          alert.setHeaderText("Look, a Confirmation Dialog with Custom Actions");
-          alert.setContentText("Choose your option.");
+          alert.setHeaderText(alert.getHeaderText().substring(0, alert.getHeaderText().length() - 1));
 
           ButtonType save = new ButtonType("Save");
           ButtonType dontSave = new ButtonType("Dont save");

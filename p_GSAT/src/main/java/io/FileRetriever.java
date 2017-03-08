@@ -53,7 +53,9 @@ public class FileRetriever {
 
       for (String line : lines) {
         AnalysedSequence seq = convertLineToSequence(line);
-        sequences.add(seq);
+        if (seq != null) {
+          sequences.add(seq);
+        }
       }
     }
 
@@ -106,48 +108,51 @@ public class FileRetriever {
    */
   private static AnalysedSequence convertLineToSequence(String line) {
 
+    
     String[] data = line.split(ConfigHandler.SEPARATOR_CHAR + "");
 
     for (int i = 0; i < data.length; i++) {
       data[i] = data[i].trim();
     }
 
+    if (FileSaver.containsProblematicComment(data[6])) {
+      return null;
+    }
+    
+    
     AnalysedSequence sequence = new AnalysedSequence();
 
-    // data[0] contains the id
-    sequence.setFileName(data[1]);
-    sequence.setReferencedGene(GeneHandler.checkGene(data[2], data[3]));
-
-    String[] mutations = data[4].split(",");
+    sequence.setFileName(data[0]);
+    sequence.setReferencedGene(GeneHandler.checkGene(data[1], data[2]));
+    
+    String[] mutations = data[3].split(",");
     for (int i = 0; i < mutations.length; i++) {
       mutations[i] = mutations[i].trim();
       sequence.addMutation(mutations[i]);
     }
 
-    sequence.setComments(data[5]);
-    sequence.setResearcher(data[6]);
-    sequence.setAddingDate(data[7]);
-    sequence.setAvgQuality(Double.parseDouble(data[8]));
-    sequence.setTrimPercentage(Double.parseDouble(data[9]));
-    sequence.setSequence(data[10]);
-    sequence.setLeftVector(data[11]);
-    sequence.setRightVector(data[12]);
-    sequence.setPrimer(data[13]);
-
-    if (data[14].equals("none")) {
+    if (data[4].equals("none")) {
       sequence.setHisTagPosition(-1);
     } else {
-      sequence.setHisTagPosition(Integer.parseInt(data[14]));
+      sequence.setHisTagPosition(Integer.parseInt(data[4]));
     }
-
-    // data[15] contains the mutations again
-
-    if (data[16].equalsIgnoreCase("yes") || data[16].equalsIgnoreCase("y")
-        || data[16].equalsIgnoreCase("true")) {
+    
+    if (data[5].equalsIgnoreCase("yes") || data[5].equalsIgnoreCase("y")
+        || data[5].equalsIgnoreCase("true")) {
       sequence.setManuallyChecked(true);
     } else {
       sequence.setManuallyChecked(false);
     }
+    
+    sequence.setComments(data[6]);
+    sequence.setResearcher(data[7]);
+    sequence.setAddingDate(data[8]);
+    sequence.setAvgQuality(Integer.parseInt(data[9]));
+    sequence.setTrimPercentage(Double.parseDouble(data[10]));
+    sequence.setSequence(data[11]);
+    sequence.setPrimer(data[12]);
+
+    // data[13] contains the mutations again
 
     return sequence;
 

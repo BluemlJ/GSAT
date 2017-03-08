@@ -80,8 +80,8 @@ public class QualityTests {
         0, 0, 0, 30, 0, 0, 0, 30, 0, 0, 0, 30, 0, 0, 0, 40, 0, 0};
     AnalysedSequence testSequence =
         new AnalysedSequence("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", "", "", qualities);
-    double avg = QualityAnalysis.getAvgQuality(testSequence);
-    assertTrue(Math.abs(avg - 99.99979) < 0.00005);
+    int avg = QualityAnalysis.getAvgQuality(testSequence);
+    assertTrue(avg == 36);
   }
 
   @Test
@@ -89,7 +89,7 @@ public class QualityTests {
     int[] qualities = {30, 31, 40, 57, 57, 57, 6, 7, 8, 4, 3, 12};
     AnalysedSequence testSequence = new AnalysedSequence("aaaaaaaaaaaa", "", "", qualities);
     double avg = QualityAnalysis.getAvgQuality(testSequence);
-    assertTrue(Math.abs(avg - 99.9974881135685) < 0.00005);
+    assertTrue(avg == 26);
   }
 
   @Test
