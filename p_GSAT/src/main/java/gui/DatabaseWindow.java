@@ -171,7 +171,8 @@ public class DatabaseWindow extends Application implements javafx.fxml.Initializ
 				
 				// download data to folder
 				else if (downloadToggle.isSelected()) {
-					
+					//TODO
+					//java.sql.Date datePickerDate = java.sql.Date.valueOf(datePicker.getValue());
 				}
 			}
 		}
@@ -283,7 +284,5 @@ public class DatabaseWindow extends Application implements javafx.fxml.Initializ
      * @Override public void handle(ActionEvent arg0) { primaryStage.close(); } });
      */
   }
-  
-  //java.sql.Date datePickerDate = java.sql.Date.valueOf(datePicker.getValue());
 
 }

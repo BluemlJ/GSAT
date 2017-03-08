@@ -49,6 +49,32 @@ public class LocalDBTest {
   Connection conn = null;
   java.sql.Statement stmt = null;
   ResultSet rs = null;
+
+  @Ignore
+  @Test
+  public void testPullPerDate() throws DatabaseConnectionException, SQLException{
+	  //TODO
+	  //yyyy-MM-dd
+	  //java.sql.Date.valueOf(String date)
+	  java.sql.Date d1 = java.sql.Date.valueOf("2000-01-01");
+	  java.sql.Date d2 = java.sql.Date.valueOf("2000-12-31");
+	  /*
+	  AnalysedSequence(Gene gene, LinkedList<String> mutations, String name, String sequence,
+		      java.util.Date date, String researcher, String comment, boolean manuallyChecked,
+		      String primer2, String vecLeft, String vecRight, int trimpercent, int histag,
+		      int avgquality2)
+		*/
+	  
+	  Gene g1 = new Gene("aaatttggg", 0, "fsa1", "Lovis Heindrich", "fsa", "comment1");
+	  LinkedList<String> m1 = new LinkedList<String>();
+	  m1.add("a5t");
+	  
+	  //AnalysedSequence s1 = new AnalysedSequence(g1, m1, "")
+	  
+	  ArrayList<AnalysedSequence> seq = DatabaseConnection.pullAllSequencesPerPeriod(d1, d2);
+	  
+  }
+  
   
   @Ignore
   @Test
