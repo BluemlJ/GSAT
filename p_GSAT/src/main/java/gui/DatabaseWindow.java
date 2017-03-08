@@ -4,7 +4,10 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import io.ConfigHandler;
 import javafx.application.Application;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -75,6 +78,18 @@ public class DatabaseWindow extends Application implements javafx.fxml.Initializ
     uploadToggle.setToggleGroup(usageGroupe);
     downloadToggle.setToggleGroup(usageGroupe);
 
+    destField.textProperty().addListener(new ChangeListener<String>() {
+        @Override
+        public void changed(ObservableValue<? extends String> observable, String oldValue,
+            String newValue) {
+          if (newValue.matches(ConfigHandler.SEPARATOR_CHAR + "")) {
+            destField.setText(oldValue);
+          } else {
+            destField.setText(newValue);
+          }
+        }
+      });
+    
     uploadToggle.setOnAction(new EventHandler<ActionEvent>() {
 
       @Override
