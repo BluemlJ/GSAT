@@ -668,9 +668,6 @@ public class StringAnalysis {
     // define new sequence
     String newSequence = toAlign.sequence;
 
-    // cut off everything before begin found by findOffset and write into
-    // vector and newSequence
-    String leftVector = newSequence.substring(0, Math.max(toAlign.getOffset(), 0));
     newSequence = newSequence.substring(Math.max(toAlign.getOffset(), 0));
     // alsow cut quality array to fit newSequence
     toAlign.trimQualityArray(Math.max(toAlign.getOffset(), 0), toAlign.length());

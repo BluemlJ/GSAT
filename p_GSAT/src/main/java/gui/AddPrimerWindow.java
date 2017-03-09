@@ -52,9 +52,6 @@ public class AddPrimerWindow extends Application implements javafx.fxml.Initiali
   @FXML
   private TextArea commentArea;
 
-  Stage activeStage;
-
-
 
   @Override
   public void initialize(URL location, ResourceBundle resources) {

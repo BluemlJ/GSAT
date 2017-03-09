@@ -52,10 +52,15 @@ public class BioJavaTest {
      * File("/home/bluemlj/Desktop/chroma.png"); ImageIO.write(chromaImg, "png", outputfile);
      */
     int[] aTrace = myTrace.getTrace(DNATools.a());
+    assertTrue(aTrace != null);
     int[] cTrace = myTrace.getTrace(DNATools.c());
+    assertTrue(cTrace != null);
     int[] gTrace = myTrace.getTrace(DNATools.g());
+    assertTrue(gTrace != null);
     int[] tTrace = myTrace.getTrace(DNATools.t());
+    assertTrue(tTrace != null);
     int[] basecalls = myTrace.getBasecalls();
+    assertTrue(basecalls != null);
   }
 
   /**

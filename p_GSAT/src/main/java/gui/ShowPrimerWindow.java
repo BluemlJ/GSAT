@@ -36,9 +36,6 @@ public class ShowPrimerWindow extends Application implements javafx.fxml.Initial
   @FXML
   private Button okButton;
 
-  Stage activeStage;
-
-
 
   @Override
   public void initialize(URL location, ResourceBundle resources) {
