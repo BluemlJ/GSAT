@@ -122,11 +122,13 @@ public class PrimerHandler {
    * 
    * @param primer the primer to be added
    */
-  public static void addPrimer(Primer primer) {
+  public static boolean addPrimer(Primer primer) {
     // only add if primer doesn´t exist yet
     if (getPrimer(primer.getName(), primer.getId()) == null) {
       primerList.add(primer);
+      return true;
     }
+    return false;
   }
 
   /**

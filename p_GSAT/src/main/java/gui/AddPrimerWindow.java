@@ -20,6 +20,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Alert.AlertType;
 import javafx.stage.Stage;
@@ -47,6 +48,9 @@ public class AddPrimerWindow extends Application implements javafx.fxml.Initiali
 
   @FXML
   private Button confirmButton;
+
+  @FXML
+  private TextArea commentArea;
 
   Stage activeStage;
 
@@ -108,17 +112,17 @@ public class AddPrimerWindow extends Application implements javafx.fxml.Initiali
       }
     });
 
-    // commentArea.textProperty().addListener(new ChangeListener<String>() {
-    // @Override
-    // public void changed(ObservableValue<? extends String> observable, String oldValue,
-    // String newValue) {
-    // if (newValue.contains(ConfigHandler.SEPARATOR_CHAR + "")) {
-    // commentArea.setText(oldValue);
-    // } else {
-    // commentArea.setText(newValue);
-    // }
-    // }
-    // });
+    commentArea.textProperty().addListener(new ChangeListener<String>() {
+      @Override
+      public void changed(ObservableValue<? extends String> observable, String oldValue,
+          String newValue) {
+        if (newValue.contains(ConfigHandler.SEPARATOR_CHAR + "")) {
+          commentArea.setText(oldValue);
+        } else {
+          commentArea.setText(newValue);
+        }
+      }
+    });
 
     confirmButton.setOnAction(new EventHandler<ActionEvent>() {
 
@@ -126,31 +130,25 @@ public class AddPrimerWindow extends Application implements javafx.fxml.Initiali
       public void handle(ActionEvent arg0) {
         if (!nameField.getText().isEmpty() && !geneArea.getText().isEmpty()
             && !idField.getText().isEmpty()) {
-          try {
-            if (PrimerHandler.addPrimer(new Primer(geneArea.getText(),
-                ConfigHandler.getResearcher(), meltingTempField.getText(), idField.getText(),
-                nameField.getText(), commentArea.getText()))) {
+          if (PrimerHandler.addPrimer(new Primer(geneArea.getText(), ConfigHandler.getResearcher(),
+              Integer.parseInt(meltingTempField.getText()), idField.getText(), nameField.getText(),
+              commentArea.getText()))) {
 
-              Alert alert = new Alert(AlertType.INFORMATION);
-              alert.setTitle("Adding primer");
-              alert.setHeaderText("Primer added successfully.");
-              alert.showAndWait();
-              MainWindow.changesOnPrimers = true;
-              parent.updateGenes();
-              Stage stage = (Stage) cancelButton.getScene().getWindow();
-              stage.close();
-            } else {
-              Alert alert = new Alert(AlertType.INFORMATION);
-              alert.setTitle("Adding primer failed");
-              alert.setHeaderText(
-                  "Primer added not successful because gene already exists in local file.");
-              alert.showAndWait();
+            Alert alert = new Alert(AlertType.INFORMATION);
+            alert.setTitle("Adding primer");
+            alert.setHeaderText("Primer added successfully.");
+            alert.showAndWait();
+            MainWindow.changesOnPrimers = true;
+            parent.updateGenes();
+            Stage stage = (Stage) cancelButton.getScene().getWindow();
+            stage.close();
+          } else {
+            Alert alert = new Alert(AlertType.INFORMATION);
+            alert.setTitle("Adding primer failed");
+            alert.setHeaderText(
+                "Primer added not successful because gene already exists in local file.");
+            alert.showAndWait();
 
-            }
-
-          } catch (DuplicateGeneException | IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
           }
         }
 
@@ -188,7 +186,7 @@ public class AddPrimerWindow extends Application implements javafx.fxml.Initiali
     primaryStage.setScene(scene);
     primaryStage.sizeToScene();
     primaryStage.show();
-    
+
     primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
 
       @Override
@@ -202,5 +200,5 @@ public class AddPrimerWindow extends Application implements javafx.fxml.Initiali
   public void setParent(SettingsWindow parent) {
     this.parent = parent;
   }
-  }
+
 }
