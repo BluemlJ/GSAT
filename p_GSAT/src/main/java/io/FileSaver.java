@@ -154,7 +154,7 @@ public class FileSaver {
         builder.append(SEPARATOR_CHAR + " ").append(SEPARATOR_CHAR + " ").append(SEPARATOR_CHAR + " ");
         builder.append(sequence.getComments().replace(SEPARATOR_CHAR, ','));
         for(int i = 0; i < 7; i++) {
-          builder.append(SEPARATOR_CHAR + " ").append(SEPARATOR_CHAR + " ").append(SEPARATOR_CHAR + " ");
+          builder.append(SEPARATOR_CHAR + " ");
         }
         builder.append(System.lineSeparator());
       return builder.toString();

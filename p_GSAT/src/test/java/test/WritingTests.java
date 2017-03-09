@@ -61,7 +61,20 @@ public class WritingTests {
    */
   static AnalysedSequence seq1 =
       new AnalysedSequence("ATCG", "Klaus Bohne", "sequence1.ab1", new int[] {1, 3});
+  
+  
+  
+  
+  static AnalysedSequence seq5 =
+      new AnalysedSequence("TG", "Bernd", "sequence5.ab1", new int[] {2, 6});
+  
+  static AnalysedSequence seq6 =
+      new AnalysedSequence("ATC", "Alexander", "sequence6.ab1", new int[] {2, 6});
+  
+  static AnalysedSequence seq7 =
+      new AnalysedSequence("GT", "Jonas", "sequence7.ab1", new int[] {2, 6});
 
+  
   /**
    * This method sets the genes and adds a few mutations to the AnalyzedSequence objects to make
    * them ready to be used in the tests.
@@ -93,6 +106,13 @@ public class WritingTests {
     seq4.addMutation("AAA7CAA");
     seq4.addMutation("-1H5 (TCT)");
 
+    
+    seq5.setComments("There was no match found, so the sequence can't be analysed.");
+    seq5.setReferencedGene(g1);
+    seq6.setComments("Comment. There was no match found, so the sequence can't be analysed. There may be some plasmidmixes.");
+    seq6.setReferencedGene(g1);
+    seq7.addMutation("+1T4");
+    seq7.setReferencedGene(g1);
   }
 
   @AfterClass
@@ -493,4 +513,99 @@ public class WritingTests {
 
   }
 
+  
+  @Test
+  public void criticalMessageInFile1() throws MissingPathException, IOException {
+    FileSaver.setLocalPath(path);
+    FileSaver.setSeparateFiles(false);
+    FileSaver.setDestFileName("testdata1");
+    FileSaver.storeResultsLocally("testdata1", seq5);
+
+    // Code for reading the file in again
+    BufferedReader reader =
+        new BufferedReader(new FileReader("resources/writingtests/testdata1.csv"));
+
+    LinkedList<String> results = new LinkedList<String>();
+    reader.lines().skip(1).forEach(line -> results.add(line));
+    reader.close();
+
+    // Check whether the input is correct
+    String[] correctResults = new String[] {
+        "sequence5.ab1; FSA; bacteria; ; ; ; There was no match found, so the sequence can't be analysed.; ; ; ; ; ; ; "};
+    for (int i = 0; i < correctResults.length; i++) {
+      assertEquals(correctResults[i], results.get(i));
+    }
+
+  }
+  
+  
+  
+  @Test
+  public void criticalMessageInFile2() throws MissingPathException, IOException {
+    FileSaver.setLocalPath(path);
+    FileSaver.setSeparateFiles(false);
+    FileSaver.setDestFileName("testdata2");
+    FileSaver.storeResultsLocally("testdata2", seq6);
+    FileSaver.storeResultsLocally("testdata2", seq1);
+
+    // Code for reading the file in again
+    BufferedReader reader =
+        new BufferedReader(new FileReader("resources/writingtests/testdata2.csv"));
+
+    LinkedList<String> results = new LinkedList<String>();
+    reader.lines().skip(1).forEach(line -> results.add(line));
+    reader.close();
+
+    DateFormat df = new SimpleDateFormat("dd/MM/yy");
+    String addingDate = df.format(new Date());
+
+    // Check whether the input is correct
+    String[] correctResults = new String[] {
+        "sequence6.ab1; FSA; bacteria; ; ; ; Comment. There was no match found, so the sequence can't be analysed. There may be some plasmidmixes.; ; ; ; ; ; ; ",
+        "sequence1.ab1; FSA; bacteria; A131E (ACC), G7K (ATC), +2H5 (AAC); none; false; No comments; Klaus Bohne; " + addingDate + "; 0; 0; ATCG; none; A131E, G7K, +2H5"};
+    
+    for (int i = 0; i < correctResults.length; i++) {
+      assertEquals(correctResults[i], results.get(i));
+    }
+
+  }
+  
+  
+  @Test
+  public void criticalMessageInFile3() throws MissingPathException, IOException {
+    
+    FileSaver.setSeparateFiles(false);
+    
+    FileSaver.setLocalPath(path);
+    FileSaver.setDestFileName("testdata3");
+    FileSaver.storeResultsLocally("testdata3", seq2);
+    FileSaver.storeResultsLocally("testdata3", seq5);
+    FileSaver.storeResultsLocally("testdata3", seq6);
+    FileSaver.storeResultsLocally("testdata3", seq7);
+
+    // Code for reading the file in again
+    BufferedReader reader =
+        new BufferedReader(new FileReader("resources/writingtests/testdata3.csv"));
+
+    LinkedList<String> results = new LinkedList<String>();
+    reader.lines().skip(1).forEach(line -> results.add(line));
+    reader.close();
+
+    DateFormat df = new SimpleDateFormat("dd/MM/yy");
+    String addingDate = df.format(new Date());
+
+    // Check whether the input is correct
+    String[] correctResults = new String[] {
+        "sequence2.ab1; FSA; null; reading frame error; none; false; No comments; Klaus Bohne; " + addingDate + "; 0; 0; ATCTTTG; none; reading frame error",
+        "sequence5.ab1; FSA; bacteria; ; ; ; There was no match found, so the sequence can't be analysed.; ; ; ; ; ; ; ",
+        "sequence6.ab1; FSA; bacteria; ; ; ; Comment. There was no match found, so the sequence can't be analysed. There may be some plasmidmixes.; ; ; ; ; ; ; ",
+        "sequence7.ab1; FSA; bacteria; +1T4; none; false; ; Jonas; " + addingDate + "; 0; 0; GT; none; +1T4"};
+    for (int i = 0; i < correctResults.length; i++) {
+      assertEquals(correctResults[i], results.get(i));
+    }
+
+  }
+  
+  
+  
 }
