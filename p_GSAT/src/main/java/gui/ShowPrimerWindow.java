@@ -18,8 +18,7 @@ import javafx.stage.Stage;
 
 public class ShowPrimerWindow extends Application implements javafx.fxml.Initializable {
 
-  // private SettingsWindow parent;
-
+  
   // fields
   @FXML
   private TextField nameField;
@@ -32,6 +31,9 @@ public class ShowPrimerWindow extends Application implements javafx.fxml.Initial
 
   @FXML
   private javafx.scene.control.TextArea geneArea;
+  
+  @FXML
+  private javafx.scene.control.TextArea commentArea;
 
   @FXML
   private Button okButton;
@@ -49,6 +51,7 @@ public class ShowPrimerWindow extends Application implements javafx.fxml.Initial
     geneArea.setText(selectedPrimer.getSequence());
     meltingTempField.setText(selectedPrimer.getMeltingPoint() + "");
     idField.setText(selectedPrimer.getId());
+    commentArea.setText(selectedPrimer.getComment());
 
     okButton.setOnAction(new EventHandler<ActionEvent>() {
       @Override
