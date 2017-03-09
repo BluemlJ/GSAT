@@ -60,7 +60,7 @@ public class AddGeneWindow extends Application implements javafx.fxml.Initializa
       @Override
       public void changed(ObservableValue<? extends String> observable, String oldValue,
           String newValue) {
-        if (newValue.matches(".*" + ConfigHandler.SEPARATOR_CHAR + ".*")) {
+        if (newValue.contains(ConfigHandler.SEPARATOR_CHAR + "")) {
           nameField.setText(oldValue);
         } else {
           nameField.setText(newValue);
@@ -72,7 +72,7 @@ public class AddGeneWindow extends Application implements javafx.fxml.Initializa
       @Override
       public void changed(ObservableValue<? extends String> observable, String oldValue,
           String newValue) {
-        if (newValue.matches(".*" + ConfigHandler.SEPARATOR_CHAR + ".*")) {
+        if (newValue.contains(ConfigHandler.SEPARATOR_CHAR + "")) {
           organismField.setText(oldValue);
         } else {
           organismField.setText(newValue);
@@ -96,7 +96,7 @@ public class AddGeneWindow extends Application implements javafx.fxml.Initializa
       @Override
       public void changed(ObservableValue<? extends String> observable, String oldValue,
           String newValue) {
-        if (newValue.matches(".*" + ConfigHandler.SEPARATOR_CHAR + ".*")) {
+        if (newValue.contains(ConfigHandler.SEPARATOR_CHAR + "")) {
           commentArea.setText(oldValue);
         } else {
           commentArea.setText(newValue);

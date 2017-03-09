@@ -16,7 +16,6 @@ import analysis.StringAnalysis;
 import exceptions.ConfigNotFoundException;
 import exceptions.CorruptedSequenceException;
 import exceptions.DissimilarGeneException;
-import exceptions.FileReadingException;
 import exceptions.MissingPathException;
 import exceptions.UndefinedTypeOfMutationException;
 import exceptions.UnknownConfigFieldException;
@@ -24,7 +23,6 @@ import io.ConfigHandler;
 import io.FileSaver;
 import io.GeneHandler;
 import io.PrimerHandler;
-import io.SequenceReader;
 import javafx.collections.FXCollections;
 import javafx.event.EventHandler;
 import javafx.scene.control.Alert;
@@ -124,25 +122,17 @@ public class GUIUtils {
    *         printed in the infoarea.
    * @throws DissimilarGeneException
    */
-  public static LinkedList<Text> runAnalysis(Pair<LinkedList<File>, LinkedList<File>> sequences,
-      String geneId, String resultname, ProgressBar bar) throws DissimilarGeneException {
+  public static LinkedList<Text> runAnalysis(LinkedList<AnalysedSequence> sequences, String geneId,
+      String resultname, ProgressBar bar) throws DissimilarGeneException {
 
     LinkedList<Text> resultingLines = new LinkedList<Text>();
 
-    if (sequences.first == null) {
-      if (sequences.second == null) {
-        return wrap(
-            "Reading Sequences unsuccessful: "
-                + "please make sure the given path is correct or the file is valid\n",
-            resultingLines, true);
-      } else {
-        return wrap("No AB1 files were found at the given path or the file is invalid.\n",
-            resultingLines, true);
-      }
-    } else {
-      wrap("Reading .ab1 file(s) was successful\n", resultingLines, false);
+    if (sequences == null) {
+      return wrap(
+          "Reading Sequences unsuccessful: "
+              + "please make sure the given path is correct or the file is valid\n",
+          resultingLines, true);
     }
-
     // get the gene from the coiceboxID
     Gene gene = null;
     if (!geneId.equals("-1")) {
@@ -151,56 +141,56 @@ public class GUIUtils {
     }
     // foreach ab1 file
     int counter = 0;
-    int allFiles = sequences.first.size();
-    for (File file : sequences.first) {
+    int allFiles = sequences.size();
+    for (AnalysedSequence analysedSequence : sequences) {
       // get Sequence
-      AnalysedSequence toAnalyse = readSequenceFromFile(file).first;
       if (geneId.equals("-1")) {
-        gene = StringAnalysis.findRightGene(toAnalyse, GeneHandler.getGeneList());
+        gene = StringAnalysis.findRightGene(analysedSequence, GeneHandler.getGeneList());
       }
-      toAnalyse.setReferencedGene(gene);
+      analysedSequence.setReferencedGene(gene);
 
       // checks if complementary and reversed Sequence is better, then
       // standard
       try {
-        StringAnalysis.checkComplementAndReverse(toAnalyse);
+        StringAnalysis.checkComplementAndReverse(analysedSequence);
       } catch (CorruptedSequenceException e) {
         return wrap("Calculation of complementary sequence unsuccessful, analysing stops\n",
             resultingLines, true);
       }
 
       // cut out vector
-      StringAnalysis.trimVector(toAnalyse);
+      StringAnalysis.trimVector(analysedSequence);
 
-      int lengthBeforeTrimmingQuality = toAnalyse.getSequence().length();
+      int lengthBeforeTrimmingQuality = analysedSequence.getSequence().length();
       // cut out low Quality parts of sequence
-      QualityAnalysis.trimLowQuality(toAnalyse);
+      QualityAnalysis.trimLowQuality(analysedSequence);
 
-      int stopcodonPosition = StringAnalysis.findStopcodonPosition(toAnalyse);
+      int stopcodonPosition = StringAnalysis.findStopcodonPosition(analysedSequence);
       if (stopcodonPosition != -1) {
-        toAnalyse.trimSequence(0, stopcodonPosition * 3 + 2);
+        analysedSequence.trimSequence(0, stopcodonPosition * 3 + 2);
       }
 
-      toAnalyse.setTrimPercentage(
-          QualityAnalysis.percentageOfTrimQuality(lengthBeforeTrimmingQuality, toAnalyse));
+      analysedSequence.setTrimPercentage(
+          QualityAnalysis.percentageOfTrimQuality(lengthBeforeTrimmingQuality, analysedSequence));
 
-      toAnalyse.setHisTagPosition(StringAnalysis.findHisTag(toAnalyse));
+      analysedSequence.setHisTagPosition(StringAnalysis.findHisTag(analysedSequence));
       // find all Mutations
       try {
-        MutationAnalysis.findMutations(toAnalyse);
+        MutationAnalysis.findMutations(analysedSequence);
+        MutationAnalysis.findPlasmidMix(analysedSequence);
       } catch (UndefinedTypeOfMutationException | CorruptedSequenceException e) {
-        return wrap(
-            "Mutation analysis was unsuccessful because of error in " + file.getName() + "\n",
-            resultingLines, true);
+        return wrap("Mutation analysis was unsuccessful because of error in "
+            + analysedSequence.getFileName() + "\n", resultingLines, true);
       }
 
       // add average quality
-      toAnalyse.setAvgQuality(QualityAnalysis.getAvgQuality(toAnalyse));
+      analysedSequence.setAvgQuality(QualityAnalysis.getAvgQuality(analysedSequence));
 
       // add entry to database
       try {
         FileSaver.setDestFileName(resultname);
-        FileSaver.storeResultsLocally(file.getName().replaceFirst("[.][^.]+$", ""), toAnalyse);
+        FileSaver.storeResultsLocally(analysedSequence.getFileName().replaceFirst("[.][^.]+$", ""),
+            analysedSequence);
 
       } catch (MissingPathException e2) {
         FileSaver.setLocalPath("");
@@ -387,34 +377,6 @@ public class GUIUtils {
     return new Pair<LinkedList<File>, LinkedList<File>>(files, oddFiles);
   }
 
-  /**
-   * Reads the Sequence of the given File and prints Errors if necessary
-   * 
-   * @param file the .ab1 file
-   * @return Analysedsequence and reportpair
-   * @author Jannis
-   */
-  private static Pair<AnalysedSequence, Pair<Boolean, Text>> readSequenceFromFile(File file) {
-    Text report = getRedText(
-        "Failure with: " + file.getAbsolutePath() + ".\n This file might be corrupted.\n");
-    boolean success = false;
-    Pair<Boolean, Text> ret = null;
-    try {
-      success = true;
-      report = new Text("");
-      ret = new Pair<Boolean, Text>(success, report);
-      return new Pair<AnalysedSequence, Pair<Boolean, Text>>(
-          SequenceReader.convertFileIntoSequence(file), ret);
-    } catch (FileReadingException e) {
-      System.err.println("Could not read from file.\n");
-    } catch (IOException e) {
-      System.err.println("Error during reading occured.\n");
-    } catch (MissingPathException e) {
-      // TODO Auto-generated catch block
-      e.printStackTrace();
-    }
-    return new Pair<AnalysedSequence, Pair<Boolean, Text>>(null, ret);
-  }
 
   /**
    * This methods sets a color on a given node object and also provides EventHandlers to change the

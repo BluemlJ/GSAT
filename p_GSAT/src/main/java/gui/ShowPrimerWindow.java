@@ -35,28 +35,23 @@ public class ShowPrimerWindow extends Application implements javafx.fxml.Initial
 
   @FXML
   private Button okButton;
-  
+
   Stage activeStage;
 
 
 
   @Override
   public void initialize(URL location, ResourceBundle resources) {
-    
-    
+
+
     geneArea.setWrapText(true);
     GUIUtils.setColorOnButton(okButton, ButtonColor.BLUE);
 
-
     Primer selectedPrimer = SettingsWindow.getSelectedPrimer();
-    String tmp;
     nameField.setText(selectedPrimer.getName());
-
-
-
     geneArea.setText(selectedPrimer.getSequence());
-
-
+    meltingTempField.setText(selectedPrimer.getMeltingPoint() + "");
+    idField.setText(selectedPrimer.getId());
 
     okButton.setOnAction(new EventHandler<ActionEvent>() {
       @Override
@@ -82,9 +77,9 @@ public class ShowPrimerWindow extends Application implements javafx.fxml.Initial
       return;
     }
     Scene scene = new Scene(root);
-    
+
     primaryStage.setTitle("GSAT - Primer - " + SettingsWindow.getSelectedPrimer().getName());
-    
+
     primaryStage.setScene(scene);
     primaryStage.sizeToScene();
     primaryStage.show();

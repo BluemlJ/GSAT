@@ -231,32 +231,54 @@ public class SettingsWindow extends Application implements javafx.fxml.Initializ
     addGeneButton.setOnAction(new EventHandler<ActionEvent>() {
       @Override
       public void handle(ActionEvent arg0) {
-
         numGeneWindows++;
 
-        try {
-          final FXMLLoader loader =
-              new FXMLLoader(TextWindow.class.getResource("/fxml/AddGeneWindow.fxml"));
+        if (isPrimerOn) {
+          try {
+            final FXMLLoader loader =
+                new FXMLLoader(TextWindow.class.getResource("/fxml/AddPrimerWindow.fxml"));
 
-          final Parent root = loader.load();
+            final Parent root = loader.load();
 
-          AddGeneWindow genWin = loader.<AddGeneWindow>getController();
+            AddPrimerWindow primerWin = loader.<AddPrimerWindow>getController();
 
-          genWin.setParent(self);
+            primerWin.setParent(self);
 
-          Scene scene = new Scene(root);
-          Stage s = new Stage();
-          s.setScene(scene);
-          s.sizeToScene();
-          s.setTitle("GSAT - Adding a gene");
-          s.show();
+            Scene scene = new Scene(root);
+            Stage s = new Stage();
+            s.setScene(scene);
+            s.sizeToScene();
+            s.setTitle("GSAT - Adding a primer");
+            s.show();
 
-        } catch (IOException e) {
-          e.printStackTrace();
-          return;
+          } catch (IOException e) {
+            e.printStackTrace();
+            return;
+          }
+        } else {
+          try {
+            final FXMLLoader loader =
+                new FXMLLoader(TextWindow.class.getResource("/fxml/AddGeneWindow.fxml"));
+
+            final Parent root = loader.load();
+
+            AddGeneWindow genWin = loader.<AddGeneWindow>getController();
+
+            genWin.setParent(self);
+
+            Scene scene = new Scene(root);
+            Stage s = new Stage();
+            s.setScene(scene);
+            s.sizeToScene();
+            s.setTitle("GSAT - Adding a gene");
+            s.show();
+
+          } catch (IOException e) {
+            e.printStackTrace();
+            return;
+          }
         }
       }
-
     });
 
     addResearcherButton.setOnAction(new EventHandler<ActionEvent>() {
