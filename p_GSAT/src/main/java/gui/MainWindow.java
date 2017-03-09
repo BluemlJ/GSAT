@@ -53,7 +53,7 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
   public static boolean autoGeneSearch = false;
 
   private static Pair<LinkedList<File>, LinkedList<File>> files;
-  private static LinkedList<AnalysedSequence> sequences;
+  private static LinkedList<AnalysedSequence> sequences = new LinkedList<>();
 
   // Warnings by closing without saving
   public static boolean changesOnGenes = false;
@@ -166,12 +166,11 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
       srcField.setText(ConfigHandler.getSrcPath());
       chromatogramButton.setDisable(false);
       files = GUIUtils.getSequencesFromSourceFolder(srcField.getText());
-      
+
       for (File file : files.first) {
         try {
           sequences.add(SequenceReader.convertFileIntoSequence(file));
         } catch (FileReadingException | IOException | MissingPathException e) {
-          // TODO Auto-generated catch block
           e.printStackTrace();
         }
       }
@@ -189,12 +188,11 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
           } else {
             chromatogramButton.setDisable(false);
             files = GUIUtils.getSequencesFromSourceFolder(srcField.getText());
-            
+
             for (File file : files.first) {
               try {
                 sequences.add(SequenceReader.convertFileIntoSequence(file));
               } catch (FileReadingException | IOException | MissingPathException e) {
-                // TODO Auto-generated catch block
                 e.printStackTrace();
               }
             }
@@ -339,7 +337,7 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
             }
 
             LinkedList<Text> resultingLines =
-                GUIUtils.runAnalysis(files, geneBoxItem, destfileNameText, bar);
+                GUIUtils.runAnalysis(sequences, geneBoxItem, destfileNameText, bar);
             Platform.runLater(new Runnable() {
 
               @Override
@@ -479,7 +477,7 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
         ShowChromatogram chromaWindow = new ShowChromatogram();
         try {
           chromaWindow.start(new Stage());
-        
+
           chromaWindow.setSequence(sequences);
         } catch (Exception e) {
           // TODO: handle exception
@@ -512,17 +510,19 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
         if (changesOnGenes || changesOnPrimers || changesOnResults) {
           Alert alert = new Alert(AlertType.CONFIRMATION);
           alert.setTitle("Unsaved changes!");
-          alert.setHeaderText("There are unsaved changes with:");
+          alert.setHeaderText("STOP");
+          alert.setContentText("There are unsaved changes with ");
           if (changesOnGenes) {
-            alert.setHeaderText(alert.getHeaderText() + " genes,");
+            alert.setContentText(alert.getContentText() + " genes,");
           }
           if (changesOnPrimers) {
-            alert.setHeaderText(alert.getHeaderText() + " primers,");
+            alert.setContentText(alert.getContentText() + " primers,");
           }
           if (changesOnResults) {
-            alert.setHeaderText(alert.getHeaderText() + " results,");
+            alert.setContentText(alert.getContentText() + " results,");
           }
-          alert.setHeaderText(alert.getHeaderText().substring(0, alert.getHeaderText().length() - 1));
+          alert.setContentText(
+              alert.getContentText().substring(0, alert.getContentText().length() - 1));
 
           ButtonType save = new ButtonType("Save");
           ButtonType dontSave = new ButtonType("Dont save");

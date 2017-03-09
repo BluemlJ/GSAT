@@ -81,7 +81,6 @@ public class SequenceReader {
       throw new MissingPathException(PathUsage.READING);
     }
 
-
     File referencedFile = file;
 
 
@@ -97,7 +96,6 @@ public class SequenceReader {
     for (int i = 0; i < qualities.length; i++) {
       qualitiesInt[i] = qualities[i];
     }
-
     AnalysedSequence parsedSequence = new AnalysedSequence(sequence, ConfigHandler.getResearcher(),
         referencedFile.getName(), qualitiesInt);
 
@@ -111,7 +109,6 @@ public class SequenceReader {
       // TODO Auto-generated catch block
       e.printStackTrace();
     }
-
     return parsedSequence;
   }
 

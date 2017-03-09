@@ -283,12 +283,12 @@ public class MutationAnalysis {
     }
     if (!mixPositions.isEmpty()) {
       sequence.setComments(
-          sequence.getComments() + "\nEs wurden folgende mögliche Plasmidmixe gefunden: ");
+          sequence.getComments() + "There are possible placmidmixes at the positions ");
       for (String string : mixPositions) {
         sequence.setComments(sequence.getComments() + string + ", ");
       }
       sequence
-          .setComments(sequence.getComments().substring(0, sequence.getComments().length() - 2));
+          .setComments(sequence.getComments().substring(0, sequence.getComments().length() - 2)+ ". ");
     }
   }
 
