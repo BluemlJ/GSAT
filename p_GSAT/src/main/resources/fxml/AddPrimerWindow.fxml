@@ -15,13 +15,13 @@
          <content>
             <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="135.0" prefWidth="200.0">
                <children>
-                  <TextArea fx:id="geneArea" editable="false" prefHeight="135.0" prefWidth="640.0" promptText="Sequence" wrapText="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="-440.0" AnchorPane.topAnchor="0.0" />
+                  <TextArea fx:id="geneArea" prefHeight="135.0" prefWidth="640.0" promptText="Sequence" wrapText="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="-440.0" AnchorPane.topAnchor="0.0" />
                </children>
             </AnchorPane>
          </content>
       </ScrollPane>
-      <TextField fx:id="nameField" editable="false" prefHeight="26.0" prefWidth="296.0" promptText="Name" />
-      <TextField fx:id="idField" editable="false" prefHeight="26.0" prefWidth="296.0" promptText="ID" />
+      <TextField fx:id="nameField" prefHeight="26.0" prefWidth="296.0" promptText="Name" />
+      <TextField fx:id="idField" prefHeight="26.0" prefWidth="296.0" promptText="ID" />
       <ScrollPane prefHeight="185.0" prefWidth="620.0">
          <content>
             <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="119.0" prefWidth="200.0">
