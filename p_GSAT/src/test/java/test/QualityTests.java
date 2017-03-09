@@ -24,8 +24,6 @@ import io.SequenceReader;
  */
 public class QualityTests {
 
-  AnalysedSequence testSequence;
-
   // store main vars to avoid interfering with other tests
   private static int avgApproximationStart = 30;
   private static int avgApproximationEnd = 25;
@@ -47,11 +45,7 @@ public class QualityTests {
    */
   @Before
   public void initializeSequence() throws FileReadingException, IOException, MissingPathException {
-    // set SequenceReader file path
-    SequenceReader
-        .configurePath(new File("resources/ab1/Tk_Gs40Hits/Forward/95EI60.ab1").getAbsolutePath());
-    testSequence = SequenceReader.convertFileIntoSequence();
-
+    
     avgApproximationStart = QualityAnalysis.getAvgApproximationStart();
     avgApproximationEnd = QualityAnalysis.getAvgApproximationEnd();
     breakcounter = QualityAnalysis.getBreakcounter();

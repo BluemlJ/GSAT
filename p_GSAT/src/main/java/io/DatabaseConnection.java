@@ -884,6 +884,7 @@ public class DatabaseConnection {
 		if (rs.next()) {
 			researcher = rs.getString("name");
 		}
+		stmt.close(); pstmt.close();
 		return researcher;
 	}
 
@@ -912,7 +913,7 @@ public class DatabaseConnection {
 			Gene gene = new Gene(sequence, 0, name, researcher, organism, comment, date);
 			genes.add(gene);
 		}
-
+		stmt.close();
 		return genes;
 	}
 
@@ -943,7 +944,8 @@ public class DatabaseConnection {
 			String researcher = pullResearcherPerIndex(researcherId);
 			gene = new Gene(sequence, 0, name, researcher, organism, comment, date);
 		}
-
+		stmt.close(); 
+		pstmt.close();
 		return gene;
 	}
 
@@ -1035,7 +1037,7 @@ public class DatabaseConnection {
 			sequences.add(seq);
 
 		}
-		stmt.close();
+		stmt.close(); pstmt.close();
 		return sequences;
 	}
 
@@ -1184,6 +1186,7 @@ public class DatabaseConnection {
 
 		}
 		stmt.close();
+		pstmt.close();
 		return sequences;
 	}
 
@@ -1321,7 +1324,7 @@ public class DatabaseConnection {
 					manuallyChecked, primer, trimpercent, histag, avgquality);
 			sequences.add(seq);
 		}
-		stmt.close();
+		stmt.close(); pstmt.close();
 		return sequences;
 	}
 

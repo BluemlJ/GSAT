@@ -167,7 +167,7 @@ public class LocalDBTest {
 			throws SQLException, DatabaseConnectionException, NumberFormatException, IOException {
 		// TODO manual test with 2 computers
 		DatabaseConnection.setDatabaseConnection(user, pass, port, server);
-		Connection conn = DatabaseConnection.establishConnection();
+		conn = DatabaseConnection.establishConnection();
 		DatabaseConnection.createDatabase();
 		PrimerHandler.readPrimer();
 
@@ -380,7 +380,7 @@ public class LocalDBTest {
 	@Test
 	public void testPushAllGenes() throws DatabaseConnectionException, SQLException, IOException {
 		DatabaseConnection.setDatabaseConnection(user, pass, port, server);
-		Connection conn = DatabaseConnection.establishConnection();
+		conn = DatabaseConnection.establishConnection();
 		DatabaseConnection.pushAllGenes();
 	}
 
