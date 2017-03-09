@@ -902,12 +902,13 @@ public class DatabaseConnection {
 			String name = rs.getString("name");
 			String sequence = rs.getString("sequence");
 			java.util.Date date = new Date(rs.getTimestamp("date").getTime());
-			String researcher = rs.getString("researcher");
+			int researcherId = rs.getInt("researcher");
 			String comment = rs.getString("comment");
 			String organism = rs.getString("organism");
 
 			// (String sequence, int id, String name, String researcher, String
 			// organism, String comment)
+			String researcher = pullResearcherPerIndex(researcherId);
 			Gene gene = new Gene(sequence, 0, name, researcher, organism, comment, date);
 			genes.add(gene);
 		}
@@ -933,12 +934,13 @@ public class DatabaseConnection {
 			String name = rs.getString("name");
 			String sequence = rs.getString("sequence");
 			java.util.Date date = new Date(rs.getTimestamp("date").getTime());
-			String researcher = rs.getString("researcher");
+			int researcherId = rs.getInt("researcher");
 			String comment = rs.getString("comment");
 			String organism = rs.getString("organism");
 
 			// (String sequence, int id, String name, String researcher, String
 			// organism, String comment)
+			String researcher = pullResearcherPerIndex(researcherId);
 			gene = new Gene(sequence, 0, name, researcher, organism, comment, date);
 		}
 
@@ -1221,10 +1223,10 @@ public class DatabaseConnection {
 		if (endDate == null || endDate.getTime() == 0) {
 			endDateActive = false;
 		}
-		if (researcher.equals("") || researcher == null) {
+		if (researcher == null || researcher.equals("")) {
 			researcherActive = false;
 		}
-		if (geneName.equals("") || geneName == null) {
+		if (geneName == null || geneName.equals("")) {
 			geneActive = false;
 		}
 
@@ -1239,9 +1241,9 @@ public class DatabaseConnection {
 			if (startDateActive && endDateActive) {
 				query.append(" date BETWEEN ? AND ?");
 			} else if (startDateActive) {
-				query.append(" date > ?");
+				query.append(" date >= ?");
 			} else if (endDateActive) {
-				query.append(" date < ?");
+				query.append(" date <= ?");
 			}
 
 			// AND if needed if a date condition and a later condition is active
