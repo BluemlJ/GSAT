@@ -5,20 +5,29 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 import analysis.Primer;
+import exceptions.DuplicateGeneException;
+import io.ConfigHandler;
+import io.GeneHandler;
+import io.PrimerHandler;
 import javafx.application.Application;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Alert.AlertType;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 
 public class AddPrimerWindow extends Application implements javafx.fxml.Initializable {
 
-  // private SettingsWindow parent;
+  private SettingsWindow parent;
 
   // fields
   @FXML
@@ -35,39 +44,128 @@ public class AddPrimerWindow extends Application implements javafx.fxml.Initiali
 
   @FXML
   private Button cancelButton;
-  
+
   @FXML
   private Button confirmButton;
-  
+
   Stage activeStage;
 
 
 
   @Override
   public void initialize(URL location, ResourceBundle resources) {
-    
-    
+
+
     geneArea.setWrapText(true);
-    //GUIUtils.setColorOnButton(okButton, ButtonColor.BLUE);
+    GUIUtils.setColorOnButton(confirmButton, ButtonColor.GREEN);
+    GUIUtils.setColorOnButton(cancelButton, ButtonColor.RED);
 
+    nameField.textProperty().addListener(new ChangeListener<String>() {
+      @Override
+      public void changed(ObservableValue<? extends String> observable, String oldValue,
+          String newValue) {
+        if (newValue.contains(ConfigHandler.SEPARATOR_CHAR + "")) {
+          nameField.setText(oldValue);
+        } else {
+          nameField.setText(newValue);
+        }
+      }
+    });
 
-    Primer selectedPrimer = SettingsWindow.getSelectedPrimer();
-    String tmp;
-    nameField.setText(selectedPrimer.getName());
+    idField.textProperty().addListener(new ChangeListener<String>() {
+      @Override
+      public void changed(ObservableValue<? extends String> observable, String oldValue,
+          String newValue) {
+        if (newValue.contains(ConfigHandler.SEPARATOR_CHAR + "")) {
+          idField.setText(oldValue);
+        } else {
+          idField.setText(newValue);
+        }
+      }
+    });
 
+    meltingTempField.textProperty().addListener(new ChangeListener<String>() {
+      @Override
+      public void changed(ObservableValue<? extends String> observable, String oldValue,
+          String newValue) {
+        if (newValue.contains(ConfigHandler.SEPARATOR_CHAR + "")) {
+          meltingTempField.setText(oldValue);
+        } else {
+          meltingTempField.setText(newValue);
+        }
+      }
+    });
 
+    geneArea.textProperty().addListener(new ChangeListener<String>() {
+      @Override
+      public void changed(ObservableValue<? extends String> observable, String oldValue,
+          String newValue) {
+        if (newValue.toUpperCase().matches(".*[^ATCG].*")) {
+          geneArea.setText(oldValue);
+        } else {
+          geneArea.setText(newValue);
+        }
+      }
+    });
 
-    geneArea.setText(selectedPrimer.getSequence());
+    // commentArea.textProperty().addListener(new ChangeListener<String>() {
+    // @Override
+    // public void changed(ObservableValue<? extends String> observable, String oldValue,
+    // String newValue) {
+    // if (newValue.contains(ConfigHandler.SEPARATOR_CHAR + "")) {
+    // commentArea.setText(oldValue);
+    // } else {
+    // commentArea.setText(newValue);
+    // }
+    // }
+    // });
 
+    confirmButton.setOnAction(new EventHandler<ActionEvent>() {
 
-
-    /*okButton.setOnAction(new EventHandler<ActionEvent>() {
       @Override
       public void handle(ActionEvent arg0) {
-        Stage stage = (Stage) okButton.getScene().getWindow();
-        stage.close();
+        if (!nameField.getText().isEmpty() && !geneArea.getText().isEmpty()
+            && !idField.getText().isEmpty()) {
+          try {
+            if (PrimerHandler.addPrimer(new Primer(geneArea.getText(),
+                ConfigHandler.getResearcher(), meltingTempField.getText(), idField.getText(),
+                nameField.getText(), commentArea.getText()))) {
+
+              Alert alert = new Alert(AlertType.INFORMATION);
+              alert.setTitle("Adding primer");
+              alert.setHeaderText("Primer added successfully.");
+              alert.showAndWait();
+              MainWindow.changesOnPrimers = true;
+              parent.updateGenes();
+              Stage stage = (Stage) cancelButton.getScene().getWindow();
+              stage.close();
+            } else {
+              Alert alert = new Alert(AlertType.INFORMATION);
+              alert.setTitle("Adding primer failed");
+              alert.setHeaderText(
+                  "Primer added not successful because gene already exists in local file.");
+              alert.showAndWait();
+
+            }
+
+          } catch (DuplicateGeneException | IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+          }
+        }
+
       }
-    });*/
+    });
+
+    cancelButton.setOnAction(new EventHandler<ActionEvent>() {
+
+      @Override
+      public void handle(ActionEvent arg0) {
+        Stage stage = (Stage) cancelButton.getScene().getWindow();
+        stage.close();
+
+      }
+    });
   }
 
   @Override
@@ -85,12 +183,24 @@ public class AddPrimerWindow extends Application implements javafx.fxml.Initiali
       return;
     }
     Scene scene = new Scene(root);
-    
-    //TODO @Jannis: hier giebt es denn nullpointer, der ist nicht von mir.
-    //primaryStage.setTitle("GSAT - Gene - " + SettingsWindow.getSelectedGene().getName());
-    
+
+    primaryStage.setTitle("GSAT - Adding a primer");
     primaryStage.setScene(scene);
     primaryStage.sizeToScene();
     primaryStage.show();
+    
+    primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+
+      @Override
+      public void handle(WindowEvent arg0) {
+        parent.decNumGenWindows();
+
+      }
+    });
+  }
+
+  public void setParent(SettingsWindow parent) {
+    this.parent = parent;
+  }
   }
 }
