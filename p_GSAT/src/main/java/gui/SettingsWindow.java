@@ -95,7 +95,7 @@ public class SettingsWindow extends Application implements javafx.fxml.Initializ
       public void handle(ActionEvent arg0) {
         isPrimerOn = false;
         GUIUtils.initializeGeneBox(geneList);
-        System.out.println("Gene sollen es sein");
+        geneList.getSelectionModel().clearSelection();
       }
     });
 
@@ -105,6 +105,8 @@ public class SettingsWindow extends Application implements javafx.fxml.Initializ
       public void handle(ActionEvent arg0) {
         isPrimerOn = true;
         GUIUtils.initializePrimerBox(geneList);
+        geneList.getSelectionModel().clearSelection();
+        showGeneButton.setDisable(true);
         System.out.println("Primer soll es sein");
 
       }
@@ -336,6 +338,8 @@ public class SettingsWindow extends Application implements javafx.fxml.Initializ
               GUIUtils.initializeGeneBox(geneList);
               MainWindow.changesOnGenes = true;
             }
+            
+            showGeneButton.setDisable(true);
           } catch (IOException e) {
             e.printStackTrace();
           }

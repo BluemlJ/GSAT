@@ -89,7 +89,7 @@ public class AddPrimerWindow extends Application implements javafx.fxml.Initiali
       @Override
       public void changed(ObservableValue<? extends String> observable, String oldValue,
           String newValue) {
-        if (newValue.contains(ConfigHandler.SEPARATOR_CHAR + "")) {
+        if (newValue.matches(".*[^1234567890].*")) {
           meltingTempField.setText(oldValue);
         } else {
           meltingTempField.setText(newValue);
@@ -136,7 +136,7 @@ public class AddPrimerWindow extends Application implements javafx.fxml.Initiali
             alert.setHeaderText("Primer added successfully.");
             alert.showAndWait();
             MainWindow.changesOnPrimers = true;
-            parent.updateGenes();
+            parent.updatePrimers();
             Stage stage = (Stage) cancelButton.getScene().getWindow();
             stage.close();
           } else {

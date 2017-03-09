@@ -8,7 +8,9 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import analysis.Gene;
 import analysis.Primer;
+import exceptions.DuplicateGeneException;
 
 public class PrimerHandler {
   private static ArrayList<Primer> primerList;
@@ -124,12 +126,29 @@ public class PrimerHandler {
    */
   public static boolean addPrimer(Primer primer) {
     // only add if primer doesn´t exist yet
-    if (getPrimer(primer.getName(), primer.getId()) == null) {
+      try {
+	readPrimer();
+    } catch (NumberFormatException | IOException e) {
+	// TODO Auto-generated catch block
+	e.printStackTrace();
+    }
+      
+      if (getPrimer(primer.getName(), primer.getId()) == null) {
       primerList.add(primer);
+      
+      try {
+	writePrimer();
+    } catch (IOException e) {
+	// TODO Auto-generated catch block
+	e.printStackTrace();
+    }
+      
       return true;
     }
     return false;
   }
+  
+  
 
   /**
    * deletes a primer from the primerList

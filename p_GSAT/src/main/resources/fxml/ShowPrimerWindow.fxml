@@ -15,25 +15,25 @@
          <content>
             <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="200.0" prefWidth="200.0">
                <children>
-                  <TextArea fx:id="geneArea" editable="false" prefHeight="200.0" prefWidth="640.0" promptText="Sequence" wrapText="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="-440.0" AnchorPane.topAnchor="0.0" />
+                  <TextArea fx:id="geneArea" editable="true" prefHeight="200.0" prefWidth="640.0" promptText="Sequence" wrapText="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="-440.0" AnchorPane.topAnchor="0.0" />
                </children>
             </AnchorPane>
          </content>
       </ScrollPane>
-      <TextField fx:id="nameField" editable="false" prefHeight="26.0" prefWidth="296.0" promptText="name" />
-      <TextField fx:id="idField" editable="false" prefHeight="26.0" prefWidth="296.0" promptText="ID" />
+      <TextField fx:id="nameField" editable="true" prefHeight="26.0" prefWidth="296.0" promptText="name" />
+      <TextField fx:id="idField" editable="true" prefHeight="26.0" prefWidth="296.0" promptText="ID" />
       <ScrollPane prefHeight="147.0" prefWidth="620.0">
          <content>
             <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="147.0" prefWidth="200.0">
                <children>
-                  <TextArea fx:id="commentArea" editable="false" prefHeight="147.0" prefWidth="612.0" promptText="Comment" wrapText="true" AnchorPane.bottomAnchor="-2.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="-412.0" AnchorPane.topAnchor="0.0" />
+                  <TextArea fx:id="commentArea" editable="true" prefHeight="147.0" prefWidth="612.0" promptText="Comment" wrapText="true" AnchorPane.bottomAnchor="-2.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="-412.0" AnchorPane.topAnchor="0.0" />
                </children>
             </AnchorPane>
          </content>
       </ScrollPane>
       <HBox alignment="BOTTOM_CENTER" prefHeight="12.0" prefWidth="620.0" spacing="10.0">
          <children>
-            <TextField fx:id="meltingTempField" editable="false" prefHeight="25.0" prefWidth="575.0" promptText="Melting Temperature" />
+            <TextField fx:id="meltingTempField" editable="true" prefHeight="25.0" prefWidth="575.0" promptText="Melting Temperature" />
             <Button fx:id="okButton" mnemonicParsing="false" text="OK" />
          </children>
       </HBox>
