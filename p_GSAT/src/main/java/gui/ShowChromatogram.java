@@ -1,32 +1,44 @@
 package gui;
 
+import java.awt.Graphics;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.net.URL;
 import java.util.LinkedList;
 import java.util.ResourceBundle;
 
+import javax.imageio.ImageIO;
+
 import analysis.AnalysedSequence;
 import javafx.application.Application;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.canvas.Canvas;
+import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.chart.LineChart;
-import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.Button;
 import javafx.scene.control.ScrollBar;
 import javafx.scene.control.ScrollPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.Priority;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 public class ShowChromatogram extends Application implements javafx.fxml.Initializable {
 
 
+  java.awt.Color colorA = new java.awt.Color(0, 255, 0);
+  java.awt.Color colorT = new java.awt.Color(255, 0, 0);
+  java.awt.Color colorG = new java.awt.Color(0, 0, 0);
+  java.awt.Color colorC = new java.awt.Color(0, 0, 255);
   LinkedList<AnalysedSequence> sequences;
 
   private int numberRange = 200;
@@ -39,13 +51,10 @@ public class ShowChromatogram extends Application implements javafx.fxml.Initial
   private int maxScroll = 10;
   private int minScroll = 5;
 
-  LineChart<Number, Number> linechart;
+  javafx.scene.image.Image img;
 
-  @FXML
+
   private ScrollPane scrollPane;
-
-  @FXML
-  private LineChart<Number, Number> lineChart;
 
 
   private Button next = new Button();
@@ -55,13 +64,13 @@ public class ShowChromatogram extends Application implements javafx.fxml.Initial
   private ScrollBar bar = new ScrollBar();
 
 
-  private XYChart.Series<Number, String> seriesA = new XYChart.Series<Number, String>();
+  private XYChart.Series<Number, Number> seriesA = new XYChart.Series<Number, Number>();
 
-  private XYChart.Series<Number, String> seriesT = new XYChart.Series<Number, String>();
+  private XYChart.Series<Number, Number> seriesT = new XYChart.Series<Number, Number>();
 
-  private XYChart.Series<Number, String> seriesG = new XYChart.Series<Number, String>();
+  private XYChart.Series<Number, Number> seriesG = new XYChart.Series<Number, Number>();
 
-  private XYChart.Series<Number, String> seriesC = new XYChart.Series<Number, String>();
+  private XYChart.Series<Number, Number> seriesC = new XYChart.Series<Number, Number>();
 
 
 
@@ -70,142 +79,24 @@ public class ShowChromatogram extends Application implements javafx.fxml.Initial
 
   }
 
+  private Scene scene;
+
   @Override
-  public void start(Stage stage) throws Exception {
+  public void start(Stage primaryStage) throws Exception {
 
-    seriesA.setName("A");
-    seriesA.setName("T");
-    seriesA.setName("G");
-
-    stage.setTitle("GSAT - Chromatogram");
-    // defining the axes
-    final NumberAxis xAxis = new NumberAxis();
-    final NumberAxis yAxis = new NumberAxis();
-    xAxis.setLabel("Quality");
-    yAxis.setLabel("Nukleotide");
-
-    xAxis.setAutoRanging(false);
-    xAxis.setUpperBound(5);
-    xAxis.setLowerBound(numberRange + 5);
-
-    // creating the chart
-    lineChart = new LineChart<Number, Number>(xAxis, yAxis);
-
-    lineChart.setTitle("FILENAME");
-    // defining a series
-    XYChart.Series<Number, Number> series = new XYChart.Series<Number, Number>();
-    series.setName("G");
-    // populating the series with data
-    series.getData().add(new XYChart.Data<Number, Number>(1, 23));
-    series.getData().add(new XYChart.Data<Number, Number>(2, 14));
-    series.getData().add(new XYChart.Data<Number, Number>(3, 15));
-    series.getData().add(new XYChart.Data<Number, Number>(4, 24));
-    series.getData().add(new XYChart.Data<Number, Number>(5, 34));
-    series.getData().add(new XYChart.Data<Number, Number>(6, 36));
-    series.getData().add(new XYChart.Data<Number, Number>(7, 22));
-    series.getData().add(new XYChart.Data<Number, Number>(8, 45));
-    series.getData().add(new XYChart.Data<Number, Number>(9, 43));
-    series.getData().add(new XYChart.Data<Number, Number>(10, 17));
-    series.getData().add(new XYChart.Data<Number, Number>(11, 29));
-    series.getData().add(new XYChart.Data<Number, Number>(12, 25));
+    scrollPane = new ScrollPane();
+    scrollPane.setMaxHeight(600);
+    scrollPane.setMinHeight(600);
 
 
+    VBox v = new VBox(scrollPane);
 
-    // define scroll bar
-    bar.setMin(0);
-    bar.setMax(100);
-    bar.setValue(0);
-    bar.valueProperty().addListener(new ChangeListener<Number>() {
-      @Override
-      public void changed(ObservableValue<? extends Number> ov, Number oldVal, Number newVal) {
-        xAxis.setUpperBound((int) (maxScroll * newVal.doubleValue() + numberRange));
-        xAxis.setLowerBound((int) (maxScroll * newVal.doubleValue()));
-      }
-    });
+    scene = new Scene(v, 800, 600);
 
-
-    // ***********
-
-    // set linechart
-    lineChart.getData().add(series);
-    lineChart.setPrefSize(8000, 600);
-
-    // SET Colors
-    lineChart.setStyle("CHART_COLOR_1: #00ff00;");
-
-
-    // button box begin
-    HBox buttonBox = new HBox(10);
-
-    // next sequence button:
-
-    next.setText("Next");
-
-
-    prev.setText("Previous");
-
-
-    next.setOnAction(new EventHandler<ActionEvent>() {
-
-      @Override
-      public void handle(ActionEvent arg0) {
-
-        if (activeSequence + 1 == sequences.size()) {
-          next.setDisable(true);
-        }
-        activeSequence = Math.min(activeSequence + 1, sequences.size());
-        updateSequences(activeSequence);
-        if (activeSequence - 1 >= 0) {
-          prev.setDisable(false);
-        }
-      }
-    });
-    //
-    prev.setOnAction(new EventHandler<ActionEvent>() {
-
-      @Override
-      public void handle(ActionEvent arg0) {
-
-        if (activeSequence - 1 == 0) {
-          prev.setDisable(true);
-        }
-
-        activeSequence = Math.max(activeSequence - 1, 0);
-        updateSequences(activeSequence);
-
-        if (activeSequence + 1 < sequences.size()) {
-          next.setDisable(false);
-        }
-      }
-    });
-    next.setDisable(true);
-    prev.setDisable(true);
-
-    Button cancel = new Button();
-    cancel.setText("Cancel");
-
-    final Pane spacer = new Pane();
-    HBox.setHgrow(spacer, Priority.ALWAYS);
-    spacer.setMinSize(10, 1);
-
-    buttonBox.getChildren().addAll(spacer, next, prev, cancel);
-
-
-
-    // define Hbox to order window content
-    VBox box = new VBox();
-    final Pane spacer2 = new Pane();
-    spacer2.setMinSize(10, 10);
-    final Pane spacer3 = new Pane();
-    spacer3.setMinSize(10, 10);
-    box.getChildren().addAll(lineChart, bar, spacer2, buttonBox, spacer3);
-
-    // set scene
-    Scene scene = new Scene(box, 800, 600);
-
-
-    stage.setScene(scene);
-    stage.show();
+    primaryStage.setTitle("GSAT - Settings");
+    primaryStage.setScene(scene);
+    primaryStage.sizeToScene();
+    primaryStage.show();
   }
 
   public static void main(String[] args) {
@@ -213,20 +104,12 @@ public class ShowChromatogram extends Application implements javafx.fxml.Initial
   }
 
   private void updateSequences(int id) {
-    System.out.println("seqence Updated");
+    System.out.println("seqence Update");
 
     activeSequence = id;
 
 
-    AnalysedSequence startSequence = this.sequences.get(id);
-
-
-    // TODO channelA ist nun nur noch als int[] zu haben....
-
-    // QualitySequence channelA = startSequence.getChannels().getAChannel().getQualitySequence();
-    // QualitySequence channelC = startSequence.getChannels().getCChannel().getQualitySequence();
-    // QualitySequence channelT = startSequence.getChannels().getTChannel().getQualitySequence();
-    // QualitySequence channelG = startSequence.getChannels().getGChannel().getQualitySequence();
+    AnalysedSequence startSequence = sequences.get(id);
 
     int[] channelA = startSequence.getChannelA();
     int[] channelC = startSequence.getChannelC();
@@ -235,32 +118,253 @@ public class ShowChromatogram extends Application implements javafx.fxml.Initial
 
 
     int last = (int) channelA.length;
+
     last = (int) Math.min(last, channelC.length);
     last = (int) Math.min(last, channelT.length);
     last = (int) Math.min(last, channelG.length);
 
-    for (int i = 0; i < last; i++) {
+    System.out.println("new Canvas");
+    ImageView viewr = new ImageView();
+    System.out.println("add canvas");
+    try {
+      scrollPane.setContent(viewr);
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
 
-      seriesA.getData().set(i, new XYChart.Data<Number, String>(channelA[i], i + "F"));
-      seriesC.getData().set(i, new XYChart.Data<Number, String>(channelC[i], i + "F"));
-      seriesT.getData().set(i, new XYChart.Data<Number, String>(channelT[i], i + "F"));
-      seriesG.getData().set(i, new XYChart.Data<Number, String>(channelG[i], i + "F"));
+    double strechX = 0.25;
+    int strechY = 4;
+
+    System.out.println("chromatogram length = " + last);
+
+    BufferedImage buffImg = new BufferedImage(last*strechY, 400, BufferedImage.TYPE_INT_RGB);
+    buffImg.createGraphics();
+    Graphics buffGraph = buffImg.getGraphics();
+
+    buffGraph.setColor(java.awt.Color.WHITE);
+    buffGraph.fillRect(0, 0, last*strechY, 400);
+
+    int lastA = 0;
+    int lastT = 0;
+    int lastG = 0;
+    int lastC = 0;
+
+
+
+    //A
+    int lastAmax = 0;
+    int nextAmax = 0;
+    int lastAhight = 0;
+    int lastACandidate = 0;
+    int aHold = 0;
+    boolean aFalling = true;
+    
+    //T
+    int lastTmax = 0;
+    int nextTmax = 0;
+    int lastThight = 0;
+    int lastTCandidate = 0;
+    int tHold = 0;
+    boolean tFalling = true;
+    
+    //G
+    int lastGmax = 0;
+    int nextGmax = 0;
+    int lastGhight = 0;
+    int lastGCandidate = 0;
+    int gHold = 0;
+    boolean gFalling = true;
+    
+    //C
+    int lastCmax = 0;
+    int nextCmax = 0;
+    int lastChight = 0;
+    int lastCCandidate = 0;
+    int cHold = 0;
+    boolean cFalling = true;
+
+
+
+    for (int i = 0; i < last; i++) {
+      int a = (int) (400 - ((channelA[i]) * strechX));
+      int t = (int) (400 - ((channelT[i]) * strechX));
+      int g = (int) (400 - ((channelG[i]) * strechX));
+      int c = (int) (400 - ((channelC[i]) * strechX));
+
+      // A
+      buffGraph.setColor(colorA);
+      buffGraph.drawLine((i - 1) * strechY, lastA, i * strechY, a);
+
+      // T
+      buffGraph.setColor(colorT);
+      buffGraph.drawLine((i - 1) * strechY, lastT, i * strechY, t);
+
+      // G
+      buffGraph.setColor(colorG);
+      buffGraph.drawLine((i - 1) * strechY, lastG, i * strechY, g);
+
+      // C
+      buffGraph.setColor(colorC);
+      buffGraph.drawLine((i - 1) * strechY, lastC, i * strechY, c);
+
+
+      //A
+      if (channelA[i] >= lastACandidate) {
+        if (!aFalling) {
+          aHold++;
+        } else {
+          aHold = 0;
+        }
+        aFalling = false;
+
+      } else {
+        if (aFalling) {
+          aHold++;
+        } else {
+          aHold = 0;
+          nextAmax = i-1;
+        }
+
+        aFalling = true;
+        aHold++;
+      }
+
+      if (aHold > 5 && lastAmax != nextAmax) {
+        if (channelA[nextAmax] > channelT[nextAmax] && channelA[nextAmax] > channelG[nextAmax] && channelA[nextAmax] > channelC[nextAmax]) {
+          
+        
+        buffGraph.setColor(colorA);
+        buffGraph.drawLine((nextAmax)*strechY, 0, (nextAmax)*strechY, 400);
+        }
+      }
+      //*********************************************T
+      if (channelT[i] >= lastTCandidate) {
+        if (!tFalling) {
+          tHold++;
+        } else {
+          tHold = 0;
+        }
+        tFalling = false;
+
+      } else {
+        if (tFalling) {
+          tHold++;
+        } else {
+          tHold = 0;
+          nextTmax = i-1;
+        }
+
+        tFalling = true;
+        tHold++;
+      }
+
+      if (tHold > 5 && lastTmax != nextTmax) {
+        if (channelT[nextTmax] > channelA[nextTmax] && channelT[nextTmax] > channelG[nextTmax] && channelT[nextTmax] > channelC[nextTmax]) {
+          
+        
+        buffGraph.setColor(colorT);
+        buffGraph.drawLine((nextTmax)*strechY, 0, (nextTmax)*strechY, 400);
+        }
+      }
+      //********************************G
+      if (channelG[i] >= lastGCandidate) {
+        if (!gFalling) {
+          gHold++;
+        } else {
+          gHold = 0;
+        }
+        gFalling = false;
+
+      } else {
+        if (gFalling) {
+          gHold++;
+        } else {
+          gHold = 0;
+          nextGmax = i-1;
+        }
+
+        gFalling = true;
+        gHold++;
+      }
+
+      if (gHold > 5 && lastGmax != nextGmax) {
+        if (channelG[nextGmax] > channelT[nextGmax] && channelG[nextGmax] > channelA[nextGmax] && channelG[nextGmax] > channelC[nextGmax]) {
+          
+        
+        buffGraph.setColor(colorG);
+        buffGraph.drawLine((nextGmax)*strechY, 0, (nextGmax)*strechY, 400);
+        }
+      }
+      //***********************C
+      if (channelC[i] >= lastCCandidate) {
+        if (!cFalling) {
+          cHold++;
+        } else {
+          cHold = 0;
+        }
+        cFalling = false;
+
+      } else {
+        if (cFalling) {
+          cHold++;
+        } else {
+          cHold = 0;
+          nextCmax = i-1;
+        }
+
+        cFalling = true;
+        cHold++;
+      }
+
+      if (cHold > 5 && lastCmax != nextCmax) {
+        if (channelC[nextCmax] > channelT[nextCmax] && channelC[nextCmax] > channelG[nextCmax] && channelC[nextCmax] > channelA[nextCmax]) {
+          
+        
+        buffGraph.setColor(colorC);
+        buffGraph.drawLine((nextCmax)*strechY, 0, (nextCmax)*strechY, 400);
+        }
+      }
+      
+      
+
+
+      lastACandidate = channelA[i];
+      lastTCandidate = channelT[i];
+      lastGCandidate = channelG[i];
+      lastCCandidate = channelC[i];
+      //
+
+      lastA = a;
+      lastT = t;
+      lastG = g;
+      lastC = c;
 
     }
 
 
+    try
 
-    seriesA.getData().remove(last, seriesA.getData().size());
-    seriesC.getData().remove(last, seriesC.getData().size());
-    seriesT.getData().remove(last, seriesT.getData().size());
-    seriesG.getData().remove(last, seriesG.getData().size());
+    {
+      File outputfile = new File("resources/GeneData/chrom.png");
+      ImageIO.write(buffImg, "png", outputfile);
+
+    } catch (IOException e1) {
+
+      e1.printStackTrace();
+    }
 
 
-    bar.setMin(0);
-    bar.setMax(100);
-    bar.setValue(0);
-    maxScroll = last;
+    System.out.println("getGraph");
+    // GraphicsContext graph = chartCanvas.getGraphicsContext2D();
+    try {
+      FileInputStream fin = new FileInputStream(new File("resources/GeneData/chrom.png"));
+      Image img = new Image(fin);
+      viewr.setImage(img);
+    } catch (FileNotFoundException e) {
+      e.printStackTrace();
+    }
 
+    System.out.println("Finished");
   }
 
   public void setSequence(AnalysedSequence sequence) {
@@ -278,3 +382,4 @@ public class ShowChromatogram extends Application implements javafx.fxml.Initial
   }
 
 }
+

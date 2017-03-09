@@ -2,6 +2,7 @@ package gui;
 
 
 
+import java.awt.Image;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
@@ -114,6 +115,8 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
 
   Stage primaryStage;
 
+  
+  
   public static void main(String[] args) {
     launch(args);
   }
