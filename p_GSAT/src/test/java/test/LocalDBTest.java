@@ -51,7 +51,7 @@ public class LocalDBTest {
 	java.sql.Statement stmt = null;
 	ResultSet rs = null;
 
-	
+	@Ignore
 	@Test
 	public void testPullCustom() throws DatabaseConnectionException, SQLException, UnknownConfigFieldException, ConfigNotFoundException, IOException {
 		DatabaseConnection.setDatabaseConnection(user, pass, port, server);
@@ -152,7 +152,7 @@ public class LocalDBTest {
 		assertEquals(test1.getAddingDate(), s4.getAddingDate());
 		assertEquals(test1.getComments(), s4.getComments());
 		assertEquals(test1.getPrimer(), s4.getPrimer());
-		//assertEquals(test1.getTrimPercentage(), s4.getTrimPercentage());
+		assertEquals(test1.getTrimPercentage(), s4.getTrimPercentage(), 0.0001);
 		assertEquals(test1.getHisTagPosition(), s4.getHisTagPosition());
 		assertEquals(test1.getAvgQuality(), s4.getAvgQuality());
 		
