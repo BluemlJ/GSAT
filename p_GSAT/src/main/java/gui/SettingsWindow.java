@@ -34,395 +34,400 @@ import javafx.stage.WindowEvent;
 
 public class SettingsWindow extends Application implements javafx.fxml.Initializable {
 
-	public static boolean addParametersOpen = false;
-	private boolean addResearcher = false;
-	private static Gene selectedGene;
-	private static Primer selectedPrimer;
-	private static boolean isPrimerOn = false;
 
-	@FXML
-	private ListView<String> geneOrPrimerList;
-	// fields
-	@FXML
-	private TextField parameter1Field;
-	@FXML
-	private ChoiceBox<String> researcherDropdown;
+  public static boolean addParametersOpen = false;
+  private boolean addResearcher = false;
+  private static Gene selectedGene;
+  private static Primer selectedPrimer;
+  private static boolean isPrimerOn = false;
 
-	@FXML
-	private TextField srcPathField;
+  @FXML
+  private ListView<String> geneOrPrimerList;
+  // fields
+  @FXML
+  private TextField parameter1Field;
+  @FXML
+  private ChoiceBox<String> researcherDropdown;
 
-	// buttons
-	@FXML
-	private Button parameterButton;
-	@FXML
-	private Button closeButton;
-	@FXML
-	private Button databaseButton;
-	@FXML
-	private Button addGeneOrPrimerButton;
-	@FXML
-	private Button addResearcherButton;
-	@FXML
-	private Button deleteGeneOrPrimerButton;
-	@FXML
-	private Button deleteResearcherButton;
-	@FXML
-	private Button showGeneOrPrimerButton;
+  @FXML
+  private TextField srcPathField;
 
-	@FXML
-	private ToggleButton geneToggle;
-	@FXML
-	private ToggleButton primmerToggle;
+  // buttons
+  @FXML
+  private Button parameterButton;
+  @FXML
+  private Button closeButton;
+  @FXML
+  private Button databaseButton;
+  @FXML
+  private Button addGeneOrPrimerButton;
+  @FXML
+  private Button addResearcherButton;
+  @FXML
+  private Button deleteGeneOrPrimerButton;
+  @FXML
+  private Button deleteResearcherButton;
+  @FXML
+  private Button showGeneOrPrimerButton;
 
-	private Scene scene;
+  @FXML
+  private ToggleButton geneToggle;
+  @FXML
+  private ToggleButton primmerToggle;
 
-	private int numGeneWindows = 0;
+  private Scene scene;
 
-	public static Gene getSelectedGene() {
-		return selectedGene;
-	}
+  private int numGeneWindows = 0;
 
-	@Override
-	public void initialize(URL location, ResourceBundle resources) {
-		ToggleGroup selectorGroup = new ToggleGroup();
-		primmerToggle.setToggleGroup(selectorGroup);
-		geneToggle.setToggleGroup(selectorGroup);
+  public static Gene getSelectedGene() {
+    return selectedGene;
+  }
 
-		geneToggle.setOnAction(new EventHandler<ActionEvent>() {
+  @Override
+  public void initialize(URL location, ResourceBundle resources) {
+    ToggleGroup selectorGroup = new ToggleGroup();
+    primmerToggle.setToggleGroup(selectorGroup);
+    geneToggle.setToggleGroup(selectorGroup);
 
-			@Override
-			public void handle(ActionEvent arg0) {
-				isPrimerOn = false;
-				GUIUtils.initializeGeneBox(geneOrPrimerList);
-				geneOrPrimerList.getSelectionModel().clearSelection();
-			}
-		});
+    geneToggle.setOnAction(new EventHandler<ActionEvent>() {
 
-		primmerToggle.setOnAction(new EventHandler<ActionEvent>() {
+      @Override
+      public void handle(ActionEvent arg0) {
+        isPrimerOn = false;
+        GUIUtils.initializeGeneBox(geneOrPrimerList);
+        geneOrPrimerList.getSelectionModel().clearSelection();
+        showGeneOrPrimerButton.setDisable(true);
+      }
+    });
 
-			@Override
-			public void handle(ActionEvent arg0) {
-				isPrimerOn = true;
-				GUIUtils.initializePrimerBox(geneOrPrimerList);
-				geneOrPrimerList.getSelectionModel().clearSelection();
-				showGeneOrPrimerButton.setDisable(true);
-				System.out.println("Primer soll es sein");
+    primmerToggle.setOnAction(new EventHandler<ActionEvent>() {
 
-			}
-		});
+      @Override
+      public void handle(ActionEvent arg0) {
+        isPrimerOn = true;
+        GUIUtils.initializePrimerBox(geneOrPrimerList);
+        geneOrPrimerList.getSelectionModel().clearSelection();
+        showGeneOrPrimerButton.setDisable(true);
+        System.out.println("Primer soll es sein");
 
-		showGeneOrPrimerButton.setDisable(true);
+      }
+    });
 
-		GUIUtils.initializeResearchers(researcherDropdown);
-		GUIUtils.initializeGeneBox(geneOrPrimerList);
-		isPrimerOn = false;
-		geneOrPrimerList.setStyle("-fx-font-style: italic;");
+    showGeneOrPrimerButton.setDisable(true);
 
-		GUIUtils.setColorOnButton(closeButton, ButtonColor.BLUE);
-		GUIUtils.setColorOnButton(databaseButton, ButtonColor.GRAY);
-		GUIUtils.setColorOnButton(parameterButton, ButtonColor.GRAY);
-		GUIUtils.setColorOnButton(deleteResearcherButton, ButtonColor.RED);
-		GUIUtils.setColorOnButton(addGeneOrPrimerButton, ButtonColor.GREEN);
-		GUIUtils.setColorOnButton(addResearcherButton, ButtonColor.GREEN);
-		GUIUtils.setColorOnButton(deleteGeneOrPrimerButton, ButtonColor.RED);
-		GUIUtils.setColorOnButton(deleteResearcherButton, ButtonColor.RED);
-		GUIUtils.setColorOnButton(showGeneOrPrimerButton, ButtonColor.BLUE);
+    GUIUtils.initializeResearchers(researcherDropdown);
+    GUIUtils.initializeGeneBox(geneOrPrimerList);
+    isPrimerOn = false;
+    geneOrPrimerList.setStyle("-fx-font-style: italic;");
 
-		srcPathField.setText(ConfigHandler.getSrcPath());
+    GUIUtils.setColorOnButton(closeButton, ButtonColor.BLUE);
+    GUIUtils.setColorOnButton(databaseButton, ButtonColor.GRAY);
+    GUIUtils.setColorOnButton(parameterButton, ButtonColor.GRAY);
+    GUIUtils.setColorOnButton(deleteResearcherButton, ButtonColor.RED);
+    GUIUtils.setColorOnButton(addGeneOrPrimerButton, ButtonColor.GREEN);
+    GUIUtils.setColorOnButton(addResearcherButton, ButtonColor.GREEN);
+    GUIUtils.setColorOnButton(deleteGeneOrPrimerButton, ButtonColor.RED);
+    GUIUtils.setColorOnButton(deleteResearcherButton, ButtonColor.RED);
+    GUIUtils.setColorOnButton(showGeneOrPrimerButton, ButtonColor.BLUE);
 
-		srcPathField.textProperty().addListener(new ChangeListener<String>() {
+    srcPathField.setText(ConfigHandler.getSrcPath());
 
-			@Override
-			public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-				if (newValue.matches(ConfigHandler.SEPARATOR_CHAR + "")) {
-					srcPathField.setText(oldValue);
-				} else {
-					srcPathField.setText(newValue);
-				}
+    srcPathField.textProperty().addListener(new ChangeListener<String>() {
 
-				ConfigHandler.setSrcPath(newValue);
-				try {
-					ConfigHandler.writeConfig();
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-			}
-		});
+      @Override
+      public void changed(ObservableValue<? extends String> observable, String oldValue,
+          String newValue) {
+        if (newValue.matches(ConfigHandler.SEPARATOR_CHAR + "")) {
+          srcPathField.setText(oldValue);
+        } else {
+          srcPathField.setText(newValue);
+        }
 
-		geneOrPrimerList.getSelectionModel().selectedItemProperty().addListener((obeservable, value, newValue) -> {
-			if (!geneOrPrimerList.getSelectionModel().isEmpty()) {
-				if (isPrimerOn) {
-					selectedPrimer = PrimerHandler.getPrimer(newValue);
-				} else {
-					selectedGene = GeneHandler.getGene(newValue.split(" ")[0]);
-				}
-				showGeneOrPrimerButton.setDisable(false);
-			}
-		});
+        ConfigHandler.setSrcPath(newValue);
+        try {
+          ConfigHandler.writeConfig();
+        } catch (IOException e) {
+          e.printStackTrace();
+        }
+      }
+    });
 
-		showGeneOrPrimerButton.setOnAction(new EventHandler<ActionEvent>() {
-			@Override
-			public void handle(ActionEvent arg0) {
-				if (isPrimerOn) {
-					ShowPrimerWindow primerWindow = new ShowPrimerWindow();
-					try {
-						primerWindow.start(new Stage());
-					} catch (Exception e) {
-						e.printStackTrace();
-					}
+    geneOrPrimerList.getSelectionModel().selectedItemProperty()
+        .addListener((obeservable, value, newValue) -> {
+          if (!geneOrPrimerList.getSelectionModel().isEmpty()) {
+            if (isPrimerOn) {
+              selectedPrimer = PrimerHandler.getPrimer(newValue);
+            } else {
+              selectedGene = GeneHandler.getGene(newValue.split(" ")[0]);
+            }
+            showGeneOrPrimerButton.setDisable(false);
+          }
+        });
 
-				} else {
-					ShowGeneWindow geneWindow = new ShowGeneWindow();
-					try {
-						geneWindow.start(new Stage());
-					} catch (Exception e) {
-						e.printStackTrace();
-					}
-				}
+    showGeneOrPrimerButton.setOnAction(new EventHandler<ActionEvent>() {
+      @Override
+      public void handle(ActionEvent arg0) {
+        if (isPrimerOn) {
+          ShowPrimerWindow primerWindow = new ShowPrimerWindow();
+          try {
+            primerWindow.start(new Stage());
+          } catch (Exception e) {
+            e.printStackTrace();
+          }
 
-			}
-		});
+        } else {
+          ShowGeneWindow geneWindow = new ShowGeneWindow();
+          try {
+            geneWindow.start(new Stage());
+          } catch (Exception e) {
+            e.printStackTrace();
+          }
+        }
 
-		researcherDropdown.getSelectionModel().selectedItemProperty().addListener((obeservable, value, newValue) -> {
-			ConfigHandler.setResearcher(newValue);
-			try {
-				ConfigHandler.writeConfig();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		});
+      }
+    });
 
-		// gives you a short menu
-		parameterButton.setOnAction(new EventHandler<ActionEvent>() {
-			@Override
-			public void handle(ActionEvent arg0) {
-				if (!addParametersOpen) {
-					addParametersOpen = true;
-					ParameterWindow settings = new ParameterWindow();
-					try {
-						settings.start(new Stage());
-					} catch (Exception e) {
-						e.printStackTrace();
-					}
-				}
-			}
-		});
+    researcherDropdown.getSelectionModel().selectedItemProperty()
+        .addListener((obeservable, value, newValue) -> {
+          ConfigHandler.setResearcher(newValue);
+          try {
+            ConfigHandler.writeConfig();
+          } catch (IOException e) {
+            e.printStackTrace();
+          }
+        });
 
-		databaseButton.setOnAction(new EventHandler<ActionEvent>() {
-			@Override
-			public void handle(ActionEvent arg0) {
-				if (!addParametersOpen) {
-					System.err.println(addParametersOpen);
-					addParametersOpen = true;
-					DatabaseSettingsWindow settings = new DatabaseSettingsWindow();
-					try {
-						settings.start(new Stage());
-					} catch (Exception e) {
-						e.printStackTrace();
-					}
-				}
-				System.out.println("Database Button!");
-			}
-		});
+    // gives you a short menu
+    parameterButton.setOnAction(new EventHandler<ActionEvent>() {
+      @Override
+      public void handle(ActionEvent arg0) {
+        if (!addParametersOpen) {
+          addParametersOpen = true;
+          ParameterWindow settings = new ParameterWindow();
+          try {
+            settings.start(new Stage());
+          } catch (Exception e) {
+            e.printStackTrace();
+          }
+        }
+      }
+    });
 
-		SettingsWindow self = this;
-		addGeneOrPrimerButton.setOnAction(new EventHandler<ActionEvent>() {
-			@Override
-			public void handle(ActionEvent arg0) {
-				numGeneWindows++;
+    databaseButton.setOnAction(new EventHandler<ActionEvent>() {
+      @Override
+      public void handle(ActionEvent arg0) {
+        if (!addParametersOpen) {
+          System.err.println(addParametersOpen);
+          addParametersOpen = true;
+          DatabaseSettingsWindow settings = new DatabaseSettingsWindow();
+          try {
+            settings.start(new Stage());
+          } catch (Exception e) {
+            e.printStackTrace();
+          }
+        }
+        System.out.println("Database Button!");
+      }
+    });
 
-				if (isPrimerOn) {
-					try {
-						final FXMLLoader loader = new FXMLLoader(
-								TextWindow.class.getResource("/fxml/AddPrimerWindow.fxml"));
+    SettingsWindow self = this;
+    addGeneOrPrimerButton.setOnAction(new EventHandler<ActionEvent>() {
+      @Override
+      public void handle(ActionEvent arg0) {
+        numGeneWindows++;
 
-						final Parent root = loader.load();
+        if (isPrimerOn) {
+          try {
+            final FXMLLoader loader =
+                new FXMLLoader(TextWindow.class.getResource("/fxml/AddPrimerWindow.fxml"));
 
-						AddPrimerWindow primerWin = loader.<AddPrimerWindow>getController();
+            final Parent root = loader.load();
 
-						primerWin.setParent(self);
+            AddPrimerWindow primerWin = loader.<AddPrimerWindow>getController();
 
-						Scene scene = new Scene(root);
-						Stage s = new Stage();
-						s.setScene(scene);
-						s.sizeToScene();
-						s.setTitle("GSAT - Adding a primer");
-						s.show();
+            primerWin.setParent(self);
 
-					} catch (IOException e) {
-						e.printStackTrace();
-						return;
-					}
-				} else {
-					try {
-						final FXMLLoader loader = new FXMLLoader(
-								TextWindow.class.getResource("/fxml/AddGeneWindow.fxml"));
+            Scene scene = new Scene(root);
+            Stage s = new Stage();
+            s.setScene(scene);
+            s.sizeToScene();
+            s.setTitle("GSAT - Adding a primer");
+            s.show();
 
-						final Parent root = loader.load();
+          } catch (IOException e) {
+            e.printStackTrace();
+            return;
+          }
+        } else {
+          try {
+            final FXMLLoader loader =
+                new FXMLLoader(TextWindow.class.getResource("/fxml/AddGeneWindow.fxml"));
 
-						AddGeneWindow genWin = loader.<AddGeneWindow>getController();
+            final Parent root = loader.load();
 
-						genWin.setParent(self);
+            AddGeneWindow genWin = loader.<AddGeneWindow>getController();
 
-						Scene scene = new Scene(root);
-						Stage s = new Stage();
-						s.setScene(scene);
-						s.sizeToScene();
-						s.setTitle("GSAT - Adding a gene");
-						s.show();
+            genWin.setParent(self);
 
-					} catch (IOException e) {
-						e.printStackTrace();
-						return;
-					}
-				}
-			}
-		});
+            Scene scene = new Scene(root);
+            Stage s = new Stage();
+            s.setScene(scene);
+            s.sizeToScene();
+            s.setTitle("GSAT - Adding a gene");
+            s.show();
 
-		addResearcherButton.setOnAction(new EventHandler<ActionEvent>() {
-			@Override
-			public void handle(ActionEvent arg0) {
-				TextInputDialog dialog = new TextInputDialog("your name");
-				dialog.setTitle("Add a new researcher");
-				dialog.setHeaderText("Please enter the name of the new researcher.");
-				dialog.setContentText("The name should have a form like 'Max M'.");
-				dialog.setContentText("Name:");
+          } catch (IOException e) {
+            e.printStackTrace();
+            return;
+          }
+        }
+      }
+    });
 
-				ButtonBar buttonBar = (ButtonBar) dialog.getDialogPane().lookup(".button-bar");
-				ObservableList<Node> nodes = buttonBar.getButtons();
-				GUIUtils.setColorOnButton((Button) nodes.get(0), ButtonColor.GREEN);
-				GUIUtils.setColorOnButton((Button) nodes.get(1), ButtonColor.RED);
+    addResearcherButton.setOnAction(new EventHandler<ActionEvent>() {
+      @Override
+      public void handle(ActionEvent arg0) {
+        TextInputDialog dialog = new TextInputDialog("your name");
+        dialog.setTitle("Add a new researcher");
+        dialog.setHeaderText("Please enter the name of the new researcher.");
+        dialog.setContentText("The name should have a form like 'Max M'.");
+        dialog.setContentText("Name:");
 
-				// Traditional way to get the response value.
-				Optional<String> result = dialog.showAndWait();
-				if (result.isPresent()) {
-					if (result.get() != null && !result.get().isEmpty()) {
-						ConfigHandler.addResearcher(result.get().replaceAll(ConfigHandler.SEPARATOR_CHAR + "", ""));
-						addResearcher = true;
-					}
+        ButtonBar buttonBar = (ButtonBar) dialog.getDialogPane().lookup(".button-bar");
+        ObservableList<Node> nodes = buttonBar.getButtons();
+        GUIUtils.setColorOnButton((Button) nodes.get(0), ButtonColor.GREEN);
+        GUIUtils.setColorOnButton((Button) nodes.get(1), ButtonColor.RED);
 
-				}
-				if (addResearcher) {
-					try {
-						ConfigHandler.writeConfig();
-						GUIUtils.initializeResearchers(researcherDropdown);
-						researcherDropdown.getSelectionModel()
-								.select(result.get().replaceAll(ConfigHandler.SEPARATOR_CHAR + "", ""));
-						addResearcher = false;
-					} catch (IOException e) {
-						e.printStackTrace();
-					}
-				}
-			}
-		});
+        // Traditional way to get the response value.
+        Optional<String> result = dialog.showAndWait();
+        if (result.isPresent()) {
+          if (result.get() != null && !result.get().isEmpty()) {
+            ConfigHandler
+                .addResearcher(result.get().replaceAll(ConfigHandler.SEPARATOR_CHAR + "", ""));
+            addResearcher = true;
+          }
 
-		deleteGeneOrPrimerButton.setOnAction(new EventHandler<ActionEvent>() {
-			@Override
-			public void handle(ActionEvent arg0) {
-				int geneindex = geneOrPrimerList.getSelectionModel().getSelectedIndex();
-				if (geneindex != -1) {
-					try {
-						if (isPrimerOn) {
-							PrimerHandler.deletePrimer(geneOrPrimerList.getSelectionModel().getSelectedItem());
-							PrimerHandler.writePrimer();
-							GUIUtils.initializePrimerBox(geneOrPrimerList);
-						} else {
-							GeneHandler.deleteGene(geneOrPrimerList.getSelectionModel().getSelectedItem());
-							GeneHandler.writeGenes();
-							GUIUtils.initializeGeneBox(geneOrPrimerList);
-						}
+        }
+        if (addResearcher) {
+          try {
+            ConfigHandler.writeConfig();
+            GUIUtils.initializeResearchers(researcherDropdown);
+            researcherDropdown.getSelectionModel()
+                .select(result.get().replaceAll(ConfigHandler.SEPARATOR_CHAR + "", ""));
+            addResearcher = false;
+          } catch (IOException e) {
+            e.printStackTrace();
+          }
+        }
+      }
+    });
 
-						showGeneOrPrimerButton.setDisable(true);
-					} catch (IOException e) {
-						e.printStackTrace();
-					}
-				}
+    deleteGeneOrPrimerButton.setOnAction(new EventHandler<ActionEvent>() {
+      @Override
+      public void handle(ActionEvent arg0) {
+        int geneindex = geneOrPrimerList.getSelectionModel().getSelectedIndex();
+        if (geneindex != -1) {
+          try {
+            if (isPrimerOn) {
+              PrimerHandler.deletePrimer(geneOrPrimerList.getSelectionModel().getSelectedItem());
+              PrimerHandler.writePrimer();
+              GUIUtils.initializePrimerBox(geneOrPrimerList);
+            } else {
+              GeneHandler.deleteGene(geneOrPrimerList.getSelectionModel().getSelectedItem());
+              GeneHandler.writeGenes();
+              GUIUtils.initializeGeneBox(geneOrPrimerList);
+            }
 
-			}
-		});
+            showGeneOrPrimerButton.setDisable(true);
+          } catch (IOException e) {
+            e.printStackTrace();
+          }
+        }
 
-		deleteResearcherButton.setOnAction(new EventHandler<ActionEvent>() {
-			@Override
-			public void handle(ActionEvent arg0) {
-				ConfigHandler.deleteResearcher(researcherDropdown.getSelectionModel().getSelectedItem());
-				researcherDropdown.getSelectionModel().clearSelection();
-				GUIUtils.initializeResearchers(researcherDropdown);
-			}
-		});
+      }
+    });
 
-		closeButton.setOnAction(new EventHandler<ActionEvent>() {
+    deleteResearcherButton.setOnAction(new EventHandler<ActionEvent>() {
+      @Override
+      public void handle(ActionEvent arg0) {
+        ConfigHandler.deleteResearcher(researcherDropdown.getSelectionModel().getSelectedItem());
+        researcherDropdown.getSelectionModel().clearSelection();
+        GUIUtils.initializeResearchers(researcherDropdown);
+      }
+    });
 
-			@Override
-			public void handle(ActionEvent arg0) {
-				MainWindow.settingsOpen = false;
-				Stage stage = (Stage) closeButton.getScene().getWindow();
-				stage.close();
-			}
-		});
-	}
+    closeButton.setOnAction(new EventHandler<ActionEvent>() {
 
-	@Override
-	public void stop() throws Exception {
-		MainWindow.settingsOpen = false;
-		System.out.println("Settings Closed");
-		super.stop();
-	}
+      @Override
+      public void handle(ActionEvent arg0) {
+        MainWindow.settingsOpen = false;
+        Stage stage = (Stage) closeButton.getScene().getWindow();
+        stage.close();
+      }
+    });
+  }
 
-	@Override
-	public void start(Stage primaryStage) throws Exception {
-		Parent root;
-		try {
-			root = FXMLLoader.load(getClass().getResource("/fxml/SettingsWindow.fxml"));
-		} catch (IOException e) {
-			e.printStackTrace();
-			return;
-		}
-		scene = new Scene(root);
-		primaryStage.setTitle("GSAT - Settings");
-		primaryStage.setScene(scene);
-		primaryStage.sizeToScene();
-		primaryStage.show();
-		// alow opening again when settingswindow was closed
-		primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+  @Override
+  public void stop() throws Exception {
+    MainWindow.settingsOpen = false;
+    System.out.println("Settings Closed");
+    super.stop();
+  }
 
-			@Override
-			public void handle(WindowEvent arg0) {
-				if (numGeneWindows == 0) {
-					MainWindow.settingsOpen = false;
-				} else {
-					arg0.consume();
-				}
+  @Override
+  public void start(Stage primaryStage) throws Exception {
+    Parent root;
+    try {
+      root = FXMLLoader.load(getClass().getResource("/fxml/SettingsWindow.fxml"));
+    } catch (IOException e) {
+      e.printStackTrace();
+      return;
+    }
+    scene = new Scene(root);
+    primaryStage.setTitle("GSAT - Settings");
+    primaryStage.setScene(scene);
+    primaryStage.sizeToScene();
+    primaryStage.show();
+    // alow opening again when settingswindow was closed
+    primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
 
-			}
-		});
-	}
+      @Override
+      public void handle(WindowEvent arg0) {
+        if (numGeneWindows == 0) {
+          MainWindow.settingsOpen = false;
+        } else {
+          arg0.consume();
+        }
 
-	public void updateGenes() {
-		GUIUtils.initializeGeneBox(geneOrPrimerList);
-	}
+      }
+    });
+  }
 
-	public void updatePrimers() {
-		GUIUtils.initializePrimerBox(geneOrPrimerList);
-	}
+  public void updateGenes() {
+    GUIUtils.initializeGeneBox(geneOrPrimerList);
+  }
 
-	/**
-	 * @return the selectedPrimer
-	 */
-	public static Primer getSelectedPrimer() {
-		return selectedPrimer;
-	}
+  public void updatePrimers() {
+    GUIUtils.initializePrimerBox(geneOrPrimerList);
+  }
 
-	/**
-	 * @param selectedPrimer
-	 *            the selectedPrimer to set
-	 */
-	public static void setSelectedPrimer(Primer selectedPrimer) {
-		SettingsWindow.selectedPrimer = selectedPrimer;
-	}
+  /**
+   * @return the selectedPrimer
+   */
+  public static Primer getSelectedPrimer() {
+    return selectedPrimer;
+  }
 
-	public void decNumGenWindows() {
-		numGeneWindows--;
+  /**
+   * @param selectedPrimer the selectedPrimer to set
+   */
+  public static void setSelectedPrimer(Primer selectedPrimer) {
+    SettingsWindow.selectedPrimer = selectedPrimer;
+  }
 
-	}
+  public void decNumGenWindows() {
+    numGeneWindows--;
+
+  }
 
 }

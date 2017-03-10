@@ -20,6 +20,7 @@ import analysis.AnalysedSequence;
  */
 public class FileRetriever {
 
+
 	/**
 	 * This methods extracts all the stored information of all CSV files in the
 	 * folder indicated by the given path and stores them inside an
@@ -157,5 +158,4 @@ public class FileRetriever {
 		return sequence;
 
 	}
-
 }

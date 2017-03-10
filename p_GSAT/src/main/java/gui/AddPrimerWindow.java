@@ -28,165 +28,173 @@ import javafx.stage.WindowEvent;
 
 public class AddPrimerWindow extends Application implements javafx.fxml.Initializable {
 
-	private SettingsWindow parent;
+  private SettingsWindow parent;
 
-	// fields
-	@FXML
-	private TextField nameField;
+  // fields
+  @FXML
+  private TextField nameField;
 
-	@FXML
-	private TextField idField;
+  @FXML
+  private TextField idField;
 
-	@FXML
-	private TextField meltingTempField;
+  @FXML
+  private TextField meltingTempField;
 
-	@FXML
-	private javafx.scene.control.TextArea sequenceArea;
+  @FXML
+  private javafx.scene.control.TextArea sequenceArea;
 
-	@FXML
-	private Button cancelButton;
+  @FXML
+  private Button cancelButton;
 
-	@FXML
-	private Button confirmButton;
+  @FXML
+  private Button confirmButton;
 
-	@FXML
-	private TextArea commentArea;
+  @FXML
+  private TextArea commentArea;
 
-	@Override
-	public void initialize(URL location, ResourceBundle resources) {
 
-		sequenceArea.setWrapText(true);
-		GUIUtils.setColorOnButton(confirmButton, ButtonColor.GREEN);
-		GUIUtils.setColorOnButton(cancelButton, ButtonColor.RED);
+  @Override
+  public void initialize(URL location, ResourceBundle resources) {
 
-		nameField.textProperty().addListener(new ChangeListener<String>() {
-			@Override
-			public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-				if (newValue.contains(ConfigHandler.SEPARATOR_CHAR + "")) {
-					nameField.setText(oldValue);
-				} else {
-					nameField.setText(newValue);
-				}
-			}
-		});
 
-		idField.textProperty().addListener(new ChangeListener<String>() {
-			@Override
-			public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-				if (newValue.contains(ConfigHandler.SEPARATOR_CHAR + "")) {
-					idField.setText(oldValue);
-				} else {
-					idField.setText(newValue);
-				}
-			}
-		});
+    sequenceArea.setWrapText(true);
+    GUIUtils.setColorOnButton(confirmButton, ButtonColor.GREEN);
+    GUIUtils.setColorOnButton(cancelButton, ButtonColor.RED);
 
-		meltingTempField.textProperty().addListener(new ChangeListener<String>() {
-			@Override
-			public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-				if (newValue.matches(".*[^1234567890].*")) {
-					meltingTempField.setText(oldValue);
-				} else {
-					meltingTempField.setText(newValue);
-				}
-			}
-		});
+    nameField.textProperty().addListener(new ChangeListener<String>() {
+      @Override
+      public void changed(ObservableValue<? extends String> observable, String oldValue,
+          String newValue) {
+        if (newValue.contains(ConfigHandler.SEPARATOR_CHAR + "")) {
+          nameField.setText(oldValue);
+        } else {
+          nameField.setText(newValue);
+        }
+      }
+    });
 
-		sequenceArea.textProperty().addListener(new ChangeListener<String>() {
-			@Override
-			public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-				if (newValue.toUpperCase().matches(".*[^ATCG].*")) {
-					sequenceArea.setText(oldValue);
-				} else {
-					sequenceArea.setText(newValue);
-				}
-			}
-		});
+    idField.textProperty().addListener(new ChangeListener<String>() {
+      @Override
+      public void changed(ObservableValue<? extends String> observable, String oldValue,
+          String newValue) {
+        if (newValue.contains(ConfigHandler.SEPARATOR_CHAR+"")) {
+          idField.setText(oldValue);
+        } else {
+          idField.setText(newValue);
+        }
+      }
+    });
 
-		commentArea.textProperty().addListener(new ChangeListener<String>() {
-			@Override
-			public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-				if (newValue.contains(ConfigHandler.SEPARATOR_CHAR + "")) {
-					commentArea.setText(oldValue);
-				} else {
-					commentArea.setText(newValue);
-				}
-			}
-		});
+    meltingTempField.textProperty().addListener(new ChangeListener<String>() {
+      @Override
+      public void changed(ObservableValue<? extends String> observable, String oldValue,
+          String newValue) {
+        if (newValue.matches(".*[^1234567890].*")) {
+          meltingTempField.setText(oldValue);
+        } else {
+          meltingTempField.setText(newValue);
+        }
+      }
+    });
 
-		confirmButton.setOnAction(new EventHandler<ActionEvent>() {
+    sequenceArea.textProperty().addListener(new ChangeListener<String>() {
+      @Override
+      public void changed(ObservableValue<? extends String> observable, String oldValue,
+          String newValue) {
+        if (newValue.toUpperCase().matches(".*[^ATCG].*")) {
+          sequenceArea.setText(oldValue);
+        } else {
+          sequenceArea.setText(newValue);
+        }
+      }
+    });
 
-			@Override
-			public void handle(ActionEvent arg0) {
-				if (!nameField.getText().isEmpty() && !sequenceArea.getText().isEmpty() && !idField.getText().isEmpty()) {
-					if (PrimerHandler.addPrimer(new Primer(sequenceArea.getText(), ConfigHandler.getResearcher(),
-							Integer.parseInt(meltingTempField.getText()), idField.getText(), nameField.getText(),
-							commentArea.getText()))) {
+    commentArea.textProperty().addListener(new ChangeListener<String>() {
+      @Override
+      public void changed(ObservableValue<? extends String> observable, String oldValue,
+          String newValue) {
+        if (newValue.contains(ConfigHandler.SEPARATOR_CHAR + "")) {
+          commentArea.setText(oldValue);
+        } else {
+          commentArea.setText(newValue);
+        }
+      }
+    });
 
-						Alert alert = new Alert(AlertType.INFORMATION);
-						alert.setTitle("Adding primer");
-						alert.setHeaderText("Primer added successfully.");
-						alert.showAndWait();
-						MainWindow.changesOnPrimers = true;
-						parent.updatePrimers();
-						Stage stage = (Stage) cancelButton.getScene().getWindow();
-						stage.close();
-					} else {
-						Alert alert = new Alert(AlertType.INFORMATION);
-						alert.setTitle("Adding primer failed");
-						alert.setHeaderText("Primer added not successful because gene already exists in local file.");
-						alert.showAndWait();
+    confirmButton.setOnAction(new EventHandler<ActionEvent>() {
 
-					}
-				}
+      @Override
+      public void handle(ActionEvent arg0) {
+        if (!nameField.getText().isEmpty() && !sequenceArea.getText().isEmpty()
+            && !idField.getText().isEmpty() && !meltingTempField.getText().isEmpty() ) {
+          if (PrimerHandler.addPrimer(new Primer(sequenceArea.getText(), ConfigHandler.getResearcher(),
+              Integer.parseInt(meltingTempField.getText()), idField.getText(), nameField.getText(),
+              commentArea.getText()))) {
 
-			}
-		});
+            Alert alert = new Alert(AlertType.INFORMATION);
+            alert.setTitle("Adding primer");
+            alert.setHeaderText("Primer added successfully.");
+            alert.showAndWait();
+            MainWindow.changesOnPrimers = true;
+            parent.updatePrimers();
+            Stage stage = (Stage) cancelButton.getScene().getWindow();
+            stage.close();
+          } else {
+            Alert alert = new Alert(AlertType.INFORMATION);
+            alert.setTitle("Adding primer failed");
+            alert.setHeaderText(
+                "Primer added not successful because gene already exists in local file.");
+            alert.showAndWait();
 
-		cancelButton.setOnAction(new EventHandler<ActionEvent>() {
+          }
+        }
 
-			@Override
-			public void handle(ActionEvent arg0) {
-				Stage stage = (Stage) cancelButton.getScene().getWindow();
-				stage.close();
+      }
+    });
 
-			}
-		});
-	}
+    cancelButton.setOnAction(new EventHandler<ActionEvent>() {
 
-	@Override
-	public void stop() throws Exception {
-		super.stop();
-	}
+      @Override
+      public void handle(ActionEvent arg0) {
+        Stage stage = (Stage) cancelButton.getScene().getWindow();
+        stage.close();
 
-	@Override
-	public void start(Stage primaryStage) throws Exception {
-		Parent root;
-		try {
-			root = FXMLLoader.load(getClass().getResource("/fxml/AddPrimerWindow.fxml"));
-		} catch (IOException e) {
-			e.printStackTrace();
-			return;
-		}
-		Scene scene = new Scene(root);
+      }
+    });
+  }
 
-		primaryStage.setTitle("GSAT - Adding a primer");
-		primaryStage.setScene(scene);
-		primaryStage.sizeToScene();
-		primaryStage.show();
+  @Override
+  public void stop() throws Exception {
+    super.stop();
+  }
 
-		primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+  @Override
+  public void start(Stage primaryStage) throws Exception {
+    Parent root;
+    try {
+      root = FXMLLoader.load(getClass().getResource("/fxml/AddPrimerWindow.fxml"));
+    } catch (IOException e) {
+      e.printStackTrace();
+      return;
+    }
+    Scene scene = new Scene(root);
 
-			@Override
-			public void handle(WindowEvent arg0) {
-				parent.decNumGenWindows();
+    primaryStage.setTitle("GSAT - Adding a primer");
+    primaryStage.setScene(scene);
+    primaryStage.sizeToScene();
+    primaryStage.show();
 
-			}
-		});
-	}
+    primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
 
-	public void setParent(SettingsWindow parent) {
-		this.parent = parent;
-	}
+      @Override
+      public void handle(WindowEvent arg0) {
+        parent.decNumGenWindows();
 
+      }
+    });
+  }
+
+  public void setParent(SettingsWindow parent) {
+    this.parent = parent;
+  }
 }

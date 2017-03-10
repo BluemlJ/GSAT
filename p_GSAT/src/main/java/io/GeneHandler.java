@@ -19,7 +19,8 @@ import exceptions.DuplicateGeneException;
  *
  */
 public class GeneHandler {
-	private static ArrayList<Gene> geneList;
+
+ 	private static ArrayList<Gene> geneList;
 	private static String path = System.getProperty("user.home") + File.separator + "gsat" + File.separator
 			+ "genes.txt";
 	private static final String SEPARATOR = ConfigHandler.SEPARATOR_CHAR + "";
@@ -112,30 +113,46 @@ public class GeneHandler {
 	}
 
 	/**
-	 * 
-	 * @param newpath
-	 * @param geneName
-	 * @throws IOException
-	 */
-	public static void deleteGene(String newpath, String geneName) throws IOException {
+	   * 
+	   * @param newpath
+	   * @param geneName
+	   * @throws IOException
+	   */
+	  public static void deleteGene(String newpath, String geneName) throws IOException {
 
-		for (int i = 0; i < geneList.size(); i++) {
-			if (geneList.get(i).getName().equals(geneName)) {
-				geneList.remove(i);
-			}
-		}
-		writeGenes(newpath);
-	}
+	    for (int i = 0; i < geneList.size(); i++) {
+	      if (geneList.get(i).getName().equals(geneName)) {
+	        geneList.remove(i);
+	      }
+	    }
+	    writeGenes(newpath);
+	  }
 
-	/**
-	 * 
-	 * @param string
-	 * @throws IOException
-	 */
-	public static void deleteGene(String string) throws IOException {
-		deleteGene(path, string.split(" ")[0]);
+	  /**
+	   * 
+	   * @param string
+	   * @throws IOException
+	   */
+	  public static void deleteGene(String string) throws IOException {
+	    if (!string.split(" ")[1].isEmpty()) {
+	      deleteGene(path, string.split(" ")[0],
+	          string.split(" ")[1].substring(1, string.split(" ")[1].length() - 1));
+	    } else {
+	      deleteGene(path, string.split(" ")[0]);
+	    }
+	  }
 
-	}
+	  public static void deleteGene(String newpath, String geneName, String organism)
+	      throws IOException {
+
+	    for (int i = 0; i < geneList.size(); i++) {
+	      if (geneList.get(i).getName().equals(geneName)
+	          && geneList.get(i).getOrganism().equals(organism)) {
+	        geneList.remove(i);
+	      }
+	    }
+	    writeGenes(newpath);
+	  }
 
 	/**
 	 * clears gene.txt and writes all known genes.
@@ -395,5 +412,4 @@ public class GeneHandler {
 	public static String getPath() {
 		return GeneHandler.path;
 	}
-
 }
