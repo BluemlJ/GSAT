@@ -171,6 +171,8 @@ public class ShowChromatogram extends Application implements javafx.fxml.Initial
 		int lastCCandidate = 0;
 		int cHold = 0;
 		boolean cFalling = true;
+		
+		int num = 0; 
 
 		for (int i = 0; i < last; i++) {
 			int a = (int) (400 - ((channelA[i]) * strechX));
@@ -218,7 +220,7 @@ public class ShowChromatogram extends Application implements javafx.fxml.Initial
 			if (aHold > 5 && lastAmax != nextAmax) {
 				if (channelA[nextAmax] > channelT[nextAmax] && channelA[nextAmax] > channelG[nextAmax]
 						&& channelA[nextAmax] > channelC[nextAmax]) {
-
+				    num++;
 					buffGraph.setColor(colorA);
 					buffGraph.drawLine((nextAmax) * strechY, 0, (nextAmax) * strechY, 400);
 				}
@@ -247,7 +249,7 @@ public class ShowChromatogram extends Application implements javafx.fxml.Initial
 			if (tHold > 5 && lastTmax != nextTmax) {
 				if (channelT[nextTmax] > channelA[nextTmax] && channelT[nextTmax] > channelG[nextTmax]
 						&& channelT[nextTmax] > channelC[nextTmax]) {
-
+				  num++;
 					buffGraph.setColor(colorT);
 					buffGraph.drawLine((nextTmax) * strechY, 0, (nextTmax) * strechY, 400);
 				}
@@ -276,7 +278,7 @@ public class ShowChromatogram extends Application implements javafx.fxml.Initial
 			if (gHold > 5 && lastGmax != nextGmax) {
 				if (channelG[nextGmax] > channelT[nextGmax] && channelG[nextGmax] > channelA[nextGmax]
 						&& channelG[nextGmax] > channelC[nextGmax]) {
-
+				    num++;
 					buffGraph.setColor(colorG);
 					buffGraph.drawLine((nextGmax) * strechY, 0, (nextGmax) * strechY, 400);
 				}
@@ -305,7 +307,7 @@ public class ShowChromatogram extends Application implements javafx.fxml.Initial
 			if (cHold > 5 && lastCmax != nextCmax) {
 				if (channelC[nextCmax] > channelT[nextCmax] && channelC[nextCmax] > channelG[nextCmax]
 						&& channelC[nextCmax] > channelA[nextCmax]) {
-
+				    num++;
 					buffGraph.setColor(colorC);
 					buffGraph.drawLine((nextCmax) * strechY, 0, (nextCmax) * strechY, 400);
 				}
@@ -323,7 +325,8 @@ public class ShowChromatogram extends Application implements javafx.fxml.Initial
 			lastC = c;
 
 		}
-
+		System.out.println(num + " = num");
+		System.out.println(startSequence.getSequence().length() +  " = seq");
 		try
 
 		{
