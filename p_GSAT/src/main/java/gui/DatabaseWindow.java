@@ -338,9 +338,11 @@ public class DatabaseWindow extends Application implements javafx.fxml.Initializ
 		String path = destField.getText();
 		ArrayList<AnalysedSequence> resList = DatabaseConnection.pullCustomSequences(datePickerStartDate,
 				datePickerEndDate, researcher, gene);
+		
 		FileSaver.setLocalPath(path);
+		FileSaver.setSeparateFiles(false);
+		FileSaver.setDestFileName("database_files");
 		for (AnalysedSequence res : resList) {
-
 			FileSaver.storeResultsLocally(res.getFileName(), res);
 		}
 
