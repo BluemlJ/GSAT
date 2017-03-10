@@ -53,18 +53,19 @@ public class LocalDBTest {
 
 	@Ignore
 	@Test
-	public void testPullCustom() throws DatabaseConnectionException, SQLException, UnknownConfigFieldException, ConfigNotFoundException, IOException {
+	public void testPullCustom() throws DatabaseConnectionException, SQLException, UnknownConfigFieldException,
+			ConfigNotFoundException, IOException {
 		DatabaseConnection.setDatabaseConnection(user, pass, port, server);
-		
-		//DatabaseConnection.setDatabaseConnection(userOnline, passOnline, portOnline, serverOnline);
-		
+
+		// DatabaseConnection.setDatabaseConnection(userOnline, passOnline,
+		// portOnline, serverOnline);
+
 		DatabaseConnection.createDatabase();
-		
+
 		java.sql.Date d1 = java.sql.Date.valueOf("2000-01-01");
 		java.sql.Date d2 = java.sql.Date.valueOf("2000-12-31");
 		java.sql.Date d3 = java.sql.Date.valueOf("2007-12-31");
 		java.sql.Date d4 = java.sql.Date.valueOf("2016-6-19");
-
 
 		Gene g1 = new Gene("aaatttggg", 0, "fsa1", "Lovis Heindrich", "fsa", "comment1");
 		Gene g2 = new Gene("aaatttgggaaa", 0, "fsa2", "Kevin Otto", "fsa", "comment1");
@@ -85,25 +86,25 @@ public class LocalDBTest {
 		seq.add(s2);
 		seq.add(s3);
 		seq.add(s4);
-		
+
 		DatabaseConnection.pushAllData(seq);
-		
+
 		// no parameters
 		ArrayList<AnalysedSequence> res1 = DatabaseConnection.pullCustomSequences(null, null, null, null);
 		assertEquals(res1.size(), 4);
-		
+
 		// researcher set
 		ArrayList<AnalysedSequence> res2 = DatabaseConnection.pullCustomSequences(null, null, "Kevin Otto", null);
 		assertEquals(res2.size(), 2);
 		ArrayList<AnalysedSequence> res3 = DatabaseConnection.pullCustomSequences(null, null, "Lovis Heindrich", null);
 		assertEquals(res3.size(), 2);
-		
+
 		// gene set
 		ArrayList<AnalysedSequence> res4 = DatabaseConnection.pullCustomSequences(null, null, null, g1.getName());
 		assertEquals(res4.size(), 3);
 		ArrayList<AnalysedSequence> res5 = DatabaseConnection.pullCustomSequences(null, null, null, g2.getName());
 		assertEquals(res5.size(), 1);
-		
+
 		// date set
 		ArrayList<AnalysedSequence> res6 = DatabaseConnection.pullCustomSequences(d1, null, null, null);
 		assertEquals(res6.size(), 4);
@@ -117,35 +118,39 @@ public class LocalDBTest {
 		assertEquals(res10.size(), 2);
 		ArrayList<AnalysedSequence> res11 = DatabaseConnection.pullCustomSequences(d1, d4, null, null);
 		assertEquals(res11.size(), 4);
-		
-		//combinations
-		ArrayList<AnalysedSequence> res12 = DatabaseConnection.pullCustomSequences(null, null, "Kevin Otto", g1.getName());
+
+		// combinations
+		ArrayList<AnalysedSequence> res12 = DatabaseConnection.pullCustomSequences(null, null, "Kevin Otto",
+				g1.getName());
 		assertEquals(res12.size(), 1);
 		ArrayList<AnalysedSequence> res13 = DatabaseConnection.pullCustomSequences(null, d4, "Lovis Heindrich", null);
 		assertEquals(res13.size(), 2);
-		ArrayList<AnalysedSequence> res14 = DatabaseConnection.pullCustomSequences(d2, d4, "Lovis Heindrich", g1.getName());
+		ArrayList<AnalysedSequence> res14 = DatabaseConnection.pullCustomSequences(d2, d4, "Lovis Heindrich",
+				g1.getName());
 		assertEquals(res14.size(), 1);
 		ArrayList<AnalysedSequence> res15 = DatabaseConnection.pullCustomSequences(d1, d2, null, g1.getName());
 		assertEquals(res15.size(), 2);
-		
-		//check values
-		ArrayList<AnalysedSequence> res16 = DatabaseConnection.pullCustomSequences(d2, d4, "Lovis Heindrich", g1.getName());
+
+		// check values
+		ArrayList<AnalysedSequence> res16 = DatabaseConnection.pullCustomSequences(d2, d4, "Lovis Heindrich",
+				g1.getName());
 		assertEquals(res16.size(), 1);
-		//s4: (g1, m1, "seq4", "atatat", d2, "Lovis Heindrich", "comment1", false, "primer1", 80, 0, 99
+		// s4: (g1, m1, "seq4", "atatat", d2, "Lovis Heindrich", "comment1",
+		// false, "primer1", 80, 0, 99
 		AnalysedSequence test1 = res16.get(0);
-		
-		//check gene values
-		//("aaatttggg", 0, "fsa1", "Lovis Heindrich", "fsa", "comment1")
+
+		// check gene values
+		// ("aaatttggg", 0, "fsa1", "Lovis Heindrich", "fsa", "comment1")
 		assertEquals(test1.getReferencedGene().getSequence(), g1.getSequence());
 		assertEquals(test1.getReferencedGene().getName(), g1.getName());
 		assertEquals(test1.getReferencedGene().getResearcher(), g1.getResearcher());
 		assertEquals(test1.getReferencedGene().getOrganism(), g1.getOrganism());
 		assertEquals(test1.getReferencedGene().getComment(), g1.getComment());
-		
-		//check mutation
+
+		// check mutation
 		assertEquals(test1.getMutations().getFirst(), m1.getFirst());
-		
-		//check sequence data
+
+		// check sequence data
 		assertEquals(test1.getSequence(), s4.getSequence());
 		assertEquals(test1.getFileName(), s4.getFileName());
 		assertEquals(test1.getResearcher(), s4.getResearcher());
@@ -155,8 +160,7 @@ public class LocalDBTest {
 		assertEquals(test1.getTrimPercentage(), s4.getTrimPercentage(), 0.0001);
 		assertEquals(test1.getHisTagPosition(), s4.getHisTagPosition());
 		assertEquals(test1.getAvgQuality(), s4.getAvgQuality());
-		
-		
+
 		// refresh database
 		DatabaseConnection.createDatabase();
 	}

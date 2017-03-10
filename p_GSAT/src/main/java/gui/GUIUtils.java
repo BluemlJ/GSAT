@@ -47,6 +47,7 @@ import javafx.stage.FileChooser;
  */
 public class GUIUtils {
 
+
   /**
    * This method initialize the choiceBox and adds all Gene which are stored locally in the
    * Genes.txt
@@ -473,7 +474,4 @@ public class GUIUtils {
     s.close();
     return ret;
   }
-
-
-
 }

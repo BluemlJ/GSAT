@@ -46,7 +46,9 @@ public class PrimerHandler {
 
   }
 
+
   public static void readPrimer() throws NumberFormatException, IOException {
+    initPrimer();
     readPrimer(path);
   }
 
@@ -62,6 +64,52 @@ public class PrimerHandler {
       geneWriter.close();
 
     }
+  }
+
+  public static String[] getPrimerListWithIdAsString() {
+    String[] ret = new String[primerList.size()];
+    for (int i = 0; i < primerList.size(); i++) {
+      ret[i] = primerList.get(i).getName() + " (" + primerList.get(i).getId() + ")";
+    }
+    return ret;
+  }
+
+  /**
+   * 
+   * @param newpath
+   * @param name
+   * @throws IOException
+   */
+  public static void deletePrimer(String newpath, String name) throws IOException {
+
+    for (int i = 0; i < primerList.size(); i++) {
+      if (primerList.get(i).getName().equals(name)) {
+        primerList.remove(i);
+      }
+    }
+    writePrimer(newpath);
+  }
+
+  /**
+   * 
+   * @param string
+   * @throws IOException
+   */
+  public static void deletePrimer(String string) throws IOException {
+    if (!string.split(" ")[1].isEmpty()) {
+      deletePrimer(path, string.split(" ")[0],
+          string.split(" ")[1].substring(1, string.split(" ")[1].length() - 1));
+    } else {}
+  }
+
+  public static void deletePrimer(String newpath, String name, String id) throws IOException {
+
+    for (int i = 0; i < primerList.size(); i++) {
+      if (primerList.get(i).getName().equals(name) && primerList.get(i).getId().equals(id)) {
+        primerList.remove(i);
+      }
+    }
+    writePrimer(newpath);
   }
 
   /**
@@ -151,46 +199,6 @@ public class PrimerHandler {
 
 
   /**
-   * 
-   * @param newpath
-   * @param name
-   * @throws IOException
-   */
-  public static void deletePrimer(String newpath, String name) throws IOException {
-
-    for (int i = 0; i < primerList.size(); i++) {
-      if (primerList.get(i).getName().equals(name)) {
-        primerList.remove(i);
-      }
-    }
-    writePrimer(newpath);
-  }
-
-  /**
-   * 
-   * @param string
-   * @throws IOException
-   */
-  public static void deletePrimer(String string) throws IOException {
-    if (!string.split(" ")[1].isEmpty()) {
-      deletePrimer(path, string.split(" ")[0],
-          string.split(" ")[1].substring(1, string.split(" ")[1].length() - 1));
-    } else {}
-  }
-
-  public static void deletePrimer(String newpath, String name, String id) throws IOException {
-
-    for (int i = 0; i < primerList.size(); i++) {
-      if (primerList.get(i).getName().equals(name) && primerList.get(i).getId().equals(id)) {
-        primerList.remove(i);
-      }
-    }
-    writePrimer(newpath);
-  }
-
-
-
-  /**
    * Returns a primer identified by name and id from the primerList
    * 
    * @param name
@@ -210,23 +218,45 @@ public class PrimerHandler {
   /**
    * Returns a primer identified by name and id from the primerList
    * 
-   * @param item
+   * @param name
    * @return the primer identified by name and primerId or null
    * @author Lovis Heindrich
    */
-  public static Primer getPrimer(String item) {
-    return getPrimer(item.split(" ")[0],item.split(" ")[1].substring(1, item.split(" ")[1].length()-1));
+  public static Primer getPrimer(String name) {
+    if (name.split(" ")[1].isEmpty()) {
+      for (Primer primer : primerList) {
+        if (primer.getName().equals(name)) {
+          return primer;
+        }
+      }
+    } else
+      return getPrimer(name.split(" ")[0],
+          name.split(" ")[1].substring(1, name.split(" ")[1].length() - 1));
+    return null;
   }
+
+
+  /**
+   * clears the txt file at a given path
+   * 
+   * @param path
+   * @throws IOException
+   */
+  public static void clearTxtFile() throws IOException {
+    BufferedWriter writer = new BufferedWriter(new FileWriter(path));
+    writer.write("");
+    writer.close();
+  }
+
 
   public static ArrayList<Primer> getPrimerList() {
     return primerList;
   }
 
-  public static String[] getPrimerListWithIdAsString() {
+  public static String[] getPrimerListAsString() {
     String[] ret = new String[primerList.size()];
     for (int i = 0; i < primerList.size(); i++) {
-      ret[i] = primerList.get(i).getName() + " (" + primerList.get(i).getId() + ")";
-
+      ret[i] = primerList.get(i).getName();
     }
 
     return ret;

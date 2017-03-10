@@ -10,9 +10,10 @@ import java.util.List;
 import analysis.AnalysedSequence;
 
 /**
- * This class is used to read in stored CSV result files and converts them into AnalysedSequences.
- * This is necessary to be able to store the information in the database, after a user may have
- * manually changed some of the values in the file.
+ * This class is used to read in stored CSV result files and converts them into
+ * AnalysedSequences. This is necessary to be able to store the information in
+ * the database, after a user may have manually changed some of the values in
+ * the file.
  * 
  * @author Ben Kohr
  *
@@ -20,144 +21,141 @@ import analysis.AnalysedSequence;
 public class FileRetriever {
 
 
-  /**
-   * This methods extracts all the stored information of all CSV files in the folder indicated by
-   * the given path and stores them inside an AnalysedSequence object.
-   * 
-   * @param path The path of the folder where the CSV files are located
-   * 
-   * @return a list of AnalysedSequence objects, each representing an analysis result
-   * 
-   * @see #getFiles(String)
-   * @see #convertLineToSequence(String)
-   * 
-   * @throws IOException if problems during file access occur
-   * 
-   * @author Ben Kohr
-   */
-  public static LinkedList<AnalysedSequence> convertFilesToSequences(String path)
-      throws IOException {
+	/**
+	 * This methods extracts all the stored information of all CSV files in the
+	 * folder indicated by the given path and stores them inside an
+	 * AnalysedSequence object.
+	 * 
+	 * @param path
+	 *            The path of the folder where the CSV files are located
+	 * 
+	 * @return a list of AnalysedSequence objects, each representing an analysis
+	 *         result
+	 * 
+	 * @see #getFiles(String)
+	 * @see #convertLineToSequence(String)
+	 * 
+	 * @throws IOException
+	 *             if problems during file access occur
+	 * 
+	 * @author Ben Kohr
+	 */
+	public static LinkedList<AnalysedSequence> convertFilesToSequences(String path) throws IOException {
 
-    LinkedList<AnalysedSequence> sequences = new LinkedList<AnalysedSequence>();
+		LinkedList<AnalysedSequence> sequences = new LinkedList<AnalysedSequence>();
 
-    List<File> csvFiles = getFiles(path);
+		List<File> csvFiles = getFiles(path);
 
-    for (File file : csvFiles) {
-      BufferedReader reader = new BufferedReader(new FileReader(file));
-      LinkedList<String> lines = new LinkedList<String>();
+		for (File file : csvFiles) {
+			BufferedReader reader = new BufferedReader(new FileReader(file));
+			LinkedList<String> lines = new LinkedList<String>();
 
-      reader.lines().skip(1).forEach(line -> {
-        lines.add(line);
-      });
-      reader.close();
+			reader.lines().skip(1).forEach(line -> {
+				lines.add(line);
+			});
+			reader.close();
 
-      for (String line : lines) {
-        AnalysedSequence seq = convertLineToSequence(line);
-        if (seq != null) {
-          sequences.add(seq);
-        }
-      }
-    }
+			for (String line : lines) {
+				AnalysedSequence seq = convertLineToSequence(line);
+				if (seq != null) {
+					sequences.add(seq);
+				}
+			}
+		}
 
-    return sequences;
+		return sequences;
 
-  }
+	}
 
+	/**
+	 * This method creates File objects for each CSV file in a given folder and
+	 * returns them as a list.
+	 * 
+	 * @param path
+	 *            The path where the files are located
+	 * 
+	 * @return A list of file objects (one object for each CSV file)
+	 * 
+	 * @author Ben Kohr
+	 */
+	private static List<File> getFiles(String path) {
 
+		File pathAsFile = new File(path);
+		File[] files = pathAsFile.listFiles();
+		LinkedList<File> fileList = new LinkedList<File>();
 
-  /**
-   * This method creates File objects for each CSV file in a given folder and returns them as a
-   * list.
-   * 
-   * @param path The path where the files are located
-   * 
-   * @return A list of file objects (one object for each CSV file)
-   * 
-   * @author Ben Kohr
-   */
-  private static List<File> getFiles(String path) {
+		if (files == null) {
+			files = new File[0];
+		}
 
-    File pathAsFile = new File(path);
-    File[] files = pathAsFile.listFiles();
-    LinkedList<File> fileList = new LinkedList<File>();
+		for (int i = 0; i < files.length; i++) {
+			if (files[i].getName().endsWith(".csv")) {
+				fileList.add(files[i]);
+			}
+		}
 
-    if (files == null) {
-      files = new File[0];
-    }
+		return fileList;
 
-    for (int i = 0; i < files.length; i++) {
-      if (files[i].getName().endsWith(".csv")) {
-        fileList.add(files[i]);
-      }
-    }
+	}
 
-    return fileList;
+	/**
+	 * Converts a CSV result file line into an AnalysedSequence object by
+	 * placing the information into the corresponding fields.
+	 * 
+	 * @param line
+	 *            One line containing analysis information from a CSV file
+	 * 
+	 * @return An AnaylsedSequence object containing the information of the
+	 *         given line
+	 * 
+	 * @author Ben Kohr
+	 */
+	private static AnalysedSequence convertLineToSequence(String line) {
 
-  }
+		String[] data = line.split(ConfigHandler.SEPARATOR_CHAR + "");
 
+		for (int i = 0; i < data.length; i++) {
+			data[i] = data[i].trim();
+		}
 
-  /**
-   * Converts a CSV result file line into an AnalysedSequence object by placing the information into
-   * the corresponding fields.
-   * 
-   * @param line One line containing analysis information from a CSV file
-   * 
-   * @return An AnaylsedSequence object containing the information of the given line
-   * 
-   * @author Ben Kohr
-   */
-  private static AnalysedSequence convertLineToSequence(String line) {
+		if (FileSaver.containsProblematicComment(data[6])) {
+			return null;
+		}
 
-    
-    String[] data = line.split(ConfigHandler.SEPARATOR_CHAR + "");
+		AnalysedSequence sequence = new AnalysedSequence();
 
-    for (int i = 0; i < data.length; i++) {
-      data[i] = data[i].trim();
-    }
+		sequence.setFileName(data[0]);
+		sequence.setReferencedGene(GeneHandler.checkGene(data[1], data[2]));
 
-    if (FileSaver.containsProblematicComment(data[6])) {
-      return null;
-    }
-    
-    
-    AnalysedSequence sequence = new AnalysedSequence();
+		String[] mutations = data[3].split(",");
+		for (int i = 0; i < mutations.length; i++) {
+			mutations[i] = mutations[i].trim();
+			sequence.addMutation(mutations[i]);
+		}
 
-    sequence.setFileName(data[0]);
-    sequence.setReferencedGene(GeneHandler.getGene(data[1], data[2]));
-    
-    String[] mutations = data[3].split(",");
-    for (int i = 0; i < mutations.length; i++) {
-      mutations[i] = mutations[i].trim();
-      sequence.addMutation(mutations[i]);
-    }
+		if (data[4].equals("none")) {
+			sequence.setHisTagPosition(-1);
+		} else {
+			sequence.setHisTagPosition(Integer.parseInt(data[4]));
+		}
 
-    if (data[4].equals("none")) {
-      sequence.setHisTagPosition(-1);
-    } else {
-      sequence.setHisTagPosition(Integer.parseInt(data[4]));
-    }
-    
-    if (data[5].equalsIgnoreCase("yes") || data[5].equalsIgnoreCase("y")
-        || data[5].equalsIgnoreCase("true")) {
-      sequence.setManuallyChecked(true);
-    } else {
-      sequence.setManuallyChecked(false);
-    }
-    
-    sequence.setComments(data[6]);
-    sequence.setResearcher(data[7]);
-    sequence.setAddingDate(data[8]);
-    sequence.setAvgQuality(Integer.parseInt(data[9]));
-    sequence.setTrimPercentage(Double.parseDouble(data[10]));
-    sequence.setSequence(data[11]);
-    sequence.setPrimer(data[12]);
+		if (data[5].equalsIgnoreCase("yes") || data[5].equalsIgnoreCase("y") || data[5].equalsIgnoreCase("true")) {
+			sequence.setManuallyChecked(true);
+		} else {
+			sequence.setManuallyChecked(false);
+		}
 
-    // data[13] contains the mutations again
+		sequence.setComments(data[6]);
+		sequence.setResearcher(data[7]);
+		sequence.setAddingDate(data[8]);
+		sequence.setAvgQuality(Integer.parseInt(data[9]));
+		sequence.setTrimPercentage(Double.parseDouble(data[10]));
+		sequence.setSequence(data[11]);
+		sequence.setPrimer(data[12]);
 
-    return sequence;
+		// data[13] contains the mutations again
 
-  }
+		return sequence;
 
-
-
+	}
 }

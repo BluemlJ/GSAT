@@ -41,7 +41,7 @@ public class AddPrimerWindow extends Application implements javafx.fxml.Initiali
   private TextField meltingTempField;
 
   @FXML
-  private javafx.scene.control.TextArea geneArea;
+  private javafx.scene.control.TextArea sequenceArea;
 
   @FXML
   private Button cancelButton;
@@ -57,7 +57,7 @@ public class AddPrimerWindow extends Application implements javafx.fxml.Initiali
   public void initialize(URL location, ResourceBundle resources) {
 
 
-    geneArea.setWrapText(true);
+    sequenceArea.setWrapText(true);
     GUIUtils.setColorOnButton(confirmButton, ButtonColor.GREEN);
     GUIUtils.setColorOnButton(cancelButton, ButtonColor.RED);
 
@@ -77,7 +77,7 @@ public class AddPrimerWindow extends Application implements javafx.fxml.Initiali
       @Override
       public void changed(ObservableValue<? extends String> observable, String oldValue,
           String newValue) {
-        if (newValue.matches(".*[^1234567890].*")) {
+        if (newValue.contains(ConfigHandler.SEPARATOR_CHAR+"")) {
           idField.setText(oldValue);
         } else {
           idField.setText(newValue);
@@ -97,14 +97,14 @@ public class AddPrimerWindow extends Application implements javafx.fxml.Initiali
       }
     });
 
-    geneArea.textProperty().addListener(new ChangeListener<String>() {
+    sequenceArea.textProperty().addListener(new ChangeListener<String>() {
       @Override
       public void changed(ObservableValue<? extends String> observable, String oldValue,
           String newValue) {
         if (newValue.toUpperCase().matches(".*[^ATCG].*")) {
-          geneArea.setText(oldValue);
+          sequenceArea.setText(oldValue);
         } else {
-          geneArea.setText(newValue);
+          sequenceArea.setText(newValue);
         }
       }
     });
@@ -125,9 +125,9 @@ public class AddPrimerWindow extends Application implements javafx.fxml.Initiali
 
       @Override
       public void handle(ActionEvent arg0) {
-        if (!nameField.getText().isEmpty() && !geneArea.getText().isEmpty()
+        if (!nameField.getText().isEmpty() && !sequenceArea.getText().isEmpty()
             && !idField.getText().isEmpty() && !meltingTempField.getText().isEmpty() ) {
-          if (PrimerHandler.addPrimer(new Primer(geneArea.getText(), ConfigHandler.getResearcher(),
+          if (PrimerHandler.addPrimer(new Primer(sequenceArea.getText(), ConfigHandler.getResearcher(),
               Integer.parseInt(meltingTempField.getText()), idField.getText(), nameField.getText(),
               commentArea.getText()))) {
 
@@ -197,5 +197,4 @@ public class AddPrimerWindow extends Application implements javafx.fxml.Initiali
   public void setParent(SettingsWindow parent) {
     this.parent = parent;
   }
-
 }
