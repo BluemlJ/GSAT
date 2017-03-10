@@ -222,6 +222,20 @@ public class PrimerHandler {
 		return null;
 	}
 
+	
+	/**
+     * clears the txt file at a given path
+     * 
+     * @param path
+     * @throws IOException
+     */
+    public static void clearTxtFile() throws IOException {
+        BufferedWriter writer = new BufferedWriter(new FileWriter(path));
+        writer.write("");
+        writer.close();
+    }
+	
+	
 	public static ArrayList<Primer> getPrimerList() {
 		return primerList;
 	}

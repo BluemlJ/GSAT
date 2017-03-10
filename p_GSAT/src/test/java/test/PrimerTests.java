@@ -14,8 +14,9 @@ import io.PrimerHandler;
 public class PrimerTests {
 
 	@Test
-	public void testAddDeletePrimer() {
-		Primer p1 = new Primer("AATAATAAT", "Lovis Heindrich", 50, "A01", "primer1", "comment1");
+	public void testAddDeletePrimer() throws IOException {
+	    PrimerHandler.clearTxtFile();
+	    Primer p1 = new Primer("AATAATAAT", "Lovis Heindrich", 50, "A01", "primer1", "comment1");
 		Primer p2 = new Primer("TTATTATTA", "Kevin Otto", 100, "B01", "primer2", "comment1");
 		// test duplicate check
 		PrimerHandler.setPrimerList(new ArrayList<Primer>());
