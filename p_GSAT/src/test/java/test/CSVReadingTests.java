@@ -21,7 +21,7 @@ public class CSVReadingTests {
 
 	@After
 	public void setup() throws IOException {
-		GeneHandler.deleteGene("FSA1");
+		GeneHandler.deleteGene("FSA1 (ecoli)");
 	}
 
 	@Test

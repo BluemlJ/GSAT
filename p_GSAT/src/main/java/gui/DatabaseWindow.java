@@ -331,8 +331,20 @@ public class DatabaseWindow extends Application implements javafx.fxml.Initializ
 	 */
 
 	private void downloadResults() throws SQLException, DatabaseConnectionException, MissingPathException, IOException {
-		java.sql.Date datePickerStartDate = java.sql.Date.valueOf(startDate.getValue());
-		java.sql.Date datePickerEndDate = java.sql.Date.valueOf(endDate.getValue());
+	  java.sql.Date datePickerStartDate;
+	    if (startDate.getValue() == null) {
+	      datePickerStartDate = null;
+		} else {
+		  datePickerStartDate = java.sql.Date.valueOf(startDate.getValue());
+		}
+	    java.sql.Date datePickerEndDate;
+        if (endDate.getValue() == null) {
+          datePickerEndDate = null;
+        } else {
+          datePickerEndDate = java.sql.Date.valueOf(endDate.getValue());
+        }
+	    
+		
 		String gene = geneField.getText();
 		String researcher = researcherField.getText();
 		String path = destField.getText();

@@ -212,6 +212,7 @@ public class DatabaseConnection {
 			conn = dataSource.getConnection();
 
 		} catch (SQLException e) {
+		  System.out.println(e.getMessage());
 			throw new DatabaseConnectionException();
 		}
 
