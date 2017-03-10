@@ -3,14 +3,19 @@ package gui;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.ResourceBundle;
 
 import analysis.AnalysedSequence;
+import exceptions.ConfigNotFoundException;
 import exceptions.DatabaseConnectionException;
+import exceptions.MissingPathException;
+import exceptions.UnknownConfigFieldException;
 import io.ConfigHandler;
 import io.DatabaseConnection;
 import io.FileRetriever;
+import io.FileSaver;
 import javafx.application.Application;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -21,12 +26,12 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.control.ToggleGroup;
-import javafx.scene.control.Alert.AlertType;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
@@ -76,6 +81,18 @@ public class DatabaseWindow extends Application implements javafx.fxml.Initializ
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 
+		try {
+			ConfigHandler.readConfig();
+			DatabaseConnection.setDatabaseConnection(ConfigHandler.getDbUser(), ConfigHandler.getDbPass(),
+					ConfigHandler.getDbPort(), ConfigHandler.getDbUrl());
+		} catch (UnknownConfigFieldException | ConfigNotFoundException | IOException e1) {
+			showAlertWindow("Failed", "Failure while reading config file");
+			e1.printStackTrace();
+		} catch (DatabaseConnectionException | SQLException e) {
+			showAlertWindow("Failed", "Failure while connecting to database");
+			e.printStackTrace();
+		}
+
 		typeGroupe = new ToggleGroup();
 		resultToggle.setToggleGroup(typeGroupe);
 		geneToggle.setToggleGroup(typeGroupe);
@@ -96,12 +113,7 @@ public class DatabaseWindow extends Application implements javafx.fxml.Initializ
 					// upload data from primer.txt
 					if (uploadToggle.isSelected()) {
 						try {
-							DatabaseConnection.pushAllPrimer();
-
-							Alert alert = new Alert(AlertType.INFORMATION);
-							alert.setTitle("Success");
-							alert.setHeaderText("Upload was successful");
-							alert.showAndWait();
+							uploadPrimer();
 						} catch (DatabaseConnectionException | SQLException e) {
 							// error while connecting to database
 
@@ -125,28 +137,15 @@ public class DatabaseWindow extends Application implements javafx.fxml.Initializ
 					// download data to primer.txt
 					else if (downloadToggle.isSelected()) {
 						try {
-							DatabaseConnection.pullAndSavePrimer();
-
-							Alert alert = new Alert(AlertType.INFORMATION);
-							alert.setTitle("Success");
-							alert.setHeaderText("Download was successful");
-							alert.showAndWait();
+							downloadPrimer();
 						} catch (DatabaseConnectionException | SQLException e) {
 							// error while connecting to database
 							e.printStackTrace();
-
-							Alert alert = new Alert(AlertType.INFORMATION);
-							alert.setTitle("Failed");
-							alert.setHeaderText("Connection to database failed");
-							alert.showAndWait();
+							showAlertWindow("Failed", "Database connection error");
 						} catch (NumberFormatException | IOException e) {
 							// error while writing txt
 							e.printStackTrace();
-
-							Alert alert = new Alert(AlertType.INFORMATION);
-							alert.setTitle("Failed");
-							alert.setHeaderText("Failure while writing local file");
-							alert.showAndWait();
+							showAlertWindow("Failed", "Writing local file failed");
 						}
 					}
 				}
@@ -156,55 +155,29 @@ public class DatabaseWindow extends Application implements javafx.fxml.Initializ
 					// upload all data from genes.txt
 					if (uploadToggle.isSelected()) {
 						try {
-							DatabaseConnection.pushAllGenes();
-
-							Alert alert = new Alert(AlertType.INFORMATION);
-							alert.setTitle("Success");
-							alert.setHeaderText("Upload was successful");
-							alert.showAndWait();
+							uploadGenes();
 						} catch (SQLException | DatabaseConnectionException e) {
 							// error while connecting to database
 							e.printStackTrace();
-
-							Alert alert = new Alert(AlertType.INFORMATION);
-							alert.setTitle("Failed");
-							alert.setHeaderText("Connection to database failed");
-							alert.showAndWait();
+							showAlertWindow("Failed", "Error while connecting to database");
 						} catch (IOException e) {
 							// error while reading genes from txt
 							e.printStackTrace();
-
-							Alert alert = new Alert(AlertType.INFORMATION);
-							alert.setTitle("Failed");
-							alert.setHeaderText("Failure while reading local file");
-							alert.showAndWait();
+							showAlertWindow("Failed", "Error while reading local genes");
 						}
 					}
 					// download genes to genes.txt
 					else if (downloadToggle.isSelected()) {
 						try {
-							DatabaseConnection.pullAndSaveGenes();
-
-							Alert alert = new Alert(AlertType.INFORMATION);
-							alert.setTitle("Success");
-							alert.setHeaderText("Download was successful");
-							alert.showAndWait();
+							downloadGenes();
 						} catch (DatabaseConnectionException | SQLException e) {
 							// error while connecting to database
 							e.printStackTrace();
-
-							Alert alert = new Alert(AlertType.INFORMATION);
-							alert.setTitle("Failed");
-							alert.setHeaderText("Connection to database failed");
-							alert.showAndWait();
+							showAlertWindow("Failed", "Connection to database failed");
 						} catch (IOException e) {
 							// error while writing txt
 							e.printStackTrace();
-
-							Alert alert = new Alert(AlertType.INFORMATION);
-							alert.setTitle("Failed");
-							alert.setHeaderText("Failure while writing local file");
-							alert.showAndWait();
+							showAlertWindow("Failed", "Error while writign local gene file");
 						}
 					}
 				}
@@ -214,42 +187,69 @@ public class DatabaseWindow extends Application implements javafx.fxml.Initializ
 
 					// upload data from file
 					if (uploadToggle.isSelected()) {
-						String path = destField.getText();
 						try {
-							LinkedList<AnalysedSequence> sequences = FileRetriever.convertFilesToSequences(path);
-							DatabaseConnection.pushAllData(sequences);
-
-							Alert alert = new Alert(AlertType.INFORMATION);
-							alert.setTitle("Success");
-							alert.setHeaderText("Upload was successful");
-							alert.showAndWait();
+							uploadResults();
 						} catch (IOException e) {
 							// error while reading file
 							e.printStackTrace();
-
-							Alert alert = new Alert(AlertType.INFORMATION);
-							alert.setTitle("Failed");
-							alert.setHeaderText("Failure while reading local file");
-							alert.showAndWait();
+							showAlertWindow("Failed", "Error while reading local file");
 						} catch (SQLException | DatabaseConnectionException e) {
 							// error while writing to database
 							e.printStackTrace();
-
-							Alert alert = new Alert(AlertType.INFORMATION);
-							alert.setTitle("Failed");
-							alert.setHeaderText("Connection to database failed");
-							alert.showAndWait();
+							showAlertWindow("Failed", "Error while connecting to database");
 						}
 					}
 
 					// download data to folder
 					else if (downloadToggle.isSelected()) {
-						// TODO
-						// java.sql.Date datePickerDate =
-						// java.sql.Date.valueOf(datePicker.getValue());
+						try {
+							downloadResults();
+						} catch (SQLException | DatabaseConnectionException e) {
+							showAlertWindow("Failed", "Failure while downloading sequences");
+							e.printStackTrace();
+						} catch (MissingPathException | IOException e) {
+							showAlertWindow("Failed", "Failure while writing local file");
+							e.printStackTrace();
+						}
+					}
+				}
+
+				else if (allToggle.isSelected()) {
+
+					// upload everything
+					if (uploadToggle.isSelected()) {
+						try {
+							uploadGenes();
+							uploadPrimer();
+							uploadResults();
+						} catch (IOException e) {
+							// error while reading file
+							e.printStackTrace();
+							showAlertWindow("Failed", "Error while reading local file");
+						} catch (SQLException | DatabaseConnectionException e) {
+							// error while writing to database
+							e.printStackTrace();
+							showAlertWindow("Failed", "Error while connecting to database");
+						}
+					}
+
+					// download everything
+					else if (downloadToggle.isSelected()) {
+						try {
+							downloadGenes();
+							downloadPrimer();
+							downloadResults();
+						} catch (SQLException | DatabaseConnectionException e) {
+							showAlertWindow("Failed", "Failure while downloading from database");
+							e.printStackTrace();
+						} catch (MissingPathException | IOException e) {
+							showAlertWindow("Failed", "Failure while writing local file");
+							e.printStackTrace();
+						}
 					}
 				}
 			}
+
 		});
 
 		destField.textProperty().addListener(new ChangeListener<String>() {
@@ -329,6 +329,67 @@ public class DatabaseWindow extends Application implements javafx.fxml.Initializ
 	 * Scene(root); stage.setTitle("Database"); stage.setScene(scene);
 	 * stage.sizeToScene(); stage.show(); }
 	 */
+
+	private void downloadResults() throws SQLException, DatabaseConnectionException, MissingPathException, IOException {
+		java.sql.Date datePickerStartDate = java.sql.Date.valueOf(startDate.getValue());
+		java.sql.Date datePickerEndDate = java.sql.Date.valueOf(endDate.getValue());
+		String gene = geneField.getText();
+		String researcher = researcherField.getText();
+		String path = destField.getText();
+		ArrayList<AnalysedSequence> resList = new ArrayList<AnalysedSequence>();
+
+		resList = DatabaseConnection.pullCustomSequences(datePickerStartDate, datePickerEndDate, researcher, gene);
+
+		for (AnalysedSequence res : resList) {
+			FileSaver.setLocalPath(path);
+			FileSaver.storeResultsLocally(res.getFileName(), res);
+		}
+
+	}
+
+	private void uploadResults() throws IOException, SQLException, DatabaseConnectionException {
+		String path = destField.getText();
+
+		LinkedList<AnalysedSequence> sequences = FileRetriever.convertFilesToSequences(path);
+		DatabaseConnection.pushAllData(sequences);
+		showAlertWindow("Success", "Results upload was successful");
+
+	}
+
+	private void downloadGenes() throws DatabaseConnectionException, SQLException, IOException {
+
+		DatabaseConnection.pullAndSaveGenes();
+		showAlertWindow("Success", "Gene download was successful");
+
+	}
+
+	private void uploadGenes() throws SQLException, DatabaseConnectionException, IOException {
+
+		DatabaseConnection.pushAllGenes();
+		showAlertWindow("Success", "Gene upload was successful");
+
+	}
+
+	private void downloadPrimer() throws NumberFormatException, DatabaseConnectionException, SQLException, IOException {
+
+		DatabaseConnection.pullAndSavePrimer();
+		showAlertWindow("Success", "Downloading primer data was successful");
+
+	}
+
+	private void uploadPrimer() throws NumberFormatException, DatabaseConnectionException, SQLException, IOException {
+
+		DatabaseConnection.pushAllPrimer();
+		showAlertWindow("Success", "Primer upload was successful");
+
+	}
+
+	private void showAlertWindow(String title, String message) {
+		Alert alert = new Alert(AlertType.INFORMATION);
+		alert.setTitle(title);
+		alert.setHeaderText(message);
+		alert.showAndWait();
+	}
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {
