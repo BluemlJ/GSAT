@@ -18,76 +18,73 @@ import javafx.stage.Stage;
 
 public class ShowGeneWindow extends Application implements javafx.fxml.Initializable {
 
-  // private SettingsWindow parent;
+	// private SettingsWindow parent;
 
-  // fields
-  @FXML
-  private TextField nameField;
+	// fields
+	@FXML
+	private TextField nameField;
 
-  @FXML
-  private TextField organismField;
+	@FXML
+	private TextField organismField;
 
-  @FXML
-  private javafx.scene.control.TextArea geneArea;
+	@FXML
+	private javafx.scene.control.TextArea geneArea;
 
-  @FXML
-  private javafx.scene.control.TextArea commentArea;
+	@FXML
+	private javafx.scene.control.TextArea commentArea;
 
-  @FXML
-  private Button okButton;
+	@FXML
+	private Button okButton;
 
+	@Override
+	public void initialize(URL location, ResourceBundle resources) {
+		geneArea.setWrapText(true);
+		commentArea.setWrapText(true);
+		GUIUtils.setColorOnButton(okButton, ButtonColor.BLUE);
 
+		Gene selectedGene = SettingsWindow.getSelectedGene();
+		String tmp;
+		nameField.setText(selectedGene.getName());
 
-  @Override
-  public void initialize(URL location, ResourceBundle resources) {
-    geneArea.setWrapText(true);
-    commentArea.setWrapText(true);
-    GUIUtils.setColorOnButton(okButton, ButtonColor.BLUE);
+		tmp = selectedGene.getOrganism();
+		if (tmp != null) {
+			organismField.setText(selectedGene.getOrganism());
+		}
 
+		geneArea.setText(selectedGene.getSequence());
 
-    Gene selectedGene = SettingsWindow.getSelectedGene();
-    String tmp;
-    nameField.setText(selectedGene.getName());
+		tmp = selectedGene.getComment();
+		if (tmp != null) {
+			commentArea.setText(tmp);
+		}
 
-    tmp = selectedGene.getOrganism();
-    if (tmp != null) {
-      organismField.setText(selectedGene.getOrganism());
-    }
+		okButton.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent arg0) {
+				Stage stage = (Stage) okButton.getScene().getWindow();
+				stage.close();
+			}
+		});
+	}
 
-    geneArea.setText(selectedGene.getSequence());
+	@Override
+	public void stop() throws Exception {
+		super.stop();
+	}
 
-    tmp = selectedGene.getComment();
-    if (tmp != null) {
-      commentArea.setText(tmp);
-    }
-
-    okButton.setOnAction(new EventHandler<ActionEvent>() {
-      @Override
-      public void handle(ActionEvent arg0) {
-        Stage stage = (Stage) okButton.getScene().getWindow();
-        stage.close();
-      }
-    });
-  }
-
-  @Override
-  public void stop() throws Exception {
-    super.stop();
-  }
-
-  @Override
-  public void start(Stage primaryStage) throws Exception {
-    Parent root;
-    try {
-      root = FXMLLoader.load(getClass().getResource("/fxml/ShowGeneWindow.fxml"));
-    } catch (IOException e) {
-      e.printStackTrace();
-      return;
-    }
-    Scene scene = new Scene(root);
-    primaryStage.setTitle("GSAT - Gene - " + SettingsWindow.getSelectedGene().getName());
-    primaryStage.setScene(scene);
-    primaryStage.sizeToScene();
-    primaryStage.show();
-  }
+	@Override
+	public void start(Stage primaryStage) throws Exception {
+		Parent root;
+		try {
+			root = FXMLLoader.load(getClass().getResource("/fxml/ShowGeneWindow.fxml"));
+		} catch (IOException e) {
+			e.printStackTrace();
+			return;
+		}
+		Scene scene = new Scene(root);
+		primaryStage.setTitle("GSAT - Gene - " + SettingsWindow.getSelectedGene().getName());
+		primaryStage.setScene(scene);
+		primaryStage.sizeToScene();
+		primaryStage.show();
+	}
 }
