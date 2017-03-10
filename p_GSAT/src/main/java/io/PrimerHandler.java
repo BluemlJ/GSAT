@@ -47,6 +47,7 @@ public class PrimerHandler {
 	}
 
 	public static void readPrimer() throws NumberFormatException, IOException {
+		initPrimer();
 		readPrimer(path);
 	}
 
