@@ -2,6 +2,8 @@ package analysis;
 
 import java.util.LinkedList;
 
+import io.ProblematicComment;
+
 /**
  * Models a sequence under analysis (i.e. obtained from an AB1 file), which may
  * have mutations. The Sequence class defines it's basic behavior.
@@ -18,6 +20,10 @@ public class AnalysedSequence extends Sequence {
 	 */
 	private String comments = "";
 
+	
+	private LinkedList<ProblematicComment> problems = new LinkedList<ProblematicComment>();
+	
+	
 	/**
 	 * Channels with informations about the positions of the four single Traces.
 	 * Dont mess this up with the quality values. Quality is in "phread scala",
@@ -150,6 +156,12 @@ public class AnalysedSequence extends Sequence {
 		mutations.add(mutation);
 	}
 
+	
+    public void addProblematicComment(ProblematicComment comment) {
+      problems.add(comment);
+    }
+	
+	
 	/**
 	 * Returns the length of the sequence (the number of nucleotides in it).
 	 * 
@@ -382,4 +394,10 @@ public class AnalysedSequence extends Sequence {
 		this.channelT = channelT;
 	}
 
+	
+	public LinkedList<ProblematicComment> getProblematicComments() {
+	  return problems;
+	}
+	
+	
 }

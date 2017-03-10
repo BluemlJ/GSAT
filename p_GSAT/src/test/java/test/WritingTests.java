@@ -23,6 +23,7 @@ import analysis.Gene;
 import exceptions.MissingPathException;
 import exceptions.UndefinedTypeOfMutationException;
 import io.FileSaver;
+import io.ProblematicComment;
 
 /**
  * This class tests the behavior of the communication with the database and all
@@ -99,11 +100,10 @@ public class WritingTests {
 		seq4.addMutation("AAA7CAA");
 		seq4.addMutation("-1H5 (TCT)");
 
-		seq5.setComments("There was no match found, so the sequence can't be analysed.");
 		seq5.setReferencedGene(g1);
-		seq6.setComments(
-				"Comment. There was no match found, so the sequence can't be analysed. There may be some plasmidmixes.");
+		seq5.addProblematicComment(ProblematicComment.SEQUENCE_TO_SHORT);
 		seq6.setReferencedGene(g1);
+		seq6.addProblematicComment(ProblematicComment.SEQUENCE_TO_SHORT);
 		seq7.addMutation("+1T4");
 		seq7.setReferencedGene(g1);
 	}
@@ -525,7 +525,7 @@ public class WritingTests {
 
 		// Check whether the input is correct
 		String[] correctResults = new String[] {
-				"sequence5.ab1; FSA; bacteria; ; ; ; There was no match found, so the sequence can't be analysed.; ; ; ; ; ; ; " };
+				"sequence5.ab1; FSA; bacteria; ; ; ; The usable part of the sequence is very short (One should probably adjust the parameters). ; ; ; ; ; ; ; " };
 		for (int i = 0; i < correctResults.length; i++) {
 			assertEquals(correctResults[i], results.get(i));
 		}
@@ -552,7 +552,7 @@ public class WritingTests {
 
 		// Check whether the input is correct
 		String[] correctResults = new String[] {
-				"sequence6.ab1; FSA; bacteria; ; ; ; Comment. There was no match found, so the sequence can't be analysed. There may be some plasmidmixes.; ; ; ; ; ; ; ",
+				"sequence6.ab1; FSA; bacteria; ; ; ; The usable part of the sequence is very short (One should probably adjust the parameters). ; ; ; ; ; ; ; ",
 				"sequence1.ab1; FSA; bacteria; A131E (ACC), G7K (ATC), +2H5 (AAC); none; false; No comments; Klaus Bohne; "
 						+ addingDate + "; 0; 0; ATCG; none; A131E, G7K, +2H5" };
 
@@ -588,8 +588,8 @@ public class WritingTests {
 		String[] correctResults = new String[] {
 				"sequence2.ab1; FSA; null; reading frame error; none; false; No comments; Klaus Bohne; " + addingDate
 						+ "; 0; 0; ATCTTTG; none; reading frame error",
-				"sequence5.ab1; FSA; bacteria; ; ; ; There was no match found, so the sequence can't be analysed.; ; ; ; ; ; ; ",
-				"sequence6.ab1; FSA; bacteria; ; ; ; Comment. There was no match found, so the sequence can't be analysed. There may be some plasmidmixes.; ; ; ; ; ; ; ",
+				"sequence5.ab1; FSA; bacteria; ; ; ; The usable part of the sequence is very short (One should probably adjust the parameters). ; ; ; ; ; ; ; ",
+				"sequence6.ab1; FSA; bacteria; ; ; ; The usable part of the sequence is very short (One should probably adjust the parameters). ; ; ; ; ; ; ; ",
 				"sequence7.ab1; FSA; bacteria; +1T4; none; false; ; Jonas; " + addingDate + "; 0; 0; GT; none; +1T4" };
 		for (int i = 0; i < correctResults.length; i++) {
 			assertEquals(correctResults[i], results.get(i));

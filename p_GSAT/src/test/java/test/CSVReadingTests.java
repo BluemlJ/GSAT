@@ -163,7 +163,7 @@ public class CSVReadingTests {
 
 		File file = new File(emptyPath);
 		file.delete();
-		LinkedList<AnalysedSequence> result = FileRetriever.convertFilesToSequences(emptyPath);
+		LinkedList<AnalysedSequence> result = FileRetriever.convertFilesToSequences(path + "empty/");
 
 		assertTrue(result.size() == 0);
 
@@ -171,4 +171,16 @@ public class CSVReadingTests {
 
 	}
 
+	
+	
+	
+	@Test
+    public void testProblematicComments() throws IOException {
+	  
+        LinkedList<AnalysedSequence> result = FileRetriever.convertFilesToSequences(path + "prob/");
+
+        assertTrue(result.size() == 0);
+
+    }
+	
 }

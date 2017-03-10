@@ -7,6 +7,7 @@ import java.util.Map;
 import java.util.TreeMap;
 
 import exceptions.CorruptedSequenceException;
+import io.ProblematicComment;
 
 /**
  * This class contains the logic of analyzing sequence strings. This class
@@ -753,7 +754,7 @@ public class StringAnalysis {
 
 		// warn if sequence is to short for testing
 		if (toTest.length() < 9) {
-			sequence.addComments("Usable part of Sequence is very short. Maybe adjust Quality Parameters");
+			sequence.addProblematicComment(ProblematicComment.SEQUENCE_TO_SHORT);
 			System.err.println("Usable part of Sequence might be too short for good Results");
 		}
 
@@ -796,7 +797,7 @@ public class StringAnalysis {
 				// EMERGENCY MODE
 				System.err.println("EMERGENCY MODE REQUIRED");
 				// TODO Implement
-				sequence.addComments("There was no match found, so the sequence can't be analysed.");
+				sequence.addProblematicComment(ProblematicComment.NO_MATCH_FOUND);
 				// TODO REMOVE
 				offsetNotFound = false;
 			}

@@ -117,7 +117,7 @@ public class FileRetriever {
 			data[i] = data[i].trim();
 		}
 
-		if (FileSaver.containsProblematicComment(data[6])) {
+		if (FileSaver.areCommentsProblematic(data[6])) {
 			return null;
 		}
 

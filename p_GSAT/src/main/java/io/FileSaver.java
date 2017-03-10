@@ -3,6 +3,8 @@ package io;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.Collection;
+import java.util.HashMap;
 import java.util.LinkedList;
 
 import analysis.AnalysedSequence;
@@ -38,6 +40,14 @@ public class FileSaver {
 	 */
 	private static boolean firstCall = true;
 
+	
+	private static HashMap<ProblematicComment, String> commentMap = new HashMap<ProblematicComment, String>();
+	static {
+	  commentMap.put(ProblematicComment.NO_MATCH_FOUND, "There was no match found, so the sequence can't be analysed.");
+	  commentMap.put(ProblematicComment.SEQUENCE_TO_SHORT, "The usable part of the sequence is very short (One should probably adjust the parameters).");
+	}
+	
+	
 	/**
 	 * Specifies the path where local files shall be created. This specifies the
 	 * folder, not the file!
@@ -162,9 +172,9 @@ public class FileSaver {
 		String organism = sequence.getReferencedGene().getOrganism();
 		builder.append(organism).append(SEPARATOR_CHAR + " ");
 
-		if (containsProblematicComment(sequence.getComments())) {
+		if (!sequence.getProblematicComments().isEmpty()) {
 			builder.append(SEPARATOR_CHAR + " ").append(SEPARATOR_CHAR + " ").append(SEPARATOR_CHAR + " ");
-			builder.append(sequence.getComments().replace(SEPARATOR_CHAR, ','));
+			builder.append(constructProblematicComments(sequence));
 			for (int i = 0; i < 7; i++) {
 				builder.append(SEPARATOR_CHAR + " ");
 			}
@@ -322,20 +332,34 @@ public class FileSaver {
 		return writer;
 	}
 
-	public static boolean containsProblematicComment(String comments) {
+	public static String constructProblematicComments(AnalysedSequence seq) {
 
-		String[] criticalStrings = new String[] { "There was no match found, so the sequence can't be analysed." };
-
-		for (String string : criticalStrings) {
-			if (comments.contains(string)) {
-				return true;
-			}
-		}
-
-		return false;
+	  StringBuilder builder = new StringBuilder();
+	  for(ProblematicComment comment : seq.getProblematicComments()) {
+	    builder.append(commentMap.get(comment) + " ");
+	  }
+	  builder.append(seq.getComments());
+	  
+	  String resultingComments = builder.toString().replace(SEPARATOR_CHAR, ',');
+	  
+	  return resultingComments;
 
 	}
 
+	
+	public static boolean areCommentsProblematic(String comments) {
+	  Collection<String> problematicComments = commentMap.values();
+	  for(String probComment : problematicComments) {
+	    if (comments.contains(probComment)) {
+	      return true;
+	    }
+	  }
+	  return false;
+	}
+	
+	
+	
+	
 	/**
 	 * This method resets the class's state by resetting the ids and setting
 	 * {@link #firstCall} to true. This is necessary to start a completely new
