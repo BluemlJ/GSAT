@@ -336,12 +336,11 @@ public class DatabaseWindow extends Application implements javafx.fxml.Initializ
 		String gene = geneField.getText();
 		String researcher = researcherField.getText();
 		String path = destField.getText();
-		ArrayList<AnalysedSequence> resList = new ArrayList<AnalysedSequence>();
-
-		resList = DatabaseConnection.pullCustomSequences(datePickerStartDate, datePickerEndDate, researcher, gene);
-
+		ArrayList<AnalysedSequence> resList = DatabaseConnection.pullCustomSequences(datePickerStartDate,
+				datePickerEndDate, researcher, gene);
+		FileSaver.setLocalPath(path);
 		for (AnalysedSequence res : resList) {
-			FileSaver.setLocalPath(path);
+
 			FileSaver.storeResultsLocally(res.getFileName(), res);
 		}
 
