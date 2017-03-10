@@ -1,5 +1,6 @@
 package gui;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
@@ -32,6 +33,8 @@ import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.control.ToggleGroup;
+import javafx.stage.DirectoryChooser;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
@@ -299,8 +302,19 @@ public class DatabaseWindow extends Application implements javafx.fxml.Initializ
 
 			@Override
 			public void handle(ActionEvent arg0) {
-				// TODO Auto-generated method stub
-
+			  DirectoryChooser chooser = new DirectoryChooser();
+		      chooser.setTitle("Set path to the .ab1 files (folder)");
+		        File start = new File("user.home");
+		        chooser.setInitialDirectory(start);
+		        File selectedDirectory = null;
+		      try {
+		        selectedDirectory = chooser.showDialog(null);
+		      } catch (java.lang.IllegalArgumentException e) {
+		        chooser.setInitialDirectory(new File(System.getProperty("user.home")));
+		        selectedDirectory = chooser.showDialog(null);
+		      }
+		      destField.setText(selectedDirectory.getAbsolutePath());
+	            
 			}
 		});
 
