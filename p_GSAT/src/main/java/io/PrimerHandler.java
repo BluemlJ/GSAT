@@ -126,69 +126,68 @@ public class PrimerHandler {
    */
   public static boolean addPrimer(Primer primer) {
     // only add if primer doesn´t exist yet
-      try {
-	readPrimer();
+    try {
+      readPrimer();
     } catch (NumberFormatException | IOException e) {
-	// TODO Auto-generated catch block
-	e.printStackTrace();
+      // TODO Auto-generated catch block
+      e.printStackTrace();
     }
-      
-      if (getPrimer(primer.getName(), primer.getId()) == null) {
+
+    if (getPrimer(primer.getName(), primer.getId()) == null) {
       primerList.add(primer);
-      
+
       try {
-	writePrimer();
-    } catch (IOException e) {
-	// TODO Auto-generated catch block
-	e.printStackTrace();
-    }
-      
+        writePrimer();
+      } catch (IOException e) {
+        // TODO Auto-generated catch block
+        e.printStackTrace();
+      }
+
       return true;
     }
     return false;
   }
-  
-  
+
+
 
   /**
-   * deletes a primer from the primerList
    * 
+   * @param newpath
    * @param name
-   * @param id
+   * @throws IOException
    */
-  public static void deletePrimer(String name, String id) {
-    int pos = -1;
-    Primer primer;
+  public static void deletePrimer(String newpath, String name) throws IOException {
+
     for (int i = 0; i < primerList.size(); i++) {
-      primer = primerList.get(i);
-      if (primer.getName().equals(name) && primer.getId().equals(id)) {
-        pos = i;
+      if (primerList.get(i).getName().equals(name)) {
+        primerList.remove(i);
       }
     }
-    if (pos != -1) {
-      primerList.remove(pos);
-    }
+    writePrimer(newpath);
   }
 
   /**
-   * deletes a primer from the primerList
    * 
-   * @param name
-   * @param id
+   * @param string
+   * @throws IOException
    */
-  public static void deletePrimer(String name) {
-    int pos = -1;
-    Primer primer;
+  public static void deletePrimer(String string) throws IOException {
+    if (!string.split(" ")[1].isEmpty()) {
+      deletePrimer(path, string.split(" ")[0],
+          string.split(" ")[1].substring(1, string.split(" ")[1].length() - 1));
+    } else {}
+  }
+
+  public static void deletePrimer(String newpath, String name, String id) throws IOException {
+
     for (int i = 0; i < primerList.size(); i++) {
-      primer = primerList.get(i);
-      if (primer.getName().equals(name)) {
-        pos = i;
+      if (primerList.get(i).getName().equals(name) && primerList.get(i).getId().equals(id)) {
+        primerList.remove(i);
       }
     }
-    if (pos != -1) {
-      primerList.remove(pos);
-    }
+    writePrimer(newpath);
   }
+
 
 
   /**
@@ -211,27 +210,23 @@ public class PrimerHandler {
   /**
    * Returns a primer identified by name and id from the primerList
    * 
-   * @param name
+   * @param item
    * @return the primer identified by name and primerId or null
    * @author Lovis Heindrich
    */
-  public static Primer getPrimer(String name) {
-    for (Primer primer : primerList) {
-      if (primer.getName().equals(name)) {
-        return primer;
-      }
-    }
-    return null;
+  public static Primer getPrimer(String item) {
+    return getPrimer(item.split(" ")[0],item.split(" ")[1].substring(1, item.split(" ")[1].length()-1));
   }
 
   public static ArrayList<Primer> getPrimerList() {
     return primerList;
   }
 
-  public static String[] getPrimerListAsString() {
+  public static String[] getPrimerListWithIdAsString() {
     String[] ret = new String[primerList.size()];
     for (int i = 0; i < primerList.size(); i++) {
-      ret[i] = primerList.get(i).getName();
+      ret[i] = primerList.get(i).getName() + " (" + primerList.get(i).getId() + ")";
+
     }
 
     return ret;

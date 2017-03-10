@@ -77,7 +77,7 @@ public class AddPrimerWindow extends Application implements javafx.fxml.Initiali
       @Override
       public void changed(ObservableValue<? extends String> observable, String oldValue,
           String newValue) {
-        if (newValue.contains(ConfigHandler.SEPARATOR_CHAR + "")) {
+        if (newValue.matches(".*[^1234567890].*")) {
           idField.setText(oldValue);
         } else {
           idField.setText(newValue);
@@ -126,7 +126,7 @@ public class AddPrimerWindow extends Application implements javafx.fxml.Initiali
       @Override
       public void handle(ActionEvent arg0) {
         if (!nameField.getText().isEmpty() && !geneArea.getText().isEmpty()
-            && !idField.getText().isEmpty()) {
+            && !idField.getText().isEmpty() && !meltingTempField.getText().isEmpty() ) {
           if (PrimerHandler.addPrimer(new Primer(geneArea.getText(), ConfigHandler.getResearcher(),
               Integer.parseInt(meltingTempField.getText()), idField.getText(), nameField.getText(),
               commentArea.getText()))) {

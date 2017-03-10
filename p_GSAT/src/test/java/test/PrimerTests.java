@@ -14,7 +14,7 @@ import io.PrimerHandler;
 public class PrimerTests {
 
   @Test
-  public void testAddDeletePrimer() {
+  public void testAddDeletePrimer() throws IOException {
     Primer p1 = new Primer("AATAATAAT", "Lovis Heindrich", 50, "A01", "primer1", "comment1");
     Primer p2 = new Primer("TTATTATTA", "Kevin Otto", 100, "B01", "primer2", "comment1");
     // test duplicate check
@@ -30,7 +30,7 @@ public class PrimerTests {
     assertEquals(p1.getSequence(), p3.getSequence());
     assertEquals(p2.getSequence(), p4.getSequence());
     // test delete
-    PrimerHandler.deletePrimer("primer1", "A01");
+    PrimerHandler.deletePrimer("primer1 (A01)");
     p3 = PrimerHandler.getPrimer("primer1", "A01");
     assertEquals(p3, null);
 

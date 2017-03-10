@@ -123,7 +123,7 @@ public class FileRetriever {
     AnalysedSequence sequence = new AnalysedSequence();
 
     sequence.setFileName(data[0]);
-    sequence.setReferencedGene(GeneHandler.checkGene(data[1], data[2]));
+    sequence.setReferencedGene(GeneHandler.getGene(data[1], data[2]));
     
     String[] mutations = data[3].split(",");
     for (int i = 0; i < mutations.length; i++) {

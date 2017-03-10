@@ -91,7 +91,7 @@ public class GUIUtils {
       return getRedText("Reading Primer.txt was unsuccessful\n");
     }
 
-    geneList.setItems(FXCollections.observableArrayList(PrimerHandler.getPrimerListAsString()));
+    geneList.setItems(FXCollections.observableArrayList(PrimerHandler.getPrimerListWithIdAsString()));
     return new Text("Reading Primer.txt was successful");
   }
 
