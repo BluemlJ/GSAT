@@ -41,7 +41,7 @@ public class SettingsWindow extends Application implements javafx.fxml.Initializ
 	private static boolean isPrimerOn = false;
 
 	@FXML
-	private ListView<String> geneList;
+	private ListView<String> geneOrPrimerList;
 	// fields
 	@FXML
 	private TextField parameter1Field;
@@ -59,15 +59,15 @@ public class SettingsWindow extends Application implements javafx.fxml.Initializ
 	@FXML
 	private Button databaseButton;
 	@FXML
-	private Button addGeneButton;
+	private Button addGeneOrPrimerButton;
 	@FXML
 	private Button addResearcherButton;
 	@FXML
-	private Button deleteGeneButton;
+	private Button deleteGeneOrPrimerButton;
 	@FXML
 	private Button deleteResearcherButton;
 	@FXML
-	private Button showGeneButton;
+	private Button showGeneOrPrimerButton;
 
 	@FXML
 	private ToggleButton geneToggle;
@@ -84,18 +84,17 @@ public class SettingsWindow extends Application implements javafx.fxml.Initializ
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		ToggleGroup selectorGroupe = new ToggleGroup();
-
-		primmerToggle.setToggleGroup(selectorGroupe);
-		geneToggle.setToggleGroup(selectorGroupe);
+		ToggleGroup selectorGroup = new ToggleGroup();
+		primmerToggle.setToggleGroup(selectorGroup);
+		geneToggle.setToggleGroup(selectorGroup);
 
 		geneToggle.setOnAction(new EventHandler<ActionEvent>() {
 
 			@Override
 			public void handle(ActionEvent arg0) {
 				isPrimerOn = false;
-				GUIUtils.initializeGeneBox(geneList);
-				geneList.getSelectionModel().clearSelection();
+				GUIUtils.initializeGeneBox(geneOrPrimerList);
+				geneOrPrimerList.getSelectionModel().clearSelection();
 			}
 		});
 
@@ -104,30 +103,30 @@ public class SettingsWindow extends Application implements javafx.fxml.Initializ
 			@Override
 			public void handle(ActionEvent arg0) {
 				isPrimerOn = true;
-				GUIUtils.initializePrimerBox(geneList);
-				geneList.getSelectionModel().clearSelection();
-				showGeneButton.setDisable(true);
+				GUIUtils.initializePrimerBox(geneOrPrimerList);
+				geneOrPrimerList.getSelectionModel().clearSelection();
+				showGeneOrPrimerButton.setDisable(true);
 				System.out.println("Primer soll es sein");
 
 			}
 		});
 
-		showGeneButton.setDisable(true);
+		showGeneOrPrimerButton.setDisable(true);
 
 		GUIUtils.initializeResearchers(researcherDropdown);
-		GUIUtils.initializeGeneBox(geneList);
+		GUIUtils.initializeGeneBox(geneOrPrimerList);
 		isPrimerOn = false;
-		geneList.setStyle("-fx-font-style: italic;");
+		geneOrPrimerList.setStyle("-fx-font-style: italic;");
 
 		GUIUtils.setColorOnButton(closeButton, ButtonColor.BLUE);
 		GUIUtils.setColorOnButton(databaseButton, ButtonColor.GRAY);
 		GUIUtils.setColorOnButton(parameterButton, ButtonColor.GRAY);
 		GUIUtils.setColorOnButton(deleteResearcherButton, ButtonColor.RED);
-		GUIUtils.setColorOnButton(addGeneButton, ButtonColor.GREEN);
+		GUIUtils.setColorOnButton(addGeneOrPrimerButton, ButtonColor.GREEN);
 		GUIUtils.setColorOnButton(addResearcherButton, ButtonColor.GREEN);
-		GUIUtils.setColorOnButton(deleteGeneButton, ButtonColor.RED);
+		GUIUtils.setColorOnButton(deleteGeneOrPrimerButton, ButtonColor.RED);
 		GUIUtils.setColorOnButton(deleteResearcherButton, ButtonColor.RED);
-		GUIUtils.setColorOnButton(showGeneButton, ButtonColor.BLUE);
+		GUIUtils.setColorOnButton(showGeneOrPrimerButton, ButtonColor.BLUE);
 
 		srcPathField.setText(ConfigHandler.getSrcPath());
 
@@ -150,18 +149,18 @@ public class SettingsWindow extends Application implements javafx.fxml.Initializ
 			}
 		});
 
-		geneList.getSelectionModel().selectedItemProperty().addListener((obeservable, value, newValue) -> {
-			if (!geneList.getSelectionModel().isEmpty()) {
+		geneOrPrimerList.getSelectionModel().selectedItemProperty().addListener((obeservable, value, newValue) -> {
+			if (!geneOrPrimerList.getSelectionModel().isEmpty()) {
 				if (isPrimerOn) {
 					selectedPrimer = PrimerHandler.getPrimer(newValue);
 				} else {
 					selectedGene = GeneHandler.getGene(newValue.split(" ")[0]);
 				}
-				showGeneButton.setDisable(false);
+				showGeneOrPrimerButton.setDisable(false);
 			}
 		});
 
-		showGeneButton.setOnAction(new EventHandler<ActionEvent>() {
+		showGeneOrPrimerButton.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent arg0) {
 				if (isPrimerOn) {
@@ -227,7 +226,7 @@ public class SettingsWindow extends Application implements javafx.fxml.Initializ
 		});
 
 		SettingsWindow self = this;
-		addGeneButton.setOnAction(new EventHandler<ActionEvent>() {
+		addGeneOrPrimerButton.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent arg0) {
 				numGeneWindows++;
@@ -317,25 +316,23 @@ public class SettingsWindow extends Application implements javafx.fxml.Initializ
 			}
 		});
 
-		deleteGeneButton.setOnAction(new EventHandler<ActionEvent>() {
+		deleteGeneOrPrimerButton.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent arg0) {
-				int geneindex = geneList.getSelectionModel().getSelectedIndex();
+				int geneindex = geneOrPrimerList.getSelectionModel().getSelectedIndex();
 				if (geneindex != -1) {
 					try {
 						if (isPrimerOn) {
-							PrimerHandler.deletePrimer(geneList.getSelectionModel().getSelectedItem());
+							PrimerHandler.deletePrimer(geneOrPrimerList.getSelectionModel().getSelectedItem());
 							PrimerHandler.writePrimer();
-							GUIUtils.initializePrimerBox(geneList);
-							MainWindow.changesOnPrimers = true;
+							GUIUtils.initializePrimerBox(geneOrPrimerList);
 						} else {
-							GeneHandler.deleteGene(geneList.getSelectionModel().getSelectedItem());
+							GeneHandler.deleteGene(geneOrPrimerList.getSelectionModel().getSelectedItem());
 							GeneHandler.writeGenes();
-							GUIUtils.initializeGeneBox(geneList);
-							MainWindow.changesOnGenes = true;
+							GUIUtils.initializeGeneBox(geneOrPrimerList);
 						}
 
-						showGeneButton.setDisable(true);
+						showGeneOrPrimerButton.setDisable(true);
 					} catch (IOException e) {
 						e.printStackTrace();
 					}
@@ -401,11 +398,11 @@ public class SettingsWindow extends Application implements javafx.fxml.Initializ
 	}
 
 	public void updateGenes() {
-		GUIUtils.initializeGeneBox(geneList);
+		GUIUtils.initializeGeneBox(geneOrPrimerList);
 	}
 
 	public void updatePrimers() {
-		GUIUtils.initializePrimerBox(geneList);
+		GUIUtils.initializePrimerBox(geneOrPrimerList);
 	}
 
 	/**

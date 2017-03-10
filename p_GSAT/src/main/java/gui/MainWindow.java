@@ -491,28 +491,27 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
 			@Override
 			public void handle(WindowEvent event) {
 				if (changesOnGenes || changesOnPrimers || changesOnResults) {
-					Alert alert = new Alert(AlertType.CONFIRMATION);
-					alert.setTitle("Unsaved changes!");
-					alert.setHeaderText("STOP");
-					alert.setContentText("There are unsaved changes with ");
+					Alert alertWindow = new Alert(AlertType.CONFIRMATION);
+					alertWindow.setTitle("Warning: Changes not uploaded to database");
+					alertWindow.setHeaderText("There are changes with ");
 					if (changesOnGenes) {
-						alert.setContentText(alert.getContentText() + " genes,");
+						alertWindow.setHeaderText(alertWindow.getHeaderText() + "genes,");
 					}
 					if (changesOnPrimers) {
-						alert.setContentText(alert.getContentText() + " primers,");
+						alertWindow.setHeaderText(alertWindow.getHeaderText() + "primers,");
 					}
 					if (changesOnResults) {
-						alert.setContentText(alert.getContentText() + " results,");
+						alertWindow.setHeaderText(alertWindow.getHeaderText() + "results,");
 					}
-					alert.setContentText(alert.getContentText().substring(0, alert.getContentText().length() - 1));
-
-					ButtonType save = new ButtonType("Save");
-					ButtonType dontSave = new ButtonType("Dont save");
+					alertWindow.setHeaderText(alertWindow.getHeaderText().substring(0, alertWindow.getHeaderText().length() - 1));
+					
+					ButtonType save = new ButtonType("Upload changes");
+					ButtonType dontSave = new ButtonType("Close without upload");
 					ButtonType buttonTypeCancel = new ButtonType("Cancel", ButtonData.CANCEL_CLOSE);
 
-					alert.getButtonTypes().setAll(save, dontSave, buttonTypeCancel);
+					alertWindow.getButtonTypes().setAll(save, dontSave, buttonTypeCancel);
 
-					Optional<ButtonType> result = alert.showAndWait();
+					Optional<ButtonType> result = alertWindow.showAndWait();
 					if (result.get() == save) {
 						DatabaseWindow base = new DatabaseWindow();
 						event.consume();

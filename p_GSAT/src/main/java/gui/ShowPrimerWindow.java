@@ -29,7 +29,7 @@ public class ShowPrimerWindow extends Application implements javafx.fxml.Initial
 	private TextField meltingTempField;
 
 	@FXML
-	private javafx.scene.control.TextArea geneArea;
+	private javafx.scene.control.TextArea sequenceArea;
 
 	@FXML
 	private javafx.scene.control.TextArea commentArea;
@@ -40,12 +40,12 @@ public class ShowPrimerWindow extends Application implements javafx.fxml.Initial
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 
-		geneArea.setWrapText(true);
+		sequenceArea.setWrapText(true);
 		GUIUtils.setColorOnButton(okButton, ButtonColor.BLUE);
 
 		Primer selectedPrimer = SettingsWindow.getSelectedPrimer();
 		nameField.setText(selectedPrimer.getName());
-		geneArea.setText(selectedPrimer.getSequence());
+		sequenceArea.setText(selectedPrimer.getSequence());
 		meltingTempField.setText(selectedPrimer.getMeltingPoint() + "");
 		idField.setText(selectedPrimer.getId());
 		commentArea.setText(selectedPrimer.getComment());
