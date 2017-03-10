@@ -19,6 +19,7 @@ buildscript {
     }
 }
 
+
 // Apply the java plugin to add support for Java
 apply plugin: 'java'
 
@@ -52,6 +53,10 @@ dependencies {
     compile fileTree('libs/jillion-5.1.jar')
     compile fileTree('libs/jfxrt.jar')
     
+    // https://mvnrepository.com/artifact/org.biojava/biojava
+	// compile group: 'org.biojava', name: 'biojava', version: '1.5'
+    compile fileTree('libs/biojava-1.5.jar')   
+        
     // https://mvnrepository.com/artifact/mysql/mysql-connector-java
     compile group: 'mysql', name: 'mysql-connector-java', version: '6.0.5'
 
