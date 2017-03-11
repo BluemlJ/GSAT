@@ -75,7 +75,8 @@ public class SettingsWindow extends Application implements javafx.fxml.Initializ
   private ToggleButton geneToggle;
   @FXML
   private ToggleButton primmerToggle;
-
+  
+  
   private Scene scene;
 
   private int numGeneWindows = 0;
@@ -155,7 +156,7 @@ public class SettingsWindow extends Application implements javafx.fxml.Initializ
       @Override
       public void changed(ObservableValue<? extends String> observable, String oldValue,
           String newValue) {
-        if (newValue.matches(ConfigHandler.SEPARATOR_CHAR + "")) {
+        if (newValue.contains(ConfigHandler.SEPARATOR_CHAR + "")) {
           srcPathField.setText(oldValue);
         } else {
           srcPathField.setText(newValue);

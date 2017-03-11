@@ -1,5 +1,6 @@
 package gui;
 
+import java.awt.Desktop;
 import java.awt.Image;
 import java.io.File;
 import java.io.IOException;
@@ -111,6 +112,12 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
 	@FXML
 	private ScrollPane textScroll;
 
+	@FXML
+	private Button openDest;
+	
+	@FXML
+    private Button openSrc;
+	
 	Stage primaryStage;
 
 
@@ -149,7 +156,7 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
 		destField.textProperty().addListener(new ChangeListener<String>() {
 			@Override
 			public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-				if (newValue.matches(ConfigHandler.SEPARATOR_CHAR + "")) {
+				if (newValue.contains(ConfigHandler.SEPARATOR_CHAR + "")) {
 					destField.setText(oldValue);
 				} else {
 					destField.setText(newValue);
@@ -173,7 +180,7 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
 		srcField.textProperty().addListener(new ChangeListener<String>() {
 			@Override
 			public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-				if (newValue.matches(ConfigHandler.SEPARATOR_CHAR + "")) {
+				if (newValue.contains(ConfigHandler.SEPARATOR_CHAR + "")) {
 					srcField.setText(oldValue);
 				} else {
 					srcField.setText(newValue);
@@ -198,7 +205,7 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
 		fileNameField.textProperty().addListener(new ChangeListener<String>() {
 			@Override
 			public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-				if (newValue.matches(ConfigHandler.SEPARATOR_CHAR + "")) {
+				if (newValue.matches(".*[" + ConfigHandler.SEPARATOR_CHAR + "/\\\\].*")) {
 					fileNameField.setText(oldValue);
 				} else {
 					fileNameField.setText(newValue);
@@ -233,6 +240,33 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
 			}
 		});
 
+		
+		openDest.setOnAction(new EventHandler<ActionEvent>() {
+          @Override
+          public void handle(ActionEvent arg0) {
+            try {
+              Desktop.getDesktop().open(new File(destField.getText()));
+            } catch (IOException e) {
+              // TODO Auto-generated catch block
+              e.printStackTrace();
+            }
+          }
+      });
+		
+		
+		openSrc.setOnAction(new EventHandler<ActionEvent>() {
+          @Override
+          public void handle(ActionEvent arg0) {
+            try {
+              Desktop.getDesktop().open(new File(srcField.getText()));
+            } catch (IOException e) {
+              // TODO Auto-generated catch block
+              e.printStackTrace();
+            }
+          }
+      });
+		
+		
 		// select if you get only one output file
 		outputCheckbox.selectedProperty().addListener((observable, oldValue, newValue) -> {
 			FileSaver.setSeparateFiles(newValue);
