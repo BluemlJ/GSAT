@@ -108,6 +108,7 @@ public class SequenceReader {
 			parsedSequence.setChannelC(myTrace.getTrace(DNATools.c()));
 			parsedSequence.setChannelG(myTrace.getTrace(DNATools.g()));
 			parsedSequence.setChannelT(myTrace.getTrace(DNATools.t()));
+			parsedSequence.setBaseCalls(myTrace.getBasecalls());
 		} catch (IllegalSymbolException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

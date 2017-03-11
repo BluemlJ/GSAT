@@ -20,10 +20,8 @@ public class AnalysedSequence extends Sequence {
 	 */
 	private String comments = "";
 
-	
 	private LinkedList<ProblematicComment> problems = new LinkedList<ProblematicComment>();
-	
-	
+
 	/**
 	 * Channels with informations about the positions of the four single Traces.
 	 * Dont mess this up with the quality values. Quality is in "phread scala",
@@ -33,6 +31,8 @@ public class AnalysedSequence extends Sequence {
 	private int[] channelC;
 	private int[] channelG;
 	private int[] channelT;
+
+	private int[] baseCalls;
 
 	/**
 	 * The name of the file this sequence was obtained from. This is used to
@@ -156,12 +156,10 @@ public class AnalysedSequence extends Sequence {
 		mutations.add(mutation);
 	}
 
-	
-    public void addProblematicComment(ProblematicComment comment) {
-      problems.add(comment);
-    }
-	
-	
+	public void addProblematicComment(ProblematicComment comment) {
+		problems.add(comment);
+	}
+
 	/**
 	 * Returns the length of the sequence (the number of nucleotides in it).
 	 * 
@@ -394,10 +392,16 @@ public class AnalysedSequence extends Sequence {
 		this.channelT = channelT;
 	}
 
-	
 	public LinkedList<ProblematicComment> getProblematicComments() {
-	  return problems;
+		return problems;
 	}
-	
-	
+
+	public void setBaseCalls(int[] basecalls) {
+		this.baseCalls = basecalls;
+	}
+
+	public int[] getBaseCalls() {
+		return baseCalls;
+	}
+
 }
