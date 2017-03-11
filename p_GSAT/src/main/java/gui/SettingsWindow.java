@@ -29,6 +29,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.TextInputDialog;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.control.ToggleGroup;
+import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
@@ -88,6 +89,23 @@ public class SettingsWindow extends Application implements javafx.fxml.Initializ
     ToggleGroup selectorGroup = new ToggleGroup();
     primmerToggle.setToggleGroup(selectorGroup);
     geneToggle.setToggleGroup(selectorGroup);
+    
+    primmerToggle.addEventFilter(MouseEvent.MOUSE_RELEASED, new EventHandler<MouseEvent>() {
+        @Override public void handle(MouseEvent mouseEvent) {
+          if (primmerToggle.equals(selectorGroup.getSelectedToggle())) {
+            mouseEvent.consume();
+          }
+        }
+      });
+    
+    geneToggle.addEventFilter(MouseEvent.MOUSE_RELEASED, new EventHandler<MouseEvent>() {
+        @Override public void handle(MouseEvent mouseEvent) {
+          if (geneToggle.equals(selectorGroup.getSelectedToggle())) {
+            mouseEvent.consume();
+          }
+        }
+      });
+    
 
     geneToggle.setOnAction(new EventHandler<ActionEvent>() {
 

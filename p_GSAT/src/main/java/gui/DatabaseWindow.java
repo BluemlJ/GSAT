@@ -28,6 +28,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
@@ -101,10 +102,59 @@ public class DatabaseWindow extends Application implements javafx.fxml.Initializ
 		geneToggle.setToggleGroup(typeGroupe);
 		primerToggle.setToggleGroup(typeGroupe);
 		allToggle.setToggleGroup(typeGroupe);
+		
+		resultToggle.addEventFilter(MouseEvent.MOUSE_RELEASED, new EventHandler<MouseEvent>() {
+	        @Override public void handle(MouseEvent mouseEvent) {
+	          if (resultToggle.equals(typeGroupe.getSelectedToggle())) {
+	            mouseEvent.consume();
+	          }
+	        }
+	      });
+		
+		geneToggle.addEventFilter(MouseEvent.MOUSE_RELEASED, new EventHandler<MouseEvent>() {
+	        @Override public void handle(MouseEvent mouseEvent) {
+	          if (geneToggle.equals(typeGroupe.getSelectedToggle())) {
+	            mouseEvent.consume();
+	          }
+	        }
+	      });
+		
+		primerToggle.addEventFilter(MouseEvent.MOUSE_RELEASED, new EventHandler<MouseEvent>() {
+	        @Override public void handle(MouseEvent mouseEvent) {
+	          if (primerToggle.equals(typeGroupe.getSelectedToggle())) {
+	            mouseEvent.consume();
+	          }
+	        }
+	      });
+		
+		allToggle.addEventFilter(MouseEvent.MOUSE_RELEASED, new EventHandler<MouseEvent>() {
+	        @Override public void handle(MouseEvent mouseEvent) {
+	          if (allToggle.equals(typeGroupe.getSelectedToggle())) {
+	            mouseEvent.consume();
+	          }
+	        }
+	      });
+		
 
 		usageGroupe = new ToggleGroup();
 		uploadToggle.setToggleGroup(usageGroupe);
 		downloadToggle.setToggleGroup(usageGroupe);
+		
+		uploadToggle.addEventFilter(MouseEvent.MOUSE_RELEASED, new EventHandler<MouseEvent>() {
+	        @Override public void handle(MouseEvent mouseEvent) {
+	          if (uploadToggle.equals(usageGroupe.getSelectedToggle())) {
+	            mouseEvent.consume();
+	          }
+	        }
+	      });
+		
+		downloadToggle.addEventFilter(MouseEvent.MOUSE_RELEASED, new EventHandler<MouseEvent>() {
+	        @Override public void handle(MouseEvent mouseEvent) {
+	          if (downloadToggle.equals(usageGroupe.getSelectedToggle())) {
+	            mouseEvent.consume();
+	          }
+	        }
+	      });
 
 		startButton.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
