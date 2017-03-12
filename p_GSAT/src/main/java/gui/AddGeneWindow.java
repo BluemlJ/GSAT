@@ -16,7 +16,6 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
@@ -111,20 +110,13 @@ public class AddGeneWindow extends Application implements javafx.fxml.Initializa
 						if (GeneHandler.addGene(nameField.getText(), geneArea.getText(), organismField.getText(),
 								commentArea.getText())) {
 
-							Alert alert = new Alert(AlertType.INFORMATION);
-							alert.setTitle("Adding gene");
-							alert.setHeaderText("Gene added successfully.");
-							alert.showAndWait();
+						    GUIUtils.showInfo(AlertType.INFORMATION, "Adding a gene", "Gene added successfully.");
 							MainWindow.changesOnGenes = true;
 							parent.updateGenes();
 							Stage stage = (Stage) cancelButton.getScene().getWindow();
 							stage.close();
-						} else {
-							Alert alert = new Alert(AlertType.INFORMATION);
-							alert.setTitle("Adding gene failed");
-							alert.setHeaderText("Gene added not successful because gene already exists in local file.");
-							alert.showAndWait();
-
+						} else {		
+						  GUIUtils.showInfo(AlertType.ERROR, "Faild to add a gene", "Gene added not successful because gene already exists in local file.");
 						}
 
 					} catch (DuplicateGeneException | IOException e) {

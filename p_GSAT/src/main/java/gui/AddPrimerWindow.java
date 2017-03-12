@@ -18,7 +18,6 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
@@ -131,21 +130,13 @@ public class AddPrimerWindow extends Application implements javafx.fxml.Initiali
               Integer.parseInt(meltingTempField.getText()), idField.getText(), nameField.getText(),
               commentArea.getText()))) {
 
-            Alert alert = new Alert(AlertType.INFORMATION);
-            alert.setTitle("Adding primer");
-            alert.setHeaderText("Primer added successfully.");
-            alert.showAndWait();
+            GUIUtils.showInfo(AlertType.INFORMATION, "Adding primer", "Primer added successfully.");
             MainWindow.changesOnPrimers = true;
             parent.updatePrimers();
             Stage stage = (Stage) cancelButton.getScene().getWindow();
             stage.close();
           } else {
-            Alert alert = new Alert(AlertType.INFORMATION);
-            alert.setTitle("Adding primer failed");
-            alert.setHeaderText(
-                "Primer added not successful because gene already exists in local file.");
-            alert.showAndWait();
-
+            GUIUtils.showInfo(AlertType.ERROR,"Adding primer failed", "Primer not added because it already exists in local file.");
           }
         }
 

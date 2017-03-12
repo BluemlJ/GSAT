@@ -1,6 +1,7 @@
 package core;
 
 import java.io.IOException;
+import java.util.Locale;
 
 import exceptions.ConfigNotFoundException;
 import exceptions.UnknownConfigFieldException;
@@ -24,7 +25,10 @@ public class Main {
 	 *            Unused input parameters
 	 */
 	public static void main(String[] args) {
-		try{
+		
+	  Locale.setDefault(Locale.ENGLISH);
+	  
+	  try{
 		ConfigHandler.readConfig();
 		PrimerHandler.readPrimer();
 		GeneHandler.readGenes();}

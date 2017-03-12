@@ -125,26 +125,14 @@ public class DatabaseSettingsWindow extends Application implements javafx.fxml.I
 					try {
 						// Try to connect
 						DatabaseConnection.setDatabaseConnection(username, password, port, adress);
-						System.out.println("connection successful");
 						// show success alert window
-						Alert alert = new Alert(AlertType.INFORMATION);
-						alert.setTitle("Database Connection");
-						alert.setHeaderText("Connection to database succeeded");
-						alert.showAndWait();
+						GUIUtils.showInfo(AlertType.INFORMATION, "Database connection", "Connection to database succeeded");
 					} catch (DatabaseConnectionException | SQLException e) {
-						System.out.println("Connection failed");
-						// Connection did not work
-						Alert alert = new Alert(AlertType.INFORMATION);
-						alert.setTitle("Database Connection");
-						alert.setHeaderText("Connection to database failed");
-						alert.showAndWait();
+					  GUIUtils.showInfo(AlertType.ERROR, "Database connection", "Connection to database failed");
 					}
 				} else {
 					// values are missing
-					Alert alert = new Alert(AlertType.INFORMATION);
-					alert.setTitle("Database Connection");
-					alert.setHeaderText("Please enter values for all parameters.");
-					alert.showAndWait();
+				  GUIUtils.showInfo(AlertType.ERROR, "Database connection", "Please enter values for all parameters.");
 				}
 			}
 		});

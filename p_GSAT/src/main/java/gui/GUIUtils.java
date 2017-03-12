@@ -462,6 +462,14 @@ public class GUIUtils {
   }
 
 
+  public static void showInfo(AlertType type, String title, String explanation) {
+    Alert alert = new Alert(type);
+    alert.setTitle(title);
+    alert.setHeaderText(explanation);
+    alert.showAndWait();
+  }
+  
+  
   public static String convertStreamToString(InputStream is) {
     Scanner s = new Scanner(is);
     String ret;
