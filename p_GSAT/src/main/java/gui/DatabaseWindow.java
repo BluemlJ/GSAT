@@ -167,6 +167,7 @@ public class DatabaseWindow extends Application implements javafx.fxml.Initializ
 					if (uploadToggle.isSelected()) {
 						try {
 							uploadPrimer();
+							GUIUtils.showInfo(AlertType.INFORMATION, "Success", "Primer upload was successful");
 						} catch (DatabaseConnectionException | SQLException e) {
 							// error while connecting to database
 
@@ -191,6 +192,7 @@ public class DatabaseWindow extends Application implements javafx.fxml.Initializ
 					else if (downloadToggle.isSelected()) {
 						try {
 							downloadPrimer();
+							GUIUtils.showInfo(AlertType.INFORMATION, "Success", "Downloading primer data was successful");
 						} catch (DatabaseConnectionException | SQLException e) {
 							// error while connecting to database
 							e.printStackTrace();
@@ -209,6 +211,7 @@ public class DatabaseWindow extends Application implements javafx.fxml.Initializ
 					if (uploadToggle.isSelected()) {
 						try {
 							uploadGenes();
+							GUIUtils.showInfo(AlertType.INFORMATION, "Success", "Gene upload was successful");
 						} catch (SQLException | DatabaseConnectionException e) {
 							// error while connecting to database
 							e.printStackTrace();
@@ -223,6 +226,7 @@ public class DatabaseWindow extends Application implements javafx.fxml.Initializ
 					else if (downloadToggle.isSelected()) {
 						try {
 							downloadGenes();
+							GUIUtils.showInfo(AlertType.INFORMATION, "Success", "Gene download was successful");
 						} catch (DatabaseConnectionException | SQLException e) {
 							// error while connecting to database
 							e.printStackTrace();
@@ -242,6 +246,7 @@ public class DatabaseWindow extends Application implements javafx.fxml.Initializ
 					if (uploadToggle.isSelected()) {
 						try {
 							uploadResults();
+							GUIUtils.showInfo(AlertType.INFORMATION, "Success", "Results upload was successful");
 						} catch (IOException e) {
 							// error while reading file
 							e.printStackTrace();
@@ -276,6 +281,7 @@ public class DatabaseWindow extends Application implements javafx.fxml.Initializ
 							uploadGenes();
 							uploadPrimer();
 							uploadResults();
+							GUIUtils.showInfo(AlertType.CONFIRMATION, "Success", "Upload complete");
 						} catch (IOException e) {
 							// error while reading file
 							e.printStackTrace();
@@ -430,35 +436,35 @@ public class DatabaseWindow extends Application implements javafx.fxml.Initializ
 
 		LinkedList<AnalysedSequence> sequences = FileRetriever.convertFilesToSequences(path);
 		DatabaseConnection.pushAllData(sequences);
-		GUIUtils.showInfo(AlertType.INFORMATION, "Success", "Results upload was successful");
+		
 
 	}
 
 	private void downloadGenes() throws DatabaseConnectionException, SQLException, IOException {
 
 		DatabaseConnection.pullAndSaveGenes();
-		GUIUtils.showInfo(AlertType.INFORMATION, "Success", "Gene download was successful");
+		
 
 	}
 
 	private void uploadGenes() throws SQLException, DatabaseConnectionException, IOException {
 
 		DatabaseConnection.pushAllGenes();
-		GUIUtils.showInfo(AlertType.INFORMATION, "Success", "Gene upload was successful");
+		
 
 	}
 
 	private void downloadPrimer() throws NumberFormatException, DatabaseConnectionException, SQLException, IOException {
 
 		DatabaseConnection.pullAndSavePrimer();
-		GUIUtils.showInfo(AlertType.INFORMATION, "Success", "Downloading primer data was successful");
+		
 
 	}
 
 	private void uploadPrimer() throws NumberFormatException, DatabaseConnectionException, SQLException, IOException {
 
 		DatabaseConnection.pushAllPrimer();
-		GUIUtils.showInfo(AlertType.INFORMATION, "Success", "Primer upload was successful");
+		
 
 	}
 
