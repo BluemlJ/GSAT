@@ -55,10 +55,9 @@ public class LocalDBTest {
 	@Test
 	public void testPullCustom() throws DatabaseConnectionException, SQLException, UnknownConfigFieldException,
 			ConfigNotFoundException, IOException {
-		DatabaseConnection.setDatabaseConnection(user, pass, port, server);
+		//DatabaseConnection.setDatabaseConnection(user, pass, port, server);
 
-		// DatabaseConnection.setDatabaseConnection(userOnline, passOnline,
-		// portOnline, serverOnline);
+		 DatabaseConnection.setDatabaseConnection(userOnline, passOnline, portOnline, serverOnline);
 
 		DatabaseConnection.createDatabase();
 

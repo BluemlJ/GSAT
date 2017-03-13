@@ -173,8 +173,9 @@ public class DatabaseConnection {
 	 * @return List of genes currently stored in the database
 	 * @throws DatabaseConnectionException
 	 * @throws DatabaseErrorException
+	 * @throws SQLException 
 	 */
-	public static LinkedList<Gene> retrieveAllGenes() throws DatabaseConnectionException, DatabaseErrorException {
+	public static LinkedList<Gene> retrieveAllGenes() throws DatabaseConnectionException, DatabaseErrorException, SQLException {
 
 		LinkedList<Gene> allGenes = new LinkedList<Gene>();
 
@@ -198,7 +199,8 @@ public class DatabaseConnection {
 		} catch (SQLException e) {
 			throw new DatabaseErrorException();
 		}
-
+		
+		conn.close();
 		return allGenes;
 	}
 
@@ -245,8 +247,9 @@ public class DatabaseConnection {
 	 * database called gsat already exists it will be dropped.
 	 * 
 	 * @author Lovis Heindrich
+	 * @throws SQLException 
 	 */
-	public static void createDatabase() {
+	public static void createDatabase() throws SQLException {
 		try {
 
 			conn = establishConnection();
@@ -285,7 +288,7 @@ public class DatabaseConnection {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-
+		conn.close();
 	}
 
 	/**
@@ -295,8 +298,9 @@ public class DatabaseConnection {
 	 * 
 	 * @return true if database exists, false if it does not exist
 	 * @author Lovis Heindrich
+	 * @throws SQLException 
 	 */
-	public static boolean gsatExists() {
+	public static boolean gsatExists() throws SQLException {
 		try {
 			conn = establishConnection();
 			Statement stmt = conn.createStatement();
@@ -306,6 +310,7 @@ public class DatabaseConnection {
 					+ "WHERE table_schema = 'gsat' AND table_name = 'genes' LIMIT 1");
 			if (!rs.next()) {
 				stmt.close();
+				conn.close();
 				return false;
 			}
 
@@ -314,6 +319,7 @@ public class DatabaseConnection {
 					+ "WHERE table_schema = 'gsat' AND table_name = 'sequences' LIMIT 1");
 			if (!rs.next()) {
 				stmt.close();
+				conn.close();
 				return false;
 			}
 
@@ -330,6 +336,7 @@ public class DatabaseConnection {
 					+ "WHERE table_schema = 'gsat' AND table_name = 'researchers' LIMIT 1");
 			if (!rs.next()) {
 				stmt.close();
+				conn.close();
 				return false;
 			}
 
@@ -338,14 +345,17 @@ public class DatabaseConnection {
 					+ "WHERE table_schema = 'gsat' AND table_name = 'primer' LIMIT 1");
 			if (!rs.next()) {
 				stmt.close();
+				conn.close();
 				return false;
 			}
 			stmt.close();
+			conn.close();
 			return true;
 		} catch (DatabaseConnectionException | SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		conn.close();
 		return false;
 	}
 
@@ -729,7 +739,7 @@ public class DatabaseConnection {
 			// push the gene
 			pushPrimer(conn, primer, researcherId);
 		}
-
+		conn.close();
 	}
 
 	public static void pushPrimer(Connection conn2, Primer primer, int researcherId) throws SQLException {
@@ -812,7 +822,7 @@ public class DatabaseConnection {
 			primerList.add(primer);
 		}
 		stmt.close();
-
+		conn.close();
 		return primerList;
 	}
 
@@ -839,6 +849,7 @@ public class DatabaseConnection {
 
 		stmt.close();
 		pstmt.close();
+		conn.close();
 		return mutations;
 	}
 
@@ -865,6 +876,7 @@ public class DatabaseConnection {
 		}
 
 		stmt.close();
+		conn.close();
 		return researchers;
 
 	}
@@ -887,6 +899,7 @@ public class DatabaseConnection {
 		}
 		stmt.close();
 		pstmt.close();
+		conn.close();
 		return researcher;
 	}
 
@@ -916,6 +929,7 @@ public class DatabaseConnection {
 			genes.add(gene);
 		}
 		stmt.close();
+		conn.close();
 		return genes;
 	}
 
@@ -948,6 +962,7 @@ public class DatabaseConnection {
 		}
 		stmt.close();
 		pstmt.close();
+		conn.close();
 		return gene;
 	}
 
@@ -991,6 +1006,7 @@ public class DatabaseConnection {
 			sequences.add(seq);
 		}
 		stmt.close();
+		conn.close();
 		return sequences;
 	}
 
@@ -1041,6 +1057,7 @@ public class DatabaseConnection {
 		}
 		stmt.close();
 		pstmt.close();
+		conn.close();
 		return sequences;
 	}
 
@@ -1190,6 +1207,7 @@ public class DatabaseConnection {
 		}
 		stmt.close();
 		pstmt.close();
+		conn.close();
 		return sequences;
 	}
 
@@ -1329,6 +1347,7 @@ public class DatabaseConnection {
 		}
 		stmt.close();
 		pstmt.close();
+		conn.close();
 		return sequences;
 	}
 
