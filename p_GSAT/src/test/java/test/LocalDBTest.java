@@ -50,7 +50,15 @@ public class LocalDBTest {
 	Connection conn = null;
 	java.sql.Statement stmt = null;
 	ResultSet rs = null;
-
+	
+	@Ignore
+	@Test
+	public void resetDB() throws DatabaseConnectionException, SQLException, UnknownConfigFieldException, ConfigNotFoundException, IOException{
+		ConfigHandler.readConfig();
+		DatabaseConnection.setDatabaseConnection(ConfigHandler.getDbUser(), ConfigHandler.getDbPass(), ConfigHandler.getDbPort(), ConfigHandler.getDbUrl());
+		DatabaseConnection.createDatabase();
+	}
+	
 	@Ignore
 	@Test
 	public void testPullCustom() throws DatabaseConnectionException, SQLException, UnknownConfigFieldException,

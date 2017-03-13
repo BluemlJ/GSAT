@@ -257,6 +257,7 @@ public class DatabaseWindow extends Application implements javafx.fxml.Initializ
 					else if (downloadToggle.isSelected()) {
 						try {
 							downloadResults();
+							GUIUtils.showInfo(AlertType.CONFIRMATION, "Success", "Sequence download complete");
 						} catch (SQLException | DatabaseConnectionException e) {
 						  GUIUtils.showInfo(AlertType.ERROR, "Failed", "Failure while downloading sequences");
 							e.printStackTrace();
