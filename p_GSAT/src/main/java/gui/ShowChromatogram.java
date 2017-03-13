@@ -11,6 +11,7 @@ import java.util.ResourceBundle;
 import analysis.AnalysedSequence;
 import javafx.application.Application;
 import javafx.embed.swing.SwingFXUtils;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.Button;
@@ -18,6 +19,7 @@ import javafx.scene.control.ScrollBar;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.image.ImageView;
 import javafx.scene.image.WritableImage;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
@@ -38,8 +40,9 @@ public class ShowChromatogram extends Application implements javafx.fxml.Initial
 	javafx.scene.image.Image img;
 
 	private ScrollPane scrollPane;
-
-	private Button next = new Button();
+	
+	Button prevs;
+	Button next;
 
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
@@ -52,10 +55,21 @@ public class ShowChromatogram extends Application implements javafx.fxml.Initial
 	public void start(Stage primaryStage) throws Exception {
 
 		scrollPane = new ScrollPane();
-		scrollPane.setMaxHeight(600);
-		scrollPane.setMinHeight(600);
+		//scrollPane.setMaxHeight(600);
+		scrollPane.setMinHeight(400);
+		scrollPane.setMaxHeight(Double.MAX_VALUE);
+		scrollPane.setMaxWidth(Double.MAX_VALUE);
 
-		VBox v = new VBox(scrollPane);
+		next = new Button("Next");
+		prevs = new Button("Previous");
+		Button close = new Button("Close");
+		
+		HBox buttonBox = new HBox(next, prevs, close);
+		buttonBox.setSpacing(10);
+		buttonBox.setAlignment(Pos.BOTTOM_RIGHT);
+		
+		
+		VBox v = new VBox(scrollPane, buttonBox);
 
 		scene = new Scene(v, 800, 600);
 
