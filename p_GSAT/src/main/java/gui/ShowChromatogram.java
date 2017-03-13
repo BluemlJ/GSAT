@@ -1,12 +1,17 @@
 package gui;
 
 import java.awt.BasicStroke;
+import java.awt.Desktop;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.net.URL;
 import java.util.LinkedList;
 import java.util.ResourceBundle;
+
+import javax.imageio.ImageIO;
 
 import analysis.AnalysedSequence;
 import javafx.application.Application;
@@ -26,6 +31,7 @@ import javafx.scene.image.WritableImage;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 public class ShowChromatogram extends Application implements javafx.fxml.Initializable {
@@ -59,6 +65,7 @@ public class ShowChromatogram extends Application implements javafx.fxml.Initial
 
   @Override
   public void start(Stage primaryStage) throws Exception {
+
 
     scrollPane = new ScrollPane();
     // scrollPane.setMaxHeight(600);
@@ -101,14 +108,27 @@ public class ShowChromatogram extends Application implements javafx.fxml.Initial
 
     Button export = new Button("Export");
     export.setOnAction(new EventHandler<ActionEvent>() {
-      
+
       @Override
       public void handle(ActionEvent event) {
-        // TODO Auto-generated method stub
+        FileChooser fileChooser = new FileChooser();
+        String filename = sequences.get(activeSequence).getFileName();
+        fileChooser.setInitialFileName(filename.substring(0, filename.length()-3) + "png");
         
+        fileChooser.setTitle("Save Image");
+        File file = fileChooser.showSaveDialog(primaryStage);
+
+        
+        if (file != null) {
+          try {
+            ImageIO.write(SwingFXUtils.fromFXImage(img, null), "png", file);
+          } catch (IOException ex) {
+            System.out.println(ex.getMessage());
+          }
+        }
       }
     });
-    
+
     Button close = new Button("Close");
 
     HBox buttonLeft = new HBox(prevs, next);
@@ -279,11 +299,11 @@ public class ShowChromatogram extends Application implements javafx.fxml.Initial
     }
     System.out.println(startSequence.getSequence().length() + " = seq");
 
-    WritableImage img = new WritableImage(last * strechX, 400);
+    WritableImage wrtieImg = new WritableImage(last * strechX, 400);
 
-    SwingFXUtils.toFXImage(buffImg, img);
-    viewer.setImage(img);
-
+    SwingFXUtils.toFXImage(buffImg, wrtieImg);
+    viewer.setImage(wrtieImg);
+    img = wrtieImg;
     /*
      * try
      * 
