@@ -250,7 +250,7 @@ public class GeneHandler {
 	 * @return
 	 */
 	public static Gene checkGene(String geneName, String organism) {
-		if (organism != null && !organism.isEmpty()) {
+		if (organism != null && !organism.isEmpty() && !organism.equals("none") && !organism.equals("null")) {
 			for (int i = 0; i < geneList.size(); i++) {
 				if (geneList.get(i).getName().equals(geneName)) {
 

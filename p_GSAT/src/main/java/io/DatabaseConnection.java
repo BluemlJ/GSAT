@@ -587,6 +587,9 @@ public class DatabaseConnection {
 		String name = gene.getName();
 		String sequence = gene.getSequence();
 		String organism = gene.getOrganism();
+		if(organism == null){
+			organism = "none";
+		}
 		DateFormat df = ConfigHandler.getDateFormat();
 		java.util.Date localDate;
 		java.sql.Date sqlDate;
