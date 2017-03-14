@@ -81,6 +81,16 @@ public class DatabaseWindow extends Application implements javafx.fxml.Initializ
 
 	private ToggleGroup typeGroupe;
 	private ToggleGroup usageGroupe;
+	
+	private final String uploadFail = "Upload to database failed.";
+	private final String downloadFail = "Download from database failed";
+	private final String writeFail = "Writing local file failed.";
+	private final String readFail = "Reading local file failed.";
+	
+	private final String uploadSuccess = "Upload to database complete.";
+	private final String downloadSuccess = "Download from database complete.";
+	private final String writeSuccess = "Writing local file complete.";
+	private final String readSuccess = "Reading local file complete.";
 
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
@@ -90,10 +100,10 @@ public class DatabaseWindow extends Application implements javafx.fxml.Initializ
 			DatabaseConnection.setDatabaseConnection(ConfigHandler.getDbUser(), ConfigHandler.getDbPass(),
 					ConfigHandler.getDbPort(), ConfigHandler.getDbUrl());
 		} catch (UnknownConfigFieldException | ConfigNotFoundException | IOException e1) {
-		  GUIUtils.showInfo(AlertType.ERROR, "Failed", "Failure while reading config file");
+		  GUIUtils.showInfo(AlertType.ERROR, "Failed", "Failure while reading database login from config file.");
 			e1.printStackTrace();
 		} catch (DatabaseConnectionException | SQLException e) {
-		  GUIUtils.showInfo(AlertType.ERROR, "Failed", "Failure while connecting to database");
+		  GUIUtils.showInfo(AlertType.ERROR, "Failed", "Failure while connecting to database. Login data might be wrong.");
 			e.printStackTrace();
 		}
 
@@ -167,24 +177,17 @@ public class DatabaseWindow extends Application implements javafx.fxml.Initializ
 					if (uploadToggle.isSelected()) {
 						try {
 							uploadPrimer();
-							GUIUtils.showInfo(AlertType.INFORMATION, "Success", "Primer upload was successful");
+							GUIUtils.showInfo(AlertType.CONFIRMATION, "Success", uploadSuccess);
 						} catch (DatabaseConnectionException | SQLException e) {
 							// error while connecting to database
 
-							Alert alert = new Alert(AlertType.INFORMATION);
-							alert.setTitle("Failed");
-							alert.setHeaderText("Connection to database failed");
-							alert.showAndWait();
+							GUIUtils.showInfo(AlertType.ERROR, "Error", uploadFail);
 
 							e.printStackTrace();
 						} catch (NumberFormatException | IOException e) {
 							// error while writing txt
 							e.printStackTrace();
-
-							Alert alert = new Alert(AlertType.INFORMATION);
-							alert.setTitle("Failed");
-							alert.setHeaderText("Failure while reading local file");
-							alert.showAndWait();
+							GUIUtils.showInfo(AlertType.ERROR, "Error", readFail);
 						}
 					}
 
@@ -192,15 +195,15 @@ public class DatabaseWindow extends Application implements javafx.fxml.Initializ
 					else if (downloadToggle.isSelected()) {
 						try {
 							downloadPrimer();
-							GUIUtils.showInfo(AlertType.INFORMATION, "Success", "Downloading primer data was successful");
+							GUIUtils.showInfo(AlertType.CONFIRMATION, "Success", downloadSuccess);
 						} catch (DatabaseConnectionException | SQLException e) {
 							// error while connecting to database
 							e.printStackTrace();
-							GUIUtils.showInfo(AlertType.ERROR, "Failed", "Database connection error");
+							GUIUtils.showInfo(AlertType.ERROR, "Error", downloadFail);
 						} catch (NumberFormatException | IOException e) {
 							// error while writing txt
 							e.printStackTrace();
-							GUIUtils.showInfo(AlertType.ERROR, "Failed", "Writing local file failed");
+							GUIUtils.showInfo(AlertType.ERROR, "Error", writeFail);
 						}
 					}
 				}
@@ -211,30 +214,30 @@ public class DatabaseWindow extends Application implements javafx.fxml.Initializ
 					if (uploadToggle.isSelected()) {
 						try {
 							uploadGenes();
-							GUIUtils.showInfo(AlertType.INFORMATION, "Success", "Gene upload was successful");
+							GUIUtils.showInfo(AlertType.CONFIRMATION, "Success", uploadSuccess);
 						} catch (SQLException | DatabaseConnectionException e) {
 							// error while connecting to database
 							e.printStackTrace();
-							GUIUtils.showInfo(AlertType.ERROR, "Failed", "Error while connecting to database");
+							GUIUtils.showInfo(AlertType.ERROR, "Error", uploadFail);
 						} catch (IOException e) {
 							// error while reading genes from txt
 							e.printStackTrace();
-							GUIUtils.showInfo(AlertType.ERROR, "Failed", "Error while reading local genes");
+							GUIUtils.showInfo(AlertType.ERROR, "Error", readFail);
 						}
 					}
 					// download genes to genes.txt
 					else if (downloadToggle.isSelected()) {
 						try {
 							downloadGenes();
-							GUIUtils.showInfo(AlertType.INFORMATION, "Success", "Gene download was successful");
+							GUIUtils.showInfo(AlertType.CONFIRMATION, "Success", downloadSuccess);
 						} catch (DatabaseConnectionException | SQLException e) {
 							// error while connecting to database
 							e.printStackTrace();
-							GUIUtils.showInfo(AlertType.ERROR, "Failed", "Connection to database failed");
+							GUIUtils.showInfo(AlertType.ERROR, "Error", downloadFail);
 						} catch (IOException e) {
 							// error while writing txt
 							e.printStackTrace();
-							GUIUtils.showInfo(AlertType.ERROR, "Failed", "Error while writign local gene file");
+							GUIUtils.showInfo(AlertType.ERROR, "Error", writeFail);
 						}
 					}
 				}
@@ -246,15 +249,15 @@ public class DatabaseWindow extends Application implements javafx.fxml.Initializ
 					if (uploadToggle.isSelected()) {
 						try {
 							uploadResults();
-							GUIUtils.showInfo(AlertType.INFORMATION, "Success", "Results upload was successful");
+							GUIUtils.showInfo(AlertType.CONFIRMATION, "Success", uploadSuccess);
 						} catch (IOException e) {
 							// error while reading file
 							e.printStackTrace();
-							GUIUtils.showInfo(AlertType.ERROR, "Failed", "Error while reading local file");
+							GUIUtils.showInfo(AlertType.ERROR, "Error", readFail);
 						} catch (SQLException | DatabaseConnectionException e) {
 							// error while writing to database
 							e.printStackTrace();
-							GUIUtils.showInfo(AlertType.ERROR, "Failed", "Error while connecting to database");
+							GUIUtils.showInfo(AlertType.ERROR, "Error", uploadFail);
 						}
 					}
 
@@ -262,12 +265,12 @@ public class DatabaseWindow extends Application implements javafx.fxml.Initializ
 					else if (downloadToggle.isSelected()) {
 						try {
 							downloadResults();
-							GUIUtils.showInfo(AlertType.CONFIRMATION, "Success", "Sequence download complete");
+							GUIUtils.showInfo(AlertType.CONFIRMATION, "Success", downloadSuccess);
 						} catch (SQLException | DatabaseConnectionException e) {
-						  GUIUtils.showInfo(AlertType.ERROR, "Failed", "Failure while downloading sequences");
+							GUIUtils.showInfo(AlertType.ERROR, "Error", downloadFail);
 							e.printStackTrace();
 						} catch (MissingPathException | IOException e) {
-						  GUIUtils.showInfo(AlertType.ERROR, "Failed", "Failure while writing local file");
+						  GUIUtils.showInfo(AlertType.ERROR, "Error", writeFail);
 							e.printStackTrace();
 						}
 					}
@@ -281,15 +284,15 @@ public class DatabaseWindow extends Application implements javafx.fxml.Initializ
 							uploadGenes();
 							uploadPrimer();
 							uploadResults();
-							GUIUtils.showInfo(AlertType.CONFIRMATION, "Success", "Upload complete");
+							GUIUtils.showInfo(AlertType.CONFIRMATION, "Success", uploadSuccess);
 						} catch (IOException e) {
 							// error while reading file
 							e.printStackTrace();
-							GUIUtils.showInfo(AlertType.ERROR, "Failed", "Error while reading local file");
+							GUIUtils.showInfo(AlertType.ERROR, "Error", readFail);
 						} catch (SQLException | DatabaseConnectionException e) {
 							// error while writing to database
 							e.printStackTrace();
-							GUIUtils.showInfo(AlertType.ERROR, "Failed", "Error while connecting to database");
+							GUIUtils.showInfo(AlertType.ERROR, "Error", uploadFail);
 						}
 					}
 
@@ -299,11 +302,12 @@ public class DatabaseWindow extends Application implements javafx.fxml.Initializ
 							downloadGenes();
 							downloadPrimer();
 							downloadResults();
+							GUIUtils.showInfo(AlertType.CONFIRMATION, "Success", downloadSuccess);
 						} catch (SQLException | DatabaseConnectionException e) {
-						  GUIUtils.showInfo(AlertType.ERROR, "Failed", "Failure while downloading from database");
+						  GUIUtils.showInfo(AlertType.ERROR, "Error", downloadFail);
 							e.printStackTrace();
 						} catch (MissingPathException | IOException e) {
-						  GUIUtils.showInfo(AlertType.ERROR, "Failed", "Failure while writing local file");
+						  GUIUtils.showInfo(AlertType.ERROR, "Error", writeFail);
 							e.printStackTrace();
 						}
 					}
