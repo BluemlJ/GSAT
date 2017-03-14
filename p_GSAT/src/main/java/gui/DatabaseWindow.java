@@ -33,12 +33,12 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
-import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.text.Text;
+import javafx.scene.text.TextFlow;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
@@ -86,6 +86,9 @@ public class DatabaseWindow extends Application implements javafx.fxml.Initializ
 
 	@FXML
 	private Text folderText;
+	
+	@FXML
+	private TextFlow infoArea;
 
 	private ToggleGroup typeGroupe;
 	private ToggleGroup usageGroupe;
