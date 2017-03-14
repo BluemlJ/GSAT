@@ -172,6 +172,8 @@ public class DatabaseWindow extends Application implements javafx.fxml.Initializ
 		geneToggle.setToggleGroup(typeGroupe);
 		primerToggle.setToggleGroup(typeGroupe);
 		allToggle.setToggleGroup(typeGroupe);
+		
+		activateOnlyPath();
 
 		resultToggle.addEventFilter(MouseEvent.MOUSE_RELEASED, new EventHandler<MouseEvent>() {
 			@Override
@@ -239,7 +241,6 @@ public class DatabaseWindow extends Application implements javafx.fxml.Initializ
 				} else if(resultToggle.isSelected() || allToggle.isSelected()){
 					activateOnlyPath();
 				}
-				System.out.println(uploadToggle.isSelected());
 			}
 		});
 
