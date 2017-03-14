@@ -86,7 +86,7 @@ public class DatabaseWindow extends Application implements javafx.fxml.Initializ
 
 	@FXML
 	private Text folderText;
-	
+
 	@FXML
 	private TextFlow infoArea;
 
@@ -179,6 +179,12 @@ public class DatabaseWindow extends Application implements javafx.fxml.Initializ
 				if (resultToggle.equals(typeGroupe.getSelectedToggle())) {
 					mouseEvent.consume();
 				}
+				// upload only path value is needed
+				if (uploadToggle.isSelected()) {
+					activateOnlyPath();
+				} else if(downloadToggle.isSelected()){
+					activateEverything();
+				}
 			}
 		});
 
@@ -188,6 +194,8 @@ public class DatabaseWindow extends Application implements javafx.fxml.Initializ
 				if (geneToggle.equals(typeGroupe.getSelectedToggle())) {
 					mouseEvent.consume();
 				}
+				// no additional user input needed
+				activateNothing();
 			}
 		});
 
@@ -197,6 +205,8 @@ public class DatabaseWindow extends Application implements javafx.fxml.Initializ
 				if (primerToggle.equals(typeGroupe.getSelectedToggle())) {
 					mouseEvent.consume();
 				}
+				// no additional user input needed
+				activateNothing();
 			}
 		});
 
@@ -205,6 +215,11 @@ public class DatabaseWindow extends Application implements javafx.fxml.Initializ
 			public void handle(MouseEvent mouseEvent) {
 				if (allToggle.equals(typeGroupe.getSelectedToggle())) {
 					mouseEvent.consume();
+				}
+				if (downloadToggle.isSelected()) {
+					activateEverything();
+				} else if(uploadToggle.isSelected()){
+					activateOnlyPath();
 				}
 			}
 		});
@@ -219,6 +234,12 @@ public class DatabaseWindow extends Application implements javafx.fxml.Initializ
 				if (uploadToggle.equals(usageGroupe.getSelectedToggle())) {
 					mouseEvent.consume();
 				}
+				if (primerToggle.isSelected() || geneToggle.isSelected()) {
+					activateNothing();
+				} else if(resultToggle.isSelected() || allToggle.isSelected()){
+					activateOnlyPath();
+				}
+				System.out.println(uploadToggle.isSelected());
 			}
 		});
 
@@ -227,6 +248,11 @@ public class DatabaseWindow extends Application implements javafx.fxml.Initializ
 			public void handle(MouseEvent mouseEvent) {
 				if (downloadToggle.equals(usageGroupe.getSelectedToggle())) {
 					mouseEvent.consume();
+				}
+				if (primerToggle.isSelected() || geneToggle.isSelected()) {
+					activateNothing();
+				} else if(resultToggle.isSelected() || allToggle.isSelected()){
+					activateEverything();
 				}
 			}
 		});
@@ -398,11 +424,11 @@ public class DatabaseWindow extends Application implements javafx.fxml.Initializ
 			public void handle(ActionEvent arg0) {
 				if (!upload) {
 					upload = true;
-
-					researcherField.setDisable(true);
-					geneField.setDisable(true);
-					startDate.setDisable(true);
-					endDate.setDisable(true);
+					/*
+					 * researcherField.setDisable(true);
+					 * geneField.setDisable(true); startDate.setDisable(true);
+					 * endDate.setDisable(true);
+					 */
 				}
 
 			}
@@ -414,11 +440,11 @@ public class DatabaseWindow extends Application implements javafx.fxml.Initializ
 			public void handle(ActionEvent arg0) {
 				if (upload) {
 					upload = false;
-
-					researcherField.setDisable(false);
-					geneField.setDisable(false);
-					startDate.setDisable(false);
-					endDate.setDisable(false);
+					/*
+					 * researcherField.setDisable(false);
+					 * geneField.setDisable(false); startDate.setDisable(false);
+					 * endDate.setDisable(false);
+					 */
 				}
 
 			}
@@ -529,6 +555,33 @@ public class DatabaseWindow extends Application implements javafx.fxml.Initializ
 
 		DatabaseConnection.pushAllPrimer();
 
+	}
+
+	private void activateOnlyPath() {
+		destButton.setDisable(false);
+		destField.setDisable(false);
+		researcherField.setDisable(true);
+		geneField.setDisable(true);
+		startDate.setDisable(true);
+		endDate.setDisable(true);
+	}
+
+	private void activateEverything() {
+		destButton.setDisable(false);
+		destField.setDisable(false);
+		researcherField.setDisable(false);
+		geneField.setDisable(false);
+		startDate.setDisable(false);
+		endDate.setDisable(false);
+	}
+
+	private void activateNothing() {
+		destButton.setDisable(true);
+		destField.setDisable(true);
+		researcherField.setDisable(true);
+		geneField.setDisable(true);
+		startDate.setDisable(true);
+		endDate.setDisable(true);
 	}
 
 	@Override
