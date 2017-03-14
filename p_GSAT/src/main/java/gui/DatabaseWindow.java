@@ -93,11 +93,8 @@ public class DatabaseWindow extends Application implements javafx.fxml.Initializ
 	private final String downloadFail = "Download from database failed";
 	private final String writeFail = "Writing local file failed.";
 	private final String readFail = "Reading local file failed.";
-	
 	private final String uploadSuccess = "Upload to database complete.";
 	private final String downloadSuccess = "Download from database complete.";
-	private final String writeSuccess = "Writing local file complete.";
-	private final String readSuccess = "Reading local file complete.";
 
   @Override
   public void initialize(URL arg0, ResourceBundle arg1) {
