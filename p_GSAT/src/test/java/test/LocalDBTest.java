@@ -51,6 +51,14 @@ public class LocalDBTest {
 	java.sql.Statement stmt = null;
 	ResultSet rs = null;
 	
+	/**
+	 * NOT A TEST (used to manually cleanup database)
+	 * @throws DatabaseConnectionException
+	 * @throws SQLException
+	 * @throws UnknownConfigFieldException
+	 * @throws ConfigNotFoundException
+	 * @throws IOException
+	 */
 	@Ignore
 	@Test
 	public void resetDB() throws DatabaseConnectionException, SQLException, UnknownConfigFieldException, ConfigNotFoundException, IOException{
