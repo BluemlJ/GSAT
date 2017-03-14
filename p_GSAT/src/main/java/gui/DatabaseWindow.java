@@ -4,8 +4,13 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
+import java.time.DateTimeException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.Locale;
 import java.util.ResourceBundle;
 
 import analysis.AnalysedSequence;
@@ -38,465 +43,524 @@ import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
+import javafx.util.StringConverter;
 
 public class DatabaseWindow extends Application implements javafx.fxml.Initializable {
 
-	private Scene scene;
+  private Scene scene;
 
-	private boolean upload = true;
+  private boolean upload = true;
 
-	@FXML
-	private ToggleButton uploadToggle;
-	@FXML
-	private ToggleButton downloadToggle;
+  @FXML
+  private ToggleButton uploadToggle;
+  @FXML
+  private ToggleButton downloadToggle;
 
-	@FXML
-	private ToggleButton resultToggle;
-	@FXML
-	private ToggleButton geneToggle;
-	@FXML
-	private ToggleButton primerToggle;
-	@FXML
-	private ToggleButton allToggle;
+  @FXML
+  private ToggleButton resultToggle;
+  @FXML
+  private ToggleButton geneToggle;
+  @FXML
+  private ToggleButton primerToggle;
+  @FXML
+  private ToggleButton allToggle;
 
-	@FXML
-	private javafx.scene.control.TextField destField;
+  @FXML
+  private javafx.scene.control.TextField destField;
 
-	@FXML
-	private Button destButton;
-	@FXML
-	private Button settingsButton;
-	@FXML
-	private Button startButton;
+  @FXML
+  private Button destButton;
+  @FXML
+  private Button settingsButton;
+  @FXML
+  private Button startButton;
 
-	@FXML
-	private TextField researcherField;
-	@FXML
-	private TextField geneField;
+  @FXML
+  private TextField researcherField;
+  @FXML
+  private TextField geneField;
 
-	@FXML
-	private DatePicker startDate;
-	@FXML
-	private DatePicker endDate;
+  @FXML
+  private DatePicker startDate;
+  @FXML
+  private DatePicker endDate;
 
-	private ToggleGroup typeGroupe;
-	private ToggleGroup usageGroupe;
+  private ToggleGroup typeGroupe;
+  private ToggleGroup usageGroupe;
 
-	@Override
-	public void initialize(URL arg0, ResourceBundle arg1) {
-
-		try {
-			ConfigHandler.readConfig();
-			DatabaseConnection.setDatabaseConnection(ConfigHandler.getDbUser(), ConfigHandler.getDbPass(),
-					ConfigHandler.getDbPort(), ConfigHandler.getDbUrl());
-		} catch (UnknownConfigFieldException | ConfigNotFoundException | IOException e1) {
-		  GUIUtils.showInfo(AlertType.ERROR, "Failed", "Failure while reading config file");
-			e1.printStackTrace();
-		} catch (DatabaseConnectionException | SQLException e) {
-		  GUIUtils.showInfo(AlertType.ERROR, "Failed", "Failure while connecting to database");
-			e.printStackTrace();
-		}
-
-		typeGroupe = new ToggleGroup();
-		resultToggle.setToggleGroup(typeGroupe);
-		geneToggle.setToggleGroup(typeGroupe);
-		primerToggle.setToggleGroup(typeGroupe);
-		allToggle.setToggleGroup(typeGroupe);
-		
-		resultToggle.addEventFilter(MouseEvent.MOUSE_RELEASED, new EventHandler<MouseEvent>() {
-	        @Override public void handle(MouseEvent mouseEvent) {
-	          if (resultToggle.equals(typeGroupe.getSelectedToggle())) {
-	            mouseEvent.consume();
-	          }
-	        }
-	      });
-		
-		geneToggle.addEventFilter(MouseEvent.MOUSE_RELEASED, new EventHandler<MouseEvent>() {
-	        @Override public void handle(MouseEvent mouseEvent) {
-	          if (geneToggle.equals(typeGroupe.getSelectedToggle())) {
-	            mouseEvent.consume();
-	          }
-	        }
-	      });
-		
-		primerToggle.addEventFilter(MouseEvent.MOUSE_RELEASED, new EventHandler<MouseEvent>() {
-	        @Override public void handle(MouseEvent mouseEvent) {
-	          if (primerToggle.equals(typeGroupe.getSelectedToggle())) {
-	            mouseEvent.consume();
-	          }
-	        }
-	      });
-		
-		allToggle.addEventFilter(MouseEvent.MOUSE_RELEASED, new EventHandler<MouseEvent>() {
-	        @Override public void handle(MouseEvent mouseEvent) {
-	          if (allToggle.equals(typeGroupe.getSelectedToggle())) {
-	            mouseEvent.consume();
-	          }
-	        }
-	      });
-		
-
-		usageGroupe = new ToggleGroup();
-		uploadToggle.setToggleGroup(usageGroupe);
-		downloadToggle.setToggleGroup(usageGroupe);
-		
-		uploadToggle.addEventFilter(MouseEvent.MOUSE_RELEASED, new EventHandler<MouseEvent>() {
-	        @Override public void handle(MouseEvent mouseEvent) {
-	          if (uploadToggle.equals(usageGroupe.getSelectedToggle())) {
-	            mouseEvent.consume();
-	          }
-	        }
-	      });
-		
-		downloadToggle.addEventFilter(MouseEvent.MOUSE_RELEASED, new EventHandler<MouseEvent>() {
-	        @Override public void handle(MouseEvent mouseEvent) {
-	          if (downloadToggle.equals(usageGroupe.getSelectedToggle())) {
-	            mouseEvent.consume();
-	          }
-	        }
-	      });
-
-		startButton.setOnAction(new EventHandler<ActionEvent>() {
-			@Override
-			public void handle(ActionEvent arg0) {
-
-				// update primer data
-				if (primerToggle.isSelected()) {
-
-					// upload data from primer.txt
-					if (uploadToggle.isSelected()) {
-						try {
-							uploadPrimer();
-							GUIUtils.showInfo(AlertType.INFORMATION, "Success", "Primer upload was successful");
-						} catch (DatabaseConnectionException | SQLException e) {
-							// error while connecting to database
-
-							Alert alert = new Alert(AlertType.INFORMATION);
-							alert.setTitle("Failed");
-							alert.setHeaderText("Connection to database failed");
-							alert.showAndWait();
-
-							e.printStackTrace();
-						} catch (NumberFormatException | IOException e) {
-							// error while writing txt
-							e.printStackTrace();
-
-							Alert alert = new Alert(AlertType.INFORMATION);
-							alert.setTitle("Failed");
-							alert.setHeaderText("Failure while reading local file");
-							alert.showAndWait();
-						}
-					}
-
-					// download data to primer.txt
-					else if (downloadToggle.isSelected()) {
-						try {
-							downloadPrimer();
-							GUIUtils.showInfo(AlertType.INFORMATION, "Success", "Downloading primer data was successful");
-						} catch (DatabaseConnectionException | SQLException e) {
-							// error while connecting to database
-							e.printStackTrace();
-							GUIUtils.showInfo(AlertType.ERROR, "Failed", "Database connection error");
-						} catch (NumberFormatException | IOException e) {
-							// error while writing txt
-							e.printStackTrace();
-							GUIUtils.showInfo(AlertType.ERROR, "Failed", "Writing local file failed");
-						}
-					}
-				}
-
-				// update gene data
-				else if (geneToggle.isSelected()) {
-					// upload all data from genes.txt
-					if (uploadToggle.isSelected()) {
-						try {
-							uploadGenes();
-							GUIUtils.showInfo(AlertType.INFORMATION, "Success", "Gene upload was successful");
-						} catch (SQLException | DatabaseConnectionException e) {
-							// error while connecting to database
-							e.printStackTrace();
-							GUIUtils.showInfo(AlertType.ERROR, "Failed", "Error while connecting to database");
-						} catch (IOException e) {
-							// error while reading genes from txt
-							e.printStackTrace();
-							GUIUtils.showInfo(AlertType.ERROR, "Failed", "Error while reading local genes");
-						}
-					}
-					// download genes to genes.txt
-					else if (downloadToggle.isSelected()) {
-						try {
-							downloadGenes();
-							GUIUtils.showInfo(AlertType.INFORMATION, "Success", "Gene download was successful");
-						} catch (DatabaseConnectionException | SQLException e) {
-							// error while connecting to database
-							e.printStackTrace();
-							GUIUtils.showInfo(AlertType.ERROR, "Failed", "Connection to database failed");
-						} catch (IOException e) {
-							// error while writing txt
-							e.printStackTrace();
-							GUIUtils.showInfo(AlertType.ERROR, "Failed", "Error while writign local gene file");
-						}
-					}
-				}
-
-				// sequences
-				else if (resultToggle.isSelected()) {
-
-					// upload data from file
-					if (uploadToggle.isSelected()) {
-						try {
-							uploadResults();
-							GUIUtils.showInfo(AlertType.INFORMATION, "Success", "Results upload was successful");
-						} catch (IOException e) {
-							// error while reading file
-							e.printStackTrace();
-							GUIUtils.showInfo(AlertType.ERROR, "Failed", "Error while reading local file");
-						} catch (SQLException | DatabaseConnectionException e) {
-							// error while writing to database
-							e.printStackTrace();
-							GUIUtils.showInfo(AlertType.ERROR, "Failed", "Error while connecting to database");
-						}
-					}
-
-					// download data to folder
-					else if (downloadToggle.isSelected()) {
-						try {
-							downloadResults();
-							GUIUtils.showInfo(AlertType.CONFIRMATION, "Success", "Sequence download complete");
-						} catch (SQLException | DatabaseConnectionException e) {
-						  GUIUtils.showInfo(AlertType.ERROR, "Failed", "Failure while downloading sequences");
-							e.printStackTrace();
-						} catch (MissingPathException | IOException e) {
-						  GUIUtils.showInfo(AlertType.ERROR, "Failed", "Failure while writing local file");
-							e.printStackTrace();
-						}
-					}
-				}
-
-				else if (allToggle.isSelected()) {
-
-					// upload everything
-					if (uploadToggle.isSelected()) {
-						try {
-							uploadGenes();
-							uploadPrimer();
-							uploadResults();
-							GUIUtils.showInfo(AlertType.CONFIRMATION, "Success", "Upload complete");
-						} catch (IOException e) {
-							// error while reading file
-							e.printStackTrace();
-							GUIUtils.showInfo(AlertType.ERROR, "Failed", "Error while reading local file");
-						} catch (SQLException | DatabaseConnectionException e) {
-							// error while writing to database
-							e.printStackTrace();
-							GUIUtils.showInfo(AlertType.ERROR, "Failed", "Error while connecting to database");
-						}
-					}
-
-					// download everything
-					else if (downloadToggle.isSelected()) {
-						try {
-							downloadGenes();
-							downloadPrimer();
-							downloadResults();
-						} catch (SQLException | DatabaseConnectionException e) {
-						  GUIUtils.showInfo(AlertType.ERROR, "Failed", "Failure while downloading from database");
-							e.printStackTrace();
-						} catch (MissingPathException | IOException e) {
-						  GUIUtils.showInfo(AlertType.ERROR, "Failed", "Failure while writing local file");
-							e.printStackTrace();
-						}
-					}
-				}
-			}
-
-		});
-
-		destField.textProperty().addListener(new ChangeListener<String>() {
-			@Override
-			public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-				if (newValue.matches(ConfigHandler.SEPARATOR_CHAR + "")) {
-					destField.setText(oldValue);
-				} else {
-					destField.setText(newValue);
-				}
-			}
-		});
-
-		uploadToggle.setOnAction(new EventHandler<ActionEvent>() {
-
-			@Override
-			public void handle(ActionEvent arg0) {
-				if (!upload) {
-					upload = true;
-
-					researcherField.setDisable(true);
-					geneField.setDisable(true);
-					startDate.setDisable(true);
-					endDate.setDisable(true);
-				}
-
-			}
-		});
-
-		downloadToggle.setOnAction(new EventHandler<ActionEvent>() {
-
-			@Override
-			public void handle(ActionEvent arg0) {
-				if (upload) {
-					upload = false;
-
-					researcherField.setDisable(false);
-					geneField.setDisable(false);
-					startDate.setDisable(false);
-					endDate.setDisable(false);
-				}
-
-			}
-		});
-
-		destButton.setOnAction(new EventHandler<ActionEvent>() {
-
-			@Override
-			public void handle(ActionEvent arg0) {
-			  DirectoryChooser chooser = new DirectoryChooser();
-		      chooser.setTitle("Set path to the .ab1 files (folder)");
-		        File start = new File("user.home");
-		        chooser.setInitialDirectory(start);
-		        File selectedDirectory = null;
-		      try {
-		        selectedDirectory = chooser.showDialog(null);
-		      } catch (java.lang.IllegalArgumentException e) {
-		        chooser.setInitialDirectory(new File(System.getProperty("user.home")));
-		        selectedDirectory = chooser.showDialog(null);
-		      }
-		      destField.setText(selectedDirectory.getAbsolutePath());
-	            
-			}
-		});
-
-		settingsButton.setOnAction(new EventHandler<ActionEvent>() {
-
-			@Override
-			public void handle(ActionEvent arg0) {
-				// TODO Auto-generated method stub
-
-			}
-		});
-	}
-
-	@Override
-	public void stop() throws Exception {
-		MainWindow.settingsOpen = false;
-		System.out.println("Database Closed");
-		super.stop();
-	}
-
-	/*
-	 * @Override public void start(Stage stage) throws Exception { Parent root;
-	 * try { root =
-	 * FXMLLoader.load(getClass().getResource("/fxml/DatabaseWindow.fxml")); }
-	 * catch (IOException e) { e.printStackTrace(); return; } Scene scene = new
-	 * Scene(root); stage.setTitle("Database"); stage.setScene(scene);
-	 * stage.sizeToScene(); stage.show(); }
-	 */
-
-	private void downloadResults() throws SQLException, DatabaseConnectionException, MissingPathException, IOException {
-	  java.sql.Date datePickerStartDate;
-	    if (startDate.getValue() == null) {
-	      datePickerStartDate = null;
-		} else {
-		  datePickerStartDate = java.sql.Date.valueOf(startDate.getValue());
-		}
-	    java.sql.Date datePickerEndDate;
-        if (endDate.getValue() == null) {
-          datePickerEndDate = null;
-        } else {
-          datePickerEndDate = java.sql.Date.valueOf(endDate.getValue());
+  @Override
+  public void initialize(URL arg0, ResourceBundle arg1) {
+    // set calender to german standard
+    startDate.setConverter(new StringConverter<LocalDate>() {
+      @Override
+      public String toString(LocalDate date) {
+        if (date != null) {
+          try {
+            return DateTimeFormatter.ofPattern("dd/MM/yyyy").format(date);
+          } catch (DateTimeException dte) {}
+          System.out.println("Format Error");
         }
-	    
-		
-		String gene = geneField.getText();
-		String researcher = researcherField.getText();
-		String path = destField.getText();
-		ArrayList<AnalysedSequence> resList = DatabaseConnection.pullCustomSequences(datePickerStartDate,
-				datePickerEndDate, researcher, gene);
-		
-		FileSaver.setLocalPath(path);
-		FileSaver.setSeparateFiles(false);
-		FileSaver.setDestFileName("database_files");
-		for (AnalysedSequence res : resList) {
-			FileSaver.storeResultsLocally(res.getFileName(), res);
-		}
+        return "";
+      }
 
-	}
+      @Override
+      public LocalDate fromString(String string) {
+        if (string != null && !string.isEmpty()) {
+          try {
+            return LocalDate.parse(string, DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+          } catch (DateTimeParseException dtpe) {}
+          System.out.println("Parse Error");
+        }
+        return null;
+      }
+    });
+    
+    endDate.setConverter(new StringConverter<LocalDate>() {
+      @Override
+      public String toString(LocalDate date) {
+        if (date != null) {
+          try {
+            return DateTimeFormatter.ofPattern("dd/MM/yyyy").format(date);
+          } catch (DateTimeException dte) {}
+          System.out.println("Format Error");
+        }
+        return "";
+      }
 
-	private void uploadResults() throws IOException, SQLException, DatabaseConnectionException {
-		String path = destField.getText();
+      @Override
+      public LocalDate fromString(String string) {
+        if (string != null && !string.isEmpty()) {
+          try {
+            return LocalDate.parse(string, DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+          } catch (DateTimeParseException dtpe) {}
+          System.out.println("Parse Error");
+        }
+        return null;
+      }
+    });
 
-		LinkedList<AnalysedSequence> sequences = FileRetriever.convertFilesToSequences(path);
-		DatabaseConnection.pushAllData(sequences);
-		
+    try {
+      ConfigHandler.readConfig();
+      DatabaseConnection.setDatabaseConnection(ConfigHandler.getDbUser(), ConfigHandler.getDbPass(),
+          ConfigHandler.getDbPort(), ConfigHandler.getDbUrl());
+    } catch (UnknownConfigFieldException | ConfigNotFoundException | IOException e1) {
+      GUIUtils.showInfo(AlertType.ERROR, "Failed", "Failure while reading config file");
+      e1.printStackTrace();
+    } catch (DatabaseConnectionException | SQLException e) {
+      GUIUtils.showInfo(AlertType.ERROR, "Failed", "Failure while connecting to database");
+      e.printStackTrace();
+    }
 
-	}
+    typeGroupe = new ToggleGroup();
+    resultToggle.setToggleGroup(typeGroupe);
+    geneToggle.setToggleGroup(typeGroupe);
+    primerToggle.setToggleGroup(typeGroupe);
+    allToggle.setToggleGroup(typeGroupe);
 
-	private void downloadGenes() throws DatabaseConnectionException, SQLException, IOException {
+    resultToggle.addEventFilter(MouseEvent.MOUSE_RELEASED, new EventHandler<MouseEvent>() {
+      @Override
+      public void handle(MouseEvent mouseEvent) {
+        if (resultToggle.equals(typeGroupe.getSelectedToggle())) {
+          mouseEvent.consume();
+        }
+      }
+    });
 
-		DatabaseConnection.pullAndSaveGenes();
-		
+    geneToggle.addEventFilter(MouseEvent.MOUSE_RELEASED, new EventHandler<MouseEvent>() {
+      @Override
+      public void handle(MouseEvent mouseEvent) {
+        if (geneToggle.equals(typeGroupe.getSelectedToggle())) {
+          mouseEvent.consume();
+        }
+      }
+    });
 
-	}
+    primerToggle.addEventFilter(MouseEvent.MOUSE_RELEASED, new EventHandler<MouseEvent>() {
+      @Override
+      public void handle(MouseEvent mouseEvent) {
+        if (primerToggle.equals(typeGroupe.getSelectedToggle())) {
+          mouseEvent.consume();
+        }
+      }
+    });
 
-	private void uploadGenes() throws SQLException, DatabaseConnectionException, IOException {
-
-		DatabaseConnection.pushAllGenes();
-		
-
-	}
-
-	private void downloadPrimer() throws NumberFormatException, DatabaseConnectionException, SQLException, IOException {
-
-		DatabaseConnection.pullAndSavePrimer();
-		
-
-	}
-
-	private void uploadPrimer() throws NumberFormatException, DatabaseConnectionException, SQLException, IOException {
-
-		DatabaseConnection.pushAllPrimer();
-		
-
-	}
+    allToggle.addEventFilter(MouseEvent.MOUSE_RELEASED, new EventHandler<MouseEvent>() {
+      @Override
+      public void handle(MouseEvent mouseEvent) {
+        if (allToggle.equals(typeGroupe.getSelectedToggle())) {
+          mouseEvent.consume();
+        }
+      }
+    });
 
 
-	@Override
-	public void start(Stage primaryStage) throws Exception {
-		Parent root;
-		try {
-			root = FXMLLoader.load(getClass().getResource("/fxml/DatabaseWindow.fxml"));
-		} catch (IOException e) {
-			e.printStackTrace();
-			return;
-		}
-		scene = new Scene(root);
-		primaryStage.setTitle("GSAT - Database");
-		primaryStage.setScene(scene);
-		primaryStage.sizeToScene();
-		primaryStage.show();
-		// alow opening again when settingswindow was closed
-		primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
 
-			@Override
-			public void handle(WindowEvent arg0) {
-				MainWindow.settingsOpen = false;
-			}
-		});
-		/*
-		 * returnButton.setOnAction(new EventHandler<ActionEvent>() {
-		 * 
-		 * @Override public void handle(ActionEvent arg0) {
-		 * primaryStage.close(); } });
-		 */
-	}
+    usageGroupe = new ToggleGroup();
+    uploadToggle.setToggleGroup(usageGroupe);
+    downloadToggle.setToggleGroup(usageGroupe);
+
+    uploadToggle.addEventFilter(MouseEvent.MOUSE_RELEASED, new EventHandler<MouseEvent>() {
+      @Override
+      public void handle(MouseEvent mouseEvent) {
+        if (uploadToggle.equals(usageGroupe.getSelectedToggle())) {
+          mouseEvent.consume();
+        }
+      }
+    });
+
+    downloadToggle.addEventFilter(MouseEvent.MOUSE_RELEASED, new EventHandler<MouseEvent>() {
+      @Override
+      public void handle(MouseEvent mouseEvent) {
+        if (downloadToggle.equals(usageGroupe.getSelectedToggle())) {
+          mouseEvent.consume();
+        }
+      }
+    });
+
+    startButton.setOnAction(new EventHandler<ActionEvent>() {
+      @Override
+      public void handle(ActionEvent arg0) {
+
+        // update primer data
+        if (primerToggle.isSelected()) {
+
+          // upload data from primer.txt
+          if (uploadToggle.isSelected()) {
+            try {
+              uploadPrimer();
+              GUIUtils.showInfo(AlertType.INFORMATION, "Success", "Primer upload was successful");
+            } catch (DatabaseConnectionException | SQLException e) {
+              // error while connecting to database
+
+              Alert alert = new Alert(AlertType.INFORMATION);
+              alert.setTitle("Failed");
+              alert.setHeaderText("Connection to database failed");
+              alert.showAndWait();
+
+              e.printStackTrace();
+            } catch (NumberFormatException | IOException e) {
+              // error while writing txt
+              e.printStackTrace();
+
+              Alert alert = new Alert(AlertType.INFORMATION);
+              alert.setTitle("Failed");
+              alert.setHeaderText("Failure while reading local file");
+              alert.showAndWait();
+            }
+          }
+
+          // download data to primer.txt
+          else if (downloadToggle.isSelected()) {
+            try {
+              downloadPrimer();
+              GUIUtils.showInfo(AlertType.INFORMATION, "Success",
+                  "Downloading primer data was successful");
+            } catch (DatabaseConnectionException | SQLException e) {
+              // error while connecting to database
+              e.printStackTrace();
+              GUIUtils.showInfo(AlertType.ERROR, "Failed", "Database connection error");
+            } catch (NumberFormatException | IOException e) {
+              // error while writing txt
+              e.printStackTrace();
+              GUIUtils.showInfo(AlertType.ERROR, "Failed", "Writing local file failed");
+            }
+          }
+        }
+
+        // update gene data
+        else if (geneToggle.isSelected()) {
+          // upload all data from genes.txt
+          if (uploadToggle.isSelected()) {
+            try {
+              uploadGenes();
+              GUIUtils.showInfo(AlertType.INFORMATION, "Success", "Gene upload was successful");
+            } catch (SQLException | DatabaseConnectionException e) {
+              // error while connecting to database
+              e.printStackTrace();
+              GUIUtils.showInfo(AlertType.ERROR, "Failed", "Error while connecting to database");
+            } catch (IOException e) {
+              // error while reading genes from txt
+              e.printStackTrace();
+              GUIUtils.showInfo(AlertType.ERROR, "Failed", "Error while reading local genes");
+            }
+          }
+          // download genes to genes.txt
+          else if (downloadToggle.isSelected()) {
+            try {
+              downloadGenes();
+              GUIUtils.showInfo(AlertType.INFORMATION, "Success", "Gene download was successful");
+            } catch (DatabaseConnectionException | SQLException e) {
+              // error while connecting to database
+              e.printStackTrace();
+              GUIUtils.showInfo(AlertType.ERROR, "Failed", "Connection to database failed");
+            } catch (IOException e) {
+              // error while writing txt
+              e.printStackTrace();
+              GUIUtils.showInfo(AlertType.ERROR, "Failed", "Error while writign local gene file");
+            }
+          }
+        }
+
+        // sequences
+        else if (resultToggle.isSelected()) {
+
+          // upload data from file
+          if (uploadToggle.isSelected()) {
+            try {
+              uploadResults();
+              GUIUtils.showInfo(AlertType.INFORMATION, "Success", "Results upload was successful");
+            } catch (IOException e) {
+              // error while reading file
+              e.printStackTrace();
+              GUIUtils.showInfo(AlertType.ERROR, "Failed", "Error while reading local file");
+            } catch (SQLException | DatabaseConnectionException e) {
+              // error while writing to database
+              e.printStackTrace();
+              GUIUtils.showInfo(AlertType.ERROR, "Failed", "Error while connecting to database");
+            }
+          }
+
+          // download data to folder
+          else if (downloadToggle.isSelected()) {
+            try {
+              downloadResults();
+              GUIUtils.showInfo(AlertType.CONFIRMATION, "Success", "Sequence download complete");
+            } catch (SQLException | DatabaseConnectionException e) {
+              GUIUtils.showInfo(AlertType.ERROR, "Failed", "Failure while downloading sequences");
+              e.printStackTrace();
+            } catch (MissingPathException | IOException e) {
+              GUIUtils.showInfo(AlertType.ERROR, "Failed", "Failure while writing local file");
+              e.printStackTrace();
+            }
+          }
+        }
+
+        else if (allToggle.isSelected()) {
+
+          // upload everything
+          if (uploadToggle.isSelected()) {
+            try {
+              uploadGenes();
+              uploadPrimer();
+              uploadResults();
+              GUIUtils.showInfo(AlertType.CONFIRMATION, "Success", "Upload complete");
+            } catch (IOException e) {
+              // error while reading file
+              e.printStackTrace();
+              GUIUtils.showInfo(AlertType.ERROR, "Failed", "Error while reading local file");
+            } catch (SQLException | DatabaseConnectionException e) {
+              // error while writing to database
+              e.printStackTrace();
+              GUIUtils.showInfo(AlertType.ERROR, "Failed", "Error while connecting to database");
+            }
+          }
+
+          // download everything
+          else if (downloadToggle.isSelected()) {
+            try {
+              downloadGenes();
+              downloadPrimer();
+              downloadResults();
+            } catch (SQLException | DatabaseConnectionException e) {
+              GUIUtils.showInfo(AlertType.ERROR, "Failed",
+                  "Failure while downloading from database");
+              e.printStackTrace();
+            } catch (MissingPathException | IOException e) {
+              GUIUtils.showInfo(AlertType.ERROR, "Failed", "Failure while writing local file");
+              e.printStackTrace();
+            }
+          }
+        }
+      }
+
+    });
+
+    destField.textProperty().addListener(new ChangeListener<String>() {
+      @Override
+      public void changed(ObservableValue<? extends String> observable, String oldValue,
+          String newValue) {
+        if (newValue.matches(ConfigHandler.SEPARATOR_CHAR + "")) {
+          destField.setText(oldValue);
+        } else {
+          destField.setText(newValue);
+        }
+      }
+    });
+
+    uploadToggle.setOnAction(new EventHandler<ActionEvent>() {
+
+      @Override
+      public void handle(ActionEvent arg0) {
+        if (!upload) {
+          upload = true;
+
+          researcherField.setDisable(true);
+          geneField.setDisable(true);
+          startDate.setDisable(true);
+          endDate.setDisable(true);
+        }
+
+      }
+    });
+
+    downloadToggle.setOnAction(new EventHandler<ActionEvent>() {
+
+      @Override
+      public void handle(ActionEvent arg0) {
+        if (upload) {
+          upload = false;
+
+          researcherField.setDisable(false);
+          geneField.setDisable(false);
+          startDate.setDisable(false);
+          endDate.setDisable(false);
+        }
+
+      }
+    });
+
+    destButton.setOnAction(new EventHandler<ActionEvent>() {
+
+      @Override
+      public void handle(ActionEvent arg0) {
+        DirectoryChooser chooser = new DirectoryChooser();
+        chooser.setTitle("Set path to the .ab1 files (folder)");
+        File start = new File("user.home");
+        chooser.setInitialDirectory(start);
+        File selectedDirectory = null;
+        try {
+          selectedDirectory = chooser.showDialog(null);
+        } catch (java.lang.IllegalArgumentException e) {
+          chooser.setInitialDirectory(new File(System.getProperty("user.home")));
+          selectedDirectory = chooser.showDialog(null);
+        }
+        destField.setText(selectedDirectory.getAbsolutePath());
+
+      }
+    });
+
+    settingsButton.setOnAction(new EventHandler<ActionEvent>() {
+
+      @Override
+      public void handle(ActionEvent arg0) {
+        // TODO Auto-generated method stub
+
+      }
+    });
+  }
+
+  @Override
+  public void stop() throws Exception {
+    MainWindow.settingsOpen = false;
+    System.out.println("Database Closed");
+    super.stop();
+  }
+
+  /*
+   * @Override public void start(Stage stage) throws Exception { Parent root; try { root =
+   * FXMLLoader.load(getClass().getResource("/fxml/DatabaseWindow.fxml")); } catch (IOException e) {
+   * e.printStackTrace(); return; } Scene scene = new Scene(root); stage.setTitle("Database");
+   * stage.setScene(scene); stage.sizeToScene(); stage.show(); }
+   */
+
+  private void downloadResults()
+      throws SQLException, DatabaseConnectionException, MissingPathException, IOException {
+    java.sql.Date datePickerStartDate;
+    if (startDate.getValue() == null) {
+      datePickerStartDate = null;
+    } else {
+      datePickerStartDate = java.sql.Date.valueOf(startDate.getValue());
+    }
+    java.sql.Date datePickerEndDate;
+    if (endDate.getValue() == null) {
+      datePickerEndDate = null;
+    } else {
+      datePickerEndDate = java.sql.Date.valueOf(endDate.getValue());
+    }
+
+
+    String gene = geneField.getText();
+    String researcher = researcherField.getText();
+    String path = destField.getText();
+    ArrayList<AnalysedSequence> resList = DatabaseConnection
+        .pullCustomSequences(datePickerStartDate, datePickerEndDate, researcher, gene);
+
+    FileSaver.setLocalPath(path);
+    FileSaver.setSeparateFiles(false);
+    FileSaver.setDestFileName("database_files");
+    for (AnalysedSequence res : resList) {
+      FileSaver.storeResultsLocally(res.getFileName(), res);
+    }
+
+  }
+
+  private void uploadResults() throws IOException, SQLException, DatabaseConnectionException {
+    String path = destField.getText();
+
+    LinkedList<AnalysedSequence> sequences = FileRetriever.convertFilesToSequences(path);
+    DatabaseConnection.pushAllData(sequences);
+
+
+  }
+
+  private void downloadGenes() throws DatabaseConnectionException, SQLException, IOException {
+
+    DatabaseConnection.pullAndSaveGenes();
+
+
+  }
+
+  private void uploadGenes() throws SQLException, DatabaseConnectionException, IOException {
+
+    DatabaseConnection.pushAllGenes();
+
+
+  }
+
+  private void downloadPrimer()
+      throws NumberFormatException, DatabaseConnectionException, SQLException, IOException {
+
+    DatabaseConnection.pullAndSavePrimer();
+
+
+  }
+
+  private void uploadPrimer()
+      throws NumberFormatException, DatabaseConnectionException, SQLException, IOException {
+
+    DatabaseConnection.pushAllPrimer();
+
+
+  }
+
+
+  @Override
+  public void start(Stage primaryStage) throws Exception {
+    Parent root;
+    try {
+      root = FXMLLoader.load(getClass().getResource("/fxml/DatabaseWindow.fxml"));
+    } catch (IOException e) {
+      e.printStackTrace();
+      return;
+    }
+    scene = new Scene(root);
+    primaryStage.setTitle("GSAT - Database");
+    primaryStage.setScene(scene);
+    primaryStage.sizeToScene();
+    primaryStage.show();
+    // alow opening again when settingswindow was closed
+    primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+
+      @Override
+      public void handle(WindowEvent arg0) {
+        MainWindow.settingsOpen = false;
+      }
+    });
+    /*
+     * returnButton.setOnAction(new EventHandler<ActionEvent>() {
+     * 
+     * @Override public void handle(ActionEvent arg0) { primaryStage.close(); } });
+     */
+  }
 
 }
