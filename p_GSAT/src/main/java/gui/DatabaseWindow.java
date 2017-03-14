@@ -38,6 +38,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.text.Text;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
@@ -84,7 +85,7 @@ public class DatabaseWindow extends Application implements javafx.fxml.Initializ
 	private DatePicker endDate;
 
 	@FXML
-	private Label folderText;
+	private Text folderText;
 
 	private ToggleGroup typeGroupe;
 	private ToggleGroup usageGroupe;
