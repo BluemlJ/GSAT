@@ -6,6 +6,7 @@
 <?import javafx.scene.control.ToggleButton?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
@@ -13,15 +14,16 @@
   <children>
     <AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="269.0" prefWidth="615.0">
       <children>
-            <Text layoutX="84.0" layoutY="113.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Folder:">
+            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#00000021" height="38.0" layoutX="141.0" layoutY="14.0" stroke="#00000021" strokeType="INSIDE" width="200.0" />
+            <Text fx:id="folderText" layoutX="84.0" layoutY="113.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Folder:">
                <font>
                   <Font size="14.0" />
                </font>
             </Text>
             <TextField fx:id="destField" layoutX="142.0" layoutY="96.0" prefHeight="26.0" prefWidth="383.0" />
-            <Button fx:id="destButton" layoutX="537.0" layoutY="96.0" mnemonicParsing="false" text="..." />
-            <ToggleButton fx:id="uploadToggle" layoutX="143.0" layoutY="26.0" mnemonicParsing="false" prefWidth="90.0" selected="true" text="Upload" />
-            <ToggleButton fx:id="downloadToggle" layoutX="233.0" layoutY="26.0" mnemonicParsing="false" prefWidth="90.0" text="Download" />
+            <Button fx:id="destButton" layoutX="544.0" layoutY="97.0" mnemonicParsing="false" text="..." />
+            <ToggleButton fx:id="uploadToggle" layoutX="151.0" layoutY="20.0" mnemonicParsing="false" prefWidth="90.0" selected="true" text="Upload" />
+            <ToggleButton fx:id="downloadToggle" layoutX="241.0" layoutY="20.0" mnemonicParsing="false" prefWidth="90.0" text="Download" />
             <Text layoutX="51.0" layoutY="158.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Researcher:">
                <font>
                   <Font size="14.0" />
@@ -51,7 +53,7 @@
             <ToggleButton fx:id="geneToggle" layoutX="233.0" layoutY="60.0" mnemonicParsing="false" prefWidth="90.0" text="Genes" />
             <ToggleButton fx:id="primerToggle" layoutX="322.0" layoutY="60.0" mnemonicParsing="false" prefWidth="90.0" text="Primer" />
             <ToggleButton fx:id="allToggle" layoutX="412.0" layoutY="60.0" mnemonicParsing="false" prefWidth="90.0" selected="true" text="All" />
-            <Button fx:id="startButton" layoutX="481.0" layoutY="222.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="112.0" text="Start" />
+            <Button fx:id="startButton" layoutX="481.0" layoutY="221.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="112.0" text="Start" />
       </children>
     </AnchorPane>
   </children>
