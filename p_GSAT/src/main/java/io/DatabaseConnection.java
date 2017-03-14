@@ -173,9 +173,10 @@ public class DatabaseConnection {
 	 * @return List of genes currently stored in the database
 	 * @throws DatabaseConnectionException
 	 * @throws DatabaseErrorException
-	 * @throws SQLException 
+	 * @throws SQLException
 	 */
-	public static LinkedList<Gene> retrieveAllGenes() throws DatabaseConnectionException, DatabaseErrorException, SQLException {
+	public static LinkedList<Gene> retrieveAllGenes()
+			throws DatabaseConnectionException, DatabaseErrorException, SQLException {
 
 		LinkedList<Gene> allGenes = new LinkedList<Gene>();
 
@@ -199,7 +200,7 @@ public class DatabaseConnection {
 		} catch (SQLException e) {
 			throw new DatabaseErrorException();
 		}
-		
+
 		conn.close();
 		return allGenes;
 	}
@@ -214,7 +215,7 @@ public class DatabaseConnection {
 			conn = dataSource.getConnection();
 
 		} catch (SQLException e) {
-		  System.out.println(e.getMessage());
+			System.out.println(e.getMessage());
 			throw new DatabaseConnectionException();
 		}
 
@@ -247,7 +248,7 @@ public class DatabaseConnection {
 	 * database called gsat already exists it will be dropped.
 	 * 
 	 * @author Lovis Heindrich
-	 * @throws SQLException 
+	 * @throws SQLException
 	 */
 	public static void createDatabase() throws SQLException {
 		try {
@@ -282,13 +283,13 @@ public class DatabaseConnection {
 			stmt.executeUpdate("CREATE TABLE researchers (id INTEGER unsigned NOT NULL AUTO_INCREMENT, "
 					+ "name VARCHAR(100) NOT NULL, PRIMARY KEY(id))");
 			stmt.close();
-
+			conn.close();
 		} catch (DatabaseConnectionException e) {
 			e.printStackTrace();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		conn.close();
+
 	}
 
 	/**
@@ -298,7 +299,7 @@ public class DatabaseConnection {
 	 * 
 	 * @return true if database exists, false if it does not exist
 	 * @author Lovis Heindrich
-	 * @throws SQLException 
+	 * @throws SQLException
 	 */
 	public static boolean gsatExists() throws SQLException {
 		try {
@@ -355,7 +356,6 @@ public class DatabaseConnection {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		conn.close();
 		return false;
 	}
 
@@ -587,7 +587,7 @@ public class DatabaseConnection {
 		String name = gene.getName();
 		String sequence = gene.getSequence();
 		String organism = gene.getOrganism();
-		if(organism == null){
+		if (organism == null) {
 			organism = "none";
 		}
 		DateFormat df = ConfigHandler.getDateFormat();
