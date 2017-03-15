@@ -519,7 +519,21 @@ public class DatabaseWindow extends Application implements javafx.fxml.Initializ
 
 		FileSaver.setLocalPath(path);
 		FileSaver.setSeparateFiles(false);
-		FileSaver.setDestFileName("database_files");
+		FileSaver.reset();
+		File file = new File(path + File.separatorChar + "database_files.csv");
+		if (file.exists()) {
+		  int i = 0;
+		  String newName;
+		  do {
+		    i++;
+		    newName = path + File.separatorChar + "database_files (" + i + ").csv";
+		  } while(new File(newName).exists());
+		  
+		  FileSaver.setDestFileName("database_files (" + i + ")");
+		} else {
+		  FileSaver.setDestFileName("database_files");
+		}
+		
 		for (AnalysedSequence res : resList) {
 			FileSaver.storeResultsLocally(res.getFileName(), res);
 		}
