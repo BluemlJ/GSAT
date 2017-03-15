@@ -220,12 +220,8 @@ public class VectorTrimTests {
 		Gene gen = new Gene("hallo3wieGehts3dirheute3", 0, null, null);
 
 		StringAnalysis.trimVector(sequence, gen);
-
 		String test = sequence.getSequence();
 		String expected = "hallo3Gehts3dirheute3";
-
-		System.out.println(test);
-		System.out.println(expected);
 
 		assertTrue(expected.toUpperCase().equals(test));
 		assertEquals(0, sequence.getOffset());
@@ -299,18 +295,5 @@ public class VectorTrimTests {
 		assertEquals(0, sequence.getOffset());
 	}
 
-	/**
-	 * 
-	 * 
-	 * @author Kevin Otto
-	 */
-	@Test(timeout = 3000)
-	public void trimVectorTimingTest() {
-
-		AnalysedSequence randomSequence = getRandomSequence();
-		Gene randomgen = getRandomGene(randomSequence);
-		StringAnalysis.trimVector(randomSequence, randomgen);
-
-	}
 
 }
