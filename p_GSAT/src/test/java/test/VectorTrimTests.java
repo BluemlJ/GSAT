@@ -100,9 +100,9 @@ public class VectorTrimTests {
 	 * 
 	 * @author Kevin Otto
 	 */
-	@Test
+	@Test(timeout = 3000)
 	public void trimVectorBasicTest() {
-		String seq = "XXhallo3wieGehts3dirheute3";
+		String seq = "hallo3wieGehts3dirheute3";
 		int[] qualities = new int[seq.length()];
 
 		AnalysedSequence sequence = new AnalysedSequence(seq, "res", "N", qualities);
@@ -112,7 +112,6 @@ public class VectorTrimTests {
 		String test = sequence.getSequence();
 		String expected = "hallo3wieGehts3dirheute3";
 
-		System.out.println(test);
 		assertTrue(expected.toUpperCase().equals(test));
 		assertEquals(0, sequence.getOffset());
 	}
@@ -122,7 +121,7 @@ public class VectorTrimTests {
 	 * 
 	 * @author Kevin Otto
 	 */
-	@Test
+	@Test(timeout = 3000)
 	public void trimVectorBeginMissingTest() {
 		String seq = "wieGehts3dirheute3ABCABCENDendeaufgefueltumdasgenlangerzumachen";
 		int[] qualities = new int[seq.length()];
@@ -132,12 +131,7 @@ public class VectorTrimTests {
 
 		StringAnalysis.trimVector(sequence, gen);
 		String test = sequence.getSequence();
-
-		System.out.println();
-		System.out.println(test);
-		System.out.println("Offset = " + sequence.getOffset());
 		String expected = "wieGehts3dirheute3ABCABCENDendeaufgefueltumdasgenlangerzumachen";
-		System.out.println(expected);
 
 		assertTrue(expected.toUpperCase().equals(test));
 		assertEquals(9, sequence.getOffset());
@@ -148,7 +142,7 @@ public class VectorTrimTests {
 	 * 
 	 * @author Kevin Otto
 	 */
-	@Test
+	@Test(timeout = 3000)
 	public void trimVectorDamagedBeginAndEnd() {
 
 		String seq = "XYXBELhallo3wieGehts3dirheute3mirgehtesgutERD";
@@ -171,7 +165,7 @@ public class VectorTrimTests {
 	 * 
 	 * @author Kevin Otto
 	 */
-	@Test
+	@Test(timeout = 3000)
 	public void trimVectorDamagedBeginTest() {
 		String seq = "XXhaXlo3wieGehts3dirheute3heuheuheuheuheuheuheuheuheuheuheuheu";
 		int[] qualities = new int[seq.length()];
@@ -195,9 +189,9 @@ public class VectorTrimTests {
 	 * 
 	 * @author Kevin Otto
 	 */
-	@Test
+	@Test(timeout = 3000)
 	public void trimVectorDamagedEnd() {
-		String seq = "XXXhallo3wieGehts3dirheute3ERD";
+		String seq = "hallo3wieGehts3dirheute3ERD";
 		int[] qualities = new int[seq.length()];
 
 		AnalysedSequence sequence = new AnalysedSequence(seq, "res", "N", qualities);
@@ -217,7 +211,7 @@ public class VectorTrimTests {
 	 * 
 	 * @author Kevin Otto
 	 */
-	@Test
+	@Test(timeout = 3000)
 	public void trimVectorDeletionTest() {
 		String seq = "XXhallo3Gehts3dirheute3";
 		int[] qualities = new int[seq.length()];
@@ -242,7 +236,7 @@ public class VectorTrimTests {
 	 * 
 	 * @author Kevin Otto
 	 */
-	@Test
+	@Test(timeout = 3000)
 	public void trimVectorEndMissingTest() {
 
 		String seq = "XXhallow";
@@ -264,7 +258,7 @@ public class VectorTrimTests {
 	 * 
 	 * @author Kevin Otto
 	 */
-	@Test
+	@Test(timeout = 3000)
 	public void trimVectorInsertTest() {
 
 		String seq = "XXhallo3wiewieGehts3dirheute3";
@@ -287,7 +281,7 @@ public class VectorTrimTests {
 	 * 
 	 * @author Kevin Otto
 	 */
-	@Test
+	@Test(timeout = 3000)
 	public void trimVectorMutatedTest() {
 		String seq = "XXhalAo3wieGehts3dirheute3mirgehtesgut".toUpperCase();
 		int[] qualities = new int[seq.length()];
@@ -310,21 +304,13 @@ public class VectorTrimTests {
 	 * 
 	 * @author Kevin Otto
 	 */
-	@Test
+	@Test(timeout = 3000)
 	public void trimVectorTimingTest() {
 
 		AnalysedSequence randomSequence = getRandomSequence();
 		Gene randomgen = getRandomGene(randomSequence);
-
-		Double time = (double) System.nanoTime();
-
 		StringAnalysis.trimVector(randomSequence, randomgen);
-		time = ((System.nanoTime() - time)) / 1000000000.0;// calsulate time
-															// needet and
-															// convert to
-															// seconds
 
-		assertTrue(time < 5);
 	}
 
 }

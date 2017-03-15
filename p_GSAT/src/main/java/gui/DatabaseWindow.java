@@ -90,15 +90,15 @@ public class DatabaseWindow extends Application implements javafx.fxml.Initializ
 	@FXML
 	private TextFlow infoArea;
 
-	private ToggleGroup typeGroupe;
-	private ToggleGroup usageGroupe;
+	private ToggleGroup typeGroup;
+	private ToggleGroup usageGroup;
 
-	private final String uploadFail = "Upload to database failed.";
-	private final String downloadFail = "Download from database failed";
-	private final String writeFail = "Writing local file failed.";
-	private final String readFail = "Reading local file failed.";
-	private final String uploadSuccess = "Upload to database complete.";
-	private final String downloadSuccess = "Download from database complete.";
+	private static final String UPLOAD_FAIL = "Upload to database failed.";
+    private static final String DOWNLOAD_FAIL = "Download from database failed";
+    private static final String WRITE_FAIL = "Writing local file failed.";
+    private static final String READ_FAIL = "Reading local file failed.";
+    private static final String UPLOAD_SUCCESS = "Upload to database complete.";
+    private static final String DOWNLOAD_SUCCESS = "Download from database complete.";
 
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
@@ -167,18 +167,18 @@ public class DatabaseWindow extends Application implements javafx.fxml.Initializ
 			e.printStackTrace();
 		}
 
-		typeGroupe = new ToggleGroup();
-		resultToggle.setToggleGroup(typeGroupe);
-		geneToggle.setToggleGroup(typeGroupe);
-		primerToggle.setToggleGroup(typeGroupe);
-		allToggle.setToggleGroup(typeGroupe);
+		typeGroup = new ToggleGroup();
+		resultToggle.setToggleGroup(typeGroup);
+		geneToggle.setToggleGroup(typeGroup);
+		primerToggle.setToggleGroup(typeGroup);
+		allToggle.setToggleGroup(typeGroup);
 		
 		activateOnlyPath();
 
 		resultToggle.addEventFilter(MouseEvent.MOUSE_RELEASED, new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent mouseEvent) {
-				if (resultToggle.equals(typeGroupe.getSelectedToggle())) {
+				if (resultToggle.equals(typeGroup.getSelectedToggle())) {
 					mouseEvent.consume();
 				}
 				// upload only path value is needed
@@ -193,7 +193,7 @@ public class DatabaseWindow extends Application implements javafx.fxml.Initializ
 		geneToggle.addEventFilter(MouseEvent.MOUSE_RELEASED, new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent mouseEvent) {
-				if (geneToggle.equals(typeGroupe.getSelectedToggle())) {
+				if (geneToggle.equals(typeGroup.getSelectedToggle())) {
 					mouseEvent.consume();
 				}
 				// no additional user input needed
@@ -204,7 +204,7 @@ public class DatabaseWindow extends Application implements javafx.fxml.Initializ
 		primerToggle.addEventFilter(MouseEvent.MOUSE_RELEASED, new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent mouseEvent) {
-				if (primerToggle.equals(typeGroupe.getSelectedToggle())) {
+				if (primerToggle.equals(typeGroup.getSelectedToggle())) {
 					mouseEvent.consume();
 				}
 				// no additional user input needed
@@ -215,7 +215,7 @@ public class DatabaseWindow extends Application implements javafx.fxml.Initializ
 		allToggle.addEventFilter(MouseEvent.MOUSE_RELEASED, new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent mouseEvent) {
-				if (allToggle.equals(typeGroupe.getSelectedToggle())) {
+				if (allToggle.equals(typeGroup.getSelectedToggle())) {
 					mouseEvent.consume();
 				}
 				if (downloadToggle.isSelected()) {
@@ -226,14 +226,14 @@ public class DatabaseWindow extends Application implements javafx.fxml.Initializ
 			}
 		});
 
-		usageGroupe = new ToggleGroup();
-		uploadToggle.setToggleGroup(usageGroupe);
-		downloadToggle.setToggleGroup(usageGroupe);
+		usageGroup = new ToggleGroup();
+		uploadToggle.setToggleGroup(usageGroup);
+		downloadToggle.setToggleGroup(usageGroup);
 
 		uploadToggle.addEventFilter(MouseEvent.MOUSE_RELEASED, new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent mouseEvent) {
-				if (uploadToggle.equals(usageGroupe.getSelectedToggle())) {
+				if (uploadToggle.equals(usageGroup.getSelectedToggle())) {
 					mouseEvent.consume();
 				}
 				if (primerToggle.isSelected() || geneToggle.isSelected()) {
@@ -247,7 +247,7 @@ public class DatabaseWindow extends Application implements javafx.fxml.Initializ
 		downloadToggle.addEventFilter(MouseEvent.MOUSE_RELEASED, new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent mouseEvent) {
-				if (downloadToggle.equals(usageGroupe.getSelectedToggle())) {
+				if (downloadToggle.equals(usageGroup.getSelectedToggle())) {
 					mouseEvent.consume();
 				}
 				if (primerToggle.isSelected() || geneToggle.isSelected()) {
@@ -269,17 +269,17 @@ public class DatabaseWindow extends Application implements javafx.fxml.Initializ
 					if (uploadToggle.isSelected()) {
 						try {
 							uploadPrimer();
-							GUIUtils.showInfo(AlertType.CONFIRMATION, "Success", uploadSuccess);
+							GUIUtils.showInfo(AlertType.CONFIRMATION, "Success", UPLOAD_SUCCESS);
 						} catch (DatabaseConnectionException | SQLException e) {
 							// error while connecting to database
 
-							GUIUtils.showInfo(AlertType.ERROR, "Error", uploadFail);
+							GUIUtils.showInfo(AlertType.ERROR, "Error", UPLOAD_FAIL);
 
 							e.printStackTrace();
 						} catch (NumberFormatException | IOException e) {
 							// error while writing txt
 							e.printStackTrace();
-							GUIUtils.showInfo(AlertType.ERROR, "Error", readFail);
+							GUIUtils.showInfo(AlertType.ERROR, "Error", READ_FAIL);
 						}
 					}
 
@@ -287,15 +287,15 @@ public class DatabaseWindow extends Application implements javafx.fxml.Initializ
 					else if (downloadToggle.isSelected()) {
 						try {
 							downloadPrimer();
-							GUIUtils.showInfo(AlertType.CONFIRMATION, "Success", downloadSuccess);
+							GUIUtils.showInfo(AlertType.CONFIRMATION, "Success", DOWNLOAD_SUCCESS);
 						} catch (DatabaseConnectionException | SQLException e) {
 							// error while connecting to database
 							e.printStackTrace();
-							GUIUtils.showInfo(AlertType.ERROR, "Error", downloadFail);
+							GUIUtils.showInfo(AlertType.ERROR, "Error", DOWNLOAD_FAIL);
 						} catch (NumberFormatException | IOException e) {
 							// error while writing txt
 							e.printStackTrace();
-							GUIUtils.showInfo(AlertType.ERROR, "Error", writeFail);
+							GUIUtils.showInfo(AlertType.ERROR, "Error", WRITE_FAIL);
 						}
 					}
 				}
@@ -306,30 +306,30 @@ public class DatabaseWindow extends Application implements javafx.fxml.Initializ
 					if (uploadToggle.isSelected()) {
 						try {
 							uploadGenes();
-							GUIUtils.showInfo(AlertType.CONFIRMATION, "Success", uploadSuccess);
+							GUIUtils.showInfo(AlertType.CONFIRMATION, "Success", UPLOAD_SUCCESS);
 						} catch (SQLException | DatabaseConnectionException e) {
 							// error while connecting to database
 							e.printStackTrace();
-							GUIUtils.showInfo(AlertType.ERROR, "Error", uploadFail);
+							GUIUtils.showInfo(AlertType.ERROR, "Error", UPLOAD_FAIL);
 						} catch (IOException e) {
 							// error while reading genes from txt
 							e.printStackTrace();
-							GUIUtils.showInfo(AlertType.ERROR, "Error", readFail);
+							GUIUtils.showInfo(AlertType.ERROR, "Error", READ_FAIL);
 						}
 					}
 					// download genes to genes.txt
 					else if (downloadToggle.isSelected()) {
 						try {
 							downloadGenes();
-							GUIUtils.showInfo(AlertType.CONFIRMATION, "Success", downloadSuccess);
+							GUIUtils.showInfo(AlertType.CONFIRMATION, "Success", DOWNLOAD_SUCCESS);
 						} catch (DatabaseConnectionException | SQLException e) {
 							// error while connecting to database
 							e.printStackTrace();
-							GUIUtils.showInfo(AlertType.ERROR, "Error", downloadFail);
+							GUIUtils.showInfo(AlertType.ERROR, "Error", DOWNLOAD_FAIL);
 						} catch (IOException e) {
 							// error while writing txt
 							e.printStackTrace();
-							GUIUtils.showInfo(AlertType.ERROR, "Error", writeFail);
+							GUIUtils.showInfo(AlertType.ERROR, "Error", WRITE_FAIL);
 						}
 					}
 				}
@@ -341,15 +341,15 @@ public class DatabaseWindow extends Application implements javafx.fxml.Initializ
 					if (uploadToggle.isSelected()) {
 						try {
 							uploadResults();
-							GUIUtils.showInfo(AlertType.CONFIRMATION, "Success", uploadSuccess);
+							GUIUtils.showInfo(AlertType.CONFIRMATION, "Success", UPLOAD_SUCCESS);
 						} catch (IOException e) {
 							// error while reading file
 							e.printStackTrace();
-							GUIUtils.showInfo(AlertType.ERROR, "Error", readFail);
+							GUIUtils.showInfo(AlertType.ERROR, "Error", READ_FAIL);
 						} catch (SQLException | DatabaseConnectionException e) {
 							// error while writing to database
 							e.printStackTrace();
-							GUIUtils.showInfo(AlertType.ERROR, "Error", uploadFail);
+							GUIUtils.showInfo(AlertType.ERROR, "Error", UPLOAD_FAIL);
 						}
 					}
 
@@ -357,12 +357,12 @@ public class DatabaseWindow extends Application implements javafx.fxml.Initializ
 					else if (downloadToggle.isSelected()) {
 						try {
 							downloadResults();
-							GUIUtils.showInfo(AlertType.CONFIRMATION, "Success", downloadSuccess);
+							GUIUtils.showInfo(AlertType.CONFIRMATION, "Success", DOWNLOAD_SUCCESS);
 						} catch (SQLException | DatabaseConnectionException e) {
-							GUIUtils.showInfo(AlertType.ERROR, "Error", downloadFail);
+							GUIUtils.showInfo(AlertType.ERROR, "Error", DOWNLOAD_FAIL);
 							e.printStackTrace();
 						} catch (MissingPathException | IOException e) {
-							GUIUtils.showInfo(AlertType.ERROR, "Error", writeFail);
+							GUIUtils.showInfo(AlertType.ERROR, "Error", WRITE_FAIL);
 							e.printStackTrace();
 						}
 					}
@@ -376,15 +376,15 @@ public class DatabaseWindow extends Application implements javafx.fxml.Initializ
 							uploadGenes();
 							uploadPrimer();
 							uploadResults();
-							GUIUtils.showInfo(AlertType.CONFIRMATION, "Success", uploadSuccess);
+							GUIUtils.showInfo(AlertType.CONFIRMATION, "Success", UPLOAD_SUCCESS);
 						} catch (IOException e) {
 							// error while reading file
 							e.printStackTrace();
-							GUIUtils.showInfo(AlertType.ERROR, "Error", readFail);
+							GUIUtils.showInfo(AlertType.ERROR, "Error", READ_FAIL);
 						} catch (SQLException | DatabaseConnectionException e) {
 							// error while writing to database
 							e.printStackTrace();
-							GUIUtils.showInfo(AlertType.ERROR, "Error", uploadFail);
+							GUIUtils.showInfo(AlertType.ERROR, "Error", UPLOAD_FAIL);
 						}
 					}
 
@@ -394,12 +394,12 @@ public class DatabaseWindow extends Application implements javafx.fxml.Initializ
 							downloadGenes();
 							downloadPrimer();
 							downloadResults();
-							GUIUtils.showInfo(AlertType.CONFIRMATION, "Success", downloadSuccess);
+							GUIUtils.showInfo(AlertType.CONFIRMATION, "Success", DOWNLOAD_SUCCESS);
 						} catch (SQLException | DatabaseConnectionException e) {
-							GUIUtils.showInfo(AlertType.ERROR, "Error", downloadFail);
+							GUIUtils.showInfo(AlertType.ERROR, "Error", DOWNLOAD_FAIL);
 							e.printStackTrace();
 						} catch (MissingPathException | IOException e) {
-							GUIUtils.showInfo(AlertType.ERROR, "Error", writeFail);
+							GUIUtils.showInfo(AlertType.ERROR, "Error", WRITE_FAIL);
 							e.printStackTrace();
 						}
 					}

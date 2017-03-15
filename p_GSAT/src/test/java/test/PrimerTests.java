@@ -38,11 +38,6 @@ public class PrimerTests {
 
   }
 
-	@Test
-	public void testPrimerRead() throws IOException {
-		PrimerHandler.initPrimer();
-		PrimerHandler.readPrimer();
-	}
 
 	@Test
 	public void testPrimerWrite() throws IOException {

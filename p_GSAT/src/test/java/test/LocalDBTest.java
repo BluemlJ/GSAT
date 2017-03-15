@@ -36,6 +36,7 @@ import io.PrimerHandler;
  * @author lovisheindrich
  *
  */
+@Ignore
 public class LocalDBTest {
 	static String user = "root";
 	static String pass = "rootpassword";

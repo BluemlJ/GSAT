@@ -2,6 +2,7 @@ package test;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import java.io.File;
 import java.io.IOException;
@@ -25,6 +26,7 @@ import io.SequenceReader;
 public class ReadingTests {
 
 	String correctSequence;
+	String correctSequence2;
 	AnalysedSequence testSequence;
 
 	/**
@@ -38,7 +40,8 @@ public class ReadingTests {
 	public void initializeSequence() throws FileReadingException, IOException, MissingPathException {
 		// sequence for ab1/Tk_Gs40Hits/Forward/95EI60.ab1 obtained with Chromas
 		// (http://technelysium.com.au/wp/chromas/)
-		correctSequence = "ACCACGTAATTCCCTCTAAAAATAATTTTGTTTACTTTAAGAAGGAGATATACATATGGCACATCACCACCACCATCACTCCGCGGCCCGATTAATGGCGCATTCAATCGAGGAGTTGGCGATTACGACGATTCGAACGCTGTCGATTGACGCGATCGAAAAAGCGAAATCCGGGCATCCGGGCATGCCGATGGGCGCGGCGCCAATGGCGTACACGCTTTGGACGAAATTTATGAATCATAACCCGGCGAATCCAAACTGGTTCAACCGCGACCGTTTTGTCTTGTCAGCCGGGCACGGGTCGATGTTATTGTACAGCTTGCTTCATTTAAGCGGCTACGACGTATCGATGGATGATTTGAAACAATTCCGTCAATGGGGAAGCAAAACGCCGGGCCATCCGGAATACGGCCATACGCCGGGCGTGGAAGCGACGACCGGCCCACTCGGCCAAGGGATTGCGATGGCGGTCGGCATGGCGATGGCGGAACGGCATTTGGCCGCTACATACAACCGCGACGGGTTTGAGATTATCAATCATTATACGTACGCCATTTGCGGCGATGGCGATTTGATGGAAGGAGTGGCGAGCGAAGCTGCGTCACTCGCCGGCCACTTGAAGCTCGGTCGACTGATCGTCCTGTATGACTCGAACGACATTTCGCTGGACGGGGAGCTCAACCTGTCGTTCTCGGAAAACGTCGCCCAACGTTTCCAAGCATACGGCTGGCAATATTTGCGCGTTGAGGACGGCAACAATATTGAAGAAATCGCCAAAGCGCTGGAGGAGGCGCGGGCGGACCTCAGCCGGCCGACGCTCATTGAAGTAAAAACGACGATTGGCTACGGCGCGCCAAATAAAGCGGGCACGTCCGGCGTCCACGGTGCTCCGCTCGGCGCCCAAGAGGCGAAGCTGACGAAAGAGGCGTATCGTTGGACATTTGCGGAAGATTTTTACGTGCCAGAAGAAGTGTACGCCCACTTTCCGTGCGACGGTGCAAGAAGCCGGGAGCGAAAAAAAGAGGCGAAATGGAATGGAGCAGCTCCGCCGCCTATGGAACAGGGCCCATCCCGGAACTGGGCCGCCCAATTTGAAGCCAAGCGATCCGAAGGCAAACTTCCCAGATGGGATGGGAAAGCTTTCTTTTGCCGGGTATACCGAAAGCAGGGCAAAAAGCTTTGGGCAACCCCGCTTCATCCGTCCCGGGGGAAAGTGGATTCAACGCCCAATCGGCCAAAAGCGGGTACCCGCAAATTGGTTTTGGGCGGGTTCCGGCGGGAACTTTGGGCAAAAGCTCCGGAAATAAAAAACGGCCTCCATCCAAAGGCGGGGGGGGCAAACTTTTCTTTCCCCGGGGGCAACCCTACCAAAAAGGGGGGCCCAACCCTTTTTTGGGTTTTGGCGCGGGGGGCCCCAAAATTTTTTCCCCCTTGGGGGGGGGCGCGGGCCCTCTAAAAACCGGGGTTAGGGGGCGGTTTTCC";
+		correctSequence = "ttagcgatattccctctataaatattttgtttactttaagaaggagatatacatatggcacatcaccaccaccatcactccgcggcccgattaatggcgcattcaatcgaggagttggcgattacgacgattcgaacgctgtcgattgacgcgatcgaaaaagcgaaatccgggcatccgggcatgccgatgggcgcggcgccaatggcgtacacgctttggacgaaatttatgaatcataacccggcgaatccaaactggttcaaccgcgaccgttttgtcttgtcagccgggcacgggtcgatgttattgtacagcttgcttcatttaagcggctacgacgtatcgatggatgatttgaaacaattccgtcaatggggaagcaaaacgccgggccatccggaatacggccatacgccgggcgtggaagcgacgaccggcccactcggccaagggattgcgatggcggtcggcatggcgatggcggaacggcatttggccgctacatacaaccgcgacgggtttgagattatcaatcattatacgtacgccatttgcggcgatggcgatttgatggaaggagtggcgagcgaagctgcgtcactcgccggccacttgaagctcggtcgactgatcgtcctgtatgactcgaacgacatttcgctggacggggagctcaacctgtcgttctcggaaaacgtcgcccaacgtttccaagcatacggctggcaatatttgcgcgttgaggacggcaacaatattgaagaaatcgccaaagcgctggaggaggcgcgggcggacctcagccggccgacgctcattgaagtaaaaacgacgattggctacggcgcgccaaataaagcgggcacgtccggcgtccacggtgctccgctcggcgcccaagaggcgaagctgacgaaagaggcgtatcgttggacatttgcggaagatttttacgtgccagaagaagtgtacgcccacttccgtgcgacggtgcaagaagccgggagcgaaaaaaagaggcgaaatggaaatgagcagctcggccgcctatgaacagggcccatcccggaactgggccgcccaaattgaagcgaaccgatcgaaaggcaaacttcccgaatggatgggaaagcttcttttgccgggttaccgaagcaagggaaaagcttgggcaaccccgctcatccgtccgggggaaagggatcaaccgccatccgccaaaagcgggacccggcaattggtttgggccggttccggcgggaatttcccaaaggctccgaattaaaacggtccctccaaaaggcggggggggaaacttctttccccgggg";
+		correctSequence2 = "accacgtaattccctctaaaaataattttgtttactttaagaaggagatatacatatggcacatcaccaccaccatcactccgcggcccgattaatggcgcattcaatcgaggagttggcgattacgacgattcgaacgctgtcgattgacgcgatcgaaaaagcgaaatccgggcatccgggcatgccgatgggcgcggcgccaatggcgtacacgctttggacgaaatttatgaatcataacccggcgaatccaaactggttcaaccgcgaccgttttgtcttgtcagccgggcacgggtcgatgttattgtacagcttgcttcatttaagcggctacgacgtatcgatggatgatttgaaacaattccgtcaatggggaagcaaaacgccgggccatccggaatacggccatacgccgggcgtggaagcgacgaccggcccactcggccaagggattgcgatggcggtcggcatggcgatggcggaacggcatttggccgctacatacaaccgcgacgggtttgagattatcaatcattatacgtacgccatttgcggcgatggcgatttgatggaaggagtggcgagcgaagctgcgtcactcgccggccacttgaagctcggtcgactgatcgtcctgtatgactcgaacgacatttcgctggacggggagctcaacctgtcgttctcggaaaacgtcgcccaacgtttccaagcatacggctggcaatatttgcgcgttgaggacggcaacaatattgaagaaatcgccaaagcgctggaggaggcgcgggcggacctcagccggccgacgctcattgaagtaaaaacgacgattggctacggcgcgccaaataaagcgggcacgtccggcgtccacggtgctccgctcggcgcccaagaggcgaagctgacgaaagaggcgtatcgttggacatttgcggaagatttttacgtgccagaagaagtgtacgcccactttccgtgcgacggtgcaagaagccgggagcgaaaaaaagaggcgaaatggaatggagcagctccgccgcctatggaacagggcccatcccggaactgggccgcccaatttgaagccaagcgatccgaaggcaaacttcccagatgggatgggaaagctttcttttgccgggtataccgaaagcagggcaaaaagctttgggcaaccccgcttcatccgtcccgggggaaagtggattcaacgcccaatcggccaaaagcgggtacccgcaaattggttttgggcgggttccggcgggaactttgggcaaaagctccggaaataaaaaacggcctccatccaaaggcggggggggcaaacttttctttccccgggggcaaccctaccaaaaaggggggcccaacccttttttgggttttggcgcggggggccccaaaattttttcccccttgggggggggcgcgggccctctaaaaaccggggttagggggcggttttcc";
 		// set SequenceReader file path
 		SequenceReader.configurePath(new File("resources/ab1/Tk_Gs40Hits/Forward/95EI60.ab1").getAbsolutePath());
 		testSequence = SequenceReader.convertFileIntoSequence();
@@ -52,18 +55,22 @@ public class ReadingTests {
 		Pair<LinkedList<File>, LinkedList<File>> pair = SequenceReader.listFiles();
 		boolean working = true;
 		for (File f : pair.first) {
-			if (!f.getName().substring(f.getName().length() - 3).equals("ab1")) {
+			if (!(f.getName().endsWith("ab1") || f.getName().endsWith("abi"))) {
 				working = false;
-				System.err.println(f.getName());
 			}
 		}
+		
+		for (File f : pair.second) {
+          if (f.getName().endsWith("ab1") || f.getName().endsWith("abi")) {
+            working = false;
+        }
+    }
+		
 		assertTrue(working);
 	}
 
 	@Test
 	public void listFilesEmptyFolderTest() {
-		// File parsedFile = new
-		// File(getClass().getResource("/test-results/test/binary").getFile());
 		File f = new File("/p_GSAT/build/test-results/test/empty");
 		SequenceReader.configurePath(f.getAbsolutePath());
 		Pair<LinkedList<File>, LinkedList<File>> pair = SequenceReader.listFiles();
@@ -72,11 +79,11 @@ public class ReadingTests {
 
 	@Test
 	public void listFilesHalfABITest() {
-		File parsedFile = new File(new File("resources/ab1/Tk_Gs40Hits/Forward").getAbsolutePath());
+		File parsedFile = new File(new File("resources/ab1/Tk_Gs40Hits/Reverse").getAbsolutePath());
 
 		SequenceReader.configurePath(parsedFile.getAbsolutePath());
 		Pair<LinkedList<File>, LinkedList<File>> pair = SequenceReader.listFiles();
-		assertTrue(pair.first.size() == 10 && pair.second.size() == 1);
+		assertTrue(pair.first.size() == 10 && pair.second.size() == 4);
 	}
 
 	/**
@@ -90,7 +97,7 @@ public class ReadingTests {
 	@Test
 	public void readFromFileTest() throws FileReadingException, IOException, MissingPathException {
 
-		File parsedFile = new File(new File("resources/ab1/Tk_Gs40Hits/Forward/95EI60.ab1").getAbsolutePath());
+		File parsedFile = new File(new File("resources/ab1/Tk_Gs40Hits/Forward/95EI61.ab1").getAbsolutePath());
 		AnalysedSequence parsedSequence = SequenceReader.convertFileIntoSequence(parsedFile);
 		assertEquals(parsedSequence.getSequence().toLowerCase(), correctSequence.toLowerCase());
 	}
@@ -106,7 +113,7 @@ public class ReadingTests {
 	@Test
 	public void sequenceReadTest() throws FileReadingException, IOException {
 
-		assertEquals(testSequence.getSequence().toLowerCase(), correctSequence.toLowerCase());
+		assertEquals(testSequence.getSequence().toLowerCase(), correctSequence2.toLowerCase());
 	}
 
 	/**
@@ -121,6 +128,7 @@ public class ReadingTests {
 		SequenceReader.configurePath(new File("resources/ab1/corrupt.ab1").getAbsolutePath());
 		try {
 			SequenceReader.convertFileIntoSequence();
+			fail();
 		} catch (IOException e) {
 			assertEquals(e.getMessage(), "unknown chromatogram format (not ab1, scf or ztr)");
 		}

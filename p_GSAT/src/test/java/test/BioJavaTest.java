@@ -13,6 +13,7 @@ import org.biojava.bio.symbol.IllegalSymbolException;
 import org.jcvi.jillion.trace.chromat.Chromatogram;
 import org.jcvi.jillion.trace.chromat.ChromatogramFactory;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 /**
@@ -22,11 +23,13 @@ import org.junit.Test;
  * @author Lovis Heindrich
  *
  */
+@Ignore
 public class BioJavaTest {
 	private File myFile;
 	private ABITrace myTrace;
 	private Chromatogram croma;
 
+	@Ignore
 	@Before
 	public void initializeABIData() throws IOException {
 		myFile = new File("resources/ab1/Tk_Gs40Hits/Forward/95EI60.ab1");
@@ -44,6 +47,7 @@ public class BioJavaTest {
 	 * @throws BioError
 	 * @throws IllegalAlphabetException
 	 */
+	@Ignore
 	@Test
 	public void testABIRead() throws IOException, IllegalSymbolException, IllegalAlphabetException, BioError {
 		// scale has to be 2
@@ -73,6 +77,8 @@ public class BioJavaTest {
 	 * 
 	 * @author bluemlj
 	 */
+	
+	@Ignore
 	@Test
 	public void testABIReadJillionBioJava() throws IOException {
 
