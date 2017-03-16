@@ -355,7 +355,7 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
 						} else {
 							geneBoxItem = geneBox.getSelectionModel().getSelectedItem().split(" ")[0];
 						}
-
+						startButton.setDisable(true);
 						LinkedList<Text> resultingLines = GUIUtils.runAnalysis(sequences, geneBoxItem, destfileNameText,
 								bar);
 						Platform.runLater(new Runnable() {
@@ -363,6 +363,7 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
 							@Override
 							public void run() {
 								infoArea.getChildren().addAll(resultingLines);
+								startButton.setDisable(false);
 							}
 
 						});

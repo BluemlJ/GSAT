@@ -143,6 +143,7 @@ public class GUIUtils {
     // foreach ab1 file
     int counter = 0;
     int allFiles = sequences.size();
+    FileSaver.reset();
     for (AnalysedSequence analysedSequence : sequences) {
       // get Sequence
       if (geneId.equals("-1")) {
