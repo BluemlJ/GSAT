@@ -196,7 +196,7 @@ public class LocalDBTest {
       throws SQLException, DatabaseConnectionException, NumberFormatException, IOException {
     // TODO manual test with 2 computers
     DatabaseConnection.setDatabaseConnection(user, pass, port, server);
-    conn = DatabaseConnection.establishConnection();
+    DatabaseConnection.establishConnection();
     DatabaseConnection.createDatabase();
     PrimerHandler.readPrimer();
 
@@ -208,7 +208,7 @@ public class LocalDBTest {
   @Test
   public void testPullSequencesPerResearcher() throws SQLException, DatabaseConnectionException {
     DatabaseConnection.setDatabaseConnection(user, pass, port, server);
-    conn = DatabaseConnection.establishConnection();
+    DatabaseConnection.establishConnection();
     DatabaseConnection.createDatabase();
     LinkedList<String> mutations1 = new LinkedList<String>(Arrays.asList("t5a", "t6a"));
     LinkedList<String> mutations2 = new LinkedList<String>(Arrays.asList("t1a", "t2a"));
@@ -260,7 +260,7 @@ public class LocalDBTest {
     // ConfigHandler.getDbPass(), ConfigHandler.getDbPort(),
     // ConfigHandler.getDbUrl());
 
-    conn = DatabaseConnection.establishConnection();
+    DatabaseConnection.establishConnection();
     DatabaseConnection.createDatabase();
 
     // push test sequence
@@ -302,7 +302,7 @@ public class LocalDBTest {
   @Test
   public void testPullGenes() throws DatabaseConnectionException, SQLException {
     DatabaseConnection.setDatabaseConnection(user, pass, port, server);
-    Connection conn = DatabaseConnection.establishConnection();
+    DatabaseConnection.establishConnection();
     DatabaseConnection.createDatabase();
 
     Gene gene1 =
@@ -310,8 +310,8 @@ public class LocalDBTest {
     Gene gene2 =
         new Gene("gggtttaaa", 0, "fsa2", "Lovis Heindrich", "fsa", "comment2", new Date(100));
 
-    DatabaseConnection.pushGene(conn, gene1, 0);
-    DatabaseConnection.pushGene(conn, gene2, 0);
+    DatabaseConnection.pushGene(gene1, 0);
+    DatabaseConnection.pushGene(gene2, 0);
 
     ArrayList<Gene> genes = DatabaseConnection.pullAllGenes();
 
@@ -329,11 +329,11 @@ public class LocalDBTest {
   @Test
   public void testPullResearcher() throws SQLException, DatabaseConnectionException {
     DatabaseConnection.setDatabaseConnection(user, pass, port, server);
-    Connection conn = DatabaseConnection.establishConnection();
+    DatabaseConnection.establishConnection();
     DatabaseConnection.createDatabase();
 
-    DatabaseConnection.pushResearcher(conn, "Lovis Heindrich");
-    DatabaseConnection.pushResearcher(conn, "Kevin Otto");
+    DatabaseConnection.pushResearcher("Lovis Heindrich");
+    DatabaseConnection.pushResearcher("Kevin Otto");
 
     ArrayList<String> researchers = DatabaseConnection.pullResearcher();
 
@@ -346,13 +346,13 @@ public class LocalDBTest {
   @Test
   public void testPullMutations() throws DatabaseConnectionException, SQLException {
     DatabaseConnection.setDatabaseConnection(user, pass, port, server);
-    Connection conn = DatabaseConnection.establishConnection();
+    DatabaseConnection.establishConnection();
     DatabaseConnection.createDatabase();
 
     LinkedList<String> mutations1 = new LinkedList<String>(Arrays.asList("t5a", "t6a"));
     LinkedList<String> mutations2 = new LinkedList<String>(Arrays.asList("t1a", "t2a"));
-    DatabaseConnection.pushMutations(conn, mutations1, 0);
-    DatabaseConnection.pushMutations(conn, mutations2, 1);
+    DatabaseConnection.pushMutations(mutations1, 0);
+    DatabaseConnection.pushMutations(mutations2, 1);
 
     LinkedList<String> mutations = DatabaseConnection.pullMutationsPerSequence(0);
 
@@ -366,13 +366,13 @@ public class LocalDBTest {
   public void testPullAllPrimer()
       throws DatabaseConnectionException, SQLException, NumberFormatException, IOException {
     DatabaseConnection.setDatabaseConnection(user, pass, port, server);
-    Connection conn = DatabaseConnection.establishConnection();
+    DatabaseConnection.establishConnection();
     DatabaseConnection.createDatabase();
 
     Primer p1 = new Primer("AATAATAAT", "Lovis Heindrich", 50, "A01", "primer1", "comment1");
     Primer p2 = new Primer("TTATTATTA", "Kevin Otto", 100, "B01", "primer2", "comment2");
-    DatabaseConnection.pushPrimer(conn, p1, 0);
-    DatabaseConnection.pushPrimer(conn, p2, 0);
+    DatabaseConnection.pushPrimer(p1, 0);
+    DatabaseConnection.pushPrimer(p2, 0);
 
     ArrayList<Primer> primerList = DatabaseConnection.pullAllPrimer();
     assertEquals(primerList.size(), 2);
@@ -404,21 +404,21 @@ public class LocalDBTest {
   @Test
   public void testPushPrimer() throws DatabaseConnectionException, SQLException {
     DatabaseConnection.setDatabaseConnection(user, pass, port, server);
-    Connection conn = DatabaseConnection.establishConnection();
+    DatabaseConnection.establishConnection();
     DatabaseConnection.createDatabase();
     Primer p1 = new Primer("AATAATAAT", "Lovis Heindrich", 50, "A01", "primer1", "comment1");
     Primer p2 = new Primer("TTATTATTA", "Kevin Otto", 100, "B01", "primer2", "comment2");
-    DatabaseConnection.pushPrimer(conn, p1, 0);
-    DatabaseConnection.pushPrimer(conn, p2, 0);
-    DatabaseConnection.pushPrimer(conn, p1, 0);
-    DatabaseConnection.pushPrimer(conn, p2, 0);
+    DatabaseConnection.pushPrimer(p1, 0);
+    DatabaseConnection.pushPrimer(p2, 0);
+    DatabaseConnection.pushPrimer(p1, 0);
+    DatabaseConnection.pushPrimer(p2, 0);
   }
 
   @Ignore
   @Test
   public void testPushAllGenes() throws DatabaseConnectionException, SQLException, IOException {
     DatabaseConnection.setDatabaseConnection(user, pass, port, server);
-    conn = DatabaseConnection.establishConnection();
+    DatabaseConnection.establishConnection();
     DatabaseConnection.pushAllGenes();
   }
 
@@ -426,7 +426,7 @@ public class LocalDBTest {
   @Test
   public void testDatabasePushPipeline() throws SQLException, DatabaseConnectionException {
     DatabaseConnection.setDatabaseConnection(user, pass, port, server);
-    conn = DatabaseConnection.establishConnection();
+    DatabaseConnection.establishConnection();
     DatabaseConnection.createDatabase();
     LinkedList<String> mutations1 = new LinkedList<String>(Arrays.asList("t5a", "t6a"));
     LinkedList<String> mutations2 = new LinkedList<String>(Arrays.asList("t1a", "t2a"));
@@ -458,27 +458,27 @@ public class LocalDBTest {
   @Test
   public void testPushMutation() throws DatabaseConnectionException, SQLException {
     DatabaseConnection.setDatabaseConnection(user, pass, port, server);
-    Connection conn = DatabaseConnection.establishConnection();
+    DatabaseConnection.establishConnection();
 
     LinkedList<String> mutations1 = new LinkedList<String>(Arrays.asList("t5a", "t6a"));
     LinkedList<String> mutations2 = new LinkedList<String>(Arrays.asList("t1a", "t2a"));
-    DatabaseConnection.pushMutations(conn, mutations1, 0);
-    DatabaseConnection.pushMutations(conn, mutations1, 0);
-    DatabaseConnection.pushMutations(conn, mutations2, 0);
-    DatabaseConnection.pushMutations(conn, mutations1, 1);
+    DatabaseConnection.pushMutations(mutations1, 0);
+    DatabaseConnection.pushMutations(mutations1, 0);
+    DatabaseConnection.pushMutations(mutations2, 0);
+    DatabaseConnection.pushMutations(mutations1, 1);
   }
 
   @Ignore
   @Test
   public void testPushSequence() throws DatabaseConnectionException, SQLException {
     DatabaseConnection.setDatabaseConnection(user, pass, port, server);
-    Connection conn = DatabaseConnection.establishConnection();
+    DatabaseConnection.establishConnection();
     AnalysedSequence sequence1 = new AnalysedSequence("aataat", "Lovis", "Sequence1", null);
     AnalysedSequence sequence2 = new AnalysedSequence("ttatta", "Kevin", "Sequence2", null);
-    int seq1 = DatabaseConnection.pushSequence(conn, sequence1, 0, 0);
-    int seq2 = DatabaseConnection.pushSequence(conn, sequence2, 0, 0);
-    int seq3 = DatabaseConnection.pushSequence(conn, sequence1, 0, 0);
-    int seq4 = DatabaseConnection.pushSequence(conn, sequence2, 0, 0);
+    int seq1 = DatabaseConnection.pushSequence(sequence1, 0, 0);
+    int seq2 = DatabaseConnection.pushSequence(sequence2, 0, 0);
+    int seq3 = DatabaseConnection.pushSequence(sequence1, 0, 0);
+    int seq4 = DatabaseConnection.pushSequence(sequence2, 0, 0);
 
     assertEquals(seq1, seq3);
     assertEquals(seq2, seq4);
@@ -488,11 +488,11 @@ public class LocalDBTest {
   @Test
   public void testPushResearcher() throws SQLException, DatabaseConnectionException {
     DatabaseConnection.setDatabaseConnection(user, pass, port, server);
-    Connection conn = DatabaseConnection.establishConnection();
-    int lh1 = DatabaseConnection.pushResearcher(conn, "Lovis Heindrich");
-    int ko1 = DatabaseConnection.pushResearcher(conn, "Kevin Otto");
-    int lh2 = DatabaseConnection.pushResearcher(conn, "Lovis Heindrich");
-    int ko2 = DatabaseConnection.pushResearcher(conn, "Kevin Otto");
+    DatabaseConnection.establishConnection();
+    int lh1 = DatabaseConnection.pushResearcher("Lovis Heindrich");
+    int ko1 = DatabaseConnection.pushResearcher("Kevin Otto");
+    int lh2 = DatabaseConnection.pushResearcher("Lovis Heindrich");
+    int ko2 = DatabaseConnection.pushResearcher("Kevin Otto");
     assertEquals(lh1, lh2);
     assertEquals(ko1, ko2);
 
@@ -502,13 +502,13 @@ public class LocalDBTest {
   @Test
   public void testPushGene() throws DatabaseConnectionException, SQLException {
     DatabaseConnection.setDatabaseConnection(user, pass, port, server);
-    Connection conn = DatabaseConnection.establishConnection();
+    DatabaseConnection.establishConnection();
     Gene gene1 = new Gene("aaatttggg", 0, "fsa1", "Lovis Heindrich", "fsa", "comment1");
     Gene gene2 = new Gene("gggtttaaa", 0, "fsa2", "Lovis Heindrich", "fsa", "comment2");
-    int g11 = DatabaseConnection.pushGene(conn, gene1, 0);
-    int g21 = DatabaseConnection.pushGene(conn, gene2, 0);
-    int g12 = DatabaseConnection.pushGene(conn, gene1, 0);
-    int g22 = DatabaseConnection.pushGene(conn, gene2, 0);
+    int g11 = DatabaseConnection.pushGene(gene1, 0);
+    int g21 = DatabaseConnection.pushGene(gene2, 0);
+    int g12 = DatabaseConnection.pushGene(gene1, 0);
+    int g22 = DatabaseConnection.pushGene(gene2, 0);
     assertEquals(g11, g12);
     assertEquals(g21, g22);
     System.out.println(g11 + " " + g12 + " " + g21 + " " + g22);

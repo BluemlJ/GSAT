@@ -387,6 +387,14 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
           public void handle(WorkerStateEvent t) {
             bar.setProgress(0);
             changesOnResults = true;
+            sequences = new LinkedList<AnalysedSequence>();
+            for (File file : files.first) {
+              try {
+                sequences.add(SequenceReader.convertFileIntoSequence(file));
+              } catch (FileReadingException | IOException | MissingPathException e) {
+                e.printStackTrace();
+              }
+            }
           }
         });
         new Thread(mainTask).start();
@@ -507,7 +515,7 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
         try {
           chromaWindow.start(new Stage());
 
-          chromaWindow.setSequence(sequences);
+          chromaWindow.setSequences(sequences);
         } catch (Exception e) {
           // TODO: handle exception
         }

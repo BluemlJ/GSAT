@@ -43,7 +43,7 @@ public class DatabaseConnection {
   static String user = "root";
 
   /**
-   * Mysql password
+   * Mysql passwort
    */
   static String pass = "rootpassword";
 
@@ -71,98 +71,7 @@ public class DatabaseConnection {
     dataSource.setPort(port);
     dataSource.setServerName(server);
   }
-
-  /**
-   * Puts all entries from a given list into this class's waiting queue.
-   * 
-   * @param entries A list of entries to be stored
-   */
-  // public static void addAllIntoQueue(LinkedList<DatabaseEntry> entries) {
-  // for (DatabaseEntry entry : entries) {
-  // addIntoQueue(entry);
-  // }
-  // }
-
-  /**
-   * Puts a single entry in the waiting queue for being written into the database.
-   * 
-   * @param entry New Data point to be written into the database
-   * 
-   * @author Ben Kohr
-   */
-  // public static void addIntoQueue(DatabaseEntry entry) {
-  // queue.add(entry);
-  // }
-
-  /**
-   * Empties the current waiting queue.
-   * 
-   * @author Ben Kohr
-   */
-  // public static void flushQueue() {
-  // queue.clear();
-  // }
-
-  /**
-   * Inserts all currently stored entries into the specified database.
-   * 
-   * @see #insertIntoDatabase()
-   * 
-   * @author Ben Kohr
-   */
-  // public static void insertAllIntoDatabase()
-  // throws DatabaseConnectionException, DatabaseErrorException {
-  // // important: just ONE analyzed file in the queue!
-  // conn = establishConnection();
-  //
-  // DatabaseEntry entry = queue.getFirst();
-  // PreparedStatement pstmt;
-  // try {
-  // // main table
-  // pstmt = conn.prepareStatement(
-  // "INSERT INTO analysis (id, filename, geneid, sequence, addingdate,
-  // researcher"
-  // + "comments, promotor, manuallychecked) VALUES "
-  // + "(?, '?', '?', '?', '?', '?', '?', '?', '?', '?', ?)");
-  //
-  // pstmt.setLong(1, entry.getID());
-  // pstmt.setString(2, entry.getFileName());
-  // pstmt.setInt(3, entry.getGeneID());
-  // pstmt.setString(4, entry.getSequence());
-  // pstmt.setString(5, entry.getAddingDate());
-  // pstmt.setString(6, entry.getResearcher());
-  // pstmt.setString(7, entry.getComments().replace(';', ','));
-  // pstmt.setString(8, entry.getLeftVector());
-  // pstmt.setString(9, entry.getRightVector());
-  // pstmt.setString(10, entry.getPromotor());
-  // pstmt.setString(11, "" + entry.isManuallyChecked());
-  //
-  // pstmt.execute();
-  // queue.removeFirst();
-  // pstmt.close();
-  // } catch (SQLException e) {
-  // throw new DatabaseErrorException();
-  // }
-  //
-  // try {
-  // pstmt = conn.prepareStatement(
-  // "INSERT INTO mutations (id, mutation, mtype) " + "VALUES (?, '?', '?')");
-  // pstmt.execute();
-  // pstmt.close();
-  // } catch (SQLException e1) {
-  // throw new DatabaseErrorException();
-  // }
-  //
-  // while (!queue.isEmpty()) {
-  // insertIntoDatabase(pstmt);
-  // }
-  //
-  // try {
-  // conn.close();
-  // } catch (SQLException e) {
-  // throw new DatabaseConnectionException();
-  // }
-  // }
+  
 
   /**
    * Retrieves all genes from the database and returns them.
@@ -177,7 +86,7 @@ public class DatabaseConnection {
 
     LinkedList<Gene> allGenes = new LinkedList<Gene>();
 
-    conn = establishConnection();
+    establishConnection();
 
     try {
       PreparedStatement pstmt =
@@ -203,42 +112,17 @@ public class DatabaseConnection {
     return allGenes;
   }
 
-  public static Connection establishConnection() throws DatabaseConnectionException {
-
-    Connection conn;
+  public static void establishConnection() throws DatabaseConnectionException {
 
     try {
-      // conn = DriverManager.getConnection(CONNECTION_STRING, "testname",
-      // "password");
       conn = dataSource.getConnection();
-
     } catch (SQLException e) {
       System.out.println(e.getMessage());
       throw new DatabaseConnectionException();
     }
 
-    return conn;
-
   }
-
-  /**
-   * Inserts a single data point into the specified database.
-   */
-  // private static void insertIntoDatabase(PreparedStatement pstmt)
-  // throws DatabaseConnectionException, DatabaseErrorException {
-  // try {
-  //
-  // // mutation table
-  // DatabaseEntry entry = queue.getFirst();
-  // pstmt.setLong(1, entry.getID());
-  // pstmt.setString(2, entry.getMutation());
-  // pstmt.setString(3, "" + entry.getMutationType());
-  //
-  // } catch (SQLException e) {
-  // throw new DatabaseErrorException();
-  // }
-  //
-  // }
+  
 
   /**
    * Creates gsat database structure consisting of four tables: genes, sequences, mutations,
@@ -251,7 +135,7 @@ public class DatabaseConnection {
   public static void createDatabase() throws SQLException {
     try {
 
-      conn = establishConnection();
+      establishConnection();
       Statement stmt = conn.createStatement();
 
       // check if old gsat database exists and drop it
@@ -300,7 +184,7 @@ public class DatabaseConnection {
    */
   public static boolean gsatExists() throws SQLException {
     try {
-      conn = establishConnection();
+      establishConnection();
       Statement stmt = conn.createStatement();
 
       // check if table 'genes' exists
@@ -381,7 +265,7 @@ public class DatabaseConnection {
       createDatabase();
     }
 
-    conn = establishConnection();
+    establishConnection();
     Statement stmt = conn.createStatement();
     stmt.execute("USE gsat");
     stmt.close();
@@ -389,9 +273,6 @@ public class DatabaseConnection {
 
   }
 
-  // public static void resetDatabaseConnection() {
-  // flushQueue();
-  // }
 
   /**
    * Pushes all data from a recent analysis: All analysed Sequences, the reference genes, mutations
@@ -405,7 +286,7 @@ public class DatabaseConnection {
       throws SQLException, DatabaseConnectionException {
 
     // get a connection
-    conn = establishConnection();
+    establishConnection();
 
     Statement stmt = conn.createStatement();
     stmt.execute("USE gsat");
@@ -416,16 +297,16 @@ public class DatabaseConnection {
 
       // push researcher and get id
       String researcher = sequence.getResearcher();
-      int researcherId = pushResearcher(conn, researcher);
+      int researcherId = pushResearcher(researcher);
 
       // push gene with the researcher id and get gene id
-      int geneId = pushGene(conn, sequence.getReferencedGene(), researcherId);
+      int geneId = pushGene(sequence.getReferencedGene(), researcherId);
 
       // push sequence and get id
-      int sequenceId = pushSequence(conn, sequence, researcherId, geneId);
+      int sequenceId = pushSequence(sequence, researcherId, geneId);
 
       // push mutations
-      pushMutations(conn, sequence.getMutations(), sequenceId);
+      pushMutations(sequence.getMutations(), sequenceId);
 
     }
 
@@ -441,16 +322,16 @@ public class DatabaseConnection {
    * @author Lovis Heindrich
    * @throws SQLException
    */
-  public static void pushMutations(Connection conn2, LinkedList<String> mutations, int sequenceId)
+  public static void pushMutations(LinkedList<String> mutations, int sequenceId)
       throws SQLException {
-    Statement stmt = conn2.createStatement();
+    Statement stmt = conn.createStatement();
     stmt.execute("USE gsat");
     stmt.close();
 
     for (String mutation : mutations) {
 
       // check if mutation exists
-      PreparedStatement pstmt = conn2.prepareStatement(
+      PreparedStatement pstmt = conn.prepareStatement(
           "SELECT id, mutation, sequence FROM mutations WHERE mutation = ? AND sequence = ?");
       pstmt.setString(1, mutation);
       pstmt.setInt(2, sequenceId);
@@ -458,7 +339,7 @@ public class DatabaseConnection {
 
       // push
       if (!res.next()) {
-        pstmt = conn2.prepareStatement("INSERT INTO mutations (mutation, sequence) VALUES (?, ?)");
+        pstmt = conn.prepareStatement("INSERT INTO mutations (mutation, sequence) VALUES (?, ?)");
         pstmt.setString(1, mutation);
         pstmt.setInt(2, sequenceId);
         pstmt.executeUpdate();
@@ -478,10 +359,10 @@ public class DatabaseConnection {
    * @author Lovis Heindrich
    * @throws SQLException
    */
-  public static int pushSequence(Connection conn2, AnalysedSequence sequence, int researcherId,
+  public static int pushSequence(AnalysedSequence sequence, int researcherId,
       int geneId) throws SQLException {
     // select database
-    Statement stmt = conn2.createStatement();
+    Statement stmt = conn.createStatement();
     stmt.execute("USE gsat");
     stmt.close();
 
@@ -506,14 +387,14 @@ public class DatabaseConnection {
       checked = "n";
     }
     String primer = sequence.getPrimer();
-    int avgquality = (int) sequence.getAvgQuality();
+    int avgquality = sequence.getAvgQuality();
 
     int trimPercent = (int) sequence.getTrimPercentage();
     int histag = sequence.getHisTagPosition();
 
     // check if sequence exists
     PreparedStatement pstmt =
-        conn2.prepareStatement("SELECT id, name, sequence, gene FROM sequences "
+        conn.prepareStatement("SELECT id, name, sequence, gene FROM sequences "
             + "WHERE name = ? AND sequence = ? AND gene = ?");
     pstmt.setString(1, name);
     pstmt.setString(2, seq);
@@ -525,7 +406,7 @@ public class DatabaseConnection {
     }
 
     // push otherwise
-    pstmt = conn2.prepareStatement(
+    pstmt = conn.prepareStatement(
         "INSERT INTO sequences (name, sequence, date, researcher, comment, manualcheck, "
             + "gene, primer, trimpercent, histag, avgquality) " + "VALUES (?,?,?,?,?,?,?,?,?,?,?)");
     pstmt.setString(1, name);
@@ -542,7 +423,7 @@ public class DatabaseConnection {
     pstmt.executeUpdate();
 
     // get index of new sequence
-    pstmt = conn2.prepareStatement("SELECT id, name, sequence, gene FROM sequences "
+    pstmt = conn.prepareStatement("SELECT id, name, sequence, gene FROM sequences "
         + "WHERE name = ? AND sequence = ? AND gene = ?");
     pstmt.setString(1, name);
     pstmt.setString(2, seq);
@@ -566,8 +447,8 @@ public class DatabaseConnection {
    * @author Lovis Heindrich
    * @throws SQLException
    */
-  public static int pushGene(Connection conn2, Gene gene, int researcherId) throws SQLException {
-    Statement stmt = conn2.createStatement();
+  public static int pushGene(Gene gene, int researcherId) throws SQLException {
+    Statement stmt = conn.createStatement();
     stmt.execute("USE gsat");
     stmt.close();
 
@@ -591,7 +472,7 @@ public class DatabaseConnection {
 
     // check if gene exists
     PreparedStatement pstmt =
-        conn2.prepareStatement("SELECT id, name, sequence, organism FROM genes "
+        conn.prepareStatement("SELECT id, name, sequence, organism FROM genes "
             + "WHERE name = ? AND sequence = ? AND organism = ?");
     pstmt.setString(1, name);
     pstmt.setString(2, sequence);
@@ -603,7 +484,7 @@ public class DatabaseConnection {
     }
 
     // push otherwise
-    pstmt = conn2
+    pstmt = conn
         .prepareStatement("INSERT INTO genes (name, sequence, date, researcher, comment, organism) "
             + "VALUES (?, ?, ?, ?, ?, ?)");
     pstmt.setString(1, name);
@@ -615,7 +496,7 @@ public class DatabaseConnection {
     pstmt.executeUpdate();
 
     // get index of new gene
-    pstmt = conn2.prepareStatement("SELECT id, name, sequence, organism FROM genes "
+    pstmt = conn.prepareStatement("SELECT id, name, sequence, organism FROM genes "
         + "WHERE name = ? AND sequence = ? AND organism = ?");
     pstmt.setString(1, name);
     pstmt.setString(2, sequence);
@@ -638,15 +519,15 @@ public class DatabaseConnection {
    * @author Lovis Heindrich
    * @throws SQLException
    */
-  public static int pushResearcher(Connection conn2, String researcher) throws SQLException {
+  public static int pushResearcher(String researcher) throws SQLException {
     // TODO figure out how to do this one time only
-    Statement stmt = conn2.createStatement();
+    Statement stmt = conn.createStatement();
     stmt.execute("USE gsat");
     stmt.close();
 
     // check if researcher exists
     PreparedStatement pstmt =
-        conn2.prepareStatement("SELECT id, name FROM researchers WHERE name = ?");
+        conn.prepareStatement("SELECT id, name FROM researchers WHERE name = ?");
     pstmt.setString(1, researcher);
     ResultSet res = pstmt.executeQuery();
     if (res.next()) {
@@ -655,12 +536,12 @@ public class DatabaseConnection {
     }
 
     // push otherwise
-    pstmt = conn2.prepareStatement("INSERT INTO researchers (name) VALUES (?)");
+    pstmt = conn.prepareStatement("INSERT INTO researchers (name) VALUES (?)");
     pstmt.setString(1, researcher);
     pstmt.executeUpdate();
 
     // get index of new researcher
-    pstmt = conn2.prepareStatement("SELECT id, name FROM researchers WHERE name = ?");
+    pstmt = conn.prepareStatement("SELECT id, name FROM researchers WHERE name = ?");
     pstmt.setString(1, researcher);
     res = pstmt.executeQuery();
     if (res.next()) {
@@ -688,7 +569,7 @@ public class DatabaseConnection {
     ArrayList<Gene> genes = GeneHandler.getGeneList();
 
     // get a connection
-    conn = establishConnection();
+    establishConnection();
 
     // select gsat database
     Statement stmt = conn.createStatement();
@@ -697,10 +578,10 @@ public class DatabaseConnection {
 
     for (Gene gene : genes) {
       // search for researcher
-      int researcherId = pushResearcher(conn, gene.getResearcher());
+      int researcherId = pushResearcher(gene.getResearcher());
 
       // push the gene
-      pushGene(conn, gene, researcherId);
+      pushGene(gene, researcherId);
 
     }
 
@@ -715,7 +596,7 @@ public class DatabaseConnection {
     ArrayList<Primer> primerList = PrimerHandler.getPrimerList();
 
     // get a connection
-    conn = establishConnection();
+    establishConnection();
 
     // select gsat database
     Statement stmt = conn.createStatement();
@@ -724,17 +605,17 @@ public class DatabaseConnection {
 
     for (Primer primer : primerList) {
       // search for researcher
-      int researcherId = pushResearcher(conn, primer.getResearcher());
+      int researcherId = pushResearcher(primer.getResearcher());
       System.out.println("push researcher: " + primer.getResearcher());
       // push the gene
-      pushPrimer(conn, primer, researcherId);
+      pushPrimer(primer, researcherId);
     }
     conn.close();
   }
 
-  public static void pushPrimer(Connection conn2, Primer primer, int researcherId)
+  public static void pushPrimer(Primer primer, int researcherId)
       throws SQLException {
-    Statement stmt = conn2.createStatement();
+    Statement stmt = conn.createStatement();
     stmt.execute("USE gsat");
     stmt.close();
 
@@ -755,7 +636,7 @@ public class DatabaseConnection {
 
     // check if gene exists
     PreparedStatement pstmt =
-        conn2.prepareStatement("SELECT id, name, sequence, primerid FROM primer "
+        conn.prepareStatement("SELECT id, name, sequence, primerid FROM primer "
             + "WHERE name = ? AND sequence = ? AND primerid = ?");
     pstmt.setString(1, name);
     pstmt.setString(2, sequence);
@@ -765,7 +646,7 @@ public class DatabaseConnection {
 
     // push if primer does not exist yet
     if (!res.next()) {
-      pstmt = conn2.prepareStatement(
+      pstmt = conn.prepareStatement(
           "INSERT INTO primer (name, sequence, date, researcher, primerid, meltingpoint, comment) "
               + "VALUES (?, ?, ?, ?, ?, ?, ?)");
       pstmt.setString(1, name);
@@ -790,7 +671,7 @@ public class DatabaseConnection {
     ArrayList<Primer> primerList = new ArrayList<Primer>();
 
     // get a connection
-    conn = establishConnection();
+    establishConnection();
 
     Statement stmt = conn.createStatement();
     stmt.execute("USE gsat");
@@ -823,7 +704,7 @@ public class DatabaseConnection {
     LinkedList<String> mutations = new LinkedList<String>();
 
     // get a connection
-    conn = establishConnection();
+    establishConnection();
 
     Statement stmt = conn.createStatement();
     stmt.execute("USE gsat");
@@ -857,7 +738,7 @@ public class DatabaseConnection {
       throws DatabaseConnectionException, SQLException {
     ArrayList<String> researchers = new ArrayList<String>();
 
-    conn = establishConnection();
+    establishConnection();
 
     Statement stmt = conn.createStatement();
     stmt.execute("USE gsat");
@@ -878,7 +759,7 @@ public class DatabaseConnection {
   private static String pullResearcherPerIndex(int researcherId)
       throws SQLException, DatabaseConnectionException {
     String researcher = null;
-    conn = establishConnection();
+    establishConnection();
 
     Statement stmt = conn.createStatement();
     stmt.execute("USE gsat");
@@ -901,7 +782,7 @@ public class DatabaseConnection {
   public static ArrayList<Gene> pullAllGenes() throws DatabaseConnectionException, SQLException {
     ArrayList<Gene> genes = new ArrayList<Gene>();
 
-    conn = establishConnection();
+    establishConnection();
 
     Statement stmt = conn.createStatement();
     stmt.execute("USE gsat");
@@ -930,7 +811,7 @@ public class DatabaseConnection {
 
   public static Gene pullGenePerIndex(int index) throws SQLException, DatabaseConnectionException {
     Gene gene = null;
-    conn = establishConnection();
+    establishConnection();
 
     Statement stmt = conn.createStatement();
     stmt.execute("USE gsat");
@@ -965,7 +846,7 @@ public class DatabaseConnection {
       throws DatabaseConnectionException, SQLException {
     ArrayList<AnalysedSequence> sequences = new ArrayList<AnalysedSequence>();
 
-    conn = establishConnection();
+    establishConnection();
 
     Statement stmt = conn.createStatement();
     stmt.execute("USE gsat");
@@ -1010,12 +891,12 @@ public class DatabaseConnection {
       throws DatabaseConnectionException, SQLException {
     ArrayList<AnalysedSequence> sequences = new ArrayList<AnalysedSequence>();
 
-    conn = establishConnection();
+    establishConnection();
 
     Statement stmt = conn.createStatement();
     stmt.execute("USE gsat");
 
-    int researcherId = getResearcherId(conn, researcherName);
+    int researcherId = getResearcherId(researcherName);
 
     // get the sequences
     PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM sequences WHERE researcher = ?");
@@ -1066,15 +947,15 @@ public class DatabaseConnection {
    * @throws SQLException
    * @author Lovis Heindrich
    */
-  private static int getResearcherId(Connection conn2, String researcher) throws SQLException {
+  private static int getResearcherId(String researcher) throws SQLException {
     // get a connection
-    Statement stmt = conn2.createStatement();
+    Statement stmt = conn.createStatement();
     stmt.execute("USE gsat");
     stmt.close();
 
     // db query for given researcher
     PreparedStatement pstmt =
-        conn2.prepareStatement("SELECT id, name FROM researchers WHERE name = ?");
+        conn.prepareStatement("SELECT id, name FROM researchers WHERE name = ?");
     pstmt.setString(1, researcher);
     ResultSet res = pstmt.executeQuery();
     if (res.next()) {
@@ -1157,7 +1038,7 @@ public class DatabaseConnection {
       throws DatabaseConnectionException, SQLException {
     ArrayList<AnalysedSequence> sequences = new ArrayList<AnalysedSequence>();
 
-    conn = establishConnection();
+    establishConnection();
 
     Statement stmt = conn.createStatement();
     stmt.execute("USE gsat");
@@ -1219,7 +1100,7 @@ public class DatabaseConnection {
   public static ArrayList<AnalysedSequence> pullCustomSequences(Date startDate, Date endDate,
       String researcher, String geneName) throws SQLException, DatabaseConnectionException {
     ArrayList<AnalysedSequence> sequences = new ArrayList<AnalysedSequence>();
-    conn = establishConnection();
+    establishConnection();
 
     Statement stmt = conn.createStatement();
     stmt.execute("USE gsat");
@@ -1293,14 +1174,14 @@ public class DatabaseConnection {
 
     // check if researcher is set
     if (researcherActive) {
-      int researcherId = getResearcherId(conn, researcher);
+      int researcherId = getResearcherId(researcher);
       pstmt.setInt(index, researcherId);
       index++;
     }
 
     // check if gene is set
     if (geneActive) {
-      int geneId = getGeneId(conn, geneName);
+      int geneId = getGeneId(geneName);
       pstmt.setInt(index, geneId);
       index++;
     }
@@ -1348,14 +1229,14 @@ public class DatabaseConnection {
    * @return database index of the gene
    * @throws SQLException
    */
-  private static int getGeneId(Connection conn2, String geneName) throws SQLException {
+  private static int getGeneId(String geneName) throws SQLException {
     // get a connection
-    Statement stmt = conn2.createStatement();
+    Statement stmt = conn.createStatement();
     stmt.execute("USE gsat");
     stmt.close();
 
     // db query for given gene
-    PreparedStatement pstmt = conn2.prepareStatement("SELECT id, name FROM genes WHERE name = ?");
+    PreparedStatement pstmt = conn.prepareStatement("SELECT id, name FROM genes WHERE name = ?");
     pstmt.setString(1, geneName);
     ResultSet res = pstmt.executeQuery();
     if (res.next()) {
