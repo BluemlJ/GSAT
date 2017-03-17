@@ -92,7 +92,8 @@ public class GUIUtils {
       return getRedText("Reading Primer.txt was unsuccessful\n");
     }
 
-    geneList.setItems(FXCollections.observableArrayList(PrimerHandler.getPrimerListWithIdAsString()));
+    geneList
+        .setItems(FXCollections.observableArrayList(PrimerHandler.getPrimerListWithIdAsString()));
     return new Text("Reading Primer.txt was successful");
   }
 
@@ -469,8 +470,8 @@ public class GUIUtils {
     alert.setHeaderText(explanation);
     alert.showAndWait();
   }
-  
-  
+
+
   public static String convertStreamToString(InputStream is) {
     Scanner s = new Scanner(is);
     String ret;

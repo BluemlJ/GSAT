@@ -17,7 +17,9 @@ public class PrimerTests {
 
   @Test
   public void testAddDeletePrimer() throws IOException {
-    new File(System.getProperty("user.home") + File.separator + "gsat" + File.separator + "primer.txt").createNewFile();
+    new File(
+        System.getProperty("user.home") + File.separator + "gsat" + File.separator + "primer.txt")
+            .createNewFile();
     PrimerHandler.clearTxtFile();
     Primer p1 = new Primer("AATAATAAT", "Lovis Heindrich", 50, "A01", "primer1", "comment1");
     Primer p2 = new Primer("TTATTATTA", "Kevin Otto", 100, "B01", "primer2", "comment1");
@@ -41,20 +43,20 @@ public class PrimerTests {
   }
 
 
-	@Test
-	public void testPrimerWrite() throws IOException {
-		PrimerHandler.initPrimer();
-		Primer p1 = new Primer("AATAATAAT", "Lovis Heindrich", 50, "A01", "primer1", "comment1");
-		Primer p2 = new Primer("TTATTATTA", "Kevin Otto", 100, "B01", "primer2", "comment1");
-		ArrayList<Primer> primerList = new ArrayList<Primer>();
-		primerList.add(p1);
-		primerList.add(p2);
-		PrimerHandler.setPrimerList(primerList);
-		PrimerHandler.writePrimer();
+  @Test
+  public void testPrimerWrite() throws IOException {
+    PrimerHandler.initPrimer();
+    Primer p1 = new Primer("AATAATAAT", "Lovis Heindrich", 50, "A01", "primer1", "comment1");
+    Primer p2 = new Primer("TTATTATTA", "Kevin Otto", 100, "B01", "primer2", "comment1");
+    ArrayList<Primer> primerList = new ArrayList<Primer>();
+    primerList.add(p1);
+    primerList.add(p2);
+    PrimerHandler.setPrimerList(primerList);
+    PrimerHandler.writePrimer();
 
-		PrimerHandler.setPrimerList(null);
-		PrimerHandler.readPrimer();
-		assertEquals(PrimerHandler.getPrimerList().get(0).getName(), "primer1");
-		assertEquals(PrimerHandler.getPrimerList().get(1).getName(), "primer2");
-	}
+    PrimerHandler.setPrimerList(null);
+    PrimerHandler.readPrimer();
+    assertEquals(PrimerHandler.getPrimerList().get(0).getName(), "primer1");
+    assertEquals(PrimerHandler.getPrimerList().get(1).getName(), "primer2");
+  }
 }

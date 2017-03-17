@@ -76,7 +76,7 @@ public class AddPrimerWindow extends Application implements javafx.fxml.Initiali
       @Override
       public void changed(ObservableValue<? extends String> observable, String oldValue,
           String newValue) {
-        if (newValue.contains(ConfigHandler.SEPARATOR_CHAR+"")) {
+        if (newValue.contains(ConfigHandler.SEPARATOR_CHAR + "")) {
           idField.setText(oldValue);
         } else {
           idField.setText(newValue);
@@ -125,10 +125,10 @@ public class AddPrimerWindow extends Application implements javafx.fxml.Initiali
       @Override
       public void handle(ActionEvent arg0) {
         if (!nameField.getText().isEmpty() && !sequenceArea.getText().isEmpty()
-            && !idField.getText().isEmpty() && !meltingTempField.getText().isEmpty() ) {
-          if (PrimerHandler.addPrimer(new Primer(sequenceArea.getText(), ConfigHandler.getResearcher(),
-              Integer.parseInt(meltingTempField.getText()), idField.getText(), nameField.getText(),
-              commentArea.getText()))) {
+            && !idField.getText().isEmpty() && !meltingTempField.getText().isEmpty()) {
+          if (PrimerHandler.addPrimer(new Primer(sequenceArea.getText(),
+              ConfigHandler.getResearcher(), Integer.parseInt(meltingTempField.getText()),
+              idField.getText(), nameField.getText(), commentArea.getText()))) {
 
             GUIUtils.showInfo(AlertType.INFORMATION, "Adding primer", "Primer added successfully.");
             MainWindow.changesOnPrimers = true;
@@ -136,7 +136,8 @@ public class AddPrimerWindow extends Application implements javafx.fxml.Initiali
             Stage stage = (Stage) cancelButton.getScene().getWindow();
             stage.close();
           } else {
-            GUIUtils.showInfo(AlertType.ERROR,"Adding primer failed", "Primer not added because it already exists in local file.");
+            GUIUtils.showInfo(AlertType.ERROR, "Adding primer failed",
+                "Primer not added because it already exists in local file.");
           }
         }
 

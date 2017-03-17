@@ -113,12 +113,12 @@ public class ShowChromatogram extends Application implements javafx.fxml.Initial
       public void handle(ActionEvent event) {
         FileChooser fileChooser = new FileChooser();
         String filename = sequences.get(activeSequence).getFileName();
-        fileChooser.setInitialFileName(filename.substring(0, filename.length()-3) + "png");
-        
+        fileChooser.setInitialFileName(filename.substring(0, filename.length() - 3) + "png");
+
         fileChooser.setTitle("Save Image");
         File file = fileChooser.showSaveDialog(primaryStage);
 
-        
+
         if (file != null) {
           try {
             ImageIO.write(SwingFXUtils.fromFXImage(img, null), "png", file);

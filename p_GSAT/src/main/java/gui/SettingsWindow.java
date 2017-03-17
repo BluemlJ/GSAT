@@ -75,8 +75,8 @@ public class SettingsWindow extends Application implements javafx.fxml.Initializ
   private ToggleButton geneToggle;
   @FXML
   private ToggleButton primmerToggle;
-  
-  
+
+
   private Scene scene;
 
   private int numGeneWindows = 0;
@@ -90,23 +90,25 @@ public class SettingsWindow extends Application implements javafx.fxml.Initializ
     ToggleGroup selectorGroup = new ToggleGroup();
     primmerToggle.setToggleGroup(selectorGroup);
     geneToggle.setToggleGroup(selectorGroup);
-    
+
     primmerToggle.addEventFilter(MouseEvent.MOUSE_RELEASED, new EventHandler<MouseEvent>() {
-        @Override public void handle(MouseEvent mouseEvent) {
-          if (primmerToggle.equals(selectorGroup.getSelectedToggle())) {
-            mouseEvent.consume();
-          }
+      @Override
+      public void handle(MouseEvent mouseEvent) {
+        if (primmerToggle.equals(selectorGroup.getSelectedToggle())) {
+          mouseEvent.consume();
         }
-      });
-    
+      }
+    });
+
     geneToggle.addEventFilter(MouseEvent.MOUSE_RELEASED, new EventHandler<MouseEvent>() {
-        @Override public void handle(MouseEvent mouseEvent) {
-          if (geneToggle.equals(selectorGroup.getSelectedToggle())) {
-            mouseEvent.consume();
-          }
+      @Override
+      public void handle(MouseEvent mouseEvent) {
+        if (geneToggle.equals(selectorGroup.getSelectedToggle())) {
+          mouseEvent.consume();
         }
-      });
-    
+      }
+    });
+
 
     geneToggle.setOnAction(new EventHandler<ActionEvent>() {
 
