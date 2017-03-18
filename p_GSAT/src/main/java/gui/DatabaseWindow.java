@@ -264,7 +264,7 @@ public class DatabaseWindow extends Application implements javafx.fxml.Initializ
           // upload data from primer.txt
           if (uploadToggle.isSelected()) {
             try {
-              DatabaseConnection.pushAllPrimer();;
+              DatabaseConnection.pushAllPrimer();
               GUIUtils.showInfo(AlertType.CONFIRMATION, "Success", UPLOAD_SUCCESS);
             } catch (DatabaseConnectionException | SQLException e) {
               // error while connecting to database
@@ -282,7 +282,7 @@ public class DatabaseWindow extends Application implements javafx.fxml.Initializ
           // download data to primer.txt
           else if (downloadToggle.isSelected()) {
             try {
-              DatabaseConnection.pullAndSavePrimer();;
+              DatabaseConnection.pullAndSavePrimer();
               GUIUtils.showInfo(AlertType.CONFIRMATION, "Success", DOWNLOAD_SUCCESS);
             } catch (DatabaseConnectionException | SQLException e) {
               // error while connecting to database
@@ -301,7 +301,7 @@ public class DatabaseWindow extends Application implements javafx.fxml.Initializ
           // upload all data from genes.txt
           if (uploadToggle.isSelected()) {
             try {
-              DatabaseConnection.pushAllGenes();;
+              DatabaseConnection.pushAllGenes();
               GUIUtils.showInfo(AlertType.CONFIRMATION, "Success", UPLOAD_SUCCESS);
             } catch (SQLException | DatabaseConnectionException e) {
               // error while connecting to database
@@ -316,7 +316,7 @@ public class DatabaseWindow extends Application implements javafx.fxml.Initializ
           // download genes to genes.txt
           else if (downloadToggle.isSelected()) {
             try {
-              DatabaseConnection.pullAndSaveGenes();;
+              DatabaseConnection.pullAndSaveGenes();
               GUIUtils.showInfo(AlertType.CONFIRMATION, "Success", DOWNLOAD_SUCCESS);
             } catch (DatabaseConnectionException | SQLException e) {
               // error while connecting to database
@@ -369,8 +369,8 @@ public class DatabaseWindow extends Application implements javafx.fxml.Initializ
           // upload everything
           if (uploadToggle.isSelected()) {
             try {
-              DatabaseConnection.pushAllGenes();;
-              DatabaseConnection.pushAllPrimer();;
+              DatabaseConnection.pushAllGenes();
+              DatabaseConnection.pushAllPrimer();
               uploadResults();
               GUIUtils.showInfo(AlertType.CONFIRMATION, "Success", UPLOAD_SUCCESS);
             } catch (IOException e) {
@@ -387,8 +387,8 @@ public class DatabaseWindow extends Application implements javafx.fxml.Initializ
           // download everything
           else if (downloadToggle.isSelected()) {
             try {
-              DatabaseConnection.pullAndSaveGenes();;
-              DatabaseConnection.pullAndSavePrimer();;
+              DatabaseConnection.pullAndSaveGenes();
+              DatabaseConnection.pullAndSavePrimer();
               downloadResults();
               GUIUtils.showInfo(AlertType.CONFIRMATION, "Success", DOWNLOAD_SUCCESS);
             } catch (SQLException | DatabaseConnectionException e) {
