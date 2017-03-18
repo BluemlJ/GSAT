@@ -15,6 +15,9 @@ import java.util.ResourceBundle;
 import javax.imageio.ImageIO;
 
 import analysis.AnalysedSequence;
+import analysis.Gene;
+import analysis.QualityAnalysis;
+import analysis.StringAnalysis;
 import javafx.application.Application;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
@@ -142,8 +145,8 @@ public class ShowChromatogram extends Application implements javafx.fxml.Initial
 
       }
     });
-  
-    
+
+
     HBox buttonLeft = new HBox(prevs, next);
     buttonLeft.setAlignment(Pos.BOTTOM_LEFT);
     buttonLeft.setSpacing(10);
@@ -172,6 +175,8 @@ public class ShowChromatogram extends Application implements javafx.fxml.Initial
 
   private void updateSequences(int id) {
 
+
+
     activeSequence = id;
 
     // get necessary variables
@@ -184,6 +189,18 @@ public class ShowChromatogram extends Application implements javafx.fxml.Initial
     int[] channelG = startSequence.getChannelG();
 
     int[] baseCalls = startSequence.getBaseCalls();
+    
+    //analyse start of aminoacids
+    try {
+      Gene refgene = StringAnalysis.findRightGene(startSequence).first;
+      startSequence.setReferencedGene(refgene);
+      StringAnalysis.findOffset(startSequence);
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+
+    
+    
     // determine length of chromatogram
     int last = (int) channelA.length;
 
@@ -219,7 +236,8 @@ public class ShowChromatogram extends Application implements javafx.fxml.Initial
     buffGraph.setStroke(stroke);
     RenderingHints renderingHints = new RenderingHints(RenderingHints.KEY_TEXT_ANTIALIASING,
         RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
-    renderingHints.add(new RenderingHints(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON));
+    renderingHints.add(
+        new RenderingHints(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON));
 
     buffGraph.setRenderingHints(renderingHints);
 
@@ -292,6 +310,13 @@ public class ShowChromatogram extends Application implements javafx.fxml.Initial
         int fontWidth = buffGraph.getFontMetrics().stringWidth("" + nucleotide) / 2;
         buffGraph.drawString("" + nucleotide, i * stretchX - fontWidth, 10);
 
+        //Draw aminoacid 
+        if ((basecallIndex-startSequence.getOffset())%3==0) {
+          
+          //buffGraph.drawString("HIER!", i * stretchX - fontWidth, 30);
+        }
+        buffGraph.setColor(Color.BLACK);
+        //next
         if (basecallIndex + 1 < baseCalls.length) {
           basecallIndex++;
         }
