@@ -7,6 +7,7 @@ import java.util.Map;
 import java.util.TreeMap;
 
 import exceptions.CorruptedSequenceException;
+import io.GeneHandler;
 import io.ProblematicComment;
 
 /**
@@ -448,9 +449,8 @@ public class StringAnalysis {
    * 
    * @author jannis blueml, lovis heindrich
    */
-  public static Pair<Gene, Double> findRightGene(AnalysedSequence toAnalyze) {
-    // TODO call findRightGene(sequence, listOfGenes) with listOfGenes with
-    // a database export
+  public static Gene findRightGene(AnalysedSequence toAnalyze) {
+    findRightGene(toAnalyze, GeneHandler.getGeneList());
     return null;
   }
 
