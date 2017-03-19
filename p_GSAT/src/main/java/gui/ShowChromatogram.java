@@ -192,7 +192,7 @@ public class ShowChromatogram extends Application implements javafx.fxml.Initial
     
     //analyse start of aminoacids
     try {
-      Gene refgene = StringAnalysis.findRightGene(startSequence).first;
+      Gene refgene = StringAnalysis.findRightGene(startSequence);
       startSequence.setReferencedGene(refgene);
       StringAnalysis.findOffset(startSequence);
     } catch (Exception e) {

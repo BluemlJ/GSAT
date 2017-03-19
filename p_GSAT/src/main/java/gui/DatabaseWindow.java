@@ -13,6 +13,7 @@ import java.util.LinkedList;
 import java.util.ResourceBundle;
 
 import analysis.AnalysedSequence;
+import core.Main;
 import exceptions.ConfigNotFoundException;
 import exceptions.DatabaseConnectionException;
 import exceptions.MissingPathException;
@@ -265,6 +266,7 @@ public class DatabaseWindow extends Application implements javafx.fxml.Initializ
           if (uploadToggle.isSelected()) {
             try {
               DatabaseConnection.pushAllPrimer();
+              MainWindow.changesOnPrimers = false;
               GUIUtils.showInfo(AlertType.CONFIRMATION, "Success", UPLOAD_SUCCESS);
             } catch (DatabaseConnectionException | SQLException e) {
               // error while connecting to database
@@ -302,6 +304,7 @@ public class DatabaseWindow extends Application implements javafx.fxml.Initializ
           if (uploadToggle.isSelected()) {
             try {
               DatabaseConnection.pushAllGenes();
+              MainWindow.changesOnGenes = false;
               GUIUtils.showInfo(AlertType.CONFIRMATION, "Success", UPLOAD_SUCCESS);
             } catch (SQLException | DatabaseConnectionException e) {
               // error while connecting to database
@@ -373,6 +376,8 @@ public class DatabaseWindow extends Application implements javafx.fxml.Initializ
               DatabaseConnection.pushAllPrimer();
               uploadResults();
               GUIUtils.showInfo(AlertType.CONFIRMATION, "Success", UPLOAD_SUCCESS);
+              MainWindow.changesOnGenes = false;
+              MainWindow.changesOnPrimers = false;
             } catch (IOException e) {
               // error while reading file
               e.printStackTrace();
@@ -537,6 +542,7 @@ public class DatabaseWindow extends Application implements javafx.fxml.Initializ
     String path = destField.getText();
     LinkedList<AnalysedSequence> sequences = FileRetriever.convertFilesToSequences(path);
     DatabaseConnection.pushAllData(sequences);
+    MainWindow.changesOnResults = false;
   }
 
 
@@ -592,11 +598,4 @@ public class DatabaseWindow extends Application implements javafx.fxml.Initializ
     });
 
   }
-  
-  private void resetChanges(){
-    MainWindow.changesOnGenes = false;
-    MainWindow.changesOnPrimers = false;
-    MainWindow.changesOnResults = false;
-  }
-
 }
