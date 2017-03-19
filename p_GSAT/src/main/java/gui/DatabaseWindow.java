@@ -264,7 +264,7 @@ public class DatabaseWindow extends Application implements javafx.fxml.Initializ
           // upload data from primer.txt
           if (uploadToggle.isSelected()) {
             try {
-              uploadPrimer();
+              DatabaseConnection.pushAllPrimer();
               GUIUtils.showInfo(AlertType.CONFIRMATION, "Success", UPLOAD_SUCCESS);
             } catch (DatabaseConnectionException | SQLException e) {
               // error while connecting to database
@@ -282,7 +282,7 @@ public class DatabaseWindow extends Application implements javafx.fxml.Initializ
           // download data to primer.txt
           else if (downloadToggle.isSelected()) {
             try {
-              downloadPrimer();
+              DatabaseConnection.pullAndSavePrimer();
               GUIUtils.showInfo(AlertType.CONFIRMATION, "Success", DOWNLOAD_SUCCESS);
             } catch (DatabaseConnectionException | SQLException e) {
               // error while connecting to database
@@ -301,7 +301,7 @@ public class DatabaseWindow extends Application implements javafx.fxml.Initializ
           // upload all data from genes.txt
           if (uploadToggle.isSelected()) {
             try {
-              uploadGenes();
+              DatabaseConnection.pushAllGenes();
               GUIUtils.showInfo(AlertType.CONFIRMATION, "Success", UPLOAD_SUCCESS);
             } catch (SQLException | DatabaseConnectionException e) {
               // error while connecting to database
@@ -316,7 +316,7 @@ public class DatabaseWindow extends Application implements javafx.fxml.Initializ
           // download genes to genes.txt
           else if (downloadToggle.isSelected()) {
             try {
-              downloadGenes();
+              DatabaseConnection.pullAndSaveGenes();
               GUIUtils.showInfo(AlertType.CONFIRMATION, "Success", DOWNLOAD_SUCCESS);
             } catch (DatabaseConnectionException | SQLException e) {
               // error while connecting to database
@@ -369,8 +369,8 @@ public class DatabaseWindow extends Application implements javafx.fxml.Initializ
           // upload everything
           if (uploadToggle.isSelected()) {
             try {
-              uploadGenes();
-              uploadPrimer();
+              DatabaseConnection.pushAllGenes();
+              DatabaseConnection.pushAllPrimer();
               uploadResults();
               GUIUtils.showInfo(AlertType.CONFIRMATION, "Success", UPLOAD_SUCCESS);
             } catch (IOException e) {
@@ -387,8 +387,8 @@ public class DatabaseWindow extends Application implements javafx.fxml.Initializ
           // download everything
           else if (downloadToggle.isSelected()) {
             try {
-              downloadGenes();
-              downloadPrimer();
+              DatabaseConnection.pullAndSaveGenes();
+              DatabaseConnection.pullAndSavePrimer();
               downloadResults();
               GUIUtils.showInfo(AlertType.CONFIRMATION, "Success", DOWNLOAD_SUCCESS);
             } catch (SQLException | DatabaseConnectionException e) {
@@ -408,7 +408,7 @@ public class DatabaseWindow extends Application implements javafx.fxml.Initializ
       @Override
       public void changed(ObservableValue<? extends String> observable, String oldValue,
           String newValue) {
-        if (newValue.matches(ConfigHandler.SEPARATOR_CHAR + "")) {
+        if (newValue.contains(ConfigHandler.SEPARATOR_CHAR + "")) {
           destField.setText(oldValue);
         } else {
           destField.setText(newValue);
@@ -483,12 +483,7 @@ public class DatabaseWindow extends Application implements javafx.fxml.Initializ
     super.stop();
   }
 
-  /*
-   * @Override public void start(Stage stage) throws Exception { Parent root; try { root =
-   * FXMLLoader.load(getClass().getResource("/fxml/DatabaseWindow.fxml")); } catch (IOException e) {
-   * e.printStackTrace(); return; } Scene scene = new Scene(root); stage.setTitle("Database");
-   * stage.setScene(scene); stage.sizeToScene(); stage.show(); }
-   */
+
 
   private void downloadResults()
       throws SQLException, DatabaseConnectionException, MissingPathException, IOException {
@@ -536,37 +531,11 @@ public class DatabaseWindow extends Application implements javafx.fxml.Initializ
 
   private void uploadResults() throws IOException, SQLException, DatabaseConnectionException {
     String path = destField.getText();
-
     LinkedList<AnalysedSequence> sequences = FileRetriever.convertFilesToSequences(path);
     DatabaseConnection.pushAllData(sequences);
-
   }
 
-  private void downloadGenes() throws DatabaseConnectionException, SQLException, IOException {
 
-    DatabaseConnection.pullAndSaveGenes();
-
-  }
-
-  private void uploadGenes() throws SQLException, DatabaseConnectionException, IOException {
-
-    DatabaseConnection.pushAllGenes();
-
-  }
-
-  private void downloadPrimer()
-      throws NumberFormatException, DatabaseConnectionException, SQLException, IOException {
-
-    DatabaseConnection.pullAndSavePrimer();
-
-  }
-
-  private void uploadPrimer()
-      throws NumberFormatException, DatabaseConnectionException, SQLException, IOException {
-
-    DatabaseConnection.pushAllPrimer();
-
-  }
 
   private void activateOnlyPath() {
     destButton.setDisable(false);
@@ -617,11 +586,7 @@ public class DatabaseWindow extends Application implements javafx.fxml.Initializ
         MainWindow.settingsOpen = false;
       }
     });
-    /*
-     * returnButton.setOnAction(new EventHandler<ActionEvent>() {
-     * 
-     * @Override public void handle(ActionEvent arg0) { primaryStage.close(); } });
-     */
+
   }
 
 }

@@ -100,6 +100,7 @@ public class AddPrimerWindow extends Application implements javafx.fxml.Initiali
       @Override
       public void changed(ObservableValue<? extends String> observable, String oldValue,
           String newValue) {
+        newValue = newValue.replaceAll("\\s", "");
         if (newValue.toUpperCase().matches(".*[^ATCG].*")) {
           sequenceArea.setText(oldValue);
         } else {

@@ -82,6 +82,7 @@ public class AddGeneWindow extends Application implements javafx.fxml.Initializa
       @Override
       public void changed(ObservableValue<? extends String> observable, String oldValue,
           String newValue) {
+        newValue = newValue.replaceAll("\\s", "");
         if (newValue.toUpperCase().matches(".*[^ATCG].*")) {
           geneArea.setText(oldValue);
         } else {

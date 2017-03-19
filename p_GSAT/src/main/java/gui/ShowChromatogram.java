@@ -1,6 +1,7 @@
 package gui;
 
 import java.awt.BasicStroke;
+import java.awt.Color;
 import java.awt.Desktop;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
@@ -14,6 +15,9 @@ import java.util.ResourceBundle;
 import javax.imageio.ImageIO;
 
 import analysis.AnalysedSequence;
+import analysis.Gene;
+import analysis.QualityAnalysis;
+import analysis.StringAnalysis;
 import javafx.application.Application;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
@@ -26,6 +30,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollBar;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.image.WritableImage;
 import javafx.scene.layout.HBox;
@@ -36,10 +41,10 @@ import javafx.stage.Stage;
 
 public class ShowChromatogram extends Application implements javafx.fxml.Initializable {
 
-  private final java.awt.Color colorA = new java.awt.Color(0, 255, 0);
-  private final java.awt.Color colorT = new java.awt.Color(255, 0, 0);
-  private final java.awt.Color colorG = new java.awt.Color(0, 0, 0);
-  private final java.awt.Color colorC = new java.awt.Color(0, 0, 255);
+  private final Color colorA = Color.GREEN;
+  private final Color colorT = Color.RED;
+  private final Color colorG = Color.BLACK;
+  private final Color colorC = Color.BLUE;
 
   private int lineThickness = 5;
 
@@ -48,7 +53,7 @@ public class ShowChromatogram extends Application implements javafx.fxml.Initial
   private int activeSequence = 0;
 
 
-  javafx.scene.image.Image img;
+  Image img;
 
   private ScrollPane scrollPane;
 
@@ -73,8 +78,8 @@ public class ShowChromatogram extends Application implements javafx.fxml.Initial
     scrollPane.setMaxHeight(Double.MAX_VALUE);
     scrollPane.setMaxWidth(Double.MAX_VALUE);
 
-    next = new Button("Next");
-    prevs = new Button("Previous");
+    next = new Button("Next file");
+    prevs = new Button("Previous file");
 
     next.setOnAction(new EventHandler<ActionEvent>() {
 
@@ -115,7 +120,7 @@ public class ShowChromatogram extends Application implements javafx.fxml.Initial
         String filename = sequences.get(activeSequence).getFileName();
         fileChooser.setInitialFileName(filename.substring(0, filename.length() - 3) + "png");
 
-        fileChooser.setTitle("Save Image");
+        fileChooser.setTitle("Save as image");
         File file = fileChooser.showSaveDialog(primaryStage);
 
 
@@ -130,6 +135,17 @@ public class ShowChromatogram extends Application implements javafx.fxml.Initial
     });
 
     Button close = new Button("Close");
+
+    close.setOnAction(new EventHandler<ActionEvent>() {
+
+      @Override
+      public void handle(ActionEvent arg0) {
+        Stage stage = (Stage) close.getScene().getWindow();
+        stage.close();
+
+      }
+    });
+
 
     HBox buttonLeft = new HBox(prevs, next);
     buttonLeft.setAlignment(Pos.BOTTOM_LEFT);
@@ -150,18 +166,16 @@ public class ShowChromatogram extends Application implements javafx.fxml.Initial
     scene = new Scene(v);
 
 
-    primaryStage.setTitle("GSAT - Settings");
+    primaryStage.setTitle("GSAT - Chromatogram view");
     primaryStage.setScene(scene);
     primaryStage.sizeToScene();
     primaryStage.show();
   }
 
-  public static void main(String[] args) {
-    launch(args);
-  }
 
   private void updateSequences(int id) {
-    System.out.println("seqence Update");
+
+
 
     activeSequence = id;
 
@@ -175,8 +189,18 @@ public class ShowChromatogram extends Application implements javafx.fxml.Initial
     int[] channelG = startSequence.getChannelG();
 
     int[] baseCalls = startSequence.getBaseCalls();
-    System.out.println(baseCalls.length + " basecallse");
-    System.out.println(startSequence.getSequence().length() + " seqencelen");
+    
+    //analyse start of aminoacids
+    try {
+      Gene refgene = StringAnalysis.findRightGene(startSequence).first;
+      startSequence.setReferencedGene(refgene);
+      StringAnalysis.findOffset(startSequence);
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+
+    
+    
     // determine length of chromatogram
     int last = (int) channelA.length;
 
@@ -195,13 +219,13 @@ public class ShowChromatogram extends Application implements javafx.fxml.Initial
     }
 
     // variables for scaling image
-    double strechY = 0.25;
-    int strechX = 4;
+    double stretchY = 0.25;
+    int stretchX = 4;
 
     System.out.println("chromatogram length = " + last);
 
     // create image
-    BufferedImage buffImg = new BufferedImage(last * strechX, 400, BufferedImage.TYPE_INT_RGB);
+    BufferedImage buffImg = new BufferedImage(last * stretchX, 400, BufferedImage.TYPE_INT_RGB);
     buffImg.createGraphics();
     Graphics2D buffGraph = (Graphics2D) buffImg.getGraphics();
 
@@ -210,16 +234,17 @@ public class ShowChromatogram extends Application implements javafx.fxml.Initial
 
     // graphics settings
     buffGraph.setStroke(stroke);
-    RenderingHints rh = new RenderingHints(RenderingHints.KEY_TEXT_ANTIALIASING,
+    RenderingHints renderingHints = new RenderingHints(RenderingHints.KEY_TEXT_ANTIALIASING,
         RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
-    rh.add(new RenderingHints(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON));
+    renderingHints.add(
+        new RenderingHints(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON));
 
-    buffGraph.setRenderingHints(rh);
+    buffGraph.setRenderingHints(renderingHints);
 
     System.out.println("image Created");
 
     buffGraph.setColor(java.awt.Color.WHITE);
-    buffGraph.fillRect(0, 0, last * strechX, 400);
+    buffGraph.fillRect(0, 0, last * stretchX, 400);
     System.out.println("background set");
 
     // remember last location to draw line
@@ -233,26 +258,26 @@ public class ShowChromatogram extends Application implements javafx.fxml.Initial
     for (int i = 0; i < last; i++) {
       // System.out.println(i + "/" + last);
       // scale traces to match image coordinate system
-      int a = (int) (400 - ((channelA[i]) * strechY));
-      int t = (int) (400 - ((channelT[i]) * strechY));
-      int g = (int) (400 - ((channelG[i]) * strechY));
-      int c = (int) (400 - ((channelC[i]) * strechY));
+      int aBasecall = (int) (400 - ((channelA[i]) * stretchY));
+      int tBasecall = (int) (400 - ((channelT[i]) * stretchY));
+      int gBasecall = (int) (400 - ((channelG[i]) * stretchY));
+      int cBasecall = (int) (400 - ((channelC[i]) * stretchY));
 
       // draw A
       buffGraph.setColor(colorA);
-      buffGraph.drawLine((i - 1) * strechX, lastA, i * strechX, a);
+      buffGraph.drawLine((i - 1) * stretchX, lastA, i * stretchX, aBasecall);
 
       // draw T
       buffGraph.setColor(colorT);
-      buffGraph.drawLine((i - 1) * strechX, lastT, i * strechX, t);
+      buffGraph.drawLine((i - 1) * stretchX, lastT, i * stretchX, tBasecall);
 
       // draw G
       buffGraph.setColor(colorG);
-      buffGraph.drawLine((i - 1) * strechX, lastG, i * strechX, g);
+      buffGraph.drawLine((i - 1) * stretchX, lastG, i * stretchX, gBasecall);
 
       // draw C
       buffGraph.setColor(colorC);
-      buffGraph.drawLine((i - 1) * strechX, lastC, i * strechX, c);
+      buffGraph.drawLine((i - 1) * stretchX, lastC, i * stretchX, cBasecall);
 
       if (baseCalls[basecallIndex] == i) {
         // draw line
@@ -277,29 +302,36 @@ public class ShowChromatogram extends Application implements javafx.fxml.Initial
             buffGraph.setColor(colorC);
             break;
           default:
-            buffGraph.setColor(java.awt.Color.MAGENTA);
+            buffGraph.setColor(Color.MAGENTA);
             break;
         }
 
         // draw nucleotide
         int fontWidth = buffGraph.getFontMetrics().stringWidth("" + nucleotide) / 2;
-        buffGraph.drawString("" + nucleotide, i * strechX - fontWidth, 10);
+        buffGraph.drawString("" + nucleotide, i * stretchX - fontWidth, 10);
 
+        //Draw aminoacid 
+        if ((basecallIndex-startSequence.getOffset())%3==0) {
+          
+          //buffGraph.drawString("HIER!", i * stretchX - fontWidth, 30);
+        }
+        buffGraph.setColor(Color.BLACK);
+        //next
         if (basecallIndex + 1 < baseCalls.length) {
           basecallIndex++;
         }
       }
 
       // update last location
-      lastA = a;
-      lastT = t;
-      lastG = g;
-      lastC = c;
+      lastA = aBasecall;
+      lastT = tBasecall;
+      lastG = gBasecall;
+      lastC = cBasecall;
 
     }
     System.out.println(startSequence.getSequence().length() + " = seq");
 
-    WritableImage wrtieImg = new WritableImage(last * strechX, 400);
+    WritableImage wrtieImg = new WritableImage(last * stretchX, 400);
 
     SwingFXUtils.toFXImage(buffImg, wrtieImg);
     viewer.setImage(wrtieImg);
@@ -452,7 +484,7 @@ public class ShowChromatogram extends Application implements javafx.fxml.Initial
     updateSequences(0);
   }
 
-  public void setSequence(LinkedList<AnalysedSequence> sequences) {
+  public void setSequences(LinkedList<AnalysedSequence> sequences) {
     this.sequences = sequences;
     activeSequence = 0;
     prevs.setDisable(true);
