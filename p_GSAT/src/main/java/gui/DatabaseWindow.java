@@ -592,5 +592,11 @@ public class DatabaseWindow extends Application implements javafx.fxml.Initializ
     });
 
   }
+  
+  private void resetChanges(){
+    MainWindow.changesOnGenes = false;
+    MainWindow.changesOnPrimers = false;
+    MainWindow.changesOnResults = false;
+  }
 
 }
