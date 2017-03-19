@@ -470,8 +470,12 @@ public class DatabaseWindow extends Application implements javafx.fxml.Initializ
 
       @Override
       public void handle(ActionEvent arg0) {
-        // TODO Auto-generated method stub
-
+        DatabaseSettingsWindow settings = new DatabaseSettingsWindow();
+        try {
+          settings.start(new Stage());
+        } catch (Exception e) {
+          e.printStackTrace();
+        }
       }
     });
   }
