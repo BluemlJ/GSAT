@@ -450,8 +450,7 @@ public class StringAnalysis {
    * @author jannis blueml, lovis heindrich
    */
   public static Gene findRightGene(AnalysedSequence toAnalyze) {
-    findRightGene(toAnalyze, GeneHandler.getGeneList());
-    return null;
+    return findRightGene(toAnalyze, GeneHandler.getGeneList());
   }
 
   /**
