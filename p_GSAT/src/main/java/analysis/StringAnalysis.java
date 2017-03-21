@@ -300,7 +300,11 @@ public class StringAnalysis {
         String codon = nucleotides.substring(i, i + 3);
         String aminoacid =  "";
         if (first) {
+          if(AMINO_ACID_SHORTS.get(codon) != null)
           aminoacid = AMINO_ACID_SHORTS.get(codon).first;  
+          else {
+            aminoacid = null;
+          }
         }else {
           if(AMINO_ACID_SHORTS.get(codon) != null)
           aminoacid = AMINO_ACID_SHORTS.get(codon).second;
