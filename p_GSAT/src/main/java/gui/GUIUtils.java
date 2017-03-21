@@ -354,8 +354,9 @@ public class GUIUtils {
    */
   public static Gene getGeneFromDropDown(String gene) {
     
+    if(gene != null)
     return (GeneHandler.checkGene(gene.split(" ")[0], gene.split(" ")[1]));
-
+    else return null;
   }
 
   /**
