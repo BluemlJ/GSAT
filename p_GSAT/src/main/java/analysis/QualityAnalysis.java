@@ -69,6 +69,7 @@ public class QualityAnalysis {
    */
   public static void checkIfSequenceIsClean(AnalysedSequence toAnalyse)
       throws CorruptedSequenceException {
+    //TODO MORE COMMENT PLEASE @Jannis
     for (char c : toAnalyse.getSequence().toCharArray()) {
       if (c == 'X') {
         throw new CorruptedSequenceException(toAnalyse.getSequence().indexOf('X'), c,
