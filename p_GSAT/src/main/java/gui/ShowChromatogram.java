@@ -230,14 +230,16 @@ public class ShowChromatogram extends Application implements javafx.fxml.Initial
     AnalysedSequence startSequence = sequences.get(id);
     fileName.setText(startSequence.getFileName());
 
+    //get trace channels from sequence
     int[] channelA = startSequence.getChannelA();
     int[] channelC = startSequence.getChannelC();
     int[] channelT = startSequence.getChannelT();
     int[] channelG = startSequence.getChannelG();
 
+    //get basecalls from sequence (spikes in trace)
     int[] baseCalls = startSequence.getBaseCalls();
 
-    // analyse start of aminoacids
+    //determine reference Gene and calculate offset (needed for aminoacid determination)
     try {
       Gene refgene = StringAnalysis.findRightGene(startSequence);
       startSequence.setReferencedGene(refgene);
@@ -248,9 +250,8 @@ public class ShowChromatogram extends Application implements javafx.fxml.Initial
 
 
 
-    // determine length of chromatogram
+    // determine length of Chromatogram
     int last = (int) channelA.length;
-
     last = (int) Math.min(last, channelC.length);
     last = (int) Math.min(last, channelT.length);
     last = (int) Math.min(last, channelG.length);
@@ -258,7 +259,7 @@ public class ShowChromatogram extends Application implements javafx.fxml.Initial
     // create new viewer and set image
     ImageView viewer = new ImageView();
 
-
+    //add viewer to scrollPane to make it scrollable
     try {
       scrollPane.setContent(viewer);
     } catch (Exception e) {
@@ -269,17 +270,19 @@ public class ShowChromatogram extends Application implements javafx.fxml.Initial
     double stretchY = 0.2;
     int stretchX = 4;
 
-    System.out.println("chromatogram length = " + last);
-
     // create image
     BufferedImage buffImg = new BufferedImage(last * stretchX, 400, BufferedImage.TYPE_INT_RGB);
     buffImg.createGraphics();
     Graphics2D buffGraph = (Graphics2D) buffImg.getGraphics();
 
+    //create stroke for trace lines
     BasicStroke bigStroke =
         new BasicStroke(lineThickness, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND);
+    
+    //create half size stroke for misc stuff
     BasicStroke smallStroke =
         new BasicStroke(lineThickness / 2, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND);
+    
     // graphics settings
     RenderingHints renderingHints = new RenderingHints(RenderingHints.KEY_TEXT_ANTIALIASING,
         RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
@@ -288,21 +291,23 @@ public class ShowChromatogram extends Application implements javafx.fxml.Initial
 
     buffGraph.setRenderingHints(renderingHints);
 
-    System.out.println("image Created");
-
+    //draw single collor background
     buffGraph.setColor(background);
     buffGraph.fillRect(0, 0, last * stretchX, 400);
-    System.out.println("background set");
 
-    // remember last location to draw line
+    // remember last location to draw line from
     int lastA = 0;
     int lastT = 0;
     int lastG = 0;
     int lastC = 0;
 
+    //count basecall index
     int basecallIndex = 0;
 
+    //drawing loop
     for (int i = 0; i < last; i++) {
+      
+      //Draw trace lines:
       buffGraph.setStroke(bigStroke);
       // scale traces to match image coordinate system
       int aBasecall = (int) (400 - ((channelA[i]) * stretchY));
@@ -327,15 +332,13 @@ public class ShowChromatogram extends Application implements javafx.fxml.Initial
       buffGraph.drawLine((i - 1) * stretchX, lastC, i * stretchX, cBasecall);
 
 
+      //if active point contains a basecall:
       if (baseCalls[basecallIndex] == i) {
-        // draw line
-        // buffGraph.setColor(new java.awt.Color(240, 240, 240));
-        // buffGraph.drawLine(i*strechX, 0, i*strechX, 400);
 
         // get char of Nucleotide
         char nucleotide = Character.toUpperCase(startSequence.getSequence().charAt(basecallIndex));
 
-        // set Nucleotide color
+        // set Nucleotide color according to nucleotide at basecall
         switch (nucleotide) {
           case 'A':
             buffGraph.setColor(colorA);
@@ -360,20 +363,30 @@ public class ShowChromatogram extends Application implements javafx.fxml.Initial
 
         // Draw aminoacid
         buffGraph.setColor(Color.BLACK);
+        
+        //check if aminoacid is complete and at correct position
         if ((basecallIndex - startSequence.getOffset()) % 3 == 0) {
           if (basecallIndex + 3 < startSequence.getSequence().length()) {
             buffGraph.setStroke(smallStroke);
             try {
               
-            
+            //get nucleotides of aminoacid
             String aminoInNucleotides =
                 (startSequence.getSequence().substring(basecallIndex, basecallIndex + 3))
                     .toUpperCase();
+            
+            //convert nucleotides in aminoacid 
             String Aminoascid = StringAnalysis.codonsToAminoAcids(aminoInNucleotides, false);
+            
+            //draw aminoacid string
             buffGraph.drawString(Aminoascid, baseCalls[basecallIndex + 1] * stretchX - fontWidth*(Aminoascid.length()),
                 30);
+            
+            //draw horizontal line under nucleotides
             buffGraph.drawLine(baseCalls[basecallIndex] * stretchX - fontWidth * 2, 35,
                 (baseCalls[basecallIndex + 2]) * stretchX + fontWidth * 2, 35);
+            
+            //draw left and right end line
             buffGraph.drawLine(baseCalls[basecallIndex] * stretchX - fontWidth * 2, 40,
                 baseCalls[basecallIndex] * stretchX - fontWidth * 2, 20);
             buffGraph.drawLine(baseCalls[basecallIndex + 2] * stretchX + fontWidth * 2, 40,
@@ -399,24 +412,37 @@ public class ShowChromatogram extends Application implements javafx.fxml.Initial
       lastC = cBasecall;
 
     }
-    System.out.println(startSequence.getSequence().length() + " = seq");
 
+    //convert buffered image to JavaFX WritableImage
     WritableImage wrtieImg = new WritableImage(last * stretchX, 400);
 
     SwingFXUtils.toFXImage(buffImg, wrtieImg);
     viewer.setImage(wrtieImg);
     img = wrtieImg;
-
-    System.out.println("Finished");
   }
 
+  /**
+   * sets Sequence and updates Chromatogram accordingly
+   * @param sequence
+   */
   public void setSequence(AnalysedSequence sequence) {
+    //create new list
     this.sequences = new LinkedList<AnalysedSequence>();
+
+    //add sequence to list 
     this.sequences.add(sequence);
+    
+    //set active sequence to 0 and udate
     updateSequences(0);
   }
 
+  /**
+   * sets list of Sequences and updates Chromatogram accordingly
+   * Automatically sets first sequence of the list.
+   * @param sequences
+   */
   public void setSequences(LinkedList<AnalysedSequence> sequences) {
+    //set sequence
     this.sequences = sequences;
     activeSequence = 0;
     prevs.setDisable(true);
@@ -425,6 +451,8 @@ public class ShowChromatogram extends Application implements javafx.fxml.Initial
     } else {
       next.setDisable(true);
     }
+    
+    //set active sequence to 0 and udate
     updateSequences(0);
   }
 
