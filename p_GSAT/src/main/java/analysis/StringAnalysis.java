@@ -397,8 +397,8 @@ public class StringAnalysis {
     for (int i = 0; i < toAnalyze.getSequence().length() - 3; i = i + 3) {
       String aminoAcid = toAnalyze.getSequence().substring(i, i + 3);
 
-      if (AMINO_ACID_SHORTS.get(aminoAcid) != null
-          && AMINO_ACID_SHORTS.get(aminoAcid).equals("#")) {
+      if (AMINO_ACID_SHORTS.get(aminoAcid) != null && AMINO_ACID_SHORTS.get(aminoAcid).first != null
+          && AMINO_ACID_SHORTS.get(aminoAcid).first.equals("#")) {
         return i / 3;
       }
     }
