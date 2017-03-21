@@ -220,7 +220,7 @@ public class PrimerHandler {
    * 
    * @param name
    * @return the primer identified by name and primerId or null
-   * @author Lovis Heindrich
+   * @author jannis blueml
    */
   public static Primer getPrimer(String name) {
     if (name.split(" ")[1].isEmpty()) {

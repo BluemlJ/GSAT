@@ -90,7 +90,7 @@ public class Primer extends Sequence {
 
 	}
 
-	// Getter and setter
+	// GETTER UND SETTER
 
 	public int getMeltingPoint() {
 		return meltingPoint;
