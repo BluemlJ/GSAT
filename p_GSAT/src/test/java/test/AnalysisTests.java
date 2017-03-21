@@ -328,7 +328,8 @@ public class AnalysisTests {
         StringAnalysis.appendStringToLength("hallohallohallo", 10).equals("hallohallohallo"));
   }
 
-  /**
+
+  /*
    * Test for correct deletion;
    * 
    * @author Kevin Otto
