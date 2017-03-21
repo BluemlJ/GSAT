@@ -12,7 +12,6 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import core.ConsoleVersion;
-import core.Main;
 
 /**
  * This class tests the writing of reports.

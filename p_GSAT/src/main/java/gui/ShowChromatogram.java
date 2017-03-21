@@ -370,7 +370,7 @@ public class ShowChromatogram extends Application implements javafx.fxml.Initial
                 (startSequence.getSequence().substring(basecallIndex, basecallIndex + 3))
                     .toUpperCase();
             String Aminoascid = StringAnalysis.codonsToAminoAcids(aminoInNucleotides, false);
-            buffGraph.drawString(Aminoascid, baseCalls[basecallIndex + 1] * stretchX - fontWidth*(Aminoascid.length()/2-1),
+            buffGraph.drawString(Aminoascid, baseCalls[basecallIndex + 1] * stretchX - fontWidth*(Aminoascid.length()),
                 30);
             buffGraph.drawLine(baseCalls[basecallIndex] * stretchX - fontWidth * 2, 35,
                 (baseCalls[basecallIndex + 2]) * stretchX + fontWidth * 2, 35);

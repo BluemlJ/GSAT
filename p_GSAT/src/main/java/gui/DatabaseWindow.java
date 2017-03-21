@@ -13,7 +13,6 @@ import java.util.LinkedList;
 import java.util.ResourceBundle;
 
 import analysis.AnalysedSequence;
-import core.Main;
 import exceptions.ConfigNotFoundException;
 import exceptions.DatabaseConnectionException;
 import exceptions.MissingPathException;
