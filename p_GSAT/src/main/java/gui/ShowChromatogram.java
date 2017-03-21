@@ -217,6 +217,11 @@ public class ShowChromatogram extends Application implements javafx.fxml.Initial
   }
 
 
+  /**
+   * Sets the active Sequence to id and updates the image
+   * Redraws the image and Displays it
+   * @param id The id of the currently selected Sequence
+   */
   private void updateSequences(int id) {
 
     activeSequence = id;
