@@ -358,12 +358,14 @@ public class ShowChromatogram extends Application implements javafx.fxml.Initial
         if ((basecallIndex - startSequence.getOffset()) % 3 == 0) {
           if (basecallIndex + 3 < startSequence.getSequence().length()) {
             buffGraph.setStroke(smallStroke);
-
+            try {
+              
+            
             String aminoInNucleotides =
                 (startSequence.getSequence().substring(basecallIndex, basecallIndex + 3))
                     .toUpperCase();
-            String Aminoascid = StringAnalysis.codonsToAminoAcids(aminoInNucleotides);
-            buffGraph.drawString(Aminoascid, baseCalls[basecallIndex + 1] * stretchX - fontWidth,
+            String Aminoascid = StringAnalysis.codonsToAminoAcids(aminoInNucleotides, false);
+            buffGraph.drawString(Aminoascid, baseCalls[basecallIndex + 1] * stretchX - fontWidth*(Aminoascid.length()/2-1),
                 30);
             buffGraph.drawLine(baseCalls[basecallIndex] * stretchX - fontWidth * 2, 35,
                 (baseCalls[basecallIndex + 2]) * stretchX + fontWidth * 2, 35);
@@ -371,6 +373,9 @@ public class ShowChromatogram extends Application implements javafx.fxml.Initial
                 baseCalls[basecallIndex] * stretchX - fontWidth * 2, 20);
             buffGraph.drawLine(baseCalls[basecallIndex + 2] * stretchX + fontWidth * 2, 40,
                 baseCalls[basecallIndex + 2] * stretchX + fontWidth * 2, 20);
+            } catch (Exception e) {
+              e.printStackTrace();
+            }
           }
         }
 

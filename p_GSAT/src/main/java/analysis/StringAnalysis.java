@@ -259,7 +259,7 @@ public class StringAnalysis {
     double avgLength = (first.length() + second.length()) / 2.0;
     return Math.max(0, 100 - (levenshteinIndex / (avgLength / 100)));
   }
-
+  
   /**
    * Changes the sequence representation from nucleotides to aminoacid (shortform)
    * 
@@ -269,6 +269,18 @@ public class StringAnalysis {
    * @author jannis blueml
    */
   public static String codonsToAminoAcids(String nucleotides) {
+    return codonsToAminoAcids(nucleotides,true);
+  }
+
+  /**
+   * Changes the sequence representation from nucleotides to aminoacid (shortform)
+   * 
+   * @param nucleotides the sequence presented by nucleotides
+   * @return the sequence presented by aminoAcid (shorts)
+   * 
+   * @author jannis blueml
+   */
+  public static String codonsToAminoAcids(String nucleotides, boolean first) {
     nucleotides = nucleotides.toUpperCase();
 
     // check for empty parameter
@@ -285,7 +297,13 @@ public class StringAnalysis {
       // Map
       for (int i = 0; i < nucleotides.length(); i = i + 3) {
         String codon = nucleotides.substring(i, i + 3);
-        String aminoacid = AMINO_ACID_SHORTS.get(codon).first;
+        String aminoacid =  "";
+        if (first) {
+          aminoacid = AMINO_ACID_SHORTS.get(codon).first;  
+        }else {
+          aminoacid = AMINO_ACID_SHORTS.get(codon).second;
+        }
+        
 
         if (aminoacid != null) {
           builder.append(aminoacid);
