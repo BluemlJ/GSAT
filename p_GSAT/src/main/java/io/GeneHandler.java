@@ -257,10 +257,8 @@ public class GeneHandler {
         }
       }
     } else {
-      System.out.println("noorga");
       return getGene(geneName);
     }
-    System.out.println("nofound");
     return null;
   }
 
