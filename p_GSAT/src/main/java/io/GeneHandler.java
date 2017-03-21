@@ -13,14 +13,20 @@ import analysis.Gene;
 import exceptions.DuplicateGeneException;
 
 /**
- * This class reads reference genes from a txt and stores them
+ * This class reads reference genes from the genes.txt and stores them.
  * 
- * @author lovisheindrich
+ * @author Lovis Heindrich
  *
  */
 public class GeneHandler {
 
+	/**
+	 * Arraylist containing all known genes.
+	 */
   private static ArrayList<Gene> geneList;
+  /**
+   * 
+   */
   private static String path =
       System.getProperty("user.home") + File.separator + "gsat" + File.separator + "genes.txt";
   private static final String SEPARATOR = ConfigHandler.SEPARATOR_CHAR + "";
@@ -257,10 +263,8 @@ public class GeneHandler {
         }
       }
     } else {
-      System.out.println("noorga");
       return getGene(geneName);
     }
-    System.out.println("nofound");
     return null;
   }
 
