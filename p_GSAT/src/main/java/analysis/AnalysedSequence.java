@@ -41,7 +41,7 @@ public class AnalysedSequence extends Sequence {
   private String fileName;
 
   /**
-   * primer name ....
+   * primer name as String for database connection
    */
   private String primer;
   /**
