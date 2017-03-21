@@ -329,36 +329,6 @@ public class AnalysisTests {
   }
 
   /**
-   * This test checks findBestMatch with a half gene DEPRICATED
-   * 
-   * @author Kevin Otto
-   */
-  @SuppressWarnings("deprecation")
-  @Test
-  public void testBestMatchIncompleteSequence() {
-    String original = "halloWieGehts".toLowerCase();
-    String sequence = "XXXXHalloWie".toLowerCase();
-    String bestFit = "halloWie".toLowerCase();
-    String result = StringAnalysis.findBestMatch(sequence, original).second;
-    assertTrue(bestFit.equals(result));
-  }
-
-  /**
-   * This test checks that find best match is not overfitting DEPRICATED
-   * 
-   * @author Kevin Otto
-   */
-  @SuppressWarnings("deprecation")
-  @Test
-  public void testBestMatchOverfit() {
-    String original = "halloWieGehts".toLowerCase();
-    String falseFit = "HalloWieXXXXhalloWieGehhtsABABABHALLOWieABAB".toLowerCase();
-    String bestFit = "halloWieGehhts".toLowerCase();
-    String result = StringAnalysis.findBestMatch(falseFit, original).second;
-    assertTrue(bestFit.equals(result));
-  }
-
-  /**
    * Test for correct deletion;
    * 
    * @author Kevin Otto
