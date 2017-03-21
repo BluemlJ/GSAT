@@ -10,6 +10,7 @@ import java.util.Optional;
 import java.util.ResourceBundle;
 
 import analysis.AnalysedSequence;
+import analysis.Gene;
 import analysis.Pair;
 import exceptions.ConfigNotFoundException;
 import exceptions.FileReadingException;
@@ -51,8 +52,9 @@ import javafx.stage.WindowEvent;
 
 public class MainWindow extends Application implements javafx.fxml.Initializable {
 
-  public static boolean settingsOpen = false;
-  public static boolean autoGeneSearch = false;
+  static boolean settingsOpen = false;
+  static boolean autoGeneSearch = false;
+  static Gene dropdownGene;
 
   private static Pair<LinkedList<File>, LinkedList<File>> files;
   private static LinkedList<AnalysedSequence> sequences = new LinkedList<>();
@@ -121,6 +123,7 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
   Stage primaryStage;
 
 
+
   /**
    * Mainwindow to initialize all components and set Eventhandlers.
    * 
@@ -155,7 +158,7 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
 
     infoArea.setTranslateX(3);
     infoArea.setTranslateY(3);
-    
+
     destField.textProperty().addListener(new ChangeListener<String>() {
       @Override
       public void changed(ObservableValue<? extends String> observable, String oldValue,
@@ -181,7 +184,7 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
         }
       }
     }
-    
+
     srcField.textProperty().addListener(new ChangeListener<String>() {
       @Override
       public void changed(ObservableValue<? extends String> observable, String oldValue,
@@ -194,11 +197,11 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
             chromatogramButton.setDisable(true);
           } else {
             chromatogramButton.setDisable(false);
-            
+
             if (new File(srcField.getText()).exists()) {
-            
+
               files = GUIUtils.getSequencesFromSourceFolder(srcField.getText());
-  
+
               for (File file : files.first) {
                 try {
                   sequences.add(SequenceReader.convertFileIntoSequence(file));
@@ -256,16 +259,18 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
     openDest.setOnAction(new EventHandler<ActionEvent>() {
       @Override
       public void handle(ActionEvent arg0) {
-        
+
         if (destField.getText().isEmpty()) {
-          GUIUtils.showInfo(AlertType.ERROR, "No path specified", "Please enter the path of a destination file or a folder first.");
+          GUIUtils.showInfo(AlertType.ERROR, "No path specified",
+              "Please enter the path of a destination file or a folder first.");
           return;
         }
-        
+
         try {
           Desktop.getDesktop().open(new File(destField.getText()));
         } catch (IllegalArgumentException | IOException e) {
-            GUIUtils.showInfo(AlertType.ERROR, "Opening failed", "Could not open destination file or folder.");
+          GUIUtils.showInfo(AlertType.ERROR, "Opening failed",
+              "Could not open destination file or folder.");
         }
       }
     });
@@ -274,16 +279,18 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
     openSrc.setOnAction(new EventHandler<ActionEvent>() {
       @Override
       public void handle(ActionEvent arg0) {
-        
+
         if (srcField.getText().isEmpty()) {
-          GUIUtils.showInfo(AlertType.ERROR, "No path specified", "Please enter the path of a source file or a folder first.");
+          GUIUtils.showInfo(AlertType.ERROR, "No path specified",
+              "Please enter the path of a source file or a folder first.");
           return;
         }
-        
+
         try {
           Desktop.getDesktop().open(new File(srcField.getText()));
         } catch (IllegalArgumentException | IOException e) {
-          GUIUtils.showInfo(AlertType.ERROR, "Opening failed", "Could not open source file or folder.");
+          GUIUtils.showInfo(AlertType.ERROR, "Opening failed",
+              "Could not open source file or folder.");
         }
       }
     });
@@ -531,6 +538,8 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
       public void handle(ActionEvent arg0) {
         ShowChromatogram chromaWindow = new ShowChromatogram();
         try {
+          dropdownGene =
+              GUIUtils.getGeneFromDropDown(geneBox.getSelectionModel().getSelectedItem());
           chromaWindow.start(new Stage());
 
           chromaWindow.setSequences(sequences);

@@ -248,8 +248,15 @@ public class ShowChromatogram extends Application implements javafx.fxml.Initial
 
     //determine reference Gene and calculate offset (needed for aminoacid determination)
     try {
-      Gene refgene = StringAnalysis.findRightGene(startSequence);
-      startSequence.setReferencedGene(refgene);
+      if (startSequence.getReferencedGene() == null) {
+        if () {
+          //TODO check if selected in main window
+        }else {
+          Gene refgene = StringAnalysis.findRightGene(startSequence);
+          startSequence.setReferencedGene(refgene);
+        }
+      }
+      
       StringAnalysis.findOffset(startSequence);
     } catch (Exception e) {
       e.printStackTrace();
