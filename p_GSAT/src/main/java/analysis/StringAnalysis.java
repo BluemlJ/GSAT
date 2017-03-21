@@ -301,7 +301,11 @@ public class StringAnalysis {
         if (first) {
           aminoacid = AMINO_ACID_SHORTS.get(codon).first;  
         }else {
+          if(AMINO_ACID_SHORTS.get(codon) != null)
           aminoacid = AMINO_ACID_SHORTS.get(codon).second;
+          else {
+            aminoacid = null;
+          }
         }
         
 
