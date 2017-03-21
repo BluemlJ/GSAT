@@ -20,6 +20,7 @@ public class AnalysedSequence extends Sequence {
    */
   private String comments = "";
 
+  //TODO Comment @BEN
   private LinkedList<ProblematicComment> problems = new LinkedList<ProblematicComment>();
 
   /**
@@ -103,6 +104,9 @@ public class AnalysedSequence extends Sequence {
     this.qualities = qualities;
   }
 
+  /**
+   * constructor creating an empty sequence
+   */
   public AnalysedSequence() {
     super("", null);
   }
@@ -150,6 +154,7 @@ public class AnalysedSequence extends Sequence {
     mutations.add(mutation);
   }
 
+  //TODO @Ben comment
   public void addProblematicComment(ProblematicComment comment) {
     problems.add(comment);
   }

@@ -107,6 +107,7 @@ public class StringAnalysis {
    *        the length it should be appended to
    * @param length
    * @return
+   * @author kevin
    */
   public static String appendStringToLength(String input, int length) {
     // calculate number of characters needed to reach required length
@@ -384,7 +385,7 @@ public class StringAnalysis {
   }
 
   /**
-   * 
+   *TODO @Jannis COMMENT
    * @param toAnalyze
    * @return
    */
@@ -422,10 +423,18 @@ public class StringAnalysis {
    * @author Kevin
    */
   public static int getLevenshteinIndex(String first, String second) {
+    //create levenstein matrix:
     int[][] matrix = calculateLevenshteinMatrix(first, second);
     return getLevenshteinIndex(matrix);
   }
 
+  /**
+   * cuts of the vector of the given sequence (trim vector) and sets the given gene as reference Gene
+   * @see trimvector
+   * @param toAlign
+   * @param gene
+   * @author kevin
+   */
   public static void trimVector(AnalysedSequence toAlign, Gene gene) {
     toAlign.setReferencedGene(gene);
     trimVector(toAlign);
@@ -464,6 +473,7 @@ public class StringAnalysis {
    * 
    * @param sequence
    * @return
+   * @author kevin
    */
   public static boolean findOffset(AnalysedSequence sequence) {
 
