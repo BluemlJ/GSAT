@@ -42,11 +42,11 @@ import javafx.stage.Stage;
 
 public class ShowChromatogram extends Application implements javafx.fxml.Initializable {
 
-  private final Color colorA = new Color(170,220,80);//green 70B7BA
-  private final Color colorT = new Color(240,60,60);//red
-  private final Color colorG = Color.BLACK;//black
-  private final Color colorC = new Color(110,180,200);//blue
-  private final Color background = new Color(244,244,244);//blue
+  private final Color colorA = new Color(170, 220, 80);     // green
+  private final Color colorT = new Color(240, 60, 60);      // red
+  private final Color colorG = Color.BLACK;                 // black
+  private final Color colorC = new Color(110, 180, 200);    // blue
+  private final Color background = new Color(244, 244, 244);// blue
 
   private int lineThickness = 5;
 
@@ -221,7 +221,7 @@ public class ShowChromatogram extends Application implements javafx.fxml.Initial
     }
 
     // variables for scaling image
-    double stretchY = 0.25;
+    double stretchY = 0.2;
     int stretchX = 4;
 
     System.out.println("chromatogram length = " + last);
@@ -234,7 +234,7 @@ public class ShowChromatogram extends Application implements javafx.fxml.Initial
     BasicStroke bigStroke =
         new BasicStroke(lineThickness, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND);
     BasicStroke smallStroke =
-        new BasicStroke(lineThickness/2, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND);
+        new BasicStroke(lineThickness / 2, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND);
     // graphics settings
     RenderingHints renderingHints = new RenderingHints(RenderingHints.KEY_TEXT_ANTIALIASING,
         RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
@@ -259,7 +259,6 @@ public class ShowChromatogram extends Application implements javafx.fxml.Initial
 
     for (int i = 0; i < last; i++) {
       buffGraph.setStroke(bigStroke);
-      // System.out.println(i + "/" + last);
       // scale traces to match image coordinate system
       int aBasecall = (int) (400 - ((channelA[i]) * stretchY));
       int tBasecall = (int) (400 - ((channelT[i]) * stretchY));
@@ -282,7 +281,7 @@ public class ShowChromatogram extends Application implements javafx.fxml.Initial
       buffGraph.setColor(colorC);
       buffGraph.drawLine((i - 1) * stretchX, lastC, i * stretchX, cBasecall);
 
-      
+
       if (baseCalls[basecallIndex] == i) {
         // draw line
         // buffGraph.setColor(new java.awt.Color(240, 240, 240));
@@ -312,7 +311,7 @@ public class ShowChromatogram extends Application implements javafx.fxml.Initial
 
         // draw nucleotide
         int fontWidth = buffGraph.getFontMetrics().stringWidth("" + nucleotide) / 2;
-        buffGraph.drawString("" + nucleotide, i * stretchX - fontWidth, 10);
+        buffGraph.drawString("" + nucleotide, i * stretchX - fontWidth, 15);
 
         // Draw aminoacid
         buffGraph.setColor(Color.BLACK);
@@ -324,10 +323,14 @@ public class ShowChromatogram extends Application implements javafx.fxml.Initial
                 (startSequence.getSequence().substring(basecallIndex, basecallIndex + 3))
                     .toUpperCase();
             String Aminoascid = StringAnalysis.codonsToAminoAcids(aminoInNucleotides);
-            buffGraph.drawString(Aminoascid, baseCalls[basecallIndex+1] * stretchX - fontWidth, 30);
-            buffGraph.drawLine(baseCalls[basecallIndex] * stretchX - fontWidth*2, 35, (baseCalls[basecallIndex+2]) * stretchX + fontWidth*2, 35);
-            buffGraph.drawLine(baseCalls[basecallIndex] * stretchX - fontWidth*2, 40, baseCalls[basecallIndex] * stretchX - fontWidth*2, 20);
-            buffGraph.drawLine(baseCalls[basecallIndex+2] * stretchX + fontWidth*2, 40, baseCalls[basecallIndex+2] * stretchX + fontWidth*2, 20);
+            buffGraph.drawString(Aminoascid, baseCalls[basecallIndex + 1] * stretchX - fontWidth,
+                30);
+            buffGraph.drawLine(baseCalls[basecallIndex] * stretchX - fontWidth * 2, 35,
+                (baseCalls[basecallIndex + 2]) * stretchX + fontWidth * 2, 35);
+            buffGraph.drawLine(baseCalls[basecallIndex] * stretchX - fontWidth * 2, 40,
+                baseCalls[basecallIndex] * stretchX - fontWidth * 2, 20);
+            buffGraph.drawLine(baseCalls[basecallIndex + 2] * stretchX + fontWidth * 2, 40,
+                baseCalls[basecallIndex + 2] * stretchX + fontWidth * 2, 20);
           }
         }
 
@@ -353,147 +356,9 @@ public class ShowChromatogram extends Application implements javafx.fxml.Initial
     SwingFXUtils.toFXImage(buffImg, wrtieImg);
     viewer.setImage(wrtieImg);
     img = wrtieImg;
-    /*
-     * try
-     * 
-     * { File outputfile = new File("resources/GeneData/chrom.png"); ImageIO.write(buffImg, "png",
-     * outputfile);
-     * 
-     * } catch (IOException e1) {
-     * 
-     * e1.printStackTrace(); }
-     */
-
-    /*
-     * System.out.println("getGraph"); // GraphicsContext graph =
-     * chartCanvas.getGraphicsContext2D(); try { FileInputStream fin = new FileInputStream(new
-     * File("resources/GeneData/chrom.png")); Image img = new Image(fin); viewer.setImage(img); }
-     * catch (FileNotFoundException e) { e.printStackTrace(); }
-     */
 
     System.out.println("Finished");
   }
-
-  /*
-   * private void updateSequences(int id) { System.out.println("seqence Update");
-   * 
-   * activeSequence = id;
-   * 
-   * AnalysedSequence startSequence = sequences.get(id);
-   * 
-   * int[] channelA = startSequence.getChannelA(); int[] channelC = startSequence.getChannelC();
-   * int[] channelT = startSequence.getChannelT(); int[] channelG = startSequence.getChannelG();
-   * 
-   * int last = (int) channelA.length;
-   * 
-   * last = (int) Math.min(last, channelC.length); last = (int) Math.min(last, channelT.length);
-   * last = (int) Math.min(last, channelG.length);
-   * 
-   * System.out.println("new Canvas"); ImageView viewr = new ImageView();
-   * System.out.println("add canvas"); try { scrollPane.setContent(viewr); } catch (Exception e) {
-   * e.printStackTrace(); }
-   * 
-   * double strechX = 0.25; int strechY = 4;
-   * 
-   * System.out.println("chromatogram length = " + last);
-   * 
-   * BufferedImage buffImg = new BufferedImage(last * strechY, 400, BufferedImage.TYPE_INT_RGB);
-   * buffImg.createGraphics(); Graphics buffGraph = buffImg.getGraphics();
-   * 
-   * buffGraph.setColor(java.awt.Color.WHITE); buffGraph.fillRect(0, 0, last * strechY, 400);
-   * 
-   * int lastA = 0; int lastT = 0; int lastG = 0; int lastC = 0;
-   * 
-   * // A int lastAmax = 0; int nextAmax = 0; int lastAhight = 0; int lastACandidate = 0; int aHold
-   * = 0; boolean aFalling = true;
-   * 
-   * // T int lastTmax = 0; int nextTmax = 0; int lastThight = 0; int lastTCandidate = 0; int tHold
-   * = 0; boolean tFalling = true;
-   * 
-   * // G int lastGmax = 0; int nextGmax = 0; int lastGhight = 0; int lastGCandidate = 0; int gHold
-   * = 0; boolean gFalling = true;
-   * 
-   * // C int lastCmax = 0; int nextCmax = 0; int lastChight = 0; int lastCCandidate = 0; int cHold
-   * = 0; boolean cFalling = true;
-   * 
-   * int num = 0;
-   * 
-   * for (int i = 0; i < last; i++) { int a = (int) (400 - ((channelA[i]) * strechX)); int t = (int)
-   * (400 - ((channelT[i]) * strechX)); int g = (int) (400 - ((channelG[i]) * strechX)); int c =
-   * (int) (400 - ((channelC[i]) * strechX));
-   * 
-   * // A buffGraph.setColor(colorA); buffGraph.drawLine((i - 1) * strechY, lastA, i * strechY, a);
-   * 
-   * // T buffGraph.setColor(colorT); buffGraph.drawLine((i - 1) * strechY, lastT, i * strechY, t);
-   * 
-   * // G buffGraph.setColor(colorG); buffGraph.drawLine((i - 1) * strechY, lastG, i * strechY, g);
-   * 
-   * // C buffGraph.setColor(colorC); buffGraph.drawLine((i - 1) * strechY, lastC, i * strechY, c);
-   * 
-   * // A if (channelA[i] >= lastACandidate) { if (!aFalling) { aHold++; } else { aHold = 0; }
-   * aFalling = false;
-   * 
-   * } else { if (aFalling) { aHold++; } else { aHold = 0; nextAmax = i - 1; }
-   * 
-   * aFalling = true; aHold++; }
-   * 
-   * if (aHold > 5 && lastAmax != nextAmax) { if (channelA[nextAmax] > channelT[nextAmax] &&
-   * channelA[nextAmax] > channelG[nextAmax] && channelA[nextAmax] > channelC[nextAmax]) { num++;
-   * buffGraph.setColor(colorA); buffGraph.drawLine((nextAmax) * strechY, 0, (nextAmax) * strechY,
-   * 400); } } // *********************************************T if (channelT[i] >= lastTCandidate)
-   * { if (!tFalling) { tHold++; } else { tHold = 0; } tFalling = false;
-   * 
-   * } else { if (tFalling) { tHold++; } else { tHold = 0; nextTmax = i - 1; }
-   * 
-   * tFalling = true; tHold++; }
-   * 
-   * if (tHold > 5 && lastTmax != nextTmax) { if (channelT[nextTmax] > channelA[nextTmax] &&
-   * channelT[nextTmax] > channelG[nextTmax] && channelT[nextTmax] > channelC[nextTmax]) { num++;
-   * buffGraph.setColor(colorT); buffGraph.drawLine((nextTmax) * strechY, 0, (nextTmax) * strechY,
-   * 400); } } // ********************************G if (channelG[i] >= lastGCandidate) { if
-   * (!gFalling) { gHold++; } else { gHold = 0; } gFalling = false;
-   * 
-   * } else { if (gFalling) { gHold++; } else { gHold = 0; nextGmax = i - 1; }
-   * 
-   * gFalling = true; gHold++; }
-   * 
-   * if (gHold > 5 && lastGmax != nextGmax) { if (channelG[nextGmax] > channelT[nextGmax] &&
-   * channelG[nextGmax] > channelA[nextGmax] && channelG[nextGmax] > channelC[nextGmax]) { num++;
-   * buffGraph.setColor(colorG); buffGraph.drawLine((nextGmax) * strechY, 0, (nextGmax) * strechY,
-   * 400); } } // ***********************C if (channelC[i] >= lastCCandidate) { if (!cFalling) {
-   * cHold++; } else { cHold = 0; } cFalling = false;
-   * 
-   * } else { if (cFalling) { cHold++; } else { cHold = 0; nextCmax = i - 1; }
-   * 
-   * cFalling = true; cHold++; }
-   * 
-   * if (cHold > 5 && lastCmax != nextCmax) { if (channelC[nextCmax] > channelT[nextCmax] &&
-   * channelC[nextCmax] > channelG[nextCmax] && channelC[nextCmax] > channelA[nextCmax]) { num++;
-   * buffGraph.setColor(colorC); buffGraph.drawLine((nextCmax) * strechY, 0, (nextCmax) * strechY,
-   * 400); } }
-   * 
-   * lastACandidate = channelA[i]; lastTCandidate = channelT[i]; lastGCandidate = channelG[i];
-   * lastCCandidate = channelC[i]; //
-   * 
-   * lastA = a; lastT = t; lastG = g; lastC = c;
-   * 
-   * } System.out.println(num + " = num"); System.out.println(startSequence.getSequence().length() +
-   * " = seq"); try
-   * 
-   * { File outputfile = new File("resources/GeneData/chrom.png"); ImageIO.write(buffImg, "png",
-   * outputfile);
-   * 
-   * } catch (IOException e1) {
-   * 
-   * e1.printStackTrace(); }
-   * 
-   * System.out.println("getGraph"); // GraphicsContext graph = chartCanvas.getGraphicsContext2D();
-   * try { FileInputStream fin = new FileInputStream(new File("resources/GeneData/chrom.png"));
-   * Image img = new Image(fin); viewr.setImage(img); } catch (FileNotFoundException e) {
-   * e.printStackTrace(); }
-   * 
-   * System.out.println("Finished"); }
-   */
 
   public void setSequence(AnalysedSequence sequence) {
     this.sequences = new LinkedList<AnalysedSequence>();
