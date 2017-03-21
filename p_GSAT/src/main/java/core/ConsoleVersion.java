@@ -39,7 +39,7 @@ import io.SequenceReader;
  * </p>
  * 
  * @deprecated
- * @author jannis blueml
+ * @author Lovis Heindrich
  *
  */
 public class ConsoleVersion {
@@ -383,6 +383,7 @@ public class ConsoleVersion {
 	 * 
 	 * @return The path entered by the user if the path is valid, null
 	 *         otherwise.
+	 * @author Lovis Heindrich
 	 */
 	private static String processPath() {
 		String message = "Please enter the path where the results will be stored." + System.lineSeparator()
