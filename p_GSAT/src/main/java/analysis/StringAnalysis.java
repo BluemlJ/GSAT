@@ -285,7 +285,7 @@ public class StringAnalysis {
       // Map
       for (int i = 0; i < nucleotides.length(); i = i + 3) {
         String codon = nucleotides.substring(i, i + 3);
-        String aminoacid = AMINO_ACID_SHORTS.get(codon);
+        String aminoacid = AMINO_ACID_SHORTS.get(codon).first;
 
         if (aminoacid != null) {
           builder.append(aminoacid);
