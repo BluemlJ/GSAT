@@ -22,147 +22,79 @@ public class StringAnalysis {
   /**
    * A Map with all possible RNA and DNA codons with the matched AminoAcid in short form.
    */
-  public static final Map<String, String> AMINO_ACID_SHORTS;
+  public static final Map<String, Pair<String, String>> AMINO_ACID_SHORTS;
 
   static {
-    Hashtable<String, String> tmp = new Hashtable<String, String>();
-    // RNA
-    tmp.put("UUU", "F");
-    tmp.put("UUC", "F");
-    tmp.put("UUA", "L");
-    tmp.put("UUG", "L");
-    tmp.put("UCU", "S");
-    tmp.put("UCC", "S");
-    tmp.put("UCA", "S");
-    tmp.put("UCG", "S");
-    tmp.put("UAU", "Y");
-    tmp.put("UAC", "Y");
-    tmp.put("UAA", "#");
-    tmp.put("UAG", "#");
-    tmp.put("UGU", "C");
-    tmp.put("UGC", "C");
-    tmp.put("UGA", "#");
-    tmp.put("UGG", "W");
-
-    tmp.put("CUU", "L");
-    tmp.put("CUC", "L");
-    tmp.put("CUA", "L");
-    tmp.put("CUG", "L");
-    tmp.put("CCU", "P");
-    tmp.put("CCC", "P");
-    tmp.put("CCA", "P");
-    tmp.put("CCG", "P");
-    tmp.put("CAU", "H");
-    tmp.put("CAC", "H");
-    tmp.put("CAA", "Q");
-    tmp.put("CAG", "Q");
-    tmp.put("CGU", "R");
-    tmp.put("CGC", "R");
-    tmp.put("CGA", "R");
-    tmp.put("CGG", "R");
-
-    tmp.put("AUU", "I");
-    tmp.put("AUC", "I");
-    tmp.put("AUA", "I");
-    tmp.put("AUG", "M");
-    tmp.put("ACU", "T");
-    tmp.put("ACC", "T");
-    tmp.put("ACA", "T");
-    tmp.put("ACG", "T");
-    tmp.put("AAU", "N");
-    tmp.put("AAC", "N");
-    tmp.put("AAA", "K");
-    tmp.put("AAG", "K");
-    tmp.put("AGU", "S");
-    tmp.put("AGC", "S");
-    tmp.put("AGA", "R");
-    tmp.put("AGG", "R");
-
-    tmp.put("GUU", "V");
-    tmp.put("GUC", "V");
-    tmp.put("GUA", "V");
-    tmp.put("GUG", "V");
-    tmp.put("GCU", "A");
-    tmp.put("GCC", "A");
-    tmp.put("GCA", "A");
-    tmp.put("GCG", "A");
-    tmp.put("GAU", "D");
-    tmp.put("GAC", "D");
-    tmp.put("GAA", "E");
-    tmp.put("GAG", "E");
-    tmp.put("GGU", "G");
-    tmp.put("GGC", "G");
-    tmp.put("GGA", "G");
-    tmp.put("GGG", "G");
-
+    Hashtable<String, Pair<String, String>> tmp = new Hashtable<String, Pair<String,String>>();
+    
     // DNA
-    tmp.put("TTT", "F");
-    tmp.put("TTC", "F");
-    tmp.put("TTA", "L");
-    tmp.put("TTG", "L");
-    tmp.put("TCT", "S");
-    tmp.put("TCC", "S");
-    tmp.put("TCA", "S");
-    tmp.put("TCG", "S");
-    tmp.put("TAT", "Y");
-    tmp.put("TAC", "Y");
-    tmp.put("TAA", "#");
-    tmp.put("TAG", "#");
-    tmp.put("TGT", "C");
-    tmp.put("TGC", "C");
-    tmp.put("TGA", "#");
-    tmp.put("TGG", "W");
+    tmp.put("TTT", new Pair<String, String>("F", "Phe"));
+    tmp.put("TTC", new Pair<String, String>("F", "Phe"));
+    tmp.put("TTA", new Pair<String, String>("L", "Leu"));
+    tmp.put("TTG", new Pair<String, String>("L", "Leu"));
+    tmp.put("TCT", new Pair<String, String>("S", "Ser"));
+    tmp.put("TCC", new Pair<String, String>("S", "Ser"));
+    tmp.put("TCA", new Pair<String, String>("S", "Ser"));
+    tmp.put("TCG", new Pair<String, String>("S", "Ser"));
+    tmp.put("TAT", new Pair<String, String>("Y", "Tyr"));
+    tmp.put("TAC", new Pair<String, String>("Y", "Tyr"));
+    tmp.put("TAA", new Pair<String, String>("#", "STOP"));
+    tmp.put("TAG", new Pair<String, String>("#", "STOP"));
+    tmp.put("TGT", new Pair<String, String>("C", "Cys"));
+    tmp.put("TGC", new Pair<String, String>("C", "Cys"));
+    tmp.put("TGA", new Pair<String, String>("#", "STOP"));
+    tmp.put("TGG", new Pair<String, String>("W", "Trp"));
 
-    tmp.put("CTT", "L");
-    tmp.put("CTC", "L");
-    tmp.put("CTA", "L");
-    tmp.put("CTG", "L");
-    tmp.put("CCT", "P");
-    tmp.put("CCC", "P");
-    tmp.put("CCA", "P");
-    tmp.put("CCG", "P");
-    tmp.put("CAT", "H");
-    tmp.put("CAC", "H");
-    tmp.put("CAA", "Q");
-    tmp.put("CAG", "Q");
-    tmp.put("CGT", "R");
-    tmp.put("CGC", "R");
-    tmp.put("CGA", "R");
-    tmp.put("CGG", "R");
+    tmp.put("CTT", new Pair<String, String>("L", "Leu"));
+    tmp.put("CTC", new Pair<String, String>("L", "Leu"));
+    tmp.put("CTA", new Pair<String, String>("L", "Leu"));
+    tmp.put("CTG", new Pair<String, String>("L", "Leu"));
+    tmp.put("CCT", new Pair<String, String>("P", "Pro"));
+    tmp.put("CCC", new Pair<String, String>("P", "Pro"));
+    tmp.put("CCA", new Pair<String, String>("P", "Pro"));
+    tmp.put("CCG", new Pair<String, String>("P", "Pro"));
+    tmp.put("CAT", new Pair<String, String>("H", "His"));
+    tmp.put("CAC", new Pair<String, String>("H", "His"));
+    tmp.put("CAA", new Pair<String, String>("Q", "Gln"));
+    tmp.put("CAG", new Pair<String, String>("Q", "Gln"));
+    tmp.put("CGT", new Pair<String, String>("R", "Arg"));
+    tmp.put("CGC", new Pair<String, String>("R", "Arg"));
+    tmp.put("CGA", new Pair<String, String>("R", "Arg"));
+    tmp.put("CGG", new Pair<String, String>("R", "Arg"));
 
-    tmp.put("ATT", "I");
-    tmp.put("ATC", "I");
-    tmp.put("ATA", "I");
-    tmp.put("ATG", "M");
-    tmp.put("ACT", "T");
-    tmp.put("ACC", "T");
-    tmp.put("ACA", "T");
-    tmp.put("ACG", "T");
-    tmp.put("AAT", "N");
-    tmp.put("AAC", "N");
-    tmp.put("AAA", "K");
-    tmp.put("AAG", "K");
-    tmp.put("AGT", "S");
-    tmp.put("AGC", "S");
-    tmp.put("AGA", "R");
-    tmp.put("AGG", "R");
+    tmp.put("ATT", new Pair<String, String>("I", "Ile"));
+    tmp.put("ATC", new Pair<String, String>("I", "Ile"));
+    tmp.put("ATA", new Pair<String, String>("I", "Ile"));
+    tmp.put("ATG", new Pair<String, String>("M", "Met"));
+    tmp.put("ACT", new Pair<String, String>("T", "Thr"));
+    tmp.put("ACC", new Pair<String, String>("T", "Thr"));
+    tmp.put("ACA", new Pair<String, String>("T", "Thr"));
+    tmp.put("ACG", new Pair<String, String>("T", "Thr"));
+    tmp.put("AAT", new Pair<String, String>("N", "Asn"));
+    tmp.put("AAC", new Pair<String, String>("N", "Asn"));
+    tmp.put("AAA", new Pair<String, String>("K", "Lys"));
+    tmp.put("AAG", new Pair<String, String>("K", "Lys"));
+    tmp.put("AGT", new Pair<String, String>("S", "Ser"));
+    tmp.put("AGC", new Pair<String, String>("S", "Ser"));
+    tmp.put("AGA", new Pair<String, String>("R", "Arg"));
+    tmp.put("AGG", new Pair<String, String>("R", "Arg"));
 
-    tmp.put("GTT", "V");
-    tmp.put("GTC", "V");
-    tmp.put("GTA", "V");
-    tmp.put("GTG", "V");
-    tmp.put("GCT", "A");
-    tmp.put("GCC", "A");
-    tmp.put("GCA", "A");
-    tmp.put("GCG", "A");
-    tmp.put("GAT", "D");
-    tmp.put("GAC", "D");
-    tmp.put("GAA", "E");
-    tmp.put("GAG", "E");
-    tmp.put("GGT", "G");
-    tmp.put("GGC", "G");
-    tmp.put("GGA", "G");
-    tmp.put("GGG", "G");
+    tmp.put("GTT", new Pair<String, String>("V", "Val"));
+    tmp.put("GTC", new Pair<String, String>("V", "Val"));
+    tmp.put("GTA", new Pair<String, String>("V", "Val"));
+    tmp.put("GTG", new Pair<String, String>("V", "Val"));
+    tmp.put("GCT", new Pair<String, String>("A", "Ala"));
+    tmp.put("GCC", new Pair<String, String>("A", "Ala"));
+    tmp.put("GCA", new Pair<String, String>("A", "Ala"));
+    tmp.put("GCG", new Pair<String, String>("A", "Ala"));
+    tmp.put("GAT", new Pair<String, String>("D", "Asp"));
+    tmp.put("GAC", new Pair<String, String>("D", "Asp"));
+    tmp.put("GAA", new Pair<String, String>("E", "Glu"));
+    tmp.put("GAG", new Pair<String, String>("E", "Glu"));
+    tmp.put("GGT", new Pair<String, String>("G", "Gly"));
+    tmp.put("GGC", new Pair<String, String>("G", "Gly"));
+    tmp.put("GGA", new Pair<String, String>("G", "Gly"));
+    tmp.put("GGG", new Pair<String, String>("G", "Gly"));
     AMINO_ACID_SHORTS = Collections.unmodifiableMap(tmp);
   }
 
@@ -353,7 +285,7 @@ public class StringAnalysis {
       // Map
       for (int i = 0; i < nucleotides.length(); i = i + 3) {
         String codon = nucleotides.substring(i, i + 3);
-        String aminoacid = AMINO_ACID_SHORTS.get(codon);
+        String aminoacid = AMINO_ACID_SHORTS.get(codon).first;
 
         if (aminoacid != null) {
           builder.append(aminoacid);
