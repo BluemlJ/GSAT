@@ -139,8 +139,7 @@ public class GUIUtils {
     // get the gene from the coiceboxID
     Gene gene = null;
     if (!geneId.equals("-1")) {
-      gene = getGeneFromDropDown(geneId).first;
-      wrap(getGeneFromDropDown(geneId).second.second, resultingLines, false);
+      gene = getGeneFromDropDown(geneId);
     }
     // foreach ab1 file
     int counter = 0;
@@ -351,11 +350,11 @@ public class GUIUtils {
    * This method gets the Gene from his ID.
    * 
    * @param dropdownID ID of Gene in the choiceBox
-   * @return Gene and reportpair
+   * @return Gene
    */
-  private static Pair<Gene, Pair<Boolean, String>> getGeneFromDropDown(String name) {
-    return new Pair<Gene, Pair<Boolean, String>>(GeneHandler.getGene(name),
-        new Pair<Boolean, String>(true, "Reading gene was successful\n"));
+  public static Gene getGeneFromDropDown(String gene) {
+    
+    return (GeneHandler.checkGene(gene.split(" ")[0], gene.split(" ")[1]));
 
   }
 
