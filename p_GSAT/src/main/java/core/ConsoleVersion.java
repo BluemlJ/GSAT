@@ -24,6 +24,23 @@ import io.FileSaver;
 import io.GeneHandler;
 import io.SequenceReader;
 
+/**
+ * 
+ * <h1> This class is from an early version of our system. 
+ * It can only the main feature "Mutation finding and save in csv" 
+ * All other features are not implemented yet </h1>  
+ * <p>
+ * 
+ * </p>
+ * This method can be start with the console by adding the parameter -c.
+ * <p>
+ * 
+ * 
+ * </p>
+ * @deprecated
+ * @author jannis
+ *
+ */
 public class ConsoleVersion {
 
   private static boolean geneRecognition = false;
