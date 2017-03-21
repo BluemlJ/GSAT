@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Hashtable;
 import java.util.Map;
-import java.util.TreeMap;
+
 
 import exceptions.CorruptedSequenceException;
 import io.GeneHandler;
@@ -545,11 +545,7 @@ public class StringAnalysis {
           }
         }
       } else {
-        // EMERGENCY MODE
-        System.err.println("EMERGENCY MODE REQUIRED");
-        // TODO Implement
         sequence.addProblematicComment(ProblematicComment.NO_MATCH_FOUND);
-        // TODO REMOVE
         offsetNotFound = false;
       }
     }

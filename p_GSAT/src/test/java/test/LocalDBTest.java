@@ -194,7 +194,6 @@ public class LocalDBTest {
   @Test
   public void testPullAndSavePrimer()
       throws SQLException, DatabaseConnectionException, NumberFormatException, IOException {
-    // TODO manual test with 2 computers
     DatabaseConnection.setDatabaseConnection(user, pass, port, server);
     DatabaseConnection.establishConnection();
     DatabaseConnection.createDatabase();

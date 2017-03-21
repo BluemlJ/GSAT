@@ -187,8 +187,7 @@ public class ConsoleVersion {
 		} catch (MissingPathException e) {
 			FileSaver.setLocalPath(destinationPath);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			System.out.println("File " + file.getName() + " could not be written.");
 		}
 
 	}
