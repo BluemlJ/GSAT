@@ -15,7 +15,7 @@ import io.PrimerHandler;
  *
  * @author Ben Kohr
  */
-public class Main {
+class Main {
 
   /**
    * Start of the GSAT program.
