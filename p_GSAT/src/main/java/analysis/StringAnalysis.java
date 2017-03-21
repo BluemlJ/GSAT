@@ -20,7 +20,7 @@ import io.ProblematicComment;
 public class StringAnalysis {
 
   /**
-   * A Map with all possible RNA and DNA codons with the matched AminoAcid in short form.
+   * A Map with all possible DNA codons with the matched AminoAcid in short form and the not so short but not the full name form.
    */
   public static final Map<String, Pair<String, String>> AMINO_ACID_SHORTS;
 
@@ -474,131 +474,6 @@ public class StringAnalysis {
     return getLevenshteinIndex(matrix);
   }
 
-  /**
-   * same as find Best Match but faster
-   * 
-   * @param toAlign
-   * @param template
-   * 
-   * @return
-   */
-  @Deprecated
-  public static String trimbyLevevenstein(AnalysedSequence toAlign, boolean isOffsetExact) {
-
-    Gene template = toAlign.getReferencedGene();
-    int[][] levenMatrix = calculateLevenshteinMatrix(template.sequence, toAlign.sequence);
-
-    // begin and end possition of final string
-    int begin = 0;
-    int end = toAlign.length();
-    boolean endFound = false;
-    boolean potentialBegin = false;
-    int potentialBeginPosition = 0;
-
-    int bestBegin = 0;
-    double bestScore = 0.0;
-
-    // gen
-    int row = levenMatrix.length - 1;
-    // sequence
-    int line = levenMatrix[0].length - 1;
-
-    int originalBegin = 0;
-    // System.out.println();
-    // ConsoleIO.printIntMatrix(levenMatrix);
-    // System.out.println();
-    while (row > 0 && line > 0) {
-      if (levenMatrix[row - 1][line - 1] <= levenMatrix[row - 1][line]
-          && levenMatrix[row - 1][line - 1] <= levenMatrix[row][line - 1]) {
-        row--;
-
-        line--;
-        endFound = true;
-        // TODO try result
-        potentialBegin = true;
-        potentialBeginPosition = line;
-        double score = checkSimilarity(toAlign.getSequence().substring(bestBegin, end),
-            toAlign.getSequence().substring(line, end));
-        if (bestScore < score) {
-          bestScore = score;
-          bestBegin = line;
-
-        }
-
-        originalBegin = row;
-
-      } else if (levenMatrix[row - 1][line] < levenMatrix[row][line - 1]) {
-        row--;
-
-      } else {
-        if (!endFound) {
-          end--;
-        }
-        line--;
-      }
-    }
-    boolean beginOutOfRange = false;
-    if (potentialBeginPosition > 1 && potentialBegin) {
-      begin = potentialBeginPosition;
-
-    } else {
-      begin = 0;
-      beginOutOfRange = true;
-    }
-    String result = toAlign.sequence.substring(begin, end);
-    toAlign.trimQualityArray(begin, end);
-
-    String startCodon = template.sequence.substring(0, 3);
-    if (result.contains(startCodon)) {
-      int codonIndex = result.indexOf(startCodon);
-      String alternativ = result.substring(codonIndex);
-      // System.err.println(alternativ + " # " + result);
-      if (checkSimilarity(template.sequence, alternativ) <= checkSimilarity(template.sequence,
-          result)) {
-        // System.out.println("BESTMATCH: Start Codon found at " +
-        // (begin + codonIndex));
-        result = alternativ;
-        toAlign.trimQualityArray(codonIndex, toAlign.length());
-        originalBegin = 0;
-        begin = begin + codonIndex;
-      }
-    }
-
-    // TODO EXPLAIN
-    begin = begin + ((3 - (originalBegin % 3)) % 3);
-    if (beginOutOfRange && begin > 0) {
-      begin--;
-    }
-
-    if (isOffsetExact) {
-      begin = 0;
-    }
-
-    result = toAlign.sequence.substring(begin, end - ((end - begin) % 3));
-    toAlign.trimQualityArray(begin, end - ((end - begin) % 3));
-    // corect vectors
-
-    // sequence.setOffset(begin);ORIGINAL
-    // System.out.println(template.sequence);
-    // System.out.println(toAlign.sequence.substring(toAlign.getOffset()));
-    // System.err.println(toAlign.sequence);
-    /*
-     * System.out.println(begin); System.out.println("template    = " +template.sequence);
-     * System.out.println("result      = " + result); System.out.println("alinght     = " +
-     * toAlign); System.out.println("alternative = " +
-     * toAlign.sequence.substring(toAlign.getOffset(),Math.min(end, toAlign.sequence.length()))); if
-     * (checkSimilarity(template.sequence,
-     * toAlign.sequence.substring(toAlign.getOffset(),Math.min(end, toAlign.sequence.length()))) <=
-     * checkSimilarity(template.sequence, result)) { originalBegin = toAlign.getOffset(); result =
-     * toAlign.sequence.substring(toAlign.getOffset(),Math.min(end, toAlign.sequence.length())); }
-     */
-    toAlign.setSequence(result);
-    toAlign.setOffset(originalBegin + ((3 - (originalBegin % 3)) % 3));
-    // toAlign.setOffset(toAlign.getOffset() + begin);
-    return result;
-    // System.out.println(toAlign.getOffset() + " = OFFSET");
-  }
-
   public static void trimVector(AnalysedSequence toAlign, Gene gene) {
     toAlign.setReferencedGene(gene);
     trimVector(toAlign);
@@ -627,18 +502,6 @@ public class StringAnalysis {
     // set vector and correct offset
     toAlign.setOffset(Math.min(toAlign.getOffset(), 0));
     toAlign.setOffset(-toAlign.getOffset());
-    toAlign.setSequence(newSequence);
-
-    // TODO Ask Jannis!
-    // **********modulo Cutting*****************
-    /*
-     * if (toAlign.getOffset() != 0) { int begin = (3 - (toAlign.getOffset() % 3) % 3); newSequence
-     * = newSequence.substring(begin); int end = newSequence.length()-(newSequence.length()%3);
-     * newSequence = newSequence.substring(0,end); toAlign.trimQualityArray(begin,
-     * toAlign.getQuality().length); toAlign.trimQualityArray(0, end); }
-     */
-    // ******************************************
-
     toAlign.setSequence(newSequence);
   }
 

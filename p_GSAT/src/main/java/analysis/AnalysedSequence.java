@@ -9,7 +9,7 @@ import io.ProblematicComment;
  * Sequence class defines it's basic behavior.
  * 
  * @category object
- * @author Ben Kohr, Jannis Blueml
+ * @author Ben Kohr, jannis blueml
  * 
  */
 public class AnalysedSequence extends Sequence {
@@ -71,8 +71,10 @@ public class AnalysedSequence extends Sequence {
    */
   private double trimPercentage;
 
-  private String primer = "";
-
+ 
+  /**
+   * quality average of all nucletieds in sequence after trimming
+   */
   private int avgQuality;
 
   /**
@@ -111,7 +113,6 @@ public class AnalysedSequence extends Sequence {
    * @param researcher
    * @param comment
    * @param manualcheck
-   * @param primer2
    * @param vecLeft
    * @param vecRight
    * @param trimpercent
@@ -122,14 +123,13 @@ public class AnalysedSequence extends Sequence {
    */
   public AnalysedSequence(Gene gene, LinkedList<String> mutations, String name, String sequence,
       java.util.Date date, String researcher, String comment, boolean manuallyChecked,
-      String primer2, int trimpercent, int histag, int avgquality2) {
+       int trimpercent, int histag, int avgquality2) {
     super(sequence, researcher, date);
     this.referencedGene = gene;
     this.mutations = mutations;
     this.fileName = name;
     this.comments = comment;
     this.manuallyChecked = manuallyChecked;
-    this.primer = primer2;
     this.trimPercentage = trimpercent;
     this.hisTagPosition = histag;
     this.avgQuality = avgquality2;
@@ -155,7 +155,7 @@ public class AnalysedSequence extends Sequence {
    * 
    * @return the sequence's length
    * 
-   * @author Jannis Blueml
+   * @author jannis blueml
    */
   public int length() {
     return sequence.length();
@@ -164,7 +164,7 @@ public class AnalysedSequence extends Sequence {
   /**
    * This method reverses the Qualityarray and set it new.
    * 
-   * @author bluemlj
+   * @author jannis blueml
    */
   public void reverseQuality() {
     if (qualities == null) {
@@ -211,6 +211,22 @@ public class AnalysedSequence extends Sequence {
     String trimmed = sequence.substring(startIndex, endIndex + 1);
     this.sequence = trimmed;
   }
+  
+  /**
+   * adds comment to existing comments
+   * 
+   * @param comments
+   * 
+   * @author Kevin
+   */
+  public void addComments(String comments) {
+    if (this.comments.length() > 0) {
+      this.comments = this.comments + ", " + comments;
+    } else {
+      setComments(comments);
+    }
+
+  }
 
   // GETTERs and SETTERs:
 
@@ -220,21 +236,6 @@ public class AnalysedSequence extends Sequence {
 
   public void setComments(String comments) {
     this.comments = comments;
-  }
-
-  /**
-   * adds comment to existing comments
-   * 
-   * @author Kevin
-   * @param comments
-   */
-  public void addComments(String comments) {
-    if (this.comments.length() > 0) {
-      this.comments = this.comments + ", " + comments;
-    } else {
-      setComments(comments);
-    }
-
   }
 
   public String getFileName() {
@@ -285,14 +286,6 @@ public class AnalysedSequence extends Sequence {
     this.avgQuality = avgQuality;
   }
 
-  public void setPrimer(String primer) {
-    this.primer = primer;
-  }
-
-  public String getPrimer() {
-    return primer;
-  }
-
   public Gene getReferencedGene() {
     return referencedGene;
   }
@@ -317,58 +310,35 @@ public class AnalysedSequence extends Sequence {
     this.hisTagPosition = hisTagPosition;
   }
 
-  /**
-   * @return the channelA
-   */
+ 
   public int[] getChannelA() {
     return channelA;
   }
 
-  /**
-   * @param channelA the channelA to set
-   */
   public void setChannelA(int[] channelA) {
     this.channelA = channelA;
   }
 
-  /**
-   * @return the channelC
-   */
   public int[] getChannelC() {
     return channelC;
   }
 
-  /**
-   * @param channelC the channelC to set
-   */
   public void setChannelC(int[] channelC) {
     this.channelC = channelC;
   }
 
-  /**
-   * @return the channelG
-   */
   public int[] getChannelG() {
     return channelG;
   }
 
-  /**
-   * @param channelG the channelG to set
-   */
   public void setChannelG(int[] channelG) {
     this.channelG = channelG;
   }
 
-  /**
-   * @return the channelT
-   */
   public int[] getChannelT() {
     return channelT;
   }
 
-  /**
-   * @param channelT the channelT to set
-   */
   public void setChannelT(int[] channelT) {
     this.channelT = channelT;
   }

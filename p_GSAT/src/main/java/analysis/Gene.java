@@ -17,12 +17,19 @@ public class Gene extends Sequence {
   private int id;
 
   /**
-   * Name of the gene (e.g. FSA).
+   * Name of the gene (e.g. fsa). 
+   * Starts with lowercase.
    */
   private String name;
 
+  /**
+   * Name of organism added to the gene (f.e. ecoli,...)
+   */
   private String organism;
 
+  /**
+   * special comments for genes, saved in gene.txt
+   */
   private String comment;
 
   /**
@@ -51,7 +58,7 @@ public class Gene extends Sequence {
    * @param comment a comment about this specific gene sequence
    * @param researcher the name of the researcher who added this gene
    * 
-   * @author Jannis Blueml
+   * @author jannis blueml
    */
   public Gene(String sequence, int id, String name, String researcher, String organism,
       String comment) {

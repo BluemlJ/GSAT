@@ -12,7 +12,6 @@ import exceptions.UndefinedTypeOfMutationException;
  * 
  * @author jannis blueml, kevin otto
  * @category DNA.Utils
- * @since 11.2.17
  */
 public class MutationAnalysis {
 
@@ -37,7 +36,7 @@ public class MutationAnalysis {
    * 
    * @return A boolean, if there was a reading frame error
    * 
-   * @author bluemlj
+   * @author jannis blueml
    * @throws CorruptedSequenceException
    */
   public static boolean findMutations(AnalysedSequence toAnalyze)
@@ -422,7 +421,7 @@ public class MutationAnalysis {
    * @param sequence The gene
    * 
    * @return A list of differences (represented as String)
-   * @author Kevin Otto, Jannis Blueml
+   * @author Kevin Otto, jannis blueml
    * @throws CorruptedSequenceException
    */
   private static LinkedList<String> reportDifferences(AnalysedSequence seq, boolean type)
