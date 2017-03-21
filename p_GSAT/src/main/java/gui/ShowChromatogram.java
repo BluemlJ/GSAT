@@ -40,6 +40,11 @@ import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
+/**
+ * Class for displaying Chromatogram data with JavaFX
+ * @author kevin
+ *
+ */
 public class ShowChromatogram extends Application implements javafx.fxml.Initializable {
 
   //Preset colors for Chromatogram:
@@ -77,6 +82,7 @@ public class ShowChromatogram extends Application implements javafx.fxml.Initial
   /**
    * required by JavaFX
    * but not used in this class
+   * @author kevin
    */
   @Override
   public void initialize(URL arg0, ResourceBundle arg1) {
@@ -89,7 +95,7 @@ public class ShowChromatogram extends Application implements javafx.fxml.Initial
   /**
    * JavaFX start method
    * Setup all necessary variables and opens the Chromatogram
-   * 
+   * @author kevin
    */
   @Override
   public void start(Stage primaryStage) throws Exception {
@@ -221,6 +227,7 @@ public class ShowChromatogram extends Application implements javafx.fxml.Initial
    * Sets the active Sequence to id and updates the image
    * Redraws the image and Displays it
    * @param id The id of the currently selected Sequence
+   * @author kevin
    */
   private void updateSequences(int id) {
 
@@ -424,6 +431,7 @@ public class ShowChromatogram extends Application implements javafx.fxml.Initial
   /**
    * sets Sequence and updates Chromatogram accordingly
    * @param sequence
+   * @author kevin
    */
   public void setSequence(AnalysedSequence sequence) {
     //create new list
@@ -439,6 +447,7 @@ public class ShowChromatogram extends Application implements javafx.fxml.Initial
   /**
    * sets list of Sequences and updates Chromatogram accordingly
    * Automatically sets first sequence of the list.
+   * @author kevin
    * @param sequences
    */
   public void setSequences(LinkedList<AnalysedSequence> sequences) {
