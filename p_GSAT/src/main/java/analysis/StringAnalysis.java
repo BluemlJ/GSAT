@@ -720,11 +720,7 @@ public class StringAnalysis {
           }
         }
       } else {
-        // EMERGENCY MODE
-        System.err.println("EMERGENCY MODE REQUIRED");
-        // TODO Implement
         sequence.addProblematicComment(ProblematicComment.NO_MATCH_FOUND);
-        // TODO REMOVE
         offsetNotFound = false;
       }
     }

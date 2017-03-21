@@ -16,6 +16,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
@@ -60,9 +61,8 @@ public class ParameterWindow extends Application implements javafx.fxml.Initiali
 
     try {
       ConfigHandler.readConfig();
-    } catch (UnknownConfigFieldException | ConfigNotFoundException | IOException e1) {
-      // TODO Auto-generated catch block
-      e1.printStackTrace();
+    } catch (UnknownConfigFieldException | ConfigNotFoundException | IOException e) {
+      GUIUtils.showInfo(AlertType.ERROR, "Configuration reading error", "The configuration file could not be read. Maybe it's corrupted.");
     }
     avgApproximationEnd.setText(ConfigHandler.getAvgApproximationEnd() + "");
     avgApproximationStart.setText(ConfigHandler.getAvgApproximationStart() + "");

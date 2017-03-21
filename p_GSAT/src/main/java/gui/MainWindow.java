@@ -17,6 +17,8 @@ import exceptions.MissingPathException;
 import exceptions.UnknownConfigFieldException;
 import io.ConfigHandler;
 import io.FileSaver;
+import io.GeneHandler;
+import io.PrimerHandler;
 import io.SequenceReader;
 import javafx.application.Application;
 import javafx.application.Platform;
@@ -68,6 +70,8 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
   private ProgressBar bar;
 
   // BUTTONS
+  @FXML
+  private Button openResFile;
   @FXML
   private Button databaseButton;
   @FXML
@@ -138,13 +142,7 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
     GUIUtils.setColorOnButton(databaseButton, ButtonColor.GRAY);
     GUIUtils.setColorOnButton(chromatogramButton, ButtonColor.GRAY);
 
-    try {
-      ConfigHandler.readConfig();
-    } catch (UnknownConfigFieldException | ConfigNotFoundException | IOException e1) {
-      // TODO Auto-generated catch block
-      e1.printStackTrace();
-    }
-
+    
     infoArea.getChildren().addListener((ListChangeListener<Node>) ((change) -> {
       infoArea.layout();
       textScroll.layout();
@@ -258,14 +256,14 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
       public void handle(ActionEvent arg0) {
         
         if (destField.getText().isEmpty()) {
-          GUIUtils.showInfo(AlertType.ERROR, "No path specified", "Please enter the path of a destination file or a folder first.");
+          GUIUtils.showInfo(AlertType.ERROR, "No path specified", "Please enter the path of a destination folder first.");
           return;
         }
         
         try {
           Desktop.getDesktop().open(new File(destField.getText()));
         } catch (IllegalArgumentException | IOException e) {
-            GUIUtils.showInfo(AlertType.ERROR, "Opening failed", "Could not open destination file or folder.");
+            GUIUtils.showInfo(AlertType.ERROR, "Opening failed", "Could not open destination folder.");
         }
       }
     });
@@ -288,6 +286,39 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
       }
     });
 
+    
+    openResFile.setOnAction(new EventHandler<ActionEvent>() {
+      @Override
+      public void handle(ActionEvent arg0) {
+        
+        if (destField.getText().isEmpty()) {
+          GUIUtils.showInfo(AlertType.ERROR, "No path specified", "Please enter the path of a destination folder first.");
+          return;
+        }
+          
+          File toOpen;
+          
+          if (fileNameField.getText().isEmpty()) {
+            toOpen = new File(destField.getText() + File.separatorChar + "gsat_results.csv");
+          } else {
+            toOpen = new File(destField.getText() + File.separatorChar + fileNameField.getText() + ".csv");
+          }
+          
+          if (!toOpen.exists()) {
+            GUIUtils.showInfo(AlertType.ERROR, "No analysis result", "No file exists with the name '" + (fileNameField.getText().isEmpty() ? "gsat_results.csv" : fileNameField.getText() + ".csv")  + "' at the given destination path.");
+            return;
+          }
+          
+        try {
+          Desktop.getDesktop().open(toOpen);
+          
+        } catch (IllegalArgumentException | IOException e) {
+          GUIUtils.showInfo(AlertType.ERROR, "Opening failed", "Could not open destination file.");
+        }
+      }
+    });
+    
+    
 
     // select if you get only one output file
     outputCheckbox.selectedProperty().addListener((observable, oldValue, newValue) -> {
@@ -535,7 +566,7 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
 
           chromaWindow.setSequences(sequences);
         } catch (Exception e) {
-          // TODO: handle exception
+          GUIUtils.showInfo(AlertType.ERROR, "Chromatogram window error", "The chromatogram window could not be opened.");
         }
       }
     });
