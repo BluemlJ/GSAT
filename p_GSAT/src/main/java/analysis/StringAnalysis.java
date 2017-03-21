@@ -323,54 +323,6 @@ public class StringAnalysis {
   }
 
   /**
-   * Verry slow, do not use
-   * 
-   * @param toAlign the String to search in
-   * @param template the String to search for
-   * @return
-   * @deprecated
-   * @author Kevin
-   */
-  @Deprecated
-  public static Pair<Integer, String> findBestMatch(String toAlign, String template) {
-
-    TreeMap<Double, Pair<Integer, String>> matches = new TreeMap<>();
-
-    // go through every supString
-
-    // begin at every position
-    for (int begin = 0; begin < (toAlign.length() - 1); begin++) {
-
-      // end at every position
-      for (int end = begin + 1; end < toAlign.length() + 1
-          && (end - begin) - 1 < template.length() + 1; end++) {
-
-        // get supString
-        String canditate = toAlign.substring(begin, end);
-        canditate = appendStringToLength(canditate, template.length());
-
-        // calculate similarity
-        Double rating = checkSimilarity(canditate, template);
-        canditate = canditate.trim();
-        // System.out.println(rating + " # " + canditate);
-        // check if two strings have the same Similarity
-        if (matches.containsKey(rating)) {
-
-          // if yes, take the one that is nearer to original
-          String doubleHit = matches.get(rating).second;
-          if (Math.abs(doubleHit.trim().length() - template.length()) > Math
-              .abs(canditate.trim().length() - template.length())) {
-            matches.put(rating, new Pair<Integer, String>(begin, canditate));
-          }
-        } else {
-          matches.put(rating, new Pair<Integer, String>(begin, canditate));
-        }
-      }
-    }
-    return matches.pollLastEntry().getValue();
-  }
-
-  /**
    * This method finds the position of the HIS-Tags in the gene.
    * 
    * @param toAnalyze the sequence to analyse

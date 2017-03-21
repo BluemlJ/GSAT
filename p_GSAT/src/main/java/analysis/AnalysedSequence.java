@@ -42,6 +42,10 @@ public class AnalysedSequence extends Sequence {
   private String fileName;
 
   /**
+   * primer name as String for database connection
+   */
+  private String primer;
+  /**
    * Indicates whether the results of this analysis have been checked by a researcher.
    */
   private boolean manuallyChecked = false;
@@ -358,6 +362,14 @@ public class AnalysedSequence extends Sequence {
 
   public int[] getBaseCalls() {
     return baseCalls;
+  }
+
+  public String getPrimer() {
+    return primer;
+  }
+
+  public void setPrimer(String primer) {
+    this.primer = primer;
   }
 
 }
