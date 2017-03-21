@@ -574,6 +574,7 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
 
           chromaWindow.setSequences(sequences);
         } catch (Exception e) {
+          e.printStackTrace();
           GUIUtils.showInfo(AlertType.ERROR, "Chromatogram window error", "The chromatogram window could not be opened.");
         }
       }
