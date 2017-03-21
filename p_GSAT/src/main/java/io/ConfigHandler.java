@@ -276,6 +276,11 @@ public class ConfigHandler {
    * @param name name of the researcher which will be deleted
    */
   public static void deleteResearcher(String name) {
+    
+    if (researcherList.length == 1) {
+      return;
+    }
+    
     String[] newResearchers = new String[researcherList.length - 1];
     int j = 0;
     for (int i = 0; i < researcherList.length; i++) {

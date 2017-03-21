@@ -125,8 +125,14 @@ public class AddPrimerWindow extends Application implements javafx.fxml.Initiali
 
       @Override
       public void handle(ActionEvent arg0) {
-        if (!nameField.getText().isEmpty() && !sequenceArea.getText().isEmpty()
-            && !idField.getText().isEmpty() && !meltingTempField.getText().isEmpty()) {
+        
+        if (nameField.getText().isEmpty() || sequenceArea.getText().isEmpty()
+            || idField.getText().isEmpty() || meltingTempField.getText().isEmpty()) {
+          GUIUtils.showInfo(AlertType.ERROR, "Empty field(s)", "All fields except for the comment field have to be filled.");
+          return;
+        }
+        
+       
           if (PrimerHandler.addPrimer(new Primer(sequenceArea.getText(),
               ConfigHandler.getResearcher(), Integer.parseInt(meltingTempField.getText()),
               idField.getText(), nameField.getText(), commentArea.getText()))) {
@@ -140,7 +146,7 @@ public class AddPrimerWindow extends Application implements javafx.fxml.Initiali
             GUIUtils.showInfo(AlertType.ERROR, "Adding primer failed",
                 "Primer not added because it already exists in local file.");
           }
-        }
+        
 
       }
     });

@@ -153,6 +153,9 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
 
     textScroll.setContent(infoArea);
 
+    infoArea.setTranslateX(3);
+    infoArea.setTranslateY(3);
+    
     destField.textProperty().addListener(new ChangeListener<String>() {
       @Override
       public void changed(ObservableValue<? extends String> observable, String oldValue,
@@ -178,6 +181,7 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
         }
       }
     }
+    
     srcField.textProperty().addListener(new ChangeListener<String>() {
       @Override
       public void changed(ObservableValue<? extends String> observable, String oldValue,
@@ -190,13 +194,17 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
             chromatogramButton.setDisable(true);
           } else {
             chromatogramButton.setDisable(false);
-            files = GUIUtils.getSequencesFromSourceFolder(srcField.getText());
-
-            for (File file : files.first) {
-              try {
-                sequences.add(SequenceReader.convertFileIntoSequence(file));
-              } catch (FileReadingException | IOException | MissingPathException e) {
-                e.printStackTrace();
+            
+            if (new File(srcField.getText()).exists()) {
+            
+              files = GUIUtils.getSequencesFromSourceFolder(srcField.getText());
+  
+              for (File file : files.first) {
+                try {
+                  sequences.add(SequenceReader.convertFileIntoSequence(file));
+                } catch (FileReadingException | IOException | MissingPathException e) {
+                  e.printStackTrace();
+                }
               }
             }
           }
@@ -239,7 +247,7 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
       @Override
       public void handle(ActionEvent arg0) {
         Text output;
-        output = GUIUtils.setDestination(destField, srcField.getText()).second;
+        output = GUIUtils.setDestination(destField, srcField.getText());
         infoArea.getChildren().add(output);
       }
     });
@@ -248,11 +256,16 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
     openDest.setOnAction(new EventHandler<ActionEvent>() {
       @Override
       public void handle(ActionEvent arg0) {
+        
+        if (destField.getText().isEmpty()) {
+          GUIUtils.showInfo(AlertType.ERROR, "No path specified", "Please enter the path of a destination file or a folder first.");
+          return;
+        }
+        
         try {
           Desktop.getDesktop().open(new File(destField.getText()));
-        } catch (IOException e) {
-          // TODO Auto-generated catch block
-          e.printStackTrace();
+        } catch (IllegalArgumentException | IOException e) {
+            GUIUtils.showInfo(AlertType.ERROR, "Opening failed", "Could not open destination file or folder.");
         }
       }
     });
@@ -261,11 +274,16 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
     openSrc.setOnAction(new EventHandler<ActionEvent>() {
       @Override
       public void handle(ActionEvent arg0) {
+        
+        if (srcField.getText().isEmpty()) {
+          GUIUtils.showInfo(AlertType.ERROR, "No path specified", "Please enter the path of a source file or a folder first.");
+          return;
+        }
+        
         try {
           Desktop.getDesktop().open(new File(srcField.getText()));
-        } catch (IOException e) {
-          // TODO Auto-generated catch block
-          e.printStackTrace();
+        } catch (IllegalArgumentException | IOException e) {
+          GUIUtils.showInfo(AlertType.ERROR, "Opening failed", "Could not open source file or folder.");
         }
       }
     });

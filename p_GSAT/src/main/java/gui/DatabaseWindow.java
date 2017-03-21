@@ -335,9 +335,21 @@ public class DatabaseWindow extends Application implements javafx.fxml.Initializ
 
         // sequences
         else if (resultToggle.isSelected()) {
-
+          
+          
           // upload data from file
           if (uploadToggle.isSelected()) {
+            
+            if (destField.getText().isEmpty()) {
+              GUIUtils.showInfo(AlertType.ERROR, "Empty path", "Please enter a path to the CSV files to be uploaded.");
+              return;
+            }
+            
+            if (!new File(destField.getText()).exists() || !new File(destField.getText()).isDirectory()) {
+              GUIUtils.showInfo(AlertType.ERROR, "Invalid path", "The entered path does not describe a folder. Please enter a folder to the CSV files to be uploaded.");
+              return;
+            }
+            
             try {
               uploadResults();
               GUIUtils.showInfo(AlertType.CONFIRMATION, "Success", UPLOAD_SUCCESS);
@@ -354,6 +366,18 @@ public class DatabaseWindow extends Application implements javafx.fxml.Initializ
 
           // download data to folder
           else if (downloadToggle.isSelected()) {
+            
+            if (destField.getText().isEmpty()) {
+              GUIUtils.showInfo(AlertType.ERROR, "Empty path", "Please enter a folder path to specify where the data should be placed.");
+              return;
+            }
+            
+            if (!new File(destField.getText()).exists() || !new File(destField.getText()).isDirectory()) {
+              GUIUtils.showInfo(AlertType.ERROR, "Invalid path", "The entered path does not describe a folder. Please enter a folder indicating where to place the retrieved data.");
+              return;
+            }
+            
+            
             try {
               downloadResults();
               GUIUtils.showInfo(AlertType.CONFIRMATION, "Success", DOWNLOAD_SUCCESS);
@@ -466,7 +490,11 @@ public class DatabaseWindow extends Application implements javafx.fxml.Initializ
           chooser.setInitialDirectory(new File(System.getProperty("user.home")));
           selectedDirectory = chooser.showDialog(null);
         }
-        destField.setText(selectedDirectory.getAbsolutePath());
+        
+        if (selectedDirectory != null) {
+          destField.setText(selectedDirectory.getAbsolutePath());
+        }
+        
 
       }
     });

@@ -107,7 +107,12 @@ public class AddGeneWindow extends Application implements javafx.fxml.Initializa
 
       @Override
       public void handle(ActionEvent arg0) {
-        if (!nameField.getText().isEmpty() && !geneArea.getText().isEmpty()) {
+        
+        if (nameField.getText().isEmpty() || geneArea.getText().isEmpty()) {
+          GUIUtils.showInfo(AlertType.ERROR, "Required fields are not filled", "Please enter a gene name and its sequence.");
+          return;
+        }
+        
           try {
             if (organismField.getText().equals("")) {
               organismField.setText("none");
@@ -129,7 +134,7 @@ public class AddGeneWindow extends Application implements javafx.fxml.Initializa
             // TODO Auto-generated catch block
             e.printStackTrace();
           }
-        }
+        
 
       }
     });

@@ -63,7 +63,8 @@ public class GUIUtils {
     }
 
     genes.setItems(FXCollections.observableArrayList(GeneHandler.getGeneNamesAndOrganisms()));
-    return new Text("Reading Gene.txt was successful\n");
+    
+    return new Text();
   }
 
   /**
@@ -230,10 +231,10 @@ public class GUIUtils {
    * @param sourcePath path from the source field
    * @return reportpair of boolean (indicates success) and report String
    */
-  public static Pair<Boolean, Text> setDestination(TextField destination, String sourcePath) {
+  public static Text setDestination(TextField destination, String sourcePath) {
 
     boolean success = false;
-    Text report = getRedText("Reading destination path was unsuccessful.\n");
+    Text report = getRedText("Reading destination path was aborted.\n");
     String path;
 
     DirectoryChooser chooser = new DirectoryChooser();
@@ -266,7 +267,7 @@ public class GUIUtils {
       FileSaver.setLocalPath(path);
       destination.setText(path);
     }
-    return new Pair<Boolean, Text>(success, report);
+    return report;
   }
 
   /**
