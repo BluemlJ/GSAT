@@ -206,31 +206,7 @@ public class QualityAnalysis {
 		return qualities.length;
 	}
 
-	/**
-	 * This method calculate the percentage of trimmed nucleotides by quality of
-	 * parameters.
-	 *
-	 * @param toAnalyse
-	 *            the trimmed sequence to get the quality for.
-	 * @return a value between 0 and 100. This is a percentage.
-	 * @author jannis blueml
-	 */
-	public static double getQualityPercentage(AnalysedSequence toAnalyse) {
-		// checks if sequence is null or empty
-		if (toAnalyse == null || toAnalyse.getQuality().length == 0) {
-			return 0;
-		}
-		// counter for calculation
-		double counter = 0;
 
-		for (int phred : toAnalyse.getQuality()) {
-			if (phred > avgQualityEdge) {
-				counter++;
-			}
-		}
-
-		return (int) (counter / toAnalyse.getQuality().length * 100);
-	}
 
 	/**
 	 * This method calculate the percentage how much are trimmed away.

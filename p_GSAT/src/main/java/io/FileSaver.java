@@ -198,7 +198,7 @@ public class FileSaver {
     if (hisTagPosition == -1) {
       builder.append("none" + SEPARATOR_CHAR + " ");
     } else {
-      builder.append((hisTagPosition + 1) + SEPARATOR_CHAR + " ");
+      builder.append((hisTagPosition + 1) + "" + SEPARATOR_CHAR + " ");
     }
 
     // manually checked

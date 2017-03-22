@@ -70,7 +70,7 @@ public class WritingTests {
       new AnalysedSequence("ATC", "Alexander", "sequence6.ab1", new int[] {2, 6});
 
   static AnalysedSequence seq7 =
-      new AnalysedSequence("GT", "Jonas", "sequence7.ab1", new int[] {2, 6});
+      new AnalysedSequence(null, new LinkedList<String>(), "sequence7.ab1", "GT", new Date(), "Jonas", "", false, null, 0, 0, 0);
 
   /**
    * This method sets the genes and adds a few mutations to the AnalyzedSequence objects to make
@@ -108,7 +108,7 @@ public class WritingTests {
     seq6.setReferencedGene(g1);
     seq6.addProblematicComment(ProblematicComment.SEQUENCE_TO_SHORT);
     seq7.addMutation("+1T4");
-    seq7.setReferencedGene(g1);
+    seq7.setReferencedGene(new Gene("ATTTTCG", 0, "FSA", "Klaus Bohne", "bacteria", "comment", new Date()));
   }
 
   @AfterClass
@@ -604,7 +604,7 @@ public class WritingTests {
             + addingDate + "; 0; 0; ATCTTTG; none; reading frame error",
         "sequence5.ab1; FSA; bacteria; ; ; ; The usable part of the sequence is very short (One should probably adjust the parameters). ; ; ; ; ; ; ; ",
         "sequence6.ab1; FSA; bacteria; ; ; ; The usable part of the sequence is very short (One should probably adjust the parameters). ; ; ; ; ; ; ; ",
-        "sequence7.ab1; FSA; bacteria; +1T4; none; false; ; Jonas; " + addingDate
+        "sequence7.ab1; FSA; bacteria; +1T4; 1; false; ; Jonas; " + addingDate
             + "; 0; 0; GT; none; +1T4"};
     for (int i = 0; i < correctResults.length; i++) {
       assertEquals(correctResults[i], results.get(i));

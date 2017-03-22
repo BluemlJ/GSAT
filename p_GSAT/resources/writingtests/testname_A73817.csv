@@ -1,0 +1,2 @@
+file name; gene; gene organism; mutations (with codons); HIS tag; manually checked; comments; researcher; date; average quality (percent); percentage of quality trim; nucleotide sequence; primer; mutations (without codons)
+sequence1.ab1; FSA; bacteria; A131E (ACC), G7K (ATC), +2H5 (AAC); none; false; No comments; Klaus Bohne; 22/03/17; 0; 0; ATCG; none; A131E, G7K, +2H5
