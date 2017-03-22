@@ -51,6 +51,8 @@ public class ShowChromatogram extends Application implements javafx.fxml.Initial
   private final Color background = new Color(244, 244, 244);
   //
 
+  private static final int imageHight = 400;
+
   // Thickness of trace graphs.
   private int lineThickness = 5;
 
@@ -276,12 +278,28 @@ public class ShowChromatogram extends Application implements javafx.fxml.Initial
       e.printStackTrace();
     }
 
+
+    // get maximal graph hight:
+    int maxHight = 0;
+    for (int i = 0; i < last; i++) {
+      maxHight = Math.max(maxHight,
+          Math.max(channelA[i], Math.max(channelC[i], Math.max(channelG[i], channelT[i]))));
+    }
+
     // variables for scaling image
     double stretchY = 0.2;
     int stretchX = 4;
 
+    // rescale if necesary:
+    if (maxHight*stretchY > imageHight-40) {
+      stretchY = (imageHight-40)/(double)maxHight;
+      System.out.println(stretchY);
+      System.out.println(maxHight);
+    }
+
     // create image
-    BufferedImage buffImg = new BufferedImage(last * stretchX, 400, BufferedImage.TYPE_INT_RGB);
+    BufferedImage buffImg =
+        new BufferedImage(last * stretchX, imageHight, BufferedImage.TYPE_INT_RGB);
     buffImg.createGraphics();
     Graphics2D buffGraph = (Graphics2D) buffImg.getGraphics();
 
