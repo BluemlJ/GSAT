@@ -62,7 +62,8 @@ public class ParameterWindow extends Application implements javafx.fxml.Initiali
     try {
       ConfigHandler.readConfig();
     } catch (UnknownConfigFieldException | ConfigNotFoundException | IOException e) {
-      GUIUtils.showInfo(AlertType.ERROR, "Configuration reading error", "The configuration file could not be read. Maybe it's corrupted.");
+      GUIUtils.showInfo(AlertType.ERROR, "Configuration reading error",
+          "The configuration file could not be read. Maybe it's corrupted.");
     }
     avgApproximationEnd.setText(ConfigHandler.getAvgApproximationEnd() + "");
     avgApproximationStart.setText(ConfigHandler.getAvgApproximationStart() + "");

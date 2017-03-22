@@ -20,9 +20,9 @@ import exceptions.DuplicateGeneException;
  */
 public class GeneHandler {
 
-	/**
-	 * Arraylist containing all known genes.
-	 */
+  /**
+   * Arraylist containing all known genes.
+   */
   private static ArrayList<Gene> geneList;
   /**
    * 

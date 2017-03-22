@@ -40,11 +40,13 @@ public class FileSaver {
 
   private static HashMap<ProblematicComment, String> commentMap =
       new HashMap<ProblematicComment, String>();
+
   static {
     commentMap.put(ProblematicComment.NO_MATCH_FOUND,
         "There was no match found, so the sequence can't be analysed.");
     commentMap.put(ProblematicComment.SEQUENCE_TO_SHORT,
-        "The usable part of the sequence is very short (One should probably adjust the parameters).");
+        "The usable part of the sequence is very short "
+            + "(One should probably adjust the parameters).");
   }
 
 
@@ -198,7 +200,7 @@ public class FileSaver {
     if (hisTagPosition == -1) {
       builder.append("none" + SEPARATOR_CHAR + " ");
     } else {
-      builder.append((hisTagPosition + 1) + SEPARATOR_CHAR + " ");
+      builder.append((hisTagPosition + 1) + "" + SEPARATOR_CHAR + " ");
     }
 
     // manually checked

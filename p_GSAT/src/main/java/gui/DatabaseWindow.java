@@ -109,8 +109,9 @@ public class DatabaseWindow extends Application implements javafx.fxml.Initializ
         if (date != null) {
           try {
             return DateTimeFormatter.ofPattern("dd/MM/yyyy").format(date);
-          } catch (DateTimeException dte) {}
-          System.out.println("Format Error");
+          } catch (DateTimeException dte) {
+            System.out.println("Format Error");
+          }
         }
         return "";
       }
@@ -120,8 +121,9 @@ public class DatabaseWindow extends Application implements javafx.fxml.Initializ
         if (string != null && !string.isEmpty()) {
           try {
             return LocalDate.parse(string, DateTimeFormatter.ofPattern("dd/MM/yyyy"));
-          } catch (DateTimeParseException dtpe) {}
-          System.out.println("Parse Error");
+          } catch (DateTimeParseException dtpe) {
+            System.out.println("Parse Error");
+          }
         }
         return null;
       }
@@ -133,8 +135,9 @@ public class DatabaseWindow extends Application implements javafx.fxml.Initializ
         if (date != null) {
           try {
             return DateTimeFormatter.ofPattern("dd/MM/yyyy").format(date);
-          } catch (DateTimeException dte) {}
-          System.out.println("Format Error");
+          } catch (DateTimeException dte) {
+            System.out.println("Format Error");
+          }
         }
         return "";
       }
@@ -144,8 +147,9 @@ public class DatabaseWindow extends Application implements javafx.fxml.Initializ
         if (string != null && !string.isEmpty()) {
           try {
             return LocalDate.parse(string, DateTimeFormatter.ofPattern("dd/MM/yyyy"));
-          } catch (DateTimeParseException dtpe) {}
-          System.out.println("Parse Error");
+          } catch (DateTimeParseException dtpe) {
+            System.out.println("Parse Error");
+          }
         }
         return null;
       }
@@ -334,21 +338,25 @@ public class DatabaseWindow extends Application implements javafx.fxml.Initializ
 
         // sequences
         else if (resultToggle.isSelected()) {
-          
-          
+
+
           // upload data from file
           if (uploadToggle.isSelected()) {
-            
+
             if (destField.getText().isEmpty()) {
-              GUIUtils.showInfo(AlertType.ERROR, "Empty path", "Please enter a path to the CSV files to be uploaded.");
+              GUIUtils.showInfo(AlertType.ERROR, "Empty path",
+                  "Please enter a path to the CSV files to be uploaded.");
               return;
             }
-            
-            if (!new File(destField.getText()).exists() || !new File(destField.getText()).isDirectory()) {
-              GUIUtils.showInfo(AlertType.ERROR, "Invalid path", "The entered path does not describe a folder. Please enter a folder to the CSV files to be uploaded.");
+
+            if (!new File(destField.getText()).exists()
+                || !new File(destField.getText()).isDirectory()) {
+              GUIUtils.showInfo(AlertType.ERROR, "Invalid path",
+                  "The entered path does not describe a folder. " + ""
+                      + "Please enter a folder to the CSV files to be uploaded.");
               return;
             }
-            
+
             try {
               uploadResults();
               GUIUtils.showInfo(AlertType.CONFIRMATION, "Success", UPLOAD_SUCCESS);
@@ -365,18 +373,22 @@ public class DatabaseWindow extends Application implements javafx.fxml.Initializ
 
           // download data to folder
           else if (downloadToggle.isSelected()) {
-            
+
             if (destField.getText().isEmpty()) {
-              GUIUtils.showInfo(AlertType.ERROR, "Empty path", "Please enter a folder path to specify where the data should be placed.");
+              GUIUtils.showInfo(AlertType.ERROR, "Empty path",
+                  "Please enter a folder path to specify where the data should be placed.");
               return;
             }
-            
-            if (!new File(destField.getText()).exists() || !new File(destField.getText()).isDirectory()) {
-              GUIUtils.showInfo(AlertType.ERROR, "Invalid path", "The entered path does not describe a folder. Please enter a folder indicating where to place the retrieved data.");
+
+            if (!new File(destField.getText()).exists()
+                || !new File(destField.getText()).isDirectory()) {
+              GUIUtils.showInfo(AlertType.ERROR, "Invalid path",
+                  "The entered path does not describe a folder. "
+                      + "Please enter a folder indicating where to place the retrieved data.");
               return;
             }
-            
-            
+
+
             try {
               downloadResults();
               GUIUtils.showInfo(AlertType.CONFIRMATION, "Success", DOWNLOAD_SUCCESS);
@@ -489,11 +501,11 @@ public class DatabaseWindow extends Application implements javafx.fxml.Initializ
           chooser.setInitialDirectory(new File(System.getProperty("user.home")));
           selectedDirectory = chooser.showDialog(null);
         }
-        
+
         if (selectedDirectory != null) {
           destField.setText(selectedDirectory.getAbsolutePath());
         }
-        
+
 
       }
     });
