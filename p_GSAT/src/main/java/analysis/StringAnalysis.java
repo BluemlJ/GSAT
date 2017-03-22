@@ -5,7 +5,6 @@ import java.util.Collections;
 import java.util.Hashtable;
 import java.util.Map;
 
-
 import exceptions.CorruptedSequenceException;
 import io.GeneHandler;
 import io.ProblematicComment;
@@ -20,13 +19,14 @@ import io.ProblematicComment;
 public class StringAnalysis {
 
   /**
-   * A Map with all possible DNA codons with the matched AminoAcid in short form and the not so short but not the full name form.
+   * A Map with all possible DNA codons with the matched AminoAcid in short form and the not so
+   * short but not the full name form.
    */
   public static final Map<String, Pair<String, String>> AMINO_ACID_SHORTS;
 
   static {
-    Hashtable<String, Pair<String, String>> tmp = new Hashtable<String, Pair<String,String>>();
-    
+    Hashtable<String, Pair<String, String>> tmp = new Hashtable<String, Pair<String, String>>();
+
     // DNA
     tmp.put("TTT", new Pair<String, String>("F", "Phe"));
     tmp.put("TTC", new Pair<String, String>("F", "Phe"));
@@ -260,7 +260,7 @@ public class StringAnalysis {
     double avgLength = (first.length() + second.length()) / 2.0;
     return Math.max(0, 100 - (levenshteinIndex / (avgLength / 100)));
   }
-  
+
   /**
    * Changes the sequence representation from nucleotides to aminoacid (shortform)
    * 
@@ -270,7 +270,7 @@ public class StringAnalysis {
    * @author jannis blueml
    */
   public static String codonsToAminoAcids(String nucleotides) {
-    return codonsToAminoAcids(nucleotides,true);
+    return codonsToAminoAcids(nucleotides, true);
   }
 
   /**
@@ -298,21 +298,21 @@ public class StringAnalysis {
       // Map
       for (int i = 0; i < nucleotides.length(); i = i + 3) {
         String codon = nucleotides.substring(i, i + 3);
-        String aminoacid =  "";
+        String aminoacid = "";
         if (first) {
-          if(AMINO_ACID_SHORTS.get(codon) != null)
-          aminoacid = AMINO_ACID_SHORTS.get(codon).first;  
-          else {
+          if (AMINO_ACID_SHORTS.get(codon) != null) {
+            aminoacid = AMINO_ACID_SHORTS.get(codon).first;
+          } else {
             aminoacid = null;
           }
-        }else {
-          if(AMINO_ACID_SHORTS.get(codon) != null)
-          aminoacid = AMINO_ACID_SHORTS.get(codon).second;
-          else {
+        } else {
+          if (AMINO_ACID_SHORTS.get(codon) != null) {
+            aminoacid = AMINO_ACID_SHORTS.get(codon).second;
+          } else {
             aminoacid = null;
           }
         }
-        
+
 
         if (aminoacid != null) {
           builder.append(aminoacid);
@@ -389,7 +389,8 @@ public class StringAnalysis {
   }
 
   /**
-   *TODO @Jannis COMMENT
+   * TODO @Jannis COMMENT
+   * 
    * @param toAnalyze
    * @return
    */
@@ -427,13 +428,15 @@ public class StringAnalysis {
    * @author Kevin
    */
   public static int getLevenshteinIndex(String first, String second) {
-    //create levenstein matrix:
+    // create levenstein matrix:
     int[][] matrix = calculateLevenshteinMatrix(first, second);
     return getLevenshteinIndex(matrix);
   }
 
   /**
-   * cuts of the vector of the given sequence (trim vector) and sets the given gene as reference Gene
+   * cuts of the vector of the given sequence (trim vector) and sets the given gene as reference
+   * Gene
+   * 
    * @see trimvector
    * @param toAlign
    * @param gene

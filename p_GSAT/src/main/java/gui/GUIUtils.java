@@ -63,7 +63,7 @@ public class GUIUtils {
     }
 
     genes.setItems(FXCollections.observableArrayList(GeneHandler.getGeneNamesAndOrganisms()));
-    
+
     return new Text();
   }
 
@@ -119,7 +119,6 @@ public class GUIUtils {
   /**
    * Main method of this class, alias the startbutton function.
    * 
-   * @param sourcepath path to .ab1 file or folder
    * @param geneId ID of the Gene in the Choicebox.
    * @return a Pair or Boolean, which indicates if the method was successful and a String, which can
    *         printed in the infoarea.
@@ -349,19 +348,19 @@ public class GUIUtils {
   /**
    * This method gets the Gene from his ID.
    * 
-   * @param dropdownID ID of Gene in the choiceBox
    * @return Gene
    */
   public static Gene getGeneFromDropDown(String gene) {
-    
+
     if (gene != null) {
       if (gene.split(" ").length > 1) {
-        return (GeneHandler.checkGene(gene.split(" ")[0], gene.split(" ")[1]));
+        return GeneHandler.checkGene(gene.split(" ")[0], gene.split(" ")[1]);
       } else {
-        return (GeneHandler.checkGene(gene.split(" ")[0], ""));
+        return GeneHandler.checkGene(gene.split(" ")[0], "");
       }
+    } else {
+      return null;
     }
-    else return null;
   }
 
   /**

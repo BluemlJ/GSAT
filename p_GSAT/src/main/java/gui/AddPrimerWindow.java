@@ -5,9 +5,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 import analysis.Primer;
-import exceptions.DuplicateGeneException;
 import io.ConfigHandler;
-import io.GeneHandler;
 import io.PrimerHandler;
 import javafx.application.Application;
 import javafx.beans.value.ChangeListener;
@@ -18,10 +16,10 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
-import javafx.scene.control.Alert.AlertType;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
@@ -125,28 +123,29 @@ public class AddPrimerWindow extends Application implements javafx.fxml.Initiali
 
       @Override
       public void handle(ActionEvent arg0) {
-        
+
         if (nameField.getText().isEmpty() || sequenceArea.getText().isEmpty()
             || idField.getText().isEmpty() || meltingTempField.getText().isEmpty()) {
-          GUIUtils.showInfo(AlertType.ERROR, "Empty field(s)", "All fields except for the comment field have to be filled.");
+          GUIUtils.showInfo(AlertType.ERROR, "Empty field(s)",
+              "All fields except for the comment field have to be filled.");
           return;
         }
-        
-       
-          if (PrimerHandler.addPrimer(new Primer(sequenceArea.getText(),
-              ConfigHandler.getResearcher(), Integer.parseInt(meltingTempField.getText()),
-              idField.getText(), nameField.getText(), commentArea.getText()))) {
 
-            GUIUtils.showInfo(AlertType.INFORMATION, "Adding primer", "Primer added successfully.");
-            MainWindow.changesOnPrimers = true;
-            parent.updatePrimers();
-            Stage stage = (Stage) cancelButton.getScene().getWindow();
-            stage.close();
-          } else {
-            GUIUtils.showInfo(AlertType.ERROR, "Adding primer failed",
-                "Primer not added because it already exists in local file.");
-          }
-        
+
+        if (PrimerHandler.addPrimer(new Primer(sequenceArea.getText(),
+            ConfigHandler.getResearcher(), Integer.parseInt(meltingTempField.getText()),
+            idField.getText(), nameField.getText(), commentArea.getText()))) {
+
+          GUIUtils.showInfo(AlertType.INFORMATION, "Adding primer", "Primer added successfully.");
+          MainWindow.changesOnPrimers = true;
+          parent.updatePrimers();
+          Stage stage = (Stage) cancelButton.getScene().getWindow();
+          stage.close();
+        } else {
+          GUIUtils.showInfo(AlertType.ERROR, "Adding primer failed",
+              "Primer not added because it already exists in local file.");
+        }
+
 
       }
     });

@@ -8,9 +8,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import analysis.Gene;
 import analysis.Primer;
-import exceptions.DuplicateGeneException;
 
 public class PrimerHandler {
   private static ArrayList<Primer> primerList;
@@ -99,7 +97,7 @@ public class PrimerHandler {
     if (!string.split(" ")[1].isEmpty()) {
       deletePrimer(path, string.split(" ")[0],
           string.split(" ")[1].substring(1, string.split(" ")[1].length() - 1));
-    } else {}
+    }
   }
 
   public static void deletePrimer(String newpath, String name, String id) throws IOException {
@@ -229,10 +227,12 @@ public class PrimerHandler {
           return primer;
         }
       }
-    } else
+    } else {
       return getPrimer(name.split(" ")[0],
           name.split(" ")[1].substring(1, name.split(" ")[1].length() - 1));
+    }
     return null;
+
   }
 
 

@@ -773,33 +773,35 @@ public class AnalysisTests {
 
   }
 
-  
-  
+
+
   @Test
   public void testPlasmidMix() throws FileReadingException, IOException, MissingPathException {
     SequenceReader
-    .configurePath(new File("resources/ab1/Tk_Gs40Hits/Forward/95EI60.ab1").getAbsolutePath());
+        .configurePath(new File("resources/ab1/Tk_Gs40Hits/Forward/95EI60.ab1").getAbsolutePath());
     AnalysedSequence testSequence = SequenceReader.convertFileIntoSequence();
     MutationAnalysis.findPlasmidMix(testSequence);
-    assertEquals("There are possible placmidmixes at the positions 2. ", testSequence.getComments());
+    assertEquals("There are possible placmidmixes at the positions 2. ",
+        testSequence.getComments());
   }
-  
+
   @Test
   public void testPlasmidMix2() throws FileReadingException, IOException, MissingPathException {
     SequenceReader
-    .configurePath(new File("resources/ab1/Tk_Gs40Hits/Forward/95EI64.ab1").getAbsolutePath());
+        .configurePath(new File("resources/ab1/Tk_Gs40Hits/Forward/95EI64.ab1").getAbsolutePath());
     AnalysedSequence testSequence = SequenceReader.convertFileIntoSequence();
     MutationAnalysis.findPlasmidMix(testSequence);
-    assertEquals("There are possible placmidmixes at the positions 2. ", testSequence.getComments());
+    assertEquals("There are possible placmidmixes at the positions 2. ",
+        testSequence.getComments());
   }
-  
+
   @Test
   public void testPlasmidMix3() throws FileReadingException, IOException, MissingPathException {
     SequenceReader
-    .configurePath(new File("resources/ab1/Tk_Gs40Hits/Forward/95EI67.ab1").getAbsolutePath());
+        .configurePath(new File("resources/ab1/Tk_Gs40Hits/Forward/95EI67.ab1").getAbsolutePath());
     AnalysedSequence testSequence = SequenceReader.convertFileIntoSequence();
     MutationAnalysis.findPlasmidMix(testSequence);
     assertEquals("", testSequence.getComments());
   }
-  
+
 }

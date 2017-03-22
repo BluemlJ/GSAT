@@ -69,8 +69,8 @@ public class WritingTests {
   static AnalysedSequence seq6 =
       new AnalysedSequence("ATC", "Alexander", "sequence6.ab1", new int[] {2, 6});
 
-  static AnalysedSequence seq7 =
-      new AnalysedSequence(null, new LinkedList<String>(), "sequence7.ab1", "GT", new Date(), "Jonas", "", false, null, 0, 0, 0);
+  static AnalysedSequence seq7 = new AnalysedSequence(null, new LinkedList<String>(),
+      "sequence7.ab1", "GT", new Date(), "Jonas", "", false, null, 0, 0, 0);
 
   /**
    * This method sets the genes and adds a few mutations to the AnalyzedSequence objects to make
@@ -108,7 +108,8 @@ public class WritingTests {
     seq6.setReferencedGene(g1);
     seq6.addProblematicComment(ProblematicComment.SEQUENCE_TO_SHORT);
     seq7.addMutation("+1T4");
-    seq7.setReferencedGene(new Gene("ATTTTCG", 0, "FSA", "Klaus Bohne", "bacteria", "comment", new Date()));
+    seq7.setReferencedGene(
+        new Gene("ATTTTCG", 0, "FSA", "Klaus Bohne", "bacteria", "comment", new Date()));
   }
 
   @AfterClass

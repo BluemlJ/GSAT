@@ -1,7 +1,6 @@
 package gui;
 
 import java.awt.Desktop;
-import java.awt.Image;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
@@ -12,14 +11,10 @@ import java.util.ResourceBundle;
 import analysis.AnalysedSequence;
 import analysis.Gene;
 import analysis.Pair;
-import exceptions.ConfigNotFoundException;
 import exceptions.FileReadingException;
 import exceptions.MissingPathException;
-import exceptions.UnknownConfigFieldException;
 import io.ConfigHandler;
 import io.FileSaver;
-import io.GeneHandler;
-import io.PrimerHandler;
 import io.SequenceReader;
 import javafx.application.Application;
 import javafx.application.Platform;
@@ -145,7 +140,7 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
     GUIUtils.setColorOnButton(databaseButton, ButtonColor.GRAY);
     GUIUtils.setColorOnButton(chromatogramButton, ButtonColor.GRAY);
 
-    
+
     infoArea.getChildren().addListener((ListChangeListener<Node>) ((change) -> {
       infoArea.layout();
       textScroll.layout();
@@ -259,15 +254,17 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
       public void handle(ActionEvent arg0) {
 
         if (destField.getText().isEmpty()) {
-          GUIUtils.showInfo(AlertType.ERROR, "No path specified", "Please enter the path of a destination folder first.");
+          GUIUtils.showInfo(AlertType.ERROR, "No path specified",
+              "Please enter the path of a destination folder first.");
           return;
         }
 
         try {
           Desktop.getDesktop().open(new File(destField.getText()));
         } catch (IllegalArgumentException | IOException e) {
-            GUIUtils.showInfo(AlertType.ERROR, "Opening failed", "Could not open destination folder.");
-            return;
+          GUIUtils.showInfo(AlertType.ERROR, "Opening failed",
+              "Could not open destination folder.");
+          return;
         }
       }
     });
@@ -292,39 +289,48 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
       }
     });
 
-    
+
     openResFile.setOnAction(new EventHandler<ActionEvent>() {
       @Override
       public void handle(ActionEvent arg0) {
-        
+
         if (destField.getText().isEmpty()) {
-          GUIUtils.showInfo(AlertType.ERROR, "No path specified", "Please enter the path of a destination folder first.");
+          GUIUtils.showInfo(AlertType.ERROR, "No path specified",
+              "Please enter the path of a destination folder first.");
           return;
         }
-          
-          File toOpen;
-          
+
+        File toOpen;
+
+        if (fileNameField.getText().isEmpty()) {
+          toOpen = new File(destField.getText() + File.separatorChar + "gsat_results.csv");
+        } else {
+          toOpen =
+              new File(destField.getText() + File.separatorChar + fileNameField.getText() + ".csv");
+        }
+
+        if (!toOpen.exists()) {
+          String name;
           if (fileNameField.getText().isEmpty()) {
-            toOpen = new File(destField.getText() + File.separatorChar + "gsat_results.csv");
+            name = "gsat_results.csv";
           } else {
-            toOpen = new File(destField.getText() + File.separatorChar + fileNameField.getText() + ".csv");
+            name = fileNameField.getText() + ".csv";
           }
-          
-          if (!toOpen.exists()) {
-            GUIUtils.showInfo(AlertType.ERROR, "No analysis result", "No file exists with the name '" + (fileNameField.getText().isEmpty() ? "gsat_results.csv" : fileNameField.getText() + ".csv")  + "' at the given destination path.");
-            return;
-          }
-          
+          GUIUtils.showInfo(AlertType.ERROR, "No analysis result",
+              "No file exists with the name '" + name + "' at the given destination path.");
+          return;
+        }
+
         try {
           Desktop.getDesktop().open(toOpen);
-          
+
         } catch (IllegalArgumentException | IOException e) {
           GUIUtils.showInfo(AlertType.ERROR, "Opening failed", "Could not open destination file.");
         }
       }
     });
-    
-    
+
+
 
     // select if you get only one output file
     outputCheckbox.selectedProperty().addListener((observable, oldValue, newValue) -> {
@@ -575,7 +581,8 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
           chromaWindow.setSequences(sequences);
         } catch (Exception e) {
           e.printStackTrace();
-          GUIUtils.showInfo(AlertType.ERROR, "Chromatogram window error", "The chromatogram window could not be opened.");
+          GUIUtils.showInfo(AlertType.ERROR, "Chromatogram window error",
+              "The chromatogram window could not be opened.");
         }
       }
     });

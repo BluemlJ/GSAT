@@ -71,7 +71,7 @@ public class DatabaseConnection {
     dataSource.setPort(port);
     dataSource.setServerName(server);
   }
-  
+
 
   /**
    * Retrieves all genes from the database and returns them.
@@ -122,7 +122,7 @@ public class DatabaseConnection {
     }
 
   }
-  
+
 
   /**
    * Creates gsat database structure consisting of four tables: genes, sequences, mutations,
@@ -158,8 +158,8 @@ public class DatabaseConnection {
       stmt.executeUpdate("CREATE TABLE sequences (id INTEGER unsigned NOT NULL AUTO_INCREMENT, "
           + "name VARCHAR(100) NOT NULL, sequence MEDIUMTEXT NOT NULL, date DATE, "
           + "researcher INTEGER unsigned, comment VARCHAR(1000), manualcheck CHAR(1), "
-          + "gene INTEGER unsigned, primer MEDIUMTEXT, trimpercent INTEGER unsigned, histag INTEGER, "
-          + "avgquality INTEGER, PRIMARY KEY(id))");
+          + "gene INTEGER unsigned, primer MEDIUMTEXT, trimpercent INTEGER unsigned, "
+          + "histag INTEGER, " + "avgquality INTEGER, PRIMARY KEY(id))");
       stmt.executeUpdate("CREATE TABLE mutations (id INTEGER unsigned NOT NULL AUTO_INCREMENT, "
           + "mutation VARCHAR(100) NOT NULL, sequence INTEGER unsigned NOT NULL, PRIMARY KEY(id))");
       stmt.executeUpdate("CREATE TABLE researchers (id INTEGER unsigned NOT NULL AUTO_INCREMENT, "
@@ -316,7 +316,6 @@ public class DatabaseConnection {
   /**
    * pushes all mutations for a single sequence into the database
    * 
-   * @param conn2 database statement
    * @param mutations list of all mutations for a single sequence
    * @param sequenceId database id of the sequence
    * @author Lovis Heindrich
@@ -343,7 +342,10 @@ public class DatabaseConnection {
         pstmt.setString(1, mutation);
         pstmt.setInt(2, sequenceId);
         pstmt.executeUpdate();
+
       }
+
+      pstmt.close();
     }
 
   }
@@ -351,7 +353,6 @@ public class DatabaseConnection {
   /**
    * checks if a sequence already exists and pushes it otherwise
    * 
-   * @param conn2 database statement
    * @param sequence sequence that will be pushed
    * @param researcherId database id of the researcher
    * @param geneId database id of the gene
@@ -359,8 +360,8 @@ public class DatabaseConnection {
    * @author Lovis Heindrich
    * @throws SQLException
    */
-  public static int pushSequence(AnalysedSequence sequence, int researcherId,
-      int geneId) throws SQLException {
+  public static int pushSequence(AnalysedSequence sequence, int researcherId, int geneId)
+      throws SQLException {
     // select database
     Statement stmt = conn.createStatement();
     stmt.execute("USE gsat");
@@ -402,9 +403,10 @@ public class DatabaseConnection {
 
     ResultSet res = pstmt.executeQuery();
     if (res.next()) {
+      pstmt.close();
       return res.getInt(1);
     }
-
+    pstmt.close();
     // push otherwise
     pstmt = conn.prepareStatement(
         "INSERT INTO sequences (name, sequence, date, researcher, comment, manualcheck, "
@@ -421,7 +423,7 @@ public class DatabaseConnection {
     pstmt.setInt(10, histag);
     pstmt.setInt(11, avgquality);
     pstmt.executeUpdate();
-
+    pstmt.close();
     // get index of new sequence
     pstmt = conn.prepareStatement("SELECT id, name, sequence, gene FROM sequences "
         + "WHERE name = ? AND sequence = ? AND gene = ?");
@@ -430,6 +432,7 @@ public class DatabaseConnection {
     pstmt.setInt(3, geneId);
 
     res = pstmt.executeQuery();
+    pstmt.close();
     if (res.next()) {
       return res.getInt(1);
     } else {
@@ -480,8 +483,11 @@ public class DatabaseConnection {
 
     ResultSet res = pstmt.executeQuery();
     if (res.next()) {
+      pstmt.close();
       return res.getInt(1);
     }
+
+    pstmt.close();
 
     // push otherwise
     pstmt = conn
@@ -494,7 +500,7 @@ public class DatabaseConnection {
     pstmt.setString(5, comment);
     pstmt.setString(6, organism);
     pstmt.executeUpdate();
-
+    pstmt.close();
     // get index of new gene
     pstmt = conn.prepareStatement("SELECT id, name, sequence, organism FROM genes "
         + "WHERE name = ? AND sequence = ? AND organism = ?");
@@ -502,6 +508,7 @@ public class DatabaseConnection {
     pstmt.setString(2, sequence);
     pstmt.setString(3, organism);
     res = pstmt.executeQuery();
+    pstmt.close();
     if (res.next()) {
       return res.getInt(1);
     } else {
@@ -513,7 +520,6 @@ public class DatabaseConnection {
   /**
    * Pushes a new researcher if he does not exist yet
    * 
-   * @param conn2 database statement
    * @param researcher name of the researcher
    * @return database index of the researcher
    * @author Lovis Heindrich
@@ -531,24 +537,28 @@ public class DatabaseConnection {
     pstmt.setString(1, researcher);
     ResultSet res = pstmt.executeQuery();
     if (res.next()) {
+      pstmt.close();
       System.out.println("researcher: " + researcher + " already exists");
       return res.getInt(1);
     }
-
+    pstmt.close();
     // push otherwise
     pstmt = conn.prepareStatement("INSERT INTO researchers (name) VALUES (?)");
     pstmt.setString(1, researcher);
     pstmt.executeUpdate();
-
+    pstmt.close();
     // get index of new researcher
     pstmt = conn.prepareStatement("SELECT id, name FROM researchers WHERE name = ?");
     pstmt.setString(1, researcher);
     res = pstmt.executeQuery();
+    pstmt.close();
     if (res.next()) {
+      pstmt.close();
       System.out.println("added researcher " + researcher + " with id " + res.getInt(1));
       return res.getInt(1);
     } else {
       // should never be called
+      pstmt.close();
       System.out.println("adding researcher " + researcher + "failed");
       return -1;
     }
@@ -613,8 +623,7 @@ public class DatabaseConnection {
     conn.close();
   }
 
-  public static void pushPrimer(Primer primer, int researcherId)
-      throws SQLException {
+  public static void pushPrimer(Primer primer, int researcherId) throws SQLException {
     Statement stmt = conn.createStatement();
     stmt.execute("USE gsat");
     stmt.close();
@@ -657,7 +666,9 @@ public class DatabaseConnection {
       pstmt.setInt(6, meltingPoint);
       pstmt.setString(7, comment);
       pstmt.executeUpdate();
+      pstmt.close();
     }
+    pstmt.close();
   }
 
   /**
@@ -960,9 +971,11 @@ public class DatabaseConnection {
     ResultSet res = pstmt.executeQuery();
     if (res.next()) {
       // return index
+      pstmt.close();
       return res.getInt(1);
     } else {
       // researcher does not exist
+      pstmt.close();
       return 0;
     }
   }
@@ -1241,10 +1254,15 @@ public class DatabaseConnection {
     ResultSet res = pstmt.executeQuery();
     if (res.next()) {
       // return index
+      pstmt.close();
       return res.getInt(1);
     } else {
       // gene does not exist
+      pstmt.close();
       return 0;
     }
+
+
+
   }
 }

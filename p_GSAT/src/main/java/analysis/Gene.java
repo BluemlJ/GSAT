@@ -17,8 +17,7 @@ public class Gene extends Sequence {
   private int id;
 
   /**
-   * Name of the gene (e.g. fsa). 
-   * Starts with lowercase.
+   * Name of the gene (e.g. fsa). Starts with lowercase.
    */
   private String name;
 
@@ -69,7 +68,7 @@ public class Gene extends Sequence {
     this.comment = comment;
   }
 
-  //TODO comment
+  // TODO comment
   public Gene(String sequence, int id, String name, String researcher, String organism,
       String comment, Date date) {
     super(sequence, researcher, date);

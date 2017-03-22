@@ -2,7 +2,6 @@ package gui;
 
 import java.awt.BasicStroke;
 import java.awt.Color;
-import java.awt.Desktop;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
@@ -16,8 +15,6 @@ import javax.imageio.ImageIO;
 
 import analysis.AnalysedSequence;
 import analysis.Gene;
-import analysis.MutationAnalysis;
-import analysis.QualityAnalysis;
 import analysis.StringAnalysis;
 import javafx.application.Application;
 import javafx.embed.swing.SwingFXUtils;
@@ -26,10 +23,8 @@ import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.chart.XYChart;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.ScrollBar;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -42,46 +37,47 @@ import javafx.stage.Stage;
 
 /**
  * Class for displaying Chromatogram data with JavaFX
+ * 
  * @author kevin
  *
  */
 public class ShowChromatogram extends Application implements javafx.fxml.Initializable {
 
-  //Preset colors for Chromatogram:
-  private final Color colorA = new Color(170, 220, 80);     // green
-  private final Color colorT = new Color(240, 60, 60);      // red
-  private final Color colorG = Color.BLACK;                 // black
-  private final Color colorC = new Color(110, 180, 200);    // blue
-  private final Color background = new Color(244, 244, 244);// blue
+  // Preset colors for Chromatogram:
+  private final Color colorA = new Color(170, 220, 80);
+  private final Color colorT = new Color(240, 60, 60);
+  private final Color colorG = Color.BLACK;
+  private final Color colorC = new Color(110, 180, 200);
+  private final Color background = new Color(244, 244, 244);
   //
-  
-  //Thickness of trace graphs.
+
+  // Thickness of trace graphs.
   private int lineThickness = 5;
 
-  //list of Sequences from selected folder.
+  // list of Sequences from selected folder.
   LinkedList<AnalysedSequence> sequences;
 
-  //the currently selected sequence.
+  // the currently selected sequence.
   private int activeSequence = 0;
 
-  //the image that is Drawn to
+  // the image that is Drawn to
   private Image img;
 
-  //ScrollPane for scrolling the Chromatogram
+  // ScrollPane for scrolling the Chromatogram
   private ScrollPane scrollPane;
 
-  //Buttons for previous File.
+  // Buttons for previous File.
   private Button prevs;
 
-  //Buttons for next File.
+  // Buttons for next File.
   private Button next;
-  
-  //Label to display the selected File
+
+  // Label to display the selected File
   private Label fileName = new Label();
 
   /**
-   * required by JavaFX
-   * but not used in this class
+   * required by JavaFX but not used in this class
+   * 
    * @author kevin
    */
   @Override
@@ -89,87 +85,87 @@ public class ShowChromatogram extends Application implements javafx.fxml.Initial
 
   }
 
-  //the active scene.
+  // the active scene.
   private Scene scene;
 
   /**
-   * JavaFX start method
-   * Setup all necessary variables and opens the Chromatogram
+   * JavaFX start method Setup all necessary variables and opens the Chromatogram
+   * 
    * @author kevin
    */
   @Override
   public void start(Stage primaryStage) throws Exception {
 
-    //create and configure Scrollpane;
+    // create and configure Scrollpane;
     scrollPane = new ScrollPane();
     scrollPane.setMinHeight(420);
     scrollPane.setMaxHeight(Double.MAX_VALUE);
     scrollPane.setMaxWidth(Double.MAX_VALUE);
 
-    //create Buttons for next and previous file
+    // create Buttons for next and previous file
     next = new Button("Next file");
     prevs = new Button("Previous file");
 
-    //set EventHandler for next file button
+    // set EventHandler for next file button
     next.setOnAction(new EventHandler<ActionEvent>() {
 
       @Override
       public void handle(ActionEvent event) {
-        //check if next file exists
+        // check if next file exists
         if (activeSequence + 1 < sequences.size()) {
-          //update Sequence
+          // update Sequence
           updateSequences(activeSequence + 1);
           if (activeSequence + 1 >= sequences.size()) {
-            //Disable button if no next file exists
+            // Disable button if no next file exists
             next.setDisable(true);
           }
         }
-        //enable previous button
+        // enable previous button
         prevs.setDisable(false);
       }
     });
 
-    //set EventHandler for previous file button
+    // set EventHandler for previous file button
     prevs.setOnAction(new EventHandler<ActionEvent>() {
 
       @Override
       public void handle(ActionEvent event) {
-        //check if next file exists
+        // check if next file exists
         if (activeSequence - 1 >= 0) {
-          //update Sequence
+          // update Sequence
           updateSequences(activeSequence - 1);
           if (activeSequence - 1 <= 0) {
-            //Disable button if no next file exists
+            // Disable button if no next file exists
             prevs.setDisable(true);
           }
         }
-        //enable next Button
+        // enable next Button
         next.setDisable(false);
 
       }
     });
-    
-    //create export Button
+
+    // create export Button
     Button export = new Button("Export");
-    
-    //set EventHandler for previous file button
+
+    // set EventHandler for previous file button
     export.setOnAction(new EventHandler<ActionEvent>() {
 
       @Override
       public void handle(ActionEvent event) {
-        //Open File Chooser window
+        // Open File Chooser window
         FileChooser fileChooser = new FileChooser();
-        
-        //save path in String
+
+        // save path in String
         String filename = sequences.get(activeSequence).getFileName();
-        
-        //remove possible File endings and set File ending to png
+
+        // remove possible File endings and set File ending to png
         fileChooser.setInitialFileName(filename.substring(0, filename.length() - 3) + "png");
 
         fileChooser.setTitle("Save as image");
         File file = fileChooser.showSaveDialog(primaryStage);
 
-        //if File was set, save file in given path
+        // if File was set, save file in given path
         if (file != null) {
           try {
             ImageIO.write(SwingFXUtils.fromFXImage(img, null), "png", file);
@@ -180,10 +176,10 @@ public class ShowChromatogram extends Application implements javafx.fxml.Initial
       }
     });
 
-    //create close button
+    // create close button
     Button close = new Button("Close");
 
-    //set close event for close button
+    // set close event for close button
     close.setOnAction(new EventHandler<ActionEvent>() {
 
       @Override
@@ -194,17 +190,17 @@ public class ShowChromatogram extends Application implements javafx.fxml.Initial
       }
     });
 
-    //create box on the left for next and previous button
+    // create box on the left for next and previous button
     HBox buttonLeft = new HBox(prevs, next);
     buttonLeft.setAlignment(Pos.BOTTOM_LEFT);
     buttonLeft.setSpacing(10);
 
-    //create box on the right for export and close button 
+    // create box on the right for export and close button
     HBox buttonRight = new HBox(export, close);
     buttonRight.setAlignment(Pos.BOTTOM_RIGHT);
     buttonRight.setSpacing(10);
 
-    //fill boxes and filename label in bigger box
+    // fill boxes and filename label in bigger box
     HBox buttonBox = new HBox(fileName, buttonLeft, buttonRight);
     buttonBox.setSpacing(100);
     buttonBox.setAlignment(Pos.BOTTOM_CENTER);
@@ -215,7 +211,7 @@ public class ShowChromatogram extends Application implements javafx.fxml.Initial
     VBox.setVgrow(scrollPane, Priority.ALWAYS);
     scene = new Scene(v);
 
-    //Standard window startup
+    // Standard window startup
     primaryStage.setTitle("GSAT - Chromatogram view");
     primaryStage.setScene(scene);
     primaryStage.sizeToScene();
@@ -224,8 +220,8 @@ public class ShowChromatogram extends Application implements javafx.fxml.Initial
 
 
   /**
-   * Sets the active Sequence to id and updates the image
-   * Redraws the image and Displays it
+   * Sets the active Sequence to id and updates the image Redraws the image and Displays it
+   * 
    * @param id The id of the currently selected Sequence
    * @author kevin
    */
@@ -237,26 +233,26 @@ public class ShowChromatogram extends Application implements javafx.fxml.Initial
     AnalysedSequence startSequence = sequences.get(id);
     fileName.setText(startSequence.getFileName());
 
-    //get trace channels from sequence
+    // get trace channels from sequence
     int[] channelA = startSequence.getChannelA();
     int[] channelC = startSequence.getChannelC();
     int[] channelT = startSequence.getChannelT();
     int[] channelG = startSequence.getChannelG();
 
-    //get basecalls from sequence (spikes in trace)
+    // get basecalls from sequence (spikes in trace)
     int[] baseCalls = startSequence.getBaseCalls();
 
-    //determine reference Gene and calculate offset (needed for aminoacid determination)
+    // determine reference Gene and calculate offset (needed for aminoacid determination)
     try {
       if (startSequence.getReferencedGene() == null) {
         if (MainWindow.dropdownGene != null) {
           startSequence.setReferencedGene(MainWindow.dropdownGene);
-        }else {
+        } else {
           Gene refgene = StringAnalysis.findRightGene(startSequence);
           startSequence.setReferencedGene(refgene);
         }
       }
-      
+
       StringAnalysis.findOffset(startSequence);
     } catch (Exception e) {
       e.printStackTrace();
@@ -273,7 +269,7 @@ public class ShowChromatogram extends Application implements javafx.fxml.Initial
     // create new viewer and set image
     ImageView viewer = new ImageView();
 
-    //add viewer to scrollPane to make it scrollable
+    // add viewer to scrollPane to make it scrollable
     try {
       scrollPane.setContent(viewer);
     } catch (Exception e) {
@@ -289,14 +285,14 @@ public class ShowChromatogram extends Application implements javafx.fxml.Initial
     buffImg.createGraphics();
     Graphics2D buffGraph = (Graphics2D) buffImg.getGraphics();
 
-    //create stroke for trace lines
+    // create stroke for trace lines
     BasicStroke bigStroke =
         new BasicStroke(lineThickness, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND);
-    
-    //create half size stroke for misc stuff
+
+    // create half size stroke for misc stuff
     BasicStroke smallStroke =
-        new BasicStroke(lineThickness / 2, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND);
-    
+        new BasicStroke(lineThickness / 2.0f, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND);
+
     // graphics settings
     RenderingHints renderingHints = new RenderingHints(RenderingHints.KEY_TEXT_ANTIALIASING,
         RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
@@ -305,7 +301,7 @@ public class ShowChromatogram extends Application implements javafx.fxml.Initial
 
     buffGraph.setRenderingHints(renderingHints);
 
-    //draw single collor background
+    // draw single collor background
     buffGraph.setColor(background);
     buffGraph.fillRect(0, 0, last * stretchX, 400);
 
@@ -315,38 +311,38 @@ public class ShowChromatogram extends Application implements javafx.fxml.Initial
     int lastG = 0;
     int lastC = 0;
 
-    //count basecall index
+    // count basecall index
     int basecallIndex = 0;
 
-    //drawing loop
+    // drawing loop
     for (int i = 0; i < last; i++) {
-      
-      //Draw trace lines:
+
+      // Draw trace lines:
       buffGraph.setStroke(bigStroke);
       // scale traces to match image coordinate system
-      int aBasecall = (int) (400 - ((channelA[i]) * stretchY));
-      int tBasecall = (int) (400 - ((channelT[i]) * stretchY));
-      int gBasecall = (int) (400 - ((channelG[i]) * stretchY));
-      int cBasecall = (int) (400 - ((channelC[i]) * stretchY));
+      int basecallA = (int) (400 - ((channelA[i]) * stretchY));
+      int basecallT = (int) (400 - ((channelT[i]) * stretchY));
+      int basecallG = (int) (400 - ((channelG[i]) * stretchY));
+      int basecallC = (int) (400 - ((channelC[i]) * stretchY));
 
       // draw A
       buffGraph.setColor(colorA);
-      buffGraph.drawLine((i - 1) * stretchX, lastA, i * stretchX, aBasecall);
+      buffGraph.drawLine((i - 1) * stretchX, lastA, i * stretchX, basecallA);
 
       // draw T
       buffGraph.setColor(colorT);
-      buffGraph.drawLine((i - 1) * stretchX, lastT, i * stretchX, tBasecall);
+      buffGraph.drawLine((i - 1) * stretchX, lastT, i * stretchX, basecallT);
 
       // draw G
       buffGraph.setColor(colorG);
-      buffGraph.drawLine((i - 1) * stretchX, lastG, i * stretchX, gBasecall);
+      buffGraph.drawLine((i - 1) * stretchX, lastG, i * stretchX, basecallG);
 
       // draw C
       buffGraph.setColor(colorC);
-      buffGraph.drawLine((i - 1) * stretchX, lastC, i * stretchX, cBasecall);
+      buffGraph.drawLine((i - 1) * stretchX, lastC, i * stretchX, basecallC);
 
 
-      //if active point contains a basecall:
+      // if active point contains a basecall:
       if (baseCalls[basecallIndex] == i) {
 
         // get char of Nucleotide
@@ -377,34 +373,34 @@ public class ShowChromatogram extends Application implements javafx.fxml.Initial
 
         // Draw aminoacid
         buffGraph.setColor(Color.BLACK);
-        
-        //check if aminoacid is complete and at correct position
+
+        // check if aminoacid is complete and at correct position
         if ((basecallIndex - startSequence.getOffset()) % 3 == 0) {
           if (basecallIndex + 3 < startSequence.getSequence().length()) {
             buffGraph.setStroke(smallStroke);
             try {
-              
-            //get nucleotides of aminoacid
-            String aminoInNucleotides =
-                (startSequence.getSequence().substring(basecallIndex, basecallIndex + 3))
-                    .toUpperCase();
-            
-            //convert nucleotides in aminoacid 
-            String Aminoascid = StringAnalysis.codonsToAminoAcids(aminoInNucleotides, false);
-            
-            //draw aminoacid string
-            buffGraph.drawString(Aminoascid, baseCalls[basecallIndex + 1] * stretchX - fontWidth*(Aminoascid.length()),
-                30);
-            
-            //draw horizontal line under nucleotides
-            buffGraph.drawLine(baseCalls[basecallIndex] * stretchX - fontWidth * 2, 35,
-                (baseCalls[basecallIndex + 2]) * stretchX + fontWidth * 2, 35);
-            
-            //draw left and right end line
-            buffGraph.drawLine(baseCalls[basecallIndex] * stretchX - fontWidth * 2, 40,
-                baseCalls[basecallIndex] * stretchX - fontWidth * 2, 20);
-            buffGraph.drawLine(baseCalls[basecallIndex + 2] * stretchX + fontWidth * 2, 40,
-                baseCalls[basecallIndex + 2] * stretchX + fontWidth * 2, 20);
+
+              // get nucleotides of aminoacid
+              String aminoInNucleotides =
+                  (startSequence.getSequence().substring(basecallIndex, basecallIndex + 3))
+                      .toUpperCase();
+
+              // convert nucleotides in aminoacid
+              String aminoacid = StringAnalysis.codonsToAminoAcids(aminoInNucleotides, false);
+
+              // draw aminoacid string
+              buffGraph.drawString(aminoacid,
+                  baseCalls[basecallIndex + 1] * stretchX - fontWidth * (aminoacid.length()), 30);
+
+              // draw horizontal line under nucleotides
+              buffGraph.drawLine(baseCalls[basecallIndex] * stretchX - fontWidth * 2, 35,
+                  (baseCalls[basecallIndex + 2]) * stretchX + fontWidth * 2, 35);
+
+              // draw left and right end line
+              buffGraph.drawLine(baseCalls[basecallIndex] * stretchX - fontWidth * 2, 40,
+                  baseCalls[basecallIndex] * stretchX - fontWidth * 2, 20);
+              buffGraph.drawLine(baseCalls[basecallIndex + 2] * stretchX + fontWidth * 2, 40,
+                  baseCalls[basecallIndex + 2] * stretchX + fontWidth * 2, 20);
             } catch (Exception e) {
               e.printStackTrace();
             }
@@ -420,14 +416,14 @@ public class ShowChromatogram extends Application implements javafx.fxml.Initial
       }
 
       // update last location
-      lastA = aBasecall;
-      lastT = tBasecall;
-      lastG = gBasecall;
-      lastC = cBasecall;
+      lastA = basecallA;
+      lastT = basecallT;
+      lastG = basecallG;
+      lastC = basecallC;
 
     }
 
-    //convert buffered image to JavaFX WritableImage
+    // convert buffered image to JavaFX WritableImage
     WritableImage wrtieImg = new WritableImage(last * stretchX, 400);
 
     SwingFXUtils.toFXImage(buffImg, wrtieImg);
@@ -437,28 +433,30 @@ public class ShowChromatogram extends Application implements javafx.fxml.Initial
 
   /**
    * sets Sequence and updates Chromatogram accordingly
+   * 
    * @param sequence
    * @author kevin
    */
   public void setSequence(AnalysedSequence sequence) {
-    //create new list
+    // create new list
     this.sequences = new LinkedList<AnalysedSequence>();
 
-    //add sequence to list 
+    // add sequence to list
     this.sequences.add(sequence);
-    
-    //set active sequence to 0 and udate
+
+    // set active sequence to 0 and udate
     updateSequences(0);
   }
 
   /**
-   * sets list of Sequences and updates Chromatogram accordingly
-   * Automatically sets first sequence of the list.
+   * sets list of Sequences and updates Chromatogram accordingly Automatically sets first sequence
+   * of the list.
+   * 
    * @author kevin
    * @param sequences
    */
   public void setSequences(LinkedList<AnalysedSequence> sequences) {
-    //set sequence
+    // set sequence
     this.sequences = sequences;
     activeSequence = 0;
     prevs.setDisable(true);
@@ -467,8 +465,8 @@ public class ShowChromatogram extends Application implements javafx.fxml.Initial
     } else {
       next.setDisable(true);
     }
-    
-    //set active sequence to 0 and udate
+
+    // set active sequence to 0 and udate
     updateSequences(0);
   }
 

@@ -20,7 +20,7 @@ public class AnalysedSequence extends Sequence {
    */
   private String comments = "";
 
-  //TODO Comment @BEN
+  // TODO Comment @BEN
   private LinkedList<ProblematicComment> problems = new LinkedList<ProblematicComment>();
 
   /**
@@ -76,7 +76,7 @@ public class AnalysedSequence extends Sequence {
    */
   private double trimPercentage;
 
- 
+
   /**
    * quality average of all nucletieds in sequence after trimming
    */
@@ -130,8 +130,8 @@ public class AnalysedSequence extends Sequence {
    * @author Lovis Heindrich
    */
   public AnalysedSequence(Gene gene, LinkedList<String> mutations, String name, String sequence,
-      java.util.Date date, String researcher, String comment, boolean manuallyChecked, String primer,
-       int trimpercent, int histag, int avgquality2) {
+      java.util.Date date, String researcher, String comment, boolean manuallyChecked,
+      String primer, int trimpercent, int histag, int avgquality2) {
     super(sequence, researcher, date);
     this.referencedGene = gene;
     this.mutations = mutations;
@@ -154,7 +154,7 @@ public class AnalysedSequence extends Sequence {
     mutations.add(mutation);
   }
 
-  //TODO @Ben comment
+  // TODO @Ben comment
   public void addProblematicComment(ProblematicComment comment) {
     problems.add(comment);
   }
@@ -220,7 +220,7 @@ public class AnalysedSequence extends Sequence {
     String trimmed = sequence.substring(startIndex, endIndex + 1);
     this.sequence = trimmed;
   }
-  
+
   /**
    * adds comment to existing comments
    * 
@@ -319,7 +319,7 @@ public class AnalysedSequence extends Sequence {
     this.hisTagPosition = hisTagPosition;
   }
 
- 
+
   public int[] getChannelA() {
     return channelA;
   }
