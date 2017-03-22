@@ -4,6 +4,8 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedList;
@@ -17,7 +19,10 @@ import analysis.Sequence;
 import analysis.StringAnalysis;
 import exceptions.CorruptedSequenceException;
 import exceptions.DissimilarGeneException;
+import exceptions.FileReadingException;
+import exceptions.MissingPathException;
 import exceptions.UndefinedTypeOfMutationException;
+import io.SequenceReader;
 
 /**
  * This class tests the behavior of the analysis parts of the project.
@@ -768,4 +773,33 @@ public class AnalysisTests {
 
   }
 
+  
+  
+  @Test
+  public void testPlasmidMix() throws FileReadingException, IOException, MissingPathException {
+    SequenceReader
+    .configurePath(new File("resources/ab1/Tk_Gs40Hits/Forward/95EI60.ab1").getAbsolutePath());
+    AnalysedSequence testSequence = SequenceReader.convertFileIntoSequence();
+    MutationAnalysis.findPlasmidMix(testSequence);
+    assertEquals("There are possible placmidmixes at the positions 2. ", testSequence.getComments());
+  }
+  
+  @Test
+  public void testPlasmidMix2() throws FileReadingException, IOException, MissingPathException {
+    SequenceReader
+    .configurePath(new File("resources/ab1/Tk_Gs40Hits/Forward/95EI64.ab1").getAbsolutePath());
+    AnalysedSequence testSequence = SequenceReader.convertFileIntoSequence();
+    MutationAnalysis.findPlasmidMix(testSequence);
+    assertEquals("There are possible placmidmixes at the positions 2. ", testSequence.getComments());
+  }
+  
+  @Test
+  public void testPlasmidMix3() throws FileReadingException, IOException, MissingPathException {
+    SequenceReader
+    .configurePath(new File("resources/ab1/Tk_Gs40Hits/Forward/95EI67.ab1").getAbsolutePath());
+    AnalysedSequence testSequence = SequenceReader.convertFileIntoSequence();
+    MutationAnalysis.findPlasmidMix(testSequence);
+    assertEquals("", testSequence.getComments());
+  }
+  
 }
