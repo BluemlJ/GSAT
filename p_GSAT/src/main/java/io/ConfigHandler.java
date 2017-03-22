@@ -18,7 +18,7 @@ import exceptions.UnknownConfigFieldException;
  * This class is responsible for reading the configuration file and storing its
  * values. The configuration file is stored in home/gsat/config.txt.
  * 
- * @author lovisheindrich, jannis blueml
+ * @author Lovis Heindrich, jannis blueml
  *
  */
 public class ConfigHandler {
@@ -219,8 +219,6 @@ public class ConfigHandler {
 		}
 
 		configReader.close();
-
-		// Arrays.sort(researchers);
 	}
 
 	/**
