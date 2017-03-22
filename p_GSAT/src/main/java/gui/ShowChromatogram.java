@@ -113,6 +113,7 @@ public class ShowChromatogram extends Application implements javafx.fxml.Initial
 
       @Override
       public void handle(ActionEvent event) {
+        next.setDisable(true);
         // check if next file exists
         if (activeSequence + 1 < sequences.size()) {
           // update Sequence
@@ -120,6 +121,8 @@ public class ShowChromatogram extends Application implements javafx.fxml.Initial
           if (activeSequence + 1 >= sequences.size()) {
             // Disable button if no next file exists
             next.setDisable(true);
+          }else {
+            next.setDisable(false);
           }
         }
         // enable previous button
@@ -132,6 +135,7 @@ public class ShowChromatogram extends Application implements javafx.fxml.Initial
 
       @Override
       public void handle(ActionEvent event) {
+        prevs.setDisable(true);
         // check if next file exists
         if (activeSequence - 1 >= 0) {
           // update Sequence
@@ -139,6 +143,8 @@ public class ShowChromatogram extends Application implements javafx.fxml.Initial
           if (activeSequence - 1 <= 0) {
             // Disable button if no next file exists
             prevs.setDisable(true);
+          }else {
+            prevs.setDisable(false);
           }
         }
         // enable next Button
