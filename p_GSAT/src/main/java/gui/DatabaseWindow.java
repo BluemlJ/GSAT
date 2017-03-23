@@ -359,7 +359,6 @@ public class DatabaseWindow extends Application implements javafx.fxml.Initializ
 
             try {
               uploadResults();
-              GUIUtils.showInfo(AlertType.CONFIRMATION, "Success", UPLOAD_SUCCESS);
             } catch (IOException e) {
               // error while reading file
               e.printStackTrace();
@@ -391,7 +390,6 @@ public class DatabaseWindow extends Application implements javafx.fxml.Initializ
 
             try {
               downloadResults();
-              GUIUtils.showInfo(AlertType.CONFIRMATION, "Success", DOWNLOAD_SUCCESS);
             } catch (SQLException | DatabaseConnectionException e) {
               GUIUtils.showInfo(AlertType.ERROR, "Error", DOWNLOAD_FAIL);
               e.printStackTrace();
@@ -406,11 +404,27 @@ public class DatabaseWindow extends Application implements javafx.fxml.Initializ
 
           // upload everything
           if (uploadToggle.isSelected()) {
+            
+            
+            if (destField.getText().isEmpty()) {
+              GUIUtils.showInfo(AlertType.ERROR, "Empty path",
+                  "Please enter a path to the CSV files to be uploaded.");
+              return;
+            }
+
+            if (!new File(destField.getText()).exists()
+                || !new File(destField.getText()).isDirectory()) {
+              GUIUtils.showInfo(AlertType.ERROR, "Invalid path",
+                  "The entered path does not describe a folder. " + ""
+                      + "Please enter a folder to the CSV files to be uploaded.");
+              return;
+            }
+            
+            
             try {
               DatabaseConnection.pushAllGenes();
               DatabaseConnection.pushAllPrimer();
               uploadResults();
-              GUIUtils.showInfo(AlertType.CONFIRMATION, "Success", UPLOAD_SUCCESS);
               MainWindow.changesOnGenes = false;
               MainWindow.changesOnPrimers = false;
             } catch (IOException e) {
@@ -426,6 +440,22 @@ public class DatabaseWindow extends Application implements javafx.fxml.Initializ
 
           // download everything
           } else if (downloadToggle.isSelected()) {
+            
+            if (destField.getText().isEmpty()) {
+              GUIUtils.showInfo(AlertType.ERROR, "Empty path",
+                  "Please enter a folder path to specify where the data should be placed.");
+              return;
+            }
+
+            if (!new File(destField.getText()).exists()
+                || !new File(destField.getText()).isDirectory()) {
+              GUIUtils.showInfo(AlertType.ERROR, "Invalid path",
+                  "The entered path does not describe a folder. "
+                      + "Please enter a folder indicating where to place the retrieved data.");
+              return;
+            }
+            
+            
             try {
               DatabaseConnection.pullAndSaveGenes();
               DatabaseConnection.pullAndSavePrimer();
@@ -571,17 +601,31 @@ public class DatabaseWindow extends Application implements javafx.fxml.Initializ
     
     ArrayList<AnalysedSequence> resList = DatabaseConnection
         .pullCustomSequences(datePickerStartDate, datePickerEndDate, researcher, gene);
-    for (AnalysedSequence res : resList) {
-      FileSaver.storeResultsLocally(res.getFileName(), res);
+    
+    
+    if (resList.isEmpty()) {
+      GUIUtils.showInfo(AlertType.INFORMATION, "No results in database", "There are no results in the database. So no local files are created.");
+      return;
+    } else {
+      for (AnalysedSequence res : resList) {
+        FileSaver.storeResultsLocally(res.getFileName(), res);
+      }
+      GUIUtils.showInfo(AlertType.CONFIRMATION, "Success", DOWNLOAD_SUCCESS);
     }
+    
 
   }
 
   private void uploadResults() throws IOException, SQLException, DatabaseConnectionException {
     String path = destField.getText();
     LinkedList<AnalysedSequence> sequences = FileRetriever.convertFilesToSequences(path);
-    DatabaseConnection.pushAllData(sequences);
-    MainWindow.changesOnResults = false;
+    
+    if (sequences.isEmpty()) {
+      GUIUtils.showInfo(AlertType.INFORMATION, "No usable results found", "There were no usable results. There either are not result CSV files at the given path or all results in these files are unusable.");
+    } else {
+      DatabaseConnection.pushAllData(sequences);
+      GUIUtils.showInfo(AlertType.CONFIRMATION, "Success", UPLOAD_SUCCESS);
+    }
   }
 
 

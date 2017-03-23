@@ -1,6 +1,7 @@
 package analysis;
 
 import exceptions.CorruptedSequenceException;
+import io.ProblematicComment;
 
 /**
  * This class contains the logic of analyzing the quality of sequences (poin) Thus, it is one of the
@@ -214,7 +215,15 @@ public class QualityAnalysis {
 
     int lengthNow = toAnalyse.getSequence().length();
     double percentage = (lengthBefore - lengthNow) / ((double) lengthBefore);
-    return (int) (percentage * 100);
+    int percentageInt = (int) (percentage * 100);
+    
+    if (percentageInt >= 90) {
+      toAnalyse.addProblematicComment(ProblematicComment.NINETY_PERCENT_QUALITY_TRIM);
+    } else if (percentageInt >= 70) {
+      toAnalyse.addComments("70% or more (but less than 90%) of the processed sequence got trimmed away by the quality analysis.");
+    }
+    
+    return percentageInt; 
   }
 
   /**

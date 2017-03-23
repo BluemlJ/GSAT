@@ -132,8 +132,7 @@ public class FileRetriever {
       sequence.setHisTagPosition(Integer.parseInt(data[4]));
     }
 
-    if (data[5].equalsIgnoreCase("yes") || data[5].equalsIgnoreCase("y")
-        || data[5].equalsIgnoreCase("true")) {
+    if (isYes(data[5])) {
       sequence.setManuallyChecked(true);
     } else {
       sequence.setManuallyChecked(false);
@@ -152,4 +151,25 @@ public class FileRetriever {
     return sequence;
 
   }
+  
+  
+  
+  private static boolean isYes(String answer) {
+    
+    answer = answer.toLowerCase();
+    
+    String[] yesPossibilities = new String[]{
+     "yes", "y", "true", "ok", "okay", "ja"                                         
+    };
+    
+    for(String possibility : yesPossibilities) {
+      if (answer.equals(possibility)) {
+        return true;
+      }
+    }
+    return false;
+   
+  }
+  
+  
 }

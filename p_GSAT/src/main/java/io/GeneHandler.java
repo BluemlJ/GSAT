@@ -8,6 +8,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 
 import analysis.Gene;
 import exceptions.DuplicateGeneException;
@@ -286,7 +287,7 @@ public class GeneHandler {
       names[i] = geneList.get(i).getName();
     }
 
-    Arrays.sort(names);
+    Arrays.sort(names, (s1, s2) -> { return s1.toLowerCase().compareTo(s2.toLowerCase()); });
     return names;
   }
 
@@ -303,7 +304,7 @@ public class GeneHandler {
       }
     }
 
-    Arrays.sort(names);
+    Arrays.sort(names, (s1, s2) -> { return s1.toLowerCase().compareTo(s2.toLowerCase()); });
     return names;
 
   }

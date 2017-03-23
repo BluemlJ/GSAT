@@ -47,6 +47,8 @@ public class FileSaver {
     commentMap.put(ProblematicComment.SEQUENCE_TO_SHORT,
         "The usable part of the sequence is very short "
             + "(One should probably adjust the parameters).");
+    commentMap.put(ProblematicComment.NINETY_PERCENT_QUALITY_TRIM, 
+      "90% or more of the processed sequence got trimmed away by the quality analysis.");
   }
 
 
@@ -309,7 +311,7 @@ public class FileSaver {
 
     if (!append) {
       writer.write("file name" + SEPARATOR_CHAR + " gene" + SEPARATOR_CHAR + " gene organism"
-          + SEPARATOR_CHAR + " mutations (with codons)" + SEPARATOR_CHAR + " HIS tag"
+          + SEPARATOR_CHAR + " mutations (with codons)" + SEPARATOR_CHAR + " HIS Tag"
           + SEPARATOR_CHAR + " manually checked" + SEPARATOR_CHAR + " comments" + SEPARATOR_CHAR
           + " researcher" + SEPARATOR_CHAR + " date" + SEPARATOR_CHAR + " average quality (percent)"
           + SEPARATOR_CHAR + " percentage of quality trim" + SEPARATOR_CHAR + " nucleotide sequence"
@@ -323,6 +325,12 @@ public class FileSaver {
   public static String constructProblematicComments(AnalysedSequence seq) {
 
     StringBuilder builder = new StringBuilder();
+    
+    LinkedList<ProblematicComment> probComments = seq.getProblematicComments();
+    if (probComments.contains(ProblematicComment.NO_MATCH_FOUND)) {
+      probComments.removeIf(probCom -> {return !probCom.equals(ProblematicComment.NO_MATCH_FOUND);});
+    }
+    
     for (ProblematicComment comment : seq.getProblematicComments()) {
       builder.append(commentMap.get(comment) + " ");
     }

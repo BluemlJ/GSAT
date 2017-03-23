@@ -49,6 +49,13 @@ public class AddGeneWindow extends Application implements javafx.fxml.Initializa
   public void initialize(URL location, ResourceBundle resources) {
 
     geneArea.setWrapText(true);
+    geneArea.setPromptText("sequence, starting with 5' and " + 
+      System.lineSeparator() + System.lineSeparator() + System.lineSeparator() + System.lineSeparator() +
+      System.lineSeparator() + System.lineSeparator() + System.lineSeparator() + System.lineSeparator() +
+      System.lineSeparator() + System.lineSeparator() +
+      "                                                                                       "
+      + "                                                                       ending with 3'");
+    
     commentArea.setWrapText(true);
 
     GUIUtils.setColorOnButton(confirmButton, ButtonColor.GREEN);

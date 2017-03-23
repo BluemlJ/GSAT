@@ -277,7 +277,6 @@ public class GUIUtils {
    */
   public static Pair<Boolean, Text> setSourceFolder(TextField source) {
     boolean success = false;
-    Text report = getRedText("Reading path to .ab1 file was unsuccessful.\n");
     String path;
     File selectedDirectory = null;
     String defaultPath = source.getText();
@@ -303,6 +302,8 @@ public class GUIUtils {
 
     alert.getButtonTypes().setAll(buttonTypeOne, buttonTypeTwo, buttonTypeCancel);
 
+    Text report;
+    
     Optional<ButtonType> result = alert.showAndWait();
     if (result.get() == buttonTypeOne) {
       report = getRedText("Reading path to .ab1 file folder was unsuccessful.\n");
@@ -319,6 +320,7 @@ public class GUIUtils {
         selectedDirectory = chooser.showDialog(null);
       }
     } else if (result.get() == buttonTypeTwo) {
+      report = getRedText("Reading path to .ab1 file was unsuccessful.\n");
       FileChooser chooser = new FileChooser();
       chooser.setTitle("Set path to the .ab1 file");
       if (!defaultPath.isEmpty()) {

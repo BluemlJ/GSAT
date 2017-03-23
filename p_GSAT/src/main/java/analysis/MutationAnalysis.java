@@ -282,10 +282,15 @@ public class MutationAnalysis {
 
     }
     if (!mixPositions.isEmpty()) {
-      sequence.setComments(
-          sequence.getComments() + "There are possible placmidmixes at the positions ");
-      for (String string : mixPositions) {
-        sequence.setComments(sequence.getComments() + string + ", ");
+      if (mixPositions.size() > 1) {
+        sequence.setComments(
+            sequence.getComments() + "There are possible plasmidmixes at the positions ");
+          for (String string : mixPositions) {
+            sequence.setComments(sequence.getComments() + string + ", ");
+          }
+      } else {
+        sequence.setComments(
+          sequence.getComments() + "There is a possible plasmidmix at the position " + mixPositions.getFirst() + "  ");
       }
       sequence.setComments(
           sequence.getComments().substring(0, sequence.getComments().length() - 2) + ". ");

@@ -220,7 +220,7 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
       }
     });
 
-    infoArea.getChildren().add(new Text("Welcome to GSAT! \n"));
+    infoArea.getChildren().add(new Text("Welcome to GSAT!" + System.lineSeparator()));
     // read Genes and show them in the choicebox
 
     Text output = GUIUtils.initializeGeneBox(geneBox);
@@ -609,8 +609,8 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
       public void handle(WindowEvent event) {
         if (changesOnGenes || changesOnPrimers || changesOnResults) {
           Alert alertWindow = new Alert(AlertType.CONFIRMATION);
-          alertWindow.setTitle("Warning: Changes not uploaded to database");
-          alertWindow.setHeaderText("There are changes with ");
+          alertWindow.setTitle("Warning: changes");
+          alertWindow.setHeaderText("Changes habe been made with ");
           if (changesOnGenes) {
             alertWindow.setHeaderText(alertWindow.getHeaderText() + "genes,");
           }
@@ -621,10 +621,12 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
             alertWindow.setHeaderText(alertWindow.getHeaderText() + "results,");
           }
           alertWindow.setHeaderText(
-              alertWindow.getHeaderText().substring(0, alertWindow.getHeaderText().length() - 1));
+              alertWindow.getHeaderText().substring(0, alertWindow.getHeaderText().length() - 1) + ".");
 
-          ButtonType save = new ButtonType("Upload changes");
-          ButtonType dontSave = new ButtonType("Close without upload");
+          alertWindow.setHeaderText(alertWindow.getHeaderText() + System.lineSeparator() + "Do you want to upload new data?");
+          
+          ButtonType save = new ButtonType("Open database window");
+          ButtonType dontSave = new ButtonType("Close");
           ButtonType buttonTypeCancel = new ButtonType("Cancel", ButtonData.CANCEL_CLOSE);
 
           alertWindow.getButtonTypes().setAll(save, dontSave, buttonTypeCancel);

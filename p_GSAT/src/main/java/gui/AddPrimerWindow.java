@@ -125,15 +125,21 @@ public class AddPrimerWindow extends Application implements javafx.fxml.Initiali
       public void handle(ActionEvent arg0) {
 
         if (nameField.getText().isEmpty() || sequenceArea.getText().isEmpty()
-            || idField.getText().isEmpty() || meltingTempField.getText().isEmpty()) {
+            || idField.getText().isEmpty()) {
           GUIUtils.showInfo(AlertType.ERROR, "Empty field(s)",
-              "All fields except for the comment field have to be filled.");
+              "Name, sequence and ID are required.");
           return;
         }
 
-
+        String meltingPoint;
+        if (meltingTempField.getText().isEmpty()) {
+          meltingPoint = "-1";
+        } else {
+          meltingPoint = meltingTempField.getText();
+        }
+        
         if (PrimerHandler.addPrimer(new Primer(sequenceArea.getText(),
-            ConfigHandler.getResearcher(), Integer.parseInt(meltingTempField.getText()),
+            ConfigHandler.getResearcher(), Integer.parseInt(meltingPoint),
             idField.getText(), nameField.getText(), commentArea.getText()))) {
 
           GUIUtils.showInfo(AlertType.INFORMATION, "Adding primer", "Primer added successfully.");

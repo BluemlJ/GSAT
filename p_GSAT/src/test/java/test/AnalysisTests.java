@@ -781,7 +781,7 @@ public class AnalysisTests {
         .configurePath(new File("resources/ab1/Tk_Gs40Hits/Forward/95EI60.ab1").getAbsolutePath());
     AnalysedSequence testSequence = SequenceReader.convertFileIntoSequence();
     MutationAnalysis.findPlasmidMix(testSequence);
-    assertEquals("There are possible placmidmixes at the positions 2. ",
+    assertEquals("There is a possible plasmidmix at the position 2. ",
         testSequence.getComments());
   }
 
@@ -791,7 +791,7 @@ public class AnalysisTests {
         .configurePath(new File("resources/ab1/Tk_Gs40Hits/Forward/95EI64.ab1").getAbsolutePath());
     AnalysedSequence testSequence = SequenceReader.convertFileIntoSequence();
     MutationAnalysis.findPlasmidMix(testSequence);
-    assertEquals("There are possible placmidmixes at the positions 2. ",
+    assertEquals("There is a possible plasmidmix at the position 2. ",
         testSequence.getComments());
   }
 

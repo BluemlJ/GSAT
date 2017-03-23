@@ -46,7 +46,7 @@ public class ShowPrimerWindow extends Application implements javafx.fxml.Initial
     Primer selectedPrimer = SettingsWindow.getSelectedPrimer();
     nameField.setText(selectedPrimer.getName());
     sequenceArea.setText(selectedPrimer.getSequence());
-    meltingTempField.setText(selectedPrimer.getMeltingPoint() + "");
+    meltingTempField.setText(selectedPrimer.getMeltingPoint() + " °C");
     idField.setText(selectedPrimer.getId());
     commentArea.setText(selectedPrimer.getComment());
 

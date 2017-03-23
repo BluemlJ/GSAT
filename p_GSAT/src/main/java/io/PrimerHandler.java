@@ -7,6 +7,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import analysis.Primer;
 
@@ -69,6 +70,9 @@ public class PrimerHandler {
     for (int i = 0; i < primerList.size(); i++) {
       ret[i] = primerList.get(i).getName() + " (" + primerList.get(i).getId() + ")";
     }
+    
+    Arrays.sort(ret, (s1, s2) -> { return s1.toLowerCase().compareTo(s2.toLowerCase()); });
+    
     return ret;
   }
 
