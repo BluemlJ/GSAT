@@ -3,6 +3,7 @@ package test;
 import java.io.IOException;
 
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import analysis.AnalysedSequence;
@@ -16,6 +17,7 @@ import exceptions.MissingPathException;
 import exceptions.UndefinedTypeOfMutationException;
 import io.SequenceReader;
 
+@Ignore
 public class PrivateTest {
 
   // TO CHANGE: ---------------------------------------------------
@@ -27,9 +29,9 @@ public class PrivateTest {
           "/home/bluemlj/Dropbox/BP_GSAT/Materialien/Dateien/Bsp/AB/",
           "/home/kevin/Documents/GSAT_Tests/",
           "C:/Users/Jannis/Dropbox/BP_GSAT/Materialien/Dateien - mehr/SET 2 17.1 Privat/Sequences/",
-          "C:/Users/Jannis/Dropbox/BP_GSAT/Materialien/Dateien - mehr/SET 3 12.16 ï¿½ffentlich/ab1/Tk_Gs40Hits/Forward/",
-          "C:/Users/Jannis/Dropbox/BP_GSAT/Materialien/Dateien - mehr/SET 3 12.16 ï¿½ffentlich/ab1/Tk_Gs40Hits/Reverse/",
-          "C:/Users/Jannis/Dropbox/BP_GSAT/Materialien/Dateien - mehr/SET 3 12.16 ï¿½ffentlich/ab1/Tk40Hits050215/",
+          "C:/Users/Jannis/Dropbox/BP_GSAT/Materialien/Dateien - mehr/SET 3 12.16 öffentlich/ab1/Tk_Gs40Hits/Forward/",
+          "C:/Users/Jannis/Dropbox/BP_GSAT/Materialien/Dateien - mehr/SET 3 12.16 öffentlich/ab1/Tk_Gs40Hits/Reverse/",
+          "C:/Users/Jannis/Dropbox/BP_GSAT/Materialien/Dateien - mehr/SET 3 12.16 öffentlich/ab1/Tk40Hits050215/",
           "/home/bluemlj/Dropbox/BP_GSAT/Materialien/Dateien - mehr/SET 4 19.1 Privat/"};
 
   private static String pathToUse;
@@ -37,25 +39,28 @@ public class PrivateTest {
   // --------------------------------------------------------------
 
   /*
-   * Datenset 1 0 Jannis, 1 Ben, 2 Lovis, 3 Kevin, 4 Jannis Laptop, 5 Kevins Laptop
+   * Datenset 1 0 Jannis, 1 Ben, 2 Lovis, 3 Kevin, 4 Jannis' Laptop, 5 Kevins Laptop
    * 
    * Datenset 2 6 Jannis
    * 
    * Datenset 3 7-9 Jannis
    * 
-   * Datenset 4 10 Jannis Laptop
+   * Datenset 4 10 Jannis' Laptop
    */
   private static int userNr = 4;
 
+  
   @BeforeClass
   public static void setup() {
     pathToUse = paths[userNr];
     System.out.println("Start");
   }
 
+  
   // Name of the file
   private String fileName = "76JH28.ab1";
 
+  
   // _____________________________________________________________________
 
   String ECDERA =
@@ -68,6 +73,7 @@ public class PrivateTest {
           + "TGCGCAGAAATATCTCGCCATTGCAGATGAACTGTTCGGTGCTGACTGGGCAGATGCGCGTCACTACCGCTTTGGCGCTTCCAGCCTGCTGGCAAGCCTGCTGAAAGCG"
           + "CTGGGTCACGGCGACGGTAAGAGCGCCAGCAGCTACCTCGAGCACCACCACCACCACCACTGA";
 
+  
   String FSA =
       "ATGGAACTGTATCTGGATACTTCAGACGTTGTTGCGGTGAAGGCGCTGTCACGTATTTTTCCGCTGGCGGGTGTGACCACTAACCCAAGCAT"
           + "TATCGCCGCGGGTAAAAAACCGCTGGATGTTGTGCTTCCGCAACTTCATGAAGCGATGGGCGGTCAGGGGCGTCTGTTTGCCCAGGTAATGGCTACCACT"
@@ -77,43 +83,46 @@ public class PrivateTest {
           + "GCGAGTTTCAAAACCCCGCGTCAGGCGCTGGACTGCTTACTGGCAGGATGTGAATCAATTACTCTGCCACTGGATGTGGCACAACAGATGATTAGCTATCC"
           + "GGCGGTTGATGCCGCTGTGGCGAAGTTTGAGCAGGACTGGCAGGGAGCGTTTGGCAGAACGTCGATTTAA";
 
+  
   String TKGS =
-      "atggcgcattcaatcgaggagttggcgattacgacgattcgaacgctgtcgattgacgcgatcgaaaaagcgaaatccgggcatccgggcatgccgatgggcgcggc"
-          + "gccaatggcgtacacgctttggacgaaatttatgaatcataacccggcgaatccaaactggttcaaccgcgaccgttttgtcttgtcagccgggcacgggtcgatg"
-          + "ttattgtacagcttgcttcatttaagcggctacgacgtatcgatggatgatttgaaacaattccgtcaatggggaagcaaaacgccgggccatccggaatacggcc"
-          + "atacgccgggcgtggaagcgacgaccggcccactcggccaagggattgcgatggcggtcggcatggcgatggcggaacggcatttggccgctacatacaaccgcga"
-          + "cgggtttgagattatcaatcattatacgtacgccatttgcggcgatggcgatttgatggaaggagtggcgagcgaagctgcgtcactcgccggccacttgaagctc"
-          + "ggtcgactgatcgtcctgtatgactcgaacgacatttcgctggacggggagctcaacctgtcgttctcggaaaacgtcgcccaacgtttccaagcatacggctggca"
-          + "atatttgcgcgttgaggacggcaacaatattgaagaaatcgccaaagcgctggaggaggcgcgggcggacctcagccggccgacgctcattgaagtaaaaacgacga"
-          + "ttggctacggcgcgccaaataaagcgggcacgtccggcgtccacggtgctccgctcggcgcccaagaggcgaagctgacgaaagaggcgtatcgttggacatttgcgg"
-          + "aagatttttacgtgccagaagaagtgtacgcccacttccgtgcgacggtgcaagagccgggagcgaaaaaagaggcgaaatggaatgagcagctcgccgcctatgaaca"
-          + "ggcccatccggaactggccgcccaattgaagcgagcgatcgaaggcaaacttccagatggatgggaagcttctttgccggtatacgaagcaggcaaaagcttggcaaccc"
-          + "gctcatcgtccggggaagtgatcaacgccatcgccaaagcggtaccgcaattgtttggcggttcggcggacttggcaagctcgaataaaacgctcatcaaaggcggcggca"
-          + "acttcttcccgggcagctacgaagggcgcaacgtttggtttggcgtgcgcgagtttgccatgggggcggcgctgaacggcatggcgcttcacggcgggctgaaagtgttcg"
-          + "gcggcacgttcttcgtgttctctgactatttgcgtccggcgatccgcttggcggcgctgatgggcttaccggtcatctacgtcttgacgcacgacagcatcgccgtcggcg"
-          + "aagacgggccgacgcacgagccgatcgaacagctagcttcgcttcgggcgatgccgaacttgtcggtcatccgtccggctgacgcaaacgaaacggcggcagcatggcggct"
-          + "ggcgctcgaatcgacggacaagccgactgcgctcgtcttgacgcgtcaagatgtgccgacgttggcggcaacagctgagttggcgtatgaaggcgtgaaaaaaggtgcatac"
-          + "gtcgtttcaccggcgaaaaacggcgctccggaggcgctgttgttggcgactggctcggaagtcggtctggccgtaaaagcgcaagaagcgctcgccgctgagggcatccatgt"
-          + "ctccgtcatcagcatgccatcgtgggaccgcttcgaagcgcagccaaaatcgtaccgcgatgaagtgcttccgccggccgtgacgaagcggctcgccattgaaatgggcgcgt"
-          + "cgctcggttgggagcgctacgtcggcgccgagggcgacattttggccatcgaccgattcggtgcttccgctccgggagagaaaatcatggccgagtatggctttacggttgac"
-          + "aacgtcgtccgccgcacaaaagcgctgctcggcaagtaa";
+      "ATGGCGCATTCAATCGAGGAGTTGGCGATTACGACGATTCGAACGCTGTCGATTGACGCGATCGAAAAAGCGAAATCCGGGCATCCGGGCATGCCGATGGGCGCGGC"
+          + "GCCAATGGCGTACACGCTTTGGACGAAATTTATGAATCATAACCCGGCGAATCCAAACTGGTTCAACCGCGACCGTTTTGTCTTGTCAGCCGGGCACGGGTCGATG"
+          + "TTATTGTACAGCTTGCTTCATTTAAGCGGCTACGACGTATCGATGGATGATTTGAAACAATTCCGTCAATGGGGAAGCAAAACGCCGGGCCATCCGGAATACGGCC"
+          + "ATACGCCGGGCGTGGAAGCGACGACCGGCCCACTCGGCCAAGGGATTGCGATGGCGGTCGGCATGGCGATGGCGGAACGGCATTTGGCCGCTACATACAACCGCGA"
+          + "CGGGTTTGAGATTATCAATCATTATACGTACGCCATTTGCGGCGATGGCGATTTGATGGAAGGAGTGGCGAGCGAAGCTGCGTCACTCGCCGGCCACTTGAAGCTC"
+          + "GGTCGACTGATCGTCCTGTATGACTCGAACGACATTTCGCTGGACGGGGAGCTCAACCTGTCGTTCTCGGAAAACGTCGCCCAACGTTTCCAAGCATACGGCTGGCA"
+          + "ATATTTGCGCGTTGAGGACGGCAACAATATTGAAGAAATCGCCAAAGCGCTGGAGGAGGCGCGGGCGGACCTCAGCCGGCCGACGCTCATTGAAGTAAAAACGACGA"
+          + "TTGGCTACGGCGCGCCAAATAAAGCGGGCACGTCCGGCGTCCACGGTGCTCCGCTCGGCGCCCAAGAGGCGAAGCTGACGAAAGAGGCGTATCGTTGGACATTTGCGG"
+          + "AAGATTTTTACGTGCCAGAAGAAGTGTACGCCCACTTCCGTGCGACGGTGCAAGAGCCGGGAGCGAAAAAAGAGGCGAAATGGAATGAGCAGCTCGCCGCCTATGAACA"
+          + "GGCCCATCCGGAACTGGCCGCCCAATTGAAGCGAGCGATCGAAGGCAAACTTCCAGATGGATGGGAAGCTTCTTTGCCGGTATACGAAGCAGGCAAAAGCTTGGCAACCC"
+          + "GCTCATCGTCCGGGGAAGTGATCAACGCCATCGCCAAAGCGGTACCGCAATTGTTTGGCGGTTCGGCGGACTTGGCAAGCTCGAATAAAACGCTCATCAAAGGCGGCGGCA"
+          + "ACTTCTTCCCGGGCAGCTACGAAGGGCGCAACGTTTGGTTTGGCGTGCGCGAGTTTGCCATGGGGGCGGCGCTGAACGGCATGGCGCTTCACGGCGGGCTGAAAGTGTTCG"
+          + "GCGGCACGTTCTTCGTGTTCTCTGACTATTTGCGTCCGGCGATCCGCTTGGCGGCGCTGATGGGCTTACCGGTCATCTACGTCTTGACGCACGACAGCATCGCCGTCGGCG"
+          + "AAGACGGGCCGACGCACGAGCCGATCGAACAGCTAGCTTCGCTTCGGGCGATGCCGAACTTGTCGGTCATCCGTCCGGCTGACGCAAACGAAACGGCGGCAGCATGGCGGCT"
+          + "GGCGCTCGAATCGACGGACAAGCCGACTGCGCTCGTCTTGACGCGTCAAGATGTGCCGACGTTGGCGGCAACAGCTGAGTTGGCGTATGAAGGCGTGAAAAAAGGTGCATAC"
+          + "GTCGTTTCACCGGCGAAAAACGGCGCTCCGGAGGCGCTGTTGTTGGCGACTGGCTCGGAAGTCGGTCTGGCCGTAAAAGCGCAAGAAGCGCTCGCCGCTGAGGGCATCCATGT"
+          + "CTCCGTCATCAGCATGCCATCGTGGGACCGCTTCGAAGCGCAGCCAAAATCGTACCGCGATGAAGTGCTTCCGCCGGCCGTGACGAAGCGGCTCGCCATTGAAATGGGCGCGT"
+          + "CGCTCGGTTGGGAGCGCTACGTCGGCGCCGAGGGCGACATTTTGGCCATCGACCGATTCGGTGCTTCCGCTCCGGGAGAGAAAATCATGGCCGAGTATGGCTTTACGGTTGAC"
+          + "AACGTCGTCCGCCGCACAAAAGCGCTGCTCGGCAAGTAA";
 
   /**
-   * 
-   * @throws FileReadingException
-   * @throws IOException
-   * @throws UndefinedTypeOfMutationException
-   * @throws CorruptedSequenceException
-   * @throws MissingPathException
+   * This is the private test method, used e.g. on Thursdays to check the performance
+   * on the given AB1 files.  
    */
-
+  @Test
   public void testLocalFile() throws FileReadingException, IOException,
       UndefinedTypeOfMutationException, CorruptedSequenceException, MissingPathException {
+    
+    // Configure path to file
     SequenceReader.configurePath(pathToUse + fileName);
     System.out.println("Path set");
+    
+    
+    // Read in the file
     AnalysedSequence testSeq = SequenceReader.convertFileIntoSequence();
     System.out.println("File read");
 
+    // Quality insights
     for (int i : testSeq.getQuality()) {
       System.err.print(i + ", ");
     }
@@ -122,46 +131,58 @@ public class PrivateTest {
       System.err.println("ENDEN:    " + i);
     }
 
-    //
+    // Gene selection
     String gene = FSA;
-
     Gene fsa = new Gene(gene, 0, "FSA", "");
     testSeq.setReferencedGene(fsa);
     System.out.println("Gene constructed");
     System.err.println("Gene                " + testSeq.getReferencedGene().getSequence());
     System.out.println("Seq before Vector   " + testSeq.getSequence());
+    
+    // Complement and reverse check
     StringAnalysis.checkComplementAndReverse(testSeq);
+    
+    // Vector trimming
     StringAnalysis.trimVector(testSeq, fsa);
     System.out.println("Offset    " + testSeq.getOffset());
     System.out.println("Vector trimmed");
     System.out.println("Seq after Vector    " + testSeq.getSequence());
+    
+    // Quality trimming
     int i = testSeq.getSequence().length();
     QualityAnalysis.trimLowQuality(testSeq);
     System.out.println("Quality trimmed");
     System.out.println("Offset    " + testSeq.getOffset());
     System.out.println("Seq after Quality   " + testSeq.getSequence());
+    
+    // Stopcodon search
     if (StringAnalysis.findStopcodonPosition(testSeq) != -1) {
       testSeq.trimSequence(0, StringAnalysis.findStopcodonPosition(testSeq) * 3 + 2);
       System.out.println("FIND STOPCODON");
     }
 
+    // Quality trim percentage
     System.out.println("" + QualityAnalysis.percentageOfTrimQuality(i, testSeq));
 
+    // Sanity check
     QualityAnalysis.checkIfSequenceIsClean(testSeq);
+    
+    // HIS tags
     testSeq.setHisTagPosition(StringAnalysis.findHisTag(testSeq));
     System.out.println("");
     System.err
         .println(testSeq.getReferencedGene().getSequence().substring(testSeq.getOffset() * 3));
     System.out.println(testSeq.getSequence());
-
     System.out.println("_________________________________________________________");
 
+    // Mutations 
     MutationAnalysis.findMutations(testSeq);
     MutationAnalysis.findPlasmidMix(testSeq);
     for (String s : testSeq.getMutations()) {
       System.out.println(s);
     }
 
+    // Constructed comment String
     System.out.println("-------\n" + testSeq.getComments());
   }
 }
