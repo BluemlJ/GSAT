@@ -282,10 +282,10 @@ public class DatabaseWindow extends Application implements javafx.fxml.Initializ
               e.printStackTrace();
               GUIUtils.showInfo(AlertType.ERROR, "Error", READ_FAIL);
             }
-          }
+          
 
           // download data to primer.txt
-          else if (downloadToggle.isSelected()) {
+          } else if (downloadToggle.isSelected()) {
             try {
               DatabaseConnection.pullAndSavePrimer();
               GUIUtils.showInfo(AlertType.CONFIRMATION, "Success", DOWNLOAD_SUCCESS);
@@ -299,10 +299,10 @@ public class DatabaseWindow extends Application implements javafx.fxml.Initializ
               GUIUtils.showInfo(AlertType.ERROR, "Error", WRITE_FAIL);
             }
           }
-        }
+        
 
         // update gene data
-        else if (geneToggle.isSelected()) {
+        } else if (geneToggle.isSelected()) {
           // upload all data from genes.txt
           if (uploadToggle.isSelected()) {
             try {
@@ -318,9 +318,9 @@ public class DatabaseWindow extends Application implements javafx.fxml.Initializ
               e.printStackTrace();
               GUIUtils.showInfo(AlertType.ERROR, "Error", READ_FAIL);
             }
-          }
+          
           // download genes to genes.txt
-          else if (downloadToggle.isSelected()) {
+          } else if (downloadToggle.isSelected()) {
             try {
               DatabaseConnection.pullAndSaveGenes();
               GUIUtils.showInfo(AlertType.CONFIRMATION, "Success", DOWNLOAD_SUCCESS);
@@ -334,10 +334,10 @@ public class DatabaseWindow extends Application implements javafx.fxml.Initializ
               GUIUtils.showInfo(AlertType.ERROR, "Error", WRITE_FAIL);
             }
           }
-        }
+        
 
         // sequences
-        else if (resultToggle.isSelected()) {
+        } else if (resultToggle.isSelected()) {
 
 
           // upload data from file
@@ -369,10 +369,10 @@ public class DatabaseWindow extends Application implements javafx.fxml.Initializ
               e.printStackTrace();
               GUIUtils.showInfo(AlertType.ERROR, "Error", UPLOAD_FAIL);
             }
-          }
+          
 
           // download data to folder
-          else if (downloadToggle.isSelected()) {
+          } else if (downloadToggle.isSelected()) {
 
             if (destField.getText().isEmpty()) {
               GUIUtils.showInfo(AlertType.ERROR, "Empty path",
@@ -400,9 +400,9 @@ public class DatabaseWindow extends Application implements javafx.fxml.Initializ
               e.printStackTrace();
             }
           }
-        }
+        
 
-        else if (allToggle.isSelected()) {
+        } else if (allToggle.isSelected()) {
 
           // upload everything
           if (uploadToggle.isSelected()) {
@@ -422,10 +422,10 @@ public class DatabaseWindow extends Application implements javafx.fxml.Initializ
               e.printStackTrace();
               GUIUtils.showInfo(AlertType.ERROR, "Error", UPLOAD_FAIL);
             }
-          }
+          
 
           // download everything
-          else if (downloadToggle.isSelected()) {
+          } else if (downloadToggle.isSelected()) {
             try {
               DatabaseConnection.pullAndSaveGenes();
               DatabaseConnection.pullAndSavePrimer();
@@ -551,9 +551,7 @@ public class DatabaseWindow extends Application implements javafx.fxml.Initializ
     String gene = geneField.getText();
     String researcher = researcherField.getText();
     String path = destField.getText();
-    ArrayList<AnalysedSequence> resList = DatabaseConnection
-        .pullCustomSequences(datePickerStartDate, datePickerEndDate, researcher, gene);
-
+   
     FileSaver.setLocalPath(path);
     FileSaver.setSeparateFiles(false);
     FileSaver.reset();
@@ -570,7 +568,9 @@ public class DatabaseWindow extends Application implements javafx.fxml.Initializ
     } else {
       FileSaver.setDestFileName("database_files");
     }
-
+    
+    ArrayList<AnalysedSequence> resList = DatabaseConnection
+        .pullCustomSequences(datePickerStartDate, datePickerEndDate, researcher, gene);
     for (AnalysedSequence res : resList) {
       FileSaver.storeResultsLocally(res.getFileName(), res);
     }

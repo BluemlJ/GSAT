@@ -51,7 +51,7 @@ public class ShowChromatogram extends Application implements javafx.fxml.Initial
   private final Color background = new Color(244, 244, 244);
   //
 
-  private static final int imageHight = 400;
+  private static final int IMAGE_HEIGHT = 400;
 
   // Thickness of trace graphs.
   private int lineThickness = 5;
@@ -121,7 +121,7 @@ public class ShowChromatogram extends Application implements javafx.fxml.Initial
           if (activeSequence + 1 >= sequences.size()) {
             // Disable button if no next file exists
             next.setDisable(true);
-          }else {
+          } else {
             next.setDisable(false);
           }
         }
@@ -143,7 +143,7 @@ public class ShowChromatogram extends Application implements javafx.fxml.Initial
           if (activeSequence - 1 <= 0) {
             // Disable button if no next file exists
             prevs.setDisable(true);
-          }else {
+          } else {
             prevs.setDisable(false);
           }
         }
@@ -241,15 +241,15 @@ public class ShowChromatogram extends Application implements javafx.fxml.Initial
     AnalysedSequence startSequence = sequences.get(id);
     fileName.setText(startSequence.getFileName());
 
+    // get basecalls from sequence (spikes in trace)
+    int[] baseCalls = startSequence.getBaseCalls();
+
     // get trace channels from sequence
     int[] channelA = startSequence.getChannelA();
     int[] channelC = startSequence.getChannelC();
     int[] channelT = startSequence.getChannelT();
     int[] channelG = startSequence.getChannelG();
-
-    // get basecalls from sequence (spikes in trace)
-    int[] baseCalls = startSequence.getBaseCalls();
-
+    
     // determine reference Gene and calculate offset (needed for aminoacid determination)
     try {
       if (startSequence.getReferencedGene() == null) {
@@ -286,9 +286,9 @@ public class ShowChromatogram extends Application implements javafx.fxml.Initial
 
 
     // get maximal graph hight:
-    int maxHight = 0;
+    int maxHeight = 0;
     for (int i = 0; i < last; i++) {
-      maxHight = Math.max(maxHight,
+      maxHeight = Math.max(maxHeight,
           Math.max(channelA[i], Math.max(channelC[i], Math.max(channelG[i], channelT[i]))));
     }
 
@@ -297,15 +297,15 @@ public class ShowChromatogram extends Application implements javafx.fxml.Initial
     int stretchX = 4;
 
     // rescale if necesary:
-    if (maxHight*stretchY > imageHight-40) {
-      stretchY = (imageHight-40)/(double)maxHight;
+    if (maxHeight * stretchY > IMAGE_HEIGHT - 40) {
+      stretchY = (IMAGE_HEIGHT - 40) / (double) maxHeight;
       System.out.println(stretchY);
-      System.out.println(maxHight);
+      System.out.println(maxHeight);
     }
 
     // create image
     BufferedImage buffImg =
-        new BufferedImage(last * stretchX, imageHight, BufferedImage.TYPE_INT_RGB);
+        new BufferedImage(last * stretchX, IMAGE_HEIGHT, BufferedImage.TYPE_INT_RGB);
     buffImg.createGraphics();
     Graphics2D buffGraph = (Graphics2D) buffImg.getGraphics();
 
