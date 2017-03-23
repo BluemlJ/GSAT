@@ -299,6 +299,10 @@ public class DatabaseConnection {
       String researcher = sequence.getResearcher();
       int researcherId = pushResearcher(researcher);
 
+      if (sequence.getReferencedGene() == null) {
+        System.out.println("Hallo!");
+      }
+      
       // push gene with the researcher id and get gene id
       int geneId = pushGene(sequence.getReferencedGene(), researcherId);
 
@@ -403,8 +407,9 @@ public class DatabaseConnection {
 
     ResultSet res = pstmt.executeQuery();
     if (res.next()) {
+      int result = res.getInt(1);
       pstmt.close();
-      return res.getInt(1);
+      return result;
     }
     pstmt.close();
     // push otherwise
@@ -432,12 +437,15 @@ public class DatabaseConnection {
     pstmt.setInt(3, geneId);
 
     res = pstmt.executeQuery();
-    pstmt.close();
     if (res.next()) {
-      return res.getInt(1);
+      int result = res.getInt(1);
+      pstmt.close();
+      return result;
     } else {
       System.out.println("sequence " + sequence.getFileName() + " failed");
+      pstmt.close();
       return -1;
+      
     }
   }
 
@@ -454,7 +462,12 @@ public class DatabaseConnection {
     Statement stmt = conn.createStatement();
     stmt.execute("USE gsat");
     stmt.close();
-
+    
+    if (gene == null) {
+      System.out.println("null");
+    }
+    
+    System.out.println(gene);
     String name = gene.getName();
     String sequence = gene.getSequence();
     String organism = gene.getOrganism();
@@ -483,8 +496,9 @@ public class DatabaseConnection {
 
     ResultSet res = pstmt.executeQuery();
     if (res.next()) {
+      int result = res.getInt(1);
       pstmt.close();
-      return res.getInt(1);
+      return result;
     }
 
     pstmt.close();
@@ -508,10 +522,12 @@ public class DatabaseConnection {
     pstmt.setString(2, sequence);
     pstmt.setString(3, organism);
     res = pstmt.executeQuery();
-    pstmt.close();
     if (res.next()) {
-      return res.getInt(1);
+      int result = res.getInt(1);
+      pstmt.close();
+      return result;
     } else {
+      pstmt.close();
       // should never be called
       return -1;
     }
@@ -537,9 +553,10 @@ public class DatabaseConnection {
     pstmt.setString(1, researcher);
     ResultSet res = pstmt.executeQuery();
     if (res.next()) {
-      pstmt.close();
       System.out.println("researcher: " + researcher + " already exists");
-      return res.getInt(1);
+      int result = res.getInt(1);
+      pstmt.close();
+      return result; 
     }
     pstmt.close();
     // push otherwise
@@ -551,11 +568,12 @@ public class DatabaseConnection {
     pstmt = conn.prepareStatement("SELECT id, name FROM researchers WHERE name = ?");
     pstmt.setString(1, researcher);
     res = pstmt.executeQuery();
-    pstmt.close();
+    //pstmt.close();
     if (res.next()) {
+      int result = res.getInt(1);
       pstmt.close();
       System.out.println("added researcher " + researcher + " with id " + res.getInt(1));
-      return res.getInt(1);
+      return result;
     } else {
       // should never be called
       pstmt.close();
@@ -970,9 +988,10 @@ public class DatabaseConnection {
     pstmt.setString(1, researcher);
     ResultSet res = pstmt.executeQuery();
     if (res.next()) {
+      int result = res.getInt(1);
       // return index
       pstmt.close();
-      return res.getInt(1);
+      return result;
     } else {
       // researcher does not exist
       pstmt.close();
@@ -1253,9 +1272,10 @@ public class DatabaseConnection {
     pstmt.setString(1, geneName);
     ResultSet res = pstmt.executeQuery();
     if (res.next()) {
+      int result = res.getInt(1);
       // return index
       pstmt.close();
-      return res.getInt(1);
+      return result;
     } else {
       // gene does not exist
       pstmt.close();

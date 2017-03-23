@@ -62,7 +62,7 @@ public class AddPrimerWindow extends Application implements javafx.fxml.Initiali
       @Override
       public void changed(ObservableValue<? extends String> observable, String oldValue,
           String newValue) {
-        if (newValue.contains(ConfigHandler.SEPARATOR_CHAR + "")) {
+        if (newValue.contains(ConfigHandler.SEPARATOR_CHAR + "") || newValue.contains(" ")) {
           nameField.setText(oldValue);
         } else {
           nameField.setText(newValue);

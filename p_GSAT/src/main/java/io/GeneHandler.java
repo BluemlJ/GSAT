@@ -117,7 +117,7 @@ public class GeneHandler {
   public static void deleteGene(String newpath, String geneName) throws IOException {
 
     for (int i = 0; i < geneList.size(); i++) {
-      if (geneList.get(i).getName().equals(geneName)) {
+      if (geneList.get(i).getName().equals(geneName) && geneList.get(i).getOrganism() == null) {
         geneList.remove(i);
       }
     }
@@ -130,7 +130,7 @@ public class GeneHandler {
    * @throws IOException
    */
   public static void deleteGene(String string) throws IOException {
-    if (!string.split(" ")[1].isEmpty()) {
+    if (string.split(" ").length > 1) {
       deleteGene(path, string.split(" ")[0],
           string.split(" ")[1].substring(1, string.split(" ")[1].length() - 1));
     } else {
