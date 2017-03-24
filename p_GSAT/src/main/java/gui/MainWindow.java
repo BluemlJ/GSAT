@@ -384,7 +384,7 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
         }
 
         if (autoGeneSearch) {
-          infoArea.getChildren().add(new Text("Selected gene:  automatic search\n"));
+          infoArea.getChildren().add(new Text("Selected gene: automatic search\n"));
         } else {
           infoArea.getChildren().add(
               new Text("Selected gene:  " + geneBox.getSelectionModel().getSelectedItem() + "\n"));
@@ -401,7 +401,7 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
             Alert alert = new Alert(AlertType.CONFIRMATION);
             alert.setTitle("Confirmation Dialog");
             alert.setHeaderText("No gene was selected!");
-            alert.setContentText("Find gene automatically?");
+            alert.setContentText("Find best fitting gene automatically?");
 
             Optional<ButtonType> result = alert.showAndWait();
             if (result.get() != ButtonType.OK) {
@@ -572,7 +572,7 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
     chromatogramButton.setOnAction(new EventHandler<ActionEvent>() {
       @Override
       public void handle(ActionEvent arg0) {
-        ShowChromatogram chromaWindow = new ShowChromatogram();
+        ShowChromatogramWindow chromaWindow = new ShowChromatogramWindow();
         try {
           dropdownGene =
               GUIUtils.getGeneFromDropDown(geneBox.getSelectionModel().getSelectedItem());
@@ -639,17 +639,14 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
 
           Optional<ButtonType> result = alertWindow.showAndWait();
           if (result.get() == save) {
-            DatabaseWindow base = new DatabaseWindow();
+            DatabaseWindow databaseWindow = new DatabaseWindow();
             event.consume();
             try {
-              base.start(new Stage());
+              databaseWindow.start(new Stage());
             } catch (Exception e) {
               // TODO Auto-generated catch block
             }
-          } else if (result.get() == dontSave) {
-            System.out.println("dont save");
-            // TODO
-          } else {
+          } else if (result.get() == buttonTypeCancel) {
             event.consume();
           }
         }

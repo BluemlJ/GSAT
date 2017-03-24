@@ -41,15 +41,15 @@ import javafx.stage.Stage;
  * @author kevin
  *
  */
-public class ShowChromatogram extends Application implements javafx.fxml.Initializable {
+public class ShowChromatogramWindow extends Application implements javafx.fxml.Initializable {
 
   // Preset colors for Chromatogram:
   private final Color colorA = new Color(170, 220, 80);
   private final Color colorT = new Color(240, 60, 60);
   private final Color colorG = Color.BLACK;
   private final Color colorC = new Color(110, 180, 200);
+  private final Color colorN = Color.MAGENTA;
   private final Color background = new Color(244, 244, 244);
-  //
 
   private static final int IMAGE_HEIGHT = 400;
 
@@ -269,10 +269,11 @@ public class ShowChromatogram extends Application implements javafx.fxml.Initial
 
 
     // determine length of Chromatogram
-    int last = (int) channelA.length;
-    last = (int) Math.min(last, channelC.length);
-    last = (int) Math.min(last, channelT.length);
-    last = (int) Math.min(last, channelG.length);
+    
+    int last = Math.min(channelA.length, 
+      Math.min(channelC.length, 
+        Math.min(channelT.length, channelG.length)));
+
 
     // create new viewer and set image
     ImageView viewer = new ImageView();
@@ -289,7 +290,9 @@ public class ShowChromatogram extends Application implements javafx.fxml.Initial
     int maxHeight = 0;
     for (int i = 0; i < last; i++) {
       maxHeight = Math.max(maxHeight,
-          Math.max(channelA[i], Math.max(channelC[i], Math.max(channelG[i], channelT[i]))));
+          Math.max(channelA[i], 
+            Math.max(channelC[i], 
+              Math.max(channelG[i], channelT[i]))));
     }
 
     // variables for scaling image
@@ -387,7 +390,7 @@ public class ShowChromatogram extends Application implements javafx.fxml.Initial
             buffGraph.setColor(colorC);
             break;
           default:
-            buffGraph.setColor(Color.MAGENTA);
+            buffGraph.setColor(colorN);
             break;
         }
 

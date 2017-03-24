@@ -22,7 +22,7 @@ public class StringAnalysis {
    * A Map with all possible DNA codons with the matched AminoAcid in short form and the not so
    * short but not the full name form.
    */
-  public static final Map<String, Pair<String, String>> AMINO_ACID_SHORTS;
+  public static final Map<String, Pair<String, String>> AMINO_ACID_LOOKUP;
 
   static {
     Hashtable<String, Pair<String, String>> tmp = new Hashtable<String, Pair<String, String>>();
@@ -95,7 +95,7 @@ public class StringAnalysis {
     tmp.put("GGC", new Pair<String, String>("G", "Gly"));
     tmp.put("GGA", new Pair<String, String>("G", "Gly"));
     tmp.put("GGG", new Pair<String, String>("G", "Gly"));
-    AMINO_ACID_SHORTS = Collections.unmodifiableMap(tmp);
+    AMINO_ACID_LOOKUP = Collections.unmodifiableMap(tmp);
   }
 
   /**
@@ -281,7 +281,7 @@ public class StringAnalysis {
    * 
    * @author jannis blueml
    */
-  public static String codonsToAminoAcids(String nucleotides, boolean first) {
+  public static String codonsToAminoAcids(String nucleotides, boolean oneChar) {
     nucleotides = nucleotides.toUpperCase();
 
     // check for empty parameter
@@ -299,15 +299,15 @@ public class StringAnalysis {
       for (int i = 0; i < nucleotides.length(); i = i + 3) {
         String codon = nucleotides.substring(i, i + 3);
         String aminoacid = "";
-        if (first) {
-          if (AMINO_ACID_SHORTS.get(codon) != null) {
-            aminoacid = AMINO_ACID_SHORTS.get(codon).first;
+        if (oneChar) {
+          if (AMINO_ACID_LOOKUP.get(codon) != null) {
+            aminoacid = AMINO_ACID_LOOKUP.get(codon).first;
           } else {
             aminoacid = null;
           }
         } else {
-          if (AMINO_ACID_SHORTS.get(codon) != null) {
-            aminoacid = AMINO_ACID_SHORTS.get(codon).second;
+          if (AMINO_ACID_LOOKUP.get(codon) != null) {
+            aminoacid = AMINO_ACID_LOOKUP.get(codon).second;
           } else {
             aminoacid = null;
           }
@@ -398,8 +398,8 @@ public class StringAnalysis {
     for (int i = 0; i < toAnalyze.getSequence().length() - 3; i = i + 3) {
       String aminoAcid = toAnalyze.getSequence().substring(i, i + 3);
 
-      if (AMINO_ACID_SHORTS.get(aminoAcid) != null && AMINO_ACID_SHORTS.get(aminoAcid).first != null
-          && AMINO_ACID_SHORTS.get(aminoAcid).first.equals("#")) {
+      if (AMINO_ACID_LOOKUP.get(aminoAcid) != null && AMINO_ACID_LOOKUP.get(aminoAcid).first != null
+          && AMINO_ACID_LOOKUP.get(aminoAcid).first.equals("#")) {
         return i / 3;
       }
     }
