@@ -5,6 +5,8 @@ Check out the topic you are interested in:
 (2) The main menu in further detail
 (3) The settings window in further detail
 (4) The analysis results
+(5) The database window in further detail
+(6) The chromatogram window in further detail
 
 
 
@@ -115,56 +117,102 @@ Leave the settings window and return to the main window. You changes will be sav
 | -------------------------
 
 The analysis results are CSV files. Each line corresponds to one AB1 file / nucleotide sequence.
-These are the meanings of the fields:
-
->>> ID:							
-A unique number per line (to quickly refer to a single result entry).
+The meanings of the fields are explained here. 
+It is also mentioned which of the to (not!) change when working with the result file in case an upload is desired:
 
 >>> FILE NAME:					
-The name of the AB1 file.
+The name of the AB1 file under analysis. 
+Please DO NOT CHANGE this entry.
 
 >>> GENE:						
 The name of the gene that was associated with the analysis of this sequence.
+Please DO NOT CHANGE this entry. 
+Also, please make sure the gene that was used for this analysis STILL EXISTS in the local gene list (in the settings) when uploading this result!
 
 >>> GENE ORGANISM:				
-The above gene's organism.
+The above gene's organism. The entry is 'null' if no organism was specified.
+Please DO NOT CHANGE this entry. Make sure this gene (with this organism, if not 'null') still exists in the local gene list (as above) when uploading this result.
 
 >>> MUTATIONS (WITH CODONS):	
 A list of found mutations (insertions, deletions, substitutions and silent mutations) with the nucleotide codons of the mutated amino acid. 
 This field may contain the information whether a reading frame error was detected.
-
->>> COMMENTS:				
-Comments entered by the user.
-
->>> RESEARCHER:				
-The researcher name associated with the analysis.
-
->>> DATE:						
-The date this result was created.
-
->>> AVERAGE QUALITY (PERCENT):	
-The average nucleotide quality in percent from 0 to 100 (calculated from the average PHRED score).
-
->>> PERCENTAGE OF QUALITY TRIM:
-The percentage of nucleotides which got cut off from the sequence due to the quality trim.
-
->>> NUCLEOTIDE SEQUENCE:		
-The nucleotide sequence which was compared against the gene.
-
->>> LEFT VECTOR:				
-The nucleotide sequence which was cut away at the beginning of the original sequence due to finding the gene part.
-
->>> RIGHT VECTOR:				
-Same as above, but at the END of the original sequence.
-
->>> PRIMER:						
-The primer associated with the sequence (entered by user).
+The mutations have the following meanings:
+- insertion: e.g. "+1L24 (ATT)", the amino acid L has been inserted at position 24 (it has the nucleotide sequence ATT).
+- deletion: e.g. "-1L220 (ATT)", the original amino acid L at position 220 was deleted and does not exist there anymore (it had the nucleotide sequence ATT).
+- substitution: e.g. "D6H (CAT)", the amino acid D at position 6 is replaced by H (which has the nucleotide sequence CAT).
+- silent mutation: e.g. "TAA6TTA", the nucleotide tripel TAA at aminoacid position 6 got replaced by TTA, they both share the same amino acid name.
+- reading frame error: A reading frame error occurred, making the finding of mutations impossible.
+Please DO NOT CHANGE this entry.
 
 >>> HIS TAG:					
 The nucleotide index (starting with 1) where a HIS tag was found, "none" otherwise.
-
->>> MUTATIONS (WITHOUT CODONS):	
-The list of found mutations WITHOUT the codons.
+Please DO NOT CHANGE this entry.
 
 >>> MANUALLY CHECKED:			
 The indication whether this result was manually checked by a user.
+Default case is 'false'. If you checked this result manually and think it is okay, then change this field's entry to 'true' or 'yes'.
+
+>>> COMMENTS:				
+Comments entered by the user.
+Feel free to edit the comment field as required. (see also: Section 5!)
+
+>>> RESEARCHER:				
+The researcher name associated with the analysis.
+It may be changed, but when you select your name from the researcher dropdown list, the results are automatically
+associated with this name. This can save your energy of manually entering your name - and it also prevents misspelling errors.
+So typically, you should not need to change it; rather enter and choose your name in the settings before doing an analysis.
+
+>>> DATE:						
+The date this result was created. 
+It always has the form XX/YY/ZZZZ (with XX -> day, YY -> month and ZZ -> year), e.g. 24/03/17.
+Please DO NOT CHANGE this entry.
+
+>>> AVERAGE QUALITY (PERCENT):	
+The average nucleotide quality in percent from 0 to 100 (calculated from the average PHRED score).
+A value between 100 and 70 can be considered as 'very good quality',
+a value between 69 and 40 is 'okay', while values below 40 are 'bad'.
+Please DO NOT CHANGE this entry.
+
+>>> PERCENTAGE OF QUALITY TRIM:
+The percentage of nucleotides which got cut off from the sequence due to the quality trim.
+Please DO NOT CHANGE this entry.
+
+>>> NUCLEOTIDE SEQUENCE:		
+The nucleotide sequence which was compared against the gene.
+Please DO NOT CHANGE this entry.
+
+>>> PRIMER:						
+The primer associated with the sequence (entered by user). If desired you can type in the name of the primer used for this sequence. But it is not required.
+If no primer was used or you don't want to specify one, just leave the 'none' in there.
+
+>>> MUTATIONS (WITHOUT CODONS):	
+The list of found mutations WITHOUT the codons.
+Please DO NOT CHANGE this entry.
+
+There are two important things to be mentioned regarding the CSV result files:
+1. In case you edit a result file before uploading it, please DO NOT USE a semicolon (;) anywhere. It's the program's internal separator char. Using it can have undesired effects.
+2. When you're working with the result files, Excel might ask you whether you want to convert the file from CSV format to Excel format. This is okay, but if you want to UPLOAD the results later on, you SHOULD NOT do this conversion. The program can only deal with the CSV format.
+
+
+
+
+
+
+
+| ----------------------------------------------
+| (5) The database window in further detail
+| ----------------------------------------------
+
+Coming soon.
+
+
+
+
+
+
+| ----------------------------------------------------
+| (6) The chromatogram window in further detail
+| ----------------------------------------------------
+
+Coming soon.
+
