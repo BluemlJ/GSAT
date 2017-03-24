@@ -219,13 +219,14 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
         }
       }
     });
+    geneBox.setStyle("-fx-font-style: italic;");
 
-    infoArea.getChildren().add(new Text("Welcome to GSAT!" + System.lineSeparator()));
     // read Genes and show them in the choicebox
 
     Text output = GUIUtils.initializeGeneBox(geneBox);
-    geneBox.setStyle("-fx-font-style: italic;");
+    
 
+    
     infoArea.getChildren().add(output);
 
     geneBox.setOnMouseClicked(arg01 -> GUIUtils.initializeGeneBox(geneBox));
@@ -586,7 +587,11 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
         }
       }
     });
-
+    
+    //IT IS ESENTIAL THAT THIS IS EXECUTED LAST!
+    //ALWAYS MOVE THIS TO THE END OF THE INIT BLOCK, ELSE CRAZY STUFF WILL HAPPEN
+    Text introText = new Text("Welcome to GSAT!" + System.lineSeparator());
+    infoArea.getChildren().add(introText);
   }
 
   @Override

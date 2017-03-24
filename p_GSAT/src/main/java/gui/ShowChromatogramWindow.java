@@ -257,7 +257,11 @@ public class ShowChromatogramWindow extends Application implements javafx.fxml.I
           startSequence.setReferencedGene(MainWindow.dropdownGene);
         } else {
           Gene refgene = StringAnalysis.findRightGene(startSequence);
-          startSequence.setReferencedGene(refgene);
+          if (refgene != null) {
+            startSequence.setReferencedGene(refgene);  
+          }else {
+            startSequence.setReferencedGene(new Gene(startSequence.getSequence(), 0, "", ""));
+          }          
         }
       }
 
