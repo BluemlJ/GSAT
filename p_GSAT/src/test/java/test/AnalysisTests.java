@@ -467,7 +467,6 @@ public class AnalysisTests {
       result.append(string + ", ");
     }
     String expected = "s|4|l|x, ";
-    // System.out.println(result);
     assertTrue(result.toString().equals(expected));
   }
 
@@ -503,13 +502,13 @@ public class AnalysisTests {
    */
   public void testFindingMultipleMutations()
       throws CorruptedSequenceException, UndefinedTypeOfMutationException {
-    Gene gena = new Gene("ATGTTTCCCCAACCCCCA", 0, "testGen1", "Jannis");
+    Gene gena = new Gene("ATGTTTCCCCAA", 0, "testGen1", "Jannis");
     AnalysedSequence testSeq = new AnalysedSequence("ATGTTATTTCCC", "Jannis", "toAnalyse", null);
     testSeq.setReferencedGene(gena);
 
     MutationAnalysis.findMutations(testSeq);
     assertTrue(testSeq.getMutations().size() == 2);
-    assertTrue(testSeq.getMutations().getFirst().equals("+1L1 (ATG)"));
+    assertTrue(testSeq.getMutations().getFirst().equals("+1L2 (TTA)"));
     assertTrue(testSeq.getMutations().get(1).equals("-1Q4"));
   }
 
@@ -525,10 +524,8 @@ public class AnalysisTests {
     testSeq.setReferencedGene(gena);
 
     MutationAnalysis.findMutations(testSeq);
-    assertTrue(testSeq.getMutations().size() == 2);
     assertTrue(testSeq.getMutations().getFirst().equals("F2L (TTA)"));
-    assertTrue(testSeq.getMutations().get(1).equals("CCC3CCA"));
-
+   
   }
 
   @Test
@@ -671,13 +668,13 @@ public class AnalysisTests {
   @Test
   public void testSilentMutationFinding()
       throws CorruptedSequenceException, UndefinedTypeOfMutationException {
-    Gene gena = new Gene("ATGUUAGGGCCC", 0, "testGen1", "Jannis");
-    AnalysedSequence testSeq = new AnalysedSequence("ATGUUGGGGCCC", "Jannis", "toAnalyse", null);
+    Gene gena = new Gene("ATGTTAGGGCCC", 0, "testGen1", "Jannis");
+    AnalysedSequence testSeq = new AnalysedSequence("ATGTTGGGGCCC", "Jannis", "toAnalyse", null);
     testSeq.setReferencedGene(gena);
 
     MutationAnalysis.findMutations(testSeq);
     assertTrue(testSeq.getMutations().size() == 1);
-    assertTrue(testSeq.getMutations().getFirst().equals("UUA2UUG"));
+    assertTrue(testSeq.getMutations().getFirst().equals("TTA2TTG"));
   }
 
   @Test
@@ -705,7 +702,8 @@ public class AnalysisTests {
     testSeq.setReferencedGene(gena);
 
     MutationAnalysis.findMutations(testSeq);
-    assertTrue(testSeq.getMutations().getFirst().equals("-1F2 (TAT)"));
+    assertTrue(testSeq.getMutations().getFirst().equals("-1F2 (TTT)"));
+    assertTrue(testSeq.getMutations().get(1).equals("+1P5"));
 
   }
 
@@ -721,7 +719,7 @@ public class AnalysisTests {
     testSeq.setReferencedGene(gena);
 
     MutationAnalysis.findMutations(testSeq);
-    assertTrue(testSeq.getMutations().getFirst().equals("-1L3 (TTT)"));
+    assert(testSeq.getMutations().getFirst().equals("-1L3 (TTA)"));
 
   }
 
@@ -733,7 +731,7 @@ public class AnalysisTests {
     testSeq.setReferencedGene(gena);
 
     MutationAnalysis.findMutations(testSeq);
-    assertTrue(testSeq.getMutations().getFirst().equals("+1F1 (TAT)"));
+    assertTrue(testSeq.getMutations().getFirst().equals("+1F2 (TTC)"));
 
   }
 
@@ -745,7 +743,7 @@ public class AnalysisTests {
     testSeq.setReferencedGene(gena);
 
     MutationAnalysis.findMutations(testSeq);
-    assertTrue(testSeq.getMutations().getFirst().equals("+1G2 (CCC)"));
+    assertTrue(testSeq.getMutations().getFirst().equals("+1G3 (GGG)"));
 
   }
 

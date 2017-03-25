@@ -137,11 +137,11 @@ public class MutationAnalysis {
           // increment shift + get informations
           shift--;
           oldAminoAcid = difference.split("\\|")[2];
-          position++;
+          
           // write informations in sequence
           if (toAnalyze.getSequence().length() > firstNucleotidePos + 3) {
-            codonsOfNew = toAnalyze.getSequence().substring(firstNucleotidePos + shift * 3,
-                firstNucleotidePos + shift * 3 + 3);
+            codonsOfNew = originalSequence.substring(firstNucleotidePos + shift * 3+3,
+                firstNucleotidePos + shift * 3 + 6);
             toAnalyze.addMutation("-1" + oldAminoAcid + position + " (" + codonsOfNew + ")");
           } else {
             toAnalyze.addMutation("-1" + oldAminoAcid + position);
@@ -153,9 +153,8 @@ public class MutationAnalysis {
         default:
           throw new UndefinedTypeOfMutationException(typeOfMutations);
       }
-
+    }
       // TODO JANNIS SILENT MUTATION
-      if (difference == differenceList.getLast()) {
         int tmpshift = 0;
         boolean isMutation = false;
         for (int j = 0; j < toAnalyze.length(); j++) {
@@ -164,17 +163,20 @@ public class MutationAnalysis {
             int tmpPosition = Integer.parseInt(diff.split("\\|")[1]) + toAnalyze.getOffset();
             String tom = diff.split("\\|")[0];
 
+            
             if (tmpPosition == j + 1) {
-              if (tom.equals("d")) {
-                tmpshift--;
-              }
-              if (tom.equals("i")) {
-                tmpshift++;
-              }
               if (tom.equals("s")) {
                 isMutation = true;
               }
             }
+            if(tmpPosition == j)
+            if (tom.equals("d")) {
+              tmpshift--;
+            }
+            if (tom.equals("i")) {
+              tmpshift++;
+            }
+            isMutation = true;
 
           }
           if (!isMutation) {
@@ -193,8 +195,7 @@ public class MutationAnalysis {
           }
           isMutation = false;
         }
-      }
-    }
+       
     return true;
   }
 
