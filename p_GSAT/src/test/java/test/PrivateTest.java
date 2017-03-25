@@ -58,7 +58,7 @@ public class PrivateTest {
 
   
   // Name of the file
-  private String fileName = "93GH02_D08.ab1";
+  private String fileName = "93GH02_C10.ab1";
 
   
   // _____________________________________________________________________

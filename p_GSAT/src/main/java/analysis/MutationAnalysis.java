@@ -62,7 +62,11 @@ public class MutationAnalysis {
     int checkFrameerrorCounter = 0;
     // shift created by insertions and deletions
     int shift = 0;
-  
+    int tmpshift = 0;
+
+    boolean changeInFrame = false;
+    boolean changeInFrame2 = false;
+
     // check all differences and add them to the sequence.
     // The new form will be -> D6E (ATA), +1/-1 T26 (TTT)
     for (int i = 0; i < differenceList.size(); i++) {
@@ -88,11 +92,11 @@ public class MutationAnalysis {
       // represents the codon of newAminoAcid
       String codonsOfNew;
 
-      boolean changeInFrame = false;
+
 
       int firstNucleotidePos = (position - 1) * 3;
 
-       // how to proceed mutation
+      // how to proceed mutation
       switch (typeOfMutations) {
         // s = substitution, normal mutation of one aminoAcid
         case "s":
@@ -102,8 +106,8 @@ public class MutationAnalysis {
           // checks length before getting the codon out of gene
           if (toAnalyze.getSequence().length() > firstNucleotidePos + 3) {
             // get codon out of gene
-            codonsOfNew =
-                toAnalyze.getSequence().substring(firstNucleotidePos+shift*3, firstNucleotidePos+shift*3 + 3);
+            codonsOfNew = toAnalyze.getSequence().substring(firstNucleotidePos + shift * 3,
+                firstNucleotidePos + shift * 3 + 3);
             // add mutation to sequence
             toAnalyze
                 .addMutation(oldAminoAcid + position + newAminoAcid + " (" + codonsOfNew + ")");
@@ -113,6 +117,7 @@ public class MutationAnalysis {
 
           checkFrameerrorCounter++;
           changeInFrame = false;
+          changeInFrame2 = false;
 
           break;
         // i = injection, inject of an new amino acid (aminoAcid short form)
@@ -120,18 +125,23 @@ public class MutationAnalysis {
           // set shift and get informations
           shift++;
           newAminoAcid = difference.split("\\|")[2];
+          position++;
 
           // write mutation into sequence (see substitution)
           if (toAnalyze.getSequence().length() > firstNucleotidePos + 3) {
-            codonsOfNew =
-                toAnalyze.getSequence().substring(firstNucleotidePos+shift*3, firstNucleotidePos+shift*3 + 3);
+            codonsOfNew = toAnalyze.getSequence().substring(firstNucleotidePos + shift * 3,
+                firstNucleotidePos + shift * 3 + 3);
             toAnalyze.addMutation("+1" + newAminoAcid + position + " (" + codonsOfNew + ")");
           } else {
             toAnalyze.addMutation("+1" + newAminoAcid + position);
           }
 
           checkFrameerrorCounter++;
+          if (changeInFrame) {
+            changeInFrame2 = true;
+          }
           changeInFrame = true;
+
           break;
         // d = deletion, deletion of an amino acid (see insertion and
         // substitution for comment)
@@ -139,15 +149,19 @@ public class MutationAnalysis {
           // increment shift + get informations
           shift--;
           oldAminoAcid = difference.split("\\|")[2];
+          position++;
           // write informations in sequence
           if (toAnalyze.getSequence().length() > firstNucleotidePos + 3) {
-            codonsOfNew =
-                toAnalyze.getSequence().substring(firstNucleotidePos+ shift*3, firstNucleotidePos+shift*3 + 3);
+            codonsOfNew = toAnalyze.getSequence().substring(firstNucleotidePos + shift * 3,
+                firstNucleotidePos + shift * 3 + 3);
             toAnalyze.addMutation("-1" + oldAminoAcid + position + " (" + codonsOfNew + ")");
           } else {
             toAnalyze.addMutation("-1" + oldAminoAcid + position);
           }
           checkFrameerrorCounter++;
+          if (changeInFrame) {
+            changeInFrame2 = true;
+          }
           changeInFrame = true;
           break;
 
@@ -156,92 +170,48 @@ public class MutationAnalysis {
           throw new UndefinedTypeOfMutationException(typeOfMutations);
       }
 
-      // in case that between to mutations are more then zero aminoacids,
-      // we check if there is any
-      // silent mutation in them.
-
-      // if the step between to mutations is greater 1 or we are the last
-      // for iteration
-      if (!changeInFrame) {
-        if (position > lastposition + 1 || i == differenceList.size() - 1) {
-
-          // starts by the last mutation and test evera amino acid between
-          // there and the actual amino
-          // acid
-          int tempPosition = lastposition + 1;
-          while (tempPosition < position - toAnalyze.getOffset()) {
-
-            tempPosition = position;
-
-            // checks boundaries
-            if ((tempPosition + shift) * 3 + toAnalyze.getOffset() * 3 + 3 > originalSequence
-                .length()
-                || Math.max(tempPosition + shift, tempPosition) * 3 + 3 > mutatedSequence
-                    .length()) {
-              break;
-              // checks amino acid
-            } else {
-              String oldAcid =
-                  originalSequence.substring((tempPosition + shift) * 3 + toAnalyze.getOffset() * 3,
-                      (tempPosition + shift) * 3 + toAnalyze.getOffset() * 3 + 3);
-              String newAcid = mutatedSequence.substring(tempPosition * 3, tempPosition * 3 + 3);
-
-              // if there is any silent mutation add them to sequence
-              if (!oldAcid.equals(newAcid)) {
-                tempPosition += toAnalyze.getOffset() + 1;
-                toAnalyze.addMutation(oldAcid + tempPosition + newAcid);
-              }
-            }
-
-            // set new lastposition and increment tempP. for next run
-            lastposition = position;
-            tempPosition++;
+      //TODO JANNIS SILENT MUTATION
+    if(difference == differenceList.getLast()){
+    int tmpshift2 = 0;
+    boolean isMutation = false;
+    for (int j = 0; j < toAnalyze.length(); j++) {
+      
+      for (String difference2 : differenceList) {
+        int position2 = Integer.parseInt(difference2.split("\\|")[1]) + toAnalyze.getOffset();
+        String typeOfMutations2 = difference2.split("\\|")[0];
+      
+        if (position2 == j+1) {
+          if (typeOfMutations2.equals("d")) {
+            tmpshift2--;
           }
-
-          // didn't increment tempP. because of insertion or deletion,
-          // instead set tmpshift. Because
-          // the actual shift references to actual position not to the
-          // room between actual and
-          // lastPosition.
-
-        } else {
-          if (typeOfMutations.charAt(0) == 's') {
-            lastposition = position;
+          if (typeOfMutations2.equals("i")) {
+            tmpshift2++;
           }
-        }
-      }else {
-        changeInFrame = false;
+          if (typeOfMutations2.equals("s")) {
+          isMutation = true;
+          }
+        } 
+        
       }
-    }
-
-    // if there is no mutation at all, check all (ignore shift)
-    if (differenceList.size() == 0) {
-
-      // init Position
-      int tempPosition = 0;
-      while (tempPosition < mutatedSequence.length()) {
-        // check boundaries
-        if (tempPosition * 3 + toAnalyze.getOffset() * 3 + 3 > originalSequence.length()
-            || tempPosition * 3 + 3 > mutatedSequence.length()) {
+      if (!isMutation) {
+        if ((j + tmpshift2) * 3 + toAnalyze.getOffset() * 3 + 3 > originalSequence
+            .length()
+            || Math.max(j + tmpshift2, j) * 3 + 3 > mutatedSequence
+                .length()){
           break;
-          // actual testing
-        } else {
-          String oldAcid = originalSequence.substring(tempPosition * 3 + toAnalyze.getOffset() * 3,
-              tempPosition * 3 + toAnalyze.getOffset() * 3 + 3);
-          String newAcid = mutatedSequence.substring(tempPosition * 3, tempPosition * 3 + 3);
-          // if silent mutation, add them. tempPosition must adding
-          // the offset before adding to
-          // sequence.
-          if (!oldAcid.equals(newAcid)) {
-
-            tempPosition += toAnalyze.getOffset() + 1;
-            toAnalyze.addMutation(oldAcid + tempPosition + newAcid);
-            tempPosition -= toAnalyze.getOffset() + 1;
-          }
         }
-        tempPosition++;
+        String oldAcid = originalSequence.substring(j * 3 + toAnalyze.getOffset() * 3,
+            j * 3 + toAnalyze.getOffset() * 3 + 3);
+        String newAcid = mutatedSequence.substring((j + tmpshift2) * 3, (j + tmpshift2) * 3 + 3);
+        if (!oldAcid.equals(newAcid)) {
+          j++;
+          toAnalyze.addMutation(oldAcid + j + newAcid);
+          j--;
+        }
       }
-
+      isMutation = false;
+    }
+    }
     }
     return true;
   }
