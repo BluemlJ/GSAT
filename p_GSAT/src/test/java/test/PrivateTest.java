@@ -17,7 +17,7 @@ import exceptions.MissingPathException;
 import exceptions.UndefinedTypeOfMutationException;
 import io.SequenceReader;
 
-@Ignore
+
 public class PrivateTest {
 
   // TO CHANGE: ---------------------------------------------------
@@ -26,13 +26,13 @@ public class PrivateTest {
       new String[] {"C:/Users/Jannis/Dropbox/BP_GSAT/Materialien/Dateien/Bsp/AB/",
           "C:\\Users\\Business\\Dropbox\\BP_GSAT\\Materialien\\Dateien\\Bsp\\AB\\",
           "/Users/lovisheindrich/Dropbox/BP_GSAT/Materialien/Dateien/Bsp/AB/", "C:/GSAT Tests/",
-          "/home/bluemlj/Dropbox/BP_GSAT/Materialien/Dateien/Bsp/AB/",
+          "/home/jannis/Dropbox/BP_GSAT/Materialien/Dateien/Bsp/AB/",
           "/home/kevin/Documents/GSAT_Tests/",
           "C:/Users/Jannis/Dropbox/BP_GSAT/Materialien/Dateien - mehr/SET 2 17.1 Privat/Sequences/",
           "C:/Users/Jannis/Dropbox/BP_GSAT/Materialien/Dateien - mehr/SET 3 12.16 oeffentlich/ab1/Tk_Gs40Hits/Forward/",
           "C:/Users/Jannis/Dropbox/BP_GSAT/Materialien/Dateien - mehr/SET 3 12.16 oeffentlich/ab1/Tk_Gs40Hits/Reverse/",
           "C:/Users/Jannis/Dropbox/BP_GSAT/Materialien/Dateien - mehr/SET 3 12.16 oeffentlich/ab1/Tk40Hits050215/",
-          "/home/bluemlj/Dropbox/BP_GSAT/Materialien/Dateien - mehr/SET 4 19.1 Privat/"};
+          "/home/jannis/Dropbox/BP_GSAT/Materialien/Dateien - mehr/plasmidmix2/"};
 
   private static String pathToUse;
 
@@ -58,7 +58,7 @@ public class PrivateTest {
 
   
   // Name of the file
-  private String fileName = "76JH28.ab1";
+  private String fileName = "93GH02_D08.ab1";
 
   
   // _____________________________________________________________________
@@ -138,6 +138,7 @@ public class PrivateTest {
    * This is the private test method, used e.g. on Thursdays to check the performance
    * on the given AB1 files.  
    */
+  
   @Test
   public void testLocalFile() throws FileReadingException, IOException,
       UndefinedTypeOfMutationException, CorruptedSequenceException, MissingPathException {
