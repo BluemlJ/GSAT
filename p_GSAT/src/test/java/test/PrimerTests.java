@@ -1,6 +1,7 @@
 package test;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 import java.io.IOException;
@@ -67,6 +68,7 @@ public class PrimerTests {
 
     assertEquals(PrimerHandler.getPrimerListAsString()[0], "primer1");
     assertEquals(PrimerHandler.getPrimerListAsString()[1], "primer2");
+    assertTrue(PrimerHandler.getPrimerListAsString().length == 2);
   }
 
   @Test

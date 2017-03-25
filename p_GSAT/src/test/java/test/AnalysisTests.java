@@ -798,10 +798,10 @@ public class AnalysisTests {
   @Test
   public void testPlasmidMix3() throws FileReadingException, IOException, MissingPathException {
     SequenceReader
-        .configurePath(new File("resources/ab1/Tk_Gs40Hits/Forward/95EI67.ab1").getAbsolutePath());
+        .configurePath(new File("resources/ab1/Tk_Gs40Hits/Forward/95EI61.ab1").getAbsolutePath());
     AnalysedSequence testSequence = SequenceReader.convertFileIntoSequence();
     MutationAnalysis.findPlasmidMix(testSequence);
-    assertEquals("", testSequence.getComments());
+    assertEquals("There are possible plasmidmixes at the positions 2, 3, 8. ", testSequence.getComments());
   }
 
 }

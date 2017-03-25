@@ -426,6 +426,14 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
               geneBoxItem = geneBox.getSelectionModel().getSelectedItem().split(" ")[0];
             }
             startButton.setDisable(true);
+            sequences = new LinkedList<AnalysedSequence>();
+            for (File file : files.first) {
+              try {
+                sequences.add(SequenceReader.convertFileIntoSequence(file));
+              } catch (FileReadingException | IOException | MissingPathException e) {
+                e.printStackTrace();
+              }
+            }
             LinkedList<Text> resultingLines =
                 GUIUtils.runAnalysis(sequences, geneBoxItem, destfileNameText, bar);
             Platform.runLater(new Runnable() {
