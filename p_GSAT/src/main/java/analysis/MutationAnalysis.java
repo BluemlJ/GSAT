@@ -62,12 +62,7 @@ public class MutationAnalysis {
     int checkFrameerrorCounter = 0;
     // shift created by insertions and deletions
     int shift = 0;
-
-    
-    System.out.println(toAnalyze.getFileName());
-    System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"+ differenceList.size());
-   
-    
+  
     // check all differences and add them to the sequence.
     // The new form will be -> D6E (ATA), +1/-1 T26 (TTT)
     for (int i = 0; i < differenceList.size(); i++) {
