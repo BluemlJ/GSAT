@@ -103,7 +103,7 @@ public class MutationAnalysis {
           if (toAnalyze.getSequence().length() > firstNucleotidePos + 3) {
             // get codon out of gene
             codonsOfNew =
-                toAnalyze.getSequence().substring(firstNucleotidePos, firstNucleotidePos + 3);
+                toAnalyze.getSequence().substring(firstNucleotidePos+shift*3, firstNucleotidePos+shift*3 + 3);
             // add mutation to sequence
             toAnalyze
                 .addMutation(oldAminoAcid + position + newAminoAcid + " (" + codonsOfNew + ")");
@@ -118,13 +118,13 @@ public class MutationAnalysis {
         // i = injection, inject of an new amino acid (aminoAcid short form)
         case "i":
           // set shift and get informations
-          shift--;
+          shift++;
           newAminoAcid = difference.split("\\|")[2];
 
           // write mutation into sequence (see substitution)
           if (toAnalyze.getSequence().length() > firstNucleotidePos + 3) {
             codonsOfNew =
-                toAnalyze.getSequence().substring(firstNucleotidePos, firstNucleotidePos + 3);
+                toAnalyze.getSequence().substring(firstNucleotidePos+shift*3, firstNucleotidePos+shift*3 + 3);
             toAnalyze.addMutation("+1" + newAminoAcid + position + " (" + codonsOfNew + ")");
           } else {
             toAnalyze.addMutation("+1" + newAminoAcid + position);
@@ -137,12 +137,12 @@ public class MutationAnalysis {
         // substitution for comment)
         case "d":
           // increment shift + get informations
-          shift++;
+          shift--;
           oldAminoAcid = difference.split("\\|")[2];
           // write informations in sequence
           if (toAnalyze.getSequence().length() > firstNucleotidePos + 3) {
             codonsOfNew =
-                toAnalyze.getSequence().substring(firstNucleotidePos, firstNucleotidePos + 3);
+                toAnalyze.getSequence().substring(firstNucleotidePos+ shift*3, firstNucleotidePos+shift*3 + 3);
             toAnalyze.addMutation("-1" + oldAminoAcid + position + " (" + codonsOfNew + ")");
           } else {
             toAnalyze.addMutation("-1" + oldAminoAcid + position);
