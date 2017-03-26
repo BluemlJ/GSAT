@@ -17,7 +17,7 @@ import exceptions.MissingPathException;
 import exceptions.UndefinedTypeOfMutationException;
 import io.SequenceReader;
 
-//@Ignore
+@Ignore
 public class PrivateTest {
 
   // TO CHANGE: ---------------------------------------------------

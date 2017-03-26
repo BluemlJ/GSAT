@@ -155,10 +155,11 @@ public class MutationAnalysis {
       }
     }
     // the following code finds silentmutations in sequence and add them to the list of mutations
-    
+
     // a tempoary shift, needed for insertions and deletions and the change in reading frame
     int tmpshift = 0;
-    // boolean to say if the position has allready a normal mutation, if so, there cant be a silentmutation
+    // boolean to say if the position has allready a normal mutation, if so, there cant be a
+    // silentmutation
     boolean isMutation = false;
 
     // check every position in the sequence
@@ -167,45 +168,56 @@ public class MutationAnalysis {
       for (String diff : differenceList) {
         int tmpPosition = Integer.parseInt(diff.split("\\|")[1]) + toAnalyze.getOffset();
         String tom = diff.split("\\|")[0];
-        // checks position is equal to j+1, diffrence because of start by 0 instead of 1
+        // checks position is equal to j+1, difference because of start by 0 instead of 1
         if (tmpPosition == j + 1) {
           if (tom.equals("s")) {
             isMutation = true;
           }
         }
-        if (tmpPosition == j){
+        // insertions and deletions gives the position before the mutation, so check against j
+        if (tmpPosition == j) {
           if (tom.equals("d")) {
-          tmpshift--;
-        }
-        if (tom.equals("i")) {
-          tmpshift++;
-        }
-        isMutation = true;
+            tmpshift--;
+          }
+          if (tom.equals("i")) {
+            tmpshift++;
+          }
+          isMutation = true;
 
+        }
       }
-      }
+      // checks if silent mutation
       if (!isMutation) {
+        // checks boundaries
         if ((j + tmpshift) * 3 + toAnalyze.getOffset() * 3 + 3 > originalSequence.length()
-            || Math.max(j + tmpshift, j) * 3 + 3 > mutatedSequence.length()) {
+            || Math.max(j + tmpshift, j) * 3 + 3 > mutatedSequence.length()
+            || (j + tmpshift) * 3 + toAnalyze.getOffset() * 3 < 0) {
           break;
         }
+        // gets nucleotide triple
         String oldAcid = originalSequence.substring(j * 3 + toAnalyze.getOffset() * 3,
             j * 3 + toAnalyze.getOffset() * 3 + 3);
         String newAcid = mutatedSequence.substring((j + tmpshift) * 3, (j + tmpshift) * 3 + 3);
+        // checks if original and toAnalyse are not equal
         if (!oldAcid.equals(newAcid)) {
           j++;
           toAnalyze.addMutation(oldAcid + j + newAcid);
           j--;
         }
       }
+      // resart process
       isMutation = false;
     }
-    
     return true;
   }
 
 
-  // TODO @Jannis comment
+  /**
+   * searches for plasmidmixes and add a comment to sequences with possitive results. Gives
+   * canditates by analysing the quality of single nucleotides.
+   * 
+   * @param sequence the sequence to analyse for plasmidmixes
+   */
   public static void findPlasmidMix(AnalysedSequence sequence) {
 
     // List of candidates

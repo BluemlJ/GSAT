@@ -1,5 +1,5 @@
 file name; gene; gene organism; mutations (with codons); HIS Tag; manually checked; comments; researcher; date; average quality (percent); percentage of quality trim; nucleotide sequence; primer; mutations (without codons)
-sequence2.ab1; FSA; null; reading frame error; none; false; No comments; Klaus Bohne; 25/03/17; 0; 0; ATCTTTG; none; reading frame error
+sequence2.ab1; FSA; null; reading frame error; none; false; No comments; Klaus Bohne; 26/03/17; 0; 0; ATCTTTG; none; reading frame error
 sequence5.ab1; FSA; bacteria; ; ; ; The usable part of the sequence is very short (One should probably adjust the parameters). ; ; ; ; ; ; ; 
 sequence6.ab1; FSA; bacteria; ; ; ; The usable part of the sequence is very short (One should probably adjust the parameters). ; ; ; ; ; ; ; 
-sequence7.ab1; FSA; bacteria; +1T4; 1; false; ; Jonas; 25/03/17; 0; 0; GT; none; +1T4
+sequence7.ab1; FSA; bacteria; +1T4; 1; false; ; Jonas; 26/03/17; 0; 0; GT; none; +1T4
