@@ -4,6 +4,7 @@ import java.awt.Desktop;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.Optional;
 import java.util.ResourceBundle;
@@ -15,6 +16,7 @@ import exceptions.FileReadingException;
 import exceptions.MissingPathException;
 import io.ConfigHandler;
 import io.FileSaver;
+import io.ProblematicComment;
 import io.SequenceReader;
 import javafx.application.Application;
 import javafx.application.Platform;
@@ -172,7 +174,7 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
       for (File file : files.first) {
         try {
           sequences.add(SequenceReader.convertFileIntoSequence(file));
-        } catch (FileReadingException | IOException | MissingPathException e) {
+        } catch (Throwable e) {
           e.printStackTrace();
         }
       }
@@ -198,7 +200,7 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
               for (File file : files.first) {
                 try {
                   sequences.add(SequenceReader.convertFileIntoSequence(file));
-                } catch (FileReadingException | IOException | MissingPathException e) {
+                } catch (Throwable e) {
                   e.printStackTrace();
                 }
               }
@@ -427,12 +429,16 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
             }
             startButton.setDisable(true);
             sequences = new LinkedList<AnalysedSequence>();
+            AnalysedSequence sequence;
             for (File file : files.first) {
               try {
-                sequences.add(SequenceReader.convertFileIntoSequence(file));
-              } catch (FileReadingException | IOException | MissingPathException e) {
-                e.printStackTrace();
+                sequence = SequenceReader.convertFileIntoSequence(file);
+              } catch (Throwable e) {
+                sequence = new AnalysedSequence();
+                sequence.setFileName(file.getName());
+                sequence.addProblematicComment(ProblematicComment.COULD_NOT_READ_SEQUENCE);
               }
+              sequences.add(sequence);
             }
             LinkedList<Text> resultingLines =
                 GUIUtils.runAnalysis(sequences, geneBoxItem, destfileNameText, bar);
@@ -454,14 +460,14 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
         // mainThread.start();
         mainTask.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
           @Override
-          public void handle(WorkerStateEvent t) {
+          public void handle(WorkerStateEvent t) {             
             bar.setProgress(0);
             changesOnResults = true;
             sequences = new LinkedList<AnalysedSequence>();
             for (File file : files.first) {
               try {
                 sequences.add(SequenceReader.convertFileIntoSequence(file));
-              } catch (FileReadingException | IOException | MissingPathException e) {
+              } catch (Throwable e) {
                 e.printStackTrace();
               }
             }
