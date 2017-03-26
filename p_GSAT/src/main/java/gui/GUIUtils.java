@@ -40,9 +40,13 @@ import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 
 /**
- * This class ...
+ * This class holds some utility methods for windows, like initialize methods for genes and primers
+ * or a method to run analysis. Mostly used from MainWindow and SettingsWindow.
  * 
- * @author bluemlj
+ * @see MainWindow
+ * @see SettingsWindow
+ * 
+ * @author jannis blueml
  *
  */
 public class GUIUtils {
@@ -53,7 +57,8 @@ public class GUIUtils {
    * Genes.txt
    * 
    * @param genes the choiceBox to initialize
-   * @return reportpair, with indicator Boolean and reportString
+   * @return a text with all needed informations about success.
+   * @author jannis blueml
    */
   public static Text initializeGeneBox(ChoiceBox<String> genes) {
     try {
@@ -68,9 +73,11 @@ public class GUIUtils {
   }
 
   /**
+   * This method initialize the ListView and adds all Gene which are stored locally in the Genes.txt
    * 
-   * @param genes
-   * @return
+   * @param genes the ListView to initialize
+   * @return a text with all needed informations about success.
+   * @author jannis blueml
    */
   public static Text initializeGeneBox(ListView<String> genes) {
     try {
@@ -84,7 +91,12 @@ public class GUIUtils {
   }
 
   /**
-   * @param geneList
+   * This method initialize the ListView and adds all primers which are stored locally in the
+   * primers.txt
+   * 
+   * @param primers the ListView to initialize
+   * @return a text with all needed informations about success.
+   * @author jannis blueml
    */
   public static Text initializePrimerBox(ListView<String> geneList) {
     try {
@@ -100,9 +112,12 @@ public class GUIUtils {
 
 
   /**
+   * This method initialize the dropdown menu for researchers in the settings window. For this it
+   * reads the config.txt.
    * 
-   * @param dropdown
-   * @return
+   * @param dropdown the CoiceBox to initialize with the researchers
+   * @return a text with needed infomations about success and critical reports
+   * @author jannis blueml
    */
   public static Text initializeResearchers(ChoiceBox<String> dropdown) {
     try {
@@ -120,15 +135,19 @@ public class GUIUtils {
    * Main method of this class, alias the startbutton function.
    * 
    * @param geneId ID of the Gene in the Choicebox.
-   * @return a Pair or Boolean, which indicates if the method was successful and a String, which can
-   *         printed in the infoarea.
+   * @param sequences a llist with all sequences that should be analysed
+   * @param resultname the name of the result file
+   * @param bar the progress bar from mainWindow to set the progress
+   * @return a list of Texts with informations about success and critical informations
    * @throws DissimilarGeneException
+   * @author jannis blueml
    */
   public static LinkedList<Text> runAnalysis(LinkedList<AnalysedSequence> sequences, String geneId,
       String resultname, ProgressBar bar) throws DissimilarGeneException {
 
     LinkedList<Text> resultingLines = new LinkedList<Text>();
 
+    // checks if the list of sequences is null, if so stop analysis.
     if (sequences == null) {
       return wrap(
           "Reading Sequences unsuccessful: "
@@ -210,6 +229,14 @@ public class GUIUtils {
     return resultingLines;
   }
 
+  /**
+   * TODO Ben
+   * 
+   * @param line
+   * @param list
+   * @param red
+   * @return
+   */
   private static LinkedList<Text> wrap(String line, LinkedList<Text> list, boolean red) {
     Text text;
     if (red) {
@@ -227,14 +254,16 @@ public class GUIUtils {
    * 
    * @param destination Textfield, to place path.
    * @param sourcePath path from the source field
-   * @return reportpair of boolean (indicates success) and report String
+   * @return a text with informations about success and other informations
+   * @author jannis blueml
    */
   public static Text setDestination(TextField destination, String sourcePath) {
 
-    boolean success = false;
+    // default value for report text
     Text report = getRedText("Reading destination path was aborted.\n");
     String path;
 
+    // starts directoryChooser for selection process
     DirectoryChooser chooser = new DirectoryChooser();
 
     File selectedDirectory;
@@ -250,16 +279,17 @@ public class GUIUtils {
       chooser.setInitialDirectory(start);
 
     }
+    // checks selected folder ( if necessary set to default (user.home))
     try {
       selectedDirectory = chooser.showDialog(null);
     } catch (java.lang.IllegalArgumentException e) {
       chooser.setInitialDirectory(new File(System.getProperty("user.home")));
       selectedDirectory = chooser.showDialog(null);
     }
+    // set report and return informations text
     chooser.setTitle("Set destination path");
     if (selectedDirectory != null) {
       path = selectedDirectory.getAbsolutePath();
-      success = true;
       report =
           new Text("Reading destination path was successful. \nDestination is:  " + path + "\n");
       FileSaver.setLocalPath(path);
@@ -274,12 +304,18 @@ public class GUIUtils {
    * 
    * @param source Textfield, to place path.
    * @return reportpair of boolean (indicates success) and report String
+   * @author jannis blueml
    */
   public static Pair<Boolean, Text> setSourceFolder(TextField source) {
+
+    // set default values
     boolean success = false;
+    Text report = null;
     String path;
     File selectedDirectory = null;
     String defaultPath = source.getText();
+
+    // if defaultPath is not empty, set field with given informations
     if (!defaultPath.isEmpty()) {
       defaultPath = defaultPath.trim();
       for (int i = defaultPath.length() - 1; i > 0; i--) {
@@ -288,9 +324,9 @@ public class GUIUtils {
           break;
         }
       }
-
     }
 
+    // give selection window in form of an alert to select file or folder
     Alert alert = new Alert(AlertType.CONFIRMATION);
     alert.setTitle("Set path to the .ab1 file(s)");
     alert.setHeaderText(null);
@@ -302,8 +338,7 @@ public class GUIUtils {
 
     alert.getButtonTypes().setAll(buttonTypeOne, buttonTypeTwo, buttonTypeCancel);
 
-    Text report;
-    
+    // start selection progress with chooser
     Optional<ButtonType> result = alert.showAndWait();
     if (result.get() == buttonTypeOne) {
       report = getRedText("Reading path to .ab1 file folder was unsuccessful.\n");
@@ -338,6 +373,7 @@ public class GUIUtils {
           getRedText("The action to set a source folder was cancelled\n"));
     }
 
+    // if selection was successful
     if (selectedDirectory != null) {
       path = selectedDirectory.getAbsolutePath();
       success = true;
@@ -348,12 +384,18 @@ public class GUIUtils {
   }
 
   /**
-   * This method gets the Gene from his ID.
+   * This method gets the Gene from his ID (gene name and organism).
    * 
-   * @return Gene
+   * @param gene gene ID inf form of name and organism
+   * @return gene from given ID
+   * 
+   * @see GeneHandler
+   * @author jannis blueml
    */
   public static Gene getGeneFromDropDown(String gene) {
 
+    // if given gene is not null, get name and organism from ID.
+    // Then return gene by calling checkGene
     if (gene != null) {
       if (gene.split(" ").length > 1) {
         return GeneHandler.checkGene(gene.split(" ")[0], gene.split(" ")[1]);
@@ -370,6 +412,7 @@ public class GUIUtils {
    * 
    * @param source the path to check about .abi-Files
    * @return two lists in form of a Pair. The .ab1 files and the not usuable files.
+   * @author jannis blueml
    */
   static Pair<LinkedList<File>, LinkedList<File>> getSequencesFromSourceFolder(String source) {
 
@@ -394,7 +437,7 @@ public class GUIUtils {
    * found in {@link ButtonColor}.
    * 
    * @param button The button to be colored
-   * @param color A ButtonColor element to specify the desired color scheme.
+   * @param color A ButtonColor element to specify the desired color scheme. q@author Ben Kohr
    */
   public static void setColorOnButton(Button button, ButtonColor color) {
 

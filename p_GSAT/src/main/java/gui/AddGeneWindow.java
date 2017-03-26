@@ -22,6 +22,15 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
+/**
+ * This window is necessary to add new genes to the local gene pool. 
+ * It contains four fields for informations (name,gene,organism and comment).
+ * 
+ * @category GUI.Window
+ * 
+ * @author jannis blueml
+ *
+ */
 public class AddGeneWindow extends Application implements javafx.fxml.Initializable {
 
   private SettingsWindow parent;
@@ -39,6 +48,7 @@ public class AddGeneWindow extends Application implements javafx.fxml.Initializa
   @FXML
   private javafx.scene.control.TextArea commentArea;
 
+  // buttons
   @FXML
   private Button confirmButton;
 
@@ -48,19 +58,22 @@ public class AddGeneWindow extends Application implements javafx.fxml.Initializa
   @Override
   public void initialize(URL location, ResourceBundle resources) {
 
+    // set start text for geneArea
     geneArea.setWrapText(true);
-    geneArea.setPromptText("sequence, starting with 5' and " + 
-      System.lineSeparator() + System.lineSeparator() + System.lineSeparator() + System.lineSeparator() +
-      System.lineSeparator() + System.lineSeparator() + System.lineSeparator() + System.lineSeparator() +
-      System.lineSeparator() + System.lineSeparator() +
-      "                                                                                       "
-      + "                                                                       ending with 3'");
-    
+    geneArea.setPromptText("sequence, starting with 5' and " + System.lineSeparator()
+        + System.lineSeparator() + System.lineSeparator() + System.lineSeparator()
+        + System.lineSeparator() + System.lineSeparator() + System.lineSeparator()
+        + System.lineSeparator() + System.lineSeparator() + System.lineSeparator()
+        + "                                                                                       "
+        + "                                                                       ending with 3'");
+
     commentArea.setWrapText(true);
 
+    // set button colors
     GUIUtils.setColorOnButton(confirmButton, ButtonColor.GREEN);
     GUIUtils.setColorOnButton(cancelButton, ButtonColor.RED);
 
+    // add ChangeListener to nameField and exclude separator and spaces
     nameField.textProperty().addListener(new ChangeListener<String>() {
       @Override
       public void changed(ObservableValue<? extends String> observable, String oldValue,
@@ -73,6 +86,7 @@ public class AddGeneWindow extends Application implements javafx.fxml.Initializa
       }
     });
 
+    // add ChangeListener to organismField, exclude separator
     organismField.textProperty().addListener(new ChangeListener<String>() {
       @Override
       public void changed(ObservableValue<? extends String> observable, String oldValue,
@@ -85,6 +99,7 @@ public class AddGeneWindow extends Application implements javafx.fxml.Initializa
       }
     });
 
+    // add ChangeListener to geneArea, only allows spaces and A,T,C and G.
     geneArea.textProperty().addListener(new ChangeListener<String>() {
       @Override
       public void changed(ObservableValue<? extends String> observable, String oldValue,
@@ -98,6 +113,7 @@ public class AddGeneWindow extends Application implements javafx.fxml.Initializa
       }
     });
 
+    // add ChangeListener to commentArea, exclude separator
     commentArea.textProperty().addListener(new ChangeListener<String>() {
       @Override
       public void changed(ObservableValue<? extends String> observable, String oldValue,
@@ -110,17 +126,21 @@ public class AddGeneWindow extends Application implements javafx.fxml.Initializa
       }
     });
 
+    // add ActonEvent to confirmButton, that checked needed Fields and add gene to the gene pool.
     confirmButton.setOnAction(new EventHandler<ActionEvent>() {
 
       @Override
       public void handle(ActionEvent arg0) {
 
+        // check necessary
         if (nameField.getText().isEmpty() || geneArea.getText().isEmpty()) {
           GUIUtils.showInfo(AlertType.ERROR, "Required fields are not filled",
               "Please enter a gene name and its sequence.");
           return;
         }
 
+        // check if gene already exists in the local gene pool. If not, then add gene and close
+        // window.
         try {
           if (organismField.getText().equals("")) {
             organismField.setText("none");
@@ -147,6 +167,7 @@ public class AddGeneWindow extends Application implements javafx.fxml.Initializa
       }
     });
 
+    // add ActionEvent to cancelButton, that close the window/stage.
     cancelButton.setOnAction(new EventHandler<ActionEvent>() {
 
       @Override
@@ -165,6 +186,7 @@ public class AddGeneWindow extends Application implements javafx.fxml.Initializa
 
   @Override
   public void start(Stage primaryStage) throws Exception {
+    // try to add parent
     Parent root;
     try {
       root = FXMLLoader.load(getClass().getResource("/fxml/AddGeneWindow.fxml"));
@@ -172,6 +194,7 @@ public class AddGeneWindow extends Application implements javafx.fxml.Initializa
       e.printStackTrace();
       return;
     }
+    // set some informations for the window
     Scene scene = new Scene(root);
     primaryStage.setTitle("GSAT - Adding a gene");
     primaryStage.setScene(scene);

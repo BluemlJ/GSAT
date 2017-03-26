@@ -23,6 +23,15 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
+/**
+ * This window is necessary to add new primers to the local primer pool. 
+ * It contains four fields for informations (name,id,meltingPoint and comment).
+ * 
+ * @category GUI.Window
+ * 
+ * @author jannis blueml
+ *
+ */
 public class AddPrimerWindow extends Application implements javafx.fxml.Initializable {
 
   private SettingsWindow parent;
@@ -54,10 +63,12 @@ public class AddPrimerWindow extends Application implements javafx.fxml.Initiali
   public void initialize(URL location, ResourceBundle resources) {
 
 
+    // set some configurations for the window (button color and text settings)
     sequenceArea.setWrapText(true);
     GUIUtils.setColorOnButton(confirmButton, ButtonColor.GREEN);
     GUIUtils.setColorOnButton(cancelButton, ButtonColor.RED);
 
+    // add ChangeListener to nameFiled, exclude separator and spaces
     nameField.textProperty().addListener(new ChangeListener<String>() {
       @Override
       public void changed(ObservableValue<? extends String> observable, String oldValue,
@@ -70,6 +81,7 @@ public class AddPrimerWindow extends Application implements javafx.fxml.Initiali
       }
     });
 
+    // add ChangeListener to idField, exclude separator
     idField.textProperty().addListener(new ChangeListener<String>() {
       @Override
       public void changed(ObservableValue<? extends String> observable, String oldValue,
@@ -82,6 +94,7 @@ public class AddPrimerWindow extends Application implements javafx.fxml.Initiali
       }
     });
 
+    // add ChangeListener to meltingTempField, only allows numbers
     meltingTempField.textProperty().addListener(new ChangeListener<String>() {
       @Override
       public void changed(ObservableValue<? extends String> observable, String oldValue,
@@ -94,6 +107,7 @@ public class AddPrimerWindow extends Application implements javafx.fxml.Initiali
       }
     });
 
+    // add ChangeListener, only allows A,T,C,G and spaces
     sequenceArea.textProperty().addListener(new ChangeListener<String>() {
       @Override
       public void changed(ObservableValue<? extends String> observable, String oldValue,
@@ -107,6 +121,7 @@ public class AddPrimerWindow extends Application implements javafx.fxml.Initiali
       }
     });
 
+    // ChangeListener to exclude sparator
     commentArea.textProperty().addListener(new ChangeListener<String>() {
       @Override
       public void changed(ObservableValue<? extends String> observable, String oldValue,
@@ -119,11 +134,13 @@ public class AddPrimerWindow extends Application implements javafx.fxml.Initiali
       }
     });
 
+    // checks all informations and add the primer to the local pool. Then close the window
     confirmButton.setOnAction(new EventHandler<ActionEvent>() {
 
       @Override
       public void handle(ActionEvent arg0) {
 
+        // check if no fields are empty (not meltingPoint)
         if (nameField.getText().isEmpty() || sequenceArea.getText().isEmpty()
             || idField.getText().isEmpty()) {
           GUIUtils.showInfo(AlertType.ERROR, "Empty field(s)",
@@ -131,6 +148,7 @@ public class AddPrimerWindow extends Application implements javafx.fxml.Initiali
           return;
         }
 
+        // set meltingPoint to the default value 
         String meltingPoint;
         if (meltingTempField.getText().isEmpty()) {
           meltingPoint = "-1";
@@ -138,6 +156,7 @@ public class AddPrimerWindow extends Application implements javafx.fxml.Initiali
           meltingPoint = meltingTempField.getText();
         }
         
+        // add primer to local pool and close stage
         if (PrimerHandler.addPrimer(new Primer(sequenceArea.getText(),
             ConfigHandler.getResearcher(), Integer.parseInt(meltingPoint),
             idField.getText(), nameField.getText(), commentArea.getText()))) {
@@ -156,6 +175,7 @@ public class AddPrimerWindow extends Application implements javafx.fxml.Initiali
       }
     });
 
+    // close stage
     cancelButton.setOnAction(new EventHandler<ActionEvent>() {
 
       @Override
