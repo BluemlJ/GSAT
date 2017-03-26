@@ -137,10 +137,10 @@ public class MutationAnalysis {
           // increment shift + get informations
           shift--;
           oldAminoAcid = difference.split("\\|")[2];
-          
+
           // write informations in sequence
           if (toAnalyze.getSequence().length() > firstNucleotidePos + 3) {
-            codonsOfNew = originalSequence.substring(firstNucleotidePos + shift * 3+3,
+            codonsOfNew = originalSequence.substring(firstNucleotidePos + shift * 3 + 3,
                 firstNucleotidePos + shift * 3 + 6);
             toAnalyze.addMutation("-1" + oldAminoAcid + position + " (" + codonsOfNew + ")");
           } else {
@@ -154,48 +154,53 @@ public class MutationAnalysis {
           throw new UndefinedTypeOfMutationException(typeOfMutations);
       }
     }
-      // TODO JANNIS SILENT MUTATION
-        int tmpshift = 0;
-        boolean isMutation = false;
-        for (int j = 0; j < toAnalyze.length(); j++) {
+    // the following code finds silentmutations in sequence and add them to the list of mutations
+    
+    // a tempoary shift, needed for insertions and deletions and the change in reading frame
+    int tmpshift = 0;
+    // boolean to say if the position has allready a normal mutation, if so, there cant be a silentmutation
+    boolean isMutation = false;
 
-          for (String diff : differenceList) {
-            int tmpPosition = Integer.parseInt(diff.split("\\|")[1]) + toAnalyze.getOffset();
-            String tom = diff.split("\\|")[0];
-
-            
-            if (tmpPosition == j + 1) {
-              if (tom.equals("s")) {
-                isMutation = true;
-              }
-            }
-            if(tmpPosition == j)
-            if (tom.equals("d")) {
-              tmpshift--;
-            }
-            if (tom.equals("i")) {
-              tmpshift++;
-            }
+    // check every position in the sequence
+    for (int j = 0; j < toAnalyze.length(); j++) {
+      // checks if position has allready a mutation
+      for (String diff : differenceList) {
+        int tmpPosition = Integer.parseInt(diff.split("\\|")[1]) + toAnalyze.getOffset();
+        String tom = diff.split("\\|")[0];
+        // checks position is equal to j+1, diffrence because of start by 0 instead of 1
+        if (tmpPosition == j + 1) {
+          if (tom.equals("s")) {
             isMutation = true;
-
           }
-          if (!isMutation) {
-            if ((j + tmpshift) * 3 + toAnalyze.getOffset() * 3 + 3 > originalSequence.length()
-                || Math.max(j + tmpshift, j) * 3 + 3 > mutatedSequence.length()) {
-              break;
-            }
-            String oldAcid = originalSequence.substring(j * 3 + toAnalyze.getOffset() * 3,
-                j * 3 + toAnalyze.getOffset() * 3 + 3);
-            String newAcid = mutatedSequence.substring((j + tmpshift) * 3, (j + tmpshift) * 3 + 3);
-            if (!oldAcid.equals(newAcid)) {
-              j++;
-              toAnalyze.addMutation(oldAcid + j + newAcid);
-              j--;
-            }
-          }
-          isMutation = false;
         }
-       
+        if (tmpPosition == j){
+          if (tom.equals("d")) {
+          tmpshift--;
+        }
+        if (tom.equals("i")) {
+          tmpshift++;
+        }
+        isMutation = true;
+
+      }
+      }
+      if (!isMutation) {
+        if ((j + tmpshift) * 3 + toAnalyze.getOffset() * 3 + 3 > originalSequence.length()
+            || Math.max(j + tmpshift, j) * 3 + 3 > mutatedSequence.length()) {
+          break;
+        }
+        String oldAcid = originalSequence.substring(j * 3 + toAnalyze.getOffset() * 3,
+            j * 3 + toAnalyze.getOffset() * 3 + 3);
+        String newAcid = mutatedSequence.substring((j + tmpshift) * 3, (j + tmpshift) * 3 + 3);
+        if (!oldAcid.equals(newAcid)) {
+          j++;
+          toAnalyze.addMutation(oldAcid + j + newAcid);
+          j--;
+        }
+      }
+      isMutation = false;
+    }
+    
     return true;
   }
 
