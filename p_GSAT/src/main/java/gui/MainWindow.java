@@ -59,27 +59,27 @@ import javafx.stage.WindowEvent;
 public class MainWindow extends Application implements javafx.fxml.Initializable {
 
   /**
-   *  boolean that controls, that at no time more then one SettingsWindow is open
+   * boolean that controls, that at no time more then one SettingsWindow is open
    */
   static boolean settingsOpen = false;
 
   /**
-   *  findRightGene yes or no
+   * findRightGene yes or no
    */
   static boolean autoGeneSearch = false;
 
   /**
-   *  selected gene in dropdown
+   * selected gene in dropdown
    */
   static Gene dropdownGene;
 
   /**
-   *  all selected files
+   * all selected files
    */
   private static Pair<LinkedList<File>, LinkedList<File>> files;
 
   /**
-   *  sequenced from selected files
+   * sequenced from selected files
    */
   private static LinkedList<AnalysedSequence> sequences = new LinkedList<>();
 

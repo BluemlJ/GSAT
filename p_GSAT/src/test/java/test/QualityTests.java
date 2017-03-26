@@ -3,7 +3,6 @@ package test;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-import java.io.File;
 import java.io.IOException;
 
 import org.junit.After;
@@ -14,7 +13,6 @@ import analysis.AnalysedSequence;
 import analysis.QualityAnalysis;
 import exceptions.FileReadingException;
 import exceptions.MissingPathException;
-import io.SequenceReader;
 
 /**
  * This class contains tests for analysing the quality of an analysedSequence

@@ -112,8 +112,7 @@ public class AnalysedSequence extends Sequence {
   }
 
   /**
-   * TODO COMMENT LOVIS
-   * constructor which sets all values
+   * TODO COMMENT LOVIS constructor which sets all values
    * 
    * @param gene
    * @param name

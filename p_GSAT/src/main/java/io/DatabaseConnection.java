@@ -302,7 +302,7 @@ public class DatabaseConnection {
       if (sequence.getReferencedGene() == null) {
         System.out.println("Hallo!");
       }
-      
+
       // push gene with the researcher id and get gene id
       int geneId = pushGene(sequence.getReferencedGene(), researcherId);
 
@@ -445,7 +445,7 @@ public class DatabaseConnection {
       System.out.println("sequence " + sequence.getFileName() + " failed");
       pstmt.close();
       return -1;
-      
+
     }
   }
 
@@ -462,11 +462,11 @@ public class DatabaseConnection {
     Statement stmt = conn.createStatement();
     stmt.execute("USE gsat");
     stmt.close();
-    
+
     if (gene == null) {
       System.out.println("null");
     }
-    
+
     System.out.println(gene);
     String name = gene.getName();
     String sequence = gene.getSequence();
@@ -556,7 +556,7 @@ public class DatabaseConnection {
       System.out.println("researcher: " + researcher + " already exists");
       int result = res.getInt(1);
       pstmt.close();
-      return result; 
+      return result;
     }
     pstmt.close();
     // push otherwise
@@ -568,7 +568,7 @@ public class DatabaseConnection {
     pstmt = conn.prepareStatement("SELECT id, name FROM researchers WHERE name = ?");
     pstmt.setString(1, researcher);
     res = pstmt.executeQuery();
-    //pstmt.close();
+    // pstmt.close();
     if (res.next()) {
       int result = res.getInt(1);
       pstmt.close();

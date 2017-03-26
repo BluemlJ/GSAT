@@ -216,14 +216,15 @@ public class QualityAnalysis {
     int lengthNow = toAnalyse.getSequence().length();
     double percentage = (lengthBefore - lengthNow) / ((double) lengthBefore);
     int percentageInt = (int) (percentage * 100);
-    
+
     if (percentageInt >= 90) {
       toAnalyse.addProblematicComment(ProblematicComment.NINETY_PERCENT_QUALITY_TRIM);
     } else if (percentageInt >= 70) {
-      toAnalyse.addComments("70% or more (but less than 90%) of the processed sequence got trimmed away by the quality analysis.");
+      toAnalyse.addComments(
+          "70% or more (but less than 90%) of the processed sequence got trimmed away by the quality analysis.");
     }
-    
-    return percentageInt; 
+
+    return percentageInt;
   }
 
   /**

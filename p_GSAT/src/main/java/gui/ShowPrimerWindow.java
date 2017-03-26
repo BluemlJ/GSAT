@@ -18,7 +18,7 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
 /**
- * Window to show extended primer informations 
+ * Window to show extended primer informations
  * 
  * @see GUIUtils
  * @category GUI.Window

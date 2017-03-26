@@ -35,7 +35,7 @@ import javafx.stage.WindowEvent;
 
 /**
  * Window to add and show genes/primers and researcher. The user can set a default path to source
- * files. The parameter and databaseSettings window can be found here. 
+ * files. The parameter and databaseSettings window can be found here.
  * 
  * @see GUIUtils
  * @category GUI.Window

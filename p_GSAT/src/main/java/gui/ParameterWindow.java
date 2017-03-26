@@ -46,7 +46,7 @@ public class ParameterWindow extends Application implements javafx.fxml.Initiali
   @FXML
   private TextField numAverageNucleotides;
 
-  //buttons
+  // buttons
   @FXML
   private Button saveButton;
   @FXML
@@ -72,7 +72,7 @@ public class ParameterWindow extends Application implements javafx.fxml.Initiali
       GUIUtils.showInfo(AlertType.ERROR, "Configuration reading error",
           "The configuration file could not be read. Maybe it's corrupted.");
     }
-    
+
     // get parameter
     avgApproximationEnd.setText(ConfigHandler.getAvgApproximationEnd() + "");
     avgApproximationStart.setText(ConfigHandler.getAvgApproximationStart() + "");
@@ -81,7 +81,7 @@ public class ParameterWindow extends Application implements javafx.fxml.Initiali
     numAverageNucleotides.setText(ConfigHandler.getNumAverageNucleotides() + "");
 
     // changeListener only allowing numbers for all fields
-    
+
     avgApproximationEnd.textProperty().addListener(new ChangeListener<String>() {
       @Override
       public void changed(ObservableValue<? extends String> observable, String oldValue,
@@ -155,7 +155,7 @@ public class ParameterWindow extends Application implements javafx.fxml.Initiali
 
       }
     });
-    
+
     // change parameter and add changes by rewriting the config file with new values
     saveButton.setOnAction(new EventHandler<ActionEvent>() {
 

@@ -55,7 +55,7 @@ public class ShowChromatogramWindow extends Application implements javafx.fxml.I
   private static final int IMAGE_HEIGHT = 400;
 
   /**
-   *  Thickness of trace graphs.
+   * Thickness of trace graphs.
    */
   private int lineThickness = 5;
 
@@ -65,32 +65,32 @@ public class ShowChromatogramWindow extends Application implements javafx.fxml.I
   LinkedList<AnalysedSequence> sequences;
 
   /**
-   *  the currently selected sequence.
+   * the currently selected sequence.
    */
   private int activeSequence = 0;
 
   /**
-   *  the image that is Drawn to
+   * the image that is Drawn to
    */
   private Image img;
 
   /**
-   *  ScrollPane for scrolling the Chromatogram
+   * ScrollPane for scrolling the Chromatogram
    */
   private ScrollPane scrollPane;
 
   /**
-   *  Buttons for previous File.
+   * Buttons for previous File.
    */
   private Button prevs;
 
   /**
-   *  Buttons for next File.
+   * Buttons for next File.
    */
   private Button next;
 
   /**
-   *  Label to display the selected File
+   * Label to display the selected File
    */
   private Label fileName = new Label();
 
@@ -266,7 +266,7 @@ public class ShowChromatogramWindow extends Application implements javafx.fxml.I
     int[] channelC = startSequence.getChannelC();
     int[] channelT = startSequence.getChannelT();
     int[] channelG = startSequence.getChannelG();
-    
+
     // determine reference Gene and calculate offset (needed for aminoacid determination)
     try {
       if (startSequence.getReferencedGene() == null) {
@@ -275,10 +275,10 @@ public class ShowChromatogramWindow extends Application implements javafx.fxml.I
         } else {
           Gene refgene = StringAnalysis.findRightGene(startSequence);
           if (refgene != null) {
-            startSequence.setReferencedGene(refgene);  
-          }else {
+            startSequence.setReferencedGene(refgene);
+          } else {
             startSequence.setReferencedGene(new Gene(startSequence.getSequence(), 0, "", ""));
-          }          
+          }
         }
       }
 
@@ -290,10 +290,9 @@ public class ShowChromatogramWindow extends Application implements javafx.fxml.I
 
 
     // determine length of Chromatogram
-    
-    int last = Math.min(channelA.length, 
-      Math.min(channelC.length, 
-        Math.min(channelT.length, channelG.length)));
+
+    int last = Math.min(channelA.length,
+        Math.min(channelC.length, Math.min(channelT.length, channelG.length)));
 
 
     // create new viewer and set image
@@ -311,9 +310,7 @@ public class ShowChromatogramWindow extends Application implements javafx.fxml.I
     int maxHeight = 0;
     for (int i = 0; i < last; i++) {
       maxHeight = Math.max(maxHeight,
-          Math.max(channelA[i], 
-            Math.max(channelC[i], 
-              Math.max(channelG[i], channelT[i]))));
+          Math.max(channelA[i], Math.max(channelC[i], Math.max(channelG[i], channelT[i]))));
     }
 
     // variables for scaling image

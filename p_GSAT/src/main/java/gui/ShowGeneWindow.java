@@ -18,7 +18,7 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
 /**
- * Window to show extended gene informations 
+ * Window to show extended gene informations
  * 
  * @see GUIUtils
  * @category GUI.Window
@@ -40,7 +40,7 @@ public class ShowGeneWindow extends Application implements javafx.fxml.Initializ
   @FXML
   private TextArea commentArea;
 
-  //buttons
+  // buttons
   @FXML
   private Button okButton;
 

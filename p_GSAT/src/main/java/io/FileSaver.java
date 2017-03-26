@@ -47,12 +47,12 @@ public class FileSaver {
     commentMap.put(ProblematicComment.SEQUENCE_TO_SHORT,
         "The usable part of the sequence is very short "
             + "(One should probably adjust the parameters).");
-    commentMap.put(ProblematicComment.NINETY_PERCENT_QUALITY_TRIM, 
-      "90% or more of the processed sequence got trimmed away by the quality analysis.");
-    commentMap.put(ProblematicComment.COULD_NOT_READ_SEQUENCE, 
+    commentMap.put(ProblematicComment.NINETY_PERCENT_QUALITY_TRIM,
+        "90% or more of the processed sequence got trimmed away by the quality analysis.");
+    commentMap.put(ProblematicComment.COULD_NOT_READ_SEQUENCE,
         "The AB1 file could not be read. It seems to be damaged.");
-    commentMap.put(ProblematicComment.ERROR_DURING_ANALYSIS_OCCURRED, 
-      "An error during the analysis process occurred.");
+    commentMap.put(ProblematicComment.ERROR_DURING_ANALYSIS_OCCURRED,
+        "An error during the analysis process occurred.");
   }
 
 
@@ -329,15 +329,19 @@ public class FileSaver {
   public static String constructProblematicComments(AnalysedSequence seq) {
 
     StringBuilder builder = new StringBuilder();
-    
+
     LinkedList<ProblematicComment> probComments = seq.getProblematicComments();
-    
+
     if (probComments.contains(ProblematicComment.ERROR_DURING_ANALYSIS_OCCURRED)) {
-      probComments.removeIf(probCom -> {return !probCom.equals(ProblematicComment.ERROR_DURING_ANALYSIS_OCCURRED);});
+      probComments.removeIf(probCom -> {
+        return !probCom.equals(ProblematicComment.ERROR_DURING_ANALYSIS_OCCURRED);
+      });
     } else if (probComments.contains(ProblematicComment.NO_MATCH_FOUND)) {
-      probComments.removeIf(probCom -> {return !probCom.equals(ProblematicComment.NO_MATCH_FOUND);});
+      probComments.removeIf(probCom -> {
+        return !probCom.equals(ProblematicComment.NO_MATCH_FOUND);
+      });
     }
-    
+
     for (ProblematicComment comment : seq.getProblematicComments()) {
       builder.append(commentMap.get(comment) + " ");
     }

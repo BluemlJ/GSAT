@@ -282,9 +282,9 @@ public class DatabaseWindow extends Application implements javafx.fxml.Initializ
               e.printStackTrace();
               GUIUtils.showInfo(AlertType.ERROR, "Error", READ_FAIL);
             }
-          
 
-          // download data to primer.txt
+
+            // download data to primer.txt
           } else if (downloadToggle.isSelected()) {
             try {
               DatabaseConnection.pullAndSavePrimer();
@@ -299,9 +299,9 @@ public class DatabaseWindow extends Application implements javafx.fxml.Initializ
               GUIUtils.showInfo(AlertType.ERROR, "Error", WRITE_FAIL);
             }
           }
-        
 
-        // update gene data
+
+          // update gene data
         } else if (geneToggle.isSelected()) {
           // upload all data from genes.txt
           if (uploadToggle.isSelected()) {
@@ -318,8 +318,8 @@ public class DatabaseWindow extends Application implements javafx.fxml.Initializ
               e.printStackTrace();
               GUIUtils.showInfo(AlertType.ERROR, "Error", READ_FAIL);
             }
-          
-          // download genes to genes.txt
+
+            // download genes to genes.txt
           } else if (downloadToggle.isSelected()) {
             try {
               DatabaseConnection.pullAndSaveGenes();
@@ -334,9 +334,9 @@ public class DatabaseWindow extends Application implements javafx.fxml.Initializ
               GUIUtils.showInfo(AlertType.ERROR, "Error", WRITE_FAIL);
             }
           }
-        
 
-        // sequences
+
+          // sequences
         } else if (resultToggle.isSelected()) {
 
 
@@ -368,9 +368,9 @@ public class DatabaseWindow extends Application implements javafx.fxml.Initializ
               e.printStackTrace();
               GUIUtils.showInfo(AlertType.ERROR, "Error", UPLOAD_FAIL);
             }
-          
 
-          // download data to folder
+
+            // download data to folder
           } else if (downloadToggle.isSelected()) {
 
             if (destField.getText().isEmpty()) {
@@ -398,14 +398,14 @@ public class DatabaseWindow extends Application implements javafx.fxml.Initializ
               e.printStackTrace();
             }
           }
-        
+
 
         } else if (allToggle.isSelected()) {
 
           // upload everything
           if (uploadToggle.isSelected()) {
-            
-            
+
+
             if (destField.getText().isEmpty()) {
               GUIUtils.showInfo(AlertType.ERROR, "Empty path",
                   "Please enter a path to the CSV files to be uploaded.");
@@ -419,8 +419,8 @@ public class DatabaseWindow extends Application implements javafx.fxml.Initializ
                       + "Please enter a folder to the CSV files to be uploaded.");
               return;
             }
-            
-            
+
+
             try {
               DatabaseConnection.pushAllGenes();
               DatabaseConnection.pushAllPrimer();
@@ -436,11 +436,11 @@ public class DatabaseWindow extends Application implements javafx.fxml.Initializ
               e.printStackTrace();
               GUIUtils.showInfo(AlertType.ERROR, "Error", UPLOAD_FAIL);
             }
-          
 
-          // download everything
+
+            // download everything
           } else if (downloadToggle.isSelected()) {
-            
+
             if (destField.getText().isEmpty()) {
               GUIUtils.showInfo(AlertType.ERROR, "Empty path",
                   "Please enter a folder path to specify where the data should be placed.");
@@ -454,8 +454,8 @@ public class DatabaseWindow extends Application implements javafx.fxml.Initializ
                       + "Please enter a folder indicating where to place the retrieved data.");
               return;
             }
-            
-            
+
+
             try {
               DatabaseConnection.pullAndSaveGenes();
               DatabaseConnection.pullAndSavePrimer();
@@ -581,7 +581,7 @@ public class DatabaseWindow extends Application implements javafx.fxml.Initializ
     String gene = geneField.getText();
     String researcher = researcherField.getText();
     String path = destField.getText();
-   
+
     FileSaver.setLocalPath(path);
     FileSaver.setSeparateFiles(false);
     FileSaver.reset();
@@ -598,13 +598,14 @@ public class DatabaseWindow extends Application implements javafx.fxml.Initializ
     } else {
       FileSaver.setDestFileName("database_files");
     }
-    
+
     ArrayList<AnalysedSequence> resList = DatabaseConnection
         .pullCustomSequences(datePickerStartDate, datePickerEndDate, researcher, gene);
-    
-    
+
+
     if (resList.isEmpty()) {
-      GUIUtils.showInfo(AlertType.INFORMATION, "No results in database", "There are no results in the database. So no local files are created.");
+      GUIUtils.showInfo(AlertType.INFORMATION, "No results in database",
+          "There are no results in the database. So no local files are created.");
       return;
     } else {
       for (AnalysedSequence res : resList) {
@@ -612,16 +613,17 @@ public class DatabaseWindow extends Application implements javafx.fxml.Initializ
       }
       GUIUtils.showInfo(AlertType.CONFIRMATION, "Success", DOWNLOAD_SUCCESS);
     }
-    
+
 
   }
 
   private void uploadResults() throws IOException, SQLException, DatabaseConnectionException {
     String path = destField.getText();
     LinkedList<AnalysedSequence> sequences = FileRetriever.convertFilesToSequences(path);
-    
+
     if (sequences.isEmpty()) {
-      GUIUtils.showInfo(AlertType.INFORMATION, "No usable results found", "There were no usable results. There either are not result CSV files at the given path or all results in these files are unusable.");
+      GUIUtils.showInfo(AlertType.INFORMATION, "No usable results found",
+          "There were no usable results. There either are not result CSV files at the given path or all results in these files are unusable.");
     } else {
       DatabaseConnection.pushAllData(sequences);
       GUIUtils.showInfo(AlertType.CONFIRMATION, "Success", UPLOAD_SUCCESS);

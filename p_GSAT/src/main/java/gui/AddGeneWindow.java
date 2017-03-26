@@ -23,8 +23,8 @@ import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
 /**
- * This window is necessary to add new genes to the local gene pool. 
- * It contains four fields for informations (name,gene,organism and comment).
+ * This window is necessary to add new genes to the local gene pool. It contains four fields for
+ * informations (name,gene,organism and comment).
  * 
  * @category GUI.Window
  * 

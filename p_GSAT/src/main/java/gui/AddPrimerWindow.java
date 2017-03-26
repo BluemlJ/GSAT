@@ -24,8 +24,8 @@ import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
 /**
- * This window is necessary to add new primers to the local primer pool. 
- * It contains four fields for informations (name,id,meltingPoint and comment).
+ * This window is necessary to add new primers to the local primer pool. It contains four fields for
+ * informations (name,id,meltingPoint and comment).
  * 
  * @category GUI.Window
  * 
@@ -51,7 +51,7 @@ public class AddPrimerWindow extends Application implements javafx.fxml.Initiali
   @FXML
   private TextArea commentArea;
 
-  //buttons
+  // buttons
   @FXML
   private Button cancelButton;
   @FXML
@@ -146,18 +146,18 @@ public class AddPrimerWindow extends Application implements javafx.fxml.Initiali
           return;
         }
 
-        // set meltingPoint to the default value 
+        // set meltingPoint to the default value
         String meltingPoint;
         if (meltingTempField.getText().isEmpty()) {
           meltingPoint = "-1";
         } else {
           meltingPoint = meltingTempField.getText();
         }
-        
+
         // add primer to local pool and close stage
         if (PrimerHandler.addPrimer(new Primer(sequenceArea.getText(),
-            ConfigHandler.getResearcher(), Integer.parseInt(meltingPoint),
-            idField.getText(), nameField.getText(), commentArea.getText()))) {
+            ConfigHandler.getResearcher(), Integer.parseInt(meltingPoint), idField.getText(),
+            nameField.getText(), commentArea.getText()))) {
 
           GUIUtils.showInfo(AlertType.INFORMATION, "Adding primer", "Primer added successfully.");
           MainWindow.changesOnPrimers = true;

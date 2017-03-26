@@ -2,7 +2,6 @@ package test;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
 
 import java.io.File;
 import java.io.IOException;
@@ -525,7 +524,7 @@ public class AnalysisTests {
 
     MutationAnalysis.findMutations(testSeq);
     assertTrue(testSeq.getMutations().getFirst().equals("F2L (TTA)"));
-   
+
   }
 
   @Test
@@ -719,7 +718,7 @@ public class AnalysisTests {
     testSeq.setReferencedGene(gena);
 
     MutationAnalysis.findMutations(testSeq);
-    assert(testSeq.getMutations().getFirst().equals("-1L3 (TTA)"));
+    assert (testSeq.getMutations().getFirst().equals("-1L3 (TTA)"));
 
   }
 
@@ -781,8 +780,7 @@ public class AnalysisTests {
     MutationAnalysis.findPlasmidMix(testSequence);
     // cut out findings due to bad quality (only focus on the good quality area)
     String commentCut = testSequence.getComments().replaceFirst("345.*", "");
-    assertEquals("There are possible plasmidmixes at the positions 2, ",
-      commentCut);
+    assertEquals("There are possible plasmidmixes at the positions 2, ", commentCut);
   }
 
   @Test
@@ -793,8 +791,7 @@ public class AnalysisTests {
     MutationAnalysis.findPlasmidMix(testSequence);
     // cut out findings due to bad quality (only focus on the good quality area)
     String commentCut = testSequence.getComments().replaceFirst("358.*", "");
-    assertEquals("There are possible plasmidmixes at the positions 2, ",
-      commentCut);
+    assertEquals("There are possible plasmidmixes at the positions 2, ", commentCut);
   }
 
   @Test

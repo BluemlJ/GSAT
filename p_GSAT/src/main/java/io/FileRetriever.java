@@ -151,25 +151,23 @@ public class FileRetriever {
     return sequence;
 
   }
-  
-  
-  
+
+
+
   private static boolean isYes(String answer) {
-    
+
     answer = answer.toLowerCase();
-    
-    String[] yesPossibilities = new String[]{
-     "yes", "y", "true", "ok", "okay", "ja"                                         
-    };
-    
-    for(String possibility : yesPossibilities) {
+
+    String[] yesPossibilities = new String[] {"yes", "y", "true", "ok", "okay", "ja"};
+
+    for (String possibility : yesPossibilities) {
       if (answer.equals(possibility)) {
         return true;
       }
     }
     return false;
-   
+
   }
-  
-  
+
+
 }
