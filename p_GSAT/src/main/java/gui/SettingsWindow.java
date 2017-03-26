@@ -33,23 +33,57 @@ import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
+/**
+ * Window to add and show genes/primers and researcher. The user can set a default path to source
+ * files. The parameter and databaseSettings window can be found here. 
+ * 
+ * @see GUIUtils
+ * @category GUI.Window
+ * 
+ * @author jannis blueml, Kevin Otto
+ *
+ */
 public class SettingsWindow extends Application implements javafx.fxml.Initializable {
 
-
+  /**
+   * says if a parameterWindow is already open
+   */
   public static boolean addParametersOpen = false;
+
+  /**
+   * says if there is the try to add a new researcher
+   */
   private boolean addResearcher = false;
+
+  /**
+   * represents the selected gene in the listView
+   */
   private static Gene selectedGene;
+
+  /**
+   * represents the selected primer in the listView
+   */
   private static Primer selectedPrimer;
+
+  /**
+   * says if the listView shows primers (true) or genes (false)
+   */
   private static boolean isPrimerOn = false;
+
+  /**
+   * number of open add- or showGeneWindows
+   */
+  private int numGeneWindows = 0;
+
 
   @FXML
   private ListView<String> geneOrPrimerList;
+
   // fields
   @FXML
   private TextField parameter1Field;
   @FXML
   private ChoiceBox<String> researcherDropdown;
-
   @FXML
   private TextField srcPathField;
 
@@ -79,14 +113,12 @@ public class SettingsWindow extends Application implements javafx.fxml.Initializ
 
   private Scene scene;
 
-  private int numGeneWindows = 0;
 
-  public static Gene getSelectedGene() {
-    return selectedGene;
-  }
 
   @Override
   public void initialize(URL location, ResourceBundle resources) {
+
+    // settings for the toogleGroup (genes or primers)
     ToggleGroup selectorGroup = new ToggleGroup();
     primmerToggle.setToggleGroup(selectorGroup);
     geneToggle.setToggleGroup(selectorGroup);
@@ -136,11 +168,13 @@ public class SettingsWindow extends Application implements javafx.fxml.Initializ
 
     showGeneOrPrimerButton.setDisable(true);
 
+    // settings for the window and initializing genes/primers and researchers
     GUIUtils.initializeResearchers(researcherDropdown);
     GUIUtils.initializeGeneBox(geneOrPrimerList);
     isPrimerOn = false;
     geneOrPrimerList.setStyle("-fx-font-style: italic;");
 
+    // set button colors
     GUIUtils.setColorOnButton(closeButton, ButtonColor.BLUE);
     GUIUtils.setColorOnButton(databaseButton, ButtonColor.GRAY);
     GUIUtils.setColorOnButton(parameterButton, ButtonColor.GRAY);
@@ -151,8 +185,8 @@ public class SettingsWindow extends Application implements javafx.fxml.Initializ
     GUIUtils.setColorOnButton(deleteResearcherButton, ButtonColor.RED);
     GUIUtils.setColorOnButton(showGeneOrPrimerButton, ButtonColor.BLUE);
 
+    // checks if there is any srcPath and add changeListener to exclude separator
     srcPathField.setText(ConfigHandler.getSrcPath());
-
     srcPathField.textProperty().addListener(new ChangeListener<String>() {
 
       @Override
@@ -173,6 +207,7 @@ public class SettingsWindow extends Application implements javafx.fxml.Initializ
       }
     });
 
+    // observe the selescted gene/primer and set it with changes
     geneOrPrimerList.getSelectionModel().selectedItemProperty()
         .addListener((obeservable, value, newValue) -> {
           if (!geneOrPrimerList.getSelectionModel().isEmpty()) {
@@ -185,6 +220,7 @@ public class SettingsWindow extends Application implements javafx.fxml.Initializ
           }
         });
 
+    // opens a new window with informations about gene/primer
     showGeneOrPrimerButton.setOnAction(new EventHandler<ActionEvent>() {
       @Override
       public void handle(ActionEvent arg0) {
@@ -208,6 +244,7 @@ public class SettingsWindow extends Application implements javafx.fxml.Initializ
       }
     });
 
+    // observe researcher and write changes in the config file
     researcherDropdown.getSelectionModel().selectedItemProperty()
         .addListener((obeservable, value, newValue) -> {
           ConfigHandler.setResearcher(newValue);
@@ -218,7 +255,7 @@ public class SettingsWindow extends Application implements javafx.fxml.Initializ
           }
         });
 
-    // gives you a short menu
+    // gives you a short menu to change parameters
     parameterButton.setOnAction(new EventHandler<ActionEvent>() {
       @Override
       public void handle(ActionEvent arg0) {
@@ -234,6 +271,7 @@ public class SettingsWindow extends Application implements javafx.fxml.Initializ
       }
     });
 
+    // opens a window for connection settings with the database
     databaseButton.setOnAction(new EventHandler<ActionEvent>() {
       @Override
       public void handle(ActionEvent arg0) {
@@ -251,6 +289,7 @@ public class SettingsWindow extends Application implements javafx.fxml.Initializ
       }
     });
 
+    // opens addGeneWindow/addPrimerWindow in a seperate window
     SettingsWindow self = this;
     addGeneOrPrimerButton.setOnAction(new EventHandler<ActionEvent>() {
       @Override
@@ -305,6 +344,7 @@ public class SettingsWindow extends Application implements javafx.fxml.Initializ
       }
     });
 
+    // actionEvent to add a new researcher with some dialog window from javafx
     addResearcherButton.setOnAction(new EventHandler<ActionEvent>() {
       @Override
       public void handle(ActionEvent arg0) {
@@ -329,6 +369,7 @@ public class SettingsWindow extends Application implements javafx.fxml.Initializ
           }
 
         }
+        // if there is a new researcher to add, write him in the config file
         if (addResearcher) {
           try {
             ConfigHandler.writeConfig();
@@ -343,6 +384,7 @@ public class SettingsWindow extends Application implements javafx.fxml.Initializ
       }
     });
 
+    // checks if there is a selected primer/gene to delete and deletes it after validation
     deleteGeneOrPrimerButton.setOnAction(new EventHandler<ActionEvent>() {
       @Override
       public void handle(ActionEvent arg0) {
@@ -368,6 +410,7 @@ public class SettingsWindow extends Application implements javafx.fxml.Initializ
       }
     });
 
+    // delete the selected researcher
     deleteResearcherButton.setOnAction(new EventHandler<ActionEvent>() {
       @Override
       public void handle(ActionEvent arg0) {
@@ -424,31 +467,48 @@ public class SettingsWindow extends Application implements javafx.fxml.Initializ
     });
   }
 
+  /**
+   * reinitialize geneBox in MainWindow and SettingsWindow by reread genes.txt
+   * 
+   * @author jannis blueml
+   */
   public void updateGenes() {
     GUIUtils.initializeGeneBox(geneOrPrimerList);
   }
 
+  /**
+   * reinitialize primerBox in MainWindow and SettingsWindow by reread primers.txt
+   * 
+   * @author jannis blueml
+   */
   public void updatePrimers() {
     GUIUtils.initializePrimerBox(geneOrPrimerList);
   }
 
   /**
-   * @return the selectedPrimer
+   * decrement number of open GeneWindows
+   * 
+   * @author Kevin Otto
    */
-  public static Primer getSelectedPrimer() {
-    return selectedPrimer;
-  }
-
-  /**
-   * @param selectedPrimer the selectedPrimer to set
-   */
-  public static void setSelectedPrimer(Primer selectedPrimer) {
-    SettingsWindow.selectedPrimer = selectedPrimer;
-  }
-
   public void decNumGenWindows() {
     numGeneWindows--;
 
   }
+
+  // GETTER AND SETTERS
+
+  public static Primer getSelectedPrimer() {
+    return selectedPrimer;
+  }
+
+  public static Gene getSelectedGene() {
+    return selectedGene;
+  }
+
+  public static void setSelectedPrimer(Primer selectedPrimer) {
+    SettingsWindow.selectedPrimer = selectedPrimer;
+  }
+
+
 
 }

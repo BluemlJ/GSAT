@@ -140,7 +140,8 @@ public class GUIUtils {
    * @param resultname the name of the result file
    * @param bar the progress bar from mainWindow to set the progress
    * @return a list of Texts with informations about success and critical informations
-   * @throws DissimilarGeneException
+   * @throws DissimilarGeneException if the gene is incorrect of the similarity between gene and
+   *         sequence are to low
    * @author jannis blueml
    */
   public static LinkedList<Text> runAnalysis(LinkedList<AnalysedSequence> sequences, String geneId,
@@ -165,14 +166,14 @@ public class GUIUtils {
     int allFiles = sequences.size();
     FileSaver.reset();
     for (AnalysedSequence analysedSequence : sequences) {
-      
-      
+
+
       if (analysedSequence.getProblematicComments().size() > 0) {
         analysedSequence.setReferencedGene(new Gene("", 0, "-", "", "-", ""));
         try {
           FileSaver.setDestFileName(resultname);
-          FileSaver.storeResultsLocally(analysedSequence.getFileName().replaceFirst("[.][^.]+$", ""),
-              analysedSequence);
+          FileSaver.storeResultsLocally(
+              analysedSequence.getFileName().replaceFirst("[.][^.]+$", ""), analysedSequence);
 
         } catch (MissingPathException e2) {
           FileSaver.setLocalPath("");
@@ -180,70 +181,70 @@ public class GUIUtils {
         } catch (IOException e2) {
           return wrap("Error while storing data, aborting analysis.\n", resultingLines, true);
         }
-        
+
       } else {
-      
-        
-       try {
-        
-      // get Sequence
-      if (geneId.equals("-1")) {
-        gene = StringAnalysis.findRightGene(analysedSequence, GeneHandler.getGeneList());
-      }
-      analysedSequence.setReferencedGene(gene);
 
-      // checks if complementary and reversed Sequence is better, then
-      // standard
-      try {
-        StringAnalysis.checkComplementAndReverse(analysedSequence);
-      } catch (CorruptedSequenceException e) {
-        return wrap("Calculation of complementary sequence unsuccessful, analysing stops\n",
-            resultingLines, true);
-      }
 
-      // cut out vector
-      StringAnalysis.trimVector(analysedSequence);
+        try {
 
-      int lengthBeforeTrimmingQuality = analysedSequence.getSequence().length();
-      // cut out low Quality parts of sequence
-      QualityAnalysis.trimLowQuality(analysedSequence);
+          // get Sequence
+          if (geneId.equals("-1")) {
+            gene = StringAnalysis.findRightGene(analysedSequence, GeneHandler.getGeneList());
+          }
+          analysedSequence.setReferencedGene(gene);
 
-      int stopcodonPosition = StringAnalysis.findStopcodonPosition(analysedSequence);
-      if (stopcodonPosition != -1) {
-        analysedSequence.trimSequence(0, stopcodonPosition * 3 + 2);
-      }
+          // checks if complementary and reversed Sequence is better, then
+          // standard
+          try {
+            StringAnalysis.checkComplementAndReverse(analysedSequence);
+          } catch (CorruptedSequenceException e) {
+            return wrap("Calculation of complementary sequence unsuccessful, analysing stops\n",
+                resultingLines, true);
+          }
 
-      analysedSequence.setTrimPercentage(
-          QualityAnalysis.percentageOfTrimQuality(lengthBeforeTrimmingQuality, analysedSequence));
+          // cut out vector
+          StringAnalysis.trimVector(analysedSequence);
 
-      analysedSequence.setHisTagPosition(StringAnalysis.findHisTag(analysedSequence));
-      // find all Mutations
-      try {
-        MutationAnalysis.findMutations(analysedSequence);
-        MutationAnalysis.findPlasmidMix(analysedSequence);
-      } catch (UndefinedTypeOfMutationException | CorruptedSequenceException e) {
-        return wrap("Mutation analysis was unsuccessful because of error in "
-            + analysedSequence.getFileName() + "\n", resultingLines, true);
-      }
+          int lengthBeforeTrimmingQuality = analysedSequence.getSequence().length();
+          // cut out low Quality parts of sequence
+          QualityAnalysis.trimLowQuality(analysedSequence);
 
-      // add average quality
-      analysedSequence.setAvgQuality(QualityAnalysis.getAvgQuality(analysedSequence));
-       
-       } catch (Throwable e) {
-         analysedSequence.addProblematicComment(ProblematicComment.ERROR_DURING_ANALYSIS_OCCURRED);
-       }
-      // add entry to database
-      try {
-        FileSaver.setDestFileName(resultname);
-        FileSaver.storeResultsLocally(analysedSequence.getFileName().replaceFirst("[.][^.]+$", ""),
-            analysedSequence);
+          int stopcodonPosition = StringAnalysis.findStopcodonPosition(analysedSequence);
+          if (stopcodonPosition != -1) {
+            analysedSequence.trimSequence(0, stopcodonPosition * 3 + 2);
+          }
 
-      } catch (MissingPathException e2) {
-        FileSaver.setLocalPath("");
-        return wrap("Missing path to destination, aborting analysis.\n", resultingLines, true);
-      } catch (IOException e2) {
-        return wrap("Error while storing data, aborting analysis.\n", resultingLines, true);
-      }
+          analysedSequence.setTrimPercentage(QualityAnalysis
+              .percentageOfTrimQuality(lengthBeforeTrimmingQuality, analysedSequence));
+
+          analysedSequence.setHisTagPosition(StringAnalysis.findHisTag(analysedSequence));
+          // find all Mutations
+          try {
+            MutationAnalysis.findMutations(analysedSequence);
+            MutationAnalysis.findPlasmidMix(analysedSequence);
+          } catch (UndefinedTypeOfMutationException | CorruptedSequenceException e) {
+            return wrap("Mutation analysis was unsuccessful because of error in "
+                + analysedSequence.getFileName() + "\n", resultingLines, true);
+          }
+
+          // add average quality
+          analysedSequence.setAvgQuality(QualityAnalysis.getAvgQuality(analysedSequence));
+
+        } catch (Throwable e) {
+          analysedSequence.addProblematicComment(ProblematicComment.ERROR_DURING_ANALYSIS_OCCURRED);
+        }
+        // add entry to database
+        try {
+          FileSaver.setDestFileName(resultname);
+          FileSaver.storeResultsLocally(
+              analysedSequence.getFileName().replaceFirst("[.][^.]+$", ""), analysedSequence);
+
+        } catch (MissingPathException e2) {
+          FileSaver.setLocalPath("");
+          return wrap("Missing path to destination, aborting analysis.\n", resultingLines, true);
+        } catch (IOException e2) {
+          return wrap("Error while storing data, aborting analysis.\n", resultingLines, true);
+        }
       }
       counter++;
       double progress = counter / (double) allFiles;

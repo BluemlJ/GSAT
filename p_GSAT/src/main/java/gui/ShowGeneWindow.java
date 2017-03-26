@@ -13,9 +13,19 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
+/**
+ * Window to show extended gene informations 
+ * 
+ * @see GUIUtils
+ * @category GUI.Window
+ * 
+ * @author jannis blueml, Kevin Otto
+ *
+ */
 public class ShowGeneWindow extends Application implements javafx.fxml.Initializable {
 
   // private SettingsWindow parent;
@@ -23,16 +33,14 @@ public class ShowGeneWindow extends Application implements javafx.fxml.Initializ
   // fields
   @FXML
   private TextField nameField;
-
   @FXML
   private TextField organismField;
-
   @FXML
-  private javafx.scene.control.TextArea geneArea;
-
+  private TextArea geneArea;
   @FXML
-  private javafx.scene.control.TextArea commentArea;
+  private TextArea commentArea;
 
+  //buttons
   @FXML
   private Button okButton;
 

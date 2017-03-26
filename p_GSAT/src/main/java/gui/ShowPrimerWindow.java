@@ -13,27 +13,34 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
+/**
+ * Window to show extended primer informations 
+ * 
+ * @see GUIUtils
+ * @category GUI.Window
+ * 
+ * @author jannis blueml, Kevin Otto
+ *
+ */
 public class ShowPrimerWindow extends Application implements javafx.fxml.Initializable {
 
   // fields
   @FXML
   private TextField nameField;
-
   @FXML
   private TextField idField;
-
   @FXML
   private TextField meltingTempField;
-
   @FXML
-  private javafx.scene.control.TextArea sequenceArea;
-
+  private TextArea sequenceArea;
   @FXML
-  private javafx.scene.control.TextArea commentArea;
+  private TextArea commentArea;
 
+  // button
   @FXML
   private Button okButton;
 
@@ -46,7 +53,7 @@ public class ShowPrimerWindow extends Application implements javafx.fxml.Initial
     Primer selectedPrimer = SettingsWindow.getSelectedPrimer();
     nameField.setText(selectedPrimer.getName());
     sequenceArea.setText(selectedPrimer.getSequence());
-    meltingTempField.setText(selectedPrimer.getMeltingPoint() + " °C");
+    meltingTempField.setText(selectedPrimer.getMeltingPoint() + " ï¿½C");
     idField.setText(selectedPrimer.getId());
     commentArea.setText(selectedPrimer.getComment());
 

@@ -12,6 +12,12 @@ import javafx.scene.Scene;
 import javafx.scene.control.TextArea;
 import javafx.stage.Stage;
 
+/**
+ * a modular Window that shows a single TextArea with the given text. Used for manual and help
+ * windows
+ * 
+ * @author Kevin OttoF
+ */
 public class TextWindow extends Application implements javafx.fxml.Initializable {
 
   Scene scene;

@@ -38,6 +38,7 @@ import javafx.stage.Stage;
 /**
  * Class for displaying Chromatogram data with JavaFX
  * 
+ * @category GUI.Window
  * @author kevin
  *
  */
@@ -53,28 +54,44 @@ public class ShowChromatogramWindow extends Application implements javafx.fxml.I
 
   private static final int IMAGE_HEIGHT = 400;
 
-  // Thickness of trace graphs.
+  /**
+   *  Thickness of trace graphs.
+   */
   private int lineThickness = 5;
 
-  // list of Sequences from selected folder.
+  /**
+   * list of Sequences from selected folder.
+   */
   LinkedList<AnalysedSequence> sequences;
 
-  // the currently selected sequence.
+  /**
+   *  the currently selected sequence.
+   */
   private int activeSequence = 0;
 
-  // the image that is Drawn to
+  /**
+   *  the image that is Drawn to
+   */
   private Image img;
 
-  // ScrollPane for scrolling the Chromatogram
+  /**
+   *  ScrollPane for scrolling the Chromatogram
+   */
   private ScrollPane scrollPane;
 
-  // Buttons for previous File.
+  /**
+   *  Buttons for previous File.
+   */
   private Button prevs;
 
-  // Buttons for next File.
+  /**
+   *  Buttons for next File.
+   */
   private Button next;
 
-  // Label to display the selected File
+  /**
+   *  Label to display the selected File
+   */
   private Label fileName = new Label();
 
   /**

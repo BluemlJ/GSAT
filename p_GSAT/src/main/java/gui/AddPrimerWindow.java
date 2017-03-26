@@ -29,35 +29,33 @@ import javafx.stage.WindowEvent;
  * 
  * @category GUI.Window
  * 
- * @author jannis blueml
+ * @author jannis blueml, Kevin Otto
  *
  */
 public class AddPrimerWindow extends Application implements javafx.fxml.Initializable {
 
+  /**
+   * the own window as a instance
+   */
   private SettingsWindow parent;
 
   // fields
   @FXML
   private TextField nameField;
-
   @FXML
   private TextField idField;
-
   @FXML
   private TextField meltingTempField;
-
   @FXML
   private javafx.scene.control.TextArea sequenceArea;
-
-  @FXML
-  private Button cancelButton;
-
-  @FXML
-  private Button confirmButton;
-
   @FXML
   private TextArea commentArea;
 
+  //buttons
+  @FXML
+  private Button cancelButton;
+  @FXML
+  private Button confirmButton;
 
   @Override
   public void initialize(URL location, ResourceBundle resources) {

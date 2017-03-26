@@ -22,55 +22,66 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
+/**
+ * With this window, the user can change most of the parameter used by the anlysing process. It
+ * contains also a own help text and the possibility to reset the parameter to default values. This
+ * default values were found on a test set with ~200 results.
+ * 
+ * @category GUI.Window
+ * 
+ * @author jannis blueml, Kevin Otto
+ *
+ */
 public class ParameterWindow extends Application implements javafx.fxml.Initializable {
 
+  // textfields
   @FXML
   private TextField avgApproximationEnd;
-
   @FXML
   private TextField avgApproximationStart;
-
   @FXML
   private TextField breakcounter;
-
   @FXML
   private TextField startcounter;
-
   @FXML
   private TextField numAverageNucleotides;
 
+  //buttons
   @FXML
   private Button saveButton;
-
   @FXML
   private Button defaultButton;
-
   @FXML
   private Button cancelButton;
-
   @FXML
   private Button helpButton;
 
   @Override
   public void initialize(URL arg0, ResourceBundle arg1) {
 
+    // window configuration
     GUIUtils.setColorOnButton(defaultButton, ButtonColor.GRAY);
     GUIUtils.setColorOnButton(saveButton, ButtonColor.GREEN);
     GUIUtils.setColorOnButton(cancelButton, ButtonColor.RED);
     GUIUtils.setColorOnButton(helpButton, ButtonColor.GRAY);
 
+    // read config.txt file with saved parameters
     try {
       ConfigHandler.readConfig();
     } catch (UnknownConfigFieldException | ConfigNotFoundException | IOException e) {
       GUIUtils.showInfo(AlertType.ERROR, "Configuration reading error",
           "The configuration file could not be read. Maybe it's corrupted.");
     }
+    
+    // get parameter
     avgApproximationEnd.setText(ConfigHandler.getAvgApproximationEnd() + "");
     avgApproximationStart.setText(ConfigHandler.getAvgApproximationStart() + "");
     breakcounter.setText(ConfigHandler.getBreakcounter() + "");
     startcounter.setText(ConfigHandler.getStartcounter() + "");
     numAverageNucleotides.setText(ConfigHandler.getNumAverageNucleotides() + "");
 
+    // changeListener only allowing numbers for all fields
+    
     avgApproximationEnd.textProperty().addListener(new ChangeListener<String>() {
       @Override
       public void changed(ObservableValue<? extends String> observable, String oldValue,
@@ -131,6 +142,7 @@ public class ParameterWindow extends Application implements javafx.fxml.Initiali
       }
     });
 
+    // set values to the default values, saved in the config file
     defaultButton.setOnAction(new EventHandler<ActionEvent>() {
 
       @Override
@@ -143,6 +155,8 @@ public class ParameterWindow extends Application implements javafx.fxml.Initiali
 
       }
     });
+    
+    // change parameter and add changes by rewriting the config file with new values
     saveButton.setOnAction(new EventHandler<ActionEvent>() {
 
       @Override
@@ -178,6 +192,7 @@ public class ParameterWindow extends Application implements javafx.fxml.Initiali
       }
     });
 
+    // close Stage
     cancelButton.setOnAction(new EventHandler<ActionEvent>() {
       @Override
       public void handle(ActionEvent arg0) {
@@ -188,6 +203,7 @@ public class ParameterWindow extends Application implements javafx.fxml.Initiali
       }
     });
 
+    // open new Window with help text, saved in intern resource files
     helpButton.setOnAction(new EventHandler<ActionEvent>() {
       @Override
       public void handle(ActionEvent arg0) {

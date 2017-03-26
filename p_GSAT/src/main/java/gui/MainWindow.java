@@ -4,7 +4,6 @@ import java.awt.Desktop;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
-import java.util.Date;
 import java.util.LinkedList;
 import java.util.Optional;
 import java.util.ResourceBundle;
@@ -12,8 +11,6 @@ import java.util.ResourceBundle;
 import analysis.AnalysedSequence;
 import analysis.Gene;
 import analysis.Pair;
-import exceptions.FileReadingException;
-import exceptions.MissingPathException;
 import io.ConfigHandler;
 import io.FileSaver;
 import io.ProblematicComment;
@@ -49,21 +46,47 @@ import javafx.scene.text.TextFlow;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
+/**
+ * This window represent the start window and replace the functionality of the console version. It
+ * can start analysis.
+ * 
+ * @see GUIUtils
+ * @category GUI.Window
+ * 
+ * @author jannis blueml, Kevin Otto
+ *
+ */
 public class MainWindow extends Application implements javafx.fxml.Initializable {
 
+  /**
+   *  boolean that controls, that at no time more then one SettingsWindow is open
+   */
   static boolean settingsOpen = false;
+
+  /**
+   *  findRightGene yes or no
+   */
   static boolean autoGeneSearch = false;
+
+  /**
+   *  selected gene in dropdown
+   */
   static Gene dropdownGene;
 
+  /**
+   *  all selected files
+   */
   private static Pair<LinkedList<File>, LinkedList<File>> files;
+
+  /**
+   *  sequenced from selected files
+   */
   private static LinkedList<AnalysedSequence> sequences = new LinkedList<>();
 
   // Warnings by closing without saving
   public static boolean changesOnGenes = false;
   public static boolean changesOnPrimers = false;
   public static boolean changesOnResults = false;
-
-  // WARNING: Do not change variable name under all circumstances!
 
   @FXML
   private ProgressBar bar;
@@ -87,6 +110,10 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
   private Button manualButton;
   @FXML
   private Button chromatogramButton;
+  @FXML
+  private Button openDest;
+  @FXML
+  private Button openSrc;
 
   // Textfields
   @FXML
@@ -108,18 +135,11 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
   // checkbox
   @FXML
   private CheckBox outputCheckbox;
-
   @FXML
   private CheckBox findGeneCheckbox;
 
   @FXML
   private ScrollPane textScroll;
-
-  @FXML
-  private Button openDest;
-
-  @FXML
-  private Button openSrc;
 
   Stage primaryStage;
 
@@ -132,6 +152,8 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
    */
   @Override
   public void initialize(URL arg0, ResourceBundle arg1) {
+
+    // set default values and set some configurations
     bar.setProgress(0);
     bar.setStyle("-fx-accent: rgb(130, 177, 255);");
     FileSaver.setSeparateFiles(false);
@@ -154,6 +176,7 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
     infoArea.setTranslateX(3);
     infoArea.setTranslateY(3);
 
+    // exclude separator
     destField.textProperty().addListener(new ChangeListener<String>() {
       @Override
       public void changed(ObservableValue<? extends String> observable, String oldValue,
@@ -166,11 +189,13 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
       }
     });
 
+    // checks if config.txt has a default path. Set path if possible
     if (!ConfigHandler.getSrcPath().isEmpty()) {
       srcField.setText(ConfigHandler.getSrcPath());
       chromatogramButton.setDisable(false);
       files = GUIUtils.getSequencesFromSourceFolder(srcField.getText());
 
+      // read files
       for (File file : files.first) {
         try {
           sequences.add(SequenceReader.convertFileIntoSequence(file));
@@ -180,6 +205,7 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
       }
     }
 
+    // read source path
     srcField.textProperty().addListener(new ChangeListener<String>() {
       @Override
       public void changed(ObservableValue<? extends String> observable, String oldValue,
@@ -210,6 +236,7 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
       }
     });
 
+    // exclude some separator for files and database
     fileNameField.textProperty().addListener(new ChangeListener<String>() {
       @Override
       public void changed(ObservableValue<? extends String> observable, String oldValue,
@@ -226,11 +253,10 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
     // read Genes and show them in the choicebox
 
     Text output = GUIUtils.initializeGeneBox(geneBox);
-    
 
-    
     infoArea.getChildren().add(output);
 
+    // init geneBox by mouseclick
     geneBox.setOnMouseClicked(arg01 -> GUIUtils.initializeGeneBox(geneBox));
 
     // gives information about new gene selection
@@ -251,7 +277,7 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
       }
     });
 
-
+    // add Action to open directory to destination
     openDest.setOnAction(new EventHandler<ActionEvent>() {
       @Override
       public void handle(ActionEvent arg0) {
@@ -272,7 +298,7 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
       }
     });
 
-
+    // add Action to open directory to source
     openSrc.setOnAction(new EventHandler<ActionEvent>() {
       @Override
       public void handle(ActionEvent arg0) {
@@ -292,11 +318,10 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
       }
     });
 
-
+    // extend openDest with the result file given by the field
     openResFile.setOnAction(new EventHandler<ActionEvent>() {
       @Override
       public void handle(ActionEvent arg0) {
-
         if (destField.getText().isEmpty()) {
           GUIUtils.showInfo(AlertType.ERROR, "No path specified",
               "Please enter the path of a destination folder first.");
@@ -304,7 +329,6 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
         }
 
         File toOpen;
-
         if (fileNameField.getText().isEmpty()) {
           toOpen = new File(destField.getText() + File.separatorChar + "gsat_results.csv");
         } else {
@@ -360,12 +384,17 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
     startButton.setOnAction(new EventHandler<ActionEvent>() {
       @Override
       public void handle(ActionEvent arg0) {
+
+
+        // reset Filesaver to delete possible old data
+        FileSaver.reset();
+
+        // set some text in the infoBox and make comment, also check if necessary information is
+        // given
         infoArea.getChildren().add(new Text(
             "--------------------------------------------------------------------------------------"
                 + "\nStarting analysis\n"
                 + "---------------------------------------------------------------------------\n"));
-
-        FileSaver.reset();
         infoArea.getChildren()
             .add(new Text("Source folder or file:  " + srcField.getText() + "\n"));
 
@@ -393,12 +422,14 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
               new Text("Selected gene:  " + geneBox.getSelectionModel().getSelectedItem() + "\n"));
         }
 
+        // check if solution should be a single file
         if (outputCheckbox.selectedProperty().get()) {
           FileSaver.setSeparateFiles(true);
         } else {
           FileSaver.setSeparateFiles(false);
         }
 
+        // checks gene and if empty, give a solution with alert dialog
         if (geneBox.getSelectionModel().getSelectedIndex() == -1) {
           if (!autoGeneSearch) {
             Alert alert = new Alert(AlertType.CONFIRMATION);
@@ -414,12 +445,15 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
         }
         infoArea.getChildren().add(new Text(
             "---------------------------------------------------------------------------------\n"));
+        // end of report
 
+        // start of process in seperate task for the progressbar
         javafx.concurrent.Task<Void> mainTask = new javafx.concurrent.Task<Void>() {
 
           @Override
           protected Void call() throws Exception {
 
+            // set necessary Strings like destination, source, gene, ...
             String destfileNameText = fileNameField.getText();
             String geneBoxItem;
             if (autoGeneSearch) {
@@ -430,6 +464,8 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
             startButton.setDisable(true);
             sequences = new LinkedList<AnalysedSequence>();
             AnalysedSequence sequence;
+
+            // convert files into sequences and analyse them
             for (File file : files.first) {
               try {
                 sequence = SequenceReader.convertFileIntoSequence(file);
@@ -456,11 +492,10 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
 
         };
 
-        // bar.setProgress(-1);
-        // mainThread.start();
+        // if successful reset bar and add sequences to local list
         mainTask.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
           @Override
-          public void handle(WorkerStateEvent t) {             
+          public void handle(WorkerStateEvent t) {
             bar.setProgress(0);
             changesOnResults = true;
             sequences = new LinkedList<AnalysedSequence>();
@@ -601,9 +636,9 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
         }
       }
     });
-    
-    //IT IS ESENTIAL THAT THIS IS EXECUTED LAST!
-    //ALWAYS MOVE THIS TO THE END OF THE INIT BLOCK, ELSE CRAZY STUFF WILL HAPPEN
+
+    // IT IS ESENTIAL THAT THIS IS EXECUTED LAST!
+    // ALWAYS MOVE THIS TO THE END OF THE INIT BLOCK, ELSE CRAZY STUFF WILL HAPPEN
     Text introText = new Text("Welcome to GSAT!" + System.lineSeparator());
     infoArea.getChildren().add(introText);
   }
@@ -623,6 +658,8 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
     primaryStage.sizeToScene();
     primaryStage.show();
 
+    // on closeRequest control if there were any changes and if, then give an alert with the option
+    // to save changes in database.
     primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
       @Override
       public void handle(WindowEvent event) {
@@ -640,10 +677,12 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
             alertWindow.setHeaderText(alertWindow.getHeaderText() + "results,");
           }
           alertWindow.setHeaderText(
-              alertWindow.getHeaderText().substring(0, alertWindow.getHeaderText().length() - 1) + ".");
+              alertWindow.getHeaderText().substring(0, alertWindow.getHeaderText().length() - 1)
+                  + ".");
 
-          alertWindow.setHeaderText(alertWindow.getHeaderText() + System.lineSeparator() + "Do you want to upload new data?");
-          
+          alertWindow.setHeaderText(alertWindow.getHeaderText() + System.lineSeparator()
+              + "Do you want to upload new data?");
+
           ButtonType save = new ButtonType("Open database window");
           ButtonType dontSave = new ButtonType("Close");
           ButtonType buttonTypeCancel = new ButtonType("Cancel", ButtonData.CANCEL_CLOSE);

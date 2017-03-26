@@ -28,7 +28,7 @@ import javafx.stage.WindowEvent;
  * 
  * @category GUI.Window
  * 
- * @author jannis blueml
+ * @author jannis blueml, Kevin Otto
  *
  */
 public class AddGeneWindow extends Application implements javafx.fxml.Initializable {
@@ -38,20 +38,16 @@ public class AddGeneWindow extends Application implements javafx.fxml.Initializa
   // fields
   @FXML
   private TextField nameField;
-
   @FXML
   private TextField organismField;
-
   @FXML
   private javafx.scene.control.TextArea geneArea;
-
   @FXML
   private javafx.scene.control.TextArea commentArea;
 
   // buttons
   @FXML
   private Button confirmButton;
-
   @FXML
   private Button cancelButton;
 
