@@ -23,6 +23,7 @@ import io.ConfigHandler;
 import io.FileSaver;
 import io.GeneHandler;
 import io.PrimerHandler;
+import io.ProblematicComment;
 import javafx.collections.FXCollections;
 import javafx.event.EventHandler;
 import javafx.scene.control.Alert;
@@ -128,7 +129,7 @@ public class GUIUtils {
       String resultname, ProgressBar bar) throws DissimilarGeneException {
 
     LinkedList<Text> resultingLines = new LinkedList<Text>();
-
+    
     if (sequences == null) {
       return wrap(
           "Reading Sequences unsuccessful: "
@@ -145,6 +146,27 @@ public class GUIUtils {
     int allFiles = sequences.size();
     FileSaver.reset();
     for (AnalysedSequence analysedSequence : sequences) {
+      
+      
+      if (analysedSequence.getProblematicComments().size() > 0) {
+        analysedSequence.setReferencedGene(new Gene("", 0, "-", "", "-", ""));
+        try {
+          FileSaver.setDestFileName(resultname);
+          FileSaver.storeResultsLocally(analysedSequence.getFileName().replaceFirst("[.][^.]+$", ""),
+              analysedSequence);
+
+        } catch (MissingPathException e2) {
+          FileSaver.setLocalPath("");
+          return wrap("Missing path to destination, aborting analysis.\n", resultingLines, true);
+        } catch (IOException e2) {
+          return wrap("Error while storing data, aborting analysis.\n", resultingLines, true);
+        }
+        
+      } else {
+      
+        
+       try {
+        
       // get Sequence
       if (geneId.equals("-1")) {
         gene = StringAnalysis.findRightGene(analysedSequence, GeneHandler.getGeneList());
@@ -187,7 +209,10 @@ public class GUIUtils {
 
       // add average quality
       analysedSequence.setAvgQuality(QualityAnalysis.getAvgQuality(analysedSequence));
-
+       
+       } catch (Throwable e) {
+         analysedSequence.addProblematicComment(ProblematicComment.ERROR_DURING_ANALYSIS_OCCURRED);
+       }
       // add entry to database
       try {
         FileSaver.setDestFileName(resultname);
@@ -200,13 +225,14 @@ public class GUIUtils {
       } catch (IOException e2) {
         return wrap("Error while storing data, aborting analysis.\n", resultingLines, true);
       }
-
+      }
       counter++;
-      bar.setProgress(counter / (double) allFiles);
+      double progress = counter / (double) allFiles;
+      bar.setProgress(progress);
 
     }
     // set output parameter and return Pair.
-    wrap("Analysis was successful\n", resultingLines, false);
+    wrap("Analysis is finished.\n", resultingLines, false);
     return resultingLines;
   }
 
