@@ -48,6 +48,7 @@ import javafx.stage.WindowEvent;
  */
 public class SettingsWindow extends Application implements javafx.fxml.Initializable {
 
+
 	/**
 	 * Says if a parameterWindow is already open.
 	 */
