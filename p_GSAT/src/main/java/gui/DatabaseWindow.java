@@ -699,7 +699,8 @@ public class DatabaseWindow extends Application implements javafx.fxml.Initializ
 
     if (sequences.isEmpty()) {
       GUIUtils.showInfo(AlertType.INFORMATION, "No usable results found",
-          "There were no usable results. There either are not result CSV files at the given path or all results in these files are unusable.");
+          "There were no usable results. There either are "
+              + "not result CSV files at the given path or all results in these files are unusable.");
     } else {
       DatabaseConnection.pushAllData(sequences);
       GUIUtils.showInfo(AlertType.CONFIRMATION, "Success", UPLOAD_SUCCESS);

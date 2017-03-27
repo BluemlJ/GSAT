@@ -166,7 +166,8 @@ public class MutationAnalysis {
     boolean isMutation = false;
 
     // check every position in the sequence
-    for (int j = 0; j < toAnalyze.length(); j++) {
+    int j = 0;
+    while (j < toAnalyze.length()) {
       // checks if position has allready a mutation
       for (String diff : differenceList) {
         int tmpPosition = Integer.parseInt(diff.split("\\|")[1]) + toAnalyze.getOffset();
@@ -210,6 +211,7 @@ public class MutationAnalysis {
       }
       // restart process
       isMutation = false;
+      j++;
     }
     return true;
   }

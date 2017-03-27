@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-import exceptions.DuplicateGeneException;
 import io.ConfigHandler;
 import io.GeneHandler;
 import javafx.application.Application;

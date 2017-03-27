@@ -164,8 +164,8 @@ public class SettingsWindow extends Application implements javafx.fxml.Initializ
   /**
    * Initialize all components and set Eventhandlers.
    * 
-   * @param Location the URL to init, more information at {@link Initializable}.
-   * @param Resources a ResourceBunde, for more informations see {@link Initializable}.
+   * @param location the URL to init, more information at {@link Initializable}.
+   * @param resources a ResourceBunde, for more informations see {@link Initializable}.
    * 
    * @see Initializable
    * @author jannis blueml
