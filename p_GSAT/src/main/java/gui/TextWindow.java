@@ -23,32 +23,41 @@ import javafx.stage.Stage;
 public class TextWindow extends Application implements javafx.fxml.Initializable {
 
   /**
-   * active scene
+   * The active scene.
    */
   Scene scene;
 
+  /**
+   * This field is used to display text.
+   */
   @FXML
-  private TextArea testArea;
+  private TextArea textArea;
 
   /**
-   * the text to display
+   * The text to display.
    */
   private String text = "";
 
   /**
-   * set textArea configuration
+   * Set textArea configuration.
    * 
-   * @param location the URL to init, more information at {@link Initializable}
-   * @param resources a ResourceBunde, for more informations see {@link Initializable}
+   * @param arg0 the URL to init, more information at {@link Initializable}
+   * @param arg1 a ResourceBunde, for more informations see {@link Initializable}
    * 
-   * @see Initializable
-   * @author kevin otto
+   * @author Kevin Otto
    */
   @Override
   public void initialize(URL arg0, ResourceBundle arg1) {
-    testArea.setWrapText(true);
+    textArea.setWrapText(true);
   }
 
+  /**
+   * Displays the text window.
+   * 
+   * @param primaryStage The primary stage
+   * 
+   * @author Kevin Otto
+   */
   @Override
   public void start(Stage primaryStage) throws Exception {
     Parent root;
@@ -66,15 +75,22 @@ public class TextWindow extends Application implements javafx.fxml.Initializable
     primaryStage.show();
   }
 
-  // Getter & Setter
+  
+  /**
+   * This method saves the given text internally and passes it to the textArea.
+   * @param text
+   */
+  public void setText(String text) {
+    textArea.setText(text);
+    this.text = text;
+  }
+
+  
+  
+  // GETTERS and SETTERs
 
   public String getText() {
     return text;
-  }
-
-  public void setText(String text) {
-    testArea.setText(text);
-    this.text = text;
   }
 
 }
