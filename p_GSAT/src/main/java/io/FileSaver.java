@@ -38,6 +38,10 @@ public class FileSaver {
   private static boolean firstCall = true;
 
 
+  /**
+   * This map translates between the ProblematicComment enum items and the corresponding texts 
+   * for the user.
+   */
   private static HashMap<ProblematicComment, String> commentMap =
       new HashMap<ProblematicComment, String>();
 
@@ -326,6 +330,19 @@ public class FileSaver {
     return writer;
   }
 
+  
+  
+  /**
+   * This method contructs the comments in case ProblematicComments where added to the sequence during
+   * analysis. This is the case when analysis anomalies are detected.
+   * It also prioritizes comments by suppressing some less critical ones while more critical comments are present.
+   * 
+   * @param seq The Sequence with problematic comments
+   * 
+   * @return The comment section for the line corresponding to the current sequence
+   *
+   * @author Ben Kohr
+   */
   public static String constructProblematicComments(AnalysedSequence seq) {
 
     StringBuilder builder = new StringBuilder();
@@ -354,6 +371,15 @@ public class FileSaver {
   }
 
 
+  /**
+   * This method checks whether a given comment section contains problematic comments by checking
+   *  whether on the Strings indicating a problematic comment is contained in the comment text passed 
+   *  to the method. This is necessary to determine whether the sequence should be uploaded or not.
+   *
+   * @param comments The comment field text to check
+   * 
+   * @return Is any problematic comment contained?
+   */
   public static boolean areCommentsProblematic(String comments) {
     Collection<String> problematicComments = commentMap.values();
     for (String probComment : problematicComments) {
@@ -374,6 +400,8 @@ public class FileSaver {
     firstCall = true;
   }
 
+  
+  
   // GETTERS AND SETTERS:
 
   public static void setSeparateFiles(boolean separateFiles) {

@@ -154,6 +154,17 @@ public class FileRetriever {
 
 
 
+  /**
+   * This method checks if a String indicating 'yes' is written into the given field text.
+   * This is necessary to determine the database value for the field 'manually checked'.
+   * 
+   * @param answer The String to be checked
+   * 
+   * @return Does this String indicate 'yes?
+   * 
+   * @author Ben Kohr   
+   *    
+   */
   private static boolean isYes(String answer) {
 
     answer = answer.toLowerCase();
