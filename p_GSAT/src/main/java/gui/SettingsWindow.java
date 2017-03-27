@@ -458,6 +458,11 @@ public class SettingsWindow extends Application implements javafx.fxml.Initializ
     super.stop();
   }
 
+  /**
+   * javaFX method to start this window
+   * @param primaryStage the Stage to be used
+   * @author Kevin Otto
+   */
   @Override
   public void start(Stage primaryStage) throws Exception {
     Parent root;
