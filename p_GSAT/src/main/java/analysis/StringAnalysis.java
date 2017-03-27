@@ -131,7 +131,7 @@ public class StringAnalysis {
    * 
    * @param horizontal The first String
    * @param vertical The second String
-   * @return
+   * @return the levenstein matrix as 2D int array
    * @author Kevin Otto
    */
   public static int[][] calculateLevenshteinMatrix(String horizontal, String vertical) {
@@ -408,9 +408,10 @@ public class StringAnalysis {
 
   /**
    * gets Levenshtein index out of Levenshtein Matrix
+   * The Index represents the maximal disntance between the two Strings wich were used to generate the matrix
    * 
    * @param matrix the Levenshtein Matrix
-   * @return
+   * @return the levenstein index
    * @author Kevin
    */
   public static int getLevenshteinIndex(int[][] matrix) {
@@ -421,10 +422,12 @@ public class StringAnalysis {
   /**
    * calculates Levensthein Matrix of first and second using calculateLevenshteinMatrix(first,
    * second) and returns the Levenshtein Index
+   * The Index represents the maximal disntance between the two Strings wich were used to generate the matrix
    * 
    * @param first
    * @param second
-   * @return
+   * @return the levenstein Index of the given Matrix
+   * @see #getLevenshteinIndex(int[][])
    * @author Kevin
    */
   public static int getLevenshteinIndex(String first, String second) {
@@ -437,10 +440,10 @@ public class StringAnalysis {
    * cuts of the vector of the given sequence (trim vector) and sets the given gene as reference
    * Gene
    * 
-   * @see trimvector
+   * @see #trimVector(AnalysedSequence)
    * @param toAlign
    * @param gene
-   * @author kevin
+   * @author Kevin
    */
   public static void trimVector(AnalysedSequence toAlign, Gene gene) {
     toAlign.setReferencedGene(gene);
@@ -449,8 +452,8 @@ public class StringAnalysis {
 
   /**
    * cuts out the Vector off and writes it into the Left vector of the given sequence Also sets
-   * Offset @see findOffset()
-   * 
+   * Offset 
+   * @see #findOffset(AnalysedSequence)
    * @param toAlign
    * @author Kevin
    */
@@ -479,7 +482,7 @@ public class StringAnalysis {
    * sequence, but may also be perfectly fine
    * 
    * @param sequence
-   * @return
+   * @return true if beggin was found, false if not
    * @author kevin
    */
   public static boolean findOffset(AnalysedSequence sequence) {
