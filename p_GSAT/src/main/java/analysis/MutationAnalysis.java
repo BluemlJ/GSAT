@@ -37,7 +37,8 @@ public class MutationAnalysis {
    * @return A boolean, if there was a reading frame error
    * 
    * @author jannis blueml
-   * @throws CorruptedSequenceException
+   * @throws CorruptedSequenceException if sequence of toAnalyze is damaged or corrupt
+   * @throws UndefinedTypeOfMutationException if reportDifferences gives me a mutation thats not s,i,d
    */
   public static boolean findMutations(AnalysedSequence toAnalyze)
       throws UndefinedTypeOfMutationException, CorruptedSequenceException {
@@ -397,7 +398,7 @@ public class MutationAnalysis {
    * 
    * @param sOne The mutated sequence
    * @param seq The gene
-   * @param type 0 = if the we work on nucleotides, 1 = if we work on aminoacids; =======
+   * @param type 0 = if the we work on nucleotides, 1 = if we work on aminoacids;
    * @param gene The mutated sequence
    * @param sequence The gene
    * 

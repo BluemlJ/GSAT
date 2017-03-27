@@ -39,11 +39,9 @@ import io.SequenceReader;
  * 
  * </p>
  * 
- * @deprecated
  * @author Lovis Heindrich
  *
  */
-@Deprecated
 public class ConsoleVersion {
 
   /**

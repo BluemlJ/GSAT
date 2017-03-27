@@ -1,7 +1,6 @@
 package io;
 
 /**
- * 
  * This enumeration contains items indicating anomalies that may happen during analysis. These items
  * are translated into user messages if needed.
  * 

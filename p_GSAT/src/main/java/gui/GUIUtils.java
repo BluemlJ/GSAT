@@ -563,7 +563,12 @@ public class GUIUtils {
     alert.showAndWait();
   }
 
-
+  /**
+   * This method converts a file given as an InputStream to a string containing the content of the file
+   * @param is a InputStream from a file we want to read.
+   * @return the content from the file as a string
+   * @author jannis blueml
+   */
   public static String convertStreamToString(InputStream is) {
     Scanner s = new Scanner(is);
     String ret;
