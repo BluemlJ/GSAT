@@ -227,7 +227,7 @@ public class AddPrimerWindow extends Application implements javafx.fxml.Initiali
   }
 
   /**
-   * javaFX method to start this window
+   * javaFX method to start this window.
    * 
    * @param primaryStage the Stage to be used
    * @author Kevin Otto
