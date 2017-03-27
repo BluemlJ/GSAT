@@ -390,7 +390,7 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
 
         try {
           Desktop.getDesktop().open(new File(destField.getText()));
-        } catch (IllegalArgumentException | IOException e) {
+        } catch (Throwable e) {
           GUIUtils.showInfo(AlertType.ERROR, "Opening failed",
               "Could not open destination folder.");
           return;
@@ -411,7 +411,7 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
 
         try {
           Desktop.getDesktop().open(new File(srcField.getText()));
-        } catch (IllegalArgumentException | IOException e) {
+        } catch (Throwable e) {
           GUIUtils.showInfo(AlertType.ERROR, "Opening failed",
               "Could not open source file or folder.");
         }
@@ -451,7 +451,7 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
         try {
           Desktop.getDesktop().open(toOpen);
 
-        } catch (IllegalArgumentException | IOException e) {
+        } catch (Throwable e) {
           GUIUtils.showInfo(AlertType.ERROR, "Opening failed", "Could not open destination file.");
         }
       }
