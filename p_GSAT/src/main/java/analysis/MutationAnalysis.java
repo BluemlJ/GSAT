@@ -35,10 +35,10 @@ public class MutationAnalysis {
    * @param toAnalyze The sequence to be analyzed (which may have mutations)
    * 
    * @return A boolean, if there was a reading frame error
-   * 
-   * @author jannis blueml
+   *
    * @throws CorruptedSequenceException if sequence of toAnalyze is damaged or corrupt
-   * @throws UndefinedTypeOfMutationException if reportDifferences gives me a mutation thats not s,i,d
+   * @throws UndefinedTypeOfMutationException if reportDifferences gives me a mutation that's not s,i,d
+   * @author jannis blueml
    */
   public static boolean findMutations(AnalysedSequence toAnalyze)
       throws UndefinedTypeOfMutationException, CorruptedSequenceException {
