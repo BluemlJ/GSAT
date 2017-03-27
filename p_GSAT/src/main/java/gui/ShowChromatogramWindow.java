@@ -46,37 +46,37 @@ import javafx.stage.Stage;
 public class ShowChromatogramWindow extends Application implements javafx.fxml.Initializable {
 
   // Preset colors for Chromatogram:
-  
+
   /**
    * geenish color for trace A.
    */
   private final Color colorA = new Color(170, 220, 80);
-  
+
   /**
    * redish color for trace T.
    */
   private final Color colorT = new Color(240, 60, 60);
-  
+
   /**
    * Black color for trace G.
    */
   private final Color colorG = Color.BLACK;
-  
+
   /**
    * Bluish color for trace C.
    */
   private final Color colorC = new Color(110, 180, 200);
-  
+
   /**
    * color for undefined genes.
    */
   private final Color colorN = Color.MAGENTA;
-  
+
   /**
    * color for background of Chromatogram window (matches default Window Color).
    */
   private final Color background = new Color(244, 244, 244);
-  
+
   /**
    * The pre-defined height of the image.
    */
@@ -127,7 +127,7 @@ public class ShowChromatogramWindow extends Application implements javafx.fxml.I
    */
   private Scene scene;
 
-  
+
   /**
    * required by JavaFX but not used in this class.
    * 
@@ -137,8 +137,8 @@ public class ShowChromatogramWindow extends Application implements javafx.fxml.I
   public void initialize(URL arg0, ResourceBundle arg1) {
 
   }
-  
-  
+
+
   /**
    * JavaFX start method Setup all necessary variables and opens the Chromatogram.
    * 
@@ -515,7 +515,7 @@ public class ShowChromatogramWindow extends Application implements javafx.fxml.I
     img = wrtieImg;
   }
 
-  
+
   /**
    * Sets sequence and updates chromatograms accordingly.
    * 
@@ -534,7 +534,7 @@ public class ShowChromatogramWindow extends Application implements javafx.fxml.I
     updateSequences(0);
   }
 
-  
+
   /**
    * Sets list of Sequences and updates Chromatogram accordingly Automatically sets first sequence
    * of the list.

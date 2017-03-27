@@ -47,9 +47,10 @@ public class AnalysedSequence extends Sequence {
   private String fileName;
 
   /**
-   * primer name as String for database connection
+   * primer name as String for database connection.
    */
   private String primer;
+
   /**
    * Indicates whether the results of this analysis have been checked by a researcher.
    */
@@ -83,7 +84,7 @@ public class AnalysedSequence extends Sequence {
 
 
   /**
-   * quality average of all nucletieds in sequence after trimming
+   * quality average of all nucleotides in sequence after trimming.
    */
   private int avgQuality;
 
@@ -110,7 +111,9 @@ public class AnalysedSequence extends Sequence {
   }
 
   /**
-   * constructor creating an empty sequence
+   * Constructor creating an empty sequence.
+   *
+   * @author Ben Kohr
    */
   public AnalysedSequence() {
     super("", null);
@@ -227,17 +230,17 @@ public class AnalysedSequence extends Sequence {
   }
 
   /**
-   * adds comment to existing comments
+   * adds comment to existing comments.
    * 
-   * @param comments
+   * @param newComment The comment to be added
    * 
    * @author Kevin
    */
-  public void addComments(String comments) {
+  public void addComments(String newComment) {
     if (this.comments.length() > 0) {
-      this.comments = this.comments + ", " + comments;
+      this.comments = this.comments + ", " + newComment;
     } else {
-      setComments(comments);
+      setComments(newComment);
     }
 
   }

@@ -75,9 +75,10 @@ public class TextWindow extends Application implements javafx.fxml.Initializable
     primaryStage.show();
   }
 
-  
+
   /**
    * This method saves the given text internally and passes it to the textArea.
+   * 
    * @param text
    */
   public void setText(String text) {
@@ -85,8 +86,8 @@ public class TextWindow extends Application implements javafx.fxml.Initializable
     this.text = text;
   }
 
-  
-  
+
+
   // GETTERS and SETTERs
 
   public String getText() {

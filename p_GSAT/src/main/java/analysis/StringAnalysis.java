@@ -407,8 +407,8 @@ public class StringAnalysis {
   }
 
   /**
-   * gets Levenshtein index out of Levenshtein Matrix.
-   * The Index represents the maximal disntance between the two Strings wich were used to generate the matrix
+   * gets Levenshtein index out of Levenshtein Matrix. The Index represents the maximal disntance
+   * between the two Strings wich were used to generate the matrix
    * 
    * @param matrix the Levenshtein Matrix
    * @return the levenstein index
@@ -421,8 +421,8 @@ public class StringAnalysis {
 
   /**
    * calculates Levensthein Matrix of first and second using calculateLevenshteinMatrix(first,
-   * second) and returns the Levenshtein Index.
-   * The Index represents the maximal distance between the two Strings wich were used to generate the matrix
+   * second) and returns the Levenshtein Index. The Index represents the maximal distance between
+   * the two Strings wich were used to generate the matrix
    * 
    * @param first The first String
    * @param second The second String
@@ -453,7 +453,7 @@ public class StringAnalysis {
 
   /**
    * cuts out the Vector off and writes it into the Left vector of the given sequence. Also sets
-   * Offset. 
+   * Offset.
    * 
    * @see #findOffset(AnalysedSequence)
    * 

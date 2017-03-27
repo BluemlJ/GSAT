@@ -70,7 +70,7 @@ public class Gene extends Sequence {
 
 
   /**
-   * constructor for genes, with all given information
+   * constructor for genes, with all given information.
    * 
    * @param sequence the nucleotide sequence
    * @param id an identifier for local database, is unique
@@ -79,6 +79,7 @@ public class Gene extends Sequence {
    * @param organism a organism for extended information about gene
    * @param comment a possible comment from the user, who add gene
    * @param date the date of creation
+   * 
    * @author jannis blueml
    */
   public Gene(String sequence, int id, String name, String researcher, String organism,

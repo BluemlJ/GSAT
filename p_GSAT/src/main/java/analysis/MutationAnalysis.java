@@ -16,15 +16,17 @@ import exceptions.UndefinedTypeOfMutationException;
 public class MutationAnalysis {
 
   /**
-   * boolean if there is a possible reading frame error is detected
+   * boolean if there is a possible reading frame error is detected.
    */
   public static boolean readingFrameError = false;
+
   /**
-   * how many bad qualtity nucleotides before we stop analysing
+   * how many bad qualtity nucleotides before we stop analysing.
    */
   public static int readingFrameErrorBorder = 100;
+
   /**
-   * A Integer, that specifies the border for the "Reading Frame Error"
+   * A Integer, that specifies the border for the "Reading Frame Error".
    */
   public static int warningReadingFrameError = 10;
 
@@ -37,7 +39,10 @@ public class MutationAnalysis {
    * @return A boolean, if there was a reading frame error
    *
    * @throws CorruptedSequenceException if sequence of toAnalyze is damaged or corrupt
-   * @throws UndefinedTypeOfMutationException if reportDifferences gives me a mutation that's not s,i,d
+   * 
+   * @throws UndefinedTypeOfMutationException if reportDifferences gives me a mutation that's not
+   *         s,i,d
+   * 
    * @author jannis blueml
    */
   public static boolean findMutations(AnalysedSequence toAnalyze)
@@ -211,7 +216,7 @@ public class MutationAnalysis {
 
 
   /**
-   * searches for plasmidmixes and add a comment to sequences with possitive results. Gives
+   * searches for plasmidmixes and add a comment to sequences with positive results. Gives
    * canditates by analysing the quality of single nucleotides.
    * 
    * @param sequence the sequence to analyse for plasmidmixes

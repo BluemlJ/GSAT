@@ -84,17 +84,17 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
   private static LinkedList<AnalysedSequence> sequences = new LinkedList<>();
 
   // Warnings by closing without saving
-  
+
   /**
    * Were there any changes on the genes, i.e. were new genes added?
    */
   public static boolean changesOnGenes = false;
-  
+
   /**
    * Were there any changes on the primers, i.e. were new primers added?
    */
   public static boolean changesOnPrimers = false;
-  
+
   /**
    * Were there any changes on the results, i.e. where new analysis results created?
    */
