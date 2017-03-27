@@ -214,5 +214,16 @@ Coming soon.
 | (6) The chromatogram window in further detail
 | ----------------------------------------------------
 
-Coming soon.
+>>> CHROMATOGRAM
+A chromatogram (sometimes also called electropherogram) is the visual representation of a DNA sample produced by a sequencing machine.
+It shows every single nucleotide and amino acid given by the information of the selected Ab1 file.
 
+>>> NEXT FILE/ PREVIOUS FILE
+Change the selected and shown file to next or previous file in folder.
+WARNING: the internal order of files can be different from given order in folder
+
+>>> EXPORT
+Save the shown chromatogram in form of an image (png file) by choosing the position to save the image
+
+>>> CLOSE
+close the window
