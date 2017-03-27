@@ -531,29 +531,29 @@ public class LocalDBTest {
     dataSource.setPort(portOnline);
     dataSource.setServerName(serverOnline);
 
-      conn = dataSource.getConnection();
-      stmt = conn.createStatement();
+    conn = dataSource.getConnection();
+    stmt = conn.createStatement();
 
-      stmt.execute("USE gsat");
+    stmt.execute("USE gsat");
 
-      rs = stmt.executeQuery(
-          "SELECT * FROM information_schema.tables WHERE table_schema = 'gsat' AND table_name = 'mutations' LIMIT 1");
-      while (rs.next()) {
-        System.out.println(rs.getString(1));
-      }
+    rs = stmt.executeQuery(
+        "SELECT * FROM information_schema.tables WHERE table_schema = 'gsat' AND table_name = 'mutations' LIMIT 1");
+    while (rs.next()) {
+      System.out.println(rs.getString(1));
+    }
 
-      rs = stmt.executeQuery("SHOW TABLES");
-      while (rs.next()) {
-        System.out.println(rs.getString(1));
+    rs = stmt.executeQuery("SHOW TABLES");
+    while (rs.next()) {
+      System.out.println(rs.getString(1));
 
-      }
+    }
 
-      rs = stmt.executeQuery(
-          "SELECT * FROM information_schema.tables WHERE table_schema = 'gsat' AND table_name = 'mutations' LIMIT 1");
-      while (rs.next()) {
-        System.out.println(rs.getString(1));
-      }
-    
+    rs = stmt.executeQuery(
+        "SELECT * FROM information_schema.tables WHERE table_schema = 'gsat' AND table_name = 'mutations' LIMIT 1");
+    while (rs.next()) {
+      System.out.println(rs.getString(1));
+    }
+
 
   }
 
@@ -576,18 +576,18 @@ public class LocalDBTest {
     dataSource.setPort(port);
     dataSource.setServerName(server);
 
-      conn = dataSource.getConnection();
-      stmt = conn.createStatement();
+    conn = dataSource.getConnection();
+    stmt = conn.createStatement();
 
-      System.out.println("");
-      rs = stmt.executeQuery(
-          "SELECT * FROM information_schema.tables WHERE table_schema = 'Gsat' AND table_name = 'Gene' LIMIT 1");
+    System.out.println("");
+    rs = stmt.executeQuery(
+        "SELECT * FROM information_schema.tables WHERE table_schema = 'Gsat' AND table_name = 'Gene' LIMIT 1");
 
-      if (rs.next()) {
-        if (!rs.getString(1).equals("def")) {
-          System.out.println("false");
-        }
+    if (rs.next()) {
+      if (!rs.getString(1).equals("def")) {
+        System.out.println("false");
       }
+    }
 
   }
 
@@ -601,80 +601,80 @@ public class LocalDBTest {
     dataSource.setPort(3306);
     dataSource.setServerName("127.0.0.1");
 
-      conn = dataSource.getConnection();
-      stmt = conn.createStatement();
+    conn = dataSource.getConnection();
+    stmt = conn.createStatement();
 
-      // Get DB List
-      System.out.println("");
-      System.out.println("SHOW DATABASES");
-      rs = stmt.executeQuery("SHOW DATABASES");
-      while (rs.next()) {
-        System.out.println(rs.getString(1));
-      }
+    // Get DB List
+    System.out.println("");
+    System.out.println("SHOW DATABASES");
+    rs = stmt.executeQuery("SHOW DATABASES");
+    while (rs.next()) {
+      System.out.println(rs.getString(1));
+    }
 
-      // USE Gsat
-      System.out.println("");
-      System.out.println("USE Gsat");
-      stmt.execute("USE Gsat");
+    // USE Gsat
+    System.out.println("");
+    System.out.println("USE Gsat");
+    stmt.execute("USE Gsat");
 
-      // Get Genes
+    // Get Genes
+    System.out.println("");
+    System.out.println("Get Genes");
+    rs = stmt.executeQuery("SELECT * FROM Gen");
+    while (rs.next()) {
+      System.out.println("ID: " + rs.getInt("id"));
+      System.out.println("NAME: " + rs.getString("name"));
+      System.out.println("SEQUENCE: " + rs.getString("sequence"));
       System.out.println("");
-      System.out.println("Get Genes");
-      rs = stmt.executeQuery("SELECT * FROM Gen");
-      while (rs.next()) {
-        System.out.println("ID: " + rs.getInt("id"));
-        System.out.println("NAME: " + rs.getString("name"));
-        System.out.println("SEQUENCE: " + rs.getString("sequence"));
-        System.out.println("");
-      }
+    }
 
-      // Add Entry
-      System.out.println("");
-      System.out.println("Add Gen: ('3', 'added from eclipse', 'aaaaaaaaaaaaaa')");
-      stmt.executeUpdate("INSERT INTO Gen VALUES ('3', 'added from eclipse', 'aaaaaaaaaaaaaa')");
+    // Add Entry
+    System.out.println("");
+    System.out.println("Add Gen: ('3', 'added from eclipse', 'aaaaaaaaaaaaaa')");
+    stmt.executeUpdate("INSERT INTO Gen VALUES ('3', 'added from eclipse', 'aaaaaaaaaaaaaa')");
 
-      // Get Genes
+    // Get Genes
+    System.out.println("");
+    System.out.println("Get new Gene");
+    rs = stmt.executeQuery("SELECT * FROM Gen WHERE name='added from eclipse'");
+    while (rs.next()) {
+      System.out.println("ID: " + rs.getInt("id"));
+      System.out.println("NAME: " + rs.getString("name"));
+      System.out.println("SEQUENCE: " + rs.getString("sequence"));
       System.out.println("");
-      System.out.println("Get new Gene");
-      rs = stmt.executeQuery("SELECT * FROM Gen WHERE name='added from eclipse'");
-      while (rs.next()) {
-        System.out.println("ID: " + rs.getInt("id"));
-        System.out.println("NAME: " + rs.getString("name"));
-        System.out.println("SEQUENCE: " + rs.getString("sequence"));
-        System.out.println("");
-      }
+    }
 
-      // Update new Gene
-      System.out.println("");
-      System.out.println("Update new Gene");
-      stmt.executeUpdate("UPDATE Gen SET sequence='tttttttttt' WHERE name='added from eclipse'");
+    // Update new Gene
+    System.out.println("");
+    System.out.println("Update new Gene");
+    stmt.executeUpdate("UPDATE Gen SET sequence='tttttttttt' WHERE name='added from eclipse'");
 
-      // Get Genes
+    // Get Genes
+    System.out.println("");
+    System.out.println("Print Updated Gene");
+    rs = stmt.executeQuery("SELECT * FROM Gen WHERE name='added from eclipse'");
+    while (rs.next()) {
+      System.out.println("ID: " + rs.getInt("id"));
+      System.out.println("NAME: " + rs.getString("name"));
+      System.out.println("SEQUENCE: " + rs.getString("sequence"));
       System.out.println("");
-      System.out.println("Print Updated Gene");
-      rs = stmt.executeQuery("SELECT * FROM Gen WHERE name='added from eclipse'");
-      while (rs.next()) {
-        System.out.println("ID: " + rs.getInt("id"));
-        System.out.println("NAME: " + rs.getString("name"));
-        System.out.println("SEQUENCE: " + rs.getString("sequence"));
-        System.out.println("");
-      }
+    }
 
-      // Delete new Gene
-      System.out.println("");
-      System.out.println("Delete new Gene");
-      stmt.executeUpdate("DELETE FROM Gen WHERE name='added from eclipse'");
+    // Delete new Gene
+    System.out.println("");
+    System.out.println("Delete new Gene");
+    stmt.executeUpdate("DELETE FROM Gen WHERE name='added from eclipse'");
 
-      // Get Genes
+    // Get Genes
+    System.out.println("");
+    System.out.println("Try to find deleted Gene");
+    rs = stmt.executeQuery("SELECT * FROM Gen WHERE name='added from eclipse'");
+    while (rs.next()) {
+      System.out.println("ID: " + rs.getInt("id"));
+      System.out.println("NAME: " + rs.getString("name"));
+      System.out.println("SEQUENCE: " + rs.getString("sequence"));
       System.out.println("");
-      System.out.println("Try to find deleted Gene");
-      rs = stmt.executeQuery("SELECT * FROM Gen WHERE name='added from eclipse'");
-      while (rs.next()) {
-        System.out.println("ID: " + rs.getInt("id"));
-        System.out.println("NAME: " + rs.getString("name"));
-        System.out.println("SEQUENCE: " + rs.getString("sequence"));
-        System.out.println("");
-      }
+    }
 
 
   }

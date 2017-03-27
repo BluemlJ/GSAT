@@ -285,7 +285,8 @@ public class ShowChromatogramWindow extends Application implements javafx.fxml.I
 
       StringAnalysis.findOffset(startSequence);
     } catch (Exception e) {
-      GUIUtils.showInfo(AlertType.ERROR, "Chromatogramm error", "Error occurred during chromatogram construction occurred.");
+      GUIUtils.showInfo(AlertType.ERROR, "Chromatogramm error",
+          "Error occurred during chromatogram construction occurred.");
     }
 
 
@@ -304,7 +305,7 @@ public class ShowChromatogramWindow extends Application implements javafx.fxml.I
       scrollPane.setContent(viewer);
     } catch (Exception e) {
       GUIUtils.showInfo(AlertType.ERROR, "Scroll error", "An error during scrolling occurred.");
-      
+
     }
 
 
@@ -449,8 +450,9 @@ public class ShowChromatogramWindow extends Application implements javafx.fxml.I
               buffGraph.drawLine(baseCalls[basecallIndex + 2] * stretchX + fontWidth * 2, 40,
                   baseCalls[basecallIndex + 2] * stretchX + fontWidth * 2, 20);
             } catch (Exception e) {
-              GUIUtils.showInfo(AlertType.ERROR, "Could not display chromatogram", "The chromatogram could not be created. Please try again.");
-              
+              GUIUtils.showInfo(AlertType.ERROR, "Could not display chromatogram",
+                  "The chromatogram could not be created. Please try again.");
+
             }
           }
         }

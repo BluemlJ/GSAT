@@ -61,8 +61,8 @@ public class AddPrimerWindow extends Application implements javafx.fxml.Initiali
   /**
    * initialize all components and set Eventhandlers.
    * 
-   * @param location  the URL to init, more information at {@link Initializable}
-   * @param resources  a ResourceBunde, for more informations see {@link Initializable}
+   * @param location the URL to init, more information at {@link Initializable}
+   * @param resources a ResourceBunde, for more informations see {@link Initializable}
    * 
    * @see Initializable
    * @author jannis blueml

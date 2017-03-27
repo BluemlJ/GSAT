@@ -22,7 +22,8 @@ public class AnalysedSequence extends Sequence {
 
   /**
    * A list of ProblematicComment enum items, indicating problems that occured during analysis.
-   * These list is intially empty. These items will be used to produce text comments in the result file.
+   * These list is intially empty. These items will be used to produce text comments in the result
+   * file.
    */
   private LinkedList<ProblematicComment> problems = new LinkedList<ProblematicComment>();
 

@@ -49,8 +49,8 @@ public class ShowGeneWindow extends Application implements javafx.fxml.Initializ
   /**
    * initialize all components and set Eventhandlers.
    * 
-   * @param location  the URL to init, more information at {@link Initializable}
-   * @param resources  a ResourceBunde, for more informations see {@link Initializable}
+   * @param location the URL to init, more information at {@link Initializable}
+   * @param resources a ResourceBunde, for more informations see {@link Initializable}
    * 
    * @see Initializable
    * @author jannis blueml
@@ -97,7 +97,8 @@ public class ShowGeneWindow extends Application implements javafx.fxml.Initializ
     try {
       root = FXMLLoader.load(getClass().getResource("/fxml/ShowGeneWindow.fxml"));
     } catch (IOException e) {
-      GUIUtils.showInfo(AlertType.ERROR, "Could not open gene window", "The gene window could not be opened. Please try again.");
+      GUIUtils.showInfo(AlertType.ERROR, "Could not open gene window",
+          "The gene window could not be opened. Please try again.");
       return;
     }
     Scene scene = new Scene(root);

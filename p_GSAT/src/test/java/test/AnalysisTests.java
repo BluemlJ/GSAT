@@ -764,7 +764,8 @@ public class AnalysisTests {
 
 
   @Test
-  public void testPlasmidMix() throws FileReadingException, IOException, MissingPathException, IllegalSymbolException {
+  public void testPlasmidMix()
+      throws FileReadingException, IOException, MissingPathException, IllegalSymbolException {
     SequenceReader
         .configurePath(new File("resources/ab1/Tk_Gs40Hits/Forward/95EI60.ab1").getAbsolutePath());
     AnalysedSequence testSequence = SequenceReader.convertFileIntoSequence();
@@ -775,7 +776,8 @@ public class AnalysisTests {
   }
 
   @Test
-  public void testPlasmidMix2() throws FileReadingException, IOException, MissingPathException, IllegalSymbolException {
+  public void testPlasmidMix2()
+      throws FileReadingException, IOException, MissingPathException, IllegalSymbolException {
     SequenceReader
         .configurePath(new File("resources/ab1/Tk_Gs40Hits/Forward/95EI64.ab1").getAbsolutePath());
     AnalysedSequence testSequence = SequenceReader.convertFileIntoSequence();
@@ -786,7 +788,8 @@ public class AnalysisTests {
   }
 
   @Test
-  public void testPlasmidMix3() throws FileReadingException, IOException, MissingPathException, IllegalSymbolException {
+  public void testPlasmidMix3()
+      throws FileReadingException, IOException, MissingPathException, IllegalSymbolException {
     SequenceReader
         .configurePath(new File("resources/ab1/Tk_Gs40Hits/Forward/95EI61.ab1").getAbsolutePath());
     AnalysedSequence testSequence = SequenceReader.convertFileIntoSequence();

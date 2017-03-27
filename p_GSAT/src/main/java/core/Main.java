@@ -33,7 +33,8 @@ class Main {
       PrimerHandler.readPrimer();
       GeneHandler.readGenes();
     } catch (IOException | UnknownConfigFieldException | ConfigNotFoundException e) {
-      GUIUtils.showInfo(AlertType.ERROR, "File damaged", "One of the configuration files seems to be damaged. Please remove them an try again.");
+      GUIUtils.showInfo(AlertType.ERROR, "File damaged",
+          "One of the configuration files seems to be damaged. Please remove them an try again.");
     }
     boolean consoleMode = false;
     for (int i = 0; i < args.length; i++) {

@@ -55,7 +55,7 @@ public class MutationAnalysis {
 
     // a List of all differences in form of s|12|d|e
     LinkedList<String> differenceList = reportDifferences(toAnalyze, true);
-     // counter for reading frame error detection
+    // counter for reading frame error detection
     int checkFrameerrorCounter = 0;
     // shift created by insertions and deletions
     int shift = 0;

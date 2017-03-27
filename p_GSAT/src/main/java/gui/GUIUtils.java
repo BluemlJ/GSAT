@@ -257,8 +257,8 @@ public class GUIUtils {
   }
 
   /**
-   * Adds a new Text object to the given list. This list ist finally used to print all events
-   * during anaylsis on the main window's text field.
+   * Adds a new Text object to the given list. This list ist finally used to print all events during
+   * anaylsis on the main window's text field.
    * 
    * @param line A new String to add
    * @param list The list where to add the new Text object
@@ -545,6 +545,17 @@ public class GUIUtils {
   }
 
 
+  /**
+   * This method constructs and displays alert window messages for the user. The type of the alert,
+   * the title text and the explanation text are passed to the method. It is then displayed until the
+   * user closes the alert window message again.
+   * 
+   * @param type The AlertType object indicating the kind of the alert
+   * @param title The title of the alter window
+   * @param explanation The explanation text of the alert window
+   * 
+   * @author Ben Kohr
+   */
   public static void showInfo(AlertType type, String title, String explanation) {
     Alert alert = new Alert(type);
     alert.setTitle(title);

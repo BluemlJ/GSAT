@@ -387,7 +387,9 @@ public class StringAnalysis {
   }
 
   /**
-   * this method finds the stopcodon in the given sequence (parameter in form of {@link AnalysedSequence}) and return it
+   * this method finds the stopcodon in the given sequence (parameter in form of
+   * {@link AnalysedSequence}) and return it
+   * 
    * @param toAnalyze the {@link AnalysedSequence} we search in
    * @return the position of stopcodon in the not trimmed sequence
    * @author jannis blueml

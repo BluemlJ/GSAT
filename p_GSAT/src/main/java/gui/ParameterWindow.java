@@ -60,8 +60,8 @@ public class ParameterWindow extends Application implements javafx.fxml.Initiali
   /**
    * initialize all components and set Eventhandlers.
    * 
-   * @param location  the URL to init, more information at {@link Initializable}
-   * @param resources  a ResourceBunde, for more informations see {@link Initializable}
+   * @param location the URL to init, more information at {@link Initializable}
+   * @param resources a ResourceBunde, for more informations see {@link Initializable}
    * 
    * @see Initializable
    * @author jannis blueml
@@ -193,7 +193,8 @@ public class ParameterWindow extends Application implements javafx.fxml.Initiali
         try {
           ConfigHandler.writeConfig();
         } catch (IOException e) {
-          GUIUtils.showInfo(AlertType.ERROR, "Configuration file error", "The configuration file could not be updated. Please try again.");
+          GUIUtils.showInfo(AlertType.ERROR, "Configuration file error",
+              "The configuration file could not be updated. Please try again.");
         }
         SettingsWindow.addParametersOpen = false;
         Stage stage = (Stage) cancelButton.getScene().getWindow();

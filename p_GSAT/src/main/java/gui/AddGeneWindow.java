@@ -55,8 +55,8 @@ public class AddGeneWindow extends Application implements javafx.fxml.Initializa
   /**
    * initialize all components and set Eventhandlers.
    * 
-   * @param location  the URL to init, more information at {@link Initializable}
-   * @param resources  a ResourceBunde, for more informations see {@link Initializable}
+   * @param location the URL to init, more information at {@link Initializable}
+   * @param resources a ResourceBunde, for more informations see {@link Initializable}
    * 
    * @see Initializable
    * @author jannis blueml
@@ -165,7 +165,8 @@ public class AddGeneWindow extends Application implements javafx.fxml.Initializa
           }
 
         } catch (Exception e) {
-          GUIUtils.showInfo(AlertType.ERROR, "Error during gene adding process", "There was an error during the creation of the new gene. Please try again.");
+          GUIUtils.showInfo(AlertType.ERROR, "Error during gene adding process",
+              "There was an error during the creation of the new gene. Please try again.");
         }
 
 

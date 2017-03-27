@@ -134,12 +134,14 @@ public class PrivateTest {
   /**
    * This is the private test method, used e.g. on Thursdays to check the performance on the given
    * AB1 files.
-   * @throws IllegalSymbolException 
+   * 
+   * @throws IllegalSymbolException
    */
 
   @Test
-  public void testLocalFile() throws FileReadingException, IOException,
-      UndefinedTypeOfMutationException, CorruptedSequenceException, MissingPathException, IllegalSymbolException {
+  public void testLocalFile()
+      throws FileReadingException, IOException, UndefinedTypeOfMutationException,
+      CorruptedSequenceException, MissingPathException, IllegalSymbolException {
 
     // Configure path to file
     SequenceReader.configurePath(pathToUse + fileName);

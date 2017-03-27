@@ -242,7 +242,8 @@ public class SettingsWindow extends Application implements javafx.fxml.Initializ
           try {
             primerWindow.start(new Stage());
           } catch (Exception e) {
-            GUIUtils.showInfo(AlertType.ERROR, "Error during primer window opening", "The primer window could not be opened. Please try again.");
+            GUIUtils.showInfo(AlertType.ERROR, "Error during primer window opening",
+                "The primer window could not be opened. Please try again.");
           }
 
         } else {
@@ -250,7 +251,8 @@ public class SettingsWindow extends Application implements javafx.fxml.Initializ
           try {
             geneWindow.start(new Stage());
           } catch (Exception e) {
-             GUIUtils.showInfo(AlertType.ERROR, "Gene window opening error", "Gene window could not be opened. Please try again.");
+            GUIUtils.showInfo(AlertType.ERROR, "Gene window opening error",
+                "Gene window could not be opened. Please try again.");
           }
         }
 
@@ -264,8 +266,9 @@ public class SettingsWindow extends Application implements javafx.fxml.Initializ
           try {
             ConfigHandler.writeConfig();
           } catch (IOException e) {
-            GUIUtils.showInfo(AlertType.ERROR, "Error processing configuration file", "There was an error during configuration file processing.");
-            
+            GUIUtils.showInfo(AlertType.ERROR, "Error processing configuration file",
+                "There was an error during configuration file processing.");
+
           }
         });
 
@@ -279,7 +282,8 @@ public class SettingsWindow extends Application implements javafx.fxml.Initializ
           try {
             settings.start(new Stage());
           } catch (Exception e) {
-            GUIUtils.showInfo(AlertType.ERROR, "Error during parameter window opening", "The parameter window could not be opened. Please try again.");
+            GUIUtils.showInfo(AlertType.ERROR, "Error during parameter window opening",
+                "The parameter window could not be opened. Please try again.");
           }
         }
       }
@@ -296,7 +300,8 @@ public class SettingsWindow extends Application implements javafx.fxml.Initializ
           try {
             settings.start(new Stage());
           } catch (Exception e) {
-            GUIUtils.showInfo(AlertType.ERROR, "Error during settings window opening", "The settings window could not be opened. Please try again.");
+            GUIUtils.showInfo(AlertType.ERROR, "Error during settings window opening",
+                "The settings window could not be opened. Please try again.");
           }
         }
         System.out.println("Database Button!");
@@ -390,7 +395,8 @@ public class SettingsWindow extends Application implements javafx.fxml.Initializ
                 .select(result.get().replaceAll(ConfigHandler.SEPARATOR_CHAR + "", ""));
             addResearcher = false;
           } catch (IOException e) {
-            GUIUtils.showInfo(AlertType.ERROR, "Error while adding researcher", "There was an error during adding a researcher.");
+            GUIUtils.showInfo(AlertType.ERROR, "Error while adding researcher",
+                "There was an error during adding a researcher.");
           }
         }
       }
@@ -415,7 +421,8 @@ public class SettingsWindow extends Application implements javafx.fxml.Initializ
 
             showGeneOrPrimerButton.setDisable(true);
           } catch (IOException e) {
-            GUIUtils.showInfo(AlertType.ERROR, "Error while deleting gene", "There was an error during gene deletion.");
+            GUIUtils.showInfo(AlertType.ERROR, "Error while deleting gene",
+                "There was an error during gene deletion.");
           }
         }
 
@@ -456,7 +463,8 @@ public class SettingsWindow extends Application implements javafx.fxml.Initializ
     try {
       root = FXMLLoader.load(getClass().getResource("/fxml/SettingsWindow.fxml"));
     } catch (IOException e) {
-      GUIUtils.showInfo(AlertType.ERROR, "Error during settings window opening", "The settings window could not be opened. Please try again.");
+      GUIUtils.showInfo(AlertType.ERROR, "Error during settings window opening",
+          "The settings window could not be opened. Please try again.");
       return;
     }
     scene = new Scene(root);

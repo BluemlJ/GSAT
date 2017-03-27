@@ -528,7 +528,8 @@ public class DatabaseWindow extends Application implements javafx.fxml.Initializ
         try {
           settings.start(new Stage());
         } catch (Exception e) {
-          GUIUtils.showInfo(AlertType.ERROR, "Database settings could not be opened", "The databse settings window could not be opened. Please try again.");
+          GUIUtils.showInfo(AlertType.ERROR, "Database settings could not be opened",
+              "The databse settings window could not be opened. Please try again.");
         }
       }
     });

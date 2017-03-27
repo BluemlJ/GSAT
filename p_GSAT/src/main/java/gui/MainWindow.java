@@ -112,7 +112,7 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
   private Button chromatogramButton;
   @FXML
   private Button openDest;
-  @FXML 
+  @FXML
   private Button openSrc;
 
   // Textfields
@@ -148,8 +148,8 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
   /**
    * initialize all components and set Eventhandlers.
    * 
-   * @param arg0  the URL to init, more information at {@link Initializable}
-   * @param arg1  a ResourceBunde, for more informations see {@link Initializable}
+   * @param arg0 the URL to init, more information at {@link Initializable}
+   * @param arg1 a ResourceBunde, for more informations see {@link Initializable}
    * 
    * @see Initializable
    * @author jannis blueml
@@ -201,14 +201,13 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
 
       // read files
       if (files.first != null) {
-      for (File file : files.first) {
-        try {
-          sequences.add(SequenceReader.convertFileIntoSequence(file));
-        } catch (Throwable e) {
-          infoArea.getChildren()
-          .add(GUIUtils.getRedText("Reading error with " + file.getName()));
+        for (File file : files.first) {
+          try {
+            sequences.add(SequenceReader.convertFileIntoSequence(file));
+          } catch (Throwable e) {
+            infoArea.getChildren().add(GUIUtils.getRedText("Reading error with " + file.getName()));
+          }
         }
-      }
       }
     }
 
@@ -235,7 +234,7 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
                   sequences.add(SequenceReader.convertFileIntoSequence(file));
                 } catch (Throwable e) {
                   infoArea.getChildren()
-                  .add(GUIUtils.getRedText("Reading error with " + file.getName()));
+                      .add(GUIUtils.getRedText("Reading error with " + file.getName()));
                 }
               }
             }
@@ -512,7 +511,7 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
                 sequences.add(SequenceReader.convertFileIntoSequence(file));
               } catch (Throwable e) {
                 infoArea.getChildren()
-                .add(GUIUtils.getRedText("Reading error with " + file.getName()));
+                    .add(GUIUtils.getRedText("Reading error with " + file.getName()));
               }
             }
           }
@@ -547,7 +546,8 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
           try {
             settings.start(new Stage());
           } catch (Exception e) {
-            GUIUtils.showInfo(AlertType.ERROR, "Could not open main window", "The main window could not be opened. Please try again.");
+            GUIUtils.showInfo(AlertType.ERROR, "Could not open main window",
+                "The main window could not be opened. Please try again.");
           }
         }
       }
@@ -619,7 +619,8 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
           try {
             base.start(new Stage());
           } catch (Exception e) {
-            GUIUtils.showInfo(AlertType.ERROR, "Could not open database window", "The database window could not be opened. Please try again.");
+            GUIUtils.showInfo(AlertType.ERROR, "Could not open database window",
+                "The database window could not be opened. Please try again.");
           }
         }
       }
@@ -707,7 +708,8 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
             try {
               databaseWindow.start(new Stage());
             } catch (Exception e) {
-              GUIUtils.showInfo(AlertType.ERROR, "Could not open database window", "The database window could not be opened. Please try again.");
+              GUIUtils.showInfo(AlertType.ERROR, "Could not open database window",
+                  "The database window could not be opened. Please try again.");
             }
           } else if (result.get() == buttonTypeCancel) {
             event.consume();

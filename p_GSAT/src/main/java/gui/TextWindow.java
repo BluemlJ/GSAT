@@ -29,7 +29,7 @@ public class TextWindow extends Application implements javafx.fxml.Initializable
 
   @FXML
   private TextArea testArea;
-  
+
   /**
    * the text to display
    */
@@ -38,8 +38,8 @@ public class TextWindow extends Application implements javafx.fxml.Initializable
   /**
    * set textArea configuration
    * 
-   * @param location  the URL to init, more information at {@link Initializable}
-   * @param resources  a ResourceBunde, for more informations see {@link Initializable}
+   * @param location the URL to init, more information at {@link Initializable}
+   * @param resources a ResourceBunde, for more informations see {@link Initializable}
    * 
    * @see Initializable
    * @author kevin otto
@@ -55,8 +55,9 @@ public class TextWindow extends Application implements javafx.fxml.Initializable
     try {
       root = FXMLLoader.load(getClass().getResource("/fxml/MainWindow.fxml"));
     } catch (IOException e) {
-      GUIUtils.showInfo(AlertType.ERROR, "Could not main gene window", "The main window could not be opened. Please try again.");
-      
+      GUIUtils.showInfo(AlertType.ERROR, "Could not main gene window",
+          "The main window could not be opened. Please try again.");
+
       return;
     }
     Scene scene = new Scene(root);
@@ -66,7 +67,7 @@ public class TextWindow extends Application implements javafx.fxml.Initializable
   }
 
   // Getter & Setter
-  
+
   public String getText() {
     return text;
   }

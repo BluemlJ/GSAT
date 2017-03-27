@@ -111,7 +111,8 @@ public class DatabaseSettingsWindow extends Application implements javafx.fxml.I
           ConfigHandler.writeConfig();
           System.out.println("config write successful");
         } catch (IOException e1) {
-          GUIUtils.showInfo(AlertType.ERROR, "Error during config file writing", "There was an error during the writing of the configuration file.");
+          GUIUtils.showInfo(AlertType.ERROR, "Error during config file writing",
+              "There was an error during the writing of the configuration file.");
           return;
         }
 
