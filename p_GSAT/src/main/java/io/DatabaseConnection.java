@@ -559,7 +559,8 @@ public class DatabaseConnection {
 	 * @param researcher
 	 *            The name of the researcher.
 	 * @return The database index of the researcher.
-	 * @throws SQLException Error while executing sql commands.
+	 * @throws SQLException
+	 *             Error while executing sql commands.
 	 * @author Lovis Heindrich
 	 */
 	public static int pushResearcher(String researcher) throws SQLException {
@@ -604,8 +605,10 @@ public class DatabaseConnection {
 	/**
 	 * Pushes all genes saved in the genes.txt.
 	 * 
-	 * @throws SQLException Error while executing sql commands.
-	 * @throws DatabaseConnectionException Error while connecting to database.
+	 * @throws SQLException
+	 *             Error while executing sql commands.
+	 * @throws DatabaseConnectionException
+	 *             Error while connecting to database.
 	 * @throws IOException
 	 *             Gene reading error.
 	 * @author Lovis Heindrich
@@ -638,13 +641,16 @@ public class DatabaseConnection {
 
 	/**
 	 * Pushes all primers stored in the primer .txt file.
-	 * @throws DatabaseConnectionException Error while connecting to database.
-	 * @throws SQLException Error while executing sql statements.
-	 * @throws IOException Error while reading the local primer file.
+	 * 
+	 * @throws DatabaseConnectionException
+	 *             Error while connecting to database.
+	 * @throws SQLException
+	 *             Error while executing sql statements.
+	 * @throws IOException
+	 *             Error while reading the local primer file.
 	 * @author Lovis Heindrich
 	 */
-	public static void pushAllPrimer()
-			throws DatabaseConnectionException, SQLException, IOException {
+	public static void pushAllPrimer() throws DatabaseConnectionException, SQLException, IOException {
 
 		// get primer
 		PrimerHandler.readPrimer();
@@ -668,6 +674,17 @@ public class DatabaseConnection {
 		conn.close();
 	}
 
+	/**
+	 * Pushes a single primer and links it to the correct researcher.
+	 * 
+	 * @param primer
+	 *            The primer which will be pushed.
+	 * @param researcherId
+	 *            Database id of the correct researcher.
+	 * @throws SQLException
+	 *             Error while executing sql commands.
+	 * @author Lovis Heindrich
+	 */
 	public static void pushPrimer(Primer primer, int researcherId) throws SQLException {
 		Statement stmt = conn.createStatement();
 		stmt.execute("USE gsat");
@@ -716,11 +733,14 @@ public class DatabaseConnection {
 	}
 
 	/**
-	 * pulls all primer data from database
+	 * Pulls all primer data from database and returns it as an arraylist.
 	 * 
-	 * @return list with all primers
+	 * @return An arraylist with all primers.
 	 * @throws DatabaseConnectionException
+	 *             Error while connecting to database.
 	 * @throws SQLException
+	 *             Error while executing sql commands.
+	 * @author Lovis Heindrich
 	 */
 	public static ArrayList<Primer> pullAllPrimer() throws DatabaseConnectionException, SQLException {
 		ArrayList<Primer> primerList = new ArrayList<Primer>();
@@ -754,6 +774,19 @@ public class DatabaseConnection {
 		return primerList;
 	}
 
+	/**
+	 * Pulls all mutations which belong to a given sequence id and returns them
+	 * as a linkedlist.
+	 * 
+	 * @param sequenceId
+	 *            Id of the sequence.
+	 * @return LinkedList containing all mutations from a given sequence.
+	 * @throws DatabaseConnectionException
+	 *             Error while connecting to database.
+	 * @throws SQLException
+	 *             Error while executing sql commands.
+	 * @author Lovis Heindrich
+	 */
 	public static LinkedList<String> pullMutationsPerSequence(int sequenceId)
 			throws DatabaseConnectionException, SQLException {
 		LinkedList<String> mutations = new LinkedList<String>();
@@ -782,11 +815,14 @@ public class DatabaseConnection {
 	}
 
 	/**
-	 * pulls all researchers from database
+	 * Pulls all researchers from database and returns them as a list.
 	 * 
-	 * @return arraylist of researchers
+	 * @return An arraylist of researchers.
 	 * @throws DatabaseConnectionException
+	 *             Error while connecting to database.
 	 * @throws SQLException
+	 *             Error while executing sql commands.
+	 * @author Lovis Heindrich
 	 */
 	public static ArrayList<String> pullResearcher() throws DatabaseConnectionException, SQLException {
 		ArrayList<String> researchers = new ArrayList<String>();
@@ -809,6 +845,18 @@ public class DatabaseConnection {
 
 	}
 
+	/**
+	 * Pulls a researcher identified by his id.
+	 * 
+	 * @param researcherId
+	 *            The id of the researcher.
+	 * @return The researcher identified by researcherId or null.
+	 * @throws SQLException
+	 *             Error while executing sql commands.
+	 * @throws DatabaseConnectionException
+	 *             Error while connecting to database.
+	 * @author Lovis Heindrich
+	 */
 	private static String pullResearcherPerIndex(int researcherId) throws SQLException, DatabaseConnectionException {
 		String researcher = null;
 		establishConnection();
@@ -831,6 +879,16 @@ public class DatabaseConnection {
 		return researcher;
 	}
 
+	/**
+	 * Pulls all genes from database and returns them as a list.
+	 * 
+	 * @return Arraylist of all genes in the database.
+	 * @throws DatabaseConnectionException
+	 *             Error while connecting to database.
+	 * @throws SQLException
+	 *             Error while connecting to database.
+	 * @author Lovis Heindrich
+	 */
 	public static ArrayList<Gene> pullAllGenes() throws DatabaseConnectionException, SQLException {
 		ArrayList<Gene> genes = new ArrayList<Gene>();
 
@@ -861,6 +919,18 @@ public class DatabaseConnection {
 		return genes;
 	}
 
+	/**
+	 * Pulls a gene identified by it´s index from database.
+	 * 
+	 * @param index
+	 *            Index of the gene which will be pulled.
+	 * @return The gene from the database.
+	 * @throws SQLException
+	 *             Error while executing sql commands.
+	 * @throws DatabaseConnectionException
+	 *             Error while connecting to database.
+	 * @author Lovis Heindrich
+	 */
 	public static Gene pullGenePerIndex(int index) throws SQLException, DatabaseConnectionException {
 		Gene gene = null;
 		establishConnection();
@@ -894,6 +964,16 @@ public class DatabaseConnection {
 		return gene;
 	}
 
+	/**
+	 * Pulls all sequences from database and returns them as a list.
+	 * 
+	 * @return Arraylist of all sequences in the database.
+	 * @throws DatabaseConnectionException
+	 *             Error while connecting to database.
+	 * @throws SQLException
+	 *             Error while executing sql commands.
+	 * @author Lovis Heindrich
+	 */
 	public static ArrayList<AnalysedSequence> pullAllSequences() throws DatabaseConnectionException, SQLException {
 		ArrayList<AnalysedSequence> sequences = new ArrayList<AnalysedSequence>();
 
@@ -938,6 +1018,19 @@ public class DatabaseConnection {
 		return sequences;
 	}
 
+	/**
+	 * Pulls all sequences from database which have been uploaded by a given
+	 * researcher.
+	 * 
+	 * @param researcherName
+	 *            The name of the researcher.
+	 * @return All sequences which have been uploaded by the given researcher.
+	 * @throws DatabaseConnectionException
+	 *             Error while connecting to database.
+	 * @throws SQLException
+	 *             Error while executing sql statements.
+	 * @author Lovis Heindrich
+	 */
 	public static ArrayList<AnalysedSequence> pullAllSequencesPerResearcher(String researcherName)
 			throws DatabaseConnectionException, SQLException {
 		ArrayList<AnalysedSequence> sequences = new ArrayList<AnalysedSequence>();
@@ -990,13 +1083,13 @@ public class DatabaseConnection {
 	}
 
 	/**
-	 * Retrieves the index of a given researcher from the database
+	 * Retrieves the index of a given researcher from the database.
 	 * 
-	 * @param conn2
 	 * @param researcher
-	 *            name of the researcher
-	 * @return database index of the given researcher or -1
+	 *            The name of the researcher.
+	 * @return The database index of the given researcher or -1.
 	 * @throws SQLException
+	 *             Error while executing sql commands.
 	 * @author Lovis Heindrich
 	 */
 	private static int getResearcherId(String researcher) throws SQLException {
@@ -1025,10 +1118,13 @@ public class DatabaseConnection {
 	 * Pulls all primer data from database and adds it to the local primer.txt
 	 * 
 	 * @throws DatabaseConnectionException
+	 *             Error while connecting to database.
 	 * @throws SQLException
+	 *             Error while executing sql commands.
 	 * @throws NumberFormatException
-	 *             local reading error
+	 *             Local reading error.
 	 * @throws IOException
+	 *             Error while writing the primer file.
 	 * @author Lovis Heindrich
 	 */
 	public static void pullAndSavePrimer()
@@ -1042,11 +1138,15 @@ public class DatabaseConnection {
 	}
 
 	/**
-	 * Pulls all gene data from database and adds it to the local genes.txt
+	 * Pulls all gene data from database and adds it to the local genes.txt.
 	 * 
 	 * @throws DatabaseConnectionException
+	 *             Error while connecting to database.
 	 * @throws SQLException
+	 *             Error while executing sql commands.
 	 * @throws IOException
+	 *             Error while writing local gene file.
+	 * @author Lovis Heindrich
 	 */
 	public static void pullAndSaveGenes() throws DatabaseConnectionException, SQLException, IOException {
 		ArrayList<Gene> databaseGenes = pullAllGenes();
@@ -1058,14 +1158,19 @@ public class DatabaseConnection {
 	}
 
 	/**
-	 * Pulls all researchers from database and adds them to the config.txt
+	 * Pulls all researchers from database and adds them to the config.txt.
 	 * 
 	 * @throws DatabaseConnectionException
+	 *             Error while connecting to database.
 	 * @throws SQLException
+	 *             Error while executing sql commands.
 	 * @throws UnknownConfigFieldException
-	 *             error reading config.txt
+	 *             Error reading config.txt.
 	 * @throws ConfigNotFoundException
+	 *             Error reading config.txt.
 	 * @throws IOException
+	 *             Error writing local file.
+	 * @author Lovis Heindrich
 	 */
 	public static void pullAndSaveResearcher() throws DatabaseConnectionException, SQLException,
 			UnknownConfigFieldException, ConfigNotFoundException, IOException {
@@ -1081,15 +1186,18 @@ public class DatabaseConnection {
 
 	/**
 	 * Pulls all Sequences (and linked genes, researchers and mutations) between
-	 * two given dates
+	 * two given dates.
 	 * 
 	 * @param date1
-	 *            First date
+	 *            First date.
 	 * @param date2
-	 *            Second date
-	 * @return List of the sequences
+	 *            Second date.
+	 * @return List of the sequences which have been created in the specified
+	 *         time intervall.
 	 * @throws DatabaseConnectionException
+	 *             Error connecting to database.
 	 * @throws SQLException
+	 *             Error executing sql commands.
 	 * @author Lovis Heindrich
 	 */
 	public static ArrayList<AnalysedSequence> pullAllSequencesPerPeriod(Date date1, Date date2)
@@ -1143,19 +1251,26 @@ public class DatabaseConnection {
 	}
 
 	/**
-	 * pulls sequences specified by 4 possible parameters
+	 * Pulls sequences specified by up to four optional parameters from
+	 * database.
 	 * 
 	 * @param startDate
-	 *            only sequences analysed after this date will be pulled
+	 *            Only sequences analyzed after this date will be pulled. This
+	 *            parameter is optional and will be null if not needed.
 	 * @param endDate
-	 *            only sequences analysed before this date will be pulled
+	 *            Only sequences analyzed before this date will be pulled. This
+	 *            parameter is optional and will be null if not needed.
 	 * @param researcher
-	 *            only sequences by this researcher will be pulled
+	 *            Only sequences by this researcher will be pulled. This
+	 *            parameter is optional and will be null if not needed.
 	 * @param geneName
-	 *            only sequences from this gene will be pullen
-	 * @return list of sequences
+	 *            Only sequences from this gene will be pulled. This parameter
+	 *            is optional and will be null if not needed.
+	 * @return List of sequences pulled from the database.
 	 * @throws SQLException
+	 *             Error while executing sql commands.
 	 * @throws DatabaseConnectionException
+	 *             Error while connecting to database.
 	 * @author Lovis Heindrich
 	 */
 	public static ArrayList<AnalysedSequence> pullCustomSequences(Date startDate, Date endDate, String researcher,
@@ -1283,12 +1398,14 @@ public class DatabaseConnection {
 	}
 
 	/**
-	 * Searches for a gene and returns its index
-	 * 
-	 * @param conn2
+	 * Searches the database for a gene and returns its index.
+	 *
 	 * @param geneName
-	 * @return database index of the gene
+	 *            The name of the gene.
+	 * @return The database index of the gene.
 	 * @throws SQLException
+	 *             Error while executing sql commands.
+	 * @author Lovis Heindrich
 	 */
 	private static int getGeneId(String geneName) throws SQLException {
 		// get a connection
