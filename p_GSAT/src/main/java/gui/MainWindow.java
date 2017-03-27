@@ -560,7 +560,7 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
             }
             
             //DISABLE ALL INPUTS
-            setAllFieldsDissabled(true);     
+            callSetDisableOfManyComponents(true);     
             
             sequences = new LinkedList<AnalysedSequence>();
             AnalysedSequence sequence;
@@ -583,7 +583,7 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
               @Override
               public void run() {
                 infoArea.getChildren().addAll(resultingLines);
-                setAllFieldsDissabled(false);     
+                callSetDisableOfManyComponents(false);     
               }
 
             });
@@ -816,10 +816,13 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
   
   /**
    * Disables or enables all critical fields.
+   * 
    * @param status the disabled status to set
+   * 
    * @author Kevin Otto
    */
-  private void setAllFieldsDissabled(boolean status){
+  private void callSetDisableOfManyComponents(boolean status) {
+    
     openResFile.setDisable(status);
     databaseButton.setDisable(status);
     destButton.setDisable(status); 
