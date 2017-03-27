@@ -120,7 +120,7 @@ public class ConfigHandler {
   private static DateFormat dateFormat = new SimpleDateFormat("dd/MM/yy");
 
   /**
-   * The char used for separating values in the configuration file;
+   * The char used for separating values in the configuration file.
    */
   public static final char SEPARATOR_CHAR = ';';
 
@@ -242,7 +242,7 @@ public class ConfigHandler {
   /**
    * This method creates a new configuration file in the user home directory in a folder named gsat.
    * 
-   * @throws IOException
+   * @throws IOException Error while reading file.
    * @author Lovis Heindrich
    */
   public static void initConfig() throws IOException {

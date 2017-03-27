@@ -36,7 +36,7 @@ import javafx.stage.WindowEvent;
 public class AddPrimerWindow extends Application implements javafx.fxml.Initializable {
 
   /**
-   * the own window as a instance
+   * the own window as a instance.
    */
   private SettingsWindow parent;
 

@@ -190,6 +190,7 @@ public abstract class Sequence {
   }
 
 
+  // GETTERs AND SETTERs:
 
   public String getAddingDate() {
     return addingDate;

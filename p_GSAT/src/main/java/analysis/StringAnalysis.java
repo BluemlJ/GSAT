@@ -452,11 +452,14 @@ public class StringAnalysis {
   }
 
   /**
-   * cuts out the Vector off and writes it into the Left vector of the given sequence Also sets
-   * Offset 
+   * cuts out the Vector off and writes it into the Left vector of the given sequence. Also sets
+   * Offset. 
+   * 
    * @see #findOffset(AnalysedSequence)
-   * @param toAlign
-   * @author Kevin
+   * 
+   * @param toAlign The AnalysedSequence objects to be aligned.
+   * 
+   * @author Kevin Otto
    */
   public static void trimVector(AnalysedSequence toAlign) {
     // **********simple Vector Cutting*****************
@@ -478,13 +481,15 @@ public class StringAnalysis {
   }
 
   /**
-   * calculates the offset and writes it into the sequence WARNING: does change Offset value!
+   * calculates the offset and writes it into the sequence. WARNING: does change Offset value!
    * returns false if begin of sequence was not found Returning false may be an indicator for bad
    * sequence, but may also be perfectly fine
    * 
-   * @param sequence
-   * @return true if beggin was found, false if not
-   * @author kevin
+   * @param sequence The AnalysedSequence object to be analysed
+   * 
+   * @return true if begin was found, false if not
+   * 
+   * @author Kevin Otto
    */
   public static boolean findOffset(AnalysedSequence sequence) {
 
