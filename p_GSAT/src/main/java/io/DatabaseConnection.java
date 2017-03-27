@@ -452,10 +452,13 @@ public class DatabaseConnection {
   /**
    * Pushes a single gene and links it to the correct researcher.
    * 
-   * @param referencedGene The gene which will be pushed.
+   * @param gene The gene which will be pushed.
    * @param researcherId Id of the researcher.
+   * 
    * @return Id of new gene or id of the already existing gene.
+   * 
    * @throws SQLException Error while executing sql commands.
+   * 
    * @author Lovis Heindrich
    */
   public static int pushGene(Gene gene, int researcherId) throws SQLException {

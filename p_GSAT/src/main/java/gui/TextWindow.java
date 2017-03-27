@@ -79,7 +79,7 @@ public class TextWindow extends Application implements javafx.fxml.Initializable
   /**
    * This method saves the given text internally and passes it to the textArea.
    * 
-   * @param text
+   * @param text The text to be set internally
    */
   public void setText(String text) {
     textArea.setText(text);

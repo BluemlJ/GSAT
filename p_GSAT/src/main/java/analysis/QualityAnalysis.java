@@ -221,7 +221,8 @@ public class QualityAnalysis {
       toAnalyse.addProblematicComment(ProblematicComment.NINETY_PERCENT_QUALITY_TRIM);
     } else if (percentageInt >= 70) {
       toAnalyse.addComments(
-          "70% or more (but less than 90%) of the processed sequence got trimmed away by the quality analysis.");
+          "70% or more (but less than 90%) of the processed "
+      + "sequence got trimmed away by the quality analysis.");
     }
 
     return percentageInt;

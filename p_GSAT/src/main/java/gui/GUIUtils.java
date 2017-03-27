@@ -95,18 +95,18 @@ public class GUIUtils {
    * This method initialize the ListView and adds all primers which are stored locally in the
    * primers.txt
    * 
-   * @param primers the ListView to initialize
+   * @param primerList the ListView to initialize
    * @return a text with all needed informations about success.
    * @author jannis blueml
    */
-  public static Text initializePrimerBox(ListView<String> geneList) {
+  public static Text initializePrimerBox(ListView<String> primerList) {
     try {
       PrimerHandler.readPrimer();
     } catch (IOException e) {
       return getRedText("Reading Primer.txt was unsuccessful\n");
     }
 
-    geneList
+    primerList
         .setItems(FXCollections.observableArrayList(PrimerHandler.getPrimerListWithIdAsString()));
     return new Text("Reading Primer.txt was successful");
   }
