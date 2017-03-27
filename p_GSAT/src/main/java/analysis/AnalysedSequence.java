@@ -169,7 +169,6 @@ public class AnalysedSequence extends Sequence {
    * Returns the length of the sequence (the number of nucleotides in it).
    * 
    * @return the sequence's length
-   * 
    * @author jannis blueml
    */
   public int length() {
