@@ -67,7 +67,7 @@ public class ParameterWindow extends Application implements javafx.fxml.Initiali
    * @author jannis blueml
    */
   @Override
-  public void initialize(URL arg0, ResourceBundle arg1) {
+  public void initialize(URL location, ResourceBundle resources) {
 
     // window configuration
     GUIUtils.setColorOnButton(defaultButton, ButtonColor.GRAY);
