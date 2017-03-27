@@ -110,7 +110,7 @@ public class SequenceReader {
   }
 
   /**
-   * Returns a list of all AB1 files in the path that was set via configurePath()
+   * Returns a list of all AB1 files in the path that was set via configurePath().
    * 
    * @return
    * @author Kevin
