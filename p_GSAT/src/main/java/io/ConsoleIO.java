@@ -57,9 +57,11 @@ public class ConsoleIO {
   }
 
   /**
-   * outputs a Integer Matrix (int[][]) to Console and Formating it for better readability
+   * outputs a Integer Matrix (int[][]) to Console and Formating it for better readability.
    * 
    * @param mat matrix (int[][]) to print
+   * 
+   * @author Kevin Otto
    */
   public static void printIntMatrix(int[][] mat) {
     for (int j = 0; j < mat[0].length; j++) {
@@ -75,8 +77,12 @@ public class ConsoleIO {
    * wasn`t a number
    * 
    * @param message the message displayed to the User
+   * 
    * @return the int that was given by the user
-   * @throws IOException if reading from console was not possivle.
+   * 
+   * @throws IOException if reading from console was not possible.
+   * 
+   * @author Kevin Otto
    */
   public static int readInt(String message) throws IOException {
     // create reader
@@ -104,11 +110,15 @@ public class ConsoleIO {
   /**
    * Asks the User to type in a Number in range from min to max (Integer) and returns it as int
    * Queston will be repeated if input is not a Number or to big or to small Warning: an Error is
-   * printen when min and max are switched
+   * printen when min and max are switched.
    * 
    * @param message the message displayed to the User
+   * 
    * @return the read integer
+   * 
    * @throws IOException If a reading error occurred
+   *
+   * @author Kevin Otto
    */
   public static int readInt(String message, int min, int max) throws IOException {
 
@@ -153,8 +163,12 @@ public class ConsoleIO {
    * Asks the User to Type text into console and returns the text as String.
    * 
    * @param message the message displayed to the User
+   * 
    * @return The read String
+   * 
    * @throws IOException if reading from console was not possible
+   *
+   * @author Kevin Otto
    */
   public static String readLine(String message) throws IOException {
     // create reader

@@ -99,7 +99,7 @@ public class DatabaseWindow extends Application implements javafx.fxml.Initializ
   private ToggleButton allToggle;
 
   /**
-   * Text field where a path can be entered.
+   * Text field where a path can be entered
    */
   @FXML
   private javafx.scene.control.TextField destField;
@@ -556,10 +556,6 @@ public class DatabaseWindow extends Application implements javafx.fxml.Initializ
       public void handle(ActionEvent arg0) {
         if (!upload) {
           upload = true;
-          /*
-           * researcherField.setDisable(true); geneField.setDisable(true);
-           * startDate.setDisable(true); endDate.setDisable(true);
-           */
         }
 
       }
@@ -571,10 +567,6 @@ public class DatabaseWindow extends Application implements javafx.fxml.Initializ
       public void handle(ActionEvent arg0) {
         if (upload) {
           upload = false;
-          /*
-           * researcherField.setDisable(false); geneField.setDisable(false);
-           * startDate.setDisable(false); endDate.setDisable(false);
-           */
         }
 
       }

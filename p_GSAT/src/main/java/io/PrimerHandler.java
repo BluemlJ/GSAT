@@ -148,10 +148,10 @@ public class PrimerHandler {
    * @throws IOException Error while updating the txt file.
    * @author Jannis Blueml
    */
-  public static void deletePrimer(String string) throws IOException {
-    if (!string.split(" ")[1].isEmpty()) {
-      deletePrimer(path, string.split(" ")[0],
-          string.split(" ")[1].substring(1, string.split(" ")[1].length() - 1));
+  public static void deletePrimer(String name) throws IOException {
+    if (!name.split(" ")[1].isEmpty()) {
+      deletePrimer(path, name.split(" ")[0],
+          name.split(" ")[1].substring(1, name.split(" ")[1].length() - 1));
     }
   }
 
@@ -316,7 +316,6 @@ public class PrimerHandler {
   /**
    * Clears the txt file at a given path.
    * 
-   * @param path The path to the txt file.
    * @throws IOException Error while writing file.
    * @author Lovis Heindrich
    */

@@ -45,25 +45,25 @@ public class AddPrimerWindow extends Application implements javafx.fxml.Initiali
    */
   @FXML
   private TextField nameField;
-  
+
   /**
    * TextField to input the id of the primer.
    */
   @FXML
   private TextField idField;
-  
+
   /**
    * TextField to inptut the melting temperature of the primer.
    */
   @FXML
   private TextField meltingTempField;
-  
+
   /**
    * TextArea to input the sequence of the primer.
    */
   @FXML
   private javafx.scene.control.TextArea sequenceArea;
-  
+
   /**
    * TextArea to add comments to the primer.
    */
@@ -76,9 +76,9 @@ public class AddPrimerWindow extends Application implements javafx.fxml.Initiali
    */
   @FXML
   private Button cancelButton;
-  
+
   /**
-   * Button to confirm adding the primer
+   * Button to confirm adding the primer.
    */
   @FXML
   private Button confirmButton;
@@ -220,7 +220,7 @@ public class AddPrimerWindow extends Application implements javafx.fxml.Initiali
     });
   }
 
-  
+
   @Override
   public void stop() throws Exception {
     super.stop();
@@ -228,6 +228,7 @@ public class AddPrimerWindow extends Application implements javafx.fxml.Initiali
 
   /**
    * javaFX method to start this window
+   * 
    * @param primaryStage the Stage to be used
    * @author Kevin Otto
    */
@@ -257,10 +258,10 @@ public class AddPrimerWindow extends Application implements javafx.fxml.Initiali
   }
 
   /**
-   * Sets this windows parrent.
-   * Has to be called upon start of this window!
+   * Sets this windows parrent. Has to be called upon start of this window!
+   * 
    * @param parent the window, this window was opend from
-   */ 
+   */
   public void setParent(SettingsWindow parent) {
     this.parent = parent;
   }

@@ -507,7 +507,7 @@ public class SettingsWindow extends Application implements javafx.fxml.Initializ
   }
 
   /**
-   * decrement number of open GeneWindows
+   * Decrement number of open GeneWindows.
    * 
    * @author Kevin Otto
    */

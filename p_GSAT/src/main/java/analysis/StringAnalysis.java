@@ -222,7 +222,7 @@ public class StringAnalysis {
    * 
    * @param toAnalyse the sequence to check
    * @param gene the gene you reference to.
-   * @throws CorruptedSequenceException
+   * @throws CorruptedSequenceException If the sequence contains unknown symbols
    * @author jannis blueml
    */
   public static void checkComplementAndReverse(AnalysedSequence toAnalyse, Gene gene)
