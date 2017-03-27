@@ -354,6 +354,7 @@ public class DatabaseWindow extends Application implements javafx.fxml.Initializ
     startButton.setOnAction(new EventHandler<ActionEvent>() {
       @Override
       public void handle(ActionEvent arg0) {
+        startButton.setDisable(true);
 
         // update primer data
         if (primerToggle.isSelected()) {
@@ -534,6 +535,7 @@ public class DatabaseWindow extends Application implements javafx.fxml.Initializ
             }
           }
         }
+        startButton.setDisable(false);
       }
 
     });
