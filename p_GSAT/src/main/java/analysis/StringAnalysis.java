@@ -389,10 +389,10 @@ public class StringAnalysis {
   }
 
   /**
-   * TODO @Jannis COMMENT
-   * 
-   * @param toAnalyze
-   * @return
+   * this method finds the stopcodon in the given sequence (parameter in form of {@link AnalysedSequence}) and return it
+   * @param toAnalyze the {@link AnalysedSequence} we search in
+   * @return the position of stopcodon in the not trimmed sequence
+   * @author jannis blueml
    */
   public static int findStopcodonPosition(AnalysedSequence toAnalyze) {
     for (int i = 0; i < toAnalyze.getSequence().length() - 3; i = i + 3) {

@@ -79,7 +79,7 @@ jfx {
     verbose = true
     mainClass = "core.Main"
     jfxAppOutputDir = "build/jfx/GSAT"
-    jfxMainAppJarName = "GSATv0_1.jar"
+    jfxMainAppJarName = "GSATv1.0.jar"
     deployDir = "src/main/deploy"
     useEnvironmentRelativeExecutables = true
 
