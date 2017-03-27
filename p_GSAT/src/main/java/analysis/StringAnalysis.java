@@ -260,7 +260,7 @@ public class StringAnalysis {
   }
 
   /**
-   * Changes the sequence representation from nucleotides to aminoacid (shortform)
+   * Changes the sequence representation from nucleotides to aminoacid (shortform).
    * 
    * @param nucleotides the sequence presented by nucleotides
    * @return the sequence presented by aminoAcid (shorts)
@@ -272,7 +272,7 @@ public class StringAnalysis {
   }
 
   /**
-   * Changes the sequence representation from nucleotides to aminoacid (shortform)
+   * Changes the sequence representation from nucleotides to aminoacid (shortform).
    * 
    * @param nucleotides the sequence presented by nucleotides
    * @return the sequence presented by aminoAcid (shorts)
