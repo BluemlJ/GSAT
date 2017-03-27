@@ -48,7 +48,6 @@ import javafx.stage.FileChooser;
  * @see SettingsWindow
  * 
  * @author jannis blueml
- *
  */
 public class GUIUtils {
 

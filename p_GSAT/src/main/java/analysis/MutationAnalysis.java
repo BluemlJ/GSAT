@@ -118,7 +118,7 @@ public class MutationAnalysis {
           break;
         // i = injection, inject of an new amino acid (aminoAcid short form)
         case "i":
-          // set shift and get informations
+          // set shift and get information
           shift++;
           newAminoAcid = difference.split("\\|")[2];
           position++;
