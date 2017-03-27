@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedList;
 
+import org.biojava.bio.symbol.IllegalSymbolException;
 import org.junit.Test;
 
 import analysis.AnalysedSequence;
@@ -33,17 +34,12 @@ public class AnalysisTests {
    * 
    */
   @Test
-  public void checkReverseAndComplementary() {
+  public void checkReverseAndComplementary() throws CorruptedSequenceException {
     Gene gena = new Gene("ATGCCCCACCCCTAA", 0, "testGenA", "Jannis");
     AnalysedSequence testSeq = new AnalysedSequence("AATCCCCACCCCGTA", "Jannis", "toAnalyse", null);
     testSeq.setReferencedGene(gena);
 
-    try {
-      StringAnalysis.checkComplementAndReverse(testSeq);
-    } catch (CorruptedSequenceException e) {
-      // TODO Auto-generated catch block
-      e.printStackTrace();
-    }
+    StringAnalysis.checkComplementAndReverse(testSeq);
 
     assertTrue(testSeq.getSequence().equals("ATGCCCCACCCCTAA"));
 
@@ -496,7 +492,6 @@ public class AnalysisTests {
 
   @Test
   /**
-   * @JANNIS TODO beschreibung
    * @throws CorruptedSequenceException
    */
   public void testFindingMultipleMutations()
@@ -513,7 +508,6 @@ public class AnalysisTests {
 
   @Test
   /**
-   * @JANNIS TODO beschreibung
    * @throws CorruptedSequenceException
    */
   public void testFindingMultipleMutations2()
@@ -529,7 +523,6 @@ public class AnalysisTests {
 
   @Test
   /**
-   * @JANNIS TODO beschreibung
    * 
    * @throws CorruptedSequenceException
    */
@@ -691,7 +684,6 @@ public class AnalysisTests {
 
   @Test
   /**
-   * @JANNIS TODO beschreibung
    * @throws CorruptedSequenceException
    */
   public void testsimpleDeletionFinding()
@@ -708,7 +700,6 @@ public class AnalysisTests {
 
   @Test
   /**
-   * @JANNIS TODO beschreibung
    * @throws CorruptedSequenceException
    */
   public void testsimpleDeletionFinding2()
@@ -773,7 +764,7 @@ public class AnalysisTests {
 
 
   @Test
-  public void testPlasmidMix() throws FileReadingException, IOException, MissingPathException {
+  public void testPlasmidMix() throws FileReadingException, IOException, MissingPathException, IllegalSymbolException {
     SequenceReader
         .configurePath(new File("resources/ab1/Tk_Gs40Hits/Forward/95EI60.ab1").getAbsolutePath());
     AnalysedSequence testSequence = SequenceReader.convertFileIntoSequence();
@@ -784,7 +775,7 @@ public class AnalysisTests {
   }
 
   @Test
-  public void testPlasmidMix2() throws FileReadingException, IOException, MissingPathException {
+  public void testPlasmidMix2() throws FileReadingException, IOException, MissingPathException, IllegalSymbolException {
     SequenceReader
         .configurePath(new File("resources/ab1/Tk_Gs40Hits/Forward/95EI64.ab1").getAbsolutePath());
     AnalysedSequence testSequence = SequenceReader.convertFileIntoSequence();
@@ -795,7 +786,7 @@ public class AnalysisTests {
   }
 
   @Test
-  public void testPlasmidMix3() throws FileReadingException, IOException, MissingPathException {
+  public void testPlasmidMix3() throws FileReadingException, IOException, MissingPathException, IllegalSymbolException {
     SequenceReader
         .configurePath(new File("resources/ab1/Tk_Gs40Hits/Forward/95EI61.ab1").getAbsolutePath());
     AnalysedSequence testSequence = SequenceReader.convertFileIntoSequence();

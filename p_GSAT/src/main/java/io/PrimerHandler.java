@@ -10,6 +10,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 import analysis.Primer;
+import gui.GUIUtils;
+import javafx.scene.control.Alert.AlertType;
 
 public class PrimerHandler {
   private static ArrayList<Primer> primerList;
@@ -181,8 +183,7 @@ public class PrimerHandler {
     try {
       readPrimer();
     } catch (NumberFormatException | IOException e) {
-      // TODO Auto-generated catch block
-      e.printStackTrace();
+      GUIUtils.showInfo(AlertType.ERROR, "Primer reading error", "Could not read primer from local file.");
     }
 
     if (getPrimer(primer.getName(), primer.getId()) == null) {
@@ -191,8 +192,7 @@ public class PrimerHandler {
       try {
         writePrimer();
       } catch (IOException e) {
-        // TODO Auto-generated catch block
-        e.printStackTrace();
+        GUIUtils.showInfo(AlertType.ERROR, "Could not update primer file", "The primer file could not be updated. Please try again.");
       }
 
       return true;

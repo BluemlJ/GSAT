@@ -154,9 +154,8 @@ public class AddGeneWindow extends Application implements javafx.fxml.Initializa
                 "Gene added not successful because gene already exists in local file.");
           }
 
-        } catch (DuplicateGeneException | IOException e) {
-          // TODO Auto-generated catch block
-          e.printStackTrace();
+        } catch (Exception e) {
+          GUIUtils.showInfo(AlertType.ERROR, "Error during gene adding process", "There was an error during the creation of the new gene. Please try again.");
         }
 
 
@@ -187,7 +186,6 @@ public class AddGeneWindow extends Application implements javafx.fxml.Initializa
     try {
       root = FXMLLoader.load(getClass().getResource("/fxml/AddGeneWindow.fxml"));
     } catch (IOException e) {
-      e.printStackTrace();
       return;
     }
     // set some informations for the window

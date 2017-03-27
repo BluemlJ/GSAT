@@ -26,6 +26,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.image.WritableImage;
@@ -284,7 +285,7 @@ public class ShowChromatogramWindow extends Application implements javafx.fxml.I
 
       StringAnalysis.findOffset(startSequence);
     } catch (Exception e) {
-      e.printStackTrace();
+      GUIUtils.showInfo(AlertType.ERROR, "Chromatogramm error", "Error occurred during chromatogram construction occurred.");
     }
 
 

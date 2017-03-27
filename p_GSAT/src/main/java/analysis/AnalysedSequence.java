@@ -20,7 +20,10 @@ public class AnalysedSequence extends Sequence {
    */
   private String comments = "";
 
-  // TODO Comment @BEN
+  /**
+   * A list of ProblematicComment enum items, indicating problems that occured during analysis.
+   * These list is intially empty. These items will be used to produce text comments in the result file.
+   */
   private LinkedList<ProblematicComment> problems = new LinkedList<ProblematicComment>();
 
   /**
@@ -112,7 +115,7 @@ public class AnalysedSequence extends Sequence {
   }
 
   /**
-   * TODO COMMENT LOVIS constructor which sets all values
+   * constructor which sets all values
    * 
    * @param gene
    * @param name
@@ -154,7 +157,7 @@ public class AnalysedSequence extends Sequence {
     mutations.add(mutation);
   }
 
-  // TODO @Ben comment
+
   public void addProblematicComment(ProblematicComment comment) {
     problems.add(comment);
   }

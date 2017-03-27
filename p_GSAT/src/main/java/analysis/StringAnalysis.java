@@ -389,7 +389,6 @@ public class StringAnalysis {
   }
 
   /**
-   * TODO @Jannis COMMENT
    * 
    * @param toAnalyze
    * @return

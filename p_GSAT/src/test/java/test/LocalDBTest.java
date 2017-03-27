@@ -524,14 +524,13 @@ public class LocalDBTest {
    */
   @Ignore
   @Test
-  public void testOnlineDBConnection() {
+  public void testOnlineDBConnection() throws Exception {
     MysqlDataSource dataSource = new MysqlDataSource();
     dataSource.setUser(userOnline);
     dataSource.setPassword(passOnline);
     dataSource.setPort(portOnline);
     dataSource.setServerName(serverOnline);
 
-    try {
       conn = dataSource.getConnection();
       stmt = conn.createStatement();
 
@@ -554,10 +553,7 @@ public class LocalDBTest {
       while (rs.next()) {
         System.out.println(rs.getString(1));
       }
-    } catch (SQLException e) {
-      // TODO Auto-generated catch block
-      e.printStackTrace();
-    }
+    
 
   }
 

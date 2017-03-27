@@ -2,6 +2,7 @@ package test;
 
 import java.io.IOException;
 
+import org.biojava.bio.symbol.IllegalSymbolException;
 import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -133,11 +134,12 @@ public class PrivateTest {
   /**
    * This is the private test method, used e.g. on Thursdays to check the performance on the given
    * AB1 files.
+   * @throws IllegalSymbolException 
    */
 
   @Test
   public void testLocalFile() throws FileReadingException, IOException,
-      UndefinedTypeOfMutationException, CorruptedSequenceException, MissingPathException {
+      UndefinedTypeOfMutationException, CorruptedSequenceException, MissingPathException, IllegalSymbolException {
 
     // Configure path to file
     SequenceReader.configurePath(pathToUse + fileName);
