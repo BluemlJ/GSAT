@@ -32,12 +32,12 @@ import javafx.stage.WindowEvent;
  */
 public class DatabaseSettingsWindow extends Application implements javafx.fxml.Initializable {
 
-	/**
-	 * Button to test connection using the entered login data.
-	 */
+  /**
+   * Button to test connection using the entered login data.
+   */
   @FXML
   private Button connectButton;
-  
+
   /**
    * Button to close the setting window.
    */
@@ -70,6 +70,7 @@ public class DatabaseSettingsWindow extends Application implements javafx.fxml.I
 
   /**
    * Initializes the database settings window. Sets all button actions.
+   * 
    * @author Lovis Heindrich
    */
   @Override
@@ -185,6 +186,7 @@ public class DatabaseSettingsWindow extends Application implements javafx.fxml.I
 
   /**
    * Initializes the gui window.
+   * 
    * @author Kevin Otto
    */
   @Override
