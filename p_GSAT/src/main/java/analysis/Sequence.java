@@ -52,11 +52,11 @@ public abstract class Sequence {
   }
 
   /**
-   * Constructor that also sets the Date
+   * This constructor sets the date, the sequence and the researcher.
    * 
-   * @param sequence
-   * @param researcher
-   * @param date
+   * @param sequence The nucleotide sequence
+   * @param researcher The researcher's name
+   * @param date The date this sequence is to be associated with
    * 
    * @author Lovis Heindrich
    */
@@ -68,10 +68,6 @@ public abstract class Sequence {
     DateFormat df = ConfigHandler.getDateFormat();
 
     this.addingDate = df.format(date);
-  }
-
-  public String getAddingDate() {
-    return addingDate;
   }
 
   /**
@@ -193,4 +189,12 @@ public abstract class Sequence {
     return sequence;
   }
 
+  
+
+  
+  public String getAddingDate() {
+    return addingDate;
+  }
+
+  
 }

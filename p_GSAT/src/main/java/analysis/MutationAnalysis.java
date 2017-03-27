@@ -397,7 +397,7 @@ public class MutationAnalysis {
    * 
    * @param sOne The mutated sequence
    * @param seq The gene
-   * @param type 0 = if the we work on nucleotides, 1 = if we work on aminoacids; =======
+   * @param type 0 = if the we work on nucleotides, 1 = if we work on aminoacids;
    * @param gene The mutated sequence
    * @param sequence The gene
    * 

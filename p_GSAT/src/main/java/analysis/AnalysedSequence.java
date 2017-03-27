@@ -1,6 +1,7 @@
 package analysis;
 
 import java.util.LinkedList;
+import java.util.Date;
 
 import io.ProblematicComment;
 
@@ -116,26 +117,27 @@ public class AnalysedSequence extends Sequence {
   }
 
   /**
-   * constructor which sets all values
+   * A constructor which sets all values directly. This is necessary when reading CSV files and
+   * converting them to AnalysedSequences.
    * 
-   * @param gene
-   * @param name
-   * @param sequence
-   * @param date
-   * @param researcher
-   * @param comment
-   * @param manualcheck
-   * @param vecLeft
-   * @param vecRight
-   * @param trimpercent
-   * @param histag
-   * @param avgquality2
+   * @param gene The reference gene
+   * @param mutations The list of mutations
+   * @param name The file name of the sequence
+   * @param sequence the nucleotide sequence
+   * @param date The date of creation
+   * @param researcher The associated researcher
+   * @param comment The comment field entry
+   * @param manuallyChecked Is this sequence manually checked?
+   * @param primer The associated primer
+   * @param trimpercent The percentage of the quality trim
+   * @param histag the histag position
+   * @param avgquality The average nucleotide quality
    * 
    * @author Lovis Heindrich
    */
   public AnalysedSequence(Gene gene, LinkedList<String> mutations, String name, String sequence,
-      java.util.Date date, String researcher, String comment, boolean manuallyChecked,
-      String primer, int trimpercent, int histag, int avgquality2) {
+      Date date, String researcher, String comment, boolean manuallyChecked,
+      String primer, int trimpercent, int histag, int avgquality) {
     super(sequence, researcher, date);
     this.referencedGene = gene;
     this.mutations = mutations;
@@ -144,7 +146,7 @@ public class AnalysedSequence extends Sequence {
     this.manuallyChecked = manuallyChecked;
     this.trimPercentage = trimpercent;
     this.hisTagPosition = histag;
-    this.avgQuality = avgquality2;
+    this.avgQuality = avgquality;
   }
 
   /**

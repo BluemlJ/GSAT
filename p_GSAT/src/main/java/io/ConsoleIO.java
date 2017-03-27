@@ -102,8 +102,8 @@ public class ConsoleIO {
    * printen when min and max are switched
    * 
    * @param message the message displayed to the User
-   * @return
-   * @throws IOException
+   * @return the read integer
+   * @throws IOException If a reading error occurred
    */
   public static int readInt(String message, int min, int max) throws IOException {
 
@@ -148,7 +148,7 @@ public class ConsoleIO {
    * Asks the User to Type text into console and returns the text as String.
    * 
    * @param message the message displayed to the User
-   * @return
+   * @return The read String
    * @throws IOException
    */
   public static String readLine(String message) throws IOException {
