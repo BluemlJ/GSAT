@@ -318,7 +318,8 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
             if (new File(srcField.getText()).exists()) {
 
               files = GUIUtils.getSequencesFromSourceFolder(srcField.getText());
-
+              
+              if (files.first != null) {
               for (File file : files.first) {
                 try {
                   sequences.add(SequenceReader.convertFileIntoSequence(file));
@@ -328,6 +329,8 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
                 }
               }
             }
+              }
+            
           }
         }
       }
@@ -565,7 +568,12 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
             sequences = new LinkedList<AnalysedSequence>();
             AnalysedSequence sequence;
 
+            if (files.first == null) {
+              files.first = new LinkedList<File>();
+            }
+            
             // convert files into sequences and analyse them
+            
             for (File file : files.first) {
               try {
                 sequence = SequenceReader.convertFileIntoSequence(file);
