@@ -295,8 +295,8 @@ public class MutationAnalysis {
    * m is the new amino acid placed in the mutated sequence * insertions take place between the
    * given index and the next index
    * 
-   * @param gene The mutated sequence
-   * @param sequence The gene
+   * @param gene The gene
+   * @param sequence The mutated sequence
    * 
    * @return A list of differences (represented as String)
    * @author Kevin Otto
@@ -397,7 +397,6 @@ public class MutationAnalysis {
    * index and the next index
    * 
    * @param seq The sequence to test for differences
-   * @param gene The mutated sequence
    * 
    * @return A list of differences (represented as String)
    * @author Kevin Otto, jannis blueml
