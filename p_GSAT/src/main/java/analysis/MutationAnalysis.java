@@ -36,7 +36,7 @@ public class MutationAnalysis {
    * 
    * @param toAnalyze The sequence to be analyzed (which may have mutations)
    * 
-   * @return A boolean, if there was a reading frame error
+   * @return A boolean if there was a reading frame error
    *
    * @throws CorruptedSequenceException if sequence of toAnalyze is damaged or corrupt
    * 
