@@ -196,12 +196,14 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
       files = GUIUtils.getSequencesFromSourceFolder(srcField.getText());
 
       // read files
+      if (files.first != null) {
       for (File file : files.first) {
         try {
           sequences.add(SequenceReader.convertFileIntoSequence(file));
         } catch (Throwable e) {
           e.printStackTrace();
         }
+      }
       }
     }
 
