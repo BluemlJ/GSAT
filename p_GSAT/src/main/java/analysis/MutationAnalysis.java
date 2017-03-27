@@ -39,8 +39,6 @@ public class MutationAnalysis {
    * @throws CorruptedSequenceException if sequence of toAnalyze is damaged or corrupt
    * @throws UndefinedTypeOfMutationException if reportDifferences gives me a mutation that's not s,i,d
    * @author jannis blueml
-   * @throws UndefinedTypeOfMutationException if reportDifferences gives me a mutation thats not
-   *         s,i,d
    */
   public static boolean findMutations(AnalysedSequence toAnalyze)
       throws UndefinedTypeOfMutationException, CorruptedSequenceException {
@@ -57,7 +55,7 @@ public class MutationAnalysis {
     readingFrameErrorBorder = mutatedSequence.length() / 3;
 
     // a List of all differences in form of s|12|d|e
-    LinkedList<String> differenceList = reportDifferences(toAnalyze, true);
+    LinkedList<String> differenceList = reportDifferences(toAnalyze);
     // counter for reading frame error detection
     int checkFrameerrorCounter = 0;
     // shift created by insertions and deletions
@@ -217,6 +215,7 @@ public class MutationAnalysis {
    * canditates by analysing the quality of single nucleotides.
    * 
    * @param sequence the sequence to analyse for plasmidmixes
+   * @author jannis blueml
    */
   public static void findPlasmidMix(AnalysedSequence sequence) {
 
@@ -397,18 +396,14 @@ public class MutationAnalysis {
    * m is the new amino acid placed in the mutated sequence insertions take place between the given
    * index and the next index
    * 
-   * 
-   * @param sOne The mutated sequence
-   * @param seq The gene
-   * @param type 0 = if the we work on nucleotides, 1 = if we work on aminoacids;
+   * @param seq The sequence to test for differences
    * @param gene The mutated sequence
-   * @param sequence The gene
    * 
    * @return A list of differences (represented as String)
    * @author Kevin Otto, jannis blueml
-   * @throws CorruptedSequenceException
+   * @throws CorruptedSequenceException is thrown if the sequence is not convertable to aminoacids
    */
-  private static LinkedList<String> reportDifferences(AnalysedSequence seq, boolean type)
+  private static LinkedList<String> reportDifferences(AnalysedSequence seq)
       throws CorruptedSequenceException {
     String first;
     String second;
