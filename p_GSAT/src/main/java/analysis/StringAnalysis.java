@@ -388,7 +388,7 @@ public class StringAnalysis {
 
   /**
    * this method finds the stopcodon in the given sequence (parameter in form of
-   * {@link AnalysedSequence}) and return it
+   * {@link AnalysedSequence}) and return it.
    * 
    * @param toAnalyze the {@link AnalysedSequence} we search in
    * @return the position of stopcodon in the not trimmed sequence
@@ -407,7 +407,7 @@ public class StringAnalysis {
   }
 
   /**
-   * gets Levenshtein index out of Levenshtein Matrix
+   * gets Levenshtein index out of Levenshtein Matrix.
    * The Index represents the maximal disntance between the two Strings wich were used to generate the matrix
    * 
    * @param matrix the Levenshtein Matrix
@@ -421,11 +421,12 @@ public class StringAnalysis {
 
   /**
    * calculates Levensthein Matrix of first and second using calculateLevenshteinMatrix(first,
-   * second) and returns the Levenshtein Index
-   * The Index represents the maximal disntance between the two Strings wich were used to generate the matrix
+   * second) and returns the Levenshtein Index.
+   * The Index represents the maximal distance between the two Strings wich were used to generate the matrix
    * 
-   * @param first
-   * @param second
+   * @param first The first String
+   * @param second The second String
+   * 
    * @return the levenstein Index of the given Matrix
    * @see #getLevenshteinIndex(int[][])
    * @author Kevin
@@ -438,12 +439,12 @@ public class StringAnalysis {
 
   /**
    * cuts of the vector of the given sequence (trim vector) and sets the given gene as reference
-   * Gene
+   * Gene.
    * 
    * @see #trimVector(AnalysedSequence)
-   * @param toAlign
-   * @param gene
-   * @author Kevin
+   * @param toAlign The AnalysedSequence to be analysed
+   * @param gene The reference gen (as a template)
+   * @author Kevin Otto
    */
   public static void trimVector(AnalysedSequence toAlign, Gene gene) {
     toAlign.setReferencedGene(gene);
