@@ -7,6 +7,7 @@ import java.util.ResourceBundle;
 import javafx.application.Application;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.TextArea;
@@ -20,12 +21,28 @@ import javafx.stage.Stage;
  */
 public class TextWindow extends Application implements javafx.fxml.Initializable {
 
+  /**
+   * active scene
+   */
   Scene scene;
 
   @FXML
   private TextArea testArea;
+  
+  /**
+   * the text to display
+   */
   private String text = "";
 
+  /**
+   * set textArea configuration
+   * 
+   * @param location  the URL to init, more information at {@link Initializable}
+   * @param resources  a ResourceBunde, for more informations see {@link Initializable}
+   * 
+   * @see Initializable
+   * @author kevin otto
+   */
   @Override
   public void initialize(URL arg0, ResourceBundle arg1) {
     testArea.setWrapText(true);
@@ -46,6 +63,8 @@ public class TextWindow extends Application implements javafx.fxml.Initializable
     primaryStage.show();
   }
 
+  // Getter & Setter
+  
   public String getText() {
     return text;
   }
