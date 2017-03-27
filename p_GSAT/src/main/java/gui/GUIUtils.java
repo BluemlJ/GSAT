@@ -417,7 +417,7 @@ public class GUIUtils {
   /**
    * This method gets the Gene from his ID (gene name and organism).
    * 
-   * @param gene gene ID inf form of name and organism
+   * @param gene gene ID in form of name and organism
    * @return gene from given ID
    * 
    * @see GeneHandler

@@ -14,6 +14,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert.AlertType;
@@ -56,6 +57,15 @@ public class ParameterWindow extends Application implements javafx.fxml.Initiali
   @FXML
   private Button helpButton;
 
+  /**
+   * initialize all components and set Eventhandlers.
+   * 
+   * @param location  the URL to init, more information at {@link Initializable}
+   * @param resources  a ResourceBunde, for more informations see {@link Initializable}
+   * 
+   * @see Initializable
+   * @author jannis blueml
+   */
   @Override
   public void initialize(URL arg0, ResourceBundle arg1) {
 

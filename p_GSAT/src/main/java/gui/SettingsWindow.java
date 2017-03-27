@@ -18,6 +18,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -111,11 +112,22 @@ public class SettingsWindow extends Application implements javafx.fxml.Initializ
   @FXML
   private ToggleButton primmerToggle;
 
-
+  /**
+   * active scene object
+   */
   private Scene scene;
 
 
 
+  /**
+   * initialize all components and set Eventhandlers.
+   * 
+   * @param location the URL to init, more information at {@link Initializable}
+   * @param resources a ResourceBunde, for more informations see {@link Initializable}
+   * 
+   * @see Initializable
+   * @author jannis blueml
+   */
   @Override
   public void initialize(URL location, ResourceBundle resources) {
 
