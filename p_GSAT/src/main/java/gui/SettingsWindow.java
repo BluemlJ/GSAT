@@ -264,7 +264,8 @@ public class SettingsWindow extends Application implements javafx.fxml.Initializ
           try {
             ConfigHandler.writeConfig();
           } catch (IOException e) {
-            e.printStackTrace();
+            GUIUtils.showInfo(AlertType.ERROR, "Error processing configuration file", "There was an error during configuration file processing.");
+            
           }
         });
 
@@ -389,7 +390,7 @@ public class SettingsWindow extends Application implements javafx.fxml.Initializ
                 .select(result.get().replaceAll(ConfigHandler.SEPARATOR_CHAR + "", ""));
             addResearcher = false;
           } catch (IOException e) {
-            e.printStackTrace();
+            GUIUtils.showInfo(AlertType.ERROR, "Error while adding researcher", "There was an error during adding a researcher.");
           }
         }
       }
@@ -414,7 +415,7 @@ public class SettingsWindow extends Application implements javafx.fxml.Initializ
 
             showGeneOrPrimerButton.setDisable(true);
           } catch (IOException e) {
-            e.printStackTrace();
+            GUIUtils.showInfo(AlertType.ERROR, "Error while deleting gene", "There was an error during gene deletion.");
           }
         }
 

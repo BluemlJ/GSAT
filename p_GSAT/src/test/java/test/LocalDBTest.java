@@ -569,14 +569,13 @@ public class LocalDBTest {
 
   @Ignore
   @Test
-  public void checkDBExists() {
+  public void checkDBExists() throws Exception {
     MysqlDataSource dataSource = new MysqlDataSource();
     dataSource.setUser(user);
     dataSource.setPassword(pass);
     dataSource.setPort(port);
     dataSource.setServerName(server);
 
-    try {
       conn = dataSource.getConnection();
       stmt = conn.createStatement();
 
@@ -589,15 +588,12 @@ public class LocalDBTest {
           System.out.println("false");
         }
       }
-    } catch (SQLException e) {
-      e.printStackTrace();
-    }
 
   }
 
   @Ignore
   @Test
-  public void testDBConnection() {
+  public void testDBConnection() throws Exception {
 
     MysqlDataSource dataSource = new MysqlDataSource();
     dataSource.setUser("root");
@@ -605,7 +601,6 @@ public class LocalDBTest {
     dataSource.setPort(3306);
     dataSource.setServerName("127.0.0.1");
 
-    try {
       conn = dataSource.getConnection();
       stmt = conn.createStatement();
 
@@ -680,9 +675,7 @@ public class LocalDBTest {
         System.out.println("SEQUENCE: " + rs.getString("sequence"));
         System.out.println("");
       }
-    } catch (SQLException e) {
-      e.printStackTrace();
-    }
+
 
   }
 }

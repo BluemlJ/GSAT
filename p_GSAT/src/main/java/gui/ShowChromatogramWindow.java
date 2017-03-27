@@ -303,7 +303,8 @@ public class ShowChromatogramWindow extends Application implements javafx.fxml.I
     try {
       scrollPane.setContent(viewer);
     } catch (Exception e) {
-      e.printStackTrace();
+      GUIUtils.showInfo(AlertType.ERROR, "Scroll error", "An error during scrolling occurred.");
+      
     }
 
 
@@ -448,7 +449,8 @@ public class ShowChromatogramWindow extends Application implements javafx.fxml.I
               buffGraph.drawLine(baseCalls[basecallIndex + 2] * stretchX + fontWidth * 2, 40,
                   baseCalls[basecallIndex + 2] * stretchX + fontWidth * 2, 20);
             } catch (Exception e) {
-              e.printStackTrace();
+              GUIUtils.showInfo(AlertType.ERROR, "Could not display chromatogram", "The chromatogram could not be created. Please try again.");
+              
             }
           }
         }

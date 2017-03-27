@@ -11,6 +11,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.TextArea;
+import javafx.scene.control.Alert.AlertType;
 import javafx.stage.Stage;
 
 /**
@@ -54,7 +55,8 @@ public class TextWindow extends Application implements javafx.fxml.Initializable
     try {
       root = FXMLLoader.load(getClass().getResource("/fxml/MainWindow.fxml"));
     } catch (IOException e) {
-      e.printStackTrace();
+      GUIUtils.showInfo(AlertType.ERROR, "Could not main gene window", "The main window could not be opened. Please try again.");
+      
       return;
     }
     Scene scene = new Scene(root);

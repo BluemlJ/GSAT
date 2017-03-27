@@ -16,6 +16,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Alert.AlertType;
 import javafx.stage.Stage;
 
 /**
@@ -93,7 +94,8 @@ public class ShowPrimerWindow extends Application implements javafx.fxml.Initial
 		try {
 			root = FXMLLoader.load(getClass().getResource("/fxml/ShowPrimerWindow.fxml"));
 		} catch (IOException e) {
-			e.printStackTrace();
+		  GUIUtils.showInfo(AlertType.ERROR, "Could not open primer window", "The primer window could not be opened. Please try again.");
+	      
 			return;
 		}
 		Scene scene = new Scene(root);
