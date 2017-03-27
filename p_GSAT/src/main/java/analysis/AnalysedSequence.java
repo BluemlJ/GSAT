@@ -1,7 +1,7 @@
 package analysis;
 
-import java.util.LinkedList;
 import java.util.Date;
+import java.util.LinkedList;
 
 import io.ProblematicComment;
 

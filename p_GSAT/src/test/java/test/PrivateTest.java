@@ -135,7 +135,10 @@ public class PrivateTest {
    * This is the private test method, used e.g. on Thursdays to check the performance on the given
    * AB1 files.
    * 
-   * @throws IllegalSymbolException
+   * @author Jannis Blueml
+   * @author Lovis Heindrich
+   * @author Ben Kohr
+   * @author Kevin Otto
    */
 
   @Test
@@ -158,7 +161,7 @@ public class PrivateTest {
     }
     System.out.println("\n");
     for (int i : QualityAnalysis.findLowQuality(testSeq)) {
-      System.err.println("ENDEN:    " + i);
+      System.err.println("ENDS:    " + i);
     }
 
     // Gene selection
@@ -167,7 +170,7 @@ public class PrivateTest {
     testSeq.setReferencedGene(fsa);
     System.out.println("Gene constructed");
     System.err.println("Gene                " + testSeq.getReferencedGene().getSequence());
-    System.out.println("Seq before Vector   " + testSeq.getSequence());
+    System.out.println("Sequence before Vector   " + testSeq.getSequence());
 
     // Complement and reverse check
     StringAnalysis.checkComplementAndReverse(testSeq);
@@ -176,14 +179,14 @@ public class PrivateTest {
     StringAnalysis.trimVector(testSeq, fsa);
     System.out.println("Offset    " + testSeq.getOffset());
     System.out.println("Vector trimmed");
-    System.out.println("Seq after Vector    " + testSeq.getSequence());
+    System.out.println("Sequence after Vector    " + testSeq.getSequence());
 
     // Quality trimming
     int i = testSeq.getSequence().length();
     QualityAnalysis.trimLowQuality(testSeq);
     System.out.println("Quality trimmed");
     System.out.println("Offset    " + testSeq.getOffset());
-    System.out.println("Seq after Quality   " + testSeq.getSequence());
+    System.out.println("Sequence after quality   " + testSeq.getSequence());
 
     // Stopcodon search
     if (StringAnalysis.findStopcodonPosition(testSeq) != -1) {

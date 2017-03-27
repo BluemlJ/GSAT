@@ -23,42 +23,53 @@ import exceptions.DatabaseErrorException;
 import exceptions.UnknownConfigFieldException;
 
 /**
- * Class to communicate with the database.
+ * Class to communicate with the database. Analysis data can be uploaded and downloaded via this
+ * classe's methods.
  * 
- * @author Ben Kohr, Lovis Heindrich
- *
+ * @author Ben Kohr
+ * @author Lovis Heindrich
  */
 public class DatabaseConnection {
 
+  /**
+   * This connection object models the actual connection is is updated during database accesses.
+   */
   private static Connection conn;
 
+
   /**
-   * Mysql connection object.
+   * MySql connection object, necessary to indicate the data source.
    */
   static MysqlDataSource dataSource;
 
   /**
-   * Mysql user name.
+   * MySql user name. Can be set by the user. It is necessary to get access to the database.
    */
   static String user = "root";
 
+
   /**
-   * Mysql password.
+   * MySql password. Can be set by the user. It is necessary to get access to the database for the
+   * given user name.
    */
   static String pass = "rootpassword";
 
+
   /**
-   * Mysql port.
+   * MySql port. Indicates the database location (together with the address below).
    */
   static int port = 3306;
 
+
   /**
-   * Mysql server address.
+   * MySql server address. Indicates the database location (together with the port above).
    */
   static String server = "127.0.0.1";
 
+
   /**
-   * Initializes the database by creating a new datasource object.
+   * Initializes the database by creating a new data source object. The connection variables are
+   * set.
    * 
    * @author Lovis Heindrich
    */
@@ -70,13 +81,16 @@ public class DatabaseConnection {
     dataSource.setServerName(server);
   }
 
+
   /**
    * Retrieves all genes from the database and returns them.
    * 
    * @return List of genes currently stored in the database
+   * 
    * @throws DatabaseConnectionException Error while connecting to database.
-   * @throws DatabaseErrorException Error while creating a database connection.
-   * @throws SQLException Error while executing sql statements.
+   * @throws DatabaseErrorException An error occurred while creating a database connection
+   * @throws SQLException An error occurred while executing SQL statements.
+   * 
    * @author Lovis Heindrich
    */
   public static LinkedList<Gene> retrieveAllGenes()
@@ -110,10 +124,13 @@ public class DatabaseConnection {
     return allGenes;
   }
 
+
   /**
-   * Initializes a new connection by getting a new datasource connection.
+   * Initializes a new connection. This method is often called at the beginning of a data retrieval
+   * or upload.
    * 
    * @throws DatabaseConnectionException Error while connecting to database.
+   * 
    * @author Lovis Heindrich
    */
   public static void establishConnection() throws DatabaseConnectionException {
@@ -121,27 +138,29 @@ public class DatabaseConnection {
     try {
       conn = dataSource.getConnection();
     } catch (SQLException e) {
-      System.out.println(e.getMessage());
+
       throw new DatabaseConnectionException();
     }
-
   }
 
+
   /**
-   * Creates gsat database structure consisting of four tables: genes, sequences, mutations,
-   * researcher. Names must not be changed. If a database called gsat already exists it will be
+   * Creates the GSAT database structure consisting of four tables: genes, sequences, mutations and
+   * researcher. Names must not be changed. If a database called 'gsat' already exists it will be
    * dropped.
    * 
-   * @throws SQLException Error while executing sql statements.
+   * @throws SQLException Error while executing SQL statements.
+   * @throws DatabaseConnectionException If a connection could not be established
+   * 
    * @author Lovis Heindrich
    */
-  public static void createDatabase() throws SQLException {
+  public static void createDatabase() throws SQLException, DatabaseConnectionException {
     try {
 
       establishConnection();
       Statement stmt = conn.createStatement();
 
-      // check if old gsat database exists and drop it
+      // check if old gsat database exists
       ResultSet rs = stmt.executeQuery(
           "SELECT * FROM information_schema.tables " + "WHERE table_schema = 'gsat' LIMIT 1");
       if (rs.next()) {
@@ -168,92 +187,98 @@ public class DatabaseConnection {
           + "name VARCHAR(100) NOT NULL, PRIMARY KEY(id))");
       stmt.close();
       conn.close();
+
     } catch (DatabaseConnectionException | SQLException e) {
-      System.out.println("Database anomaly");
+      throw new DatabaseConnectionException();
     }
 
   }
 
   /**
-   * checks if the given database already has the necessary tables for storing data database name
-   * must be 'gsat' and table names must be 'genes', 'sequences', 'mutations'.
+   * Checks if the given database already has the necessary tables for storing data. Database name
+   * must be 'gsat' and table names must be 'genes', 'sequences', 'mutations', 'researchers' and
+   * 'primer'.
    * 
-   * @return True if database exists, false if it does not exist.
-   * @throws SQLException Error while executing sql statements.
+   * @return True if the complete database exists, false if it does not exist.
+   * 
+   * @throws SQLException Error while executing SQL statements.
+   * @throws DatabaseConnectionException If a connection could not be established
+   * 
    * @author Lovis Heindrich
+   * 
    */
-  public static boolean gsatExists() throws SQLException {
-    try {
-      establishConnection();
-      Statement stmt = conn.createStatement();
+  public static boolean gsatExists() throws SQLException, DatabaseConnectionException {
 
-      // check if table 'genes' exists
-      ResultSet rs = stmt.executeQuery("SELECT * FROM information_schema.tables "
-          + "WHERE table_schema = 'gsat' AND table_name = 'genes' LIMIT 1");
-      if (!rs.next()) {
-        stmt.close();
-        conn.close();
-        return false;
-      }
+    establishConnection();
+    Statement stmt = conn.createStatement();
 
-      // check if table 'sequences' exists
-      rs = stmt.executeQuery("SELECT * FROM information_schema.tables "
-          + "WHERE table_schema = 'gsat' AND table_name = 'sequences' LIMIT 1");
-      if (!rs.next()) {
-        stmt.close();
-        conn.close();
-        return false;
-      }
-
-      // check if table 'mutations' exists
-      rs = stmt.executeQuery("SELECT * FROM information_schema.tables "
-          + "WHERE table_schema = 'gsat' AND table_name = 'mutations' LIMIT 1");
-      if (!rs.next()) {
-        stmt.close();
-        return false;
-      }
-
-      // check if table 'researchers' exists
-      rs = stmt.executeQuery("SELECT * FROM information_schema.tables "
-          + "WHERE table_schema = 'gsat' AND table_name = 'researchers' LIMIT 1");
-      if (!rs.next()) {
-        stmt.close();
-        conn.close();
-        return false;
-      }
-
-      // check if table 'primer' exists
-      rs = stmt.executeQuery("SELECT * FROM information_schema.tables "
-          + "WHERE table_schema = 'gsat' AND table_name = 'primer' LIMIT 1");
-      if (!rs.next()) {
-        stmt.close();
-        conn.close();
-        return false;
-      }
+    // check if table 'genes' exists
+    ResultSet rs = stmt.executeQuery("SELECT * FROM information_schema.tables "
+        + "WHERE table_schema = 'gsat' AND table_name = 'genes' LIMIT 1");
+    if (!rs.next()) {
       stmt.close();
       conn.close();
-      return true;
-    } catch (DatabaseConnectionException | SQLException e) {
-      System.out.println("Database anomaly.");
+      return false;
     }
-    return false;
+
+    // check if table 'sequences' exists
+    rs = stmt.executeQuery("SELECT * FROM information_schema.tables "
+        + "WHERE table_schema = 'gsat' AND table_name = 'sequences' LIMIT 1");
+    if (!rs.next()) {
+      stmt.close();
+      conn.close();
+      return false;
+    }
+
+    // check if table 'mutations' exists
+    rs = stmt.executeQuery("SELECT * FROM information_schema.tables "
+        + "WHERE table_schema = 'gsat' AND table_name = 'mutations' LIMIT 1");
+    if (!rs.next()) {
+      stmt.close();
+      return false;
+    }
+
+    // check if table 'researchers' exists
+    rs = stmt.executeQuery("SELECT * FROM information_schema.tables "
+        + "WHERE table_schema = 'gsat' AND table_name = 'researchers' LIMIT 1");
+    if (!rs.next()) {
+      stmt.close();
+      conn.close();
+      return false;
+    }
+
+    // check if table 'primer' exists
+    rs = stmt.executeQuery("SELECT * FROM information_schema.tables "
+        + "WHERE table_schema = 'gsat' AND table_name = 'primer' LIMIT 1");
+    if (!rs.next()) {
+      stmt.close();
+      conn.close();
+      return false;
+    }
+
+    stmt.close();
+    conn.close();
+    return true;
   }
 
   /**
-   * Sets the values of the mysql database to be used and initializes the database.
+   * Sets the values of the MySQL database to be used and initializes the database.
    * 
-   * @param user The mysql user name.
-   * @param pass The mysql password.
-   * @param port The mysql server port.
-   * @param server The mysql server address.
+   * @param username The MySql user name.
+   * @param password The MySql password.
+   * @param port The MySql server port.
+   * @param server The MySql server address.
+   * 
    * @throws DatabaseConnectionException Error while connecting to database.
-   * @throws SQLException Error while executing sql statements.
+   * @throws SQLException Error while executing SQL statements.
+   * 
    * @author Lovis Heindrich
    */
-  public static void setDatabaseConnection(String user, String pass, int port, String server)
-      throws DatabaseConnectionException, SQLException {
-    DatabaseConnection.user = user;
-    DatabaseConnection.pass = pass;
+  public static void setDatabaseConnection(String username, String password, int port,
+      String server) throws DatabaseConnectionException, SQLException {
+
+    DatabaseConnection.user = username;
+    DatabaseConnection.pass = password;
     DatabaseConnection.port = port;
     DatabaseConnection.server = server;
     DatabaseConnection.initDatabase();
@@ -271,12 +296,21 @@ public class DatabaseConnection {
 
   }
 
+
   /**
-   * Pushes all data from a recent analysis: All analysed Sequences, the reference genes, mutations
-   * and the researcher.
+   * Pushes all data from a recent analysis: All the information in the result CSV files, the
+   * reference genes, mutations and the researcher.
    * 
-   * @throws SQLException Error while executing sql statements.
+   * @param sequences The list of sequences representing the analysis results
+   * 
+   * @throws SQLException Error while executing SQL statements.
    * @throws DatabaseConnectionException Error while connecting to database.
+   * 
+   * @see #pushResearcher(String)
+   * @see #pushGene(Gene, int)
+   * @see #pushSequence(AnalysedSequence, int, int)
+   * @see #pushMutations(LinkedList, int)
+   * 
    * @author Lovis Heindrich
    */
   public static void pushAllData(LinkedList<AnalysedSequence> sequences)
@@ -296,10 +330,6 @@ public class DatabaseConnection {
       String researcher = sequence.getResearcher();
       int researcherId = pushResearcher(researcher);
 
-      if (sequence.getReferencedGene() == null) {
-        System.out.println("Hallo!");
-      }
-
       // push gene with the researcher id and get gene id
       int geneId = pushGene(sequence.getReferencedGene(), researcherId);
 
@@ -310,17 +340,18 @@ public class DatabaseConnection {
       pushMutations(sequence.getMutations(), sequenceId);
 
     }
-
     conn.close();
   }
 
+
   /**
-   * Pushes all mutations for a single sequence into the database.
+   * Inserts all mutations for a single sequence into the database.
    * 
    * @param mutations List of all mutations for a single sequence.
    * @param sequenceId Database id of the sequence.
    * 
-   * @throws SQLException Error while executing sql statements.
+   * @throws SQLException Error while executing SQL statements.
+   * 
    * @author Lovis Heindrich
    */
   public static void pushMutations(LinkedList<String> mutations, int sequenceId)
@@ -338,7 +369,7 @@ public class DatabaseConnection {
       pstmt.setInt(2, sequenceId);
       ResultSet res = pstmt.executeQuery();
 
-      // push
+      // insert
       if (!res.next()) {
         pstmt = conn.prepareStatement("INSERT INTO mutations (mutation, sequence) VALUES (?, ?)");
         pstmt.setString(1, mutation);
@@ -353,15 +384,16 @@ public class DatabaseConnection {
   }
 
   /**
-   * Checks if a sequence already exists and pushes it otherwise. The sequence contains ids of the
-   * correct researcher and gene.
+   * Checks if a sequence already exists and pushes it otherwise.
    * 
    * @param sequence The sequence that will be pushed.
    * @param researcherId The database id of the researcher.
    * @param geneId The database id of the gene.
+   * 
    * @return Database id of the new entry or the id of the existing sequence entry.
    * 
-   * @throws SQLException Error while executing sql commands.
+   * @throws SQLException Error while executing SQL commands.
+   * 
    * @author Lovis Heindrich
    */
   public static int pushSequence(AnalysedSequence sequence, int researcherId, int geneId)
@@ -449,15 +481,17 @@ public class DatabaseConnection {
     }
   }
 
+
   /**
-   * Pushes a single gene and links it to the correct researcher.
+   * Pushes a single gene and links it to the correct researcher. A researcher's name should always
+   * be stored with a the genes he or she inserted into the database.
    * 
    * @param gene The gene which will be pushed.
    * @param researcherId Id of the researcher.
    * 
    * @return Id of new gene or id of the already existing gene.
    * 
-   * @throws SQLException Error while executing sql commands.
+   * @throws SQLException Error while executing SQL commands.
    * 
    * @author Lovis Heindrich
    */
@@ -465,10 +499,6 @@ public class DatabaseConnection {
     Statement stmt = conn.createStatement();
     stmt.execute("USE gsat");
     stmt.close();
-
-    if (gene == null) {
-      System.out.println("null");
-    }
 
     System.out.println(gene);
     String name = gene.getName();
@@ -537,11 +567,15 @@ public class DatabaseConnection {
   }
 
   /**
-   * Pushes a new researcher if he does not exist yet.
+   * Pushes a new researcher if he or she does not exist yet. Researchers are associated with genes
+   * and analysis results.
    * 
    * @param researcher The name of the researcher.
+   * 
    * @return The database index of the researcher.
-   * @throws SQLException Error while executing sql commands.
+   * 
+   * @throws SQLException Error while executing SQL commands.
+   * 
    * @author Lovis Heindrich
    */
   public static int pushResearcher(String researcher) throws SQLException {
@@ -561,40 +595,43 @@ public class DatabaseConnection {
       return result;
     }
     pstmt.close();
+
     // push otherwise
     pstmt = conn.prepareStatement("INSERT INTO researchers (name) VALUES (?)");
     pstmt.setString(1, researcher);
     pstmt.executeUpdate();
     pstmt.close();
+
     // get index of new researcher
     pstmt = conn.prepareStatement("SELECT id, name FROM researchers WHERE name = ?");
     pstmt.setString(1, researcher);
     res = pstmt.executeQuery();
+
     // pstmt.close();
     if (res.next()) {
       int result = res.getInt(1);
       pstmt.close();
-      System.out.println("added researcher " + researcher + " with id " + res.getInt(1));
       return result;
+
     } else {
-      // should never be called
       pstmt.close();
-      System.out.println("adding researcher " + researcher + "failed");
       return -1;
     }
   }
 
   /**
-   * Pushes all genes saved in the genes.txt.
+   * Pushes all genes saved in the genes.txt. This is necessary to exchange gene information with
+   * other researchers and to associate the correct gene to an analysis result.
    * 
-   * @throws SQLException Error while executing sql commands.
+   * @throws SQLException Error while executing SQL commands.
    * @throws DatabaseConnectionException Error while connecting to database.
-   * @throws IOException Gene reading error.
+   * @throws IOException A gene reading error occurred.
+   * 
    * @author Lovis Heindrich
    */
   public static void pushAllGenes() throws SQLException, DatabaseConnectionException, IOException {
 
-    // get Genes
+    // get genes
     GeneHandler.readGenes();
     ArrayList<Gene> genes = GeneHandler.getGeneList();
 
@@ -619,11 +656,16 @@ public class DatabaseConnection {
   }
 
   /**
-   * Pushes all primers stored in the primer .txt file.
+   * Pushes all primers stored in the primer.txt file. By doing this, primers can be exchanged
+   * between researchers.
    * 
    * @throws DatabaseConnectionException Error while connecting to database.
-   * @throws SQLException Error while executing sql statements.
+   * @throws SQLException Error while executing SQL statements.
    * @throws IOException Error while reading the local primer file.
+   * 
+   * @see #pushResearcher(String)
+   * @see #pushPrimer(Primer, int)
+   * 
    * @author Lovis Heindrich
    */
   public static void pushAllPrimer() throws DatabaseConnectionException, SQLException, IOException {
@@ -650,12 +692,15 @@ public class DatabaseConnection {
     conn.close();
   }
 
+
   /**
    * Pushes a single primer and links it to the correct researcher.
    * 
    * @param primer The primer which will be pushed.
    * @param researcherId Database id of the correct researcher.
-   * @throws SQLException Error while executing sql commands.
+   * 
+   * @throws SQLException Error while executing SQL commands.
+   * 
    * @author Lovis Heindrich
    */
   public static void pushPrimer(Primer primer, int researcherId) throws SQLException {
@@ -703,15 +748,22 @@ public class DatabaseConnection {
       pstmt.executeUpdate();
       pstmt.close();
     }
+
     pstmt.close();
   }
 
+
   /**
-   * Pulls all primer data from database and returns it as an arraylist.
+   * Pulls all primer data from database and returns it as an ArrayList. This data is later used to
+   * update the primer file.
    * 
-   * @return An arraylist with all primers.
+   * @return An ArrayList with all primers.
+   * 
    * @throws DatabaseConnectionException Error while connecting to database.
-   * @throws SQLException Error while executing sql commands.
+   * @throws SQLException Error while executing SQL commands.
+   * 
+   * @see #pullResearcherPerIndex(int)
+   * 
    * @author Lovis Heindrich
    */
   public static ArrayList<Primer> pullAllPrimer() throws DatabaseConnectionException, SQLException {
@@ -741,18 +793,22 @@ public class DatabaseConnection {
       Primer primer = new Primer(sequence, researcher, meltingPoint, primerId, name, comment, date);
       primerList.add(primer);
     }
+
     stmt.close();
     conn.close();
     return primerList;
   }
 
   /**
-   * Pulls all mutations which belong to a given sequence id and returns them as a linkedlist.
+   * Pulls all mutations which belong to a given sequence id and returns them as a LinkedList.
    * 
    * @param sequenceId Id of the sequence.
+   * 
    * @return LinkedList containing all mutations from a given sequence.
+   * 
    * @throws DatabaseConnectionException Error while connecting to database.
-   * @throws SQLException Error while executing sql commands.
+   * @throws SQLException Error while executing SQL commands.
+   * 
    * @author Lovis Heindrich
    */
   public static LinkedList<String> pullMutationsPerSequence(int sequenceId)
@@ -783,12 +839,16 @@ public class DatabaseConnection {
     return mutations;
   }
 
+
   /**
-   * Pulls all researchers from database and returns them as a list.
+   * Pulls all researchers from the database and returns them as a list. This serves as a data
+   * source for the researcher dropdown.
    * 
-   * @return An arraylist of researchers.
+   * @return An ArrayList of all researcher names.
+   * 
    * @throws DatabaseConnectionException Error while connecting to database.
-   * @throws SQLException Error while executing sql commands.
+   * @throws SQLException Error while executing SQL commands.
+   * 
    * @author Lovis Heindrich
    */
   public static ArrayList<String> pullResearcher()
@@ -814,12 +874,15 @@ public class DatabaseConnection {
   }
 
   /**
-   * Pulls a researcher identified by his id.
+   * Pulls a researcher identified by his or her id in the table of researchers.
    * 
    * @param researcherId The id of the researcher.
-   * @return The researcher identified by researcherId or null.
+   * 
+   * @return The researcher identified by researcherId
+   * 
    * @throws SQLException Error while executing sql commands.
    * @throws DatabaseConnectionException Error while connecting to database.
+   * 
    * @author Lovis Heindrich
    */
   private static String pullResearcherPerIndex(int researcherId)
@@ -845,12 +908,18 @@ public class DatabaseConnection {
     return researcher;
   }
 
+
   /**
-   * Pulls all genes from database and returns them as a list.
+   * Pulls all genes from the database and returns them as a list. This data will be used to fill
+   * the gene list in the settings Window.
    * 
    * @return Arraylist of all genes in the database.
+   * 
    * @throws DatabaseConnectionException Error while connecting to database.
    * @throws SQLException Error while connecting to database.
+   * 
+   * @see #pullResearcherPerIndex(int)
+   * 
    * @author Lovis Heindrich
    */
   public static ArrayList<Gene> pullAllGenes() throws DatabaseConnectionException, SQLException {
@@ -878,18 +947,25 @@ public class DatabaseConnection {
       Gene gene = new Gene(sequence, 0, name, researcher, organism, comment, date);
       genes.add(gene);
     }
+
     stmt.close();
     conn.close();
     return genes;
   }
 
   /**
-   * Pulls a gene identified by it´s index from database.
+   * Pulls a gene identified by its index from the database. Genes have to be associated with a
+   * result and with a researcher later on.
    * 
    * @param index Index of the gene which will be pulled.
+   * 
    * @return The gene from the database.
-   * @throws SQLException Error while executing sql commands.
+   * 
+   * @throws SQLException Error while executing SQL commands.
    * @throws DatabaseConnectionException Error while connecting to database.
+   * 
+   * @see #pullResearcherPerIndex(int)
+   * 
    * @author Lovis Heindrich
    */
   public static Gene pullGenePerIndex(int index) throws SQLException, DatabaseConnectionException {
@@ -922,15 +998,25 @@ public class DatabaseConnection {
     stmt.close();
     pstmt.close();
     conn.close();
+
     return gene;
   }
 
+
   /**
-   * Pulls all sequences from database and returns them as a list.
+   * Pulls all sequences from the database and returns them as a list of AnalysedSequences.
+   * Associated data (mutations, researcher and gene) is also retrieved and added to the
+   * AnalysedSequence objects indicating these reuslts.
    * 
-   * @return Arraylist of all sequences in the database.
+   * @return ArrayList of all sequences in the database.
+   * 
    * @throws DatabaseConnectionException Error while connecting to database.
-   * @throws SQLException Error while executing sql commands.
+   * @throws SQLException Error while executing SQL commands.
+   * 
+   * @see #pullMutationsPerSequence(int)
+   * @see #pullResearcherPerIndex(int)
+   * @see #pullGenePerIndex(int)
+   * 
    * @author Lovis Heindrich
    */
   public static ArrayList<AnalysedSequence> pullAllSequences()
@@ -942,8 +1028,6 @@ public class DatabaseConnection {
     Statement stmt = conn.createStatement();
     stmt.execute("USE gsat");
 
-    // (name, sequence, date, researcher, comment, manualcheck, gene,
-    // primer, trimpercent, histag, avgquality)
     ResultSet rs = stmt.executeQuery("SELECT * FROM sequences");
 
     while (rs.next()) {
@@ -975,16 +1059,24 @@ public class DatabaseConnection {
     }
     stmt.close();
     conn.close();
+
     return sequences;
   }
 
+
   /**
-   * Pulls all sequences from database which have been uploaded by a given researcher.
+   * Pulls all sequences from database which have been uploaded by a given researcher. The user can
+   * specify this researcher name via the database exchange window.
    * 
    * @param researcherName The name of the researcher.
+   * 
    * @return All sequences which have been uploaded by the given researcher.
+   * 
    * @throws DatabaseConnectionException Error while connecting to database.
-   * @throws SQLException Error while executing sql statements.
+   * @throws SQLException Error while executing SQL statements.
+   * 
+   * @see #getResearcherId(String)
+   * 
    * @author Lovis Heindrich
    */
   public static ArrayList<AnalysedSequence> pullAllSequencesPerResearcher(String researcherName)
@@ -1035,6 +1127,7 @@ public class DatabaseConnection {
     stmt.close();
     pstmt.close();
     conn.close();
+
     return sequences;
   }
 
@@ -1042,11 +1135,15 @@ public class DatabaseConnection {
    * Retrieves the index of a given researcher from the database.
    * 
    * @param researcher The name of the researcher.
-   * @return The database index of the given researcher or -1.
-   * @throws SQLException Error while executing sql commands.
+   * 
+   * @return The database index of the given researcher
+   * 
+   * @throws SQLException Error while executing SQL commands.
+   * 
    * @author Lovis Heindrich
    */
   private static int getResearcherId(String researcher) throws SQLException {
+
     // get a connection
     Statement stmt = conn.createStatement();
     stmt.execute("USE gsat");
@@ -1059,23 +1156,31 @@ public class DatabaseConnection {
     ResultSet res = pstmt.executeQuery();
     if (res.next()) {
       int result = res.getInt(1);
+
       // return index
       pstmt.close();
       return result;
     } else {
+
       // researcher does not exist
       pstmt.close();
       return 0;
     }
   }
 
+
   /**
-   * Pulls all primer data from database and adds it to the local primer.txt
+   * Pulls all primer data from the database and adds it to the local primer file
    * 
    * @throws DatabaseConnectionException Error while connecting to database.
-   * @throws SQLException Error while executing sql commands.
-   * @throws NumberFormatException Local reading error.
+   * @throws SQLException Error while executing SQL commands.
+   * @throws NumberFormatException Local reading error of the primer file.
    * @throws IOException Error while writing the primer file.
+   * 
+   * @see io.PrimerHandler#readPrimer()
+   * @see io.PrimerHandler#addPrimer(Primer)
+   * @see io.PrimerHandler#writePrimer()
+   * 
    * @author Lovis Heindrich
    */
   public static void pullAndSavePrimer()
@@ -1088,12 +1193,17 @@ public class DatabaseConnection {
     PrimerHandler.writePrimer();
   }
 
+
   /**
-   * Pulls all gene data from database and adds it to the local genes.txt.
+   * Pulls all gene data from database and adds it to the local genes file.
    * 
    * @throws DatabaseConnectionException Error while connecting to database.
-   * @throws SQLException Error while executing sql commands.
+   * @throws SQLException Error while executing SQL commands.
    * @throws IOException Error while writing local gene file.
+   * 
+   * @see #pullAllGenes()
+   * @see io.GeneHandler#addGene(Gene)
+   * 
    * @author Lovis Heindrich
    */
   public static void pullAndSaveGenes()
@@ -1106,14 +1216,19 @@ public class DatabaseConnection {
     }
   }
 
+
   /**
-   * Pulls all researchers from database and adds them to the config.txt.
+   * Pulls all researchers from the database and adds them to the configuration file
    * 
    * @throws DatabaseConnectionException Error while connecting to database.
-   * @throws SQLException Error while executing sql commands.
+   * @throws SQLException Error while executing SQL commands.
    * @throws UnknownConfigFieldException Error reading config.txt.
    * @throws ConfigNotFoundException Error reading config.txt.
    * @throws IOException Error writing local file.
+   * 
+   * @see #pullResearcher()
+   * @see io.ConfigHandler#addResearcher(String)
+   * 
    * @author Lovis Heindrich
    */
   public static void pullAndSaveResearcher() throws DatabaseConnectionException, SQLException,
@@ -1128,14 +1243,18 @@ public class DatabaseConnection {
     ConfigHandler.writeConfig();
   }
 
+
   /**
-   * Pulls all Sequences (and linked genes, researchers and mutations) between two given dates.
+   * Pulls all sequences (and linked genes, researchers and mutations) between two given dates.
    * 
-   * @param date1 First date.
-   * @param date2 Second date.
-   * @return List of the sequences which have been created in the specified time intervall.
+   * @param date1 First date (earlier)
+   * @param date2 Second date (later)
+   * 
+   * @return List of the sequences which have been created in the specified time interval.
+   * 
    * @throws DatabaseConnectionException Error connecting to database.
-   * @throws SQLException Error executing sql commands.
+   * @throws SQLException Error executing SQL commands.
+   * 
    * @author Lovis Heindrich
    */
   public static ArrayList<AnalysedSequence> pullAllSequencesPerPeriod(Date date1, Date date2)
@@ -1186,11 +1305,14 @@ public class DatabaseConnection {
     stmt.close();
     pstmt.close();
     conn.close();
+
     return sequences;
   }
 
+
   /**
-   * Pulls sequences specified by up to four optional parameters from database.
+   * Pulls sequences specified by up to four optional parameters from the database. These parameters
+   * are: The start date, the end date, the researcher's name and the gene name.
    * 
    * @param startDate Only sequences analyzed after this date will be pulled. This parameter is
    *        optional and will be null if not needed.
@@ -1200,9 +1322,12 @@ public class DatabaseConnection {
    *        and will be null if not needed.
    * @param geneName Only sequences from this gene will be pulled. This parameter is optional and
    *        will be null if not needed.
+   * 
    * @return List of sequences pulled from the database.
-   * @throws SQLException Error while executing sql commands.
+   * 
+   * @throws SQLException Error while executing SQL commands.
    * @throws DatabaseConnectionException Error while connecting to database.
+   * 
    * @author Lovis Heindrich
    */
   public static ArrayList<AnalysedSequence> pullCustomSequences(Date startDate, Date endDate,
@@ -1326,15 +1451,20 @@ public class DatabaseConnection {
     stmt.close();
     pstmt.close();
     conn.close();
+
     return sequences;
   }
 
+
   /**
-   * Searches the database for a gene and returns its index.
+   * Searches a gene in the database and returns its index (or zero if it does not exist.
    *
    * @param geneName The name of the gene.
-   * @return The database index of the gene.
-   * @throws SQLException Error while executing sql commands.
+   * 
+   * @return The database index of the gene (or zero).
+   * 
+   * @throws SQLException Error while executing SQL commands.
+   * 
    * @author Lovis Heindrich
    */
   private static int getGeneId(String geneName) throws SQLException {
@@ -1343,16 +1473,18 @@ public class DatabaseConnection {
     stmt.execute("USE gsat");
     stmt.close();
 
-    // db query for given gene
+    // DB query for given gene
     PreparedStatement pstmt = conn.prepareStatement("SELECT id, name FROM genes WHERE name = ?");
     pstmt.setString(1, geneName);
     ResultSet res = pstmt.executeQuery();
     if (res.next()) {
+
       int result = res.getInt(1);
       // return index
       pstmt.close();
       return result;
     } else {
+
       // gene does not exist
       pstmt.close();
       return 0;

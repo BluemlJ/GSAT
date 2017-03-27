@@ -195,6 +195,7 @@ public class DatabaseSettingsWindow extends Application implements javafx.fxml.I
     try {
       root = FXMLLoader.load(getClass().getResource("/fxml/DatabaseSettingsWindow.fxml"));
     } catch (IOException e) {
+      System.err.println("Database settings window could not be constructed.");
       return;
     }
     Scene scene = new Scene(root);

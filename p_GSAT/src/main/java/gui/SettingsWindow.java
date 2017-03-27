@@ -377,6 +377,7 @@ public class SettingsWindow extends Application implements javafx.fxml.Initializ
             s.show();
 
           } catch (IOException e) {
+            System.err.println("Primer adding adding window could not be constructed.");
             return;
           }
         } else {
@@ -398,6 +399,7 @@ public class SettingsWindow extends Application implements javafx.fxml.Initializ
             s.show();
 
           } catch (IOException e) {
+            System.err.println("Gene adding window could not be constructed.");
             return;
           }
         }

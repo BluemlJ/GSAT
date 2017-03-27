@@ -318,19 +318,19 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
             if (new File(srcField.getText()).exists()) {
 
               files = GUIUtils.getSequencesFromSourceFolder(srcField.getText());
-              
+
               if (files.first != null) {
-              for (File file : files.first) {
-                try {
-                  sequences.add(SequenceReader.convertFileIntoSequence(file));
-                } catch (Throwable e) {
-                  infoArea.getChildren()
-                      .add(GUIUtils.getRedText("Reading error with " + file.getName()));
+                for (File file : files.first) {
+                  try {
+                    sequences.add(SequenceReader.convertFileIntoSequence(file));
+                  } catch (Throwable e) {
+                    infoArea.getChildren()
+                        .add(GUIUtils.getRedText("Reading error with " + file.getName()));
+                  }
                 }
               }
             }
-              }
-            
+
           }
         }
       }
@@ -561,19 +561,19 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
             } else {
               geneBoxItem = geneBox.getSelectionModel().getSelectedItem().split(" ")[0];
             }
-            
-            //DISABLE ALL INPUTS
-            callSetDisableOfManyComponents(true);     
-            
+
+            // DISABLE ALL INPUTS
+            callSetDisableOfManyComponents(true);
+
             sequences = new LinkedList<AnalysedSequence>();
             AnalysedSequence sequence;
 
             if (files.first == null) {
               files.first = new LinkedList<File>();
             }
-            
+
             // convert files into sequences and analyse them
-            
+
             for (File file : files.first) {
               try {
                 sequence = SequenceReader.convertFileIntoSequence(file);
@@ -591,7 +591,7 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
               @Override
               public void run() {
                 infoArea.getChildren().addAll(resultingLines);
-                callSetDisableOfManyComponents(false);     
+                callSetDisableOfManyComponents(false);
               }
 
             });
@@ -678,6 +678,7 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
           s.show();
 
         } catch (IOException e) {
+          System.err.println("About window could not be constructed.");
           return;
         }
       }
@@ -704,6 +705,7 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
           s.show();
 
         } catch (IOException e) {
+          System.err.println("Help window could not be constructed.");
           return;
         }
       }
@@ -733,16 +735,16 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
       public void handle(ActionEvent arg0) {
         ShowChromatogramWindow chromaWindow = new ShowChromatogramWindow();
         try {
-          
+
           if (sequences.isEmpty()) {
             throw new Exception();
           }
-          
+
           dropdownGene =
               GUIUtils.getGeneFromDropDown(geneBox.getSelectionModel().getSelectedItem());
           chromaWindow.start(new Stage());
-          
-          
+
+
           chromaWindow.setSequences(sequences);
         } catch (Exception e) {
           GUIUtils.showInfo(AlertType.ERROR, "Chromatogram window error",
@@ -764,7 +766,9 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
     try {
       root = FXMLLoader.load(getClass().getResource("/fxml/MainWindow.fxml"));
     } catch (IOException e) {
+      System.err.println("Main window could not be constructed.");
       return;
+
     }
     Scene scene = new Scene(root);
     primaryStage.setTitle("GSAT");
@@ -827,7 +831,7 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
     });
 
   }
-  
+
   /**
    * Disables or enables all critical fields.
    * 
@@ -836,11 +840,11 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
    * @author Kevin Otto
    */
   private void callSetDisableOfManyComponents(boolean status) {
-    
+
     openResFile.setDisable(status);
     databaseButton.setDisable(status);
-    destButton.setDisable(status); 
-    startButton.setDisable(status);    
+    destButton.setDisable(status);
+    startButton.setDisable(status);
     settingsButton.setDisable(status);
     srcButton.setDisable(status);
     chromatogramButton.setDisable(status);

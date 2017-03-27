@@ -26,20 +26,22 @@ public class FileSaver {
    */
   private static String destinationFileName = "gsat_results";
 
+
   /**
    * This is the class's separator char. It separates the columns of the resulting CSV file.
    */
   private static final char SEPARATOR_CHAR = ConfigHandler.SEPARATOR_CHAR;
 
+
   /**
    * Indicating whether this is the first call of the storage method in the current storage process.
-   * This field is necessary to keep up with the labeling.
+   * This field is necessary to keep up with the constructing of the head row (column names).
    */
   private static boolean firstCall = true;
 
 
   /**
-   * This map translates between the ProblematicComment enum items and the corresponding texts for
+   * This map translates between the ProblematicComment Enum items and the corresponding texts for
    * the user.
    */
   private static HashMap<ProblematicComment, String> commentMap =
@@ -48,28 +50,34 @@ public class FileSaver {
   static {
     commentMap.put(ProblematicComment.NO_MATCH_FOUND,
         "There was no match found, so the sequence can't be analysed.");
+
     commentMap.put(ProblematicComment.SEQUENCE_TO_SHORT,
         "The usable part of the sequence is very short "
             + "(One should probably adjust the parameters).");
+
     commentMap.put(ProblematicComment.NINETY_PERCENT_QUALITY_TRIM,
         "90% or more of the processed sequence got trimmed away by the quality analysis.");
+
     commentMap.put(ProblematicComment.COULD_NOT_READ_SEQUENCE,
         "The AB1 file could not be read. It seems to be damaged.");
+
     commentMap.put(ProblematicComment.ERROR_DURING_ANALYSIS_OCCURRED,
         "An error during the analysis process occurred.");
   }
 
 
   /**
-   * Specifies the path where local files shall be created. This specifies the folder, not the file!
+   * Specifies the path where local files shall be created. This specifies the folder, not the file.
    */
   private static File localPath;
+
 
   /**
    * Indicates whether one or multiple files shall be used for storage. By default, only one file
    * will be generated.
    */
   private static boolean separateFiles = false;
+
 
   /**
    * Sets the path where local files shall be created. The String argument is converted into a File.
@@ -87,11 +95,14 @@ public class FileSaver {
     }
   }
 
+
   /**
    * The destination file name can be changed by the user. It is passed as a String argument. If the
    * String is empty, the default name "gsat_results" will be used.
    * 
    * @param destFileName the name of the destination file
+   * 
+   * @author Ben Kohr
    */
   public static void setDestFileName(String destFileName) {
     if (destFileName.isEmpty()) {
@@ -100,6 +111,7 @@ public class FileSaver {
       destinationFileName = destFileName;
     }
   }
+
 
   /**
    * Inserts the data of an analysed sequence into one or multiple local file(s). The name of the
@@ -152,7 +164,7 @@ public class FileSaver {
    * This methods converts the analysed sequence object passed to it into a CSV line containing all
    * the information to store.
    * 
-   * @param sequence The analysed sequence object. It is assumed to contain all data to be stored.
+   * @param sequence The analysed sequence object. It is expected to contain all data to be stored.
    * 
    * @return a line to insert into a CSV file (with the information of the sequence)
    * 
@@ -271,6 +283,7 @@ public class FileSaver {
     return toWrite;
   }
 
+
   /**
    * This method initializes and initially uses a new writer, if only one file is desired.
    *
@@ -292,6 +305,7 @@ public class FileSaver {
     }
     return writer;
   }
+
 
   /**
    * This method creates a new writer for the current writing situation (one or several files?). If
@@ -335,9 +349,9 @@ public class FileSaver {
   /**
    * This method contructs the comments in case ProblematicComments where added to the sequence
    * during analysis. This is the case when analysis anomalies are detected. It also prioritizes
-   * comments by suppressing some less critical ones while more critical comments are present.
+   * comments by suppressing some less critical ones in case more critical comments are present.
    * 
-   * @param seq The Sequence with problematic comments
+   * @param seq The sequence with problematic comments
    * 
    * @return The comment section for the line corresponding to the current sequence
    *
@@ -373,8 +387,9 @@ public class FileSaver {
 
   /**
    * This method checks whether a given comment section contains problematic comments by checking
-   * whether on the Strings indicating a problematic comment is contained in the comment text passed
-   * to the method. This is necessary to determine whether the sequence should be uploaded or not.
+   * whether one of the Strings indicating a problematic comment is contained in the comment text
+   * passed to the method. This is necessary to determine whether the sequence should be uploaded or
+   * not.
    *
    * @param comments The comment field text to check
    * 
@@ -393,8 +408,8 @@ public class FileSaver {
 
 
   /**
-   * This method resets the class's state by resetting the ids and setting {@link #firstCall} to
-   * true. This is necessary to start a completely new analyzing process.
+   * This method resets the class's state by setting {@link #firstCall} to true. This is necessary
+   * to start a completely new analyzing process.
    */
   public static void reset() {
     firstCall = true;

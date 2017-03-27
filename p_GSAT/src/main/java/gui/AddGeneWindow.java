@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import exceptions.DuplicateGeneException;
 import io.ConfigHandler;
 import io.GeneHandler;
 import javafx.application.Application;
@@ -190,7 +191,7 @@ public class AddGeneWindow extends Application implements javafx.fxml.Initializa
                 "Gene added not successful because gene already exists in local file.");
           }
 
-        } catch (Exception e) {
+        } catch (IOException | DuplicateGeneException e) {
           GUIUtils.showInfo(AlertType.ERROR, "Error during gene adding process",
               "There was an error during the creation of the new gene. Please try again.");
         }
@@ -229,6 +230,7 @@ public class AddGeneWindow extends Application implements javafx.fxml.Initializa
     try {
       root = FXMLLoader.load(getClass().getResource("/fxml/AddGeneWindow.fxml"));
     } catch (IOException e) {
+      System.err.println("Gene adding window could not be constructed.");
       return;
     }
     // set some informations for the window

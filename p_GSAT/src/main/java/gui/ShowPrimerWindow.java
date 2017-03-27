@@ -13,10 +13,10 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
-import javafx.scene.control.Alert.AlertType;
 import javafx.stage.Stage;
 
 /**
@@ -89,7 +89,7 @@ public class ShowPrimerWindow extends Application implements javafx.fxml.Initial
     sequenceArea.setText(selectedPrimer.getSequence());
     int meltingPoint = selectedPrimer.getMeltingPoint();
     if (meltingPoint != -1) {
-      meltingTempField.setText(selectedPrimer.getMeltingPoint() + " \u00b0C");
+      meltingTempField.setText(selectedPrimer.getMeltingPoint() + " (degree Celsius)");
     }
     idField.setText(selectedPrimer.getId());
     commentArea.setText(selectedPrimer.getComment());

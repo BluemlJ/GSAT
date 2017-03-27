@@ -701,8 +701,7 @@ public class DatabaseWindow extends Application implements javafx.fxml.Initializ
 
     if (sequences.isEmpty()) {
       GUIUtils.showInfo(AlertType.INFORMATION, "No usable results found",
-          "There were no usable results. There either are "
-              + "not result CSV files at the given "
+          "There were no usable results. There either are " + "not result CSV files at the given "
               + "path or all results in these files are unusable.");
     } else {
       DatabaseConnection.pushAllData(sequences);
@@ -763,6 +762,7 @@ public class DatabaseWindow extends Application implements javafx.fxml.Initializ
     try {
       root = FXMLLoader.load(getClass().getResource("/fxml/DatabaseWindow.fxml"));
     } catch (IOException e) {
+      System.err.println("Database window could not be constructed.");
       return;
     }
     scene = new Scene(root);

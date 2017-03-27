@@ -23,10 +23,10 @@ import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
-import javafx.scene.control.Alert.AlertType;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.image.WritableImage;
@@ -219,7 +219,7 @@ public class ShowChromatogramWindow extends Application implements javafx.fxml.I
         String filename = sequences.get(activeSequence).getFileName();
 
         filename = filename.split("\\.")[0] + ".png";
-        
+
         // remove possible File endings and set File ending to png
         fileChooser.setInitialFileName(filename.substring(0, filename.length() - 3) + "png");
 
@@ -228,14 +228,15 @@ public class ShowChromatogramWindow extends Application implements javafx.fxml.I
 
         // if File was set, save file in given path
         if (file != null) {
-          
+
           File newFile;
           try {
-            newFile = new File(file.getParentFile() + File.separator + file.getName().split("\\.")[0] + ".png");
-            } catch (Throwable e) {
-              newFile = new File(file.getParentFile() + File.separator + "output.png");
-            }
-          
+            newFile = new File(
+                file.getParentFile() + File.separator + file.getName().split("\\.")[0] + ".png");
+          } catch (Throwable e) {
+            newFile = new File(file.getParentFile() + File.separator + "output.png");
+          }
+
           try {
             ImageIO.write(SwingFXUtils.fromFXImage(img, null), "png", newFile);
           } catch (IOException ex) {
