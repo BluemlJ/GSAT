@@ -30,6 +30,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.TextInputDialog;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.control.ToggleGroup;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
@@ -214,7 +215,7 @@ public class SettingsWindow extends Application implements javafx.fxml.Initializ
         try {
           ConfigHandler.writeConfig();
         } catch (IOException e) {
-          e.printStackTrace();
+          srcPathField.setText("");
         }
       }
     });
@@ -241,7 +242,7 @@ public class SettingsWindow extends Application implements javafx.fxml.Initializ
           try {
             primerWindow.start(new Stage());
           } catch (Exception e) {
-            e.printStackTrace();
+            GUIUtils.showInfo(AlertType.ERROR, "Error during primer window opening", "The primer window could not be opened. Please try again.");
           }
 
         } else {
@@ -249,7 +250,7 @@ public class SettingsWindow extends Application implements javafx.fxml.Initializ
           try {
             geneWindow.start(new Stage());
           } catch (Exception e) {
-            e.printStackTrace();
+             GUIUtils.showInfo(AlertType.ERROR, "Gene window opening error", "Gene window could not be opened. Please try again.");
           }
         }
 
@@ -277,7 +278,7 @@ public class SettingsWindow extends Application implements javafx.fxml.Initializ
           try {
             settings.start(new Stage());
           } catch (Exception e) {
-            e.printStackTrace();
+            GUIUtils.showInfo(AlertType.ERROR, "Error during parameter window opening", "The parameter window could not be opened. Please try again.");
           }
         }
       }
@@ -294,7 +295,7 @@ public class SettingsWindow extends Application implements javafx.fxml.Initializ
           try {
             settings.start(new Stage());
           } catch (Exception e) {
-            e.printStackTrace();
+            GUIUtils.showInfo(AlertType.ERROR, "Error during settings window opening", "The settings window could not be opened. Please try again.");
           }
         }
         System.out.println("Database Button!");
@@ -327,7 +328,6 @@ public class SettingsWindow extends Application implements javafx.fxml.Initializ
             s.show();
 
           } catch (IOException e) {
-            e.printStackTrace();
             return;
           }
         } else {
@@ -349,7 +349,6 @@ public class SettingsWindow extends Application implements javafx.fxml.Initializ
             s.show();
 
           } catch (IOException e) {
-            e.printStackTrace();
             return;
           }
         }
@@ -456,7 +455,7 @@ public class SettingsWindow extends Application implements javafx.fxml.Initializ
     try {
       root = FXMLLoader.load(getClass().getResource("/fxml/SettingsWindow.fxml"));
     } catch (IOException e) {
-      e.printStackTrace();
+      GUIUtils.showInfo(AlertType.ERROR, "Error during settings window opening", "The settings window could not be opened. Please try again.");
       return;
     }
     scene = new Scene(root);

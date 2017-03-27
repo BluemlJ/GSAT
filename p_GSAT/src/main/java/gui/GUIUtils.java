@@ -257,12 +257,16 @@ public class GUIUtils {
   }
 
   /**
-   * TODO Ben
+   * Adds a new Text object to the given list. This list ist finally used to print all events
+   * during anaylsis on the main window's text field.
    * 
-   * @param line
-   * @param list
-   * @param red
-   * @return
+   * @param line A new String to add
+   * @param list The list where to add the new Text object
+   * @param red A boolean indicating whether the new text should be displayed in red (or black)
+   * 
+   * @return The updated list (the new Text object is included now)
+   * 
+   * @author Ben Kohr
    */
   private static LinkedList<Text> wrap(String line, LinkedList<Text> list, boolean red) {
     Text text;

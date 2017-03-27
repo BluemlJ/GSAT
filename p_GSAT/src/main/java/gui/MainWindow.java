@@ -205,7 +205,8 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
         try {
           sequences.add(SequenceReader.convertFileIntoSequence(file));
         } catch (Throwable e) {
-          e.printStackTrace();
+          infoArea.getChildren()
+          .add(GUIUtils.getRedText("Reading error with " + file.getName()));
         }
       }
       }
@@ -233,7 +234,8 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
                 try {
                   sequences.add(SequenceReader.convertFileIntoSequence(file));
                 } catch (Throwable e) {
-                  e.printStackTrace();
+                  infoArea.getChildren()
+                  .add(GUIUtils.getRedText("Reading error with " + file.getName()));
                 }
               }
             }
@@ -509,7 +511,8 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
               try {
                 sequences.add(SequenceReader.convertFileIntoSequence(file));
               } catch (Throwable e) {
-                e.printStackTrace();
+                infoArea.getChildren()
+                .add(GUIUtils.getRedText("Reading error with " + file.getName()));
               }
             }
           }
@@ -544,7 +547,7 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
           try {
             settings.start(new Stage());
           } catch (Exception e) {
-            // TODO Auto-generated catch block
+            GUIUtils.showInfo(AlertType.ERROR, "Could not open main window", "The main window could not be opened. Please try again.");
           }
         }
       }
@@ -574,7 +577,6 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
           s.show();
 
         } catch (IOException e) {
-          e.printStackTrace();
           return;
         }
       }
@@ -601,7 +603,6 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
           s.show();
 
         } catch (IOException e) {
-          e.printStackTrace();
           return;
         }
       }
@@ -618,7 +619,7 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
           try {
             base.start(new Stage());
           } catch (Exception e) {
-            // TODO Auto-generated catch block
+            GUIUtils.showInfo(AlertType.ERROR, "Could not open database window", "The database window could not be opened. Please try again.");
           }
         }
       }
@@ -636,7 +637,6 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
 
           chromaWindow.setSequences(sequences);
         } catch (Exception e) {
-          e.printStackTrace();
           GUIUtils.showInfo(AlertType.ERROR, "Chromatogram window error",
               "The chromatogram window could not be opened.");
         }
@@ -655,7 +655,6 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
     try {
       root = FXMLLoader.load(getClass().getResource("/fxml/MainWindow.fxml"));
     } catch (IOException e) {
-      e.printStackTrace();
       return;
     }
     Scene scene = new Scene(root);
@@ -708,7 +707,7 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
             try {
               databaseWindow.start(new Stage());
             } catch (Exception e) {
-              // TODO Auto-generated catch block
+              GUIUtils.showInfo(AlertType.ERROR, "Could not open database window", "The database window could not be opened. Please try again.");
             }
           } else if (result.get() == buttonTypeCancel) {
             event.consume();

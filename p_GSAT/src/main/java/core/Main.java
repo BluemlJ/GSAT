@@ -5,10 +5,12 @@ import java.util.Locale;
 
 import exceptions.ConfigNotFoundException;
 import exceptions.UnknownConfigFieldException;
+import gui.GUIUtils;
 import gui.MainWindow;
 import io.ConfigHandler;
 import io.GeneHandler;
 import io.PrimerHandler;
+import javafx.scene.control.Alert.AlertType;
 
 /**
  * This class coordinates the overall behavior of the program. It moderates the analyzing pipeline.
@@ -31,7 +33,7 @@ class Main {
       PrimerHandler.readPrimer();
       GeneHandler.readGenes();
     } catch (IOException | UnknownConfigFieldException | ConfigNotFoundException e) {
-      e.printStackTrace();
+      GUIUtils.showInfo(AlertType.ERROR, "File damaged", "One of the configuration files seems to be damaged. Please remove them an try again.");
     }
     boolean consoleMode = false;
     for (int i = 0; i < args.length; i++) {

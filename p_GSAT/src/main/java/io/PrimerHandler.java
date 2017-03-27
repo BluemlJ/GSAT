@@ -382,5 +382,4 @@ public class PrimerHandler {
 	public static void setPath(String path) {
 		PrimerHandler.path = path;
 	}
-
 }

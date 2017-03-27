@@ -21,6 +21,8 @@ import exceptions.ConfigNotFoundException;
 import exceptions.DatabaseConnectionException;
 import exceptions.DatabaseErrorException;
 import exceptions.UnknownConfigFieldException;
+import gui.GUIUtils;
+import javafx.scene.control.Alert.AlertType;
 
 /**
  * Class to communicate with the database.
@@ -142,7 +144,6 @@ public class DatabaseConnection {
       ResultSet rs = stmt.executeQuery(
           "SELECT * FROM information_schema.tables " + "WHERE table_schema = 'gsat' LIMIT 1");
       if (rs.next()) {
-        // TODO this will delete all data!
         stmt.executeUpdate("DROP DATABASE gsat");
       }
       stmt.executeUpdate("CREATE DATABASE gsat");
@@ -234,8 +235,7 @@ public class DatabaseConnection {
       conn.close();
       return true;
     } catch (DatabaseConnectionException | SQLException e) {
-      // TODO Auto-generated catch block
-      e.printStackTrace();
+      GUIUtils.showInfo(AlertType.ERROR, "Error during database connection establishment", "There was an error during the connection establishment to the database.");
     }
     return false;
   }
@@ -542,7 +542,6 @@ public class DatabaseConnection {
    * @throws SQLException
    */
   public static int pushResearcher(String researcher) throws SQLException {
-    // TODO figure out how to do this one time only
     Statement stmt = conn.createStatement();
     stmt.execute("USE gsat");
     stmt.close();

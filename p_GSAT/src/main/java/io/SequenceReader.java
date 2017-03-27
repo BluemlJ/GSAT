@@ -57,7 +57,7 @@ public class SequenceReader {
    * @throws MissingPathException
    */
   public static AnalysedSequence convertFileIntoSequence()
-      throws FileReadingException, IOException, MissingPathException {
+      throws FileReadingException, IOException, MissingPathException, IllegalSymbolException {
     return convertFileIntoSequence(new File(path));
   }
 
@@ -73,7 +73,7 @@ public class SequenceReader {
    * @throws MissingPathException
    */
   public static AnalysedSequence convertFileIntoSequence(File file)
-      throws FileReadingException, IOException, MissingPathException {
+      throws FileReadingException, IOException, MissingPathException, IllegalSymbolException {
 
     if (path == null) {
       throw new MissingPathException(PathUsage.READING);
@@ -86,8 +86,6 @@ public class SequenceReader {
     String sequence = abifile.getNucleotideSequence().toString();
     byte[] qualities = abifile.getQualitySequence().toArray();
 
-    // TODO Add Primer
-
     // convert qualities from byte[] to int[]
     int[] qualitiesInt = new int[qualities.length];
     for (int i = 0; i < qualities.length; i++) {
@@ -97,16 +95,13 @@ public class SequenceReader {
         referencedFile.getName(), qualitiesInt);
 
     ABITrace myTrace = new ABITrace(referencedFile);
-    try {
+
       parsedSequence.setChannelA(myTrace.getTrace(DNATools.a()));
       parsedSequence.setChannelC(myTrace.getTrace(DNATools.c()));
       parsedSequence.setChannelG(myTrace.getTrace(DNATools.g()));
       parsedSequence.setChannelT(myTrace.getTrace(DNATools.t()));
       parsedSequence.setBaseCalls(myTrace.getBasecalls());
-    } catch (IllegalSymbolException e) {
-      // TODO Auto-generated catch block
-      e.printStackTrace();
-    }
+    
     return parsedSequence;
   }
 

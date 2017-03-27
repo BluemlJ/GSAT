@@ -206,7 +206,6 @@ public class AddPrimerWindow extends Application implements javafx.fxml.Initiali
     try {
       root = FXMLLoader.load(getClass().getResource("/fxml/AddPrimerWindow.fxml"));
     } catch (IOException e) {
-      e.printStackTrace();
       return;
     }
     Scene scene = new Scene(root);

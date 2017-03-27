@@ -34,8 +34,7 @@ public class ConsoleIO {
       }
     } catch (final Exception e) {
       // no idea what could possibly go wrong (may be anything)
-      // TODO test
-      System.err.println(e);
+      System.err.println("Error duringing console clearing.");
     }
   }
 

@@ -193,8 +193,7 @@ public class ParameterWindow extends Application implements javafx.fxml.Initiali
         try {
           ConfigHandler.writeConfig();
         } catch (IOException e) {
-          // TODO Auto-generated catch block
-          e.printStackTrace();
+          GUIUtils.showInfo(AlertType.ERROR, "Configuration file error", "The configuration file could not be updated. Please try again.");
         }
         SettingsWindow.addParametersOpen = false;
         Stage stage = (Stage) cancelButton.getScene().getWindow();
@@ -236,7 +235,6 @@ public class ParameterWindow extends Application implements javafx.fxml.Initiali
           s.show();
 
         } catch (IOException e) {
-          e.printStackTrace();
           return;
         }
       }
@@ -249,7 +247,6 @@ public class ParameterWindow extends Application implements javafx.fxml.Initiali
     try {
       root = FXMLLoader.load(getClass().getResource("/fxml/ParameterWindow.fxml"));
     } catch (IOException e) {
-      e.printStackTrace();
       return;
     }
 

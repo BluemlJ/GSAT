@@ -161,10 +161,8 @@ public class DatabaseWindow extends Application implements javafx.fxml.Initializ
           ConfigHandler.getDbPort(), ConfigHandler.getDbUrl());
     } catch (UnknownConfigFieldException | ConfigNotFoundException | IOException e1) {
       GUIUtils.showInfo(AlertType.ERROR, "Failed", "Failure while reading config file");
-      e1.printStackTrace();
     } catch (DatabaseConnectionException | SQLException e) {
       GUIUtils.showInfo(AlertType.ERROR, "Failed", "Failure while connecting to database");
-      e.printStackTrace();
     }
 
     typeGroup = new ToggleGroup();
@@ -273,13 +271,9 @@ public class DatabaseWindow extends Application implements javafx.fxml.Initializ
               GUIUtils.showInfo(AlertType.CONFIRMATION, "Success", UPLOAD_SUCCESS);
             } catch (DatabaseConnectionException | SQLException e) {
               // error while connecting to database
-
               GUIUtils.showInfo(AlertType.ERROR, "Error", UPLOAD_FAIL);
-
-              e.printStackTrace();
             } catch (NumberFormatException | IOException e) {
               // error while writing txt
-              e.printStackTrace();
               GUIUtils.showInfo(AlertType.ERROR, "Error", READ_FAIL);
             }
 
@@ -291,11 +285,9 @@ public class DatabaseWindow extends Application implements javafx.fxml.Initializ
               GUIUtils.showInfo(AlertType.CONFIRMATION, "Success", DOWNLOAD_SUCCESS);
             } catch (DatabaseConnectionException | SQLException e) {
               // error while connecting to database
-              e.printStackTrace();
               GUIUtils.showInfo(AlertType.ERROR, "Error", DOWNLOAD_FAIL);
             } catch (NumberFormatException | IOException e) {
               // error while writing txt
-              e.printStackTrace();
               GUIUtils.showInfo(AlertType.ERROR, "Error", WRITE_FAIL);
             }
           }
@@ -311,11 +303,9 @@ public class DatabaseWindow extends Application implements javafx.fxml.Initializ
               GUIUtils.showInfo(AlertType.CONFIRMATION, "Success", UPLOAD_SUCCESS);
             } catch (SQLException | DatabaseConnectionException e) {
               // error while connecting to database
-              e.printStackTrace();
               GUIUtils.showInfo(AlertType.ERROR, "Error", UPLOAD_FAIL);
             } catch (IOException e) {
               // error while reading genes from txt
-              e.printStackTrace();
               GUIUtils.showInfo(AlertType.ERROR, "Error", READ_FAIL);
             }
 
@@ -326,11 +316,9 @@ public class DatabaseWindow extends Application implements javafx.fxml.Initializ
               GUIUtils.showInfo(AlertType.CONFIRMATION, "Success", DOWNLOAD_SUCCESS);
             } catch (DatabaseConnectionException | SQLException e) {
               // error while connecting to database
-              e.printStackTrace();
               GUIUtils.showInfo(AlertType.ERROR, "Error", DOWNLOAD_FAIL);
             } catch (IOException e) {
               // error while writing txt
-              e.printStackTrace();
               GUIUtils.showInfo(AlertType.ERROR, "Error", WRITE_FAIL);
             }
           }
@@ -361,11 +349,9 @@ public class DatabaseWindow extends Application implements javafx.fxml.Initializ
               uploadResults();
             } catch (IOException e) {
               // error while reading file
-              e.printStackTrace();
               GUIUtils.showInfo(AlertType.ERROR, "Error", READ_FAIL);
             } catch (SQLException | DatabaseConnectionException e) {
               // error while writing to database
-              e.printStackTrace();
               GUIUtils.showInfo(AlertType.ERROR, "Error", UPLOAD_FAIL);
             }
 
@@ -392,10 +378,8 @@ public class DatabaseWindow extends Application implements javafx.fxml.Initializ
               downloadResults();
             } catch (SQLException | DatabaseConnectionException e) {
               GUIUtils.showInfo(AlertType.ERROR, "Error", DOWNLOAD_FAIL);
-              e.printStackTrace();
             } catch (MissingPathException | IOException e) {
               GUIUtils.showInfo(AlertType.ERROR, "Error", WRITE_FAIL);
-              e.printStackTrace();
             }
           }
 
@@ -429,11 +413,9 @@ public class DatabaseWindow extends Application implements javafx.fxml.Initializ
               MainWindow.changesOnPrimers = false;
             } catch (IOException e) {
               // error while reading file
-              e.printStackTrace();
               GUIUtils.showInfo(AlertType.ERROR, "Error", READ_FAIL);
             } catch (SQLException | DatabaseConnectionException e) {
               // error while writing to database
-              e.printStackTrace();
               GUIUtils.showInfo(AlertType.ERROR, "Error", UPLOAD_FAIL);
             }
 
@@ -463,10 +445,8 @@ public class DatabaseWindow extends Application implements javafx.fxml.Initializ
               GUIUtils.showInfo(AlertType.CONFIRMATION, "Success", DOWNLOAD_SUCCESS);
             } catch (SQLException | DatabaseConnectionException e) {
               GUIUtils.showInfo(AlertType.ERROR, "Error", DOWNLOAD_FAIL);
-              e.printStackTrace();
             } catch (MissingPathException | IOException e) {
               GUIUtils.showInfo(AlertType.ERROR, "Error", WRITE_FAIL);
-              e.printStackTrace();
             }
           }
         }
@@ -548,7 +528,7 @@ public class DatabaseWindow extends Application implements javafx.fxml.Initializ
         try {
           settings.start(new Stage());
         } catch (Exception e) {
-          e.printStackTrace();
+          GUIUtils.showInfo(AlertType.ERROR, "Database settings could not be opened", "The databse settings window could not be opened. Please try again.");
         }
       }
     });
@@ -665,7 +645,6 @@ public class DatabaseWindow extends Application implements javafx.fxml.Initializ
     try {
       root = FXMLLoader.load(getClass().getResource("/fxml/DatabaseWindow.fxml"));
     } catch (IOException e) {
-      e.printStackTrace();
       return;
     }
     scene = new Scene(root);

@@ -5,6 +5,8 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.LinkedList;
 
+import org.biojava.bio.symbol.IllegalSymbolException;
+
 import analysis.AnalysedSequence;
 import analysis.Gene;
 import analysis.MutationAnalysis;
@@ -234,8 +236,7 @@ public class ConsoleVersion {
       sequence.setComments(ConsoleIO.readLine(
           "Please enter a comment for file " + file.getName() + " or press ENTER to skip."));
     } catch (IOException e1) {
-      // TODO Auto-generated catch block
-      e1.printStackTrace();
+      System.out.println("Error occurred during comment reading.");
     }
   }
 
@@ -361,7 +362,6 @@ public class ConsoleVersion {
     } catch (CorruptedSequenceException e) {
       System.err.println("The file " + file.getName()
           + " seems to be corrupted. An unknown nulceotide symbol was detected.");
-      e.printStackTrace();
     }
   }
 
@@ -385,7 +385,6 @@ public class ConsoleVersion {
         return path;
       } catch (IOException e) {
         invalidPath = true;
-        e.printStackTrace();
       }
     }
     return null;
@@ -416,8 +415,7 @@ public class ConsoleVersion {
     try {
       StringAnalysis.checkComplementAndReverse(activeSequence);
     } catch (CorruptedSequenceException e) {
-      // TODO HIER FEHLER ANBRINGEN
-      e.printStackTrace();
+      System.err.println("Unknown symbol detected in sequence.");
     }
     // cut out vector
     StringAnalysis.trimVector(activeSequence);
@@ -433,8 +431,7 @@ public class ConsoleVersion {
     try {
       QualityAnalysis.checkIfSequenceIsClean(activeSequence);
     } catch (CorruptedSequenceException e) {
-      System.err.println("CORRUPTED");
-      e.printStackTrace();
+      System.err.println("Sequence seems to be corrupted.");
     }
     // mutation analysis
     processMutations(activeSequence, file);
@@ -518,10 +515,11 @@ public class ConsoleVersion {
       System.err.println("Could not read file " + e.filename + ". This file might be corrupted.");
       System.out.println();
     } catch (IOException e) {
-      e.printStackTrace();
+      System.err.print("Reading failed.");
     } catch (MissingPathException e) {
-      // TODO Auto-generated catch block
-      e.printStackTrace();
+      System.err.print("No reading path specified.");
+    } catch (IllegalSymbolException e) {
+      System.err.print("Unknown number format observed.");
     }
     return null;
   }

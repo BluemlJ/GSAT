@@ -111,8 +111,7 @@ public class DatabaseSettingsWindow extends Application implements javafx.fxml.I
           ConfigHandler.writeConfig();
           System.out.println("config write successful");
         } catch (IOException e1) {
-          // TODO Auto-generated catch block
-          e1.printStackTrace();
+          GUIUtils.showInfo(AlertType.ERROR, "Error during config file writing", "There was an error during the writing of the configuration file.");
         }
 
         // try to connect
@@ -159,7 +158,6 @@ public class DatabaseSettingsWindow extends Application implements javafx.fxml.I
     try {
       root = FXMLLoader.load(getClass().getResource("/fxml/DatabaseSettingsWindow.fxml"));
     } catch (IOException e) {
-      e.printStackTrace();
       return;
     }
     Scene scene = new Scene(root);

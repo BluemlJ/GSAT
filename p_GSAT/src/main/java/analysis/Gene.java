@@ -16,7 +16,7 @@ public class Gene extends Sequence {
    */
   private int id;
 
-  /**
+    /**
    * Name of the gene (e.g. fsa). Starts with lowercase.
    */
   private String name;
@@ -68,11 +68,23 @@ public class Gene extends Sequence {
     this.comment = comment;
   }
 
-  // TODO comment
+
+  /**
+   * constructor for genes, with all given information
+   * @param sequence the nucleotide sequence
+   * @param id an identifier for local database, is unique
+   * @param name the name of gene (mostly in lowercase)
+   * @param researcher the researcher, who add the gene to database
+   * @param organism a organism for extended information about gene
+   * @param comment a possible comment from the user, who add gene
+   * @param date the date of creation
+   * @author jannis blueml
+   */
   public Gene(String sequence, int id, String name, String researcher, String organism,
       String comment, Date date) {
     super(sequence, researcher, date);
-    this.name = name;
+      this.sequence = sequence;
+      this.name = name;
     this.id = id;
     this.organism = organism;
     this.comment = comment;
