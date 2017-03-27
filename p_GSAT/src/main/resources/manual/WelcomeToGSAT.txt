@@ -39,6 +39,12 @@ And there you go. When the analysis finished, you can find the results in the fo
 | (2) The main menu in further detail
 | ---------------------------------------
 
+>>> DATABASE
+This button opens the database window which is used to upload and download data from the database.
+
+>>> CHROMATOGRAM
+This button opens the chromatogram window. In this window a chromatogram for the file(s) specified in the source field is shown.
+
 >>> SETTINGS
 You can adjust the program's settings by clicking on this button. The settings window is explained in section (3).
 
@@ -49,11 +55,13 @@ This button allows you to get some help on the program's functionality (you alre
 Read about the authors and the making of GSAT!
 
 >>> SOURCE
-This specifies the folder of AB1 files or the single AB1 file which you want to analyze. Enter folder or file path manually or simply choose it by clicking on the button
-situated on the right of the input field.
+This specifies the folder of AB1 files or the single AB1 file which you want to analyze. Enter folder or file path manually or simply choose it by clicking on the choose button situated on the right of the input field. 
+Clicking the open button will open the folder with the default file explorer of your operating system. In case of a single file the open button will open this file with the default program specified by your operating system.
+
 
 >>> DESTINATION
-This specifies the folder where the results should be written to. You can enter the folder manually or choose it by clicking the button on the right hand side of the input field.
+This specifies the folder where the results should be written to. You can enter the folder manually or choose it by clicking the choose button on the right hand side of the input field.
+Clicking the open button will open the folder with the default file explorer of your operating system. In case of a single file the open button will open this file with the default program specified by your operating system.
 
 >>> FILE NAME
 You can specify the name of the out file(s). By leaving this field blank, "gsat_results" will be used as a default name.
@@ -65,7 +73,10 @@ Use this dropdown menu to choose which gene to compare the sequences with.
 This checkbox indicates whether multiple output files are produced, one for each input file (checked) or one single file, containing the information of all input files (unchecked).
 
 >>> FIND RIGHT GENE
-Instead of specifying a certain gene, you can also ask the programm to select the gene that fits best to the given sequences. Activate this functionality via this checkbox.
+Instead of specifying a certain gene, you can also ask the program to select the gene that fits best to the given sequences. Activate this functionality via this checkbox.
+
+>>> OPEN RESULT FILE
+This button will open the last analyzed file with the standard program specified by your operating system.
 
 >>> START
 After choosing a path for input and output and after selecting a gene, you can click on Start to run the analysis.
@@ -202,24 +213,24 @@ There are three important things to be mentioned regarding the CSV result files:
 | (5) The database window in further detail
 | ----------------------------------------------
 
->>> Upload 
+>>> UPLOAD
 Select this button to upload data to the database. Only this button or the download button can be active at the same time. Selecting this button changes the functionality of most other buttons in this window.
 
->>> Download
+>>> DOWNLOAD
 Select this button to download data from the database. Only this button or the upload button can be active at the same time. Selecting this button changes the functionality of most other buttons in this window.
 
->>> Results
+>>> RESULTS
 Select this button to upload/download the results from an analysis. The genes and researchers linked to the analysis will be uploaded/downloaded as well automatically.
 When uploading, a folder containing CSV files must be selected.
 When downloading, a folder where the results will be saved must be selected. You can also specify which files you want to download by using the date, gene or researcher fields. Filling in these fields is optional and when a field is left empty it will be ignored.
 
->>> Genes
+>>> GENES
 Select this button to upload/download genes. This will upload all local genes from the genes.txt file or download all genes from the database and save them to the local genes.txt file.
 
->>> Primer
+>>> PRIMER
 Select this button to upload/download primer. This will upload all local primers from the primer.txt file or download all genes from the database and save them to the local primer.txt file.
 
->>> All
+>>> ALL
 Select this button to upload/download all data. This is equivalent to manually uploading/donwloading results, genes and primer.
 
 >>> Folder
@@ -228,23 +239,23 @@ Use this text field to enter the path from where results will be uploaded or whe
 >>> Researcher
 This text field can be used to download only results created by a specific researcher. This field is optional and leaving it empty will download results from all researchers. The name entered must be exactly the same as the name linked to the file in the database.
 
->>> Gene
+>>> GENE
 This text field can be used to download only results which use a specific gene. This field is optional and leaving it empty will download results from all genes. The gene name entered must be exactly the same as the name linked to the file in the database.
 
->>> Starting Date
+>>> STARTING DATE
 This text field can be used to download only results which were created after a specific date. This field is optional. The date entered must match the format dd/mm/yyyy. Alternatively the button next to the field can be used to select a date using a graphical date selector.
 
->>> End Date
+>>> END DATE
 This text field can be used to download only results which were created before a specific date. This field is optional. The date entered must match the format dd/mm/yyyy. Alternatively the button next to the field can be used to select a date using a graphical date selector.
 
->>> Database Settings
+>>> DATABASE SETTINGS
 This button opens the database settings window where the login details to the mysql database can be entered.
 
->>> Start
+>>> START
 This button starts the database query as specified by the upload/download toggle buttons, the results/genes/primer/all toggle buttons and the additional researcher/gene/date parameters.
 
 Some of the text fields and parameters will be disabled automatically if the selected upload/download and results/genes/primer/all combination does not need additional specification.
-
+Depending on the number of elements that will be pushed or pulled the program might take a while to process the database request. 
 
 
 
