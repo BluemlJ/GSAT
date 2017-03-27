@@ -33,16 +33,34 @@ public class ShowGeneWindow extends Application implements javafx.fxml.Initializ
   // private SettingsWindow parent;
 
   // fields
+  /**
+   * TextField to display the name of the Gene.
+   */
   @FXML
   private TextField nameField;
+  
+  /**
+   * TextField to display the organism of this gene.
+   */
   @FXML
   private TextField organismField;
+  
+  /**
+   * TextArea to display the sequence of the gene.
+   */
   @FXML
   private TextArea geneArea;
+  
+  /**
+   * TextArea to display the comments of the gene.
+   */
   @FXML
   private TextArea commentArea;
 
   // buttons
+  /**
+   * Button to close the window
+   */
   @FXML
   private Button okButton;
 
@@ -91,6 +109,11 @@ public class ShowGeneWindow extends Application implements javafx.fxml.Initializ
     super.stop();
   }
 
+  /**
+   * javaFX method to start this window
+   * @param primaryStage the Stage to be used
+   * @author Kevin Otto
+   */
   @Override
   public void start(Stage primaryStage) throws Exception {
     Parent root;
