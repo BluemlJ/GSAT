@@ -16,6 +16,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Alert.AlertType;
 import javafx.stage.Stage;
 
 /**
@@ -96,7 +97,7 @@ public class ShowGeneWindow extends Application implements javafx.fxml.Initializ
     try {
       root = FXMLLoader.load(getClass().getResource("/fxml/ShowGeneWindow.fxml"));
     } catch (IOException e) {
-      e.printStackTrace();
+      GUIUtils.showInfo(AlertType.ERROR, "Could not open gene window", "The gene window could not be opened. Please try again.");
       return;
     }
     Scene scene = new Scene(root);

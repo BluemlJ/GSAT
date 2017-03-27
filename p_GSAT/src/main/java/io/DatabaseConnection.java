@@ -167,10 +167,8 @@ public class DatabaseConnection {
           + "name VARCHAR(100) NOT NULL, PRIMARY KEY(id))");
       stmt.close();
       conn.close();
-    } catch (DatabaseConnectionException e) {
-      e.printStackTrace();
-    } catch (SQLException e) {
-      e.printStackTrace();
+    } catch (DatabaseConnectionException | SQLException e) {
+      System.out.println("Database anomaly");
     }
 
   }
@@ -235,7 +233,7 @@ public class DatabaseConnection {
       conn.close();
       return true;
     } catch (DatabaseConnectionException | SQLException e) {
-      GUIUtils.showInfo(AlertType.ERROR, "Error during database connection establishment", "There was an error during the connection establishment to the database.");
+      System.out.println("Database anomaly.");
     }
     return false;
   }
