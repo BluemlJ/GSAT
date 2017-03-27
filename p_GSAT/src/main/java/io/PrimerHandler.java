@@ -10,6 +10,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 import analysis.Primer;
+import gui.GUIUtils;
+import javafx.scene.control.Alert.AlertType;
 
 /**
  * This class is responsible for storing primer data. Primers get synchronised to a csv file which
@@ -251,12 +253,11 @@ public class PrimerHandler {
    * @author Lovis Heindrich
    */
   public static boolean addPrimer(Primer primer) {
-    // only add if primer doesn´t exist yet
+    // only add if primer doesn't exist yet
     try {
       readPrimer();
     } catch (NumberFormatException | IOException e) {
-      // TODO Auto-generated catch block
-      e.printStackTrace();
+      GUIUtils.showInfo(AlertType.ERROR, "Primer reading error", "Error while reading primers occurred.");
     }
 
     if (getPrimer(primer.getName(), primer.getId()) == null) {
@@ -265,8 +266,7 @@ public class PrimerHandler {
       try {
         writePrimer();
       } catch (IOException e) {
-        // TODO Auto-generated catch block
-        e.printStackTrace();
+        GUIUtils.showInfo(AlertType.ERROR, "Primer writing error", "Error while writing primers occurred.");
       }
 
       return true;

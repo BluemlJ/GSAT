@@ -35,7 +35,10 @@ import javafx.stage.WindowEvent;
  */
 public class ParameterWindow extends Application implements javafx.fxml.Initializable {
 
-  // textfields
+  /**
+   * Textfield for the avgApproximationEnd parameter.
+   * @see analysis.QualityAnalysis
+   */
   @FXML
   private TextField avgApproximationEnd;
   @FXML
