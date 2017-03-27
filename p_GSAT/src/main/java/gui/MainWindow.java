@@ -733,10 +733,16 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
       public void handle(ActionEvent arg0) {
         ShowChromatogramWindow chromaWindow = new ShowChromatogramWindow();
         try {
+          
+          if (sequences.isEmpty()) {
+            throw new Exception();
+          }
+          
           dropdownGene =
               GUIUtils.getGeneFromDropDown(geneBox.getSelectionModel().getSelectedItem());
           chromaWindow.start(new Stage());
-
+          
+          
           chromaWindow.setSequences(sequences);
         } catch (Exception e) {
           GUIUtils.showInfo(AlertType.ERROR, "Chromatogram window error",

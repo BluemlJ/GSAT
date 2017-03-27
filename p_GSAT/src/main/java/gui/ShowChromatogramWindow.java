@@ -218,6 +218,8 @@ public class ShowChromatogramWindow extends Application implements javafx.fxml.I
         // save path in String
         String filename = sequences.get(activeSequence).getFileName();
 
+        filename = filename.split("\\.")[0] + ".png";
+        
         // remove possible File endings and set File ending to png
         fileChooser.setInitialFileName(filename.substring(0, filename.length() - 3) + "png");
 
@@ -226,8 +228,16 @@ public class ShowChromatogramWindow extends Application implements javafx.fxml.I
 
         // if File was set, save file in given path
         if (file != null) {
+          
+          File newFile;
           try {
-            ImageIO.write(SwingFXUtils.fromFXImage(img, null), "png", file);
+            newFile = new File(file.getParentFile() + File.separator + file.getName().split("\\.")[0] + ".png");
+            } catch (Throwable e) {
+              newFile = new File(file.getParentFile() + File.separator + "output.png");
+            }
+          
+          try {
+            ImageIO.write(SwingFXUtils.fromFXImage(img, null), "png", newFile);
           } catch (IOException ex) {
             System.out.println(ex.getMessage());
           }
