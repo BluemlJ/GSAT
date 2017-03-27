@@ -46,13 +46,40 @@ import javafx.stage.Stage;
 public class ShowChromatogramWindow extends Application implements javafx.fxml.Initializable {
 
   // Preset colors for Chromatogram:
+  
+  /**
+   * geenish color for trace A.
+   */
   private final Color colorA = new Color(170, 220, 80);
+  
+  /**
+   * redish color for trace T.
+   */
   private final Color colorT = new Color(240, 60, 60);
+  
+  /**
+   * Black color for trace G.
+   */
   private final Color colorG = Color.BLACK;
+  
+  /**
+   * Bluish color for trace C.
+   */
   private final Color colorC = new Color(110, 180, 200);
+  
+  /**
+   * color for undefined genes.
+   */
   private final Color colorN = Color.MAGENTA;
+  
+  /**
+   * color for background of Chromatogram window (matches default Window Color).
+   */
   private final Color background = new Color(244, 244, 244);
-
+  
+  /**
+   * The pre-defined height of the image.
+   */
   private static final int IMAGE_HEIGHT = 400;
 
   /**
@@ -71,12 +98,12 @@ public class ShowChromatogramWindow extends Application implements javafx.fxml.I
   private int activeSequence = 0;
 
   /**
-   * the image that is Drawn to
+   * the image that is Drawn to.
    */
   private Image img;
 
   /**
-   * ScrollPane for scrolling the Chromatogram
+   * ScrollPane for scrolling the Chromatogram.
    */
   private ScrollPane scrollPane;
 
@@ -91,27 +118,33 @@ public class ShowChromatogramWindow extends Application implements javafx.fxml.I
   private Button next;
 
   /**
-   * Label to display the selected File
+   * Label to display the selected File.
    */
   private Label fileName = new Label();
 
   /**
-   * required by JavaFX but not used in this class
+   * active scene.
+   */
+  private Scene scene;
+
+  
+  /**
+   * required by JavaFX but not used in this class.
    * 
-   * @author kevin
+   * @author Kevin Otto
    */
   @Override
   public void initialize(URL arg0, ResourceBundle arg1) {
 
   }
-
-  // the active scene.
-  private Scene scene;
-
+  
+  
   /**
-   * JavaFX start method Setup all necessary variables and opens the Chromatogram
+   * JavaFX start method Setup all necessary variables and opens the Chromatogram.
    * 
-   * @author kevin
+   * @param primaryStage the stage to use for this window
+   * 
+   * @author Kevin Otto
    */
   @Override
   public void start(Stage primaryStage) throws Exception {
@@ -246,10 +279,11 @@ public class ShowChromatogramWindow extends Application implements javafx.fxml.I
 
 
   /**
-   * Sets the active Sequence to id and updates the image Redraws the image and Displays it
+   * Sets the active Sequence to id and updates the image Redraws the image and Displays it.
    * 
    * @param id The id of the currently selected Sequence
-   * @author kevin
+   * 
+   * @author Kevin Otto
    */
   private void updateSequences(int id) {
 
@@ -481,11 +515,13 @@ public class ShowChromatogramWindow extends Application implements javafx.fxml.I
     img = wrtieImg;
   }
 
+  
   /**
    * Sets sequence and updates chromatograms accordingly.
    * 
-   * @param sequence
-   * @author kevin
+   * @param sequence The AnalysedSequence object to be showed as a chromatogram
+   * 
+   * @author Kevin Otto
    */
   public void setSequence(AnalysedSequence sequence) {
     // create new list
@@ -498,12 +534,16 @@ public class ShowChromatogramWindow extends Application implements javafx.fxml.I
     updateSequences(0);
   }
 
+  
   /**
-   * sets list of Sequences and updates Chromatogram accordingly Automatically sets first sequence
+   * Sets list of Sequences and updates Chromatogram accordingly Automatically sets first sequence
    * of the list.
    * 
-   * @author kevin
-   * @param sequences
+   * @author Kevin
+   * 
+   * @see #updateSequences(int)
+   * 
+   * @param sequences the list of sequences that should be displayed in the chromatogram
    */
   public void setSequences(LinkedList<AnalysedSequence> sequences) {
     // set sequence

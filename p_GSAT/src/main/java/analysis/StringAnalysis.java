@@ -131,7 +131,7 @@ public class StringAnalysis {
    * 
    * @param horizontal The first String
    * @param vertical The second String
-   * @return
+   * @return the levenstein matrix as 2D int array
    * @author Kevin Otto
    */
   public static int[][] calculateLevenshteinMatrix(String horizontal, String vertical) {
@@ -260,7 +260,7 @@ public class StringAnalysis {
   }
 
   /**
-   * Changes the sequence representation from nucleotides to aminoacid (shortform)
+   * Changes the sequence representation from nucleotides to aminoacid (shortform).
    * 
    * @param nucleotides the sequence presented by nucleotides
    * @return the sequence presented by aminoAcid (shorts)
@@ -272,7 +272,7 @@ public class StringAnalysis {
   }
 
   /**
-   * Changes the sequence representation from nucleotides to aminoacid (shortform)
+   * Changes the sequence representation from nucleotides to aminoacid (shortform).
    * 
    * @param nucleotides the sequence presented by nucleotides
    * @return the sequence presented by aminoAcid (shorts)
@@ -388,7 +388,7 @@ public class StringAnalysis {
 
   /**
    * this method finds the stopcodon in the given sequence (parameter in form of
-   * {@link AnalysedSequence}) and return it
+   * {@link AnalysedSequence}) and return it.
    * 
    * @param toAnalyze the {@link AnalysedSequence} we search in
    * @return the position of stopcodon in the not trimmed sequence
@@ -407,10 +407,11 @@ public class StringAnalysis {
   }
 
   /**
-   * gets Levenshtein index out of Levenshtein Matrix
+   * gets Levenshtein index out of Levenshtein Matrix.
+   * The Index represents the maximal disntance between the two Strings wich were used to generate the matrix
    * 
    * @param matrix the Levenshtein Matrix
-   * @return
+   * @return the levenstein index
    * @author Kevin
    */
   public static int getLevenshteinIndex(int[][] matrix) {
@@ -420,11 +421,14 @@ public class StringAnalysis {
 
   /**
    * calculates Levensthein Matrix of first and second using calculateLevenshteinMatrix(first,
-   * second) and returns the Levenshtein Index
+   * second) and returns the Levenshtein Index.
+   * The Index represents the maximal distance between the two Strings wich were used to generate the matrix
    * 
-   * @param first
-   * @param second
-   * @return
+   * @param first The first String
+   * @param second The second String
+   * 
+   * @return the levenstein Index of the given Matrix
+   * @see #getLevenshteinIndex(int[][])
    * @author Kevin
    */
   public static int getLevenshteinIndex(String first, String second) {
@@ -435,12 +439,12 @@ public class StringAnalysis {
 
   /**
    * cuts of the vector of the given sequence (trim vector) and sets the given gene as reference
-   * Gene
+   * Gene.
    * 
-   * @see trimvector
-   * @param toAlign
-   * @param gene
-   * @author kevin
+   * @see #trimVector(AnalysedSequence)
+   * @param toAlign The AnalysedSequence to be analysed
+   * @param gene The reference gen (as a template)
+   * @author Kevin Otto
    */
   public static void trimVector(AnalysedSequence toAlign, Gene gene) {
     toAlign.setReferencedGene(gene);
@@ -448,11 +452,14 @@ public class StringAnalysis {
   }
 
   /**
-   * cuts out the Vector off and writes it into the Left vector of the given sequence Also sets
-   * Offset @see findOffset()
+   * cuts out the Vector off and writes it into the Left vector of the given sequence. Also sets
+   * Offset. 
    * 
-   * @param toAlign
-   * @author Kevin
+   * @see #findOffset(AnalysedSequence)
+   * 
+   * @param toAlign The AnalysedSequence objects to be aligned.
+   * 
+   * @author Kevin Otto
    */
   public static void trimVector(AnalysedSequence toAlign) {
     // **********simple Vector Cutting*****************
@@ -474,13 +481,15 @@ public class StringAnalysis {
   }
 
   /**
-   * calculates the offset and writes it into the sequence WARNING: does change Offset value!
+   * calculates the offset and writes it into the sequence. WARNING: does change Offset value!
    * returns false if begin of sequence was not found Returning false may be an indicator for bad
    * sequence, but may also be perfectly fine
    * 
-   * @param sequence
-   * @return
-   * @author kevin
+   * @param sequence The AnalysedSequence object to be analysed
+   * 
+   * @return true if begin was found, false if not
+   * 
+   * @author Kevin Otto
    */
   public static boolean findOffset(AnalysedSequence sequence) {
 

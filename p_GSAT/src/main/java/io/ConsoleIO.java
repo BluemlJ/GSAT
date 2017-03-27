@@ -5,7 +5,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 
 /**
- * Class to handle Console outputs
+ * Class to handle console outputs.
  * 
  * @author Kevin Otto
  *
@@ -13,8 +13,9 @@ import java.io.InputStreamReader;
 public class ConsoleIO {
 
   /**
-   * WARNING: Highly experimental and still untested Needs To be testet in builded Verion (as JAR)
-   * WARNING: Black Magic incoming Should clear Console OS independently
+   * This method clears the console.
+   * 
+   * @author Kevin Otto
    */
   public static void clearConsole() {
     try {
@@ -39,11 +40,14 @@ public class ConsoleIO {
   }
 
   /**
-   * outputs a Char Matrix (char[][]) to Console and Formating it for better readability
+   * Outputs a Char Matrix (char[][]) to Console and Formating it for better readability.
    * 
    * @param mat matrix (char[][]) to print
+   * 
+   * @author Kevin Otto
    */
   public static void printCharMatrix(char[][] mat) {
+    //iterate though the array and print
     for (int j = 0; j < mat[0].length; j++) {
       for (int i = 0; i < mat.length; i++) {
         System.out.print(mat[i][j] + " ");
@@ -67,11 +71,12 @@ public class ConsoleIO {
   }
 
   /**
-   * Asks the User to type in a Number (Integer) and returns it as int
+   * Asks the User to type in a Number (Integer) and returns it as int.
+   * asks again if given String wasn`t a number
    * 
    * @param message the message displayed to the User
-   * @return
-   * @throws IOException
+   * @return the int that was given by the user
+   * @throws IOException if reading from console was not possivle.
    */
   public static int readInt(String message) throws IOException {
     // create reader
@@ -149,7 +154,7 @@ public class ConsoleIO {
    * 
    * @param message the message displayed to the User
    * @return The read String
-   * @throws IOException
+   * @throws IOException if reading from console was not possible
    */
   public static String readLine(String message) throws IOException {
     // create reader

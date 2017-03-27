@@ -547,8 +547,8 @@ public class GUIUtils {
 
   /**
    * This method constructs and displays alert window messages for the user. The type of the alert,
-   * the title text and the explanation text are passed to the method. It is then displayed until the
-   * user closes the alert window message again.
+   * the title text and the explanation text are passed to the method. It is then displayed until
+   * the user closes the alert window message again.
    * 
    * @param type The AlertType object indicating the kind of the alert
    * @param title The title of the alter window
@@ -564,7 +564,9 @@ public class GUIUtils {
   }
 
   /**
-   * This method converts a file given as an InputStream to a string containing the content of the file
+   * This method converts a file given as an InputStream to a string containing the content of the
+   * file
+   * 
    * @param is a InputStream from a file we want to read.
    * @return the content from the file as a string
    * @author jannis blueml

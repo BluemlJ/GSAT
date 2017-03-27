@@ -189,12 +189,12 @@ public abstract class Sequence {
     return sequence;
   }
 
-  
 
-  
+  // GETTERs AND SETTERs:
+
   public String getAddingDate() {
     return addingDate;
   }
 
-  
+
 }

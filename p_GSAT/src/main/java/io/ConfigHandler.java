@@ -120,7 +120,7 @@ public class ConfigHandler {
   private static DateFormat dateFormat = new SimpleDateFormat("dd/MM/yy");
 
   /**
-   * The char used for separating values in the configuration file;
+   * The char used for separating values in the configuration file.
    */
   public static final char SEPARATOR_CHAR = ';';
 

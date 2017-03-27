@@ -48,32 +48,32 @@ import javafx.stage.WindowEvent;
 public class SettingsWindow extends Application implements javafx.fxml.Initializable {
 
   /**
-   * says if a parameterWindow is already open
+   * Says if a parameterWindow is already open.
    */
   public static boolean addParametersOpen = false;
 
   /**
-   * says if there is the try to add a new researcher
+   * Says if there is the try to add a new researcher.
    */
   private boolean addResearcher = false;
 
   /**
-   * represents the selected gene in the listView
+   * Represents the selected gene in the listView.
    */
   private static Gene selectedGene;
 
   /**
-   * represents the selected primer in the listView
+   * Represents the selected primer in the listView.
    */
   private static Primer selectedPrimer;
 
   /**
-   * says if the listView shows primers (true) or genes (false)
+   * Says if the listView shows primers (true) or genes (false).
    */
   private static boolean isPrimerOn = false;
 
   /**
-   * number of open add- or showGeneWindows
+   * Number of open add- or showGeneWindows.
    */
   private int numGeneWindows = 0;
 
@@ -112,8 +112,9 @@ public class SettingsWindow extends Application implements javafx.fxml.Initializ
   @FXML
   private ToggleButton primmerToggle;
 
+  
   /**
-   * active scene object
+   * active scene object.
    */
   private Scene scene;
 

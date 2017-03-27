@@ -136,8 +136,8 @@ public class AnalysedSequence extends Sequence {
    * @author Lovis Heindrich
    */
   public AnalysedSequence(Gene gene, LinkedList<String> mutations, String name, String sequence,
-      Date date, String researcher, String comment, boolean manuallyChecked,
-      String primer, int trimpercent, int histag, int avgquality) {
+      Date date, String researcher, String comment, boolean manuallyChecked, String primer,
+      int trimpercent, int histag, int avgquality) {
     super(sequence, researcher, date);
     this.referencedGene = gene;
     this.mutations = mutations;
@@ -169,7 +169,6 @@ public class AnalysedSequence extends Sequence {
    * Returns the length of the sequence (the number of nucleotides in it).
    * 
    * @return the sequence's length
-   * 
    * @author jannis blueml
    */
   public int length() {
