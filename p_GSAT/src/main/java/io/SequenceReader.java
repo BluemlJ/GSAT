@@ -162,10 +162,10 @@ public class SequenceReader {
     path = null;
     files.clear();
   }
-  
+
   // getter and setter
-  
+
   public static String getPath() {
-	    return path;
-	  }
+    return path;
+  }
 }

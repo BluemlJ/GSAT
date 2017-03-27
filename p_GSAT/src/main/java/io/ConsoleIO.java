@@ -47,7 +47,7 @@ public class ConsoleIO {
    * @author Kevin Otto
    */
   public static void printCharMatrix(char[][] mat) {
-    //iterate though the array and print
+    // iterate though the array and print
     for (int j = 0; j < mat[0].length; j++) {
       for (int i = 0; i < mat.length; i++) {
         System.out.print(mat[i][j] + " ");
@@ -71,8 +71,8 @@ public class ConsoleIO {
   }
 
   /**
-   * Asks the User to type in a Number (Integer) and returns it as int.
-   * asks again if given String wasn`t a number
+   * Asks the User to type in a Number (Integer) and returns it as int. asks again if given String
+   * wasn`t a number
    * 
    * @param message the message displayed to the User
    * @return the int that was given by the user

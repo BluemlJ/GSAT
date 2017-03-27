@@ -34,21 +34,48 @@ import javafx.stage.WindowEvent;
  */
 public class AddGeneWindow extends Application implements javafx.fxml.Initializable {
 
+  /**
+   * the SettingsWindow this window was opened from.
+   */
   private SettingsWindow parent;
 
   // fields
+  
+  /**
+   * TextField to input the name of the Gene.
+   */
   @FXML
   private TextField nameField;
+  
+  /**
+   * TextField to input the organism of this Gene.
+   */
   @FXML
   private TextField organismField;
+  
+  /**
+   * TextArea to input the Nucleotide Sequence of this gene.
+   */
   @FXML
   private javafx.scene.control.TextArea geneArea;
+  
+  /**
+   * TextArea to input commits for this gene.
+   */
   @FXML
   private javafx.scene.control.TextArea commentArea;
 
   // buttons
+  
+  /**
+   * Button to confirm adding the gene.
+   */
   @FXML
   private Button confirmButton;
+  
+  /**
+   * Button to cancel adding the gene
+   */
   @FXML
   private Button cancelButton;
 
@@ -190,6 +217,11 @@ public class AddGeneWindow extends Application implements javafx.fxml.Initializa
     super.stop();
   }
 
+  /**
+   * javaFX method to start this window
+   * @param primaryStage the Stage to be used
+   * @author kevin
+   */
   @Override
   public void start(Stage primaryStage) throws Exception {
     // try to add parent
@@ -216,6 +248,11 @@ public class AddGeneWindow extends Application implements javafx.fxml.Initializa
     });
   }
 
+  /**
+   * Sets this windows parrent.
+   * Has to be called upon start of this window!
+   * @param parent the window, this window was opend from
+   */
   public void setParent(SettingsWindow parent) {
     this.parent = parent;
   }
