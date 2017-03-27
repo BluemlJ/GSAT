@@ -220,7 +220,7 @@ public class AddGeneWindow extends Application implements javafx.fxml.Initializa
   /**
    * javaFX method to start this window
    * @param primaryStage the Stage to be used
-   * @author kevin
+   * @author Kevin Otto
    */
   @Override
   public void start(Stage primaryStage) throws Exception {
