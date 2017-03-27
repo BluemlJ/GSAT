@@ -10,6 +10,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -44,6 +45,15 @@ public class ShowPrimerWindow extends Application implements javafx.fxml.Initial
   @FXML
   private Button okButton;
 
+  /**
+   * initialize all components and set Eventhandlers.
+   * 
+   * @param location  the URL to init, more information at {@link Initializable}
+   * @param resources  a ResourceBunde, for more informations see {@link Initializable}
+   * 
+   * @see Initializable
+   * @author jannis blueml
+   */
   @Override
   public void initialize(URL location, ResourceBundle resources) {
 

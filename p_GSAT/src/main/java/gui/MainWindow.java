@@ -112,7 +112,7 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
   private Button chromatogramButton;
   @FXML
   private Button openDest;
-  @FXML
+  @FXML 
   private Button openSrc;
 
   // Textfields
@@ -146,9 +146,13 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
 
 
   /**
-   * Mainwindow to initialize all components and set Eventhandlers.
+   * initialize all components and set Eventhandlers.
+   * 
+   * @param arg0  the URL to init, more information at {@link Initializable}
+   * @param arg1  a ResourceBunde, for more informations see {@link Initializable}
    * 
    * @see Initializable
+   * @author jannis blueml
    */
   @Override
   public void initialize(URL arg0, ResourceBundle arg1) {

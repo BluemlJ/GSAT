@@ -106,7 +106,7 @@ public class StringAnalysis {
    * 
    *        the length it should be appended to
    * @param length
-   * @return
+   * @return TODO KEVIN COMMENT
    * @author kevin
    */
   public static String appendStringToLength(String input, int length) {

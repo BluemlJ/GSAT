@@ -55,10 +55,7 @@ public class MutationAnalysis {
 
     // a List of all differences in form of s|12|d|e
     LinkedList<String> differenceList = reportDifferences(toAnalyze, true);
-    // the last position we found a mutation. Necessary for silent mutation
-    // detection.
-    int lastposition = 0;
-    // counter for reading frame error detection
+     // counter for reading frame error detection
     int checkFrameerrorCounter = 0;
     // shift created by insertions and deletions
     int shift = 0;
@@ -80,7 +77,7 @@ public class MutationAnalysis {
       String typeOfMutations = difference.split("\\|")[0];
       // position relative to mutatedSequence (of animoAcids)
       int position = Integer.parseInt(difference.split("\\|")[1]) + toAnalyze.getOffset();
-      // the amino acid in the mutated seqeunce
+      // the amino acid in the mutated sequence
       String newAminoAcid;
       // the amino acid found in the gene at the same position
       String oldAminoAcid;
@@ -205,7 +202,7 @@ public class MutationAnalysis {
           j--;
         }
       }
-      // resart process
+      // restart process
       isMutation = false;
     }
     return true;
