@@ -558,7 +558,10 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
             } else {
               geneBoxItem = geneBox.getSelectionModel().getSelectedItem().split(" ")[0];
             }
-            startButton.setDisable(true);
+            
+            //DISABLE ALL INPUTS
+            callSetDisableOfManyComponents(true);     
+            
             sequences = new LinkedList<AnalysedSequence>();
             AnalysedSequence sequence;
 
@@ -580,7 +583,7 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
               @Override
               public void run() {
                 infoArea.getChildren().addAll(resultingLines);
-                startButton.setDisable(false);
+                callSetDisableOfManyComponents(false);     
               }
 
             });
@@ -809,6 +812,32 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
       }
     });
 
+  }
+  
+  /**
+   * Disables or enables all critical fields.
+   * 
+   * @param status the disabled status to set
+   * 
+   * @author Kevin Otto
+   */
+  private void callSetDisableOfManyComponents(boolean status) {
+    
+    openResFile.setDisable(status);
+    databaseButton.setDisable(status);
+    destButton.setDisable(status); 
+    startButton.setDisable(status);    
+    settingsButton.setDisable(status);
+    srcButton.setDisable(status);
+    chromatogramButton.setDisable(status);
+    openDest.setDisable(status);
+    openSrc.setDisable(status);
+    srcField.setDisable(status);
+    destField.setDisable(status);
+    fileNameField.setDisable(status);
+    geneBox.setDisable(status);
+    outputCheckbox.setDisable(status);
+    findGeneCheckbox.setDisable(status);
   }
 
 }
