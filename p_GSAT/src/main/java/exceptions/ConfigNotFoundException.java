@@ -3,7 +3,7 @@ package exceptions;
 /**
  * This exception is thrown in case the configuration file could not be found.
  * 
- * @author lovisheindrich
+ * @author Lovis Heindrich
  * @author Ben Kohr
  */
 public class ConfigNotFoundException extends Exception {
@@ -18,7 +18,7 @@ public class ConfigNotFoundException extends Exception {
    * 
    * @param path A String specifying the path where the configuration file could not be found.
    * 
-   * @author lovisheindrich
+   * @author Lovis Heindrich
    * @author Ben Kohr
    */
   public ConfigNotFoundException(String path) {

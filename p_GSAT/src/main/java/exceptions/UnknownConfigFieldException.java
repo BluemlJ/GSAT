@@ -3,7 +3,7 @@ package exceptions;
 /**
  * This exception is thrown if a field in the configuration file is unknown.
  * 
- * @author lovisheindrich
+ * @author Lovis Heindrich
  * @author Ben Kohr
  *
  */
@@ -19,7 +19,7 @@ public class UnknownConfigFieldException extends Exception {
    * 
    * @param unknownField the name of the unknown field which was found
    * 
-   * @author lovisheindrich
+   * @author Lovis Heindrich
    * @author Ben Kohr
    */
   public UnknownConfigFieldException(String unknownField) {
