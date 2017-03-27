@@ -99,15 +99,13 @@ public class StringAnalysis {
   }
 
   /**
-   * Appents a string to the given lenght by adding space characters at the end if the String is
+   * Appends a string to the given length by adding space characters at the end if the String is
    * already long e or longe nothing is done.
    * 
-   * @param input
-   * 
-   *        the length it should be appended to
-   * @param length
-   * @return TODO KEVIN COMMENT
-   * @author kevin
+   * @param input the string we trim
+   * @param length the length it should be appended to
+   * @return the trimmed string
+   * @author kevin otto
    */
   public static String appendStringToLength(String input, int length) {
     // calculate number of characters needed to reach required length
