@@ -29,73 +29,79 @@ import javafx.stage.Stage;
  */
 public class ShowPrimerWindow extends Application implements javafx.fxml.Initializable {
 
-  // fields
-  @FXML
-  private TextField nameField;
-  @FXML
-  private TextField idField;
-  @FXML
-  private TextField meltingTempField;
-  @FXML
-  private TextArea sequenceArea;
-  @FXML
-  private TextArea commentArea;
+	// fields
+	@FXML
+	private TextField nameField;
+	@FXML
+	private TextField idField;
+	@FXML
+	private TextField meltingTempField;
+	@FXML
+	private TextArea sequenceArea;
+	@FXML
+	private TextArea commentArea;
 
-  // button
-  @FXML
-  private Button okButton;
+	// button
+	@FXML
+	private Button okButton;
 
-  /**
-   * initialize all components and set Eventhandlers.
-   * 
-   * @param location  the URL to init, more information at {@link Initializable}
-   * @param resources  a ResourceBunde, for more informations see {@link Initializable}
-   * 
-   * @see Initializable
-   * @author jannis blueml
-   */
-  @Override
-  public void initialize(URL location, ResourceBundle resources) {
+	/**
+	 * initialize all components and set Eventhandlers.
+	 * 
+	 * @param location
+	 *            the URL to init, more information at {@link Initializable}
+	 * @param resources
+	 *            a ResourceBunde, for more informations see
+	 *            {@link Initializable}
+	 * 
+	 * @see Initializable
+	 * @author jannis blueml
+	 */
+	@Override
+	public void initialize(URL location, ResourceBundle resources) {
 
-    sequenceArea.setWrapText(true);
-    GUIUtils.setColorOnButton(okButton, ButtonColor.BLUE);
+		sequenceArea.setWrapText(true);
+		GUIUtils.setColorOnButton(okButton, ButtonColor.BLUE);
 
-    Primer selectedPrimer = SettingsWindow.getSelectedPrimer();
-    nameField.setText(selectedPrimer.getName());
-    sequenceArea.setText(selectedPrimer.getSequence());
-    meltingTempField.setText(selectedPrimer.getMeltingPoint() + " �C");
-    idField.setText(selectedPrimer.getId());
-    commentArea.setText(selectedPrimer.getComment());
+		Primer selectedPrimer = SettingsWindow.getSelectedPrimer();
+		nameField.setText(selectedPrimer.getName());
+		sequenceArea.setText(selectedPrimer.getSequence());
+		int meltingPoint = selectedPrimer.getMeltingPoint();
+		if (meltingPoint != -1) {
+			meltingTempField.setText(selectedPrimer.getMeltingPoint() + " \u00b0C");
+		}
+		idField.setText(selectedPrimer.getId());
+		commentArea.setText(selectedPrimer.getComment());
 
-    okButton.setOnAction(new EventHandler<ActionEvent>() {
-      @Override
-      public void handle(ActionEvent arg0) {
-        Stage stage = (Stage) okButton.getScene().getWindow();
-        stage.close();
-      }
-    });
-  }
+		okButton.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent arg0) {
+				Stage stage = (Stage) okButton.getScene().getWindow();
+				stage.close();
+			}
+		});
+	}
 
-  @Override
-  public void stop() throws Exception {
-    super.stop();
-  }
+	@Override
+	public void stop() throws Exception {
+		super.stop();
+	}
 
-  @Override
-  public void start(Stage primaryStage) throws Exception {
-    Parent root;
-    try {
-      root = FXMLLoader.load(getClass().getResource("/fxml/ShowPrimerWindow.fxml"));
-    } catch (IOException e) {
-      e.printStackTrace();
-      return;
-    }
-    Scene scene = new Scene(root);
+	@Override
+	public void start(Stage primaryStage) throws Exception {
+		Parent root;
+		try {
+			root = FXMLLoader.load(getClass().getResource("/fxml/ShowPrimerWindow.fxml"));
+		} catch (IOException e) {
+			e.printStackTrace();
+			return;
+		}
+		Scene scene = new Scene(root);
 
-    primaryStage.setTitle("GSAT - Primer - " + SettingsWindow.getSelectedPrimer().getName());
+		primaryStage.setTitle("GSAT - Primer - " + SettingsWindow.getSelectedPrimer().getName());
 
-    primaryStage.setScene(scene);
-    primaryStage.sizeToScene();
-    primaryStage.show();
-  }
+		primaryStage.setScene(scene);
+		primaryStage.sizeToScene();
+		primaryStage.show();
+	}
 }
