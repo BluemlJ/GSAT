@@ -112,8 +112,9 @@ public class SettingsWindow extends Application implements javafx.fxml.Initializ
   @FXML
   private ToggleButton primmerToggle;
 
+  
   /**
-   * active scene object
+   * active scene object.
    */
   private Scene scene;
 
