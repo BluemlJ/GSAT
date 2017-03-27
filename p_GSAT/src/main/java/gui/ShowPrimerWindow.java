@@ -36,25 +36,25 @@ public class ShowPrimerWindow extends Application implements javafx.fxml.Initial
    */
   @FXML
   private TextField nameField;
-  
+
   /**
    * TextField to display the id of the primer.
    */
   @FXML
   private TextField idField;
-  
+
   /**
    * TextField to display the melting temperature of the primer.
    */
   @FXML
   private TextField meltingTempField;
-  
+
   /**
    * TextArea to display the sequence of the Primer.
    */
   @FXML
   private TextArea sequenceArea;
-  
+
   /**
    * TextArea to display the comments of the Primer.
    */
@@ -62,9 +62,9 @@ public class ShowPrimerWindow extends Application implements javafx.fxml.Initial
   private TextArea commentArea;
 
   // button
-  
+
   /**
-   * button to close the window
+   * button to close the window.
    */
   @FXML
   private Button okButton;
@@ -109,8 +109,10 @@ public class ShowPrimerWindow extends Application implements javafx.fxml.Initial
   }
 
   /**
-   * javaFX method to start this window
+   * javaFX method to start this window.
+   * 
    * @param primaryStage the Stage to be used
+   * 
    * @author Kevin Otto
    */
   @Override

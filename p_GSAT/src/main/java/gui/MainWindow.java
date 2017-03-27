@@ -101,7 +101,7 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
   public static boolean changesOnResults = false;
 
   /**
-   * ProgressBar to show Progress of the Analysis
+   * ProgressBar to show Progress of the Analysis.
    */
   @FXML
   private ProgressBar bar;
@@ -112,62 +112,62 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
    */
   @FXML
   private Button openResFile;
-  
+
   /**
    * Button to open the DatabaseConnection window.
    */
   @FXML
   private Button databaseButton;
-  
+
   /**
-   * Button to specify the destination folder for the analysis results.
-   * (opens a Folder Chooser)
+   * Button to specify the destination folder for the analysis results. (opens a Folder Chooser)
    */
   @FXML
   private Button destButton;
-  
+
   /**
    * Button to start the Analysis.
    */
   @FXML
   private Button startButton;
-  
+
   /**
    * Button to open the Settings Window.
    */
   @FXML
   private Button settingsButton;
-  
+
   /**
-   * Button to specify the Files to be Analyisd (opens a selector wich opens a File or Folder Chooser)
+   * Button to specify the Files to be Analyisd (opens a selector wich opens a File or Folder
+   * Chooser).
    */
   @FXML
   private Button srcButton;
-  
+
   /**
    * Button to open the About Window.
    */
   @FXML
   private Button aboutButton;
-  
+
   /**
    * Button to open the User Manual.
    */
   @FXML
   private Button manualButton;
-  
+
   /**
    * Button to open the showChromatogramWindow.
    */
   @FXML
   private Button chromatogramButton;
-  
+
   /**
    * Button to open the Destination Dolder in explorer.
    */
   @FXML
   private Button openDest;
-  
+
   /**
    * Button to open Source Folder in explorer.
    */
@@ -180,7 +180,7 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
    */
   @FXML
   private TextField srcField;
-  
+
   /**
    * TextField to enter and display selected destination folder.
    */
@@ -195,40 +195,41 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
 
   // dropdownMenu
   /**
-   * ChoiceBox to select the gene that should be used for the analysis
+   * ChoiceBox to select the gene that should be used for the analysis.
    */
   @FXML
   private ChoiceBox<String> geneBox;
 
   // info output area
   /**
-   * TextFlow to display status messages of the program during usage
+   * TextFlow to display status messages of the program during usage.
    */
   @FXML
   private TextFlow infoArea;
 
   // checkbox
   /**
-   * Checkbox to specify if one ore multiple files should be saved
+   * Checkbox to specify if one ore multiple files should be saved.
    */
   @FXML
   private CheckBox outputCheckbox;
-  
+
   /**
-   * CheckBox to specify if gene should be selected automatically
+   * CheckBox to specify if gene should be selected automatically.
    */
   @FXML
   private CheckBox findGeneCheckbox;
 
   /**
-   * scrollPane that makes the infoarea scrollable
+   * scrollPane that makes the infoarea scrollable.
+   * 
    * @see #infoArea
    */
   @FXML
   private ScrollPane textScroll;
 
   /**
-   * stage of this Window
+   * stage of this Window.
    */
   Stage primaryStage;
 
@@ -742,7 +743,7 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
     infoArea.getChildren().add(introText);
   }
 
-  
+
   @Override
   public void start(Stage primaryStage) throws Exception {
     Parent root;

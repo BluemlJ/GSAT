@@ -30,36 +30,77 @@ import javafx.stage.WindowEvent;
  * 
  * @category GUI.Window
  * 
- * @author jannis blueml, Kevin Otto
+ * @author Jannis Blueml, Kevin Otto
  *
  */
 public class ParameterWindow extends Application implements javafx.fxml.Initializable {
 
   /**
    * Textfield for the avgApproximationEnd parameter.
+   * 
    * @see analysis.QualityAnalysis
    */
   @FXML
   private TextField avgApproximationEnd;
+
+  /**
+   * Textfield for the avgApproximationStart parameter.
+   * 
+   * @see analysis.QualityAnalysis
+   */
   @FXML
   private TextField avgApproximationStart;
+
+
+  /**
+   * Textfield for the breakcounter parameter.
+   * 
+   * @see analysis.QualityAnalysis
+   */
   @FXML
   private TextField breakcounter;
+  
+  /**
+   * Textfield for the startcounter parameter.
+   * 
+   * @see analysis.QualityAnalysis
+   */
   @FXML
   private TextField startcounter;
+  
+  /**
+   * Textfield for the numAverageNucleotides parameter.
+   * 
+   * @see analysis.QualityAnalysis
+   */
   @FXML
   private TextField numAverageNucleotides;
 
-  // buttons
+  /**
+   * Saves the current values.
+   */
   @FXML
   private Button saveButton;
+  
+  /**
+   * Restores the default values.
+   */
   @FXML
   private Button defaultButton;
+  
+  /**
+   * Closes the window without saving the new entered ones.
+   */
   @FXML
   private Button cancelButton;
+  
+  /**
+   * Opens a help window to explain the parameters.
+   */
   @FXML
   private Button helpButton;
 
+  
   /**
    * initialize all components and set Eventhandlers.
    * 
@@ -245,6 +286,11 @@ public class ParameterWindow extends Application implements javafx.fxml.Initiali
     });
   }
 
+  /**
+   * Starts the window.
+   * 
+   * @author Ben Kohr
+   */
   @Override
   public void start(Stage primaryStage) throws Exception {
     Parent root;
@@ -269,9 +315,15 @@ public class ParameterWindow extends Application implements javafx.fxml.Initiali
     });
   }
 
+  /**
+   * Stops the current parameter window.
+   *
+   *@author Kevin Otto
+   */
   @Override
   public void stop() throws Exception {
     SettingsWindow.addParametersOpen = false;
     super.stop();
   }
+  
 }

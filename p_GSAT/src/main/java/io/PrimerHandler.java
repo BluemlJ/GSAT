@@ -257,7 +257,8 @@ public class PrimerHandler {
     try {
       readPrimer();
     } catch (NumberFormatException | IOException e) {
-      GUIUtils.showInfo(AlertType.ERROR, "Primer reading error", "Error while reading primers occurred.");
+      GUIUtils.showInfo(AlertType.ERROR, "Primer reading error",
+          "Error while reading primers occurred.");
     }
 
     if (getPrimer(primer.getName(), primer.getId()) == null) {
@@ -266,7 +267,8 @@ public class PrimerHandler {
       try {
         writePrimer();
       } catch (IOException e) {
-        GUIUtils.showInfo(AlertType.ERROR, "Primer writing error", "Error while writing primers occurred.");
+        GUIUtils.showInfo(AlertType.ERROR, "Primer writing error",
+            "Error while writing primers occurred.");
       }
 
       return true;
