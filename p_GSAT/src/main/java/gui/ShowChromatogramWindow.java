@@ -46,11 +46,35 @@ import javafx.stage.Stage;
 public class ShowChromatogramWindow extends Application implements javafx.fxml.Initializable {
 
   // Preset colors for Chromatogram:
+  
+  /**
+   * geenish color for trace A
+   */
   private final Color colorA = new Color(170, 220, 80);
+  
+  /**
+   * redish color for trace T
+   */
   private final Color colorT = new Color(240, 60, 60);
+  
+  /**
+   * Black color for trace G
+   */
   private final Color colorG = Color.BLACK;
+  
+  /**
+   * Bluish color for trace C
+   */
   private final Color colorC = new Color(110, 180, 200);
+  
+  /**
+   * color for undefined genes
+   */
   private final Color colorN = Color.MAGENTA;
+  
+  /**
+   * color for background of Chromatogram window (matches default Window Color)
+   */
   private final Color background = new Color(244, 244, 244);
 
   private static final int IMAGE_HEIGHT = 400;
@@ -105,12 +129,15 @@ public class ShowChromatogramWindow extends Application implements javafx.fxml.I
 
   }
 
-  // the active scene.
+  /**
+   * active scene
+   */
   private Scene scene;
 
   /**
    * JavaFX start method Setup all necessary variables and opens the Chromatogram
    * 
+   * @param primaryStage the stage to use for this window
    * @author kevin
    */
   @Override
@@ -486,7 +513,7 @@ public class ShowChromatogramWindow extends Application implements javafx.fxml.I
    * 
    * @param sequence The AnalysedSequence object to be showed as a chromatogram
    * 
-   * @author Kevin Otto
+   * @author Kevin
    */
   public void setSequence(AnalysedSequence sequence) {
     // create new list
@@ -503,8 +530,8 @@ public class ShowChromatogramWindow extends Application implements javafx.fxml.I
    * sets list of Sequences and updates Chromatogram accordingly Automatically sets first sequence
    * of the list.
    * 
-   * @author kevin
-   * @param sequences
+   * @author Kevin
+   * @param sequences the list of sequences that should be displayed in the chromatogram
    */
   public void setSequences(LinkedList<AnalysedSequence> sequences) {
     // set sequence
