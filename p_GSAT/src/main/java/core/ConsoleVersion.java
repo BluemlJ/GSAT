@@ -221,28 +221,11 @@ public class ConsoleVersion {
     return new Pair<LinkedList<File>, LinkedList<File>>(files, oddFiles);
   }
 
-  /**
-   * Asks user for a comment and sets the comment field of the referenced analysedSequence.
-   * 
-   * @param sequence
-   * @param file
-   * @author Ben Kohr
-   */
-  @SuppressWarnings("unused")
-  private static void askForComment(AnalysedSequence sequence, File file) {
-    try {
-      sequence.setComments(ConsoleIO.readLine(
-          "Please enter a comment for file " + file.getName() + " or press ENTER to skip."));
-    } catch (IOException e1) {
-      System.out.println("Error occurred during comment reading.");
-    }
-  }
 
   /**
    * Asks user for gene sequence and gene name and adds it to the local gene file.
    * 
    * @return Gene containing the parsed data
-   * @throws DuplicateGeneException
    * @author Lovis Heindrich
    */
   private static Gene askForGene() {
