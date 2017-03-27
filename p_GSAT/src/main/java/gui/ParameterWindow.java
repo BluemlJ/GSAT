@@ -41,8 +41,15 @@ public class ParameterWindow extends Application implements javafx.fxml.Initiali
    */
   @FXML
   private TextField avgApproximationEnd;
+  
+  /**
+   * Textfield for the avgApproximationStart parameter.
+   * @see analysis.QualityAnalysis
+   */
   @FXML
   private TextField avgApproximationStart;
+  
+  
   @FXML
   private TextField breakcounter;
   @FXML
