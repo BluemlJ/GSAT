@@ -7,5 +7,6 @@ package exceptions;
  * @author Ben Kohr
  */
 public enum PathUsage {
-  READING, WRITING
+  READING, 
+  WRITING
 }
