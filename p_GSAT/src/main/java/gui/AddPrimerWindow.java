@@ -26,7 +26,7 @@ import javafx.stage.WindowEvent;
 
 /**
  * This window is necessary to add new primers to the local primer pool. It contains four fields for
- * informations (name,id,meltingPoint and comment).
+ * information (name,id,meltingPoint and comment).
  * 
  * @category GUI.Window
  * 
