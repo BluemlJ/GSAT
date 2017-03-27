@@ -24,25 +24,54 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
+/**
+ * Window for database settings. Used to enter login details for the mysql database.
+ * 
+ * @author Lovis Heindrich
+ *
+ */
 public class DatabaseSettingsWindow extends Application implements javafx.fxml.Initializable {
 
+	/**
+	 * Button to test connection using the entered login data.
+	 */
   @FXML
   private Button connectButton;
+  
+  /**
+   * Button to close the setting window.
+   */
   @FXML
   private Button closeButton;
 
+  /**
+   * Field to enter the database url.
+   */
   @FXML
   private TextField adressField;
 
+  /**
+   * Text field to enter the database port.
+   */
   @FXML
   private TextField portField;
 
+  /**
+   * Text field to enter the database username.
+   */
   @FXML
   private TextField userNameField;
 
+  /**
+   * Text field to enter the database password.
+   */
   @FXML
   private PasswordField passwordField;
 
+  /**
+   * Initializes the database settings window. Sets all button actions.
+   * @author Lovis Heindrich
+   */
   @Override
   public void initialize(URL arg0, ResourceBundle arg1) {
     GUIUtils.setColorOnButton(connectButton, ButtonColor.GREEN);
@@ -154,6 +183,10 @@ public class DatabaseSettingsWindow extends Application implements javafx.fxml.I
     });
   }
 
+  /**
+   * Initializes the gui window.
+   * @author Kevin Otto
+   */
   @Override
   public void start(Stage primaryStage) throws Exception {
     Parent root;

@@ -36,25 +36,50 @@ import javafx.stage.WindowEvent;
 public class AddPrimerWindow extends Application implements javafx.fxml.Initializable {
 
   /**
-   * the own window as a instance.
+   * the SettingsWindow that this Window was opened from.
    */
   private SettingsWindow parent;
 
-  // fields
+  /**
+   * TextField to input the name of the primer.
+   */
   @FXML
   private TextField nameField;
+  
+  /**
+   * TextField to input the id of the primer.
+   */
   @FXML
   private TextField idField;
+  
+  /**
+   * TextField to inptut the melting temperature of the primer.
+   */
   @FXML
   private TextField meltingTempField;
+  
+  /**
+   * TextArea to input the sequence of the primer.
+   */
   @FXML
   private javafx.scene.control.TextArea sequenceArea;
+  
+  /**
+   * TextArea to add comments to the primer.
+   */
   @FXML
   private TextArea commentArea;
 
   // buttons
+  /**
+   * Button to cancle adding the primer.
+   */
   @FXML
   private Button cancelButton;
+  
+  /**
+   * Button to confirm adding the primer
+   */
   @FXML
   private Button confirmButton;
 
@@ -195,11 +220,17 @@ public class AddPrimerWindow extends Application implements javafx.fxml.Initiali
     });
   }
 
+  
   @Override
   public void stop() throws Exception {
     super.stop();
   }
 
+  /**
+   * javaFX method to start this window
+   * @param primaryStage the Stage to be used
+   * @author Kevin Otto
+   */
   @Override
   public void start(Stage primaryStage) throws Exception {
     Parent root;
@@ -225,6 +256,11 @@ public class AddPrimerWindow extends Application implements javafx.fxml.Initiali
     });
   }
 
+  /**
+   * Sets this windows parrent.
+   * Has to be called upon start of this window!
+   * @param parent the window, this window was opend from
+   */ 
   public void setParent(SettingsWindow parent) {
     this.parent = parent;
   }
