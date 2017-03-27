@@ -482,7 +482,7 @@ public class ShowChromatogramWindow extends Application implements javafx.fxml.I
   }
 
   /**
-   * sets Sequence and updates Chromatogram accordingly
+   * Sets sequence and updates chromatograms accordingly.
    * 
    * @param sequence
    * @author kevin
