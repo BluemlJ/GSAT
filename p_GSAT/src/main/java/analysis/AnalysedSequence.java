@@ -136,8 +136,8 @@ public class AnalysedSequence extends Sequence {
    * @author Lovis Heindrich
    */
   public AnalysedSequence(Gene gene, LinkedList<String> mutations, String name, String sequence,
-      Date date, String researcher, String comment, boolean manuallyChecked,
-      String primer, int trimpercent, int histag, int avgquality) {
+      Date date, String researcher, String comment, boolean manuallyChecked, String primer,
+      int trimpercent, int histag, int avgquality) {
     super(sequence, researcher, date);
     this.referencedGene = gene;
     this.mutations = mutations;

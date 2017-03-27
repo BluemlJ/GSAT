@@ -38,8 +38,8 @@ public class SequenceReader {
    * Sets the path to the folder or the file to be used. In case of a folder, also gathers the file
    * names into the list to be able to check that all files are analyzed, and only once.
    * 
-   * @param path The given path to the data
-   * 
+   * @param path The given path to the data.
+   * @author Lovis Heindrich
    */
   public static void configurePath(String path) {
     SequenceReader.path = path;
@@ -50,11 +50,11 @@ public class SequenceReader {
    * deletes the first entry of the list. Note: There's no method to read in several files at once,
    * because the files is analyzed one by one.
    * 
-   * @throws IOException
-   * @throws IllegalSymbolException
+   * @throws IOException Error while reading file.
+   * @throws IllegalSymbolException Illegal symbol in file.
    * 
    * @author Lovis Heindrich
-   * @throws MissingPathException
+   * @throws MissingPathException Path to the files is missing.
    */
   public static AnalysedSequence convertFileIntoSequence()
       throws FileReadingException, IOException, MissingPathException, IllegalSymbolException {
@@ -66,11 +66,11 @@ public class SequenceReader {
    * into a sequence. If possible, deletes the first entry of the list. Note: There's no method to
    * read in several files at once, because the files is analyzed one by one.
    * 
-   * @throws IOException
-   * @throws IllegalSymbolException
+   * @throws IOException Error while reading file.
+   * @throws IllegalSymbolException Illegal symbol in file.
    * 
    * @author Lovis Heindrich
-   * @throws MissingPathException
+   * @throws MissingPathException Path to the files is missing.
    */
   public static AnalysedSequence convertFileIntoSequence(File file)
       throws FileReadingException, IOException, MissingPathException, IllegalSymbolException {
@@ -105,15 +105,13 @@ public class SequenceReader {
     return parsedSequence;
   }
 
-  public static String getPath() {
-    return path;
-  }
+
 
   /**
-   * Returns a list of all AB1 files in the path that was set via configurePath()
+   * Returns a list of all AB1 files in the path that was set via configurePath().
    * 
-   * @return
-   * @author Kevin
+   * @return A Pair containing a list of readable .ab1 files and a list of all other files.
+   * @author Kevin Otto
    */
   public static Pair<LinkedList<File>, LinkedList<File>> listFiles() {
 
@@ -164,4 +162,10 @@ public class SequenceReader {
     path = null;
     files.clear();
   }
+  
+  // getter and setter
+  
+  public static String getPath() {
+	    return path;
+	  }
 }

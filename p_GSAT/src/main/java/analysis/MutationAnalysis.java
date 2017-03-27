@@ -39,6 +39,8 @@ public class MutationAnalysis {
    * @throws CorruptedSequenceException if sequence of toAnalyze is damaged or corrupt
    * @throws UndefinedTypeOfMutationException if reportDifferences gives me a mutation that's not s,i,d
    * @author jannis blueml
+   * @throws UndefinedTypeOfMutationException if reportDifferences gives me a mutation thats not
+   *         s,i,d
    */
   public static boolean findMutations(AnalysedSequence toAnalyze)
       throws UndefinedTypeOfMutationException, CorruptedSequenceException {

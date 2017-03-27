@@ -5,7 +5,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 
 /**
- * Class to handle Console outputs
+ * Class to handle console outputs.
  * 
  * @author Kevin Otto
  *
@@ -13,8 +13,9 @@ import java.io.InputStreamReader;
 public class ConsoleIO {
 
   /**
-   * WARNING: Highly experimental and still untested Needs To be testet in builded Verion (as JAR)
-   * WARNING: Black Magic incoming Should clear Console OS independently
+   * This method clears the console.
+   * 
+   * @author Kevin Otto
    */
   public static void clearConsole() {
     try {
@@ -39,9 +40,11 @@ public class ConsoleIO {
   }
 
   /**
-   * outputs a Char Matrix (char[][]) to Console and Formating it for better readability
+   * Outputs a Char Matrix (char[][]) to Console and Formating it for better readability.
    * 
    * @param mat matrix (char[][]) to print
+   * 
+   * @author Kevin Otto
    */
   public static void printCharMatrix(char[][] mat) {
     for (int j = 0; j < mat[0].length; j++) {
