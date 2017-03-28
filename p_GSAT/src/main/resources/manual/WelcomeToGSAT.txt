@@ -96,10 +96,12 @@ After choosing a path for input and output and after selecting a gene, you can c
 Choose your name in the dropdown menu to make sure your analyses are associated with it. If your name is not entered yet, do so by making use of the add button. 
 Remove names from the list with delete.
 
->>> AVAILABLE GENES
-The big box contains all currently available genes for an analysis. You can add or delete genes with the buttons add and delete. Only the genes you specify here
-are presented to you in the main window's gene dropdown.
+>>> AVAILABLE GENES AND PRIMERS
+The list you see in the middle of the window contains all currently available genes for an analysis. You can add, delete and show your genes with the three buttons next to the list.
+Only the genes you specify here are presented in the main window's gene dropdown.
 When adding a gene you are asked to enter its name, the organism it corresponds to, its nucleotide sequence (with A, T, C and G letters). You may enter a comment if desired.
+Next to the list are also two toggle buttons to switch between genes and primers. When primers are selected the list will contain all primers you saved in your local primer file.
+You can add, delete and show them with the same buttons next to the list view.
 
 >>> EDIT PARAMETERS
 You can adjust parameters used in the analysis pipeline by clicking this button.
@@ -110,10 +112,10 @@ Good Quality Margin: The minimum number of nucleotides with good quality (better
 Search Radius: The number of nucleotides with bad quality (less than "Minimal End Quality") that must appear in a row to cut off the sequence AT THE END.
 
 >>> CONFIGURE DATABASE
-The database used to store the results can be configured with this button.
+Opens a new window to configurate the database connection. You can login here.
 
 >>> OK
-Leave the settings window and return to the main window. You changes will be saved.
+Leave the settings window by closing it and return to the main window. You changes will be saved.
 
 
 
