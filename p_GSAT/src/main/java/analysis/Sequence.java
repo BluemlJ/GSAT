@@ -148,9 +148,9 @@ public abstract class Sequence {
 
     return reversedSequence;
   }
-  
-  
-  
+
+
+
   /**
    * This methods sets the internal nucleotide representation as a String constisting of the letters
    * A, T, C and G. It also removes all internal whitespace characters and converts in to uppercase.
@@ -175,15 +175,15 @@ public abstract class Sequence {
   public String toString() {
     return sequence;
   }
-  
-  
-  
+
+
+
   // GETTERs and SETTERs:
-  
+
   public String getResearcher() {
     return researcher;
   }
-  
+
   public String getSequence() {
     return sequence;
   }

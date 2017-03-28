@@ -31,28 +31,28 @@ public class AnalysedSequence extends Sequence {
   private LinkedList<ProblematicComment> problems = new LinkedList<ProblematicComment>();
 
   /**
-   * Channel A information (retrieved from AB1 files), as an array
+   * Channel A information (retrieved from AB1 files), as an array.
    */
   private int[] channelA;
-  
+
   /**
-   * Channel C information (retrieved from AB1 files), as an array
+   * Channel C information (retrieved from AB1 files), as an array.
    */
   private int[] channelC;
-  
+
   /**
-   * Channel G information (retrieved from AB1 files), as an array
+   * Channel G information (retrieved from AB1 files), as an array.
    */
   private int[] channelG;
-  
+
   /**
-   * Channel T information (retrieved from AB1 files), as an array
+   * Channel T information (retrieved from AB1 files), as an array.
    */
   private int[] channelT;
 
-  
+
   /**
-   * Basecalls information (retrieved from AB1 files), as an array
+   * Basecalls information (retrieved from AB1 files), as an array.
    */
   private int[] baseCalls;
 
@@ -191,7 +191,7 @@ public class AnalysedSequence extends Sequence {
     problems.add(comment);
   }
 
-  
+
   /**
    * Returns the length of the sequence (the number of nucleotides in it).
    * 
@@ -202,7 +202,7 @@ public class AnalysedSequence extends Sequence {
     return sequence.length();
   }
 
-  
+
   /**
    * This method reverses the Qualityarray and set it new.
    * 

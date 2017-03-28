@@ -25,7 +25,7 @@ import javafx.stage.Stage;
  * @see GUIUtils
  * @category GUI.Window
  * 
- * @author jannis blueml 
+ * @author jannis blueml
  * @author Kevin Otto
  *
  */

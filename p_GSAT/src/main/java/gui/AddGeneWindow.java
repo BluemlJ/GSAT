@@ -256,7 +256,7 @@ public class AddGeneWindow extends Application implements javafx.fxml.Initializa
 
 
   // GETTERs and SETTERs:
-  
+
   public void setParent(SettingsWindow parent) {
     this.parent = parent;
   }

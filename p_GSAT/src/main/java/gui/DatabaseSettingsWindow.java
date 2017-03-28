@@ -72,8 +72,8 @@ public class DatabaseSettingsWindow extends Application implements javafx.fxml.I
   /**
    * Initializes the database settings window. Sets all button actions.
    * 
-   * @param location the URL to init, more information at {@link Initializable}
-   * @param resources a ResourceBunde, for more informations see {@link Initializable}
+   * @param arg0 the URL to init, more information at {@link Initializable}
+   * @param arg1 a ResourceBunde, for more informations see {@link Initializable}
    * 
    * @author Lovis Heindrich
    */

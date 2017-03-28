@@ -30,7 +30,7 @@ import javafx.stage.WindowEvent;
  * 
  * @category GUI.Window
  * 
- * @author Jannis Blueml, 
+ * @author Jannis Blueml,
  * @author Kevin Otto
  *
  */

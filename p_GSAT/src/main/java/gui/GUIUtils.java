@@ -469,7 +469,7 @@ public class GUIUtils {
    * found in {@link ButtonColor}.
    * 
    * @param button The button to be colored
-   * @param color A ButtonColor element to specify the desired color scheme. 
+   * @param color A ButtonColor element to specify the desired color scheme.
    * 
    * @author Ben Kohr
    */

@@ -21,6 +21,7 @@ public class QualityAnalysis {
    */
   private static int avgApproximationStart = 30;
 
+
   /**
    * This parameter sets the minimal quality to end a sequence. It can be changed by the user. The
    * default value is 25.
@@ -29,6 +30,7 @@ public class QualityAnalysis {
    * @see gui.ParameterWindow
    */
   private static int avgApproximationEnd = 25;
+
 
   /**
    * This variable represents how many bad quality nucleotide are allowed before the sequence gets
@@ -39,6 +41,7 @@ public class QualityAnalysis {
    */
   private static int breakcounter = 9;
 
+
   /**
    * Number of Nucleotides which will be used for the average Quality calculations. This can be
    * changed by the user. The default value is 20.
@@ -47,6 +50,7 @@ public class QualityAnalysis {
    * @see gui.ParameterWindow
    */
   private static int numAverageNucleotides = 20;
+
 
   /**
    * This variable represents how many good quality nucleotides are needed before the sequence's

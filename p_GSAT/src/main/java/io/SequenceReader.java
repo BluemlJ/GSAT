@@ -67,12 +67,13 @@ public class SequenceReader {
    * into a sequence. If possible, deletes the first entry of the list. Note: There's no method to
    * read in several files at once, because the files is analyzed one by one.
    * 
+   * @param file The file object modeling the AB1 file to be converted into a sequence
+   * 
    * @throws IOException Error while reading file.
    * @throws FileReadingException If the AB1 file could not be read.
    * @throws IllegalSymbolException Illegal symbol in file.
    * @throws MissingPathException Path to the files is missing.
    * 
-   * @param file The file object modeling the AB1 file to be converted into a sequence
    * 
    * @author Lovis Heindrich
    */
@@ -157,7 +158,7 @@ public class SequenceReader {
     return new Pair<LinkedList<File>, LinkedList<File>>(ab1Files, oddFiles);
   }
 
-  
+
   /**
    * Discards the current path and files.
    * 
@@ -168,7 +169,7 @@ public class SequenceReader {
     files.clear();
   }
 
-  
+
   // Getters and Setters
 
   public static String getPath() {

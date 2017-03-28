@@ -261,7 +261,7 @@ public class DatabaseConnection {
     return true;
   }
 
-  
+
   /**
    * Sets the values of the MySQL database to be used and initializes the database.
    * 
@@ -951,7 +951,7 @@ public class DatabaseConnection {
     return genes;
   }
 
-  
+
   /**
    * Pulls a gene identified by its index from the database. Genes have to be associated with a
    * result and with a researcher later on.
@@ -1005,7 +1005,7 @@ public class DatabaseConnection {
   /**
    * Pulls all sequences from the database and returns them as a list of AnalysedSequences.
    * Associated data (mutations, researcher and gene) is also retrieved and added to the
-   * AnalysedSequence objects indicating these reuslts.
+   * AnalysedSequence objects indicating these results.
    * 
    * @return ArrayList of all sequences in the database.
    * 
@@ -1189,7 +1189,7 @@ public class DatabaseConnection {
     for (Primer primer : databasePrimer) {
       PrimerHandler.addPrimer(primer);
     }
-    
+
     PrimerHandler.writePrimer();
   }
 

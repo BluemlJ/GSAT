@@ -337,7 +337,7 @@ public class GeneHandler {
     return names;
   }
 
-  
+
   /**
    * Returns all known genes as a string array.
    * 

@@ -39,15 +39,6 @@ public class PrivateTest {
 
   // --------------------------------------------------------------
 
-  /*
-   * Datenset 1 0 Jannis, 1 Ben, 2 Lovis, 3 Kevin, 4 Jannis' Laptop, 5 Kevins Laptop
-   * 
-   * Datenset 2 6 Jannis
-   * 
-   * Datenset 3 7-9 Jannis
-   * 
-   * Datenset 4 10 Jannis' Laptop
-   */
   private static int userNr = 4;
 
 
