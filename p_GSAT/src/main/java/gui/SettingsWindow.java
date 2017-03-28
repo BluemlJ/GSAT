@@ -42,7 +42,8 @@ import javafx.stage.WindowEvent;
  * @see GUIUtils
  * @category GUI.Window
  * 
- * @author jannis blueml, Kevin Otto
+ * @author jannis blueml
+ * @author Kevin Otto
  *
  */
 public class SettingsWindow extends Application implements javafx.fxml.Initializable {
@@ -512,6 +513,8 @@ public class SettingsWindow extends Application implements javafx.fxml.Initializ
 
   /**
    * Initializes the gui window.
+   * 
+   * @param primaryStage The primary stage to be used.
    * 
    * @author Kevin Otto
    */

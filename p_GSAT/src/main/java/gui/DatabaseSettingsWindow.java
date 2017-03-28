@@ -15,6 +15,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert.AlertType;
@@ -70,6 +71,9 @@ public class DatabaseSettingsWindow extends Application implements javafx.fxml.I
 
   /**
    * Initializes the database settings window. Sets all button actions.
+   * 
+   * @param location the URL to init, more information at {@link Initializable}
+   * @param resources a ResourceBunde, for more informations see {@link Initializable}
    * 
    * @author Lovis Heindrich
    */
@@ -187,7 +191,9 @@ public class DatabaseSettingsWindow extends Application implements javafx.fxml.I
   /**
    * Initializes the gui window.
    * 
-   * @author Kevin Otto
+   * @param primaryStage The primaryStage to use
+   * 
+   * @author Lovis Heindrich
    */
   @Override
   public void start(Stage primaryStage) throws Exception {

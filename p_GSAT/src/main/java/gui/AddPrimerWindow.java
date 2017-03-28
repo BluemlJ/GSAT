@@ -30,7 +30,8 @@ import javafx.stage.WindowEvent;
  * 
  * @category GUI.Window
  * 
- * @author jannis blueml, Kevin Otto
+ * @author jannis blueml, 
+ * @author Kevin Otto
  *
  */
 public class AddPrimerWindow extends Application implements javafx.fxml.Initializable {
@@ -220,7 +221,11 @@ public class AddPrimerWindow extends Application implements javafx.fxml.Initiali
     });
   }
 
-
+  /**
+   * Stops this window by calling {@link Application#stop()}.
+   * 
+   * @author Kevin Otto
+   */
   @Override
   public void stop() throws Exception {
     super.stop();
@@ -258,11 +263,9 @@ public class AddPrimerWindow extends Application implements javafx.fxml.Initiali
     });
   }
 
-  /**
-   * Sets this windows parrent. Has to be called upon start of this window!
-   * 
-   * @param parent the window, this window was opend from
-   */
+
+  // GETTERs and SETTERs:
+
   public void setParent(SettingsWindow parent) {
     this.parent = parent;
   }

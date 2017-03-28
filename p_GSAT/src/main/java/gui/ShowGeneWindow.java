@@ -25,7 +25,8 @@ import javafx.stage.Stage;
  * @see GUIUtils
  * @category GUI.Window
  * 
- * @author jannis blueml, Kevin Otto
+ * @author jannis blueml 
+ * @author Kevin Otto
  *
  */
 public class ShowGeneWindow extends Application implements javafx.fxml.Initializable {

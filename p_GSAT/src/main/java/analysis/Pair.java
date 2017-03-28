@@ -26,6 +26,8 @@ public class Pair<A, B> {
    * 
    * @param first The first element of this pair
    * @param second The second element of this pair
+   * 
+   * @author Kevin Otto
    */
   public Pair(A first, B second) {
     this.first = first;

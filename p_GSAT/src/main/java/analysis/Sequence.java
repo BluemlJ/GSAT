@@ -12,6 +12,8 @@ import io.ConfigHandler;
  * 
  * @category object (abstract)
  * @author Ben Kohr
+ * @author Lovis Heindrich
+ * @author Kevin Otto
  */
 public abstract class Sequence {
 
@@ -129,11 +131,6 @@ public abstract class Sequence {
     return complSequence;
   }
 
-  public String getResearcher() {
-    return researcher;
-  }
-
-  // GETTERs and SETTERs:
 
   /**
    * Returns the reversed version of this object's nucleotide sequence, i.e. the nucleotide sequence
@@ -151,19 +148,9 @@ public abstract class Sequence {
 
     return reversedSequence;
   }
-
-  public String getSequence() {
-    return sequence;
-  }
-
-  public void setAddingDate(String addingDate) {
-    this.addingDate = addingDate;
-  }
-
-  public void setResearcher(String researcher) {
-    this.researcher = researcher;
-  }
-
+  
+  
+  
   /**
    * This methods sets the internal nucleotide representation as a String constisting of the letters
    * A, T, C and G. It also removes all internal whitespace characters and converts in to uppercase.
@@ -188,9 +175,26 @@ public abstract class Sequence {
   public String toString() {
     return sequence;
   }
+  
+  
+  
+  // GETTERs and SETTERs:
+  
+  public String getResearcher() {
+    return researcher;
+  }
+  
+  public String getSequence() {
+    return sequence;
+  }
 
+  public void setAddingDate(String addingDate) {
+    this.addingDate = addingDate;
+  }
 
-  // GETTERs AND SETTERs:
+  public void setResearcher(String researcher) {
+    this.researcher = researcher;
+  }
 
   public String getAddingDate() {
     return addingDate;

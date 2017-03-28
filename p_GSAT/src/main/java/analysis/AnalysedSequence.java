@@ -10,7 +10,9 @@ import io.ProblematicComment;
  * Sequence class defines it's basic behavior.
  * 
  * @category object
- * @author Ben Kohr, jannis blueml
+ * 
+ * @author Ben Kohr
+ * @author Jannis Blueml
  * 
  */
 public class AnalysedSequence extends Sequence {
@@ -29,15 +31,29 @@ public class AnalysedSequence extends Sequence {
   private LinkedList<ProblematicComment> problems = new LinkedList<ProblematicComment>();
 
   /**
-   * Channels with informations about the positions of the four single Traces. Dont mess this up
-   * with the quality values. Quality is in "phread scala", this channel in "pixel" or something
-   * else.
+   * Channel A information (retrieved from AB1 files), as an array
    */
   private int[] channelA;
+  
+  /**
+   * Channel C information (retrieved from AB1 files), as an array
+   */
   private int[] channelC;
+  
+  /**
+   * Channel G information (retrieved from AB1 files), as an array
+   */
   private int[] channelG;
+  
+  /**
+   * Channel T information (retrieved from AB1 files), as an array
+   */
   private int[] channelT;
 
+  
+  /**
+   * Basecalls information (retrieved from AB1 files), as an array
+   */
   private int[] baseCalls;
 
   /**
@@ -164,20 +180,29 @@ public class AnalysedSequence extends Sequence {
   }
 
 
+  /**
+   * Adds a ProblematicComment Enum item to the list of such items.
+   * 
+   * @param comment The new comment item
+   * 
+   * @author Ben Kohr
+   */
   public void addProblematicComment(ProblematicComment comment) {
     problems.add(comment);
   }
 
+  
   /**
    * Returns the length of the sequence (the number of nucleotides in it).
    * 
    * @return the sequence's length
-   * @author jannis blueml
+   * @author Jannis Blueml
    */
   public int length() {
     return sequence.length();
   }
 
+  
   /**
    * This method reverses the Qualityarray and set it new.
    * 

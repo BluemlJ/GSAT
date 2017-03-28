@@ -29,7 +29,8 @@ import javafx.stage.WindowEvent;
  * 
  * @category GUI.Window
  * 
- * @author jannis blueml, Kevin Otto
+ * @author jannis blueml
+ * @author Kevin Otto
  *
  */
 public class AddGeneWindow extends Application implements javafx.fxml.Initializable {
@@ -39,7 +40,6 @@ public class AddGeneWindow extends Application implements javafx.fxml.Initializa
    */
   private SettingsWindow parent;
 
-  // fields
 
   /**
    * TextField to input the name of the Gene.
@@ -65,7 +65,6 @@ public class AddGeneWindow extends Application implements javafx.fxml.Initializa
   @FXML
   private javafx.scene.control.TextArea commentArea;
 
-  // buttons
 
   /**
    * Button to confirm adding the gene.
@@ -212,6 +211,11 @@ public class AddGeneWindow extends Application implements javafx.fxml.Initializa
     });
   }
 
+  /**
+   * Stops this window by calling {@link Application#stop()}.
+   * 
+   * @author Kevin Otto
+   */
   @Override
   public void stop() throws Exception {
     super.stop();
@@ -250,11 +254,9 @@ public class AddGeneWindow extends Application implements javafx.fxml.Initializa
     });
   }
 
-  /**
-   * Sets this windows parrent. Has to be called upon start of this window!
-   * 
-   * @param parent the window, this window was opend from
-   */
+
+  // GETTERs and SETTERs:
+  
   public void setParent(SettingsWindow parent) {
     this.parent = parent;
   }

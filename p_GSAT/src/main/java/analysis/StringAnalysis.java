@@ -27,7 +27,6 @@ public class StringAnalysis {
   static {
     Hashtable<String, Pair<String, String>> tmp = new Hashtable<String, Pair<String, String>>();
 
-    // DNA
     tmp.put("TTT", new Pair<String, String>("F", "Phe"));
     tmp.put("TTC", new Pair<String, String>("F", "Phe"));
     tmp.put("TTA", new Pair<String, String>("L", "Leu"));
@@ -176,7 +175,8 @@ public class StringAnalysis {
    * the mutated sequence the the original gene. If this so set reference gene of sequence to the
    * best similarity.
    * 
-   * @see CorruptedSequenceException
+   * @see #checkSimilarity(Sequence, Sequence)
+   * @see #checkSimilarity(String, String)
    * 
    * @param toAnalyse the sequence to check
    * @throws CorruptedSequenceException if complementary cant be build
@@ -223,6 +223,9 @@ public class StringAnalysis {
    * @param toAnalyse the sequence to check
    * @param gene the gene you reference to.
    * @throws CorruptedSequenceException If the sequence contains unknown symbols
+   * 
+   * @see #checkComplementAndReverse(AnalysedSequence)
+   * 
    * @author jannis blueml
    */
   public static void checkComplementAndReverse(AnalysedSequence toAnalyse, Gene gene)
@@ -356,7 +359,8 @@ public class StringAnalysis {
    * 
    * @return The found gene.
    * 
-   * @author jannis blueml, lovis heindrich
+   * @author jannis blueml
+   * @author lovis heindrich
    */
   public static Gene findRightGene(AnalysedSequence toAnalyze) {
     return findRightGene(toAnalyze, GeneHandler.getGeneList());
@@ -462,7 +466,6 @@ public class StringAnalysis {
    * @author Kevin Otto
    */
   public static void trimVector(AnalysedSequence toAlign) {
-    // **********simple Vector Cutting*****************
 
     // calculate offset
     findOffset(toAlign);

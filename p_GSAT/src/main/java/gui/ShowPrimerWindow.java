@@ -18,6 +18,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import javafx.application.Application;
 
 /**
  * Window to show extended primer informations
@@ -25,7 +26,8 @@ import javafx.stage.Stage;
  * @see GUIUtils
  * @category GUI.Window
  * 
- * @author jannis blueml, Kevin Otto
+ * @author jannis blueml
+ * @author Kevin Otto
  *
  */
 public class ShowPrimerWindow extends Application implements javafx.fxml.Initializable {
@@ -103,6 +105,11 @@ public class ShowPrimerWindow extends Application implements javafx.fxml.Initial
     });
   }
 
+  /**
+   * Stops the window by calling {@link Application#stop()}
+   * 
+   * @author Jannis Blueml
+   */
   @Override
   public void stop() throws Exception {
     super.stop();

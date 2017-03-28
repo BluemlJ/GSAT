@@ -40,6 +40,8 @@ import io.SequenceReader;
  * </p>
  * 
  * @author Lovis Heindrich
+ * @author Ben Kohr
+ * @author Kevin Otto
  *
  */
 public class ConsoleVersion {

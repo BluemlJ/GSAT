@@ -241,7 +241,6 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
    * @param arg0 the URL to init, more information at {@link Initializable}
    * @param arg1 a ResourceBunde, for more informations see {@link Initializable}
    * 
-   * @see Initializable
    * @author jannis blueml
    */
   @Override
@@ -760,6 +759,11 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
   }
 
 
+  /**
+   * Starts the window, before it is initialised.
+   * 
+   * @author Kevin Otto
+   */
   @Override
   public void start(Stage primaryStage) throws Exception {
     Parent root;

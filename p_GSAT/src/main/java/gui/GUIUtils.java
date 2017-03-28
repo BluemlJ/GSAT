@@ -48,6 +48,7 @@ import javafx.stage.FileChooser;
  * @see SettingsWindow
  * 
  * @author jannis blueml
+ * @author Ben Kohr
  */
 public class GUIUtils {
 
@@ -419,7 +420,8 @@ public class GUIUtils {
    * @param gene gene ID in form of name and organism
    * @return gene from given ID
    * 
-   * @see GeneHandler
+   * @see GeneHandler#checkGene(String, String)
+   * 
    * @author jannis blueml
    */
   public static Gene getGeneFromDropDown(String gene) {
@@ -467,7 +469,9 @@ public class GUIUtils {
    * found in {@link ButtonColor}.
    * 
    * @param button The button to be colored
-   * @param color A ButtonColor element to specify the desired color scheme. q@author Ben Kohr
+   * @param color A ButtonColor element to specify the desired color scheme. 
+   * 
+   * @author Ben Kohr
    */
   public static void setColorOnButton(Button button, ButtonColor color) {
 

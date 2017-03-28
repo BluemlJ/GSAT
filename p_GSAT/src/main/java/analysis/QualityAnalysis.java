@@ -92,7 +92,7 @@ public class QualityAnalysis {
    * 
    * @return an array indicating where to trim
    * 
-   * @author Jannis Blueml,
+   * @author Jannis Blueml
    * @author Lovis Heindrich
    * 
    */
@@ -242,6 +242,8 @@ public class QualityAnalysis {
    * nucleotide sequence or the AnalysedSequence object passed to it.
    * 
    * @param toAnalyse the sequence to trim
+   * 
+   * @see #findLowQuality(AnalysedSequence)
    * 
    * @author Jannis Blueml
    */

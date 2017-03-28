@@ -474,7 +474,6 @@ public class DatabaseConnection {
       pstmt.close();
       return result;
     } else {
-      System.out.println("sequence " + sequence.getFileName() + " failed");
       pstmt.close();
       return -1;
 
@@ -500,7 +499,6 @@ public class DatabaseConnection {
     stmt.execute("USE gsat");
     stmt.close();
 
-    System.out.println(gene);
     String name = gene.getName();
     String sequence = gene.getSequence();
     String organism = gene.getOrganism();
@@ -589,7 +587,6 @@ public class DatabaseConnection {
     pstmt.setString(1, researcher);
     ResultSet res = pstmt.executeQuery();
     if (res.next()) {
-      System.out.println("researcher: " + researcher + " already exists");
       int result = res.getInt(1);
       pstmt.close();
       return result;
@@ -685,7 +682,7 @@ public class DatabaseConnection {
     for (Primer primer : primerList) {
       // search for researcher
       int researcherId = pushResearcher(primer.getResearcher());
-      System.out.println("push researcher: " + primer.getResearcher());
+
       // push the gene
       pushPrimer(primer, researcherId);
     }

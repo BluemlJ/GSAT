@@ -20,6 +20,7 @@ import javafx.application.Application;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -130,6 +131,9 @@ public class ShowChromatogramWindow extends Application implements javafx.fxml.I
 
   /**
    * required by JavaFX but not used in this class.
+   * 
+   * @param arg0 the URL to init, more information at {@link Initializable}
+   * @param arg1 a ResourceBunde, for more informations see {@link Initializable}
    * 
    * @author Kevin Otto
    */

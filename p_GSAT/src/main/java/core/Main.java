@@ -10,12 +10,13 @@ import gui.MainWindow;
 import io.ConfigHandler;
 import io.GeneHandler;
 import io.PrimerHandler;
+import javafx.application.Application;
 import javafx.scene.control.Alert.AlertType;
 
 /**
  * This class coordinates the overall behavior of the program. It moderates the analyzing pipeline.
  *
- * @author Ben Kohr
+ * @author Kevin Otto
  */
 class Main {
 
@@ -23,6 +24,10 @@ class Main {
    * Start of the GSAT program.
    * 
    * @param args Unused input parameters
+   * 
+   * @see ConsoleVersion#startConsoleVersion()
+   * 
+   * @author Kevin Otto
    */
   public static void main(String[] args) {
 
@@ -47,7 +52,7 @@ class Main {
     if (consoleMode) {
       ConsoleVersion.startConsoleVersion();
     } else {
-      javafx.application.Application.launch(MainWindow.class);
+      Application.launch(MainWindow.class);
     }
 
   }

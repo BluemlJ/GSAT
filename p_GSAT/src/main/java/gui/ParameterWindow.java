@@ -30,7 +30,8 @@ import javafx.stage.WindowEvent;
  * 
  * @category GUI.Window
  * 
- * @author Jannis Blueml, Kevin Otto
+ * @author Jannis Blueml, 
+ * @author Kevin Otto
  *
  */
 public class ParameterWindow extends Application implements javafx.fxml.Initializable {
@@ -290,7 +291,9 @@ public class ParameterWindow extends Application implements javafx.fxml.Initiali
   /**
    * Starts the window.
    * 
-   * @author Ben Kohr
+   * @param primaryStage The primary stage to be used.
+   * 
+   * @author Jannis Blueml
    */
   @Override
   public void start(Stage primaryStage) throws Exception {

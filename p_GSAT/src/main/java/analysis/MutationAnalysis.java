@@ -10,7 +10,9 @@ import exceptions.UndefinedTypeOfMutationException;
  * This class contains the logic of analyzing mutations in sequences. Thus, it is one of the main
  * parts of the analyzing pipeline.
  * 
- * @author jannis blueml, kevin otto
+ * @author jannis blueml
+ * @author kevin otto
+ * 
  * @category DNA.Utils
  */
 public class MutationAnalysis {
@@ -42,6 +44,8 @@ public class MutationAnalysis {
    * 
    * @throws UndefinedTypeOfMutationException if reportDifferences gives me a mutation that's not
    *         s,i,d
+   * 
+   * @see #reportDifferences(AnalysedSequence)
    * 
    * @author jannis blueml
    */

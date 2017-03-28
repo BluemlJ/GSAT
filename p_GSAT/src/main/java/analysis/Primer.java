@@ -40,6 +40,7 @@ public class Primer extends Sequence {
    * @param id The unique id of the primer.
    * @param name The name of the primer.
    * @param comment The user comment for the primer.
+   * 
    * @author Lovis Heindrich
    */
   public Primer(String sequence, String researcher, int meltingPoint, String id, String name,
@@ -64,6 +65,7 @@ public class Primer extends Sequence {
    * @param name The name of the primer.
    * @param comment The user comment for the primer.
    * @param date The adding date of the primer.
+   * 
    * @author Lovis Heindrich
    */
   public Primer(String sequence, String researcher, int meltingPoint, String id, String name,
