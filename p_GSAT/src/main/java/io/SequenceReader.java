@@ -19,7 +19,8 @@ import exceptions.PathUsage;
 /**
  * This class reads files of the AB1 format and extracts the information into a sequence.
  * 
- * @author Ben Kohr, bluemlj, Lovis Heindrich
+ * @author Lovis Heindrich
+ * @author Ben Kohr
  *
  */
 public class SequenceReader {
@@ -67,10 +68,13 @@ public class SequenceReader {
    * read in several files at once, because the files is analyzed one by one.
    * 
    * @throws IOException Error while reading file.
+   * @throws FileReadingException If the AB1 file could not be read.
    * @throws IllegalSymbolException Illegal symbol in file.
+   * @throws MissingPathException Path to the files is missing.
+   * 
+   * @param file The file object modeling the AB1 file to be converted into a sequence
    * 
    * @author Lovis Heindrich
-   * @throws MissingPathException Path to the files is missing.
    */
   public static AnalysedSequence convertFileIntoSequence(File file)
       throws FileReadingException, IOException, MissingPathException, IllegalSymbolException {
@@ -153,6 +157,7 @@ public class SequenceReader {
     return new Pair<LinkedList<File>, LinkedList<File>>(ab1Files, oddFiles);
   }
 
+  
   /**
    * Discards the current path and files.
    * 
@@ -163,7 +168,8 @@ public class SequenceReader {
     files.clear();
   }
 
-  // getter and setter
+  
+  // Getters and Setters
 
   public static String getPath() {
     return path;

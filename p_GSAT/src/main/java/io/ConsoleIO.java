@@ -74,7 +74,7 @@ public class ConsoleIO {
 
   /**
    * Asks the User to type in a Number (Integer) and returns it as int. asks again if given String
-   * wasn`t a number
+   * was not a number
    * 
    * @param message the message displayed to the User
    * 

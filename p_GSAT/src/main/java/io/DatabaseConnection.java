@@ -261,6 +261,7 @@ public class DatabaseConnection {
     return true;
   }
 
+  
   /**
    * Sets the values of the MySQL database to be used and initializes the database.
    * 
@@ -293,7 +294,6 @@ public class DatabaseConnection {
     stmt.execute("USE gsat");
     stmt.close();
     conn.close();
-
   }
 
 
@@ -559,7 +559,6 @@ public class DatabaseConnection {
       return result;
     } else {
       pstmt.close();
-      // should never be called
       return -1;
     }
   }
@@ -623,6 +622,8 @@ public class DatabaseConnection {
    * @throws SQLException Error while executing SQL commands.
    * @throws DatabaseConnectionException Error while connecting to database.
    * @throws IOException A gene reading error occurred.
+   * 
+   * @see #pushGene(Gene, int)
    * 
    * @author Lovis Heindrich
    */
@@ -950,6 +951,7 @@ public class DatabaseConnection {
     return genes;
   }
 
+  
   /**
    * Pulls a gene identified by its index from the database. Genes have to be associated with a
    * result and with a researcher later on.
@@ -1146,7 +1148,7 @@ public class DatabaseConnection {
     stmt.execute("USE gsat");
     stmt.close();
 
-    // db query for given researcher
+    // DB query for given researcher
     PreparedStatement pstmt =
         conn.prepareStatement("SELECT id, name FROM researchers WHERE name = ?");
     pstmt.setString(1, researcher);
@@ -1187,6 +1189,7 @@ public class DatabaseConnection {
     for (Primer primer : databasePrimer) {
       PrimerHandler.addPrimer(primer);
     }
+    
     PrimerHandler.writePrimer();
   }
 
@@ -1208,7 +1211,6 @@ public class DatabaseConnection {
     ArrayList<Gene> databaseGenes = pullAllGenes();
 
     for (Gene gene : databaseGenes) {
-      // gene handler already writes and reads config when a gene is added
       GeneHandler.addGene(gene);
     }
   }
@@ -1454,7 +1456,7 @@ public class DatabaseConnection {
 
 
   /**
-   * Searches a gene in the database and returns its index (or zero if it does not exist.
+   * Searches a gene in the database and returns its index (or zero if it does not exist).
    *
    * @param geneName The name of the gene.
    * 

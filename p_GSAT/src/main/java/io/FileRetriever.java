@@ -160,7 +160,7 @@ public class FileRetriever {
    * 
    * @param answer The String to be checked
    * 
-   * @return Does this String indicate 'yes?
+   * @return Does this String indicate 'yes'?
    * 
    * @author Ben Kohr
    * 

@@ -18,7 +18,8 @@ import exceptions.UnknownConfigFieldException;
  * This class is responsible for reading the configuration file and storing its values. The
  * configuration file is stored in home/gsat/config.txt.
  * 
- * @author Lovis Heindrich, jannis blueml
+ * @author Lovis Heindrich
+ * @author jannis blueml
  *
  */
 public class ConfigHandler {
@@ -210,7 +211,6 @@ public class ConfigHandler {
 
     configReader.close();
 
-    // Arrays.sort(researchers);
   }
 
   /**
@@ -220,6 +220,9 @@ public class ConfigHandler {
    * @throws IOException An error during file handling occured.
    * @throws UnknownConfigFieldException The config file contains unknown fields.
    * @throws ConfigNotFoundException The config file can not be found.
+   * 
+   * @see #readConfig()
+   * 
    * @author Lovis Heindrich
    */
   public static void readConfig(String path)

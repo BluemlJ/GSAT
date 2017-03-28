@@ -18,6 +18,7 @@ import javafx.scene.control.Alert.AlertType;
  * is stored in the user directory.
  * 
  * @author Lovis Heindrich
+ * @author Jannis Blueml
  *
  */
 public class PrimerHandler {
@@ -227,6 +228,8 @@ public class PrimerHandler {
   /**
    * Writes all primers in the primerlist to the local txt file.
    * 
+   * @see #writePrimer(String)
+   * 
    * @throws IOException Error while writing the local file.
    * @author Lovis Heindrich
    */
@@ -342,7 +345,9 @@ public class PrimerHandler {
     return ret;
   }
 
-  // Getter and Setter
+  
+  
+  // Getters and Setters
 
   public static ArrayList<Primer> getPrimerList() {
     return primerList;

@@ -16,6 +16,7 @@ import exceptions.DuplicateGeneException;
  * This class reads reference genes from the genes.txt and stores them.
  * 
  * @author Lovis Heindrich
+ * @author Jannis Blueml
  *
  */
 public class GeneHandler {
@@ -43,6 +44,7 @@ public class GeneHandler {
    * @param geneSequence Sequence string of the gene.
    * @throws DuplicateGeneException Gene already exists.
    * @throws IOException Error while writing the file
+   * 
    * @author Lovis Heindrich
    */
   public static void addGene(String geneName, String geneSequence)
@@ -258,7 +260,7 @@ public class GeneHandler {
   }
 
   /**
-   * Gets a gene identified by it´s name.
+   * Gets a gene identified by its name.
    * 
    * @param geneName Name of the gene.
    * @return The correct gene or null.
@@ -275,7 +277,7 @@ public class GeneHandler {
   }
 
   /**
-   * Gets a gene identified by it´s name and organism.
+   * Gets a gene identified by its name and organism.
    * 
    * @param geneName The name of the gene.
    * @param organism The organism of the gene.
@@ -307,7 +309,7 @@ public class GeneHandler {
   }
 
   /**
-   * Gets a gene identified by it´s index in the gene list.
+   * Gets a gene identified by its index in the gene list.
    * 
    * @param index The index of the gene.
    * @return The correct gene.
@@ -335,6 +337,7 @@ public class GeneHandler {
     return names;
   }
 
+  
   /**
    * Returns all known genes as a string array.
    * 
@@ -359,6 +362,8 @@ public class GeneHandler {
 
   /**
    * Reads a gene.txt from the standard path. Stores all parsed genes in the genelist.
+   * 
+   * @see #readGenes(String)
    * 
    * @throws IOException Error reading file.
    * @author Lovis Heindrich

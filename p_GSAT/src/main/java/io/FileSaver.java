@@ -347,7 +347,7 @@ public class FileSaver {
 
 
   /**
-   * This method contructs the comments in case ProblematicComments where added to the sequence
+   * This method constructs the comments in case ProblematicComments where added to the sequence
    * during analysis. This is the case when analysis anomalies are detected. It also prioritizes
    * comments by suppressing some less critical ones in case more critical comments are present.
    * 
@@ -394,6 +394,8 @@ public class FileSaver {
    * @param comments The comment field text to check
    * 
    * @return Is any problematic comment contained?
+   * 
+   * @author Ben Kohr
    */
   public static boolean areCommentsProblematic(String comments) {
     Collection<String> problematicComments = commentMap.values();
@@ -410,6 +412,8 @@ public class FileSaver {
   /**
    * This method resets the class's state by setting {@link #firstCall} to true. This is necessary
    * to start a completely new analyzing process.
+   * 
+   * @author Ben Kohr
    */
   public static void reset() {
     firstCall = true;
