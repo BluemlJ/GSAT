@@ -256,15 +256,14 @@ public class StringAnalysis {
    */
   public static double checkSimilarity(String first, String second) {
     //TODO CLEAN outcommented code
-    int longestMatch = findLongestMatch(first, second);
+
     //System.out.println("longest match = " + longestMatch);
     double levenshteinIndex = getLevenshteinIndex(first, second);
     //System.out.println(levenshteinIndex);
     //System.err.println(first.length() + " # " + second.length());
     double avgLength = (first.length() + second.length()) / 2.0;
-    //return Math.max(0, 100 - (levenshteinIndex / (avgLength / 100)));
+    return Math.max(0, 100 - (levenshteinIndex / (avgLength / 100)));
     // return Math.max(0, ((avgLength-levenshteinIndex)/(avgLength))*100);
-    return longestMatch;
   }
 
   public static int findLongestMatch(String first, String second) {
@@ -442,12 +441,13 @@ public class StringAnalysis {
    */
   public static Gene findRightGene(AnalysedSequence toAnalyze, ArrayList<Gene> listOfGenes) {
     Gene bestgene = listOfGenes.get(0);
-    double bestSimilarity = 0;
+    double bestMatch = 0;
 
     for (Gene gene : listOfGenes) {
-      double similarity = StringAnalysis.checkSimilarity(toAnalyze, gene);
-      if (similarity > bestSimilarity) {
-        bestSimilarity = similarity;
+      //double similarity = StringAnalysis.checkSimilarity(toAnalyze, gene);
+      int longestMatch = findLongestMatch(toAnalyze.sequence, gene.sequence);
+      if (longestMatch > bestMatch) {
+        bestMatch = longestMatch;
         bestgene = gene;
       }
     }
