@@ -18,7 +18,7 @@ import exceptions.MissingPathException;
 import exceptions.UndefinedTypeOfMutationException;
 import io.SequenceReader;
 
-@Ignore
+//@Ignore
 public class PrivateTest {
 
   // TO CHANGE: ---------------------------------------------------
@@ -48,7 +48,7 @@ public class PrivateTest {
    * 
    * Datenset 4 10 Jannis' Laptop
    */
-  private static int userNr = 4;
+  private static int userNr = 0;
 
 
   @BeforeClass
@@ -59,7 +59,7 @@ public class PrivateTest {
 
 
   // Name of the file
-  private String fileName = "93GH02_C10.ab1";
+  private String fileName = "93GH02_F10.ab1";
 
 
   // _____________________________________________________________________

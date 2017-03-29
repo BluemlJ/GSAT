@@ -104,8 +104,8 @@ public class MutationAnalysis {
           // checks length before getting the codon out of gene
           if (toAnalyze.getSequence().length() > firstNucleotidePos + 3) {
             // get codon out of gene
-            codonsOfNew = toAnalyze.getSequence().substring(firstNucleotidePos + shift * 3,
-                firstNucleotidePos + shift * 3 + 3);
+            codonsOfNew = toAnalyze.getSequence().substring(firstNucleotidePos + shift * 3 - toAnalyze.getOffset()*3,
+                firstNucleotidePos + shift * 3 - toAnalyze.getOffset()*3 + 3);
             // add mutation to sequence
             toAnalyze
                 .addMutation(oldAminoAcid + position + newAminoAcid + " (" + codonsOfNew + ")");
@@ -125,8 +125,8 @@ public class MutationAnalysis {
 
           // write mutation into sequence (see substitution)
           if (toAnalyze.getSequence().length() > firstNucleotidePos + 3) {
-            codonsOfNew = toAnalyze.getSequence().substring(firstNucleotidePos + shift * 3,
-                firstNucleotidePos + shift * 3 + 3);
+            codonsOfNew = toAnalyze.getSequence().substring(firstNucleotidePos + shift * 3 - toAnalyze.getOffset()*3,
+                firstNucleotidePos + shift * 3  - toAnalyze.getOffset()*3 + 3);
             toAnalyze.addMutation("+1" + newAminoAcid + position + " (" + codonsOfNew + ")");
           } else {
             toAnalyze.addMutation("+1" + newAminoAcid + position);
@@ -143,8 +143,8 @@ public class MutationAnalysis {
 
           // write informations in sequence
           if (toAnalyze.getSequence().length() > firstNucleotidePos + 3) {
-            codonsOfNew = originalSequence.substring(firstNucleotidePos + shift * 3 + 3,
-                firstNucleotidePos + shift * 3 + 6);
+            codonsOfNew = originalSequence.substring(firstNucleotidePos + shift * 3  - toAnalyze.getOffset()*3 + 3,
+                firstNucleotidePos + shift * 3  - toAnalyze.getOffset()*3 + 6);
             toAnalyze.addMutation("-1" + oldAminoAcid + position + " (" + codonsOfNew + ")");
           } else {
             toAnalyze.addMutation("-1" + oldAminoAcid + position);
@@ -173,7 +173,7 @@ public class MutationAnalysis {
         int tmpPosition = Integer.parseInt(diff.split("\\|")[1]) + toAnalyze.getOffset();
         String tom = diff.split("\\|")[0];
         // checks position is equal to j+1, difference because of start by 0 instead of 1
-        if (tmpPosition == j + 1) {
+        if (tmpPosition == j + 1 +toAnalyze.getOffset() ) {
           if (tom.equals("s")) {
             isMutation = true;
           }
@@ -192,7 +192,7 @@ public class MutationAnalysis {
       }
       // checks if silent mutation
       if (!isMutation) {
-        // checks boundaries
+	 // checks boundaries
         if ((j + tmpshift) * 3 + toAnalyze.getOffset() * 3 + 3 > originalSequence.length()
             || Math.max(j + tmpshift, j) * 3 + 3 > mutatedSequence.length()
             || (j + tmpshift) * 3 + toAnalyze.getOffset() * 3 < 0) {
