@@ -3,6 +3,7 @@ package analysis;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Hashtable;
+import java.util.LinkedList;
 import java.util.Map;
 
 import exceptions.CorruptedSequenceException;
@@ -254,9 +255,78 @@ public class StringAnalysis {
    * @author Kevin
    */
   public static double checkSimilarity(String first, String second) {
+    //TODO CLEAN outcommented code
+    int longestMatch = findLongestMatch(first, second);
+    //System.out.println("longest match = " + longestMatch);
     double levenshteinIndex = getLevenshteinIndex(first, second);
+    //System.out.println(levenshteinIndex);
+    //System.err.println(first.length() + " # " + second.length());
     double avgLength = (first.length() + second.length()) / 2.0;
-    return Math.max(0, 100 - (levenshteinIndex / (avgLength / 100)));
+    //return Math.max(0, 100 - (levenshteinIndex / (avgLength / 100)));
+    // return Math.max(0, ((avgLength-levenshteinIndex)/(avgLength))*100);
+    return longestMatch;
+  }
+
+  public static int findLongestMatch(String first, String second) {
+    //TODO Comment
+    // get Levenshtein Matrix
+    int[][] lev = StringAnalysis.calculateLevenshteinMatrix(first, second);
+
+    // get matrix dimmensions
+    int matrixHeight = lev.length;
+    int matrixWidth = lev[0].length;
+
+    // counter variables for actual matrix position
+    int row = matrixHeight - 1;
+    int column = matrixWidth - 1;
+    
+    int longesMatch = 0;
+    int currentMatch = 0;
+
+    // iterate over levenstein matrix by folowing best path
+    while (row > 0 && column > 0) {
+
+      // if previous diagonal cell is best (smallest neighbor cell and
+      // equal or exactly one smaller)
+      if (lev[row - 1][column - 1] <= Math.min(lev[row - 1][column], lev[row][column - 1])
+          && (lev[row - 1][column - 1] == lev[row][column]
+              || lev[row - 1][column - 1] == lev[row][column] - 1)) {
+        // Diagonal smaller -> Substitution
+        if (lev[row - 1][column - 1] == lev[row][column] - 1) {
+          // SUBSTITUTION
+          currentMatch = 0;
+        }
+        // else -> No Operation
+        // go to next diagonal cell
+        row--;
+        column--;
+        currentMatch++;
+        if (currentMatch > longesMatch) {
+          longesMatch = currentMatch;
+        }
+        // if left cell is best
+      } else if ((lev[row - 1][column] <= lev[row][column - 1])
+          && (lev[row - 1][column] == lev[row][column]
+              || lev[row - 1][column] == lev[row][column] - 1)) {
+        // left smaller->deletion;
+        // DELETION
+        if (lev[row - 1][column] == lev[row][column] - 1) {
+          currentMatch = 0;
+        }
+
+        row--;
+      } else {
+        // up smaller -> insertion
+        // INSERTION
+        if (lev[row][column - 1] == lev[row][column] - 1) {
+          currentMatch = 0;
+        }
+        column--;
+      }
+    }
+
+
+    return longesMatch;
   }
 
   /**
@@ -462,11 +532,13 @@ public class StringAnalysis {
    * @author Kevin Otto
    */
   public static void trimVector(AnalysedSequence toAlign) {
-    // **********simple Vector Cutting*****************
 
+    // **********simple Vector Cutting*****************
+    // System.out.println(toAlign.getReferencedGene().sequence);
+    // System.err.println(toAlign.sequence);
     // calculate offset
     findOffset(toAlign);
-
+    // System.out.println(toAlign.getOffset());
     // define new sequence
     String newSequence = toAlign.sequence;
 
@@ -478,6 +550,7 @@ public class StringAnalysis {
     toAlign.setOffset(Math.min(toAlign.getOffset(), 0));
     toAlign.setOffset(-toAlign.getOffset());
     toAlign.setSequence(newSequence);
+    // System.out.println(toAlign.sequence);
   }
 
   /**
