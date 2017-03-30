@@ -175,8 +175,8 @@ public class WritingTests {
     String addingDate = df.format(new Date());
 
     String[] correctResults = new String[] {
-        "sequence3.ab1; FSA; null; ; AAA7CAA, -1H5 (TCT); none; false; Nothing to say; Kurt Bohne; "
-            + addingDate + "; 0; 0; ATC; none; ; AAA7CAA, -1H5"};
+        "sequence3.ab1; FSA; null; ; none; false; Nothing to say; Kurt Bohne; "
+            + addingDate + "; 0; 0; ATC; none; ; AAA7CAA, -1H5 (TCT)"};
 
     for (int i = 0; i < correctResults.length; i++) {
       String[] correctInfo = correctResults[i].split(";");
@@ -247,7 +247,7 @@ public class WritingTests {
     DateFormat df = new SimpleDateFormat("dd/MM/yy");
     String addingDate = df.format(new Date());
 
-    assertEquals("sequence3.ab1; FSA; null; ; ; none; false; ; Klaus Hafer; " + addingDate
+    assertEquals("sequence3.ab1; FSA; null; ; none; false; ; Klaus Hafer; " + addingDate
         + "; 0; 0; ATCTTGCGTTG; none; ; ;", results.getFirst());
     assertTrue(results.size() == 1);
     reader.close();
@@ -286,8 +286,8 @@ public class WritingTests {
 
     // Check whether the input is correct
     String[] correctResults = new String[] {
-        "sequence1.ab1; FSA; bacteria; A131E (ACC), G7K (ATC); +2H5 (AAC); none; false; No comments; Klaus Bohne; "
-            + addingDate + "; 0; 0; ATCG; none; A131E, G7K; +2H5"};
+        "sequence1.ab1; FSA; bacteria; A131E (ACC), G7K (ATC); none; false; No comments; Klaus Bohne; "
+            + addingDate + "; 0; 0; ATCG; none; A131E, G7K; +2H5 (AAC)"};
     for (int i = 0; i < correctResults.length; i++) {
       assertEquals(correctResults[i], results.get(i));
     }
@@ -318,10 +318,8 @@ public class WritingTests {
     String addingDate = df.format(new Date());
 
     String[] correctResults = new String[] {
-        "sequence2.ab1; FSA; null; reading frame error; ; none; false; No comments; Klaus Bohne; "
-            + addingDate + "; 0; 0; ATCTTTG; none; reading frame error; ;",
-        "sequence3.ab1; FSA; null; ; ; none; false; ; Klaus Hafer; " + addingDate
-            + "; 0; 0; ATCTTGCGTTG; none; ; ;"};
+        "sequence2.ab1; FSA; null; reading frame error; none; false; No comments; Klaus Bohne; " + addingDate + "; 0; 0; ATCTTTG; none; reading frame error; ;",
+        "sequence3.ab1; FSA; null; ; none; false; ; Klaus Hafer; " + addingDate + "; 0; 0; ATCTTGCGTTG; none; ; ;"};
 
     for (int i = 0; i < correctResults.length; i++) {
       assertEquals(correctResults[i], results.get(i));
@@ -356,10 +354,9 @@ public class WritingTests {
     String addingDate = df.format(new Date());
 
     String[] correctResults = new String[] {
-        "sequence1.ab1; FSA; bacteria; A131E (ACC), G7K (ATC); +2H5 (AAC); none; false; No comments; Klaus Bohne; "
-            + addingDate + "; 0; 0; ATCG; none; A131E, G7K; +2H5",
-        "sequence2.ab1; FSA; null; reading frame error; ; none; false; No comments; Klaus Bohne; "
-            + addingDate + "; 0; 0; ATCTTTG; none; reading frame error; ;"};
+        "sequence1.ab1; FSA; bacteria; A131E (ACC), G7K (ATC); none; false; No comments; Klaus Bohne; "
+            + addingDate + "; 0; 0; ATCG; none; A131E, G7K; +2H5 (AAC)",
+        "sequence2.ab1; FSA; null; reading frame error; none; false; No comments; Klaus Bohne; " + addingDate + "; 0; 0; ATCTTTG; none; reading frame error; ;"};
 
     for (int i = 0; i < correctResults.length; i++) {
       assertEquals(correctResults[i], results.get(i));
@@ -418,7 +415,7 @@ public class WritingTests {
     String addingDate = df.format(new Date());
 
     String[] correctResults = new String[] {
-        "sequence2.ab1; FSA; null; reading frame error; ; none; false; No comments; Klaus Bohne; "
+        "sequence2.ab1; FSA; null; reading frame error; none; false; No comments; Klaus Bohne; "
             + addingDate + "; 0; 0; ATCTTTG; none; reading frame error; ;"};
 
     for (int i = 0; i < correctResults.length; i++) {
@@ -435,7 +432,7 @@ public class WritingTests {
     reader.lines().skip(1).forEach(line -> results2.add(line));
     reader.close();
 
-    correctResults = new String[] {"sequence3.ab1; FSA; null; ; ; none; false; ; Klaus Hafer; "
+    correctResults = new String[] {"sequence3.ab1; FSA; null; ; none; false; ; Klaus Hafer; "
         + addingDate + "; 0; 0; ATCTTGCGTTG; none; ; ;"};
     for (int i = 0; i < correctResults.length; i++) {
       assertEquals(correctResults[i], results2.get(i));
@@ -468,8 +465,8 @@ public class WritingTests {
 
     // Check whether the input is correct
     String[] correctResults = new String[] {
-        "sequence1.ab1; FSA; bacteria; A131E (ACC), G7K (ATC); +2H5 (AAC); none; false; No comments; Klaus Bohne; "
-            + addingDate + "; 0; 0; ATCG; none; A131E, G7K; +2H5"};
+        "sequence1.ab1; FSA; bacteria; A131E (ACC), G7K (ATC); none; false; No comments; Klaus Bohne; "
+            + addingDate + "; 0; 0; ATCG; none; A131E, G7K; +2H5 (AAC)"};
 
     for (int i = 0; i < correctResults.length; i++) {
       assertEquals(correctResults[i], results.get(i));
@@ -510,7 +507,7 @@ public class WritingTests {
 
     // Check whether the input is correct
     String[] correctResults = new String[] {
-"sequence1.ab1; FSA; bacteria; A131E (ACC), G7K (ATC); +2H5 (AAC); none; false; No comments; Klaus Bohne; " + addingDate + "; 0; 0; ATCG; none; A131E, G7K; +2H5"};
+"sequence1.ab1; FSA; bacteria; A131E (ACC), G7K (ATC); none; false; No comments; Klaus Bohne; " + addingDate + "; 0; 0; ATCG; none; A131E, G7K; +2H5 (AAC)"};
 
     for (int i = 0; i < correctResults.length; i++) {
       assertEquals(correctResults[i], results1.get(i));
@@ -566,8 +563,8 @@ public class WritingTests {
     // Check whether the input is correct
     String[] correctResults = new String[] {
         "sequence6.ab1; FSA; bacteria; ; ; ; The usable part of the sequence is very short (One should probably adjust the parameters). ; ; ; ; ; ; ; ",
-        "sequence1.ab1; FSA; bacteria; A131E (ACC), G7K (ATC); +2H5 (AAC); none; false; No comments; Klaus Bohne; "
-            + addingDate + "; 0; 0; ATCG; none; A131E, G7K; +2H5"};
+        "sequence1.ab1; FSA; bacteria; A131E (ACC), G7K (ATC); none; false; No comments; Klaus Bohne; "
+            + addingDate + "; 0; 0; ATCG; none; A131E, G7K; +2H5 (AAC)"};
 
     for (int i = 0; i < correctResults.length; i++) {
       assertEquals(correctResults[i], results.get(i));
@@ -600,11 +597,11 @@ public class WritingTests {
 
     // Check whether the input is correct
     String[] correctResults = new String[] {
-        "sequence2.ab1; FSA; null; reading frame error; ; none; false; No comments; Klaus Bohne; "
+        "sequence2.ab1; FSA; null; reading frame error; none; false; No comments; Klaus Bohne; "
             + addingDate + "; 0; 0; ATCTTTG; none; reading frame error; ;",
         "sequence5.ab1; FSA; bacteria; ; ; ; The usable part of the sequence is very short (One should probably adjust the parameters). ; ; ; ; ; ; ; ",
         "sequence6.ab1; FSA; bacteria; ; ; ; The usable part of the sequence is very short (One should probably adjust the parameters). ; ; ; ; ; ; ; ",
-        "sequence7.ab1; FSA; bacteria; ; +1T4; 1; false; ; Jonas; " + addingDate
+        "sequence7.ab1; FSA; bacteria; ; 1; false; ; Jonas; " + addingDate
             + "; 0; 0; GT; none; ; +1T4"};
     for (int i = 0; i < correctResults.length; i++) {
       assertEquals(correctResults[i], results.get(i));

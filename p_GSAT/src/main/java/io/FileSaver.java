@@ -220,20 +220,6 @@ public class FileSaver {
     
     int insDelSilentCount = insertionsDeletionsSilent.size();
 
-    if (insDelSilentCount == 0) {
-      builder.append(SEPARATOR_CHAR + " ");
-    } else {
-      for (int i = 0; i < insDelSilentCount; i++) {
-
-        String mutation = insertionsDeletionsSilent.get(i);
-        builder.append(mutation);
-        if (i < insDelSilentCount - 1) {
-          builder.append(", ");
-        } else {
-          builder.append(SEPARATOR_CHAR + " ");
-        }
-      }
-    }
 
     // his tag
     // The his tag position starts with 1 in the stored result.
@@ -305,13 +291,7 @@ public class FileSaver {
       for (int i = 0; i < insDelSilentCount; i++) {
 
         String mutation = insertionsDeletionsSilent.get(i);
-        String reducedMutation;
-        if (mutation.equals("reading frame error")) {
-          reducedMutation = mutation;
-        } else {
-          reducedMutation = (mutation.trim()).split(" ")[0];
-        }
-        builder.append(reducedMutation);
+        builder.append(mutation);
         if (i < insDelSilentCount - 1) {
           builder.append(", ");
       }
@@ -374,11 +354,11 @@ public class FileSaver {
 
     if (!append) {
       writer.write("file name" + SEPARATOR_CHAR + " gene" + SEPARATOR_CHAR + " gene organism"
-          + SEPARATOR_CHAR + " mutations (with codons - except for insertions, deletions and silent mutations)" + SEPARATOR_CHAR + "mutations (with codons - insertions, deletions and silent mutations)" + SEPARATOR_CHAR + " HIS Tag"
+          + SEPARATOR_CHAR + " mutations (with codons - except for insertions, deletions and silent mutations)" + SEPARATOR_CHAR + " HIS Tag"
           + SEPARATOR_CHAR + " manually checked" + SEPARATOR_CHAR + " comments" + SEPARATOR_CHAR
           + " researcher" + SEPARATOR_CHAR + " date" + SEPARATOR_CHAR + " average quality (percent)"
           + SEPARATOR_CHAR + " percentage of quality trim" + SEPARATOR_CHAR + " nucleotide sequence"
-          + SEPARATOR_CHAR + " primer" + SEPARATOR_CHAR + "mutations (without codons - except for insertions, deletions and silent mutations)" + SEPARATOR_CHAR + "mutations (without codons - insertions, deletions and silent mutations)"
+          + SEPARATOR_CHAR + " primer" + SEPARATOR_CHAR + "mutations (without codons - except for insertions, deletions and silent mutations)" + SEPARATOR_CHAR + "mutations (with codons - insertions, deletions and silent mutations)"
           + System.lineSeparator());
     }
 
