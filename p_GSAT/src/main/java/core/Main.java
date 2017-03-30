@@ -52,8 +52,7 @@ class Main {
         command.add("-Xmx1024M");
         command.add(currentJar.getPath());
         
-        
-        System.out.println("Heapspace low");
+                System.out.println("Heapspace low");
         System.out.println("Set Heapspace");
         System.out.println(currentPath);
         
@@ -61,6 +60,7 @@ class Main {
         Process proc = pbuilder.start();
         
         System.out.println("waiting");
+        proc.notifyAll();
         proc.waitFor();
         System.out.println("finished waiting");
         System.out.println("exitcode = " + proc.exitValue());
