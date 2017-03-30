@@ -771,8 +771,7 @@ public class AnalysisTests {
     AnalysedSequence testSequence = SequenceReader.convertFileIntoSequence();
     MutationAnalysis.findPlasmidMix(testSequence);
     // cut out findings due to bad quality (only focus on the good quality area)
-    String commentCut = testSequence.getComments().replaceFirst("345.*", "");
-    assertEquals("There are possible plasmidmixes at the positions 2, ", commentCut);
+    assertTrue(testSequence.getComments().contains("There are possible plasmidmixes at the positions 2, "));
   }
 
   @Test
@@ -783,8 +782,7 @@ public class AnalysisTests {
     AnalysedSequence testSequence = SequenceReader.convertFileIntoSequence();
     MutationAnalysis.findPlasmidMix(testSequence);
     // cut out findings due to bad quality (only focus on the good quality area)
-    String commentCut = testSequence.getComments().replaceFirst("358.*", "");
-    assertEquals("There are possible plasmidmixes at the positions 2, ", commentCut);
+    assertTrue(testSequence.getComments().contains("There are possible plasmidmixes at the positions 2, "));
   }
 
   @Test
@@ -795,8 +793,7 @@ public class AnalysisTests {
     AnalysedSequence testSequence = SequenceReader.convertFileIntoSequence();
     MutationAnalysis.findPlasmidMix(testSequence);
     // cut out findings due to bad quality (only focus on the good quality area)
-    String commentCut = testSequence.getComments().replaceFirst("366.*", "");
-    assertEquals("There are possible plasmidmixes at the positions 2, 3, 8, ", commentCut);
+    assertTrue(testSequence.getComments().contains("There are possible plasmidmixes at the positions 2, 3, 8, "));
   }
 
 }
