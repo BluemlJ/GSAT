@@ -1,11 +1,11 @@
 These are the parameters you can change:
 
-Minimal Start Quality: The minimal PHRED score a nucleotide is allowed to have to not get trimmed away at the BEGINNING of the sequence.
+Minimal Start Quality: The minimal PHRED score a nucleotide is allowed to have to not get trimmed away at the BEGINNING of the sequence. Increasing this value will result in a more strict trimming at the start of the sequence. This means most likely more nucleotides will be trimmed away at the start of the sequence.
 
-Minimal End Quality: The minimal PHRED score a nucleotide is allowed to have to not get trimmed away at the END of the sequence.
+Minimal End Quality: The minimal PHRED score a nucleotide is allowed to have to not get trimmed away at the END of the sequence. Increasing this value will result in a more strict trimming at the end of the sequence. This means most likely more nucleotides will be trimmed away at the end of the sequence.
 
-Bad Quality Margin: The maximum number of nucleotides in a row with bad quality (less than "Minimal End Quality") that are allowed before the sequence gets cut off AT THE END.
+Bad Quality Margin: The maximum number of nucleotides in a row with bad quality (less than "Minimal End Quality") that are allowed before the sequence gets cut off AT THE END. Increasing this value will result in a less strict trimming at the end of the sequence which means less nucleotides will be trimmed away at the end.
 
-Good Quality Margin: The minimum number of nucleotides with good quality (better than "Minimal End Quality") that must appear in a row to not get cut away AT THE BEGINNING of a sequence.
+Good Quality Margin: The minimum number of nucleotides with good quality (better than "Minimal End Quality") that must appear in a row to not get cut away AT THE BEGINNING of a sequence. Increasing this value will result in a more strict trimming at the start of the sequence which means more nucleotides will be trimmed away at the beginning.
 
-Search Radius: The number of nucleotides with bad quality (less than "Minimal End Quality") that must appear in a row to cut off the sequence AT THE END.
+Search Radius: This value describes how many nucleotides will be averaged for an additional trimm factor. If the average quality of the nucleotides is below our cutoff value (minimal end quality), the rest of the sequence will be trimmed away. Increasing this value will result in more nucleotides being averaged which means the quality of a single nucleotide will have less weight.

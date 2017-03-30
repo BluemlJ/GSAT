@@ -19,15 +19,14 @@ Check out the topic you are interested in:
 | (1) How to set up and to start a new analysis
 | -------------------------------------------------
 
-To start a new analysis, you first have to choose a folder of AB1 files or a single AB1 file. For doing this, enter a path into the Source input field or click on the Button 
+To start a new analysis, you first have to choose a folder of AB1 files or a single AB1 file. For doing this, enter a path into the source input field or click on the Button 
 next to the field. You will be asked whether you want to specify a path or a single file. Choose as preferred and select the folder or the file in the menu which will be presented 
-to you then. To tell GSAT where to place the results of your analysis, analogously enter a Destination path in the input field below the Source field. You can also choose a
+to you. To tell GSAT where to place the results of your analysis, analogously enter a destination path in the input field below the source field. You can also choose a
 folder by clicking on the button next to the field. 
-Next, you have to choose a gene to compare the files with. Choose one from the gene dropdown menu. 
-Make sure the output is as desired: One single file or multiple files, one for each input. You can specify this with the checkbox 'Multiple outfut files'.
-Almost done. All you have to do now is click on the Start button. 
-And there you go. When the analysis finished, you can find the results in the folder you specified with Destination. The progress bar will tell you how far the analysis process hase come.
-
+Next, you have to choose a gene to compare the files with. Choose one from the gene dropdown menu or let GSAT automatically detect the right gene by using the 'Find right gene' checkbox. The gene must be already integrated or added manually via the settings menu.
+Make sure the output is as desired: One single file or multiple files, one for each sequence. You can specify this with the checkbox 'Multiple outfut files'.
+To start the analysis click on the start button. When the analysis is finished, you can find the results in the folder you specified in the destination field. The progress bar will tell you how far the analysis process has come.
+To directly open the results in excel you can use the 'Open results file' button.
 
 
 
@@ -58,13 +57,12 @@ Read about the authors and the making of GSAT!
 This specifies the folder of AB1 files or the single AB1 file which you want to analyze. Enter folder or file path manually or simply choose it by clicking on the choose button situated on the right of the input field. 
 Clicking the open button will open the folder with the default file explorer of your operating system. In case of a single file the open button will open this file with the default program specified by your operating system.
 
-
 >>> DESTINATION
 This specifies the folder where the results should be written to. You can enter the folder manually or choose it by clicking the choose button on the right hand side of the input field.
-Clicking the open button will open the folder with the default file explorer of your operating system. In case of a single file the open button will open this file with the default program specified by your operating system.
+Clicking the open button will open the folder with the default file explorer of your operating system.
 
 >>> FILE NAME
-You can specify the name of the out file(s). By leaving this field blank, "gsat_results" will be used as a default name.
+You can specify the name of the out file(s). By leaving this field blank, 'gsat_results' will be used as a default name.
  
 >>> GENE
 Use this dropdown menu to choose which gene to compare the sequences with.
@@ -79,7 +77,7 @@ Instead of specifying a certain gene, you can also ask the program to select the
 This button will open the last analyzed file with the standard program specified by your operating system.
 
 >>> START
-After choosing a path for input and output and after selecting a gene, you can click on Start to run the analysis.
+After choosing a path for input and output and after selecting a gene, you can click on start to run the analysis.
 
 
 
@@ -92,9 +90,9 @@ After choosing a path for input and output and after selecting a gene, you can c
 | (3) The settings window in further detail
 | -------------------------------------------
 
->>> RESEARCHER
+>>> RESEARCHER:
 Choose your name in the dropdown menu to make sure your analyses are associated with it. If your name is not entered yet, do so by making use of the add button. 
-Remove names from the list with delete.
+Remove names from the list with hte delete button.
 
 >>> AVAILABLE GENES AND PRIMERS
 The list you see in the middle of the window contains all currently available genes for an analysis. You can add, delete and show your genes with the three buttons next to the list.
@@ -103,19 +101,29 @@ When adding a gene you are asked to enter its name, the organism it corresponds 
 Next to the list are also two toggle buttons to switch between genes and primers. When primers are selected the list will contain all primers you saved in your local primer file.
 You can add, delete and show them with the same buttons next to the list view.
 
->>> EDIT PARAMETERS
-You can adjust parameters used in the analysis pipeline by clicking this button.
-Minimal Start Quality: The minimal PHRED score a nucleotide is allowed to have to not get trimmed away at the BEGINNING of the sequence.
-Minimal End Quality: The minimal PHRED score a nucleotide is allowed to have to not get trimmed away at the END of the sequence.
-Bad Quality Margin: The maximum number of nucleotides in a row with bad quality (less than "Minimal End Quality") that are allowed before the sequence gets cut off AT THE END.
-Good Quality Margin: The minimum number of nucleotides with good quality (better than "Minimal End Quality") that must appear in a row to not get cut away AT THE BEGINNING of a sequence.
-Search Radius: The number of nucleotides with bad quality (less than "Minimal End Quality") that must appear in a row to cut off the sequence AT THE END.
+>>> EDIT PARAMETERS:
+These are the parameters you can change:
+
+Minimal Start Quality: 
+The minimal PHRED score a nucleotide is allowed to have to not get trimmed away at the BEGINNING of the sequence. Increasing this value will result in a more strict trimming at the start of the sequence. This means most likely more nucleotides will be trimmed away at the start of the sequence.
+
+Minimal End Quality: 
+The minimal PHRED score a nucleotide is allowed to have to not get trimmed away at the END of the sequence. Increasing this value will result in a more strict trimming at the end of the sequence. This means most likely more nucleotides will be trimmed away at the end of the sequence.
+
+Bad Quality Margin: 
+The maximum number of nucleotides in a row with bad quality (less than "Minimal End Quality") that are allowed before the sequence gets cut off AT THE END. Increasing this value will result in a less strict trimming at the end of the sequence which means less nucleotides will be trimmed away at the end.
+
+Good Quality Margin: 
+The minimum number of nucleotides with good quality (better than "Minimal End Quality") that must appear in a row to not get cut away AT THE BEGINNING of a sequence. Increasing this value will result in a more strict trimming at the start of the sequence which means more nucleotides will be trimmed away at the beginning.
+
+Search Radius: 
+This value describes how many nucleotides will be averaged for an additional trimm factor. If the average quality of the nucleotides is below our cutoff value (minimal end quality), the rest of the sequence will be trimmed away. Increasing this value will result in more nucleotides being averaged which means the quality of a single nucleotide will have less weight.
 
 >>> CONFIGURE DATABASE
-Opens a new window to configurate the database connection. You can login here.
+Opens a new window to configurate the database connection. You can login here by setting the username, password, url and port via the text input fields. To test the connection press the connect button. The values will automatically be saved.
 
 >>> OK
-Leave the settings window by closing it and return to the main window. You changes will be saved.
+Leave the settings window by closing it and return to the main window. Your changes will be saved.
 
 
 
