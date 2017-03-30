@@ -52,6 +52,8 @@ class Main {
     } catch (InterruptedException e) {
       // TODO Auto-generated catch block
       e.printStackTrace();
+    } catch (Throwable e) {
+      e.printStackTrace();
     }
 
     if (Runtime.getRuntime().maxMemory() < 1024 * 1024 * 1024) {
