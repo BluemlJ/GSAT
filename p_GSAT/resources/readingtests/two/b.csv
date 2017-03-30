@@ -1,3 +1,3 @@
-file name; gene; gene organism; mutations (with codons); HIS tag; manually checked; comments; researcher; date; average quality (percent); percentage of quality trim; nucleotide sequence; primer; mutations (without codons)
-y.ab1; FSA1; ecoli; R6F (AAA); 3; false; comment; -; 02/03/17; 99; 55; ATCTACTACTATACG; none; R6F
-z.ab1; FSA1; ecoli; F6R (ACT); none; true; c; -; 02/03/17; 99; 49; AATATC; none; F6R
+file name; gene; gene organism; mutations (with codons - except for insertions, deletions and silent mutations);mutations (with codons - insertions, deletions and silent mutations); HIS Tag; manually checked; comments; researcher; date; average quality (percent); percentage of quality trim; nucleotide sequence; primer;mutations (without codons - except for insertions, deletions and silent mutations);mutations (without codons - insertions, deletions and silent mutations)
+y.ab1; FSA1; ecoli; R6F (AAA); ; 3; false; comment; -; 02/03/17; 99; 55; ATCTACTACTATACG; none; R6F;
+z.ab1; FSA1; ecoli; F6R (ACT); ; none; true; c; -; 02/03/17; 99; 49; AATATC; none; F6R; ;
