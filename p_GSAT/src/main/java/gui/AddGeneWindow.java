@@ -205,7 +205,7 @@ public class AddGeneWindow extends Application implements javafx.fxml.Initializa
             Alert alert = new Alert(AlertType.CONFIRMATION);
             alert.setTitle("Incorrect Sequence");
             alert.setHeaderText(
-                "The seqeunce starts or ends with incorrect codon (not ATG and stopcodon like TAA)");
+                "The seqeunce starts or ends with incorrect codon (not ATG as startcodon, no stopcodon like TAA)");
             alert.setContentText("Want to save gene regardless of startcodon and/or stopcodon?");
 
             Optional<ButtonType> result = alert.showAndWait();
