@@ -180,7 +180,7 @@ public class StringAnalysis {
    * @see CorruptedSequenceException
    * 
    * @param toAnalyse the sequence to check
-   * @throws CorruptedSequenceException if complementary cant be build
+   * @throws CorruptedSequenceException if complementary can't be build
    * @author jannis blueml
    * 
    */
@@ -188,11 +188,12 @@ public class StringAnalysis {
       throws CorruptedSequenceException {
     // initialize with standard sequence
     double bestSimilarity = checkSimilarity(toAnalyse, toAnalyse.getReferencedGene());
+    boolean reverseQuality = false;
     // checks complementary sequence
     double toTest = checkSimilarity(toAnalyse.getComplementarySequence(),
         toAnalyse.getReferencedGene().getSequence());
     if (toTest > bestSimilarity) {
-      System.out.println("complementary the sequence");
+      toAnalyse.addComments(toAnalyse.getComments() + "The sequence was complementary. ");
       toAnalyse.setSequence(toAnalyse.getComplementarySequence());
       bestSimilarity = toTest;
     }
@@ -200,21 +201,24 @@ public class StringAnalysis {
     toTest = checkSimilarity(toAnalyse.getReversedSequence(),
         toAnalyse.getReferencedGene().getSequence());
     if (toTest > bestSimilarity) {
-      System.out.println("reverse the sequence");
+      toAnalyse.addComments(toAnalyse.getComments() + "The sequence was reverse. ");
       toAnalyse.setSequence(toAnalyse.getReversedSequence());
-      toAnalyse.reverseQuality();
+      reverseQuality = true;
       bestSimilarity = toTest;
     }
     // checks complementary and reversed sequence
     toTest = checkSimilarity(toAnalyse.getComplementarySequence(toAnalyse.getReversedSequence()),
         toAnalyse.getReferencedGene().getSequence());
     if (toTest > bestSimilarity) {
-      System.out.println("reverse + complementary the sequence");
+      toAnalyse.addComments(toAnalyse.getComments() + "The sequence was complementary and reverse. ");
       toAnalyse.setSequence(toAnalyse.getComplementarySequence(toAnalyse.getReversedSequence()));
-      toAnalyse.reverseQuality();
+      reverseQuality = true;
       bestSimilarity = toTest;
     }
 
+    if(reverseQuality){
+      toAnalyse.reverseQuality();
+    }
   }
 
   /**

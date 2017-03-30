@@ -267,7 +267,7 @@ public class MutationAnalysis {
     if (!mixPositions.isEmpty()) {
       if (mixPositions.size() > 1) {
         sequence.setComments(
-            sequence.getComments() + "There are possible plasmidmixes at the positions ");
+            sequence.getComments() + " There are possible plasmidmixes at the positions ");
         for (String string : mixPositions) {
           sequence.setComments(sequence.getComments() + string + ", ");
         }
