@@ -39,9 +39,17 @@ class Main {
         System.out.println("Heapspace low");
         System.out.println("Set Heapspace");
         System.out.println(currentPath);
-        Process p = Runtime.getRuntime().exec("java -jar -Xmx1024M " + currentPath + " restart");
-        p.waitFor();
-        return;
+        
+        ProcessBuilder pbuilder = new ProcessBuilder("java -jar -Xmx1024M " + currentPath);
+        Process proc = pbuilder.start();
+        proc.waitFor();
+        //Process p = Runtime.getRuntime().exec();
+        //p.waitFor();
+        
+        if (proc.exitValue() == 0) {
+          return;
+        }
+        
       }
     } catch (URISyntaxException e1) {
       // TODO Auto-generated catch block
