@@ -2,8 +2,10 @@ package gui;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
+import analysis.StringAnalysis;
 import io.ConfigHandler;
 import io.GeneHandler;
 import javafx.application.Application;
@@ -16,8 +18,10 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
@@ -171,23 +175,57 @@ public class AddGeneWindow extends Application implements javafx.fxml.Initializa
           return;
         }
 
+        if (geneArea.getText().length() % 3 != 0) {
+          GUIUtils.showInfo(AlertType.ERROR, "Gene can't be casted to amino acids",
+              "Please check if gene is given as nucleotide triples");
+          return;
+        }
+
         // check if gene already exists in the local gene pool. If not, then add gene and close
         // window.
         try {
           if (organismField.getText().equals("")) {
             organismField.setText("none");
           }
-          if (GeneHandler.addGene(nameField.getText(), geneArea.getText(), organismField.getText(),
-              commentArea.getText())) {
 
-            GUIUtils.showInfo(AlertType.INFORMATION, "Adding a gene", "Gene added successfully.");
-            MainWindow.changesOnGenes = true;
-            parent.updateGenes();
-            Stage stage = (Stage) cancelButton.getScene().getWindow();
-            stage.close();
+          if (testGeneStartAndStop(geneArea.getText())) {
+            if (GeneHandler.addGene(nameField.getText(), geneArea.getText(),
+                organismField.getText(), commentArea.getText())) {
+
+              GUIUtils.showInfo(AlertType.INFORMATION, "Adding a gene", "Gene added successfully.");
+              MainWindow.changesOnGenes = true;
+              parent.updateGenes();
+              Stage stage = (Stage) cancelButton.getScene().getWindow();
+              stage.close();
+            } else {
+              GUIUtils.showInfo(AlertType.ERROR, "Faild to add a gene",
+                  "Gene added not successful because gene already exists in local file.");
+            }
           } else {
-            GUIUtils.showInfo(AlertType.ERROR, "Faild to add a gene",
-                "Gene added not successful because gene already exists in local file.");
+            Alert alert = new Alert(AlertType.CONFIRMATION);
+            alert.setTitle("Incorrect Sequence");
+            alert.setHeaderText(
+                "The seqeunce starts or ends with incorrect codon (not ATG and stopcodon like TAA)");
+            alert.setContentText("Want to save gene regardless of startcodon and/or stopcodon?");
+
+            Optional<ButtonType> result = alert.showAndWait();
+            if (result.get() == ButtonType.OK) {
+              if (GeneHandler.addGene(nameField.getText(), geneArea.getText(),
+                  organismField.getText(), commentArea.getText())) {
+
+                GUIUtils.showInfo(AlertType.INFORMATION, "Adding a gene",
+                    "Gene added successfully.");
+                MainWindow.changesOnGenes = true;
+                parent.updateGenes();
+                Stage stage = (Stage) cancelButton.getScene().getWindow();
+                stage.close();
+              } else {
+                GUIUtils.showInfo(AlertType.ERROR, "Faild to add a gene",
+                    "Gene added not successful because gene already exists in local file.");
+              }
+            } else {
+              alert.close();
+            }
           }
 
         } catch (Exception e) {
@@ -249,9 +287,21 @@ public class AddGeneWindow extends Application implements javafx.fxml.Initializa
   }
 
   /**
-   * Sets this windows parrent. Has to be called upon start of this window!
+   * This method checks if the given gene sequence starts with ATG and end with a stopcodon.
    * 
-   * @param parent the window, this window was opend from
+   * @param genesequence the gene seqeunce to check for beginning and end
+   * @return if gene starts with ATG and ends with stopcodon
+   * @author jannis blueml
+   */
+  private boolean testGeneStartAndStop(String genesequence) {
+    String aminoAcids = StringAnalysis.codonsToAminoAcids(genesequence);
+    return (aminoAcids.startsWith("M") && aminoAcids.endsWith("#"));
+  }
+
+  /**
+   * Sets this windows parent. Has to be called upon start of this window!
+   * 
+   * @param parent the window, this window was opened from
    */
   public void setParent(SettingsWindow parent) {
     this.parent = parent;
