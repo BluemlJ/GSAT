@@ -50,12 +50,12 @@ public class ShowChromatogramWindow extends Application implements javafx.fxml.I
   /**
    * geenish color for trace A.
    */
-  private final Color colorA = new Color(170, 220, 80);
+  private final Color colorA = new Color(120, 255, 80);
 
   /**
    * redish color for trace T.
    */
-  private final Color colorT = new Color(240, 60, 60);
+  private final Color colorT = new Color(255, 60, 60);
 
   /**
    * Black color for trace G.
@@ -65,7 +65,7 @@ public class ShowChromatogramWindow extends Application implements javafx.fxml.I
   /**
    * Bluish color for trace C.
    */
-  private final Color colorC = new Color(110, 180, 200);
+  private final Color colorC = new Color(110, 180, 255);
 
   /**
    * color for undefined genes.
@@ -361,7 +361,7 @@ public class ShowChromatogramWindow extends Application implements javafx.fxml.I
     }
 
     // variables for scaling image
-    double stretchY = 0.2;
+    double stretchY = 0.25;
     int stretchX = 4;
 
     // rescale if necesary:
