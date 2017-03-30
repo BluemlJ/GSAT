@@ -185,18 +185,49 @@ public class FileSaver {
       return builder.toString();
     }
 
-    // mutations (with nucleotide codons)
+    // mutations (with nucleotide codons); separateded into
+    // everything except insertions, deletions, silent mutations AND
+    // insertions, deletions, silent mutations
     LinkedList<String> mutations = sequence.getMutations();
-    int numberOfMutations = sequence.getMutations().size();
+    int numberOfMutations = mutations.size();
+    LinkedList<String> insertionsDeletionsSilent = new LinkedList<String>();
+    LinkedList<String> furtherMutations = new LinkedList<String>();
+    
+    for (String s : mutations) {
+      if (s.contains("+") || s.contains("-") || s.matches(".*[ATCG][ATCG][ATCG].*[ATCG][ATCG][ATCG]")) {
+        insertionsDeletionsSilent.add(s);
+      } else {
+        furtherMutations.add(s);
+      }
+    }
+    
+    int furtherMutCount = furtherMutations.size();
 
-    if (numberOfMutations == 0) {
+    if (furtherMutCount == 0) {
       builder.append(SEPARATOR_CHAR + " ");
     } else {
-      for (int i = 0; i < numberOfMutations; i++) {
+      for (int i = 0; i < furtherMutCount; i++) {
 
-        String mutation = mutations.get(i);
+        String mutation = furtherMutations.get(i);
         builder.append(mutation);
-        if (i < numberOfMutations - 1) {
+        if (i < furtherMutCount - 1) {
+          builder.append(", ");
+        } else {
+          builder.append(SEPARATOR_CHAR + " ");
+        }
+      }
+    }
+    
+    int insDelSilentCount = insertionsDeletionsSilent.size();
+
+    if (insDelSilentCount == 0) {
+      builder.append(SEPARATOR_CHAR + " ");
+    } else {
+      for (int i = 0; i < insDelSilentCount; i++) {
+
+        String mutation = insertionsDeletionsSilent.get(i);
+        builder.append(mutation);
+        if (i < insDelSilentCount - 1) {
           builder.append(", ");
         } else {
           builder.append(SEPARATOR_CHAR + " ");
@@ -245,12 +276,14 @@ public class FileSaver {
     // primer (may be changed by user manually)
     builder.append("none" + SEPARATOR_CHAR + " ");
 
+    
     // mutations without nucleotide codons
-    if (numberOfMutations == 0) {
-      builder.append("; ");
+    if (furtherMutCount == 0) {
+      builder.append(SEPARATOR_CHAR + " ");
     } else {
-      for (int i = 0; i < numberOfMutations; i++) {
-        String mutation = mutations.get(i);
+      for (int i = 0; i < furtherMutCount; i++) {
+
+        String mutation = furtherMutations.get(i);
         String reducedMutation;
         if (mutation.equals("reading frame error")) {
           reducedMutation = mutation;
@@ -258,12 +291,34 @@ public class FileSaver {
           reducedMutation = (mutation.trim()).split(" ")[0];
         }
         builder.append(reducedMutation);
-        if (i < numberOfMutations - 1) {
+        if (i < furtherMutCount - 1) {
           builder.append(", ");
+        } else {
+          builder.append(SEPARATOR_CHAR + " ");
         }
       }
     }
 
+    if (insDelSilentCount == 0) {
+      builder.append(SEPARATOR_CHAR);
+    } else {
+      for (int i = 0; i < insDelSilentCount; i++) {
+
+        String mutation = insertionsDeletionsSilent.get(i);
+        String reducedMutation;
+        if (mutation.equals("reading frame error")) {
+          reducedMutation = mutation;
+        } else {
+          reducedMutation = (mutation.trim()).split(" ")[0];
+        }
+        builder.append(reducedMutation);
+        if (i < insDelSilentCount - 1) {
+          builder.append(", ");
+      }
+    }
+    }
+    
+     
     builder.append(System.lineSeparator());
 
     String toWrite = builder.toString();
@@ -319,11 +374,11 @@ public class FileSaver {
 
     if (!append) {
       writer.write("file name" + SEPARATOR_CHAR + " gene" + SEPARATOR_CHAR + " gene organism"
-          + SEPARATOR_CHAR + " mutations (with codons)" + SEPARATOR_CHAR + " HIS Tag"
+          + SEPARATOR_CHAR + " mutations (with codons - except for insertions, deletions and silent mutations)" + SEPARATOR_CHAR + "mutations (with codons - insertions, deletions and silent mutations)" + SEPARATOR_CHAR + " HIS Tag"
           + SEPARATOR_CHAR + " manually checked" + SEPARATOR_CHAR + " comments" + SEPARATOR_CHAR
           + " researcher" + SEPARATOR_CHAR + " date" + SEPARATOR_CHAR + " average quality (percent)"
           + SEPARATOR_CHAR + " percentage of quality trim" + SEPARATOR_CHAR + " nucleotide sequence"
-          + SEPARATOR_CHAR + " primer" + SEPARATOR_CHAR + " mutations (without codons)"
+          + SEPARATOR_CHAR + " primer" + SEPARATOR_CHAR + "mutations (without codons - except for insertions, deletions and silent mutations)" + SEPARATOR_CHAR + "mutations (without codons - insertions, deletions and silent mutations)"
           + System.lineSeparator());
     }
 

@@ -118,10 +118,11 @@ public class CSVReadingTests {
     System.out.println(test.getReversedSequence());
     assertEquals("FSA1", test.getReferencedGene().getName());
 
-    assertTrue(test.getMutations().size() == 3);
+    assertTrue(test.getMutations().size() == 4);
     assertEquals("K9L (CAA)", test.getMutations().pop());
     assertEquals("D9L (CAA)", test.getMutations().pop());
     assertEquals("W9L (CAA)", test.getMutations().pop());
+    assertEquals("+1E4 (ATC)", test.getMutations().pop());
 
     assertEquals("l", test.getComments());
     assertEquals("test", test.getResearcher());
@@ -140,10 +141,11 @@ public class CSVReadingTests {
     assertEquals("test2.ab1", test.getFileName());
     assertEquals("FSA1", test.getReferencedGene().getName());
 
-    assertTrue(test.getMutations().size() == 2);
+    assertTrue(test.getMutations().size() == 3);
     assertEquals("K9J (CCA)", test.getMutations().pop());
     assertEquals("G5H (AGG)", test.getMutations().pop());
-
+    assertEquals("-1E4 (ATC)", test.getMutations().pop());
+    
     assertEquals("d", test.getComments());
     assertEquals("test2", test.getResearcher());
     assertEquals("06/03/17", test.getAddingDate());

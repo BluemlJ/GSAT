@@ -123,30 +123,42 @@ public class FileRetriever {
     String[] mutations = data[3].split(",");
     for (int i = 0; i < mutations.length; i++) {
       mutations[i] = mutations[i].trim();
-      sequence.addMutation(mutations[i]);
+      if (!mutations[i].isEmpty()) {
+        sequence.addMutation(mutations[i]);
+      }
+    }
+    
+    mutations = data[4].split(",");
+    for (int i = 0; i < mutations.length; i++) {
+      mutations[i] = mutations[i].trim();
+      if (!mutations[i].isEmpty()) {
+        sequence.addMutation(mutations[i]);
+      }
     }
 
-    if (data[4].equals("none")) {
+    if (data[5].equals("none")) {
       sequence.setHisTagPosition(-1);
     } else {
-      sequence.setHisTagPosition(Integer.parseInt(data[4]));
+      sequence.setHisTagPosition(Integer.parseInt(data[5]));
     }
 
-    if (isYes(data[5])) {
+    if (isYes(data[6])) {
       sequence.setManuallyChecked(true);
     } else {
       sequence.setManuallyChecked(false);
     }
 
-    sequence.setComments(data[6]);
-    sequence.setResearcher(data[7]);
-    sequence.setAddingDate(data[8]);
-    sequence.setAvgQuality(Integer.parseInt(data[9]));
-    sequence.setTrimPercentage(Double.parseDouble(data[10]));
-    sequence.setSequence(data[11]);
-    sequence.setPrimer(data[12]);
+    sequence.setComments(data[7]);
+    sequence.setResearcher(data[8]);
+    sequence.setAddingDate(data[9]);
+    sequence.setAvgQuality(Integer.parseInt(data[10]));
+    sequence.setTrimPercentage(Double.parseDouble(data[11]));
+    sequence.setSequence(data[12]);
+    sequence.setPrimer(data[13]);
 
-    // data[13] contains the mutations again
+    // data[14] contains the mutations again
+    
+    // data[15] contains the mutations again
 
     return sequence;
 
