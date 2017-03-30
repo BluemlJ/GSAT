@@ -29,13 +29,16 @@ class Main {
   public static void main(String[] args) {
 
     // check for heap space
+    System.out.println((Runtime.getRuntime().maxMemory() / (1024 * 1024)) + "MB Awailable");
     try {
       String currentPath = Main.class.getProtectionDomain().getCodeSource().getLocation().toURI()
           .getPath().replace('/', File.separator.charAt(0)).substring(1);
 
       // check if enough heap space is awailable
       if (args.length == 0 && Runtime.getRuntime().maxMemory() < 1024 * 1024 * 1024) {
+        System.out.println("Heapspace low");
         System.out.println("Set Heapspace");
+        System.out.println(currentPath);
         Process p = Runtime.getRuntime().exec("java -jar -Xmx1024M " + currentPath + " restart");
         p.waitFor();
         return;
@@ -55,7 +58,7 @@ class Main {
        GUIUtils.showInfo(AlertType.ERROR, "Heap space error", "Maximum heap space capacity is low, this might cause malfunction of the chromatogram window. Please run the program with the command" + System.lineSeparator() + "java -jar -Xmx1024M PATHTO-GSAT.JAR" + System.lineSeparator() + " or increase the java heap space");
     }
 
-    System.out.println((Runtime.getRuntime().maxMemory() / (1024 * 1024)) + "MB Awailable");
+    
 
     Locale.setDefault(Locale.ENGLISH);
 
