@@ -3,6 +3,7 @@ package core;
 import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.util.ArrayList;
 import java.util.Locale;
 
 import exceptions.ConfigNotFoundException;
@@ -34,20 +35,40 @@ class Main {
       String currentPath = Main.class.getProtectionDomain().getCodeSource().getLocation().toURI()
           .getPath().replace('/', File.separator.charAt(0)).substring(1);
 
+      final File currentJar = new File(Main.class.getProtectionDomain().getCodeSource().getLocation().toURI());
+      final String javaBin = System.getProperty("java.home") + File.separator + "bin" + File.separator + "java";
+
+
+      
+      
+      
+      
       // check if enough heap space is awailable
-      if (args.length == 0 && Runtime.getRuntime().maxMemory() < 1024 * 1024 * 1024) {
+      if (args.length == 0 && Runtime.getRuntime().maxMemory() < 1024 * 1024 * 1024 && currentJar.getName().endsWith(".jar")) {
+        /* Build command: java -jar application.jar */
+        final ArrayList<String> command = new ArrayList<String>();
+        command.add(javaBin);
+        command.add("-jar");
+        command.add("-Xmx1024M");
+        command.add(currentJar.getPath());
+        
+        
         System.out.println("Heapspace low");
         System.out.println("Set Heapspace");
         System.out.println(currentPath);
         
-        ProcessBuilder pbuilder = new ProcessBuilder("java -jar -Xmx1024M " + currentPath);
+        ProcessBuilder pbuilder = new ProcessBuilder(command);
         Process proc = pbuilder.start();
+        
+        System.out.println("waiting");
         proc.waitFor();
+        System.out.println("finished waiting");
+        System.out.println("exitcode = " + proc.exitValue());
         //Process p = Runtime.getRuntime().exec();
         //p.waitFor();
         
         if (proc.exitValue() == 0) {
-          return;
+          System.exit(0);
         }
         
       }
@@ -63,11 +84,11 @@ class Main {
     } catch (Throwable e) {
       e.printStackTrace();
     }
-
+    System.out.println("end of catchclause");
     if (Runtime.getRuntime().maxMemory() < 1024 * 1024 * 1024) {
        GUIUtils.showInfo(AlertType.ERROR, "Heap space error", "Maximum heap space capacity is low, this might cause malfunction of the chromatogram window. Please run the program with the command" + System.lineSeparator() + "java -jar -Xmx1024M PATHTO-GSAT.JAR" + System.lineSeparator() + " or increase the java heap space");
     }
-
+    System.out.println("begin of normal program");
     
 
     Locale.setDefault(Locale.ENGLISH);
