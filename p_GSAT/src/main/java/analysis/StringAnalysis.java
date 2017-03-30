@@ -203,19 +203,20 @@ public class StringAnalysis {
 		toAnalyse.getReferencedGene().getSequence());
 
 	double best = Math.max((Math.max(toTestcomp, toTestcomprev)), Math.max(toTestrev, bestSimilarity));
+
 	if (best == toTestcomp) {
-	    toAnalyse.addComments(toAnalyse.getComments() + "The sequence was complementary. ");
+	    toAnalyse.addComments(toAnalyse.getComments() + " The sequence was complementary. ");
 	    toAnalyse.setSequence(toAnalyse.getComplementarySequence());
 	    bestSimilarity = toTestcomp;
 	}
 	if (best == toTestrev) {
-	    toAnalyse.addComments(toAnalyse.getComments() + "The sequence was reverse. ");
+	    toAnalyse.addComments(toAnalyse.getComments() + " The sequence was reverse. ");
 	    toAnalyse.setSequence(toAnalyse.getReversedSequence());
 	    toAnalyse.reverseQuality();
 	    bestSimilarity = toTestrev;
 	}
 	if (best == toTestcomprev) {
-	    toAnalyse.addComments(toAnalyse.getComments() + "The sequence was complementary and reverse. ");
+	    toAnalyse.addComments(toAnalyse.getComments() + " The sequence was complementary and reverse. ");
 	    toAnalyse.setSequence(toAnalyse.getComplementarySequence(toAnalyse.getReversedSequence()));
 	    toAnalyse.reverseQuality();
 	    bestSimilarity = toTestcomprev;
