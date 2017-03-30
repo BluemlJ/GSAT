@@ -52,7 +52,7 @@ class Main {
         command.add("-Xmx1024M");
         command.add(currentJar.getPath());
         
-                System.out.println("Heapspace low");
+        System.out.println("Heapspace low");
         System.out.println("Set Heapspace");
         System.out.println(currentPath);
         
