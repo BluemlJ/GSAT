@@ -119,9 +119,10 @@ public class DatabaseConnection {
   public static void establishConnection() throws DatabaseConnectionException {
 
     try {
-      conn = dataSource.getConnection();
+    conn = dataSource.getConnection();
     } catch (SQLException e) {
       System.out.println(e.getMessage());
+      e.printStackTrace();
       throw new DatabaseConnectionException();
     }
 
@@ -644,6 +645,7 @@ public class DatabaseConnection {
       // search for researcher
       int researcherId = pushResearcher(primer.getResearcher());
       System.out.println("push researcher: " + primer.getResearcher());
+      
       // push the gene
       pushPrimer(primer, researcherId);
     }
@@ -760,7 +762,7 @@ public class DatabaseConnection {
     LinkedList<String> mutations = new LinkedList<String>();
 
     // get a connection
-    establishConnection();
+    //establishConnection();
 
     Statement stmt = conn.createStatement();
     stmt.execute("USE gsat");
@@ -779,7 +781,7 @@ public class DatabaseConnection {
 
     stmt.close();
     pstmt.close();
-    conn.close();
+    //conn.close();
     return mutations;
   }
 
@@ -825,7 +827,7 @@ public class DatabaseConnection {
   private static String pullResearcherPerIndex(int researcherId)
       throws SQLException, DatabaseConnectionException {
     String researcher = null;
-    establishConnection();
+    //establishConnection();
 
     Statement stmt = conn.createStatement();
     stmt.execute("USE gsat");
@@ -841,7 +843,7 @@ public class DatabaseConnection {
     }
     stmt.close();
     pstmt.close();
-    conn.close();
+    //conn.close();
     return researcher;
   }
 
@@ -894,14 +896,14 @@ public class DatabaseConnection {
    */
   public static Gene pullGenePerIndex(int index) throws SQLException, DatabaseConnectionException {
     Gene gene = null;
-    establishConnection();
+    //establishConnection();
 
     Statement stmt = conn.createStatement();
     stmt.execute("USE gsat");
 
     // get the gene from the given sequence
     PreparedStatement pstmt = conn.prepareStatement("SELECT * FROM genes WHERE id = ?");
-    pstmt.setInt(1, index);
+    pstmt.setInt(1, 2);
 
     ResultSet rs = pstmt.executeQuery();
 
@@ -921,7 +923,7 @@ public class DatabaseConnection {
     }
     stmt.close();
     pstmt.close();
-    conn.close();
+    //conn.close();
     return gene;
   }
 
@@ -1314,11 +1316,12 @@ public class DatabaseConnection {
       int trimpercent = rs.getInt("trimpercent");
       int histag = rs.getInt("histag");
       int avgquality = rs.getInt("avgquality");
-
+      
       String researcherName = pullResearcherPerIndex(researcherid);
-      Gene gene = pullGenePerIndex(geneIndex);
+      Gene gene = pullGenePerIndex(geneIndex);       
       LinkedList<String> mutations = pullMutationsPerSequence(id);
-
+      
+      //System.out.println(name + " " + gene.getName() );
       AnalysedSequence seq = new AnalysedSequence(gene, mutations, name, sequence, date,
           researcherName, comment, manuallyChecked, primer, trimpercent, histag, avgquality);
       sequences.add(seq);
