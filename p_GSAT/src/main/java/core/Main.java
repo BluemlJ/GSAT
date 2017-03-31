@@ -49,10 +49,10 @@ class Main {
       op = new BufferedReader(new InputStreamReader(command.getInputStream()));
       // Wait for the application to Finish
       command.waitFor();
-      exitVal = command.exitValue();
+      /*exitVal = command.exitValue();
       if (exitVal != 0) {
         throw new IOException("Failed to execure jar, " + getExecutionLog());
-      }
+      }*/
 
     } catch (Throwable e) {
       throw e;
@@ -75,7 +75,7 @@ class Main {
     return jarFile.getParentFile().getAbsolutePath();
   }
 
-  public static String getExecutionLog() {
+/*  public static String getExecutionLog() {
     String errorString = "";
     String lineString;
     try {
@@ -94,7 +94,7 @@ class Main {
       op.close();
     } catch (final IOException e) {}
     return "exitVal: " + exitVal + ", error: " + error + ", output: " + output;
-  }
+  }*/
 
 
   /**
@@ -104,15 +104,18 @@ class Main {
    */
   public static void main(String[] args) {
 
+    System.out.println(Runtime.getRuntime().maxMemory() );
     
-    if (args.length == 0 && Runtime.getRuntime().maxMemory() <  1024 * 1024 * 1024) {      
+    if (args.length == 0 && Runtime.getRuntime().maxMemory()/  (1024 * 1024 * 1024) <  1) {
+      System.out.println("try realocating heap space");
       try {
         String path = new File(Main.class.getProtectionDomain().getCodeSource().getLocation().toURI().getPath()).getAbsolutePath();
-        jarrunner(path, "-help");
+        System.out.println("starting with more heap");
+        jarrunner(path, "-Xmx1024M");
         System.exit(0);
-      } catch (Throwable e1) {
-        // TODO Auto-generated catch block
+      } catch (Throwable e1) {        
         e1.printStackTrace();
+        System.err.println("fallbackMode");
       }
     }else if(args.length > 0) {
       System.out.println(args[0]);
@@ -120,7 +123,7 @@ class Main {
 
     // **********************
     System.err.println("end of catchclause");
-    if (Runtime.getRuntime().maxMemory() < 1024 * 1024 * 1024) {
+    if (Runtime.getRuntime().maxMemory() < 1024 * 1024 * 1024 *10) {
       GUIUtils.showInfo(AlertType.ERROR, "Heap space error",
           "Maximum heap space capacity is low, this might cause malfunction of the chromatogram window. Please run the program with the command"
               + System.lineSeparator() + "java -jar -Xmx1024M PATHTO-GSAT.JAR"

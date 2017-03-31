@@ -204,22 +204,28 @@ public class StringAnalysis {
 
 	double best = Math.max((Math.max(toTestcomp, toTestcomprev)), Math.max(toTestrev, bestSimilarity));
 
+	if(best == bestSimilarity){
+	    return;
+	}
 	if (best == toTestcomp) {
 	    toAnalyse.addComments(toAnalyse.getComments() + " The sequence was complementary. ");
 	    toAnalyse.setSequence(toAnalyse.getComplementarySequence());
 	    bestSimilarity = toTestcomp;
+	    return;
 	}
 	if (best == toTestrev) {
 	    toAnalyse.addComments(toAnalyse.getComments() + " The sequence was reverse. ");
 	    toAnalyse.setSequence(toAnalyse.getReversedSequence());
 	    toAnalyse.reverseQuality();
 	    bestSimilarity = toTestrev;
+	    return;
 	}
 	if (best == toTestcomprev) {
 	    toAnalyse.addComments(toAnalyse.getComments() + " The sequence was complementary and reverse. ");
 	    toAnalyse.setSequence(toAnalyse.getComplementarySequence(toAnalyse.getReversedSequence()));
 	    toAnalyse.reverseQuality();
 	    bestSimilarity = toTestcomprev;
+	    return;
 	}
 
     }

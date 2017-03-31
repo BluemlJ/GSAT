@@ -538,8 +538,9 @@ public class MainWindow extends Application implements javafx.fxml.Initializable
             alert.setContentText("Find best fitting gene automatically?");
 
             Optional<ButtonType> result = alert.showAndWait();
-            if (result.get() != ButtonType.OK) {
-              return;
+            if (result.get() == ButtonType.OK) {
+              findGeneCheckbox.selectedProperty().set(true);
+              autoGeneSearch = true;
             }
           }
         }
