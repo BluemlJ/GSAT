@@ -575,7 +575,7 @@ public class DatabaseConnection {
     if (res.next()) {
       int result = res.getInt(1);
       pstmt.close();
-      System.out.println("added researcher " + researcher + " with id " + res.getInt(1));
+      //System.out.println("added researcher " + researcher + " with id " + res.getInt(1));
       return result;
     } else {
       // should never be called
