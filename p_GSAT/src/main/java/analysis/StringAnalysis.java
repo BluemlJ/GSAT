@@ -204,6 +204,9 @@ public class StringAnalysis {
 
 	double best = Math.max((Math.max(toTestcomp, toTestcomprev)), Math.max(toTestrev, bestSimilarity));
 
+	if(best == bestSimilarity){
+	    return;
+	}
 	if (best == toTestcomp) {
 	    toAnalyse.addComments(toAnalyse.getComments() + " The sequence was complementary. ");
 	    toAnalyse.setSequence(toAnalyse.getComplementarySequence());
