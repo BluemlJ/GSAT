@@ -7,8 +7,7 @@ Buildstatus:
 
 About GSAT
 ----
-GSAT, which means "Genetic Sequence Analysing Tool", is a Java program for analysing AB1 files, comparing them with genes and adding retrieved
-information about mutations into a database.
+GSAT, which means "Genetic Sequence Analysing Tool", is a Java program for analysing AB1 files, comparing them with genes and adding retrieved information about mutations into a database.
 
 Requirements
 ----
@@ -18,7 +17,9 @@ Further it is possible, that linux and mac need an additionally installation of 
 
 Building/Installation
 ----
+The newest version of the software can be found unter pipelines by downloading the latest build. This build includes a lib folder and a jar file. An additionally installation is not necessary, start our software by starting the jar. 
 
+A smaller console version can be start with the commandline by adding the parameter c. 
 
 
 Users Guide
