@@ -1,0 +1,2 @@
+primer1;AATAATAAT;Lovis Heindrich;50;A01;comment1
+primer2;TTATTATTA;Kevin Otto;100;B01;comment1

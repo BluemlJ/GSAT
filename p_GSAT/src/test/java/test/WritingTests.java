@@ -23,6 +23,7 @@ import analysis.Gene;
 import exceptions.MissingPathException;
 import exceptions.UndefinedTypeOfMutationException;
 import io.FileSaver;
+import io.ProblematicComment;
 
 /**
  * This class tests the behavior of the communication with the database and all associated behavior.
@@ -62,6 +63,15 @@ public class WritingTests {
   static AnalysedSequence seq1 =
       new AnalysedSequence("ATCG", "Klaus Bohne", "sequence1.ab1", new int[] {1, 3});
 
+  static AnalysedSequence seq5 =
+      new AnalysedSequence("TG", "Bernd", "sequence5.ab1", new int[] {2, 6});
+
+  static AnalysedSequence seq6 =
+      new AnalysedSequence("ATC", "Alexander", "sequence6.ab1", new int[] {2, 6});
+
+  static AnalysedSequence seq7 = new AnalysedSequence(null, new LinkedList<String>(),
+      "sequence7.ab1", "GT", new Date(), "Jonas", "", false, null, 0, 0, 0);
+
   /**
    * This method sets the genes and adds a few mutations to the AnalyzedSequence objects to make
    * them ready to be used in the tests.
@@ -81,8 +91,6 @@ public class WritingTests {
     seq1.addMutation("A131E (ACC)");
     seq1.addMutation("G7K (ATC)");
     seq1.addMutation("+2H5 (AAC)");
-    seq1.setLeftVector("A");
-    seq1.setRightVector("B");
 
     seq2.setReferencedGene(new Gene("ATTTTCG", 1, "FSA", "Karl Mueller"));
     seq2.setComments("No comments");
@@ -95,10 +103,17 @@ public class WritingTests {
     seq4.addMutation("AAA7CAA");
     seq4.addMutation("-1H5 (TCT)");
 
+    seq5.setReferencedGene(g1);
+    seq5.addProblematicComment(ProblematicComment.SEQUENCE_TO_SHORT);
+    seq6.setReferencedGene(g1);
+    seq6.addProblematicComment(ProblematicComment.SEQUENCE_TO_SHORT);
+    seq7.addMutation("+1T4");
+    seq7.setReferencedGene(
+        new Gene("ATTTTCG", 0, "FSA", "Klaus Bohne", "bacteria", "comment", new Date()));
   }
 
   @AfterClass
-  public static void wrightNewFile() throws IOException {
+  public static void writeNewFile() throws IOException {
     File newFile = new File(path + "test.txt");
     newFile.createNewFile();
   }
@@ -114,7 +129,7 @@ public class WritingTests {
   public void setup() {
     FileSaver.setSeparateFiles(true);
     FileSaver.setDestFileName("");
-    FileSaver.resetAll();
+    FileSaver.reset();
 
     File directory = new File(path);
     File[] files = directory.listFiles();
@@ -160,8 +175,8 @@ public class WritingTests {
     String addingDate = df.format(new Date());
 
     String[] correctResults = new String[] {
-        "1; sequence3.ab1; FSA; null; AAA7CAA, -1H5 (TCT); Nothing to say; Kurt Bohne; "
-            + addingDate + "; 0.0; 0; ATC; null; null; none; none; AAA7CAA, -1H5; false"};
+        "sequence3.ab1; FSA; null; ; none; false; Nothing to say; Kurt Bohne; "
+            + addingDate + "; 0; 0; ATC; none; ; AAA7CAA, -1H5 (TCT)"};
 
     for (int i = 0; i < correctResults.length; i++) {
       String[] correctInfo = correctResults[i].split(";");
@@ -232,8 +247,9 @@ public class WritingTests {
     DateFormat df = new SimpleDateFormat("dd/MM/yy");
     String addingDate = df.format(new Date());
 
-    assertEquals("1; sequence3.ab1; FSA; null; ; ; Klaus Hafer; " + addingDate
-        + "; 0.0; 0; ATCTTGCGTTG; null; null; none; none; ; false", results.getFirst());
+    assertEquals("sequence3.ab1; FSA; null; ; none; false; ; Klaus Hafer; " + addingDate
+        + "; 0; 0; ATCTTGCGTTG; none; ; ;", results.getFirst());
+    assertTrue(results.size() == 1);
     reader.close();
   }
 
@@ -270,8 +286,8 @@ public class WritingTests {
 
     // Check whether the input is correct
     String[] correctResults = new String[] {
-        "1; sequence1.ab1; FSA; bacteria; A131E (ACC), G7K (ATC), +2H5 (AAC); No comments; Klaus Bohne; "
-            + addingDate + "; 0.0; 0; ATCG; A; B; none; none; A131E, G7K, +2H5; false"};
+        "sequence1.ab1; FSA; bacteria; A131E (ACC), G7K (ATC); none; false; No comments; Klaus Bohne; "
+            + addingDate + "; 0; 0; ATCG; none; A131E, G7K; +2H5 (AAC)"};
     for (int i = 0; i < correctResults.length; i++) {
       assertEquals(correctResults[i], results.get(i));
     }
@@ -302,10 +318,8 @@ public class WritingTests {
     String addingDate = df.format(new Date());
 
     String[] correctResults = new String[] {
-        "1; sequence2.ab1; FSA; null; reading frame error; No comments; Klaus Bohne; " + addingDate
-            + "; 0.0; 0; ATCTTTG; null; null; none; none; reading frame error; false",
-        "2; sequence3.ab1; FSA; null; ; ; Klaus Hafer; " + addingDate
-            + "; 0.0; 0; ATCTTGCGTTG; null; null; none; none; ; false"};
+        "sequence2.ab1; FSA; null; reading frame error; none; false; No comments; Klaus Bohne; " + addingDate + "; 0; 0; ATCTTTG; none; reading frame error; ;",
+        "sequence3.ab1; FSA; null; ; none; false; ; Klaus Hafer; " + addingDate + "; 0; 0; ATCTTGCGTTG; none; ; ;"};
 
     for (int i = 0; i < correctResults.length; i++) {
       assertEquals(correctResults[i], results.get(i));
@@ -340,10 +354,9 @@ public class WritingTests {
     String addingDate = df.format(new Date());
 
     String[] correctResults = new String[] {
-        "1; sequence1.ab1; FSA; bacteria; A131E (ACC), G7K (ATC), +2H5 (AAC); No comments; Klaus Bohne; "
-            + addingDate + "; 0.0; 0; ATCG; A; B; none; none; A131E, G7K, +2H5; false",
-        "2; sequence2.ab1; FSA; null; reading frame error; No comments; Klaus Bohne; " + addingDate
-            + "; 0.0; 0; ATCTTTG; null; null; none; none; reading frame error; false"};
+        "sequence1.ab1; FSA; bacteria; A131E (ACC), G7K (ATC); none; false; No comments; Klaus Bohne; "
+            + addingDate + "; 0; 0; ATCG; none; A131E, G7K; +2H5 (AAC)",
+        "sequence2.ab1; FSA; null; reading frame error; none; false; No comments; Klaus Bohne; " + addingDate + "; 0; 0; ATCTTTG; none; reading frame error; ;"};
 
     for (int i = 0; i < correctResults.length; i++) {
       assertEquals(correctResults[i], results.get(i));
@@ -359,8 +372,11 @@ public class WritingTests {
     FileSaver.setSeparateFiles(false);
     FileSaver.setLocalPath(path);
 
+    AnalysedSequence seq = new AnalysedSequence();
+    seq.setReferencedGene(new Gene("A", 0, "A", null));
+
     // Nothing added (no mutations) - does it still work?
-    FileSaver.storeResultsLocally("", seq3);
+    FileSaver.storeResultsLocally("", seq);
 
     // Code for reading the file in again
     BufferedReader reader =
@@ -398,9 +414,9 @@ public class WritingTests {
     DateFormat df = new SimpleDateFormat("dd/MM/yy");
     String addingDate = df.format(new Date());
 
-    String[] correctResults =
-        new String[] {"1; sequence2.ab1; FSA; null; reading frame error; No comments; Klaus Bohne; "
-            + addingDate + "; 0.0; 0; ATCTTTG; null; null; none; none; reading frame error; false"};
+    String[] correctResults = new String[] {
+        "sequence2.ab1; FSA; null; reading frame error; none; false; No comments; Klaus Bohne; "
+            + addingDate + "; 0; 0; ATCTTTG; none; reading frame error; ;"};
 
     for (int i = 0; i < correctResults.length; i++) {
       assertEquals(correctResults[i], results.get(i));
@@ -416,8 +432,8 @@ public class WritingTests {
     reader.lines().skip(1).forEach(line -> results2.add(line));
     reader.close();
 
-    correctResults = new String[] {"1; sequence3.ab1; FSA; null; ; ; Klaus Hafer; " + addingDate
-        + "; 0.0; 0; ATCTTGCGTTG; null; null; none; none; ; false"};
+    correctResults = new String[] {"sequence3.ab1; FSA; null; ; none; false; ; Klaus Hafer; "
+        + addingDate + "; 0; 0; ATCTTGCGTTG; none; ; ;"};
     for (int i = 0; i < correctResults.length; i++) {
       assertEquals(correctResults[i], results2.get(i));
     }
@@ -449,8 +465,8 @@ public class WritingTests {
 
     // Check whether the input is correct
     String[] correctResults = new String[] {
-        "1; sequence1.ab1; FSA; bacteria; A131E (ACC), G7K (ATC), +2H5 (AAC); No comments; Klaus Bohne; "
-            + addingDate + "; 0.0; 0; ATCG; A; B; none; none; A131E, G7K, +2H5; false"};
+        "sequence1.ab1; FSA; bacteria; A131E (ACC), G7K (ATC); none; false; No comments; Klaus Bohne; "
+            + addingDate + "; 0; 0; ATCG; none; A131E, G7K; +2H5 (AAC)"};
 
     for (int i = 0; i < correctResults.length; i++) {
       assertEquals(correctResults[i], results.get(i));
@@ -491,13 +507,104 @@ public class WritingTests {
 
     // Check whether the input is correct
     String[] correctResults = new String[] {
-        "1; sequence1.ab1; FSA; bacteria; A131E (ACC), G7K (ATC), +2H5 (AAC); No comments; Klaus Bohne; "
-            + addingDate + "; 0.0; 0; ATCG; A; B; none; none; A131E, G7K, +2H5; false"};
+"sequence1.ab1; FSA; bacteria; A131E (ACC), G7K (ATC); none; false; No comments; Klaus Bohne; " + addingDate + "; 0; 0; ATCG; none; A131E, G7K; +2H5 (AAC)"};
 
     for (int i = 0; i < correctResults.length; i++) {
       assertEquals(correctResults[i], results1.get(i));
       assertEquals(correctResults[i], results2.get(i));
       assertEquals(correctResults[i], results3.get(i));
+    }
+
+  }
+
+  @Test
+  public void criticalMessageInFile1() throws MissingPathException, IOException {
+    FileSaver.setLocalPath(path);
+    FileSaver.setSeparateFiles(false);
+    FileSaver.setDestFileName("testdata1");
+    FileSaver.storeResultsLocally("testdata1", seq5);
+
+    // Code for reading the file in again
+    BufferedReader reader =
+        new BufferedReader(new FileReader("resources/writingtests/testdata1.csv"));
+
+    LinkedList<String> results = new LinkedList<String>();
+    reader.lines().skip(1).forEach(line -> results.add(line));
+    reader.close();
+
+    // Check whether the input is correct
+    String[] correctResults = new String[] {
+        "sequence5.ab1; FSA; bacteria; ; ; ; The usable part of the sequence is very short (One should probably adjust the parameters). ; ; ; ; ; ; ; "};
+    for (int i = 0; i < correctResults.length; i++) {
+      assertEquals(correctResults[i], results.get(i));
+    }
+
+  }
+
+  @Test
+  public void criticalMessageInFile2() throws MissingPathException, IOException {
+    FileSaver.setLocalPath(path);
+    FileSaver.setSeparateFiles(false);
+    FileSaver.setDestFileName("testdata2");
+    FileSaver.storeResultsLocally("testdata2", seq6);
+    FileSaver.storeResultsLocally("testdata2", seq1);
+
+    // Code for reading the file in again
+    BufferedReader reader =
+        new BufferedReader(new FileReader("resources/writingtests/testdata2.csv"));
+
+    LinkedList<String> results = new LinkedList<String>();
+    reader.lines().skip(1).forEach(line -> results.add(line));
+    reader.close();
+
+    DateFormat df = new SimpleDateFormat("dd/MM/yy");
+    String addingDate = df.format(new Date());
+
+    // Check whether the input is correct
+    String[] correctResults = new String[] {
+        "sequence6.ab1; FSA; bacteria; ; ; ; The usable part of the sequence is very short (One should probably adjust the parameters). ; ; ; ; ; ; ; ",
+        "sequence1.ab1; FSA; bacteria; A131E (ACC), G7K (ATC); none; false; No comments; Klaus Bohne; "
+            + addingDate + "; 0; 0; ATCG; none; A131E, G7K; +2H5 (AAC)"};
+
+    for (int i = 0; i < correctResults.length; i++) {
+      assertEquals(correctResults[i], results.get(i));
+    }
+
+  }
+
+  @Test
+  public void criticalMessageInFile3() throws MissingPathException, IOException {
+
+    FileSaver.setSeparateFiles(false);
+
+    FileSaver.setLocalPath(path);
+    FileSaver.setDestFileName("testdata3");
+    FileSaver.storeResultsLocally("testdata3", seq2);
+    FileSaver.storeResultsLocally("testdata3", seq5);
+    FileSaver.storeResultsLocally("testdata3", seq6);
+    FileSaver.storeResultsLocally("testdata3", seq7);
+
+    // Code for reading the file in again
+    BufferedReader reader =
+        new BufferedReader(new FileReader("resources/writingtests/testdata3.csv"));
+
+    LinkedList<String> results = new LinkedList<String>();
+    reader.lines().skip(1).forEach(line -> results.add(line));
+    reader.close();
+
+    DateFormat df = new SimpleDateFormat("dd/MM/yy");
+    String addingDate = df.format(new Date());
+
+    // Check whether the input is correct
+    String[] correctResults = new String[] {
+        "sequence2.ab1; FSA; null; reading frame error; none; false; No comments; Klaus Bohne; "
+            + addingDate + "; 0; 0; ATCTTTG; none; reading frame error; ;",
+        "sequence5.ab1; FSA; bacteria; ; ; ; The usable part of the sequence is very short (One should probably adjust the parameters). ; ; ; ; ; ; ; ",
+        "sequence6.ab1; FSA; bacteria; ; ; ; The usable part of the sequence is very short (One should probably adjust the parameters). ; ; ; ; ; ; ; ",
+        "sequence7.ab1; FSA; bacteria; ; 1; false; ; Jonas; " + addingDate
+            + "; 0; 0; GT; none; ; +1T4"};
+    for (int i = 0; i < correctResults.length; i++) {
+      assertEquals(correctResults[i], results.get(i));
     }
 
   }

@@ -8,12 +8,10 @@ package exceptions;
  */
 public class FileReadingException extends Exception {
 
-
   /**
    * Name of the file that caused the problem.
    */
   public String filename;
-
 
   /**
    * Constructor specifies the message about the problematic file and also stores its name in the

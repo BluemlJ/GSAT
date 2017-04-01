@@ -6,8 +6,10 @@ import java.util.Optional;
 import java.util.ResourceBundle;
 
 import analysis.Gene;
+import analysis.Primer;
 import io.ConfigHandler;
 import io.GeneHandler;
+import io.PrimerHandler;
 import javafx.application.Application;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -16,92 +18,238 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonBar;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextInputDialog;
+import javafx.scene.control.ToggleButton;
+import javafx.scene.control.ToggleGroup;
+import javafx.scene.input.MouseButton;
+import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
-
+/**
+ * Window to add and show genes/primers and researcher. The user can set a default path to source
+ * files. The parameter and databaseSettings window can be found here.
+ * 
+ * @see GUIUtils
+ * @category GUI.Window
+ * 
+ * @author jannis blueml, Kevin Otto
+ *
+ */
 public class SettingsWindow extends Application implements javafx.fxml.Initializable {
 
 
+  /**
+   * Says if a parameterWindow is already open.
+   */
   public static boolean addParametersOpen = false;
+
+  /**
+   * Says if there is the try to add a new researcher.
+   */
   private boolean addResearcher = false;
+
+  /**
+   * Represents the selected gene in the listView.
+   */
   private static Gene selectedGene;
 
+  /**
+   * Represents the selected primer in the listView.
+   */
+  private static Primer selectedPrimer;
+
+  /**
+   * Says if the listView shows primers (true) or genes (false).
+   */
+  private static boolean isPrimerOn = false;
+
+  /**
+   * Number of open add- or showGeneWindows.
+   */
+  private int numGeneWindows = 0;
+
+  /**
+   * List view for displaying genes or primers.
+   */
   @FXML
-  private ListView<String> geneList;
-  // fields
-  @FXML
-  private TextField parameter1Field;
+  private ListView<String> geneOrPrimerList;
+
+  /**
+   * Dropdown list for selecting a researcher.
+   */
   @FXML
   private ChoiceBox<String> researcherDropdown;
 
+  /**
+   * Text field for entering a default source path.
+   */
   @FXML
   private TextField srcPathField;
 
-  // buttons
+  /**
+   * Button that opens the parameter window.
+   */
   @FXML
   private Button parameterButton;
+
+  /**
+   * Button that closes the settings window.
+   */
   @FXML
   private Button closeButton;
+
+  /**
+   * Button that opens the database settings.
+   */
   @FXML
   private Button databaseButton;
+
+  /**
+   * Button that switches between primers and genes.
+   */
   @FXML
-  private Button addGeneButton;
+  private Button addGeneOrPrimerButton;
+
+  /**
+   * Button for adding a new researcher.
+   */
   @FXML
   private Button addResearcherButton;
+
+  /**
+   * Button that deletes a gene or primer.
+   */
   @FXML
-  private Button deleteGeneButton;
+  private Button deleteGeneOrPrimerButton;
+
+  /**
+   * Button that deletes the selected researcher.
+   */
   @FXML
   private Button deleteResearcherButton;
-  @FXML
-  private Button showGeneButton;
 
+  /**
+   * Button to show the details of the currently selected gene or primer.
+   */
+  @FXML
+  private Button showGeneOrPrimerButton;
+
+  /**
+   * Toggle button to select genes.
+   */
+  @FXML
+  private ToggleButton geneToggle;
+
+  /**
+   * Toggle button to select primers.
+   */
+  @FXML
+  private ToggleButton primmerToggle;
+
+  /**
+   * Active scene object.
+   */
   private Scene scene;
 
-  private int numGeneWindows = 0;
-
-  public static Gene getSelectedGene() {
-    return selectedGene;
-  }
-  
-  
-
+  /**
+   * Initialize all components and set Eventhandlers.
+   * 
+   * @param location the URL to init, more information at {@link Initializable}.
+   * @param resources a ResourceBunde, for more informations see {@link Initializable}.
+   * 
+   * @see Initializable
+   * @author jannis blueml
+   */
   @Override
   public void initialize(URL location, ResourceBundle resources) {
 
-    showGeneButton.setDisable(true);
+    // settings for the toogleGroup (genes or primers)
+    ToggleGroup selectorGroup = new ToggleGroup();
+    primmerToggle.setToggleGroup(selectorGroup);
+    geneToggle.setToggleGroup(selectorGroup);
 
+    primmerToggle.addEventFilter(MouseEvent.MOUSE_RELEASED, new EventHandler<MouseEvent>() {
+      @Override
+      public void handle(MouseEvent mouseEvent) {
+        if (primmerToggle.equals(selectorGroup.getSelectedToggle())) {
+          mouseEvent.consume();
+        }
+      }
+    });
+
+    geneToggle.addEventFilter(MouseEvent.MOUSE_RELEASED, new EventHandler<MouseEvent>() {
+      @Override
+      public void handle(MouseEvent mouseEvent) {
+        if (geneToggle.equals(selectorGroup.getSelectedToggle())) {
+          mouseEvent.consume();
+        }
+      }
+    });
+
+    geneToggle.setOnAction(new EventHandler<ActionEvent>() {
+
+      @Override
+      public void handle(ActionEvent arg0) {
+        isPrimerOn = false;
+        GUIUtils.initializeGeneBox(geneOrPrimerList);
+        geneOrPrimerList.getSelectionModel().clearSelection();
+        showGeneOrPrimerButton.setDisable(true);
+      }
+    });
+
+    primmerToggle.setOnAction(new EventHandler<ActionEvent>() {
+
+      @Override
+      public void handle(ActionEvent arg0) {
+        isPrimerOn = true;
+        GUIUtils.initializePrimerBox(geneOrPrimerList);
+        geneOrPrimerList.getSelectionModel().clearSelection();
+        showGeneOrPrimerButton.setDisable(true);
+        System.out.println("Primer soll es sein");
+
+      }
+    });
+
+    showGeneOrPrimerButton.setDisable(true);
+
+    // settings for the window and initializing genes/primers and
+    // researchers
     GUIUtils.initializeResearchers(researcherDropdown);
-    GUIUtils.initializeGeneBox(geneList);
-    geneList.setStyle("-fx-font-style: italic;");
+    GUIUtils.initializeGeneBox(geneOrPrimerList);
+    isPrimerOn = false;
+    geneOrPrimerList.setStyle("-fx-font-style: italic;");
 
+    // set button colors
     GUIUtils.setColorOnButton(closeButton, ButtonColor.BLUE);
     GUIUtils.setColorOnButton(databaseButton, ButtonColor.GRAY);
     GUIUtils.setColorOnButton(parameterButton, ButtonColor.GRAY);
     GUIUtils.setColorOnButton(deleteResearcherButton, ButtonColor.RED);
-    GUIUtils.setColorOnButton(addGeneButton, ButtonColor.GREEN);
+    GUIUtils.setColorOnButton(addGeneOrPrimerButton, ButtonColor.GREEN);
     GUIUtils.setColorOnButton(addResearcherButton, ButtonColor.GREEN);
-    GUIUtils.setColorOnButton(deleteGeneButton, ButtonColor.RED);
+    GUIUtils.setColorOnButton(deleteGeneOrPrimerButton, ButtonColor.RED);
     GUIUtils.setColorOnButton(deleteResearcherButton, ButtonColor.RED);
-    GUIUtils.setColorOnButton(showGeneButton, ButtonColor.BLUE);
+    GUIUtils.setColorOnButton(showGeneOrPrimerButton, ButtonColor.BLUE);
 
+    // checks if there is any srcPath and add changeListener to exclude
+    // separator
     srcPathField.setText(ConfigHandler.getSrcPath());
-
     srcPathField.textProperty().addListener(new ChangeListener<String>() {
 
       @Override
       public void changed(ObservableValue<? extends String> observable, String oldValue,
           String newValue) {
-        if (newValue.matches(ConfigHandler.SEPARATOR_CHAR + "")) {
+        if (newValue.contains(ConfigHandler.SEPARATOR_CHAR + "")) {
           srcPathField.setText(oldValue);
         } else {
           srcPathField.setText(newValue);
@@ -111,46 +259,97 @@ public class SettingsWindow extends Application implements javafx.fxml.Initializ
         try {
           ConfigHandler.writeConfig();
         } catch (IOException e) {
-          // TODO Auto-generated catch block
-          e.printStackTrace();
+          srcPathField.setText("");
         }
       }
     });
 
-    geneList.getSelectionModel().selectedItemProperty()
+    // observe the selescted gene/primer and set it with changes
+    geneOrPrimerList.getSelectionModel().selectedItemProperty()
         .addListener((obeservable, value, newValue) -> {
-          if (!geneList.getSelectionModel().isEmpty()) {
-            selectedGene = GeneHandler.getGene(newValue.split(" ")[0]);
-            showGeneButton.setDisable(false);
+          if (!geneOrPrimerList.getSelectionModel().isEmpty()) {
+            if (isPrimerOn) {
+              selectedPrimer = PrimerHandler.getPrimer(newValue);
+            } else {
+              selectedGene = GeneHandler.getGene(newValue.split(" ")[0]);
+            }
+            showGeneOrPrimerButton.setDisable(false);
           }
         });
+    
+    geneOrPrimerList.setOnMouseClicked(new EventHandler<MouseEvent>() {
+      
+      @Override
+      public void handle(MouseEvent e) {
+          if(e.getButton() == MouseButton.PRIMARY && e.getClickCount() == 2) {
+            if (!geneOrPrimerList.getSelectionModel().isEmpty()) {
+              if (isPrimerOn) {
+                selectedPrimer = PrimerHandler.getPrimer(geneOrPrimerList.getSelectionModel().getSelectedItem());
+                ShowPrimerWindow primerWindow = new ShowPrimerWindow();
+                try {
+                  primerWindow.start(new Stage());
+                } catch (Exception ex) {
+                  GUIUtils.showInfo(AlertType.ERROR, "Error during primer window opening",
+                      "The primer window could not be opened. Please try again.");
+                }
+              } else {
+                selectedGene = GeneHandler.getGene(geneOrPrimerList.getSelectionModel().getSelectedItem().split(" ")[0]);
+                ShowGeneWindow geneWindow = new ShowGeneWindow();
+                try {
+                  geneWindow.start(new Stage());
+                } catch (Exception ex) {
+                  GUIUtils.showInfo(AlertType.ERROR, "Gene window opening error",
+                      "Gene window could not be opened. Please try again.");
+                }
+              }
+              showGeneOrPrimerButton.setDisable(false);
+            }
+          }  
+      }   
+  });
 
-
-    showGeneButton.setOnAction(new EventHandler<ActionEvent>() {
+    
+    
+    // opens a new window with informations about gene/primer
+    showGeneOrPrimerButton.setOnAction(new EventHandler<ActionEvent>() {
       @Override
       public void handle(ActionEvent arg0) {
-        ShowGeneWindow geneWindow = new ShowGeneWindow();
-        try {
-          geneWindow.start(new Stage());
-        } catch (Exception e) {
-          // TODO Auto-generated
+        if (isPrimerOn) {
+          ShowPrimerWindow primerWindow = new ShowPrimerWindow();
+          try {
+            primerWindow.start(new Stage());
+          } catch (Exception e) {
+            GUIUtils.showInfo(AlertType.ERROR, "Error during primer window opening",
+                "The primer window could not be opened. Please try again.");
+          }
+
+        } else {
+          ShowGeneWindow geneWindow = new ShowGeneWindow();
+          try {
+            geneWindow.start(new Stage());
+          } catch (Exception e) {
+            GUIUtils.showInfo(AlertType.ERROR, "Gene window opening error",
+                "Gene window could not be opened. Please try again.");
+          }
         }
+
       }
     });
 
-
+    // observe researcher and write changes in the config file
     researcherDropdown.getSelectionModel().selectedItemProperty()
         .addListener((obeservable, value, newValue) -> {
           ConfigHandler.setResearcher(newValue);
           try {
             ConfigHandler.writeConfig();
           } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            GUIUtils.showInfo(AlertType.ERROR, "Error processing configuration file",
+                "There was an error during configuration file processing.");
+
           }
         });
 
-    // gives you a short menu
+    // gives you a short menu to change parameters
     parameterButton.setOnAction(new EventHandler<ActionEvent>() {
       @Override
       public void handle(ActionEvent arg0) {
@@ -160,13 +359,14 @@ public class SettingsWindow extends Application implements javafx.fxml.Initializ
           try {
             settings.start(new Stage());
           } catch (Exception e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            GUIUtils.showInfo(AlertType.ERROR, "Error during parameter window opening",
+                "The parameter window could not be opened. Please try again.");
           }
         }
       }
     });
 
+    // opens a window for connection settings with the database
     databaseButton.setOnAction(new EventHandler<ActionEvent>() {
       @Override
       public void handle(ActionEvent arg0) {
@@ -177,46 +377,69 @@ public class SettingsWindow extends Application implements javafx.fxml.Initializ
           try {
             settings.start(new Stage());
           } catch (Exception e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            GUIUtils.showInfo(AlertType.ERROR, "Error during settings window opening",
+                "The settings window could not be opened. Please try again.");
           }
         }
         System.out.println("Database Button!");
       }
     });
 
+    // opens addGeneWindow/addPrimerWindow in a seperate window
     SettingsWindow self = this;
-    addGeneButton.setOnAction(new EventHandler<ActionEvent>() {
+    addGeneOrPrimerButton.setOnAction(new EventHandler<ActionEvent>() {
       @Override
       public void handle(ActionEvent arg0) {
-
         numGeneWindows++;
 
-        try {
-          final FXMLLoader loader =
-              new FXMLLoader(TextWindow.class.getResource("/fxml/AddGeneWindow.fxml"));
+        if (isPrimerOn) {
+          try {
+            final FXMLLoader loader =
+                new FXMLLoader(TextWindow.class.getResource("/fxml/AddPrimerWindow.fxml"));
 
-          final Parent root = loader.load();
+            final Parent root = loader.load();
 
-          AddGeneWindow genWin = loader.<AddGeneWindow>getController();
+            AddPrimerWindow primerWin = loader.<AddPrimerWindow>getController();
 
-          genWin.setParent(self);
+            primerWin.setParent(self);
 
-          Scene scene = new Scene(root);
-          Stage s = new Stage();
-          s.setScene(scene);
-          s.sizeToScene();
-          s.setTitle("GSAT - Adding a gene");
-          s.show();
+            Scene scene = new Scene(root);
+            Stage s = new Stage();
+            s.setScene(scene);
+            s.sizeToScene();
+            s.setTitle("GSAT - Adding a primer");
+            s.show();
 
-        } catch (IOException e) {
-          e.printStackTrace();
-          return;
+          } catch (IOException e) {
+            return;
+          }
+        } else {
+          try {
+            final FXMLLoader loader =
+                new FXMLLoader(TextWindow.class.getResource("/fxml/AddGeneWindow.fxml"));
+
+            final Parent root = loader.load();
+
+            AddGeneWindow genWin = loader.<AddGeneWindow>getController();
+
+            genWin.setParent(self);
+
+            Scene scene = new Scene(root);
+            Stage s = new Stage();
+            s.setScene(scene);
+            s.sizeToScene();
+            s.setTitle("GSAT - Adding a gene");
+            s.show();
+
+          } catch (IOException e) {
+            return;
+          }
         }
       }
-
     });
 
+    // actionEvent to add a new researcher with some dialog window from
+    // javafx
     addResearcherButton.setOnAction(new EventHandler<ActionEvent>() {
       @Override
       public void handle(ActionEvent arg0) {
@@ -241,6 +464,8 @@ public class SettingsWindow extends Application implements javafx.fxml.Initializ
           }
 
         }
+        // if there is a new researcher to add, write him in the config
+        // file
         if (addResearcher) {
           try {
             ConfigHandler.writeConfig();
@@ -249,31 +474,42 @@ public class SettingsWindow extends Application implements javafx.fxml.Initializ
                 .select(result.get().replaceAll(ConfigHandler.SEPARATOR_CHAR + "", ""));
             addResearcher = false;
           } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            GUIUtils.showInfo(AlertType.ERROR, "Error while adding researcher",
+                "There was an error during adding a researcher.");
           }
         }
       }
     });
 
-    deleteGeneButton.setOnAction(new EventHandler<ActionEvent>() {
+    // checks if there is a selected primer/gene to delete and deletes it
+    // after validation
+    deleteGeneOrPrimerButton.setOnAction(new EventHandler<ActionEvent>() {
       @Override
       public void handle(ActionEvent arg0) {
-        int geneindex = geneList.getSelectionModel().getSelectedIndex();
+        int geneindex = geneOrPrimerList.getSelectionModel().getSelectedIndex();
         if (geneindex != -1) {
           try {
-            GeneHandler.deleteGene(geneList.getSelectionModel().getSelectedItem());
-            GeneHandler.writeGenes();
-            GUIUtils.initializeGeneBox(geneList);
+            if (isPrimerOn) {
+              PrimerHandler.deletePrimer(geneOrPrimerList.getSelectionModel().getSelectedItem());
+              PrimerHandler.writePrimer();
+              GUIUtils.initializePrimerBox(geneOrPrimerList);
+            } else {
+              GeneHandler.deleteGene(geneOrPrimerList.getSelectionModel().getSelectedItem());
+              GeneHandler.writeGenes();
+              GUIUtils.initializeGeneBox(geneOrPrimerList);
+            }
+
+            showGeneOrPrimerButton.setDisable(true);
           } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            GUIUtils.showInfo(AlertType.ERROR, "Error while deleting gene",
+                "There was an error during gene deletion.");
           }
         }
 
       }
     });
 
+    // delete the selected researcher
     deleteResearcherButton.setOnAction(new EventHandler<ActionEvent>() {
       @Override
       public void handle(ActionEvent arg0) {
@@ -294,6 +530,11 @@ public class SettingsWindow extends Application implements javafx.fxml.Initializ
     });
   }
 
+  /**
+   * Closes the gui window.
+   * 
+   * @author Kevin Otto
+   */
   @Override
   public void stop() throws Exception {
     MainWindow.settingsOpen = false;
@@ -301,13 +542,19 @@ public class SettingsWindow extends Application implements javafx.fxml.Initializ
     super.stop();
   }
 
+  /**
+   * Initializes the gui window.
+   * 
+   * @author Kevin Otto
+   */
   @Override
   public void start(Stage primaryStage) throws Exception {
     Parent root;
     try {
       root = FXMLLoader.load(getClass().getResource("/fxml/SettingsWindow.fxml"));
     } catch (IOException e) {
-      e.printStackTrace();
+      GUIUtils.showInfo(AlertType.ERROR, "Error during settings window opening",
+          "The settings window could not be opened. Please try again.");
       return;
     }
     scene = new Scene(root);
@@ -328,22 +575,48 @@ public class SettingsWindow extends Application implements javafx.fxml.Initializ
 
       }
     });
-    /*
-     * returnButton.setOnAction(new EventHandler<ActionEvent>() {
-     * 
-     * @Override public void handle(ActionEvent arg0) { primaryStage.close(); } });
-     */
   }
 
-  
+  /**
+   * reinitialize geneBox in MainWindow and SettingsWindow by reread genes.txt
+   * 
+   * @author jannis blueml
+   */
   public void updateGenes() {
-    GUIUtils.initializeGeneBox(geneList);
+    GUIUtils.initializeGeneBox(geneOrPrimerList);
   }
 
-  
+  /**
+   * reinitialize primerBox in MainWindow and SettingsWindow by reread primers.txt
+   * 
+   * @author jannis blueml
+   */
+  public void updatePrimers() {
+    GUIUtils.initializePrimerBox(geneOrPrimerList);
+  }
+
+  /**
+   * Decrement number of open GeneWindows.
+   * 
+   * @author Kevin Otto
+   */
   public void decNumGenWindows() {
     numGeneWindows--;
 
+  }
+
+  // GETTER AND SETTERS
+
+  public static Primer getSelectedPrimer() {
+    return selectedPrimer;
+  }
+
+  public static Gene getSelectedGene() {
+    return selectedGene;
+  }
+
+  public static void setSelectedPrimer(Primer selectedPrimer) {
+    SettingsWindow.selectedPrimer = selectedPrimer;
   }
 
 }

@@ -7,7 +7,6 @@ package exceptions;
  */
 public class DatabaseConnectionException extends Exception {
 
-
   /**
    * Constructor calling the super constructor. The message indicating a database connection failure
    * is specified here.

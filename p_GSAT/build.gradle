@@ -19,6 +19,7 @@ buildscript {
     }
 }
 
+
 // Apply the java plugin to add support for Java
 apply plugin: 'java'
 
@@ -52,6 +53,10 @@ dependencies {
     compile fileTree('libs/jillion-5.1.jar')
     compile fileTree('libs/jfxrt.jar')
     
+    // https://mvnrepository.com/artifact/org.biojava/biojava
+	// compile group: 'org.biojava', name: 'biojava', version: '1.5'
+    compile fileTree('libs/biojava-1.5.jar')   
+        
     // https://mvnrepository.com/artifact/mysql/mysql-connector-java
     compile group: 'mysql', name: 'mysql-connector-java', version: '6.0.5'
 
@@ -66,22 +71,15 @@ dependencies {
 // In this section we declare the jacocoTestReport structure
 
 test {
-     exclude '**/userDrivenTests/**' }
-
-
-jacocoTestReport {
-    reports {
-        xml.enabled false
-        csv.enabled false
-        html.destination "${buildDir}/reports/jacocoHtml"
-    }
+     exclude '**/userDrivenTests/', '**/src/main/java/org/'
 }
+
 
 jfx {
     verbose = true
     mainClass = "core.Main"
     jfxAppOutputDir = "build/jfx/GSAT"
-    jfxMainAppJarName = "GSATv0_1.jar"
+    jfxMainAppJarName = "GSATv1.0.jar"
     deployDir = "src/main/deploy"
     useEnvironmentRelativeExecutables = true
 

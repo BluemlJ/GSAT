@@ -12,32 +12,53 @@ import java.util.Arrays;
 import analysis.Gene;
 import exceptions.DuplicateGeneException;
 
-
 /**
- * This class reads reference genes from a txt and stores them
+ * This class reads reference genes from the genes.txt and stores them.
  * 
- * @author lovisheindrich
+ * @author Lovis Heindrich
  *
  */
 public class GeneHandler {
+
+  /**
+   * Arraylist containing all known genes.
+   */
   private static ArrayList<Gene> geneList;
+
+  /**
+   * Path where the gene data will be stored.
+   */
   private static String path =
       System.getProperty("user.home") + File.separator + "gsat" + File.separator + "genes.txt";
+
+  /**
+   * Separator character.
+   */
   private static final String SEPARATOR = ConfigHandler.SEPARATOR_CHAR + "";
 
+  /**
+   * Add a new gene if it does not exist yet. Also writes it to the genes.txt.
+   * 
+   * @param geneName Name of the gene.
+   * @param geneSequence Sequence string of the gene.
+   * @throws DuplicateGeneException Gene already exists.
+   * @throws IOException Error while writing the file
+   * @author Lovis Heindrich
+   */
   public static void addGene(String geneName, String geneSequence)
       throws DuplicateGeneException, IOException {
     addGene(path, geneName, geneSequence);
   }
 
   /**
-   * add a new gene to genes.txt
+   * Add a new gene if it does not exist yet. Also writes it to the genes.txt.
    * 
-   * @param genePath path of the genes.txt file
-   * @param geneName name of the gene
-   * @param geneSequence sequence string of the gene
-   * @throws DuplicateGeneException gene name already exists
-   * @throws IOException error while writing the file
+   * @param genePath Path of the genes.txt file.
+   * @param geneName Name of the gene.
+   * @param geneSequence Sequence string of the gene.
+   * @throws DuplicateGeneException Gene already exists.
+   * @throws IOException Error while writing the file
+   * @author Lovis Heindrich
    */
   public static void addGene(String genePath, String geneName, String geneSequence)
       throws DuplicateGeneException, IOException {
@@ -57,14 +78,15 @@ public class GeneHandler {
   }
 
   /**
-   * add a new gene to genes.txt
+   * Add a new gene if it does not exist yet. Also writes it to the genes.txt.
    * 
-   * @param geneName name of the gene
-   * @param geneSequence sequence string of the gene
-   * @param organism more informations about the gene sequence
-   * @param comment specific comment to this gene sequence
-   * @throws DuplicateGeneException gene name already exists
-   * @throws IOException error while writing the file
+   * @param geneName Name of the gene.
+   * @param geneSequence Sequence string of the gene.
+   * @param organism Organism of the gene.
+   * @param comment User comment for the gene.
+   * @throws DuplicateGeneException Gene already exists.
+   * @throws IOException Error while writing the file
+   * @author Lovis Heindrich
    */
   public static boolean addGene(String geneName, String geneSequence, String organism,
       String comment) throws DuplicateGeneException, IOException {
@@ -83,15 +105,39 @@ public class GeneHandler {
   }
 
   /**
+   * Adds a gene to the list if the gene is not known yet. Also writes the updated List to
+   * genes.txt.
    * 
-   * @param newpath
-   * @param geneName
-   * @throws IOException
+   * @param gene The gene which will be added.
+   * @return False if the gene already exists. True otherwise.
+   * @throws IOException Error writing gene file.
+   * @author Lovis Heindrich
+   */
+  public static boolean addGene(Gene gene) throws IOException {
+    readGenes();
+
+    if (checkGene(gene.getName(), gene.getOrganism()) != null) {
+      return false;
+    }
+
+    geneList.add(gene);
+
+    writeGenes();
+    return true;
+  }
+
+  /**
+   * Deletes a gene and rewrites the local file.
+   * 
+   * @param newpath Path of the gene file.
+   * @param geneName Name of the gene.
+   * @throws IOException Error while writing the file.
+   * @author Lovis Heindrich
    */
   public static void deleteGene(String newpath, String geneName) throws IOException {
 
     for (int i = 0; i < geneList.size(); i++) {
-      if (geneList.get(i).getName().equals(geneName)) {
+      if (geneList.get(i).getName().equals(geneName) && geneList.get(i).getOrganism() == null) {
         geneList.remove(i);
       }
     }
@@ -99,20 +145,48 @@ public class GeneHandler {
   }
 
   /**
+   * Deletes a gene and rewrites the local file.
    * 
-   * @param string
-   * @throws IOException
+   * @param string Name and id of the file.
+   * @throws IOException Error while writing the file.
+   * @author Lovis Heindrich
    */
   public static void deleteGene(String string) throws IOException {
-    deleteGene(path, string.split(" ")[0]);
-
+    if (string.split(" ").length > 1) {
+      deleteGene(path, string.split(" ")[0],
+          string.split(" ")[1].substring(1, string.split(" ")[1].length() - 1));
+    } else {
+      deleteGene(path, string.split(" ")[0]);
+    }
   }
 
   /**
-   * clears gene.txt and writes all known genes.
+   * Deletes a gene and rewrites the local file.
    * 
-   * @param genePath
-   * @throws IOException
+   * @param newpath Path of the gene file.
+   * @param geneName Name of the gene.
+   * @param organism Organism of the gene.
+   * @throws IOException Error while writing the file.
+   * @author Lovis Heindrich
+   */
+  public static void deleteGene(String newpath, String geneName, String organism)
+      throws IOException {
+
+    for (int i = 0; i < geneList.size(); i++) {
+      if (geneList.get(i).getName().equals(geneName)
+          && geneList.get(i).getOrganism().equals(organism)) {
+        geneList.remove(i);
+      }
+    }
+    writeGenes(newpath);
+  }
+
+  /**
+   * Clears the gene.txt and rewrites all known genes.
+   * 
+   * @param genePath Path of the gene file.
+   * @throws IOException Error writing local file.
+   * @author Lovis Heindrich
    */
   public static void writeGenes(String genePath) throws IOException {
     // clears all genes from file
@@ -136,13 +210,6 @@ public class GeneHandler {
         geneString.append("none");
       }
       geneString.append(System.getProperty("line.separator"));
-      // old writing code
-      /*
-       * geneWriter.write( gene.getName() + SEPARATOR + gene.getSequence() + SEPARATOR +
-       * gene.getOrganism()); } else { geneWriter.write(gene.getName() + SEPARATOR +
-       * gene.getSequence() + SEPARATOR + "none"); }
-       * geneWriter.write(System.getProperty("line.separator"));
-       */
       geneWriter.write(geneString.toString());
     }
 
@@ -150,17 +217,23 @@ public class GeneHandler {
     readGenes(genePath);
   }
 
-
+  /**
+   * Clears the gene.txt and rewrites all known genes.
+   * 
+   * @throws IOException Error writing local file.
+   * @author Lovis Heindrich
+   */
   public static void writeGenes() throws IOException {
     writeGenes(path);
 
   }
 
   /**
-   * clears the txt file at a given path
+   * Clears the .txt file at a given path.
    * 
-   * @param path
-   * @throws IOException
+   * @param path Path to the txt file.
+   * @throws IOException Error while writing the file.
+   * @author Lovis Heindrich
    */
   public static void clearTxtFile(String path) throws IOException {
     BufferedWriter writer = new BufferedWriter(new FileWriter(path));
@@ -169,10 +242,11 @@ public class GeneHandler {
   }
 
   /**
-   * checks if a gene already exists
+   * Checks if a gene already exists.
    * 
-   * @param name
-   * @return
+   * @param name Name of the gene.
+   * @return True if the gene exists, else false.
+   * @author Lovis Heindrich
    */
   public static boolean containsGene(String name) {
     for (int i = 0; i < geneList.size(); i++) {
@@ -184,9 +258,11 @@ public class GeneHandler {
   }
 
   /**
+   * Gets a gene identified by it´s name.
    * 
-   * @param geneName
-   * @return
+   * @param geneName Name of the gene.
+   * @return The correct gene or null.
+   * @author Lovis Heindrich
    */
   public static Gene getGene(String geneName) {
     for (int i = 0; i < geneList.size(); i++) {
@@ -199,40 +275,53 @@ public class GeneHandler {
   }
 
   /**
+   * Gets a gene identified by it´s name and organism.
    * 
-   * @param geneName
-   * @return
+   * @param geneName The name of the gene.
+   * @param organism The organism of the gene.
+   * @return The correct gene or null.
+   * @author Jannis Blueml
    */
   public static Gene checkGene(String geneName, String organism) {
-    if (organism != null && organism != "") {
+    if (organism != null && !organism.isEmpty() && !organism.equals("none")
+        && !organism.equals("null")) {
       for (int i = 0; i < geneList.size(); i++) {
         if (geneList.get(i).getName().equals(geneName)) {
-          String tmp =
-              geneList.get(i).getOrganism() == null ? "none" : geneList.get(i).getOrganism();
+
+          String tmp;
+          if (geneList.get(i).getOrganism() == null) {
+            tmp = "none";
+          } else {
+            tmp = geneList.get(i).getOrganism();
+          }
+
           if (tmp.equals(organism)) {
             return geneList.get(i);
           }
         }
       }
     } else {
-      System.out.println("noorga");
       return getGene(geneName);
     }
-    System.out.println("nofound");
     return null;
   }
 
+  /**
+   * Gets a gene identified by it´s index in the gene list.
+   * 
+   * @param index The index of the gene.
+   * @return The correct gene.
+   * @author Lovis Heindrich
+   */
   public static Gene getGeneAt(int index) {
     return geneList.get(index);
   }
 
-  public static ArrayList<Gene> getGeneList() {
-    return geneList;
-  }
-
   /**
+   * Returns all known genes as a string array.
    * 
-   * @return
+   * @return A string array containing all genes.
+   * @author Lovis Heindrich
    */
   public static String[] getGeneNames() {
     String[] names = new String[geneList.size()];
@@ -240,46 +329,50 @@ public class GeneHandler {
       names[i] = geneList.get(i).getName();
     }
 
-    Arrays.sort(names);
+    Arrays.sort(names, (s1, s2) -> {
+      return s1.toLowerCase().compareTo(s2.toLowerCase());
+    });
     return names;
   }
 
   /**
+   * Returns all known genes as a string array.
    * 
-   * @return
+   * @return A string array containing all genes with their organisms.
+   * @author Lovis Heindrich
    */
   public static String[] getGeneNamesAndOrganisms() {
     String[] names = new String[geneList.size()];
     for (int i = 0; i < geneList.size(); i++) {
       names[i] = geneList.get(i).getName();
-      if (geneList.get(i).getOrganism() != null && geneList.get(i).getOrganism() != "none") {
+      if (geneList.get(i).getOrganism() != null && !geneList.get(i).getOrganism().equals("none")) {
         names[i] = names[i] + " (" + geneList.get(i).getOrganism() + ")";
       }
     }
 
-    Arrays.sort(names);
+    Arrays.sort(names, (s1, s2) -> {
+      return s1.toLowerCase().compareTo(s2.toLowerCase());
+    });
     return names;
 
   }
 
-  public static int getNumGenes() {
-    return geneList.size();
-  }
-
   /**
-   * reads genes from gene file at the locally stored path
+   * Reads a gene.txt from the standard path. Stores all parsed genes in the genelist.
    * 
-   * @throws IOException
+   * @throws IOException Error reading file.
+   * @author Lovis Heindrich
    */
   public static void readGenes() throws IOException {
     readGenes(path);
   }
 
   /**
-   * reads a gene.txt from a given path
+   * Reads a gene.txt from a given path. Stores all parsed genes in the genelist.
    * 
-   * @param genePath
-   * @throws IOException
+   * @param genePath Path of the gene file.
+   * @throws IOException Error reading file.
+   * @author Lovis Heindrich
    */
   public static void readGenes(String genePath) throws IOException {
 
@@ -311,13 +404,13 @@ public class GeneHandler {
 
     geneReader.close();
 
-
   }
 
   /**
-   * check if a genes.txt file exists at the given path
+   * Checks if a genes.txt file exists at the given path.
    * 
-   * @return true if a gene.txt exists
+   * @return True if a gene.txt exists.
+   * @author Lovis Heindrich
    */
   public static boolean exists() {
     File config = new File(path);
@@ -325,10 +418,11 @@ public class GeneHandler {
   }
 
   /**
-   * create a new gene file in the user home directory in a folder named gsat
+   * Creates a new gene file in the user home directory in a folder named gsat. Writes fsa as a
+   * reference gene to avoid null pointers.
    * 
-   * @throws IOException
-   * 
+   * @throws IOException Error while writing the file.
+   * @author Lovis Heindrich
    */
   public static void initGenes() throws IOException {
     if (!exists()) {
@@ -337,7 +431,7 @@ public class GeneHandler {
       geneFile.createNewFile();
 
       BufferedWriter geneWriter = new BufferedWriter(new FileWriter(path));
-      geneWriter.write("FSA" + SEPARATOR
+      geneWriter.write("fsa" + SEPARATOR
           + "ATGGAACTGTATCTGGATACTTCAGACGTTGTTGCGGTGAAGGCGCTGTCACGTATTTTTCCGCTGGCGGGTGTGAC"
           + "CACTAACCCAAGCATTATCGCCGCGGGTAAAAAACCGCTGGATGTTGTGCTTCCGCAACTTCATGAAGCGATGGGCGGT"
           + "CAGGGGCGTCTGTTTGCCCAGGTAATGGCTACCACTGCCGAAGGGATGGTTAATGACGCGCTTAAGCTGCGTTCTATTAT"
@@ -352,10 +446,21 @@ public class GeneHandler {
     }
   }
 
-
+  /**
+   * Gets the number of genes in the genelist.
+   * 
+   * @return The number of genes.
+   * @author Lovis Heindrich
+   */
+  public static int getNumGenes() {
+    return geneList.size();
+  }
 
   // GETTERs and SETTERs:
 
+  public static ArrayList<Gene> getGeneList() {
+    return geneList;
+  }
 
   public static void setPath(String path) {
     GeneHandler.path = path;
@@ -364,7 +469,4 @@ public class GeneHandler {
   public static String getPath() {
     return GeneHandler.path;
   }
-
-
-
 }

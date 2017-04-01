@@ -62,7 +62,6 @@ public class ExceptionTests {
 
   }
 
-
   /**
    * This test checks if the exception that is thrown if the database connection could not be set up
    * works correctly.
@@ -184,7 +183,6 @@ public class ExceptionTests {
       assertEquals(PathUsage.WRITING, e.usage);
 
     }
-
 
     // Same check for the reading path.
     try {

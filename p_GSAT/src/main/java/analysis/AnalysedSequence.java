@@ -1,17 +1,16 @@
 package analysis;
 
-import java.util.Arrays;
 import java.util.LinkedList;
+import java.util.Date;
 
-import org.jcvi.jillion.trace.chromat.ChannelGroup;
-import org.jcvi.jillion.trace.chromat.abi.AbiChromatogram;
+import io.ProblematicComment;
 
 /**
  * Models a sequence under analysis (i.e. obtained from an AB1 file), which may have mutations. The
  * Sequence class defines it's basic behavior.
  * 
  * @category object
- * @author Ben Kohr, Jannis Blueml
+ * @author Ben Kohr, jannis blueml
  * 
  */
 public class AnalysedSequence extends Sequence {
@@ -23,21 +22,34 @@ public class AnalysedSequence extends Sequence {
   private String comments = "";
 
   /**
-   * Informations getting from the abiFile in form of an AbiChromatogram
+   * A list of ProblematicComment enum items, indicating problems that occured during analysis.
+   * These list is intially empty. These items will be used to produce text comments in the result
+   * file.
    */
-  private AbiChromatogram abiFile;
+  private LinkedList<ProblematicComment> problems = new LinkedList<ProblematicComment>();
+
+  /**
+   * Channels with informations about the positions of the four single Traces. Dont mess this up
+   * with the quality values. Quality is in "phread scala", this channel in "pixel" or something
+   * else.
+   */
+  private int[] channelA;
+  private int[] channelC;
+  private int[] channelG;
+  private int[] channelT;
+
+  private int[] baseCalls;
+
   /**
    * The name of the file this sequence was obtained from. This is used to create the name of the
    * output file.
    */
-
   private String fileName;
 
   /**
-   * The left vector to be stored with this sequence, i.e. the nucleotides at the left side of the
-   * sequence that corresponds to the gene.
+   * primer name as String for database connection.
    */
-  private String leftVector;
+  private String primer;
 
   /**
    * Indicates whether the results of this analysis have been checked by a researcher.
@@ -66,20 +78,15 @@ public class AnalysedSequence extends Sequence {
   private Gene referencedGene;
 
   /**
-   * The right vector to be stored with this sequence, i.e. the nucleotides at the right hand side
-   * of the sequence that corresponds to the gene.
-   */
-  private String rightVector;
-
-  /**
    * The percentage of trimmed nucleotides due to the quality trim.
    */
   private double trimPercentage;
 
-  private String primer;
 
-  private double avgQuality;
-
+  /**
+   * quality average of all nucleotides in sequence after trimming.
+   */
+  private int avgQuality;
 
   /**
    * Specifies the position (starting with 0) where a HIS tag is found in the analysed sequence.
@@ -103,11 +110,47 @@ public class AnalysedSequence extends Sequence {
     this.qualities = qualities;
   }
 
-
+  /**
+   * Constructor creating an empty sequence.
+   *
+   * @author Ben Kohr
+   */
   public AnalysedSequence() {
     super("", null);
   }
 
+  /**
+   * A constructor which sets all values directly. This is necessary when reading CSV files and
+   * converting them to AnalysedSequences.
+   * 
+   * @param gene The reference gene
+   * @param mutations The list of mutations
+   * @param name The file name of the sequence
+   * @param sequence the nucleotide sequence
+   * @param date The date of creation
+   * @param researcher The associated researcher
+   * @param comment The comment field entry
+   * @param manuallyChecked Is this sequence manually checked?
+   * @param primer The associated primer
+   * @param trimpercent The percentage of the quality trim
+   * @param histag the histag position
+   * @param avgquality The average nucleotide quality
+   * 
+   * @author Lovis Heindrich
+   */
+  public AnalysedSequence(Gene gene, LinkedList<String> mutations, String name, String sequence,
+      Date date, String researcher, String comment, boolean manuallyChecked, String primer,
+      int trimpercent, int histag, int avgquality) {
+    super(sequence, researcher, date);
+    this.referencedGene = gene;
+    this.mutations = mutations;
+    this.fileName = name;
+    this.comments = comment;
+    this.manuallyChecked = manuallyChecked;
+    this.trimPercentage = trimpercent;
+    this.hisTagPosition = histag;
+    this.avgQuality = avgquality;
+  }
 
   /**
    * Add a discovered, String-encoded mutation to the list of already discovered mutations.
@@ -120,62 +163,16 @@ public class AnalysedSequence extends Sequence {
     mutations.add(mutation);
   }
 
-  
-  
-  public void sortInPlasmidmixes(LinkedList<String> plasmidmixes) {
-    
-    for (String mix : plasmidmixes) {
-      for (int i = 0; i < mutations.size(); i++) {
-        String normalMutation = mutations.get(i);
-        if (numberOfMutation(normalMutation) == numberOfMutation(mix)) {
-          mutations.remove(i);
-          mutations.add(i, mix);
-          break;
-        } else if (numberOfMutation(normalMutation) > numberOfMutation(mix)) {
-          mutations.add(i, mix);
-          break;
-        }
-      }
-      mutations.addLast(mix);
-    }
-    
-  }
-  
-  
-  
-  private int numberOfMutation(String mutationString) {
-    
-    char[] chars = mutationString.toCharArray();
-    
-    int end = chars.length - 1;
-    int start = chars.length - 1;
-    while(!String.valueOf(chars[end]).matches("[0-9]")) {
-      end--;
-    }
-    start = end;
-    while(String.valueOf(chars[start]).matches("[0-9]")) {
-      start--;
-    }
-    
-    char[] numberChars = Arrays.copyOfRange(chars, start, end + 1);
-    String numberString = new String(numberChars);
-    
-    int number = Integer.parseInt(numberString);
-    
-    return number;
-   
-  }
-  
-  
-  
 
+  public void addProblematicComment(ProblematicComment comment) {
+    problems.add(comment);
+  }
 
   /**
    * Returns the length of the sequence (the number of nucleotides in it).
    * 
    * @return the sequence's length
-   * 
-   * @author Jannis Blueml
+   * @author jannis blueml
    */
   public int length() {
     return sequence.length();
@@ -184,7 +181,7 @@ public class AnalysedSequence extends Sequence {
   /**
    * This method reverses the Qualityarray and set it new.
    * 
-   * @author bluemlj
+   * @author jannis blueml
    */
   public void reverseQuality() {
     if (qualities == null) {
@@ -232,6 +229,21 @@ public class AnalysedSequence extends Sequence {
     this.sequence = trimmed;
   }
 
+  /**
+   * adds comment to existing comments.
+   * 
+   * @param newComment The comment to be added
+   * 
+   * @author Kevin
+   */
+  public void addComments(String newComment) {
+    if (this.comments.length() > 0) {
+      this.comments = this.comments + ", " + newComment;
+    } else {
+      setComments(newComment);
+    }
+
+  }
 
   // GETTERs and SETTERs:
 
@@ -239,141 +251,133 @@ public class AnalysedSequence extends Sequence {
     return comments;
   }
 
-
   public void setComments(String comments) {
     this.comments = comments;
-  }
-
-
-  public AbiChromatogram getAbiFile() {
-    return abiFile;
-  }
-
-  public void setAbiFile(AbiChromatogram abiFile) {
-    this.abiFile = abiFile;
   }
 
   public String getFileName() {
     return fileName;
   }
 
-
   public void setFileName(String fileName) {
     this.fileName = fileName;
   }
-
-
-  public String getLeftVector() {
-    return leftVector;
-  }
-
-
-  public void setLeftVector(String leftVector) {
-    this.leftVector = leftVector;
-  }
-
 
   public boolean isManuallyChecked() {
     return manuallyChecked;
   }
 
-
   public void setManuallyChecked(boolean manuallyChecked) {
     this.manuallyChecked = manuallyChecked;
   }
-
 
   public LinkedList<String> getMutations() {
     return mutations;
   }
 
-
   public void setMutations(LinkedList<String> mutations) {
     this.mutations = mutations;
   }
-
 
   public int getOffset() {
     return offset;
   }
 
-
   public void setOffset(int offset) {
     this.offset = offset;
   }
-
-
 
   public int[] getQuality() {
     return qualities;
   }
 
-
   public void setQuality(int[] qualities) {
     this.qualities = qualities;
   }
 
-  public double getAvgQuality() {
+  public int getAvgQuality() {
     return avgQuality;
   }
 
-  public void setAvgQuality(double avgQuality) {
+  public void setAvgQuality(int avgQuality) {
     this.avgQuality = avgQuality;
   }
 
+  public Gene getReferencedGene() {
+    return referencedGene;
+  }
 
-  public void setPrimer(String primer) {
-    this.primer = primer;
+  public void setReferencedGene(Gene referencedGene) {
+    this.referencedGene = referencedGene;
+  }
+
+  public double getTrimPercentage() {
+    return trimPercentage;
+  }
+
+  public void setTrimPercentage(double trimPercentage) {
+    this.trimPercentage = trimPercentage;
+  }
+
+  public int getHisTagPosition() {
+    return hisTagPosition;
+  }
+
+  public void setHisTagPosition(int hisTagPosition) {
+    this.hisTagPosition = hisTagPosition;
+  }
+
+
+  public int[] getChannelA() {
+    return channelA;
+  }
+
+  public void setChannelA(int[] channelA) {
+    this.channelA = channelA;
+  }
+
+  public int[] getChannelC() {
+    return channelC;
+  }
+
+  public void setChannelC(int[] channelC) {
+    this.channelC = channelC;
+  }
+
+  public int[] getChannelG() {
+    return channelG;
+  }
+
+  public void setChannelG(int[] channelG) {
+    this.channelG = channelG;
+  }
+
+  public int[] getChannelT() {
+    return channelT;
+  }
+
+  public void setChannelT(int[] channelT) {
+    this.channelT = channelT;
+  }
+
+  public LinkedList<ProblematicComment> getProblematicComments() {
+    return problems;
+  }
+
+  public void setBaseCalls(int[] basecalls) {
+    this.baseCalls = basecalls;
+  }
+
+  public int[] getBaseCalls() {
+    return baseCalls;
   }
 
   public String getPrimer() {
     return primer;
   }
 
-
-  public Gene getReferencedGene() {
-    return referencedGene;
+  public void setPrimer(String primer) {
+    this.primer = primer;
   }
 
-
-  public void setReferencedGene(Gene referencedGene) {
-    this.referencedGene = referencedGene;
-  }
-
-
-  public String getRightVector() {
-    return rightVector;
-  }
-
-
-  public void setRightVector(String rightVector) {
-    this.rightVector = rightVector;
-  }
-
-
-
-  public double getTrimPercentage() {
-    return trimPercentage;
-  }
-
-
-  public void setTrimPercentage(double trimPercentage) {
-    this.trimPercentage = trimPercentage;
-  }
-
-
-  public int getHisTagPosition() {
-    return hisTagPosition;
-  }
-
-
-  public void setHisTagPosition(int hisTagPosition) {
-    this.hisTagPosition = hisTagPosition;
-  }
-
-  public ChannelGroup getChannels() {
-    return abiFile.getChannelGroup();
-  }
-
-  
 }

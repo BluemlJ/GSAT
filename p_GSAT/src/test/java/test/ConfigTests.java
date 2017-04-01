@@ -22,14 +22,11 @@ import io.ConfigHandler;
  */
 public class ConfigTests {
 
-
   @Test
   public void configInitTest() throws IOException {
     ConfigHandler.initConfig();
     assertTrue(ConfigHandler.exists());
   }
-
-
 
   /**
    * Test reading a researcher name from a sample config file and sets the researcher in an analysed
@@ -188,7 +185,6 @@ public class ConfigTests {
     String dbUserOld = ConfigHandler.getDbUser();
     int avgNucOld = ConfigHandler.getNumAverageNucleotides();
     int startcounterOld = ConfigHandler.getStartcounter();
-
 
     ConfigHandler.setAvgApproximationStart(51);
     ConfigHandler.setAvgApproximationEnd(50);

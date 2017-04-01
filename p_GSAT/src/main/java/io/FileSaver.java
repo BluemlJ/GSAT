@@ -3,6 +3,8 @@ package io;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.Collection;
+import java.util.HashMap;
 import java.util.LinkedList;
 
 import analysis.AnalysedSequence;
@@ -35,11 +37,28 @@ public class FileSaver {
    */
   private static boolean firstCall = true;
 
+
   /**
-   * This value is needed to keep track of the momentarily used id of the data. One number
-   * corresponds to a single sequence. Ids start with one to be human-understandable.
+   * This map translates between the ProblematicComment enum items and the corresponding texts for
+   * the user.
    */
-  private static long id = 1;
+  private static HashMap<ProblematicComment, String> commentMap =
+      new HashMap<ProblematicComment, String>();
+
+  static {
+    commentMap.put(ProblematicComment.NO_MATCH_FOUND,
+        "There was no match found, so the sequence can't be analysed.");
+    commentMap.put(ProblematicComment.SEQUENCE_TO_SHORT,
+        "The usable part of the sequence is very short "
+            + "(One should probably adjust the parameters).");
+    commentMap.put(ProblematicComment.NINETY_PERCENT_QUALITY_TRIM,
+        "90% or more of the processed sequence got trimmed away by the quality analysis.");
+    commentMap.put(ProblematicComment.COULD_NOT_READ_SEQUENCE,
+        "The AB1 file could not be read. It seems to be damaged.");
+    commentMap.put(ProblematicComment.ERROR_DURING_ANALYSIS_OCCURRED,
+        "An error during the analysis process occurred.");
+  }
+
 
   /**
    * Specifies the path where local files shall be created. This specifies the folder, not the file!
@@ -127,9 +146,6 @@ public class FileSaver {
 
     writer.close();
 
-    // if several files are desired, then the id field has to be set to
-    // zero. Also, ids have to be incremented.
-    updateIDs();
   }
 
   /**
@@ -146,9 +162,6 @@ public class FileSaver {
 
     StringBuilder builder = new StringBuilder();
 
-    // id
-    builder.append(id).append(SEPARATOR_CHAR + " ");
-
     // file name
     String fileName = sequence.getFileName();
     builder.append(fileName).append(SEPARATOR_CHAR + " ");
@@ -161,24 +174,66 @@ public class FileSaver {
     String organism = sequence.getReferencedGene().getOrganism();
     builder.append(organism).append(SEPARATOR_CHAR + " ");
 
-    // mutations (with nucleotide codons)
-    LinkedList<String> mutations = sequence.getMutations();
-    int numberOfMutations = sequence.getMutations().size();
+    if (!sequence.getProblematicComments().isEmpty()) {
+      builder.append(SEPARATOR_CHAR + " ").append(SEPARATOR_CHAR + " ")
+          .append(SEPARATOR_CHAR + " ");
+      builder.append(constructProblematicComments(sequence));
+      for (int i = 0; i < 7; i++) {
+        builder.append(SEPARATOR_CHAR + " ");
+      }
+      builder.append(System.lineSeparator());
+      return builder.toString();
+    }
 
-    if (numberOfMutations == 0) {
+    // mutations (with nucleotide codons); separateded into
+    // everything except insertions, deletions, silent mutations AND
+    // insertions, deletions, silent mutations
+    LinkedList<String> mutations = sequence.getMutations();
+    int numberOfMutations = mutations.size();
+    LinkedList<String> insertionsDeletionsSilent = new LinkedList<String>();
+    LinkedList<String> furtherMutations = new LinkedList<String>();
+    
+    for (String s : mutations) {
+      if (s.contains("+") || s.contains("-") || s.matches(".*[ATCG][ATCG][ATCG].*[ATCG][ATCG][ATCG]")) {
+        insertionsDeletionsSilent.add(s);
+      } else {
+        furtherMutations.add(s);
+      }
+    }
+    
+    int furtherMutCount = furtherMutations.size();
+
+    if (furtherMutCount == 0) {
       builder.append(SEPARATOR_CHAR + " ");
     } else {
-      for (int i = 0; i < numberOfMutations; i++) {
+      for (int i = 0; i < furtherMutCount; i++) {
 
-        String mutation = mutations.get(i);
+        String mutation = furtherMutations.get(i);
         builder.append(mutation);
-        if (i < numberOfMutations - 1) {
+        if (i < furtherMutCount - 1) {
           builder.append(", ");
         } else {
           builder.append(SEPARATOR_CHAR + " ");
         }
       }
     }
+    
+    int insDelSilentCount = insertionsDeletionsSilent.size();
+
+
+    // his tag
+    // The his tag position starts with 1 in the stored result.
+    int hisTagPosition = sequence.getHisTagPosition();
+    if (hisTagPosition == -1) {
+      builder.append("none" + SEPARATOR_CHAR + " ");
+    } else {
+      builder.append((hisTagPosition + 1) + "" + SEPARATOR_CHAR + " ");
+    }
+
+    // manually checked
+    boolean manuallyChecked = sequence.isManuallyChecked();
+    builder.append(manuallyChecked).append(SEPARATOR_CHAR + " ");
+
     // comments
     // Replace the separator by a comma
     String comments = sequence.getComments().replace(SEPARATOR_CHAR, ',');
@@ -193,7 +248,7 @@ public class FileSaver {
     builder.append(addingDate).append(SEPARATOR_CHAR + " ");
 
     // average quality
-    double avgQuality = sequence.getAvgQuality();
+    int avgQuality = sequence.getAvgQuality();
     builder.append(avgQuality).append(SEPARATOR_CHAR + " ");
 
     // trim percentage
@@ -204,32 +259,17 @@ public class FileSaver {
     String nucleotides = sequence.getSequence();
     builder.append(nucleotides).append(SEPARATOR_CHAR + " ");
 
-    // left vector
-    String leftVector = sequence.getLeftVector();
-    builder.append(leftVector).append(SEPARATOR_CHAR + " ");
-
-    // right vector
-    String rightVector = sequence.getRightVector();
-    builder.append(rightVector).append(SEPARATOR_CHAR + " ");
-
     // primer (may be changed by user manually)
     builder.append("none" + SEPARATOR_CHAR + " ");
 
-    // his tag
-    // The his tag position starts with 1 in the stored result.
-    int hisTagPosition = sequence.getHisTagPosition();
-    if (hisTagPosition == -1) {
-      builder.append("none" + SEPARATOR_CHAR + " ");
-    } else {
-      builder.append((hisTagPosition + 1) + SEPARATOR_CHAR + " ");
-    }
-
+    
     // mutations without nucleotide codons
-    if (numberOfMutations == 0) {
-      builder.append("; ");
+    if (furtherMutCount == 0) {
+      builder.append(SEPARATOR_CHAR + " ");
     } else {
-      for (int i = 0; i < numberOfMutations; i++) {
-        String mutation = mutations.get(i);
+      for (int i = 0; i < furtherMutCount; i++) {
+
+        String mutation = furtherMutations.get(i);
         String reducedMutation;
         if (mutation.equals("reading frame error")) {
           reducedMutation = mutation;
@@ -237,7 +277,7 @@ public class FileSaver {
           reducedMutation = (mutation.trim()).split(" ")[0];
         }
         builder.append(reducedMutation);
-        if (i < numberOfMutations - 1) {
+        if (i < furtherMutCount - 1) {
           builder.append(", ");
         } else {
           builder.append(SEPARATOR_CHAR + " ");
@@ -245,10 +285,20 @@ public class FileSaver {
       }
     }
 
-    // manually checked
-    boolean manuallyChecked = sequence.isManuallyChecked();
-    builder.append(manuallyChecked);
+    if (insDelSilentCount == 0) {
+      builder.append(SEPARATOR_CHAR);
+    } else {
+      for (int i = 0; i < insDelSilentCount; i++) {
 
+        String mutation = insertionsDeletionsSilent.get(i);
+        builder.append(mutation);
+        if (i < insDelSilentCount - 1) {
+          builder.append(", ");
+      }
+    }
+    }
+    
+     
     builder.append(System.lineSeparator());
 
     String toWrite = builder.toString();
@@ -303,53 +353,89 @@ public class FileSaver {
     FileWriter writer = new FileWriter(newFile, append);
 
     if (!append) {
-      writer.write("id" + SEPARATOR_CHAR + " file name" + SEPARATOR_CHAR + " gene" + SEPARATOR_CHAR
-          + " gene organism" + SEPARATOR_CHAR + " mutations (with codons)" + SEPARATOR_CHAR
-          + " comments" + SEPARATOR_CHAR + " researcher" + SEPARATOR_CHAR + " date" + SEPARATOR_CHAR
-          + " average quality (percent)" + SEPARATOR_CHAR + " percentage of quality trim"
-          + SEPARATOR_CHAR + " nucleotide sequence" + SEPARATOR_CHAR + " left vector"
-          + SEPARATOR_CHAR + " right vector" + SEPARATOR_CHAR + " primer" + SEPARATOR_CHAR
-          + " HIS tag" + SEPARATOR_CHAR + " mutations (without codons)" + SEPARATOR_CHAR
-          + " manually checked" + System.lineSeparator());
+      writer.write("file name" + SEPARATOR_CHAR + " gene" + SEPARATOR_CHAR + " gene organism"
+          + SEPARATOR_CHAR + " mutations (with codons - except for insertions, deletions and silent mutations)" + SEPARATOR_CHAR + " HIS Tag"
+          + SEPARATOR_CHAR + " manually checked" + SEPARATOR_CHAR + " comments" + SEPARATOR_CHAR
+          + " researcher" + SEPARATOR_CHAR + " date" + SEPARATOR_CHAR + " average quality (percent)"
+          + SEPARATOR_CHAR + " percentage of quality trim" + SEPARATOR_CHAR + " nucleotide sequence"
+          + SEPARATOR_CHAR + " primer" + SEPARATOR_CHAR + "mutations (without codons - except for insertions, deletions and silent mutations)" + SEPARATOR_CHAR + "mutations (with codons - insertions, deletions and silent mutations)"
+          + System.lineSeparator());
     }
 
     return writer;
   }
 
-  /**
-   * Sets the momentarily used id to one, if separate files are desired (each file has it's own
-   * number range, starting with one). This method is used within the writing process to handle the
-   * ids.
-   * 
-   * @see #resetIDs()
-   * 
-   * @author Ben Kohr
-   */
-  private static void updateIDs() {
-    if (separateFiles) {
-      resetIDs();
-    } else {
-      id++;
-    }
-  }
+
 
   /**
-   * Sets the momentarily used id to one.
+   * This method contructs the comments in case ProblematicComments where added to the sequence
+   * during analysis. This is the case when analysis anomalies are detected. It also prioritizes
+   * comments by suppressing some less critical ones while more critical comments are present.
    * 
+   * @param seq The Sequence with problematic comments
+   * 
+   * @return The comment section for the line corresponding to the current sequence
+   *
    * @author Ben Kohr
    */
-  public static void resetIDs() {
-    id = 1;
+  public static String constructProblematicComments(AnalysedSequence seq) {
+
+    StringBuilder builder = new StringBuilder();
+
+    LinkedList<ProblematicComment> probComments = seq.getProblematicComments();
+
+    if (probComments.contains(ProblematicComment.ERROR_DURING_ANALYSIS_OCCURRED)) {
+      probComments.removeIf(probCom -> {
+        return !probCom.equals(ProblematicComment.ERROR_DURING_ANALYSIS_OCCURRED);
+      });
+    } else if (probComments.contains(ProblematicComment.NO_MATCH_FOUND)) {
+      probComments.removeIf(probCom -> {
+        return !probCom.equals(ProblematicComment.NO_MATCH_FOUND);
+      });
+    }
+
+    for (ProblematicComment comment : seq.getProblematicComments()) {
+      builder.append(commentMap.get(comment) + " ");
+    }
+    builder.append(seq.getComments());
+
+    String resultingComments = builder.toString().replace(SEPARATOR_CHAR, ',');
+
+    return resultingComments;
+
   }
+
+
+  /**
+   * This method checks whether a given comment section contains problematic comments by checking
+   * whether on the Strings indicating a problematic comment is contained in the comment text passed
+   * to the method. This is necessary to determine whether the sequence should be uploaded or not.
+   *
+   * @param comments The comment field text to check
+   * 
+   * @return Is any problematic comment contained?
+   */
+  public static boolean areCommentsProblematic(String comments) {
+    Collection<String> problematicComments = commentMap.values();
+    for (String probComment : problematicComments) {
+      if (comments.contains(probComment)) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+
 
   /**
    * This method resets the class's state by resetting the ids and setting {@link #firstCall} to
    * true. This is necessary to start a completely new analyzing process.
    */
-  public static void resetAll() {
-    resetIDs();
+  public static void reset() {
     firstCall = true;
   }
+
+
 
   // GETTERS AND SETTERS:
 

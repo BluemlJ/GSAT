@@ -1,6 +1,7 @@
 package analysis;
 
 import exceptions.CorruptedSequenceException;
+import io.ProblematicComment;
 
 /**
  * This class contains the logic of analyzing the quality of sequences (poin) Thus, it is one of the
@@ -36,6 +37,7 @@ public class QualityAnalysis {
    * @see gui.ParameterWindow
    */
   private static int avgQualityEdge = 30;
+
   /**
    * This variable represents how many bad quality nucleotide are allowed before the sequence gets
    * cut off. Changing this may cause tests to fail. This can be changed by user.
@@ -43,7 +45,6 @@ public class QualityAnalysis {
    * @see io.ConfigHandler
    * @see gui.ParameterWindow
    */
-
   private static int breakcounter = 9;
 
   /**
@@ -55,7 +56,10 @@ public class QualityAnalysis {
    */
   private static int numAverageNucleotides = 20;
 
-  // TODO by lovis
+  /**
+   * This variable represents how many good quality nucleotides are needed before the sequence start
+   * gets detected. Changing this may cause tests to fail. This can be changed by user.
+   */
   private static int startcounter = 3;
 
   /**
@@ -150,7 +154,7 @@ public class QualityAnalysis {
    * 
    * @param qualities the sequence which needs to be trimmed
    * @param startPosition the first array index which will be used
-   * @return
+   * @return The position where a sequence of average low qualities starts
    * @author Lovis Heindrich
    */
   public static int getAverageTrimmingPosition(int[] qualities, int startPosition) {
@@ -197,29 +201,7 @@ public class QualityAnalysis {
     return qualities.length;
   }
 
-  /**
-   * This method calculate the percentage of trimmed nucleotides by quality of parameters.
-   *
-   * @param toAnalyse the trimmed sequence to get the quality for.
-   * @return a value between 0 and 100. This is a percentage.
-   * @author jannis blueml
-   */
-  public static double getQualityPercentage(AnalysedSequence toAnalyse) {
-    // checks if sequence is null or empty
-    if (toAnalyse == null || toAnalyse.getQuality().length == 0) {
-      return 0;
-    }
-    // counter for calculation
-    double counter = 0;
 
-    for (int phred : toAnalyse.getQuality()) {
-      if (phred > avgQualityEdge) {
-        counter++;
-      }
-    }
-
-    return (int) (counter / toAnalyse.getQuality().length * 100);
-  }
 
   /**
    * This method calculate the percentage how much are trimmed away.
@@ -233,7 +215,16 @@ public class QualityAnalysis {
 
     int lengthNow = toAnalyse.getSequence().length();
     double percentage = (lengthBefore - lengthNow) / ((double) lengthBefore);
-    return (int) (percentage * 100);
+    int percentageInt = (int) (percentage * 100);
+
+    if (percentageInt >= 90) {
+      toAnalyse.addProblematicComment(ProblematicComment.NINETY_PERCENT_QUALITY_TRIM);
+    } else if (percentageInt >= 70) {
+      toAnalyse.addComments("70% or more (but less than 90%) of the processed "
+          + "sequence got trimmed away by the quality analysis.");
+    }
+
+    return percentageInt;
   }
 
   /**
@@ -249,64 +240,54 @@ public class QualityAnalysis {
   }
 
   /**
-   * get average Quality in a score between 0 and 100 by getting all phread scores and setting them
+   * Get average Quality in a score between 0 and 100 by getting all phread scores and setting them
    * in the phread function.
    * 
-   * @return the average quality between 0 and 100.
+   * @return The average quality between 0 and 100.
    * @author bluemlj
    */
-  public static double getAvgQuality(AnalysedSequence toAnalysedSequence) {
+  public static int getAvgQuality(AnalysedSequence sequenceToAnalyse) {
 
-    if (toAnalysedSequence.getQuality().length == 0) {
+    if (sequenceToAnalyse.getQuality().length == 0) {
       return 0;
     }
 
     int sum = 0;
-    for (int i : toAnalysedSequence.getQuality()) {
+    for (int i : sequenceToAnalyse.getQuality()) {
       sum += i;
     }
-    double tmp = sum / (1.0 * toAnalysedSequence.getQuality().length);
-    return 100 - Math.pow(10, -tmp / 10);
+    return sum / sequenceToAnalyse.getQuality().length;
   }
 
-
   // GETTERs and SETTERs:
-
 
   public static int getAvgApproximationStart() {
     return avgApproximationStart;
   }
 
-
   public static void setAvgApproximationStart(int avgApproximationStart) {
     QualityAnalysis.avgApproximationStart = avgApproximationStart;
   }
-
 
   public static int getAvgApproximationEnd() {
     return avgApproximationEnd;
   }
 
-
   public static void setAvgApproximationEnd(int avgApproximationEnd) {
     QualityAnalysis.avgApproximationEnd = avgApproximationEnd;
   }
-
 
   public static int getNumAverageNucleotides() {
     return numAverageNucleotides;
   }
 
-
   public static void setNumAverageNucleotides(int numAverageNucleotides) {
     QualityAnalysis.numAverageNucleotides = numAverageNucleotides;
   }
 
-
   public static int getStartcounter() {
     return startcounter;
   }
-
 
   public static void setStartcounter(int startcounter) {
     QualityAnalysis.startcounter = startcounter;

@@ -17,7 +17,6 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
@@ -25,25 +24,55 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
+/**
+ * Window for database settings. Used to enter login details for the mysql database.
+ * 
+ * @author Lovis Heindrich
+ *
+ */
 public class DatabaseSettingsWindow extends Application implements javafx.fxml.Initializable {
 
+  /**
+   * Button to test connection using the entered login data.
+   */
   @FXML
   private Button connectButton;
+
+  /**
+   * Button to close the setting window.
+   */
   @FXML
   private Button closeButton;
 
+  /**
+   * Field to enter the database url.
+   */
   @FXML
   private TextField adressField;
 
+  /**
+   * Text field to enter the database port.
+   */
   @FXML
   private TextField portField;
 
+  /**
+   * Text field to enter the database username.
+   */
   @FXML
   private TextField userNameField;
 
+  /**
+   * Text field to enter the database password.
+   */
   @FXML
   private PasswordField passwordField;
 
+  /**
+   * Initializes the database settings window. Sets all button actions.
+   * 
+   * @author Lovis Heindrich
+   */
   @Override
   public void initialize(URL arg0, ResourceBundle arg1) {
     GUIUtils.setColorOnButton(connectButton, ButtonColor.GREEN);
@@ -112,8 +141,9 @@ public class DatabaseSettingsWindow extends Application implements javafx.fxml.I
           ConfigHandler.writeConfig();
           System.out.println("config write successful");
         } catch (IOException e1) {
-          // TODO Auto-generated catch block
-          e1.printStackTrace();
+          GUIUtils.showInfo(AlertType.ERROR, "Error during config file writing",
+              "There was an error during the writing of the configuration file.");
+          return;
         }
 
         // try to connect
@@ -128,26 +158,17 @@ public class DatabaseSettingsWindow extends Application implements javafx.fxml.I
           try {
             // Try to connect
             DatabaseConnection.setDatabaseConnection(username, password, port, adress);
-            System.out.println("connection successful");
             // show success alert window
-            Alert alert = new Alert(AlertType.INFORMATION);
-            alert.setTitle("Database Connection");
-            alert.setHeaderText("Connection to database succeeded");
-            alert.showAndWait();
+            GUIUtils.showInfo(AlertType.INFORMATION, "Database connection",
+                "Connection to database succeeded");
           } catch (DatabaseConnectionException | SQLException e) {
-            System.out.println("Connection failed");
-            // Connection did not work
-            Alert alert = new Alert(AlertType.INFORMATION);
-            alert.setTitle("Database Connection");
-            alert.setHeaderText("Connection to database failed");
-            alert.showAndWait();
+            GUIUtils.showInfo(AlertType.ERROR, "Database connection",
+                "Connection to database failed");
           }
         } else {
           // values are missing
-          Alert alert = new Alert(AlertType.INFORMATION);
-          alert.setTitle("Database Connection");
-          alert.setHeaderText("Please enter values for all parameters.");
-          alert.showAndWait();
+          GUIUtils.showInfo(AlertType.ERROR, "Database connection",
+              "Please enter values for all parameters.");
         }
       }
     });
@@ -163,13 +184,17 @@ public class DatabaseSettingsWindow extends Application implements javafx.fxml.I
     });
   }
 
+  /**
+   * Initializes the gui window.
+   * 
+   * @author Kevin Otto
+   */
   @Override
   public void start(Stage primaryStage) throws Exception {
     Parent root;
     try {
       root = FXMLLoader.load(getClass().getResource("/fxml/DatabaseSettingsWindow.fxml"));
     } catch (IOException e) {
-      e.printStackTrace();
       return;
     }
     Scene scene = new Scene(root);

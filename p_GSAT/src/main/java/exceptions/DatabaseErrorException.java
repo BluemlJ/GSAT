@@ -8,7 +8,6 @@ package exceptions;
  */
 public class DatabaseErrorException extends Exception {
 
-
   /**
    * Constructor calling the super constructor and specifying an error message.
    * 

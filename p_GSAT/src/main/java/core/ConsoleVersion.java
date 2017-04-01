@@ -5,6 +5,8 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.LinkedList;
 
+import org.biojava.bio.symbol.IllegalSymbolException;
+
 import analysis.AnalysedSequence;
 import analysis.Gene;
 import analysis.MutationAnalysis;
@@ -24,18 +26,36 @@ import io.FileSaver;
 import io.GeneHandler;
 import io.SequenceReader;
 
-
+/**
+ * 
+ * <h1>This class is from an early version of our system. It only supports the main feature: Finding
+ * mutations and writing the results to a .csv file.</h1>
+ * <p>
+ * 
+ * </p>
+ * This program version can be started with the console by adding the parameter -c.
+ * <p>
+ * 
+ * 
+ * </p>
+ * 
+ * @author Lovis Heindrich
+ *
+ */
 public class ConsoleVersion {
 
+  /**
+   * Activates automatic gene matching for each sequence that is analysed.
+   */
   private static boolean geneRecognition = false;
 
   /**
    * Creates, prints and stores a report of the reading of the files.
    * 
-   * @param destination The destination path (where to store the results)
-   * @param validFiles The list of valid AB1/ABI files
-   * @param badFiles The list of invalid files
-   * @param configReport A message on the level of success from reading the configuration file
+   * @param destination The destination path (where to store the results).
+   * @param validFiles The list of valid AB1/ABI files.
+   * @param badFiles The list of invalid files.
+   * @param configReport A message on the level of success from reading the configuration file.
    * 
    * @author Ben Kohr
    * 
@@ -103,7 +123,8 @@ public class ConsoleVersion {
   }
 
   /**
-   * starts the console version of the programs
+   * Starts the console version and runs the general analysis pipeline. Results will be stored in a
+   * .csv file.
    * 
    * @author Lovis Heindrich
    */
@@ -144,11 +165,12 @@ public class ConsoleVersion {
   }
 
   /**
-   * adds a database entry for a sequence
+   * Saves the results of one sequence in a .csv file.
    * 
-   * @param activeSequence
-   * @param file
-   * @param destinationPath
+   * @param activeSequence The sequence which will be saved.
+   * @param file The file where the sequence has been read. Used to retrieve the file name.
+   * @param destinationPath The path where the result will be saved.
+   * @author Ben Kohr
    */
   private static void addLocalEntry(AnalysedSequence activeSequence, File file,
       String destinationPath) {
@@ -158,8 +180,7 @@ public class ConsoleVersion {
     } catch (MissingPathException e) {
       FileSaver.setLocalPath(destinationPath);
     } catch (IOException e) {
-      // TODO Auto-generated catch block
-      e.printStackTrace();
+      System.out.println("File " + file.getName() + " could not be written.");
     }
 
   }
@@ -168,7 +189,9 @@ public class ConsoleVersion {
    * Asks the User for the path to the AB1 files and returns a list of the found files Also checks
    * corectness of path and asks again if neccesary
    * 
-   * @return
+   * @return A pair of all parsed files. The first list contains all correctly parsed .abi files and
+   *         the second list all other files.
+   * @author Kevin Otto
    */
   private static Pair<LinkedList<File>, LinkedList<File>> askForAB1Files() {
     boolean inputInvalid = true;
@@ -198,28 +221,12 @@ public class ConsoleVersion {
     return new Pair<LinkedList<File>, LinkedList<File>>(files, oddFiles);
   }
 
-  /**
-   * Asks user for a comment and sets the comment field of the referenced analysedSequence
-   * 
-   * @param sequence
-   * @param file
-   */
-  @SuppressWarnings("unused")
-  private static void askForComment(AnalysedSequence sequence, File file) {
-    try {
-      sequence.setComments(ConsoleIO.readLine(
-          "Please enter a comment for file " + file.getName() + " or press ENTER to skip."));
-    } catch (IOException e1) {
-      // TODO Auto-generated catch block
-      e1.printStackTrace();
-    }
-  }
 
   /**
-   * Asks user for gene and gene name and adds it to the gene database
+   * Asks user for gene sequence and gene name and adds it to the local gene file.
    * 
    * @return Gene containing the parsed data
-   * @throws DuplicateGeneException
+   * @author Lovis Heindrich
    */
   private static Gene askForGene() {
     String strGene = null;
@@ -250,9 +257,10 @@ public class ConsoleVersion {
   }
 
   /**
-   * asks user for destination path and sets the value in DatanbaseConnection
+   * This method asks the user if they want a single output file or a file for each analyzed
+   * sequence.
    * 
-   * @return
+   * @author Ben Kohr
    */
   private static void askForOneOrMultipleFiles() {
     String message =
@@ -279,7 +287,9 @@ public class ConsoleVersion {
   }
 
   /**
-   * prints done message and closes the console
+   * Prints done message in the console and closes the program.
+   * 
+   * @author Kevin Otto
    */
   private static void closeProgram() {
     System.out.println();
@@ -317,10 +327,11 @@ public class ConsoleVersion {
   }
 
   /**
-   * Calls all necessary functions to process Mutations of a sequence
+   * Finds all mutations for a sequence and saves them in the sequence object.
    * 
-   * @param sequence
-   * @param file
+   * @param sequence The sequence which will be analyzed.
+   * @param file File of the sequence, used only for the file name.
+   * @author Lovis Heindrich
    */
   private static void processMutations(AnalysedSequence sequence, File file) {
     try {
@@ -332,14 +343,15 @@ public class ConsoleVersion {
     } catch (CorruptedSequenceException e) {
       System.err.println("The file " + file.getName()
           + " seems to be corrupted. An unknown nulceotide symbol was detected.");
-      e.printStackTrace();
     }
   }
 
   /**
-   * asks user for destination path and sets the value in DatanbaseConnection
+   * Asks the user for a destination path where the results will be stored. The path is saved in
+   * FileSaver.
    * 
-   * @return
+   * @return The path entered by the user if the path is valid, null otherwise.
+   * @author Lovis Heindrich
    */
   private static String processPath() {
     String message = "Please enter the path where the results will be stored."
@@ -354,19 +366,19 @@ public class ConsoleVersion {
         return path;
       } catch (IOException e) {
         invalidPath = true;
-        e.printStackTrace();
       }
     }
     return null;
   }
 
   /**
-   * runs the complete analysis pipeline for a single sequence and adds a database entry for the
-   * sequence
+   * Runs the complete analysis pipeline for a single sequence and adds the sequence to the saved
+   * files.
    * 
-   * @param activeSequence
-   * @param gene
-   * @param file
+   * @param gene The gene the sequence will be compared to.
+   * @param file The file which contains the sequence.
+   * @param destinationPath The path where the results will be saved.
+   * @author Lovis Heindrich
    */
   private static void processSequence(Gene gene, File file, String destinationPath) {
     AnalysedSequence activeSequence = null;
@@ -384,8 +396,7 @@ public class ConsoleVersion {
     try {
       StringAnalysis.checkComplementAndReverse(activeSequence);
     } catch (CorruptedSequenceException e) {
-      // TODO HIER FEHLER ANBRINGEN
-      e.printStackTrace();
+      System.err.println("Unknown symbol detected in sequence.");
     }
     // cut out vector
     StringAnalysis.trimVector(activeSequence);
@@ -401,8 +412,7 @@ public class ConsoleVersion {
     try {
       QualityAnalysis.checkIfSequenceIsClean(activeSequence);
     } catch (CorruptedSequenceException e) {
-      System.err.println("CORRUPTED");
-      e.printStackTrace();
+      System.err.println("Sequence seems to be corrupted.");
     }
     // mutation analysis
     processMutations(activeSequence, file);
@@ -415,10 +425,11 @@ public class ConsoleVersion {
   }
 
   /**
-   * reads genes from file and returns the correct gene genes must be in a txt file named genes.txt
-   * in the same folder as the ab1 files if genes.txt can not be found it asks the user for a gene
+   * Reads genes from file and returns the correct gene. Genes must be in a .txt file named
+   * genes.txt in the same folder as the ab1 files. If genes.txt can not be found the user will be
+   * asked to enter a new gene.
    * 
-   * @return
+   * @return The selected or added Gene which will be used for the analysis.
    * @author Lovis Heindrich
    * 
    */
@@ -472,11 +483,11 @@ public class ConsoleVersion {
   }
 
   /**
-   * Reads the Sequence of the given File and prints Errors if necessary
+   * Reads the sequence from a given File and prints error messages if necessary.
    * 
-   * @param file
-   * @return
-   * @author Kevin
+   * @param file The file of the sequence which will be parsed.
+   * @return The parsed sequence.
+   * @author Kevin Otto
    */
   private static AnalysedSequence readSequenceFromFile(File file) {
     try {
@@ -485,7 +496,11 @@ public class ConsoleVersion {
       System.err.println("Could not read file " + e.filename + ". This file might be corrupted.");
       System.out.println();
     } catch (IOException e) {
-      e.printStackTrace();
+      System.err.print("Reading failed.");
+    } catch (MissingPathException e) {
+      System.err.print("No reading path specified.");
+    } catch (IllegalSymbolException e) {
+      System.err.print("Unknown number format observed.");
     }
     return null;
   }

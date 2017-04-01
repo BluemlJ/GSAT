@@ -4,7 +4,7 @@ package exceptions;
  * This exception is thrown when the user tries to add a gene whose name already exists in the gene
  * file.
  * 
- * @author lovisheindrich
+ * @author Lovis Heindrich
  */
 public class DuplicateGeneException extends Exception {
 
@@ -13,7 +13,7 @@ public class DuplicateGeneException extends Exception {
    * 
    * @param name The name of the gene which is already in the gene file.
    * 
-   * @author lovisheindrich
+   * @author Lovis Heindrich
    */
   public DuplicateGeneException(String name) {
     super("Gene " + name + " already exists.");

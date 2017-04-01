@@ -1,151 +1,290 @@
 We're glad to help!
 Check out the topic you are interested in:
+
 (1) How to set up and to start a new analysis
 (2) The main menu in further detail
 (3) The settings window in further detail
 (4) The analysis results
---------------------------------------------------------------------------
+(5) The database window in further detail
+(6) The chromatogram window in further detail
 
 
 
-_____________________________________________
-(1) How to set up and to start a new analysis
 
-To start a new analysis, you first have to choose a folder of AB1 files or a single AB1 file. For doing this, enter a path into the Source input field or click on the Button 
+
+
+
+
+| -------------------------------------------------
+| (1) How to set up and to start a new analysis
+| -------------------------------------------------
+
+To start a new analysis, you first have to choose a folder of AB1 files or a single AB1 file. For doing this, enter a path into the source input field or click on the Button 
 next to the field. You will be asked whether you want to specify a path or a single file. Choose as preferred and select the folder or the file in the menu which will be presented 
-to you then. To tell GSAT where to place the results of your analysis, analogously enter a Destination path in the input field below the Source field. You can also choose a
+to you. To tell GSAT where to place the results of your analysis, analogously enter a destination path in the input field below the source field. You can also choose a
 folder by clicking on the button next to the field. 
-Next, you have to choose a gene to compare the files with. Choose one from the gene dropdown menu. 
-Make sure the output is as desired: One single file or multiple files, one for each input. You can specify this with the checkbox 'Multiple outfut files'.
-Almost done. All you have to do now is click on the Start button. 
-And there you go. When the analysis finished, you can find the results in the folder you specified with Destination. The progress bar will tell you how far the analysis process hase come.
+Next, you have to choose a gene to compare the files with. Choose one from the gene dropdown menu or let GSAT automatically detect the right gene by using the 'Find right gene' checkbox. The gene must be already integrated or added manually via the settings menu.
+Make sure the output is as desired: One single file or multiple files, one for each sequence. You can specify this with the checkbox 'Multiple outfut files'.
+To start the analysis click on the start button. When the analysis is finished, you can find the results in the folder you specified in the destination field. The progress bar will tell you how far the analysis process has come.
+To directly open the results in excel you can use the 'Open results file' button.
 
 
 
 
-___________________________________
-(2) The main menu in further detail
 
->>> Settings
+
+
+| ---------------------------------------
+| (2) The main menu in further detail
+| ---------------------------------------
+
+>>> DATABASE
+This button opens the database window which is used to upload and download data from the database.
+
+>>> CHROMATOGRAM
+This button opens the chromatogram window. In this window a chromatogram for the file(s) specified in the source field is shown.
+
+>>> SETTINGS
 You can adjust the program's settings by clicking on this button. The settings window is explained in section (3).
 
->>> Help
+>>> HELP
 This button allows you to get some help on the program's functionality (you already seem to use this).
 
->>> About
+>>> ABOUT
 Read about the authors and the making of GSAT!
 
->>> Source
-This specifies the folder of AB1 files or the single AB1 file which you want to analyze. Enter folder or file path manually or simply choose it by clicking on the button
-situated on the right of the input field.
+>>> SOURCE
+This specifies the folder of AB1 files or the single AB1 file which you want to analyze. Enter folder or file path manually or simply choose it by clicking on the choose button situated on the right of the input field. 
+Clicking the open button will open the folder with the default file explorer of your operating system. In case of a single file the open button will open this file with the default program specified by your operating system.
 
->>> Destination
-This specifies the folder where the results should be written to. You can enter the folder manually or choose it by clicking the button on the right hand side of the input field.
+>>> DESTINATION
+This specifies the folder where the results should be written to. You can enter the folder manually or choose it by clicking the choose button on the right hand side of the input field.
+Clicking the open button will open the folder with the default file explorer of your operating system.
 
->>> File Name
-You can specify the name of the out file(s). By leaving this field blank, "gsat_results" will be used as a default name.
+>>> FILE NAME
+You can specify the name of the out file(s). By leaving this field blank, 'gsat_results' will be used as a default name.
  
->>> Gene
+>>> GENE
 Use this dropdown menu to choose which gene to compare the sequences with.
 
->>> Multiple output files
+>>> MULTIPLE OUTPUT FILES
 This checkbox indicates whether multiple output files are produced, one for each input file (checked) or one single file, containing the information of all input files (unchecked).
 
->>> Find right gene
-Instead of specifying a certain gene, you can also ask the programm to select the gene that fits best to the given sequences. Activate this functionality via this checkbox.
+>>> FIND RIGHT GENE
+Instead of specifying a certain gene, you can also ask the program to select the gene that fits best to the given sequences. Activate this functionality via this checkbox.
 
->>> Start
-After choosing a path for input and output and after selecting a gene, you can click on Start to run the analysis.
+>>> OPEN RESULT FILE
+This button will open the last analyzed file with the standard program specified by your operating system.
+
+>>> START
+After choosing a path for input and output and after selecting a gene, you can click on start to run the analysis.
 
 
 
 
-_________________________________________
-(3) The settings window in further detail
 
->>> Researcher
+
+
+
+| -------------------------------------------
+| (3) The settings window in further detail
+| -------------------------------------------
+
+>>> RESEARCHER:
 Choose your name in the dropdown menu to make sure your analyses are associated with it. If your name is not entered yet, do so by making use of the add button. 
-Remove names from the list with delete.
+Remove names from the list with hte delete button.
 
->>> Available genes
-The big box contains all currently available genes for an analysis. You can add or delete genes with the buttons add and delete. Only the genes you specify here
-are presented to you in the main window's gene dropdown.
+>>> AVAILABLE GENES AND PRIMERS
+The list you see in the middle of the window contains all currently available genes for an analysis. You can add, delete and show your genes with the three buttons next to the list.
+Only the genes you specify here are presented in the main window's gene dropdown.
 When adding a gene you are asked to enter its name, the organism it corresponds to, its nucleotide sequence (with A, T, C and G letters). You may enter a comment if desired.
+Next to the list are also two toggle buttons to switch between genes and primers. When primers are selected the list will contain all primers you saved in your local primer file.
+You can add, delete and show them with the same buttons next to the list view.
 
->>> Edit parameters
-You can adjust parameters used in the analysis pipeline by clicking this button.
-Minimal Start Quality: The minimal PHRED score a nucleotide is allowed to have to not get trimmed away at the BEGINNING of the sequence.
-Minimal End Quality: The minimal PHRED score a nucleotide is allowed to have to not get trimmed away at the END of the sequence.
-Bad Quality Margin: The maximum number of nucleotides in a row with bad quality (less than "Minimal End Quality") that are allowed before the sequence gets cut off AT THE END.
-Good Quality Margin: The minimum number of nucleotides with good quality (better than "Minimal End Quality") that must appear in a row to not get cut away AT THE BEGINNING of a sequence.
-Search Radius: The number of nucleotides with bad quality (less than "Minimal End Quality") that must appear in a row to cut off the sequence AT THE END.
+>>> EDIT PARAMETERS:
+These are the parameters you can change:
 
->>> Configure database
-The database used to store the results can be configured with this button. NOTE: This functionality is not implemented yet,
-but coming soon! Stay tuned!
+Minimal Start Quality: 
+The minimal PHRED score a nucleotide is allowed to have to not get trimmed away at the BEGINNING of the sequence. Increasing this value will result in a more strict trimming at the start of the sequence. This means most likely more nucleotides will be trimmed away at the start of the sequence.
+
+Minimal End Quality: 
+The minimal PHRED score a nucleotide is allowed to have to not get trimmed away at the END of the sequence. Increasing this value will result in a more strict trimming at the end of the sequence. This means most likely more nucleotides will be trimmed away at the end of the sequence.
+
+Bad Quality Margin: 
+The maximum number of nucleotides in a row with bad quality (less than "Minimal End Quality") that are allowed before the sequence gets cut off AT THE END. Increasing this value will result in a less strict trimming at the end of the sequence which means less nucleotides will be trimmed away at the end.
+
+Good Quality Margin: 
+The minimum number of nucleotides with good quality (better than "Minimal End Quality") that must appear in a row to not get cut away AT THE BEGINNING of a sequence. Increasing this value will result in a more strict trimming at the start of the sequence which means more nucleotides will be trimmed away at the beginning.
+
+Search Radius: 
+This value describes how many nucleotides will be averaged for an additional trimm factor. If the average quality of the nucleotides is below our cutoff value (minimal end quality), the rest of the sequence will be trimmed away. Increasing this value will result in more nucleotides being averaged which means the quality of a single nucleotide will have less weight.
+
+>>> CONFIGURE DATABASE
+Opens a new window to configurate the database connection. You can login here by setting the username, password, url and port via the text input fields. To test the connection press the connect button. The values will automatically be saved.
 
 >>> OK
-Leave the settings window and return to the main window. You changes will be saved.
+Leave the settings window by closing it and return to the main window. Your changes will be saved.
 
 
 
 
 
 
-_________________________________________
-(4) The analysis results
+
+
+| -------------------------
+| (4) The analysis results
+| -------------------------
 
 The analysis results are CSV files. Each line corresponds to one AB1 file / nucleotide sequence.
-These are the meanings of the fields:
+The meanings of the fields are explained here. 
+It is also mentioned which of the to (not!) change when working with the result file in case an upload is desired:
 
->>> id:							
-A unique number per line (to quickly refer to a single result entry).
+>>> FILE NAME:					
+The name of the AB1 file under analysis. 
+Please DO NOT CHANGE this entry.
 
->>> file name:					
-The name of the AB1 file.
-
->>> gene:						
+>>> GENE:						
 The name of the gene that was associated with the analysis of this sequence.
+Please DO NOT CHANGE this entry. 
+Also, please make sure the gene that was used for this analysis STILL EXISTS in the local gene list (in the settings) when uploading this result!
 
->>> gene organism:				
-The above gene's organism.
+>>> GENE ORGANISM:				
+The above gene's organism. The entry is 'null' if no organism was specified.
+Please DO NOT CHANGE this entry. Make sure this gene (with this organism, if not 'null') still exists in the local gene list (as above) when uploading this result.
 
->>> mutations (with codons):	
+>>> MUTATIONS (WITH CODONS):	
 A list of found mutations (insertions, deletions, substitutions and silent mutations) with the nucleotide codons of the mutated amino acid. 
 This field may contain the information whether a reading frame error was detected.
+The mutations have the following meanings:
+- insertion: e.g. "+1L24 (ATT)", the amino acid L has been inserted at position 24 (it has the nucleotide sequence ATT).
+- deletion: e.g. "-1L220 (ATT)", the original amino acid L at position 220 was deleted and does not exist there anymore (it had the nucleotide sequence ATT).
+- substitution: e.g. "D6H (CAT)", the amino acid D at position 6 is replaced by H (which has the nucleotide sequence CAT).
+- silent mutation: e.g. "TAA6TTA", the nucleotide tripel TAA at aminoacid position 6 got replaced by TTA, they both share the same amino acid name.
+- reading frame error: A reading frame error occurred, making the finding of mutations impossible.
+Please DO NOT CHANGE this entry.
 
->>> comments:				
-Comments entered by the user.
-
->>> researcher:				
-The researcher name associated with the analysis.
-
->>> date:						
-The date this result was created.
-
->>> average quality (percent):	
-The average nucleotide quality in percent from 0 to 100 (calculated from the average PHRED score).
-
->>> percentage of quality trim:	
-The percentage of nucleotides which got cut off from the sequence due to the quality trim.
-
->>> nucleotide sequence:		
-The nucleotide sequence which was compared against the gene.
-
->>> left vector:				
-The nucleotide sequence which was cut away at the beginning of the original sequence due to finding the gene part.
-
->>> right vector:				
-Same as above, but at the END of the original sequence.
-
->>> primer:						
-The primer associated with the sequence (entered by user).
-
->>> HIS tag:					
+>>> HIS TAG:					
 The nucleotide index (starting with 1) where a HIS tag was found, "none" otherwise.
+Please DO NOT CHANGE this entry.
 
->>> mutations (without codons):	
-The list of found mutations WITHOUT the codons.
-
->>> manually checked:			
+>>> MANUALLY CHECKED:			
 The indication whether this result was manually checked by a user.
+Default case is 'false'. If you checked this result manually and think it is okay, then change this field's entry to 'true' or 'yes'.
+
+>>> COMMENTS:				
+Comments entered by the user.
+Feel free to edit the comment field as required.
+
+>>> RESEARCHER:				
+The researcher name associated with the analysis.
+It may be changed, but when you select your name from the researcher dropdown list, the results are automatically
+associated with this name. This can save your energy of manually entering your name - and it also prevents misspelling errors.
+So typically, you should not need to change it; rather enter and choose your name in the settings before doing an analysis.
+
+>>> DATE:						
+The date this result was created. 
+It always has the form XX/YY/ZZZZ (with XX -> day, YY -> month and ZZ -> year), e.g. 24/03/17.
+Please DO NOT CHANGE this entry.
+
+>>> AVERAGE QUALITY (PERCENT):	
+The average nucleotide quality in percent from 0 to 100 (calculated from the average PHRED score).
+A value between 100 and 70 can be considered as 'very good quality',
+a value between 69 and 40 is 'okay', while values below 40 are 'bad'.
+Please DO NOT CHANGE this entry.
+
+>>> PERCENTAGE OF QUALITY TRIM:
+The percentage of nucleotides which got cut off from the sequence due to the quality trim.
+Please DO NOT CHANGE this entry.
+
+>>> NUCLEOTIDE SEQUENCE:		
+The nucleotide sequence which was compared against the gene.
+Please DO NOT CHANGE this entry.
+
+>>> PRIMER:						
+The primer associated with the sequence (entered by user). If desired you can type in the name of the primer used for this sequence. But it is not required.
+If no primer was used or you don't want to specify one, just leave the 'none' in there.
+
+>>> MUTATIONS (WITHOUT CODONS):	
+The list of found mutations WITHOUT the codons.
+Please DO NOT CHANGE this entry.
+
+There are three important things to be mentioned regarding the CSV result files:
+1. In case you edit a result file before uploading it, please DO NOT USE a semicolon (;) anywhere. It's the program's internal separator char. Using it can have undesired effects.
+2. When you're working with the result files, Excel might ask you whether you want to convert the file from CSV format to Excel format. This is okay, but if you want to UPLOAD the results later on, you SHOULD NOT do this conversion. The program can only deal with the CSV format.
+3. When a file could not be analyzed and produces an empty row in the CSV file it is important that the automatically generated comment for that row must not be changed.
+
+
+
+
+
+
+| ----------------------------------------------
+| (5) The database window in further detail
+| ----------------------------------------------
+
+>>> UPLOAD
+Select this button to upload data to the database. Only this button or the download button can be active at the same time. Selecting this button changes the functionality of most other buttons in this window.
+
+>>> DOWNLOAD
+Select this button to download data from the database. Only this button or the upload button can be active at the same time. Selecting this button changes the functionality of most other buttons in this window.
+
+>>> RESULTS
+Select this button to upload/download the results from an analysis. The genes and researchers linked to the analysis will be uploaded/downloaded as well automatically.
+When uploading, a folder containing CSV files must be selected.
+When downloading, a folder where the results will be saved must be selected. You can also specify which files you want to download by using the date, gene or researcher fields. Filling in these fields is optional and when a field is left empty it will be ignored.
+
+>>> GENES
+Select this button to upload/download genes. This will upload all local genes from the genes.txt file or download all genes from the database and save them to the local genes.txt file.
+
+>>> PRIMER
+Select this button to upload/download primer. This will upload all local primers from the primer.txt file or download all genes from the database and save them to the local primer.txt file.
+
+>>> ALL
+Select this button to upload/download all data. This is equivalent to manually uploading/donwloading results, genes and primer.
+
+>>> Folder
+Use this text field to enter the path from where results will be uploaded or where results will be downloaded. You can also use the button next to the text field to open a window to select the folder path using the file chooser of your operating system.
+
+>>> Researcher
+This text field can be used to download only results created by a specific researcher. This field is optional and leaving it empty will download results from all researchers. The name entered must be exactly the same as the name linked to the file in the database.
+
+>>> GENE
+This text field can be used to download only results which use a specific gene. This field is optional and leaving it empty will download results from all genes. The gene name entered must be exactly the same as the name linked to the file in the database.
+
+>>> STARTING DATE
+This text field can be used to download only results which were created after a specific date. This field is optional. The date entered must match the format dd/mm/yyyy. Alternatively the button next to the field can be used to select a date using a graphical date selector.
+
+>>> END DATE
+This text field can be used to download only results which were created before a specific date. This field is optional. The date entered must match the format dd/mm/yyyy. Alternatively the button next to the field can be used to select a date using a graphical date selector.
+
+>>> DATABASE SETTINGS
+This button opens the database settings window where the login details to the mysql database can be entered.
+
+>>> START
+This button starts the database query as specified by the upload/download toggle buttons, the results/genes/primer/all toggle buttons and the additional researcher/gene/date parameters.
+
+Some of the text fields and parameters will be disabled automatically if the selected upload/download and results/genes/primer/all combination does not need additional specification.
+Depending on the number of elements that will be pushed or pulled the program might take a while to process the database request. 
+
+
+
+
+
+| ----------------------------------------------------
+| (6) The chromatogram window in further detail
+| ----------------------------------------------------
+
+>>> CHROMATOGRAM
+A chromatogram (sometimes also called electropherogram) is the visual representation of a DNA sample produced by a sequencing machine.
+It shows every single nucleotide and amino acid given by the information of the selected Ab1 file.
+
+>>> NEXT FILE/ PREVIOUS FILE
+Change the selected and shown file to next or previous file in folder.
+WARNING: the internal order of files can be different from given order in folder
+
+>>> EXPORT
+Save the shown chromatogram in form of an image (png file) by choosing the position to save the image
+
+>>> CLOSE
+close the window

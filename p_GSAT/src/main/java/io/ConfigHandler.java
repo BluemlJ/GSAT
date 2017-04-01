@@ -14,48 +14,133 @@ import java.util.Arrays;
 import exceptions.ConfigNotFoundException;
 import exceptions.UnknownConfigFieldException;
 
-
 /**
- * This class is responsible for reading the configuration file and storing its values
+ * This class is responsible for reading the configuration file and storing its values. The
+ * configuration file is stored in home/gsat/config.txt.
  * 
- * @author lovisheindrich
+ * @author Lovis Heindrich, jannis blueml
  *
  */
 public class ConfigHandler {
+
+  /**
+   * The path where the config file is stored. This is set to the OS dependent home directory.
+   */
   private static String path =
       System.getProperty("user.home") + File.separator + "gsat" + File.separator + "config.txt";
+
+  /**
+   * The active researcher which will be written in analysis results. This is set to "-" as a
+   * placeholder to avoid null pointer.
+   */
   private static String researcher = "-";
+
+  /**
+   * This is a list of all known researchers which is used for selecting an active researcher. Set
+   * to "-" to avoid null pointer.
+   */
   private static String[] researcherList = {"-"};
+
+  /**
+   * The source path for .abi files to speed up opening files from the GUI.
+   */
   private static String srcPath = "";
 
-  // DB connection values
+  /**
+   * The server address for the database, set to the address from the TU Darmstadt database.
+   */
   private static String dbUrl = "130.83.37.145";
+
+  /**
+   * The username for the database, set to the username from the TU Darmstadt database.
+   */
   private static String dbUser = "gsatadmin";
+
+  /**
+   * The password for the database, "none" is a placeholder which can be replaced by setting the
+   * correct password from the configure database GUI.
+   */
   private static String dbPass = "none";
+
+  /**
+   * The port for the database, set to the standard port of 3306.
+   */
   private static int dbPort = 3306;
 
-  // quality parameter
+  /**
+   * Default values for all quality parameters, used to reset user settings.
+   */
   private static int[] defaultValues = {30, 25, 9, 20, 3};
+
+  /**
+   * this parameter sets the minimal quality to start a sequence. This can be changed by the user.
+   * The default value is 30.
+   * 
+   * @see io.ConfigHandler
+   * @see gui.ParameterWindow
+   */
   private static int avgApproximationStart = defaultValues[0];
+
+  /**
+   * this parameter sets the minimal quality to end a sequence. This can be changed by the user. The
+   * default value is 25.
+   * 
+   * @see io.ConfigHandler
+   * @see gui.ParameterWindow
+   */
   private static int avgApproximationEnd = defaultValues[1];
+
+  /**
+   * This variable represents how many bad quality nucleotide are allowed before the sequence gets
+   * cut off. Changing this may cause tests to fail. This can be changed by user.
+   * 
+   * @see io.ConfigHandler
+   * @see gui.ParameterWindow
+   */
   private static int breakcounter = defaultValues[2];
+
+  /**
+   * Number of Nucleotides which will be used for the average Quality calculations. This can be
+   * changed by user.
+   * 
+   * @see io.ConfigHandler
+   * @see gui.ParameterWindow
+   */
   private static int numAverageNucleotides = defaultValues[3];
+
+  /**
+   * This variable represents how many good quality nucleotides are needed before the sequence start
+   * gets detected. Changing this may cause tests to fail. This can be changed by user.
+   */
   private static int startcounter = defaultValues[4];
 
-  // date format
+  /**
+   * The date format which is used throughout the program.
+   */
   private static DateFormat dateFormat = new SimpleDateFormat("dd/MM/yy");
 
   /**
-   * char used for separating values in the configuration file
+   * The char used for separating values in the configuration file.
    */
   public static final char SEPARATOR_CHAR = ';';
 
   /**
-   * read the content of the configuration file and store its values locally
+   * The char which is used to represent a file that has been manually checked.
+   */
+  public static final char MANUAL_CHECKED_YES = 'y';
+
+  /**
+   * The char which is used to represent a file that has not been manually checked.
+   */
+  public static final char MANUAL_CHECKED_NO = 'n';
+
+  /**
+   * Reads the content of the configuration file and stores its values locally.
    * 
-   * @throws IOException
-   * @throws UnknownConfigFieldException
-   * @throws ConfigNotFoundException
+   * @throws IOException An error during file handling occured.
+   * @throws UnknownConfigFieldException The config file contains unknown fields.
+   * @throws ConfigNotFoundException The config file can not be found.
+   * @author Lovis Heindrich
    */
   public static void readConfig()
       throws UnknownConfigFieldException, ConfigNotFoundException, IOException {
@@ -86,7 +171,6 @@ public class ConfigHandler {
         case "srcPath":
           ConfigHandler.srcPath = elements[1].trim();
           break;
-
 
         // DB Login
         case "dbUser":
@@ -130,12 +214,13 @@ public class ConfigHandler {
   }
 
   /**
-   * read the content of the configuration file in the given path and store its values locally
+   * Reads the content of the configuration file in the given path and stores its values locally.
    * 
-   * @param path the folder in which the config.ini is
-   * @throws IOException
-   * @throws UnknownConfigFieldException
-   * @throws ConfigNotFoundException
+   * @param path The folder in which the config.txt is.
+   * @throws IOException An error during file handling occured.
+   * @throws UnknownConfigFieldException The config file contains unknown fields.
+   * @throws ConfigNotFoundException The config file can not be found.
+   * @author Lovis Heindrich
    */
   public static void readConfig(String path)
       throws UnknownConfigFieldException, ConfigNotFoundException, IOException {
@@ -144,9 +229,10 @@ public class ConfigHandler {
   }
 
   /**
-   * check if a config.ini file exists at the given path
+   * This method checks if a config.txt file exists at the given path.
    * 
-   * @return true if a config.ini exists
+   * @return true if a config.txt exists
+   * @author Lovis Heindrich
    */
   public static boolean exists() {
     File config = new File(path);
@@ -154,10 +240,10 @@ public class ConfigHandler {
   }
 
   /**
-   * create a new configuration file in the user home directory in a folder named gsat
+   * This method creates a new configuration file in the user home directory in a folder named gsat.
    * 
-   * @throws IOException
-   * 
+   * @throws IOException Error while reading file.
+   * @author Lovis Heindrich
    */
   public static void initConfig() throws IOException {
     if (!exists()) {
@@ -167,12 +253,27 @@ public class ConfigHandler {
     }
   }
 
-
+  /**
+   * Checks if a researcher is in the researcher list.
+   * 
+   * @param researcher Name of the researcher.
+   * @return True if researcher is already known
+   * @author Lovis Heindrich
+   */
+  public static boolean containsResearcher(String researcher) {
+    for (String res : researcherList) {
+      if (researcher.equals(res)) {
+        return true;
+      }
+    }
+    return false;
+  }
 
   /**
-   * writes all parameters in the configuration file
+   * Writes all local parameters in the configuration file.
    * 
-   * @throws IOException
+   * @throws IOException IO Error while writing.
+   * @author Lovis Heindrich
    */
   public static void writeConfig() throws IOException {
     BufferedWriter configWriter = new BufferedWriter(new FileWriter(path));
@@ -223,28 +324,33 @@ public class ConfigHandler {
     configWriter.close();
   }
 
-  public static String getSrcPath() {
-    return srcPath;
-  }
-
-  public static void setSrcPath(String srcPath) {
-    ConfigHandler.srcPath = srcPath;
-  }
-
+  /**
+   * Sorts and returns the list of researchers.
+   * 
+   * @return An array which contains the sorted researchers.
+   * @author Jannis Blueml
+   */
   public static String[] getSortedResearcherList() {
     Arrays.sort(researcherList);
     return researcherList;
   }
 
-
+  /**
+   * Writes a researcher in the researcher list. May overwrite an existing researcher.
+   * 
+   * @param researcher The name of the researcher.
+   * @param i The array index where the new researcher will be added.
+   * @author Lovis Heindrich
+   */
   public static void setResearcherInResearcherList(String researcher, int i) {
     ConfigHandler.researcherList[i] = researcher;
   }
 
   /**
-   * adds a new researcher to the list does not write it directly to configuration file
+   * Adds a new researcher to the list. Does not write it directly to configuration file.
    * 
-   * @param name name of the new researcher
+   * @param name The name of the new researcher.
+   * @author Lovis Heindrich
    */
   public static void addResearcher(String name) {
     String[] newResearchers = new String[researcherList.length + 1];
@@ -253,17 +359,20 @@ public class ConfigHandler {
     }
     newResearchers[researcherList.length] = name;
     researcherList = newResearchers;
-
-    // sort researchers
-    // Arrays.sort(researchers);
   }
 
   /**
-   * deletes a researcher from the list does not write it directly to configuration file
+   * Deletes a researcher from the list. Does not write it directly to the configuration file.
    * 
-   * @param name name of the researcher which will be deleted
+   * @param name The name of the researcher which will be deleted.
+   * @author Lovis Heindrich
    */
   public static void deleteResearcher(String name) {
+
+    if (researcherList.length == 1) {
+      return;
+    }
+
     String[] newResearchers = new String[researcherList.length - 1];
     int j = 0;
     for (int i = 0; i < researcherList.length; i++) {
@@ -276,24 +385,15 @@ public class ConfigHandler {
     researcherList = newResearchers;
   }
 
-  // TODO @Lovis
-  public static String[] getParameters() {
-    return null;
-  }
-
-
-
   // GETTERs and SETTERs:
 
   public static String getPath() {
     return path;
   }
 
-
   public static void setPath(String path) {
     ConfigHandler.path = path;
   }
-
 
   public static String[] getResearcherList() {
     return researcherList;
@@ -303,7 +403,6 @@ public class ConfigHandler {
     ConfigHandler.researcherList = researchers;
   }
 
-
   public static String getResearcher() {
     return researcher;
   }
@@ -311,7 +410,6 @@ public class ConfigHandler {
   public static void setResearcher(String researcher) {
     ConfigHandler.researcher = researcher;
   }
-
 
   public static String getDbUrl() {
     return dbUrl;
@@ -385,16 +483,10 @@ public class ConfigHandler {
     ConfigHandler.startcounter = startcounter;
   }
 
-  /**
-   * @return the defaultValues
-   */
   public static int[] getDefaultValues() {
     return defaultValues;
   }
 
-  /**
-   * @param defaultValues the defaultValues to set
-   */
   public static void setDefaultValues(int[] defaultValues) {
     ConfigHandler.defaultValues = defaultValues;
   }
@@ -407,4 +499,11 @@ public class ConfigHandler {
     ConfigHandler.dateFormat = dateFormat;
   }
 
+  public static void setSrcPath(String srcPath) {
+    ConfigHandler.srcPath = srcPath;
+  }
+
+  public static String getSrcPath() {
+    return srcPath;
+  }
 }

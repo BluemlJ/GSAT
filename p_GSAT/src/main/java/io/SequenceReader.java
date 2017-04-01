@@ -4,14 +4,17 @@ import java.io.File;
 import java.io.IOException;
 import java.util.LinkedList;
 
+import org.biojava.bio.program.abi.ABITrace;
+import org.biojava.bio.seq.DNATools;
+import org.biojava.bio.symbol.IllegalSymbolException;
 import org.jcvi.jillion.trace.chromat.ChromatogramFactory;
 import org.jcvi.jillion.trace.chromat.abi.AbiChromatogram;
 
 import analysis.AnalysedSequence;
 import analysis.Pair;
 import exceptions.FileReadingException;
-
-
+import exceptions.MissingPathException;
+import exceptions.PathUsage;
 
 /**
  * This class reads files of the AB1 format and extracts the information into a sequence.
@@ -35,8 +38,8 @@ public class SequenceReader {
    * Sets the path to the folder or the file to be used. In case of a folder, also gathers the file
    * names into the list to be able to check that all files are analyzed, and only once.
    * 
-   * @param path The given path to the data
-   * 
+   * @param path The given path to the data.
+   * @author Lovis Heindrich
    */
   public static void configurePath(String path) {
     SequenceReader.path = path;
@@ -47,13 +50,14 @@ public class SequenceReader {
    * deletes the first entry of the list. Note: There's no method to read in several files at once,
    * because the files is analyzed one by one.
    * 
-   * @throws IOException
-   * @throws IllegalSymbolException
+   * @throws IOException Error while reading file.
+   * @throws IllegalSymbolException Illegal symbol in file.
    * 
    * @author Lovis Heindrich
+   * @throws MissingPathException Path to the files is missing.
    */
   public static AnalysedSequence convertFileIntoSequence()
-      throws FileReadingException, IOException {
+      throws FileReadingException, IOException, MissingPathException, IllegalSymbolException {
     return convertFileIntoSequence(new File(path));
   }
 
@@ -62,55 +66,52 @@ public class SequenceReader {
    * into a sequence. If possible, deletes the first entry of the list. Note: There's no method to
    * read in several files at once, because the files is analyzed one by one.
    * 
-   * @throws IOException
-   * @throws IllegalSymbolException
+   * @throws IOException Error while reading file.
+   * @throws IllegalSymbolException Illegal symbol in file.
    * 
    * @author Lovis Heindrich
+   * @throws MissingPathException Path to the files is missing.
    */
   public static AnalysedSequence convertFileIntoSequence(File file)
-      throws FileReadingException, IOException {
+      throws FileReadingException, IOException, MissingPathException, IllegalSymbolException {
+
+    if (path == null) {
+      throw new MissingPathException(PathUsage.READING);
+    }
 
     File referencedFile = file;
 
-
     AbiChromatogram abifile = (AbiChromatogram) ChromatogramFactory.create(referencedFile);
+
     String sequence = abifile.getNucleotideSequence().toString();
     byte[] qualities = abifile.getQualitySequence().toArray();
-
-    // TODO Add Primer
 
     // convert qualities from byte[] to int[]
     int[] qualitiesInt = new int[qualities.length];
     for (int i = 0; i < qualities.length; i++) {
       qualitiesInt[i] = qualities[i];
     }
-
     AnalysedSequence parsedSequence = new AnalysedSequence(sequence, ConfigHandler.getResearcher(),
         referencedFile.getName(), qualitiesInt);
-    parsedSequence.setAbiFile(abifile);
+
+    ABITrace myTrace = new ABITrace(referencedFile);
+
+    parsedSequence.setChannelA(myTrace.getTrace(DNATools.a()));
+    parsedSequence.setChannelC(myTrace.getTrace(DNATools.c()));
+    parsedSequence.setChannelG(myTrace.getTrace(DNATools.g()));
+    parsedSequence.setChannelT(myTrace.getTrace(DNATools.t()));
+    parsedSequence.setBaseCalls(myTrace.getBasecalls());
+
     return parsedSequence;
   }
 
-  public static String getPath() {
-    return path;
-  }
+
 
   /**
-   * Indicates whether there is a path set at the moment.
+   * Returns a list of all AB1 files in the path that was set via configurePath().
    * 
-   * @return Whether a path is set or not
-   * 
-   * @author Ben Kohr
-   */
-  public static boolean isPathSet() {
-    return path != null;
-  }
-
-  /**
-   * Returns a list of all AB1 files in the path that was set via configurePath()
-   * 
-   * @return
-   * @author Kevin
+   * @return A Pair containing a list of readable .ab1 files and a list of all other files.
+   * @author Kevin Otto
    */
   public static Pair<LinkedList<File>, LinkedList<File>> listFiles() {
 
@@ -152,8 +153,6 @@ public class SequenceReader {
     return new Pair<LinkedList<File>, LinkedList<File>>(ab1Files, oddFiles);
   }
 
-
-
   /**
    * Discards the current path and files.
    * 
@@ -162,5 +161,11 @@ public class SequenceReader {
   public static void resetInputData() {
     path = null;
     files.clear();
+  }
+
+  // getter and setter
+
+  public static String getPath() {
+    return path;
   }
 }

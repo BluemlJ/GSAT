@@ -7,12 +7,10 @@ package exceptions;
  */
 public class MissingPathException extends Exception {
 
-
   /**
    * This field indicates whether the path is used for reading or writing.
    */
   public PathUsage usage;
-
 
   /**
    * Constructor calling the super constructor. It also specifies the error message.

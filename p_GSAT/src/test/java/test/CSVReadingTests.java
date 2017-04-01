@@ -17,15 +17,12 @@ import io.GeneHandler;
 
 public class CSVReadingTests {
 
-
   public static String path = "resources" + File.separator + "readingtests" + File.separator;
 
   @After
   public void setup() throws IOException {
-    GeneHandler.deleteGene("FSA1");
+    GeneHandler.deleteGene("FSA1 (ecoli)");
   }
-
-
 
   @Test
   public void testReadingCSVTwoFiles() throws IOException, DuplicateGeneException {
@@ -49,18 +46,15 @@ public class CSVReadingTests {
     assertEquals("A4R (CGC)", test.getMutations().getFirst());
     assertTrue(test.getMutations().size() == 1);
 
-    assertEquals("", test.getComments());
+    assertEquals("comment", test.getComments());
     assertEquals("testresearcher", test.getResearcher());
     assertEquals("04/03/17", test.getAddingDate());
-    assertEquals("3.555", test.getAvgQuality() + "");
+    assertEquals("3", test.getAvgQuality() + "");
     assertEquals(22, (int) test.getTrimPercentage());
     assertEquals("ATC", test.getSequence());
-    assertEquals("AAA", test.getLeftVector());
-    assertEquals("null", test.getRightVector());
     assertEquals("none", test.getPrimer());
     assertEquals(-1, test.getHisTagPosition());
     assertEquals(true, test.isManuallyChecked());
-
 
     // second sequence
 
@@ -75,11 +69,9 @@ public class CSVReadingTests {
     assertEquals("comment", test.getComments());
     assertEquals("-", test.getResearcher());
     assertEquals("02/03/17", test.getAddingDate());
-    assertEquals("99.9997646690603", test.getAvgQuality() + "");
+    assertEquals("99", test.getAvgQuality() + "");
     assertEquals(55, (int) test.getTrimPercentage());
-    assertEquals("ATC", test.getSequence());
-    assertEquals("CCC", test.getLeftVector());
-    assertEquals("null", test.getRightVector());
+    assertEquals("ATCTACTACTATACG", test.getSequence());
     assertEquals("none", test.getPrimer());
     assertEquals(3, test.getHisTagPosition());
     assertEquals(false, test.isManuallyChecked());
@@ -97,17 +89,14 @@ public class CSVReadingTests {
     assertEquals("c", test.getComments());
     assertEquals("-", test.getResearcher());
     assertEquals("02/03/17", test.getAddingDate());
-    assertEquals("99.99988905066168", test.getAvgQuality() + "");
+    assertEquals("99", test.getAvgQuality() + "");
     assertEquals(49, (int) test.getTrimPercentage());
     assertEquals("AATATC", test.getSequence());
-    assertEquals("TTC", test.getLeftVector());
-    assertEquals("A", test.getRightVector());
     assertEquals("none", test.getPrimer());
     assertEquals(-1, test.getHisTagPosition());
     assertEquals(true, test.isManuallyChecked());
 
   }
-
 
   @Test
   public void testReadingCSVOneFile() throws IOException, DuplicateGeneException {
@@ -126,22 +115,21 @@ public class CSVReadingTests {
     AnalysedSequence test = result.pop();
 
     assertEquals("test1.ab1", test.getFileName());
+    System.out.println(test.getReversedSequence());
     assertEquals("FSA1", test.getReferencedGene().getName());
 
-    assertTrue(test.getMutations().size() == 3);
+    assertTrue(test.getMutations().size() == 4);
     assertEquals("K9L (CAA)", test.getMutations().pop());
     assertEquals("D9L (CAA)", test.getMutations().pop());
     assertEquals("W9L (CAA)", test.getMutations().pop());
-
+    assertEquals("+1E4 (ATC)", test.getMutations().pop());
 
     assertEquals("l", test.getComments());
     assertEquals("test", test.getResearcher());
     assertEquals("06/03/17", test.getAddingDate());
-    assertEquals("44.4", test.getAvgQuality() + "");
+    assertEquals("44", test.getAvgQuality() + "");
     assertEquals(3, (int) test.getTrimPercentage());
     assertEquals("AAAAAAAAAAAAAAAAA", test.getSequence());
-    assertEquals("CCC", test.getLeftVector());
-    assertEquals("null", test.getRightVector());
     assertEquals("none", test.getPrimer());
     assertEquals(4, test.getHisTagPosition());
     assertEquals(true, test.isManuallyChecked());
@@ -153,25 +141,22 @@ public class CSVReadingTests {
     assertEquals("test2.ab1", test.getFileName());
     assertEquals("FSA1", test.getReferencedGene().getName());
 
-    assertTrue(test.getMutations().size() == 2);
+    assertTrue(test.getMutations().size() == 3);
     assertEquals("K9J (CCA)", test.getMutations().pop());
     assertEquals("G5H (AGG)", test.getMutations().pop());
-
+    assertEquals("-1E4 (ATC)", test.getMutations().pop());
+    
     assertEquals("d", test.getComments());
     assertEquals("test2", test.getResearcher());
     assertEquals("06/03/17", test.getAddingDate());
-    assertEquals("32.3", test.getAvgQuality() + "");
+    assertEquals("33", test.getAvgQuality() + "");
     assertEquals(4, (int) test.getTrimPercentage());
     assertEquals("TTCCTTCTCCTCC", test.getSequence());
-    assertEquals("TTCA", test.getLeftVector());
-    assertEquals("AA", test.getRightVector());
     assertEquals("none", test.getPrimer());
     assertEquals(-1, test.getHisTagPosition());
     assertEquals(true, test.isManuallyChecked());
 
   }
-
-
 
   @Test
   public void testEmptyFolder() throws IOException {
@@ -180,7 +165,7 @@ public class CSVReadingTests {
 
     File file = new File(emptyPath);
     file.delete();
-    LinkedList<AnalysedSequence> result = FileRetriever.convertFilesToSequences(emptyPath);
+    LinkedList<AnalysedSequence> result = FileRetriever.convertFilesToSequences(path + "empty/");
 
     assertTrue(result.size() == 0);
 
@@ -188,5 +173,15 @@ public class CSVReadingTests {
 
   }
 
+
+
+  @Test
+  public void testProblematicComments() throws IOException {
+
+    LinkedList<AnalysedSequence> result = FileRetriever.convertFilesToSequences(path + "prob/");
+
+    assertTrue(result.size() == 0);
+
+  }
 
 }

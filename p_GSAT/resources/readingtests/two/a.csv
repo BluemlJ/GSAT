@@ -1,2 +1,2 @@
-id; file name; gene; gene organism; mutations (with codons); comments; researcher; date; average quality (percent); percentage of quality trim; nucleotide sequence; left vector; right vector; primer; HIS tag; mutations (without codons); manually checked
-1; x.ab1; FSA1; ecoli; A4R (CGC); ; testresearcher; 04/03/17; 3.555; 22; ATC; AAA; null; none; none; A4R; true
+file name; gene; gene organism; mutations (with codons - except for insertions, deletions and silent mutations);mutations (with codons - insertions, deletions and silent mutations); HIS Tag; manually checked; comments; researcher; date; average quality (percent); percentage of quality trim; nucleotide sequence; primer;mutations (without codons - except for insertions, deletions and silent mutations);mutations (without codons - insertions, deletions and silent mutations)
+x.ab1; FSA1; ecoli; A4R (CGC); none; true; comment; testresearcher; 04/03/17; 3; 22; ATC; none; A4R; ;

@@ -11,14 +11,14 @@
   <children>
     <AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="63.0" prefWidth="640.0" VBox.vgrow="ALWAYS">
       <children>
-            <Text layoutX="66.0" layoutY="103.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Database URL:" />
-            <Text layoutX="29.0" layoutY="173.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Database Password:" />
+            <Text layoutX="78.0" layoutY="103.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Database URL:" />
+            <Text layoutX="51.0" layoutY="209.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Database password:" />
             <TextField fx:id="adressField" layoutX="173.0" layoutY="86.0" prefHeight="25.0" prefWidth="375.0" />
-            <PasswordField fx:id="passwordField" layoutX="173.0" layoutY="156.0" prefHeight="25.0" prefWidth="375.0" promptText="Password" />
-            <Text layoutX="91.0" layoutY="209.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Username:" />
+            <PasswordField fx:id="passwordField" layoutX="173.0" layoutY="192.0" prefHeight="25.0" prefWidth="375.0" promptText="Password" />
+            <Text layoutX="99.0" layoutY="173.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Username:" />
             <Text layoutX="126.0" layoutY="140.0" strokeType="OUTSIDE" strokeWidth="0.0" text=" Port:" />
             <TextField fx:id="portField" layoutX="173.0" layoutY="123.0" prefHeight="25.0" prefWidth="375.0" />
-            <TextField fx:id="userNameField" layoutX="173.0" layoutY="192.0" prefHeight="25.0" prefWidth="375.0" />
+            <TextField fx:id="userNameField" layoutX="173.0" layoutY="156.0" prefHeight="25.0" prefWidth="375.0" />
             <Button fx:id="connectButton" layoutX="408.0" layoutY="242.0" mnemonicParsing="false" text="Connect" />
             <Button fx:id="closeButton" layoutX="494.0" layoutY="242.0" mnemonicParsing="false" text="Close" />
       </children>

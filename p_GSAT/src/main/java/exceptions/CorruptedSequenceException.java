@@ -23,7 +23,6 @@ public class CorruptedSequenceException extends Exception {
    */
   public char problem;
 
-
   /**
    * Constructor specifies the position, the type of wrong character in an observed sequence and the
    * nucleotide String. It also specifies an error message.
