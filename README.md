@@ -1,9 +1,7 @@
 # GSAT #
 
-Buildstatus:
-
- [![build status](https://gitlab.com/BluemlJ/GSAT/badges/master/build.svg)](https://gitlab.com/BluemlJ/GSAT/commits/master)
- 
+Build the final branch for the major stable release (30.3.2017)
+Build the master branch for a experimental nighly build
 
 About GSAT
 ----
