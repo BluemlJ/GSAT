@@ -123,8 +123,18 @@ public class FileRetriever {
     String[] mutations = data[3].split(",");
     for (int i = 0; i < mutations.length; i++) {
       mutations[i] = mutations[i].trim();
-      sequence.addMutation(mutations[i]);
+      if (!mutations[i].isEmpty()) {
+        sequence.addMutation(mutations[i]);
+      }
     }
+    mutations = data[14].split(",");
+    for (int i = 0; i < mutations.length; i++) {
+      mutations[i] = mutations[i].trim();
+      if (!mutations[i].isEmpty()) {
+        sequence.addMutation(mutations[i]);
+      }
+    }
+    
 
     if (data[4].equals("none")) {
       sequence.setHisTagPosition(-1);
@@ -147,6 +157,7 @@ public class FileRetriever {
     sequence.setPrimer(data[12]);
 
     // data[13] contains the mutations again
+    
 
     return sequence;
 

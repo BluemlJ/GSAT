@@ -57,7 +57,7 @@
                <children>
                   <TextField fx:id="numAverageNucleotides" layoutX="177.0" layoutY="21.0" prefHeight="25.0" prefWidth="82.0" promptText="20" />
                   <Text layoutX="14.0" layoutY="38.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Search Radius" wrappingWidth="161.984375" />
-                  <Button fx:id="cancelButton" layoutX="329.0" layoutY="21.0" mnemonicParsing="false" text="Cancel" AnchorPane.rightAnchor="5.0" />
+                  <Button fx:id="cancelButton" layoutX="329.0" layoutY="21.0" mnemonicParsing="false" text="Close" AnchorPane.rightAnchor="5.0" />
                   <Button fx:id="saveButton" layoutX="269.0" layoutY="21.0" mnemonicParsing="false" text="Save" AnchorPane.leftAnchor="269.0" />
                </children>
             </AnchorPane>

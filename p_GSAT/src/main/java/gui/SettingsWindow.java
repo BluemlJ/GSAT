@@ -31,6 +31,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.TextInputDialog;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.control.ToggleGroup;
+import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
@@ -276,7 +277,40 @@ public class SettingsWindow extends Application implements javafx.fxml.Initializ
             showGeneOrPrimerButton.setDisable(false);
           }
         });
+    
+    geneOrPrimerList.setOnMouseClicked(new EventHandler<MouseEvent>() {
+      
+      @Override
+      public void handle(MouseEvent e) {
+          if(e.getButton() == MouseButton.PRIMARY && e.getClickCount() == 2) {
+            if (!geneOrPrimerList.getSelectionModel().isEmpty()) {
+              if (isPrimerOn) {
+                selectedPrimer = PrimerHandler.getPrimer(geneOrPrimerList.getSelectionModel().getSelectedItem());
+                ShowPrimerWindow primerWindow = new ShowPrimerWindow();
+                try {
+                  primerWindow.start(new Stage());
+                } catch (Exception ex) {
+                  GUIUtils.showInfo(AlertType.ERROR, "Error during primer window opening",
+                      "The primer window could not be opened. Please try again.");
+                }
+              } else {
+                selectedGene = GeneHandler.getGene(geneOrPrimerList.getSelectionModel().getSelectedItem().split(" ")[0]);
+                ShowGeneWindow geneWindow = new ShowGeneWindow();
+                try {
+                  geneWindow.start(new Stage());
+                } catch (Exception ex) {
+                  GUIUtils.showInfo(AlertType.ERROR, "Gene window opening error",
+                      "Gene window could not be opened. Please try again.");
+                }
+              }
+              showGeneOrPrimerButton.setDisable(false);
+            }
+          }  
+      }   
+  });
 
+    
+    
     // opens a new window with informations about gene/primer
     showGeneOrPrimerButton.setOnAction(new EventHandler<ActionEvent>() {
       @Override

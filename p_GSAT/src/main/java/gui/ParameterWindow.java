@@ -241,9 +241,6 @@ public class ParameterWindow extends Application implements javafx.fxml.Initiali
           GUIUtils.showInfo(AlertType.ERROR, "Configuration file error",
               "The configuration file could not be updated. Please try again.");
         }
-        SettingsWindow.addParametersOpen = false;
-        Stage stage = (Stage) cancelButton.getScene().getWindow();
-        stage.close();
       }
     });
 

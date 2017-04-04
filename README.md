@@ -1,23 +1,30 @@
 # GSAT #
 
-Develop-Buildstatus:
+Buildstatus:
 
- [![build status](https://gitlab.com/BluemlJ/GSAT/badges/Develop/build.svg)](https://gitlab.com/BluemlJ/GSAT/commits/Develop)
+ [![build status](https://gitlab.com/BluemlJ/GSAT/badges/master/build.svg)](https://gitlab.com/BluemlJ/GSAT/commits/master)
  
 
 About GSAT
 ----
-GSAT, which means "Genetic Sequence Analysing Tool", is a Java program for analysing AB1 files, comparing them with genes and adding retrieved
-information about mutations into a database.
+GSAT, which means "Genetic Sequence Analysing Tool", is a Java program for analysing AB1 files, comparing them with genes and adding retrieved information about mutations into a database.
 
 Requirements
 ----
+Our software requires the Java Runtime Enviroment included in the [Java Standard Edition](http://www.oracle.com/technetwork/java/javase/downloads/index-jsp-138363.html) (Java SE). To run our software with a graphical interface the java version must be 1.8 or newer. 
+
+Further it is possible, that linux and mac need an additionally installation of "Java FX". 
 
 Building/Installation
 ----
+The newest version of the software can be found unter pipelines by downloading the latest build. This build includes a lib folder and a jar file. An additionally installation is not necessary, start our software by starting the jar. 
+
+A smaller console version can be start with the commandline by adding the parameter c. 
+
 
 Users Guide
 -----
+a short manual to use our software can be found in the software by open the help field or [here](https://gitlab.com/BluemlJ/GSAT/blob/Develop/p_GSAT/src/main/resources/manual/WelcomeToGSAT.txt)
 
 License
 -----
