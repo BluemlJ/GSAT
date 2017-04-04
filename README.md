@@ -16,10 +16,9 @@ Further it is possible, that linux and mac need an additionally installation of 
 
 Building/Installation
 ----
-The newest version of the software can be found unter pipelines by downloading the latest build. This build includes a lib folder and a jar file. An additionally installation is not necessary, start our software by starting the jar. 
+The newest version of the software can be found under the release tab (v1.0) by downloading the build. This build includes a lib folder and a jar file. An additionally installation is not necessary, start our software by starting the jar. 
 
 A smaller console version can be start with the commandline by adding the parameter c. 
-
 
 Users Guide
 -----
